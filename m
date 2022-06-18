@@ -2,146 +2,142 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F07715501A3
-	for <lists+linux-mmc@lfdr.de>; Sat, 18 Jun 2022 03:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD51E5503BD
+	for <lists+linux-mmc@lfdr.de>; Sat, 18 Jun 2022 11:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235768AbiFRBVM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 17 Jun 2022 21:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54408 "EHLO
+        id S231840AbiFRJDk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 18 Jun 2022 05:03:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231287AbiFRBVL (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 17 Jun 2022 21:21:11 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756366B023
-        for <linux-mmc@vger.kernel.org>; Fri, 17 Jun 2022 18:21:09 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id h34-20020a17090a29a500b001eb01527d9eso4669666pjd.3
-        for <linux-mmc@vger.kernel.org>; Fri, 17 Jun 2022 18:21:09 -0700 (PDT)
+        with ESMTP id S232498AbiFRJDc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 18 Jun 2022 05:03:32 -0400
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F0F28730
+        for <linux-mmc@vger.kernel.org>; Sat, 18 Jun 2022 02:03:31 -0700 (PDT)
+Received: by mail-pj1-x1049.google.com with SMTP id lk16-20020a17090b33d000b001e68a9ac3a1so4205655pjb.2
+        for <linux-mmc@vger.kernel.org>; Sat, 18 Jun 2022 02:03:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=F+G5vrMheUscNqcqfe/Vgn/7QPQWiVKmIQiHsQqGhT4=;
-        b=m3E2TWWtMPsLtGy3UNkP6R2CyUrzzErld4HxIC7V5BUUbuMycPgbuQxuJXJI6bqpUX
-         XL+ggljtounUakjSM7xIXhsd/6cboev8E1hTu0iwWKgRcPu7clb6PDXCSIleNBhl+Acu
-         My7gjrw+AEcNH+ZcO6+Z0yZfIHrR1Ym+7US0r2O92V/+PiDyw+zptZXEFo8bGCLQMxEK
-         DCYQ+RsB952kDvDBvnI0U9NkgKgGASPBXrpFOwpt+BdM91H/3rQnHWsLR6vg+kNpLbyw
-         qs/Ub35o86VjzVCU6iZr5CUT3ozgGtztWiPl41S9nRLkdFp89euxhhJUwhH2I7thst5c
-         iu/A==
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=ptVKPuGcbB2+la+8ZiODjieQiW7k/oxo/Oz/EdgWumA=;
+        b=UIxQ5FEc5KUGjUFI0jmR+pzVeOpPYkxsewDr7QpplKnl9i8FqbhtassrfzcyyW/VG4
+         q4zTZ1jlJegFa1PmQn4JCa7rgZpA9GXdHeGc7DZThZ3KQpZ5ijja2/D22gi939kN75as
+         w19ZMHfgy7cHjfLdCoqYjwhPvt3gyoPZQIRTlpXEuBVi1hRUi93DrwXHyRyr6uPntB+C
+         f5qLDoDNzx+/aL9DTUn2OsNZ3Fo0QayufVMnNZ/CwjjPTMgirdUroVvDRqUjhR2FhpvJ
+         nwHs/ieBLMWCoE89Zwm+PIiFZpaoTHinYCTLH2LFGLCAwEinnlsS9UG+rWKeGDt9sn12
+         wlLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=F+G5vrMheUscNqcqfe/Vgn/7QPQWiVKmIQiHsQqGhT4=;
-        b=Rd9wNALYbBY10F7oAwJtJgVwY0sFWdGyOD9zJlKTqYqjwaTOJCmxxjK46twVNOi9j8
-         JFRDTL0991ICc7QMYTsPLalVfY/i8jOfdYSk4sa1zBGOWbF3kxCPbehL3TbLKxvf2xvk
-         ATISjbTE3jCfJa7sRx7pwMDm1gabUwKttUuYEG1f7+4MpPssRyZe2fMWaUl288pq1DLB
-         boF/fNyyFkwCjE5hKF16s9fCZ64pl9RydsDDVWeeEbjRvkvjwwbPZ9GKnoJyX2RlXfWt
-         9h74qKEQ5OFurqbVfow6HkRiiMZx95/kthfpOTIw9dNI991mDC1TlnWbbE4A3bsUD6fy
-         8hDQ==
-X-Gm-Message-State: AJIora9pVUpkXgk9eHSncv5GYPG4gYUOWpnOhChI8V1RzJsVPTwyTcj6
-        Dgjx0VhMMLFrUYONbDFxSbOYww==
-X-Google-Smtp-Source: AGRyM1vG4KjjPKtlm1wgmX54+UP4p9y1x0Anp/mA9ON9D45XnW3TBdS/hae7OlqnJfOS0AB4kGjomA==
-X-Received: by 2002:a17:90a:df91:b0:1e3:4dc8:46e7 with SMTP id p17-20020a17090adf9100b001e34dc846e7mr24426222pjv.106.1655515268980;
-        Fri, 17 Jun 2022 18:21:08 -0700 (PDT)
-Received: from [172.31.235.92] ([216.9.110.6])
-        by smtp.gmail.com with ESMTPSA id o22-20020a17090ac09600b001e2a36fb4aasm6038921pjs.43.2022.06.17.18.21.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Jun 2022 18:21:08 -0700 (PDT)
-Message-ID: <91395246-7d94-c35b-b336-9c193e5d2b9e@linaro.org>
-Date:   Fri, 17 Jun 2022 18:21:00 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] dt-bindings: mmc: mtk-sd: Set clocks based on compatible
-Content-Language: en-US
-To:     =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     kernel@collabora.com,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Wenbin Mei <wenbin.mei@mediatek.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-mmc@vger.kernel.org
-References: <20220617230114.2438875-1-nfraprado@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220617230114.2438875-1-nfraprado@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=ptVKPuGcbB2+la+8ZiODjieQiW7k/oxo/Oz/EdgWumA=;
+        b=Ez3vdxMEhNGIEM+/i1ThLJx094GkkUJjAhB9O5XiVRbJTxjji3tOInWhKTqyBv6I5u
+         icAietUvuHz4ufoMcjZqNJ4gUur/+EdSFaMk2E5shjchOAmiLYMg3sTdG/e9r3d5N3Vu
+         vu270y9AW1OptfzDSeaoAODTnlQ62KpP0FBq3UYe6XcrDWLZ9vjmFWRaiWT4rQERnZ2c
+         hj5XLA+pyjK9ayUpSOT3Hz24wPtB1ohzeghGH/Opz11r2ODgrgJM6YElZYvVdNstS1pW
+         c+djN8b+QJrgdBbLW/mh9LIx8hhVDDh2o+K3xkp9PMcZ5A2CN8bqK3NqkDCIEOSTjtiG
+         +kqg==
+X-Gm-Message-State: AJIora87WhKYsaGiSyDKDnP4MzTK5y/5ZJPCe0MkBQPOrimaBuQ5Hhcl
+        7yaJq/XKVLWI2N5KB2dWzGEFwQVrd6bqTA==
+X-Google-Smtp-Source: AGRyM1sH2PfcGj8ViDV0lllmFpU71ukSxzCtMA3vIatOWbHB6KvOeV6QomY8XXQV6nt0d4lCuh4I6QRng8JeMg==
+X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:20a1])
+ (user=davidgow job=sendgmr) by 2002:a17:903:11cc:b0:168:eae:da4a with SMTP id
+ q12-20020a17090311cc00b001680eaeda4amr13290211plh.21.1655543010775; Sat, 18
+ Jun 2022 02:03:30 -0700 (PDT)
+Date:   Sat, 18 Jun 2022 17:03:05 +0800
+Message-Id: <20220618090310.1174932-1-davidgow@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.36.1.476.g0c4daa206d-goog
+Subject: [PATCH 0/5] Rework KUnit test execution in modules
+From:   David Gow <davidgow@google.com>
+To:     Brendan Higgins <brendanhiggins@google.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Jeremy Kerr <jk@codeconstruct.com.au>,
+        Daniel Latypov <dlatypov@google.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andra Paraschiv <andraprs@amazon.com>,
+        Longpeng <longpeng2@huawei.com>
+Cc:     David Gow <davidgow@google.com>, kunit-dev@googlegroups.com,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "=?UTF-8?q?Ma=C3=ADra=20Canal?=" <maira.canal@usp.br>,
+        linux-mmc@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, linux-usb@vger.kernel.org,
+        linux-modules@vger.kernel.org,
+        Matt Johnston <matt@codeconstruct.com.au>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 17/06/2022 16:01, Nícolas F. R. A. Prado wrote:
-> The binding was describing a single clock list for all platforms, but
-> that's not really suitable: mt2712 requires an extra 'bus_clk' on some
-> of its controllers, while mt8192 requires four different extra clocks.
-> The rest of the platforms can share the same 3 clocks, with the third
-> being optional as it's not present on all platforms.
-> 
-> Move the clock definitions inside if blocks that match on the
-> compatibles. In practice this gets rid of dtbs_check warnings on mt8192,
-> since the 'bus_clk' clock from mt2712 is no longer expected on this
-> platform.
-> 
-> Fixes: 59a23395d8aa ("dt-bindings: mmc: Add support for MT8192 SoC")
-> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-> 
-> ---
-> 
->  .../devicetree/bindings/mmc/mtk-sd.yaml       | 115 ++++++++++++------
->  1 file changed, 81 insertions(+), 34 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> index 2a2e9fa8c188..ba48ff041299 100644
-> --- a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
-> @@ -10,9 +10,6 @@ maintainers:
->    - Chaotian Jing <chaotian.jing@mediatek.com>
->    - Wenbin Mei <wenbin.mei@mediatek.com>
->  
-> -allOf:
-> -  - $ref: mmc-controller.yaml#
-> -
->  properties:
->    compatible:
->      oneOf:
-> @@ -48,28 +45,8 @@ properties:
->    clocks:
->      description:
->        Should contain phandle for the clock feeding the MMC controller.
-> -    minItems: 2
+This patch series makes two changes to how KUnit test suites are stored
+and executed:
+- The .kunit_test_suites section is now used for tests in modules (in
+  lieu of a module_init funciton), as well as for built-in tests. The
+  module loader will now trigger test execution. This frees up the
+  module_init function for other uses.
+- Instead of storing an array of arrays of suites, have the
+  kunit_test_suite() and kunit_test_suites() macros append to one global
+  (or per-module) list of test suites. This removes a needless layer of
+  indirection.
 
-Keep minItems and maxItems matching the widest constraints.
+The upshot of this is that it should now be possible to use the
+kunit_test_suite() and kunit_test_suites() macros to register test
+suites even from within modules which otherwise had module_init
+functions. This was proving to be quite a common issue, resulting in
+several modules calling into KUnit's private suite execution functions
+to run their tests (often introducing incompatibilities with the KUnit
+tooling).
 
-> -    items:
-> -      - description: source clock (required).
-> -      - description: HCLK which used for host (required).
-> -      - description: independent source clock gate (required for MT2712).
-> -      - description: bus clock used for internal register access (required for MT2712 MSDC0/3).
-> -      - description: msdc subsys clock gate (required for MT8192).
-> -      - description: peripheral bus clock gate (required for MT8192).
-> -      - description: AXI bus clock gate (required for MT8192).
-> -      - description: AHB bus clock gate (required for MT8192).
-> -
-> -  clock-names:
-> -    minItems: 2
+This series also fixes the thunderbolt, nitro_enclaves, and
+sdhci-of-aspeed tests to use kunit_test_suite() now that it works.
 
-ditto
+Huge thanks to Jeremy Kerr, who designed and implemented the module
+loader changes, and to Daniel Latypov for pushing the simplification of
+the nested arrays in .kunit_test_suites.
 
->  
+I've tested this series both with builtin tests, and with modules on
+x86_64, but there's always the possibility that there's something subtle
+and nasty on another architecture, so please test!
 
+Cheers,
+-- David
 
-Best regards,
-Krzysztof
+Daniel Latypov (1):
+  kunit: flatten kunit_suite*** to kunit_suite** in .kunit_test_suites
+
+David Gow (3):
+  thunderbolt: test: Use kunit_test_suite() macro
+  nitro_enclaves: test: Use kunit_test_suite() macro
+  mmc: sdhci-of-aspeed: test: Use kunit_test_suite() macro
+
+Jeremy Kerr (1):
+  kunit: unify module and builtin suite definitions
+
+ drivers/mmc/host/Kconfig                      |   5 +-
+ drivers/mmc/host/sdhci-of-aspeed-test.c       |   8 +-
+ drivers/mmc/host/sdhci-of-aspeed.c            |  27 ----
+ drivers/thunderbolt/Kconfig                   |   5 +-
+ drivers/thunderbolt/domain.c                  |   3 -
+ drivers/thunderbolt/tb.h                      |   8 -
+ drivers/thunderbolt/test.c                    |  12 +-
+ drivers/virt/nitro_enclaves/Kconfig           |   5 +-
+ drivers/virt/nitro_enclaves/ne_misc_dev.c     |  27 ----
+ .../virt/nitro_enclaves/ne_misc_dev_test.c    |   5 +-
+ include/kunit/test.h                          |  60 ++------
+ include/linux/module.h                        |   5 +
+ kernel/module/main.c                          |   6 +
+ lib/kunit/executor.c                          | 117 ++++-----------
+ lib/kunit/executor_test.c                     | 139 +++++-------------
+ lib/kunit/test.c                              |  54 ++++++-
+ 16 files changed, 152 insertions(+), 334 deletions(-)
+
+-- 
+2.36.1.476.g0c4daa206d-goog
+
