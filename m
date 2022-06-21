@@ -2,199 +2,107 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED108552D7B
-	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jun 2022 10:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 197FC552EE6
+	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jun 2022 11:41:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348025AbiFUIyg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 21 Jun 2022 04:54:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38940 "EHLO
+        id S1349575AbiFUJkr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 21 Jun 2022 05:40:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347739AbiFUIyS (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jun 2022 04:54:18 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E58D325EB4
-        for <linux-mmc@vger.kernel.org>; Tue, 21 Jun 2022 01:54:15 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id u19-20020a25ab13000000b00668d212a064so6600242ybi.5
-        for <linux-mmc@vger.kernel.org>; Tue, 21 Jun 2022 01:54:15 -0700 (PDT)
+        with ESMTP id S1349239AbiFUJkL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jun 2022 05:40:11 -0400
+Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7649627FC3
+        for <linux-mmc@vger.kernel.org>; Tue, 21 Jun 2022 02:39:57 -0700 (PDT)
+Received: by mail-oo1-xc30.google.com with SMTP id d12-20020a4aeb8c000000b004214e709b72so1579233ooj.6
+        for <linux-mmc@vger.kernel.org>; Tue, 21 Jun 2022 02:39:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=sMhw4RZ/mWWPPEUWkgHgKXiigOXLUScNjtTFmn2v0ww=;
-        b=WYhhSDqtQLk2QwIQ9Mr+OfByWeTNLN8sNc4QhSP14iedILM5LNdrlTY82CM6VPKQCE
-         By6Ua1qc4cn6zsrHKakHGav00eshow0V3SRetAmA0xPNxDAyQihPZF7xBJ0KTM/lOqVD
-         yAhIvn2GX/NfazxHfKC654SnUE7VoOHGZr3pWPPebIBxIOX2UvpIL4VDNO0I6QH/j5Gz
-         YqGIfw9M0roZ/xk2YYqZrsC8UH2LzF0G9fjmQredjggrZW8PNMWTCbL06TbFWUJ7e2/x
-         7HjOI5S5pt2/z0kYY9bCfy6eQ49h/EoCWOj36bKQ3He5JQvrn3N7cPPpRMn1UzZH9WZI
-         RVCA==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
+        b=NKhg6kSkfnglJlsPDVUWhCY3Iibudx7OhZC5CePFgeNekYJKNrcmU8wB8gkktmjPqY
+         f0o4DET3nwW7oGb1WQAmWVCm6yLISrVrQXMY/9qoCppMNLX7K/jA/JZ+JMs1mNT38j+N
+         qSlM2vTiSOIkQo5cZ6oY4dkMVda7fWn0vzKRT295Q67AStI8u0BTanvw38uSxo4IMvFm
+         mtbeFJOQugEk6bmbrSLJZHxNWvSEoU0AT9TQz59V3jAGDZbWiI6U0Fx8UlroTYMr9wGQ
+         +xC78kHT5AZK7k/f6wmWhdDj3ThC5Cy20ctCKCcYvb/idPExEpgvQXB/UX/ziCu3vO07
+         Q2/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=sMhw4RZ/mWWPPEUWkgHgKXiigOXLUScNjtTFmn2v0ww=;
-        b=FH7RC248o5hlsHoGQ/ZbGdbVqqRw/BJJLAuZLgIDZy1CHN/VWIV3cp9eert1pYrzJn
-         IB/JknN0vhLhbTqKoJtihpTiNuFZZR/vEDtUNs3+ukxZliPOViznh7jjjYmZa/nacstE
-         frygzK4R4/dimx03mGoYwWhfgsynPUxhv9vGdt/L7aB6mUHPj3vhNr19sXqd/qHtCQPS
-         fW80QQKN9ctFxTOGhc50vc7EXsGqkvpCj1C+1QwwYu1/unanpGXsV8fVkfxyDRXGWjAq
-         XbGdLWqTxpepvhVq6Pj3TVwAEoovpOzu9uUg3gIplUR2jJTHJ9DBB5MCZZPG5e6d+QSO
-         rAOw==
-X-Gm-Message-State: AJIora8kd9shCFpcmkE7ySPonHv72LbdKx0zg/0AWCmo+SvCfu5smHdJ
-        6yNH7pCFT2mEVYPnZvSAFDrA/M1bkpi94w==
-X-Google-Smtp-Source: AGRyM1vieUr2pRKhrhNOp1dFpCWfaNn7lwjXBL4J8TaauocML9PYRPmYH8ZaoDHS6H8PaqQG31H3ZdL9MJQ6hg==
-X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:20a1])
- (user=davidgow job=sendgmr) by 2002:a0d:f045:0:b0:317:e6b2:2c64 with SMTP id
- z66-20020a0df045000000b00317e6b22c64mr7404945ywe.350.1655801655027; Tue, 21
- Jun 2022 01:54:15 -0700 (PDT)
-Date:   Tue, 21 Jun 2022 16:53:45 +0800
-In-Reply-To: <20220621085345.603820-1-davidgow@google.com>
-Message-Id: <20220621085345.603820-6-davidgow@google.com>
-Mime-Version: 1.0
-References: <20220621085345.603820-1-davidgow@google.com>
-X-Mailer: git-send-email 2.37.0.rc0.104.g0611611a94-goog
-Subject: [PATCH v2 5/5] mmc: sdhci-of-aspeed: test: Use kunit_test_suite() macro
-From:   David Gow <davidgow@google.com>
-To:     Brendan Higgins <brendanhiggins@google.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Jeremy Kerr <jk@codeconstruct.com.au>,
-        Daniel Latypov <dlatypov@google.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andra Paraschiv <andraprs@amazon.com>,
-        Longpeng <longpeng2@huawei.com>
-Cc:     Paraschiv@google.com,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        David Gow <davidgow@google.com>, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "=?UTF-8?q?Ma=C3=ADra=20Canal?=" <maira.canal@usp.br>,
-        linux-mmc@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-usb@vger.kernel.org,
-        linux-modules@vger.kernel.org,
-        Matt Johnston <matt@codeconstruct.com.au>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
+        b=rdtioiTgZW3srMDgdVfdVD78C+C50vuuXXOc5UuEd4NiBjsCpOTMOd0FwbZ2JQ2gOy
+         s45yQFb8XUR0fNm3QkrreD7do8BM68Wd7Kb1YnWZNJa2yehDID6XhFNDl0xSX4lzIUUS
+         60FFQcd1m9phbn9pZyftwnICffapGhrSmvCLh5EPW3BHjKZrOdcFG0mvzq+pBa/BiKUe
+         u73lfe7N+mHfNBB0zXEZ3yJa3VbKBXHXrBGTY3CT/gF5QZApKRMDrwmskTLouTzl9gb0
+         ZQPKlTa9UJDqK352FCUNW8OsbNyIiuIzzJhf4+5mcpU+ToAo783nBuJMKSkqYUsYfYuv
+         qgbw==
+X-Gm-Message-State: AJIora/KKME5TLP/1MWFU+JZXfHWg6SIC4V/TBxyw9GsWZcBOH5MOMAr
+        oOy04xNUKGLB4EnRF6cdKQXzJIl/y3mT33K5KdZ/6IUaadEVNkvT
+X-Google-Smtp-Source: AGRyM1sTF/SvvxCyraPE52znD36ZX02jNmxmam87lP8bWzXT3yTfChS1a9JgJI9LjBXh9tpS4qLO5E/t+5efudcEruY=
+X-Received: by 2002:a0d:d7c7:0:b0:317:bfe8:4f2 with SMTP id
+ z190-20020a0dd7c7000000b00317bfe804f2mr12417910ywd.276.1655804384555; Tue, 21
+ Jun 2022 02:39:44 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:7010:e10a:b0:2d9:e631:94d0 with HTTP; Tue, 21 Jun 2022
+ 02:39:44 -0700 (PDT)
+Reply-To: dimitryedik@gmail.com
+From:   Dimitry Edik <lsbthdwrds@gmail.com>
+Date:   Tue, 21 Jun 2022 02:39:44 -0700
+Message-ID: <CAGrL05aBO8rbFuij24J-APa+Luis69gEjhj35iv_GZfkHCVYDQ@mail.gmail.com>
+Subject: Dear Partner,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
+        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:c30 listed in]
+        [list.dnswl.org]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [lsbthdwrds[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The kunit_test_suite() macro is no-longer incompatible with module_add,
-so its use can be reinstated.
+Hello Dear,
 
-Since this fixes parsing with builtins and kunit_tool, also enable the
-test by default when KUNIT_ALL_TESTS is enabled.
+My Name is Dimitry Edik from Russia A special assistance to my Russia
+boss who deals in oil import and export He was killed by the Ukraine
+soldiers at the border side. He supplied
+oil to the Philippines company and he was paid over 90 per cent of the
+transaction and the remaining $18.6 Million dollars have been paid into a
+Taiwan bank in the Philippines..i want a partner that will assist me
+with the claims. Is a (DEAL ) 40% for you and 60% for me
+I have all information for the claims.
+Kindly read and reply to me back is 100 per cent risk-free
 
-The test can now be run via kunit_tool with:
-	./tools/testing/kunit/kunit.py run --arch=x86_64 \
-	--kconfig_add CONFIG_OF=y --kconfig_add CONFIG_OF_ADDRESS=y \
-	--kconfig_add CONFIG_MMC=y --kconfig_add CONFIG_MMC_SDHCI=y \
-	--kconfig_add CONFIG_MMC_SDHCI_PLTFM=y \
-	--kconfig_add CONFIG_MMC_SDHCI_OF_ASPEED=y \
-	'sdhci-of-aspeed'
-
-(It may be worth adding a .kunitconfig at some point, as there are
-enough dependencies to make that command scarily long.)
-
-Signed-off-by: David Gow <davidgow@google.com>
----
-
-No changes since v1:
-https://lore.kernel.org/linux-kselftest/20220618090310.1174932-6-davidgow@google.com/
-
----
- drivers/mmc/host/Kconfig                |  5 +++--
- drivers/mmc/host/sdhci-of-aspeed-test.c |  8 +-------
- drivers/mmc/host/sdhci-of-aspeed.c      | 27 -------------------------
- 3 files changed, 4 insertions(+), 36 deletions(-)
-
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index d6144978e32d..10c563999d3d 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -169,8 +169,9 @@ config MMC_SDHCI_OF_ASPEED
- 	  If unsure, say N.
- 
- config MMC_SDHCI_OF_ASPEED_TEST
--	bool "Tests for the ASPEED SDHCI driver"
--	depends on MMC_SDHCI_OF_ASPEED && KUNIT=y
-+	bool "Tests for the ASPEED SDHCI driver" if !KUNIT_ALL_TESTS
-+	depends on MMC_SDHCI_OF_ASPEED && KUNIT
-+	default KUNIT_ALL_TESTS
- 	help
- 	  Enable KUnit tests for the ASPEED SDHCI driver. Select this
- 	  option only if you will boot the kernel for the purpose of running
-diff --git a/drivers/mmc/host/sdhci-of-aspeed-test.c b/drivers/mmc/host/sdhci-of-aspeed-test.c
-index 1ed4f86291f2..ecb502606c53 100644
---- a/drivers/mmc/host/sdhci-of-aspeed-test.c
-+++ b/drivers/mmc/host/sdhci-of-aspeed-test.c
-@@ -96,10 +96,4 @@ static struct kunit_suite aspeed_sdhci_test_suite = {
- 	.test_cases = aspeed_sdhci_test_cases,
- };
- 
--static struct kunit_suite *aspeed_sdc_test_suite_array[] = {
--	&aspeed_sdhci_test_suite,
--	NULL,
--};
--
--static struct kunit_suite **aspeed_sdc_test_suites
--	__used __section(".kunit_test_suites") = aspeed_sdc_test_suite_array;
-+kunit_test_suite(aspeed_sdhci_test_suite);
-diff --git a/drivers/mmc/host/sdhci-of-aspeed.c b/drivers/mmc/host/sdhci-of-aspeed.c
-index 6e4e132903a6..c10367946bc7 100644
---- a/drivers/mmc/host/sdhci-of-aspeed.c
-+++ b/drivers/mmc/host/sdhci-of-aspeed.c
-@@ -606,25 +606,6 @@ static struct platform_driver aspeed_sdc_driver = {
- 
- #if defined(CONFIG_MMC_SDHCI_OF_ASPEED_TEST)
- #include "sdhci-of-aspeed-test.c"
--
--static inline int aspeed_sdc_tests_init(void)
--{
--	return __kunit_test_suites_init(aspeed_sdc_test_suites);
--}
--
--static inline void aspeed_sdc_tests_exit(void)
--{
--	__kunit_test_suites_exit(aspeed_sdc_test_suites);
--}
--#else
--static inline int aspeed_sdc_tests_init(void)
--{
--	return 0;
--}
--
--static inline void aspeed_sdc_tests_exit(void)
--{
--}
- #endif
- 
- static int __init aspeed_sdc_init(void)
-@@ -639,12 +620,6 @@ static int __init aspeed_sdc_init(void)
- 	if (rc < 0)
- 		goto cleanup_sdhci;
- 
--	rc = aspeed_sdc_tests_init();
--	if (rc < 0) {
--		platform_driver_unregister(&aspeed_sdc_driver);
--		goto cleanup_sdhci;
--	}
--
- 	return 0;
- 
- cleanup_sdhci:
-@@ -656,8 +631,6 @@ module_init(aspeed_sdc_init);
- 
- static void __exit aspeed_sdc_exit(void)
- {
--	aspeed_sdc_tests_exit();
--
- 	platform_driver_unregister(&aspeed_sdc_driver);
- 	platform_driver_unregister(&aspeed_sdhci_driver);
- }
--- 
-2.37.0.rc0.104.g0611611a94-goog
-
+Yours Sincerely
+Dimitry Edik
