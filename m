@@ -2,152 +2,154 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BEBD552B65
-	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jun 2022 09:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 124C4552D71
+	for <lists+linux-mmc@lfdr.de>; Tue, 21 Jun 2022 10:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346460AbiFUHAn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 21 Jun 2022 03:00:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37718 "EHLO
+        id S1348434AbiFUIxz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 21 Jun 2022 04:53:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346465AbiFUHAm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jun 2022 03:00:42 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C364F205CE
-        for <linux-mmc@vger.kernel.org>; Tue, 21 Jun 2022 00:00:39 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id ej4so14082249edb.7
-        for <linux-mmc@vger.kernel.org>; Tue, 21 Jun 2022 00:00:39 -0700 (PDT)
+        with ESMTP id S1346751AbiFUIxy (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Jun 2022 04:53:54 -0400
+Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA32817AB9
+        for <linux-mmc@vger.kernel.org>; Tue, 21 Jun 2022 01:53:53 -0700 (PDT)
+Received: by mail-pf1-x449.google.com with SMTP id p123-20020a625b81000000b0051c31cc75dfso5183341pfb.5
+        for <linux-mmc@vger.kernel.org>; Tue, 21 Jun 2022 01:53:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Umi7gvI0e0YKpUxgohz3zUuvtGBqyHu5yi8Lq1Zp0LE=;
-        b=hRCfT6S086KX/lHoBEMeJk2FY72O/NtB3hnANPsIQqtuqSvu8r65BMOub4XNwzisgR
-         R6lK5U1f2eaHLf4mRj6G2D8RdFA3lyN+L347egVZyhh4h0Gx4dIEUDa4G19Av44ke/Qy
-         1Bf1E70RN41FxtW2PSk7qHT9PiiEV4E9d2qD85jFJe6rfNxRnYLtwt1awQnVKiasRtrg
-         WhUTHXWduf/XLduolQ9wjEaTQsnLVVv8mFhSh06RT7X2757xEzvOSYe1Fge+s2ApJ5QW
-         Bzuq5Id/zctN5O+qTkb9Vrkf2pMgZZG2Tx/dNqYVgaW24uxhoPnq9yN/ok7Ywr0lXemC
-         XDMA==
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=nf95HhrfWFUahqXSIitMKY23Se4rd+JJ9W9asuRVrfE=;
+        b=Ogsxr29vx7siAKBfxHcDd5vtA34uCszdFjp4M0pFwM3VCiNoCHpKhuGE5wgAtGqqHl
+         aCbOy32LCBU1l6SioJ723Ij5R8zHkMv6Ki0aQhFeYBWTMupd7de4Yq4HKQEgTBvLeYFY
+         qfTvVI3VxufEyM+pOkc9/Y0+8xQt6AYeRLNmovW+8Nn7Ai7EnB7tqpMZ0cplADz6SWN3
+         4WRDtNJUjqYiW80yyV3yZ+tn7w0CUK29zSyHR1iRT5yuA1kTdYdl4fVhmLRy0APOiM7m
+         EvlxApHEF4iDoOVP0PaNNrl7zYefWUgZo5Bou5AAzguAE+BIysGEnbHAffq1DWjcIYWq
+         qeoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Umi7gvI0e0YKpUxgohz3zUuvtGBqyHu5yi8Lq1Zp0LE=;
-        b=NsyTaVUmnPR63KgE6sU8jRIyeLAaJkxODxbrCmFZXm6lwA3JrxarsZMnmUgnx/2qfB
-         GsgEFV2LzBsIuKpFMhz7Mm8cBmbNk7ICJmzdTp/XtwyVMcaSSHcDPZODq4kEhA+Ejrt7
-         baEkkUfcHwjpA55Tt5Y1Aa0KYNJ07gdm4c/lXh0nkqfU8f/QX+3Jp2ShiJO38+htLgAn
-         RchvaMky7IJHc7z1u3I7BzDZT3YQJS1hiL+i/tTI6bQe449Wh8kSlnk99GtKPDqyhP67
-         +XgmCKbbyWKAV2q1cSyfqf9b3u8+56iJCcl52ubcupLE0dcZway5F2IhNTA8ByC45aMQ
-         bzMw==
-X-Gm-Message-State: AJIora94vUUHhBn7JpVcQyD4Wjy3I+MRMjAVpxyLvx65lK44k+XJeeVT
-        2LdeC6IlkenxM2gIMPUz3tABNg==
-X-Google-Smtp-Source: AGRyM1tHLVkz4w72JZUmumPtAfYpFoylwgNqZyM99ydtgpk1yP+I24yDUI9ZxhMnRxx5HDmxb9FVww==
-X-Received: by 2002:a05:6402:5ce:b0:435:65f3:38c2 with SMTP id n14-20020a05640205ce00b0043565f338c2mr23087899edx.347.1655794838254;
-        Tue, 21 Jun 2022 00:00:38 -0700 (PDT)
-Received: from [192.168.0.216] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id q17-20020a17090676d100b006fea59ef3a5sm7115446ejn.32.2022.06.21.00.00.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jun 2022 00:00:37 -0700 (PDT)
-Message-ID: <4ff85493-665a-ee58-07d3-80178c49223b@linaro.org>
-Date:   Tue, 21 Jun 2022 09:00:36 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v5 04/15] dt-bindings: spi: dw: Add AMD Pensando Elba SoC
- SPI Controller bindings
-Content-Language: en-US
-To:     Serge Semin <fancer.lancer@gmail.com>
-Cc:     Brad Larson <brad@pensando.io>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, adrian.hunter@intel.com,
-        alcooperx@gmail.com, andy.shevchenko@gmail.com, arnd@arndb.de,
-        blarson@amd.com, brijeshkumar.singh@amd.com,
-        catalin.marinas@arm.com, gsomlo@gmail.com, gerg@linux-m68k.org,
-        krzysztof.kozlowski+dt@linaro.org, lee.jones@linaro.org,
-        broonie@kernel.org, yamada.masahiro@socionext.com,
-        p.zabel@pengutronix.de, piotrs@cadence.com, p.yadav@ti.com,
-        rdunlap@infradead.org, robh+dt@kernel.org, samuel@sholland.org,
-        suravee.suthikulpanit@amd.com, thomas.lendacky@amd.com,
-        ulf.hansson@linaro.org, will@kernel.org, devicetree@vger.kernel.org
-References: <20220613195658.5607-1-brad@pensando.io>
- <20220613195658.5607-5-brad@pensando.io>
- <20220620193044.ihxfn6kddif7j5la@mobilestation>
- <0a68aa72-df85-cf78-dcca-2d75038234c6@kernel.org>
- <20220620200445.yew3vo3pnjhos7rs@mobilestation>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220620200445.yew3vo3pnjhos7rs@mobilestation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=nf95HhrfWFUahqXSIitMKY23Se4rd+JJ9W9asuRVrfE=;
+        b=LzDNUupKkStqMXosTuNwRZskIBnMF9TfA42EuVAQ5sBemvvs/QuhdGdkhUjsvZrMqN
+         8pdPmWisHj3d3K/YyI1aMeLCQA3akEKT4wVQx5Gx3mP7X1VZ0PjE3uWjp72rahcUNDKu
+         zXX9EjlQB4rGyZQapgninS3NwP+qx0Pm0PxC3gxTM+UsWdNR5kds7Ij1OFZ60qoQ5gC2
+         mrO3u1HkRfzaqrXrMy6sQPPTycfN20J9+bHAQqCJ77M57kPnFsWb/dGp8aIm9IXXsVAv
+         p7g0KXuzLTaUgKsGHYkFfsYaM9yBT9C2wQsKNBe96CRzT7PSgzdUYX6FhI5uKI0eDGmK
+         5vGg==
+X-Gm-Message-State: AJIora/2gYfi7QFWaOF3ucQzrN6zfU0F4uzlVQ6aPthjVjE0RSu2YYsU
+        p55BTopR+aiSw9dP2Cas3+k30w2rS8/s/Q==
+X-Google-Smtp-Source: AGRyM1vm7uKvTRSoy8DBny3ZH2I/R3zY1c/M5lzSFFKf5zbsgHT5nrh/r0nP22nRH6TvP9voZc09YjHiLsB5UA==
+X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:20a1])
+ (user=davidgow job=sendgmr) by 2002:a17:90a:4a97:b0:1ea:fa24:467c with SMTP
+ id f23-20020a17090a4a9700b001eafa24467cmr694965pjh.1.1655801632812; Tue, 21
+ Jun 2022 01:53:52 -0700 (PDT)
+Date:   Tue, 21 Jun 2022 16:53:40 +0800
+Message-Id: <20220621085345.603820-1-davidgow@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.37.0.rc0.104.g0611611a94-goog
+Subject: [PATCH v2 0/5] Rework KUnit test execution in modules
+From:   David Gow <davidgow@google.com>
+To:     Brendan Higgins <brendanhiggins@google.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Jeremy Kerr <jk@codeconstruct.com.au>,
+        Daniel Latypov <dlatypov@google.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andra Paraschiv <andraprs@amazon.com>,
+        Longpeng <longpeng2@huawei.com>
+Cc:     Paraschiv@google.com,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        David Gow <davidgow@google.com>, kunit-dev@googlegroups.com,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "=?UTF-8?q?Ma=C3=ADra=20Canal?=" <maira.canal@usp.br>,
+        linux-mmc@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, linux-usb@vger.kernel.org,
+        linux-modules@vger.kernel.org,
+        Matt Johnston <matt@codeconstruct.com.au>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 20/06/2022 22:04, Serge Semin wrote:
-> On Mon, Jun 20, 2022 at 09:46:25PM +0200, Krzysztof Kozlowski wrote:
->> On 20/06/2022 21:30, Serge Semin wrote:
->>> On Mon, Jun 13, 2022 at 12:56:47PM -0700, Brad Larson wrote:
->>>> From: Brad Larson <blarson@amd.com>
->>>>
->>>> The AMD Pensando Elba SoC has integrated the DW APB SPI Controller
->>>>
->>>> Signed-off-by: Brad Larson <blarson@amd.com>
->>>> ---
->>>>  Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml | 2 ++
->>>>  1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
->>>> index e25d44c218f2..2a55b947cffc 100644
->>>> --- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
->>>> +++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
->>>> @@ -73,6 +73,8 @@ properties:
->>>>                - renesas,r9a06g032-spi # RZ/N1D
->>>>                - renesas,r9a06g033-spi # RZ/N1S
->>>>            - const: renesas,rzn1-spi   # RZ/N1
->>>
->>>> +      - description: AMD Pensando Elba SoC SPI Controller
->>>> +        const: amd,pensando-elba-spi
->>>
->>> Not enough. The driver requires to have a phandle reference to the
->>> Pensando System Controller. So the property like
->>> "amd,pensando-elba-syscon" is also needed to be added to the DT schema
->>> otherwise should the dt-schema tool correctly handle the
->>> "unevaluatedProperties: false" setting (Rob says it isn't fully
->>> supported at the moment), the dtbs_check procedure will fail on your
->>> dts evaluation.
->>
-> 
->> The property was here before, now removed, so I assume it was also
->> removed from the driver and DTS. Isn't that the case?
-> 
-> Ah, the property has been indeed removed. The driver now searches for
-> the system controller by the next compatible string:
-> "amd,pensando-elba-syscon" using the
-> syscon_regmap_lookup_by_compatible() method. My mistake. Sorry for the
-> noise.
-> 
-> * Though personally I'd prefer to have a property with the phandle
-> reference in order to signify the connection between the system controller
-> and the SPI-controller. Otherwise the implicit DT bindings like having
-> the "amd,pensando-elba-syscon"-compatible syscon gets to be
-> hidden behind the DT scene. But seeing we have already got the Microsemi
-> platform with such semantic, I can't insist on fixing this.
+This patch series makes two changes to how KUnit test suites are stored
+and executed:
+- The .kunit_test_suites section is now used for tests in modules (in
+  lieu of a module_init funciton), as well as for built-in tests. The
+  module loader will now trigger test execution. This frees up the
+  module_init function for other uses.
+- Instead of storing an array of arrays of suites, have the
+  kunit_test_suite() and kunit_test_suites() macros append to one global
+  (or per-module) list of test suites. This removes a needless layer of
+  indirection, and removes the need to NULL-terminate suite_sets.
 
-I agree entirely, this should be explicit syscon-type property. Looking
-up for compatibles:
- - creates hidden (not expressed via bindings) dependency between nodes,
- - is not portable and several people struggled with it later and needed
-backward-compatible code (many examples, let's just give recent one: [1])
+The upshot of this is that it should now be possible to use the
+kunit_test_suite() and kunit_test_suites() macros to register test
+suites even from within modules which otherwise had module_init
+functions. This was proving to be quite a common issue, resulting in
+several modules calling into KUnit's private suite execution functions
+to run their tests (often introducing incompatibilities with the KUnit
+tooling).
 
+This series also fixes the thunderbolt, nitro_enclaves, and
+sdhci-of-aspeed tests to use kunit_test_suite() now that it works. This
+is required, as otherwise the first two patches may break these tests
+entirely.
 
-[1]
-https://lore.kernel.org/all/20220619151225.209029-10-tmaimon77@gmail.com/
+Huge thanks to Jeremy Kerr, who designed and implemented the module
+loader changes, and to Daniel Latypov for pushing the simplification of
+the nested arrays in .kunit_test_suites.
 
+I've tested this series both with builtin tests, and with modules on
+x86_64, but there's always the possibility that there's something subtle
+and nasty on another architecture, so please test!
 
-Best regards,
-Krzysztof
+Cheers,
+-- David
+
+Changes since v1:
+https://lore.kernel.org/linux-kselftest/20220618090310.1174932-1-davidgow@google.com/
+- Fix a compile issue when CONFIG_KUNIT=m (Thanks Christophe)
+- No longer NULL-terminate suite_sets.
+- Move the thunderbird Kconfig to the correct patch (Thanks Andra)
+- Add all the Tested-by and Acked-by tags.
+
+---
+Daniel Latypov (1):
+  kunit: flatten kunit_suite*** to kunit_suite** in .kunit_test_suites
+
+David Gow (3):
+  thunderbolt: test: Use kunit_test_suite() macro
+  nitro_enclaves: test: Use kunit_test_suite() macro
+  mmc: sdhci-of-aspeed: test: Use kunit_test_suite() macro
+
+Jeremy Kerr (1):
+  kunit: unify module and builtin suite definitions
+
+ drivers/mmc/host/Kconfig                      |   5 +-
+ drivers/mmc/host/sdhci-of-aspeed-test.c       |   8 +-
+ drivers/mmc/host/sdhci-of-aspeed.c            |  27 ----
+ drivers/thunderbolt/Kconfig                   |   5 +-
+ drivers/thunderbolt/domain.c                  |   3 -
+ drivers/thunderbolt/tb.h                      |   8 -
+ drivers/thunderbolt/test.c                    |  12 +-
+ drivers/virt/nitro_enclaves/Kconfig           |   5 +-
+ drivers/virt/nitro_enclaves/ne_misc_dev.c     |  27 ----
+ .../virt/nitro_enclaves/ne_misc_dev_test.c    |   5 +-
+ include/kunit/test.h                          |  60 ++------
+ include/linux/module.h                        |   5 +
+ kernel/module/main.c                          |   6 +
+ lib/kunit/executor.c                          | 115 ++++----------
+ lib/kunit/executor_test.c                     | 144 +++++-------------
+ lib/kunit/test.c                              |  54 ++++++-
+ 16 files changed, 152 insertions(+), 337 deletions(-)
+
+-- 
+2.37.0.rc0.104.g0611611a94-goog
+
