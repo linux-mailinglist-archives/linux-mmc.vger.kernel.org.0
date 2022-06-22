@@ -2,71 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27332554972
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 Jun 2022 14:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9534554E62
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 Jun 2022 17:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233494AbiFVJlh convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 22 Jun 2022 05:41:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
+        id S1358731AbiFVPEI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 Jun 2022 11:04:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350562AbiFVJld (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 Jun 2022 05:41:33 -0400
-Received: from mail3.swissbit.com (mail3.swissbit.com [176.95.1.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118AB39B8B
-        for <linux-mmc@vger.kernel.org>; Wed, 22 Jun 2022 02:41:31 -0700 (PDT)
-Received: from mail3.swissbit.com (localhost [127.0.0.1])
-        by DDEI (Postfix) with ESMTP id 24BA4462F3F;
-        Wed, 22 Jun 2022 11:41:27 +0200 (CEST)
-Received: from mail3.swissbit.com (localhost [127.0.0.1])
-        by DDEI (Postfix) with ESMTP id 15CAC462D2F;
-        Wed, 22 Jun 2022 11:41:27 +0200 (CEST)
-X-TM-AS-ERS: 10.149.2.84-127.5.254.253
-X-TM-AS-SMTP: 1.0 ZXguc3dpc3NiaXQuY29t Y2xvZWhsZUBoeXBlcnN0b25lLmNvbQ==
-X-DDEI-TLS-USAGE: Used
-Received: from ex.swissbit.com (SBDEEX02.sbitdom.lan [10.149.2.84])
-        by mail3.swissbit.com (Postfix) with ESMTPS;
-        Wed, 22 Jun 2022 11:41:27 +0200 (CEST)
-Received: from sbdeex04.sbitdom.lan (10.149.2.42) by sbdeex02.sbitdom.lan
- (10.149.2.84) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.9; Wed, 22 Jun
- 2022 11:41:26 +0200
-Received: from sbdeex02.sbitdom.lan (10.149.2.84) by sbdeex04.sbitdom.lan
- (10.149.2.42) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.9; Wed, 22 Jun
- 2022 11:41:26 +0200
-Received: from sbdeex02.sbitdom.lan ([fe80::e0eb:ade8:2d90:1f74]) by
- sbdeex02.sbitdom.lan ([fe80::e0eb:ade8:2d90:1f74%8]) with mapi id
- 15.02.1118.009; Wed, 22 Jun 2022 11:41:26 +0200
-From:   =?iso-8859-1?Q?Christian_L=F6hle?= <CLoehle@hyperstone.com>
-To:     =?iso-8859-1?Q?Christian_L=F6hle?= <CLoehle@hyperstone.com>,
-        "avri.altman@wdc.com" <avri.altman@wdc.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Subject: [PATCH] mmc-utils: dont divide CMD23 count by sector size
-Thread-Topic: [PATCH] mmc-utils: dont divide CMD23 count by sector size
-Thread-Index: AdiGG5pmW471gNuQTayLmad2s/EH8Q==
-Date:   Wed, 22 Jun 2022 09:41:26 +0000
-Message-ID: <1b5d40da9b8948dc8e8f1b90ef75baab@hyperstone.com>
-Accept-Language: en-US, de-DE
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.153.3.44]
-Content-Type: text/plain;
-        charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S1358916AbiFVPEB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 Jun 2022 11:04:01 -0400
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF63B3EA91
+        for <linux-mmc@vger.kernel.org>; Wed, 22 Jun 2022 08:03:52 -0700 (PDT)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-101d96fe0a5so13313528fac.2
+        for <linux-mmc@vger.kernel.org>; Wed, 22 Jun 2022 08:03:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
+        b=lmXhPRDXrnlbYClAFJkfHZYdowqXsf1nTuDLZnU/Y1W/T6TJ8ApbIv950i47frAtN/
+         OtndHJQoWJG+weygm2GuosJduERMEzUHLtTF4oGKopzqXa+c5O1ob2p5JuwuGNaCZz0D
+         0k2iO6ZG6gpeVsjTt5A+NLMvCH8qDkpG8Ex3xIMBpunG6BNJWrlCGLJYo7boJK6pvBIx
+         W4x550ST0gVpK9sdxwL58OfMVVl7H7xG/39bSvJCxipLUGbdwSBY6WRzvY6hd28wfB/N
+         vDKUfqITg8PxsgA4g6gEDGmS0K0dBg3KSntFmGDvcmLKkvSy/F4e+TYysqkO/txSQBCJ
+         afFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
+        b=bnV70KDxx/DW9bJhmB1c33G1JL0rmoAFtXQeP7BPSn9CLsBLdyXubnXZvemRSU1nst
+         6F82cxZTwmehfHiMr72YsSd7B/f+I8gtfUGAdW4P9DiQUQtTP2aMYVtSjnhWgaDwn+hz
+         Hen9Cr73JQp4z83HNQ/XgIPh3ryqqwomQFIOYsdPD/4/bRZZ84QJ2EXPwZ8O8zxnZH+K
+         jo0rRCMZ/wUGBhIJlEge642w1yUe7XXYNc+vsx74cB0wkVTb6RDIgRGH4LFxUimSKpzw
+         5WrMP8ydrA82x1yjejdzHUeN+YlUkmJ7Y2lAPq2MNWH1NDP6oxmLDCDsmQqYT5msayec
+         Yt/Q==
+X-Gm-Message-State: AJIora8MfXCErf8qAS7v7+DrSthu2MtDLIrJDNlrhE213UnOP4KWj6lY
+        TZwjzBfDdnsb/P+ZgA5dxDURAjr5T1NkV46YycgkcpcZAa55AhDv
+X-Google-Smtp-Source: AGRyM1ulxotWsDV/SS5wzW6q4zt5LXu3F658bS4StYWI/FgPuIBqBz38zqk7aydOTm9FXxU+wDfnf428k+eRTEG/aD8=
+X-Received: by 2002:a17:90b:1988:b0:1ec:f52d:90d4 with SMTP id
+ mv8-20020a17090b198800b001ecf52d90d4mr1796737pjb.70.1655910220864; Wed, 22
+ Jun 2022 08:03:40 -0700 (PDT)
 MIME-Version: 1.0
-X-TMASE-Version: DDEI-5.1-9.0.1002-26970.005
-X-TMASE-Result: 10-2.574000-10.000000
-X-TMASE-MatchedRID: zdfKSpJbRLhPTly3n9bADN9JA2lmQRNUcV3n4J/0zUN7YhuCO/3iFSOV
-        sz0LL9wGIvrftAIhWmLy9zcRSkKatUPu4/hW5W83Ss47mbT7SASu+ZyFqtd5FQE3IOP2oHsonzG
-        rpysaH8BsQpY62QYCy29yZj3aufb5aDAi8sBNMoFqHXONfTwSQsRB0bsfrpPIx1FPlNAAmcBDAA
-        DK5NrUR9zIpaOlXMDS/aoxDQuz0vi9K1jK9k1lpvqy+VVvqH2X
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-X-TMASE-INERTIA: 0-0;;;;
-X-TMASE-XGENCLOUD: db38d67d-9264-4a6a-bc1b-62f542d7c2e6-0-0-200-0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Received: by 2002:a17:903:2308:b0:16a:1b3f:f74b with HTTP; Wed, 22 Jun 2022
+ 08:03:40 -0700 (PDT)
+Reply-To: sales0212@asonmedsystemsinc.com
+From:   Prasad Ronni <lerwickfinance7@gmail.com>
+Date:   Wed, 22 Jun 2022 16:03:40 +0100
+Message-ID: <CAFkto5vTxj70kORZJZdwOGowXjsZ399eo6DJj=8T==7paSuHTw@mail.gmail.com>
+Subject: Service Needed.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,70 +64,11 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-FFU used to divide the fw_size by native sector size.
-If native sector size is 4K the accesses need to be aligned
-and a multiple of 4K, other than that CMD23 SET_BLOCK_COUNT
-does not change.
-
-The previous handling lead to MMC_SET_BLOCK_COUNT setting
-a too small block count for the FFU fw_size.
-While at it also correct CMD25 blksz and blocks fields
-to reflect the actual transfer.
-
-Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
----
- mmc_cmds.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/mmc_cmds.c b/mmc_cmds.c
-index bb0f022..048a0af 100644
---- a/mmc_cmds.c
-+++ b/mmc_cmds.c
-@@ -2768,7 +2768,6 @@ int do_ffu(int nargs, char **argv)
- 	ssize_t chunk_size;
- 	char *device;
- 	struct mmc_ioc_multi_cmd *multi_cmd = NULL;
--	__u32 blocks = 1;
- 
- 	if (nargs != 3) {
- 		fprintf(stderr, "Usage: ffu <image name> </path/to/mmcblkX> \n");
-@@ -2826,15 +2825,13 @@ int do_ffu(int nargs, char **argv)
- 		goto out;
- 	}
- 
-+	/* ensure fw is multiple of native sector size */
- 	sect_size = (ext_csd[EXT_CSD_DATA_SECTOR_SIZE] == 0) ? 512 : 4096;
- 	if (fw_size % sect_size) {
- 		fprintf(stderr, "Firmware data size (%jd) is not aligned!\n", (intmax_t)fw_size);
- 		goto out;
- 	}
- 
--	/* calculate required fw blocks for CMD25 */
--	blocks = fw_size / sect_size;
--
- 	/* set CMD ARG */
- 	arg = ext_csd[EXT_CSD_FFU_ARG_0] |
- 		ext_csd[EXT_CSD_FFU_ARG_1] << 8 |
-@@ -2857,13 +2854,13 @@ int do_ffu(int nargs, char **argv)
- 
- 	/* send block count */
- 	multi_cmd->cmds[1].opcode = MMC_SET_BLOCK_COUNT;
--	multi_cmd->cmds[1].arg = blocks;
-+	multi_cmd->cmds[1].arg = fw_size;
- 	multi_cmd->cmds[1].flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_AC;
- 
- 	/* send image chunk */
- 	multi_cmd->cmds[2].opcode = MMC_WRITE_MULTIPLE_BLOCK;
--	multi_cmd->cmds[2].blksz = sect_size;
--	multi_cmd->cmds[2].blocks = blocks;
-+	multi_cmd->cmds[2].blksz = fw_size;
-+	multi_cmd->cmds[2].blocks = 1;
- 	multi_cmd->cmds[2].arg = arg;
- 	multi_cmd->cmds[2].flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_ADTC;
- 	multi_cmd->cmds[2].write_flag = 1;
 -- 
-2.36.1
-Hyperstone GmbH | Reichenaustr. 39a  | 78467 Konstanz
-Managing Director: Dr. Jan Peter Berns.
-Commercial register of local courts: Freiburg HRB381782
+Hi,
 
+Are you currently open to work as our executive company representative
+on contractual basis working remotely? If yes, we will be happy to
+share more details. Looking forward to your response.
+
+Regards,
