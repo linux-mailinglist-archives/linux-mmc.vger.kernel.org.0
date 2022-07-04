@@ -2,97 +2,93 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A22EB5658B9
-	for <lists+linux-mmc@lfdr.de>; Mon,  4 Jul 2022 16:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23AF9565A13
+	for <lists+linux-mmc@lfdr.de>; Mon,  4 Jul 2022 17:42:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233791AbiGDOgE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 4 Jul 2022 10:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35884 "EHLO
+        id S233418AbiGDPmm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 4 Jul 2022 11:42:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234311AbiGDOgB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 4 Jul 2022 10:36:01 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2383E65CB;
-        Mon,  4 Jul 2022 07:36:00 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id eq6so11947501edb.6;
-        Mon, 04 Jul 2022 07:36:00 -0700 (PDT)
+        with ESMTP id S230210AbiGDPml (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 4 Jul 2022 11:42:41 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A81D311154
+        for <linux-mmc@vger.kernel.org>; Mon,  4 Jul 2022 08:42:40 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id r9so11512331ljp.9
+        for <linux-mmc@vger.kernel.org>; Mon, 04 Jul 2022 08:42:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=uQcJjn3ARqMYdbJS4pFTA/MzxJjJFrNvD2Fd+FyIdLc=;
-        b=oQYwfsf0MHUnEgA0ixt7Vr9jO3hYveqzhAMBh2cAQHItMnykopGDxlXg1SbXLIcQ/P
-         VR2zZNrbl2fIKg6HsRDQIpwNuAXf6K3NajbohHxygvHZjHxRV2soR2UFYXwv1tHuIRH7
-         yeuHqy32s0X8T9FiiDKCdXp+4kzWPtK8IfcMoS5izxyukA6qbRNcf3sOpjtxCXOj4Zh0
-         Aq/pbUpQoyleEYGvwCu+VLA9jpzHNL317eN467V3irADhseXoT2kF0vsn3Zz27yQDplw
-         IDZnmn+xtI1e0nLE40WyHyppF/mUrl1BcYIgC5egDq/1+29LTbqbcMV7bL02jSgmpnca
-         zadg==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :references:from:in-reply-to:content-transfer-encoding;
+        bh=jRnTm0+dhArAF8owZ/onzsDSwIYF8pxjVkdj1G3Cz5o=;
+        b=srzpyXDfFAOKz9xrgKk3U8OxFpXk5TyzbIYL0NMUfFcRRK04o7SPEVyh801/5rnz5e
+         ZL/ta0GZONJpuPnVEAm9/FUUTeQetAIshts9/9l1aj+EFs6zjrFIfjxANrL5/kZ9Fa4b
+         DJinEXFYO3FNmqfaDjWbWZyiYJx6GZ+j8oH2mR4GddbcOXVgLan4NDvI79VmezE4eMkl
+         LTjxe3a+vtNhWHO8BrUkbx+GOMruKUhZUBwZuBkhMrlZUndDjzrt9m0pMVLOHO/zZTOk
+         I+rIIaAVLiUdK6H1LPlnLlZuMN4xoMVlwmfTHQDgO/7BIlglVBBAfENwoA1nmbb99hZB
+         FBpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=uQcJjn3ARqMYdbJS4pFTA/MzxJjJFrNvD2Fd+FyIdLc=;
-        b=ACItXWjGaVfWO8Nz5HJfJ2MSkiGVkiK0s5NyvOLHBxjjJJzG7a4mH6kMAaY2bOIENo
-         BIc6fAVSas88MJFS48w+qPefq7LzZZXkZ+t+kT0YAHmtWPMVDkn7D9DrkFnvkozXSKwn
-         uJDYdFEMPJNyM9r/xg9dWbTS3T0626w+BxEvUhsqkXWDmnqmtg1SpO7galV7S/gMkV+9
-         ZJPTfNM5Ga9ayh2vm8KfEgDXMoIKqUhmSgmGlR04yBxTFEG3Zcc1Y1PAOaztMvmn+kP4
-         R+vuAX/ZehLGuQtWpyDIWLEQOLOijnmEhEfONME1hOh2smjVpv+qFDr76JXUCjQiwqvI
-         +qnQ==
-X-Gm-Message-State: AJIora8F/7e7F4toMR6uatRHJGmBfEuUiz5TDbN5jcHrZMu0G4m2CR5O
-        ITX/7nShbyI95GH9JdFrt04=
-X-Google-Smtp-Source: AGRyM1tNFEs5Coillq7eNgQw4vZaTRfahwhoYhWBTxbXDWAfVDr48Nx3QKNtO/fA4SrKT0iOiHqgBw==
-X-Received: by 2002:aa7:c0c4:0:b0:43a:20cf:3c68 with SMTP id j4-20020aa7c0c4000000b0043a20cf3c68mr11751577edp.172.1656945358622;
-        Mon, 04 Jul 2022 07:35:58 -0700 (PDT)
-Received: from fedora.robimarko.hr (dh207-99-90.xnet.hr. [88.207.99.90])
-        by smtp.googlemail.com with ESMTPSA id k10-20020a170906970a00b006fea59ef3a5sm14286020ejx.32.2022.07.04.07.35.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Jul 2022 07:35:58 -0700 (PDT)
-From:   Robert Marko <robimarko@gmail.com>
-To:     ulf.hansson@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, konrad.dybcio@somainline.org,
-        bhupesh.sharma@linaro.org, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Cc:     Robert Marko <robimarko@gmail.com>
-Subject: [PATCH v2 2/2] arm64: dts: ipq8074: add reset to SDHCI
-Date:   Mon,  4 Jul 2022 16:35:54 +0200
-Message-Id: <20220704143554.1180927-2-robimarko@gmail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220704143554.1180927-1-robimarko@gmail.com>
-References: <20220704143554.1180927-1-robimarko@gmail.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=jRnTm0+dhArAF8owZ/onzsDSwIYF8pxjVkdj1G3Cz5o=;
+        b=6NcM89JQ5O3ad/Ek3inQjMUS8kg7qJZWxDMc3sVhL2vmW4HUmc/mMxZqdOMBdH0OHi
+         X0s/N7bLimaHqRXiCELJQhur5yDIWDFvfXVnoUnjcgobxRFJp7Nc4G3r5Yadz+dEOEUc
+         GV69/HLkkmuzIXLRDDJSOXzZpmoSqEgcMILQPz8bdXx+QqXhYzdQQjK79w87tv83oUhy
+         RSqjRRIQbZLBOHAmDlD9R7nv3aCDb6cAftCLT4SthAo40p1rWsZEBDYYVg7wJnNirfcg
+         Y+Y7KnJ5c9GNTv5lkfPjxKaiyV/Uxj5B7B1yjpZendCK0k3G9KvfcYYcDrcN+kgfTpip
+         YMKg==
+X-Gm-Message-State: AJIora/jub/LTcfB94gAZxQYlMNg09dJKfqI16m8U8VpalbI3aAN+n3D
+        PLaBbvSU/kft0R7SZTNN0fn87g==
+X-Google-Smtp-Source: AGRyM1vZQoubZwD5PSegPGEQF1WuQ7CzAxwM+FuzlgVx4GryS2HKGicC/YzqczbrBsHc+rbZ34RyDA==
+X-Received: by 2002:a2e:4e09:0:b0:25a:8dd7:5c40 with SMTP id c9-20020a2e4e09000000b0025a8dd75c40mr16699694ljb.74.1656949359090;
+        Mon, 04 Jul 2022 08:42:39 -0700 (PDT)
+Received: from [192.168.1.52] ([84.20.121.239])
+        by smtp.gmail.com with ESMTPSA id o4-20020a056512050400b004785b66a9a4sm1492621lfb.126.2022.07.04.08.42.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Jul 2022 08:42:38 -0700 (PDT)
+Message-ID: <fc5a5d36-ebaa-3300-287e-fdc2e0c547ce@linaro.org>
+Date:   Mon, 4 Jul 2022 17:42:37 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2 1/2] dt-bindings: mmc: sdhci-msm: document resets
+Content-Language: en-US
+To:     Robert Marko <robimarko@gmail.com>, ulf.hansson@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        agross@kernel.org, bjorn.andersson@linaro.org,
+        konrad.dybcio@somainline.org, bhupesh.sharma@linaro.org,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20220704143554.1180927-1-robimarko@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220704143554.1180927-1-robimarko@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add reset to SDHCI controller so it can be reset to avoid timeout issues
-after software reset due to bootloader set configuration.
+On 04/07/2022 16:35, Robert Marko wrote:
+> Commit "mmc: sdhci-msm: Reset GCC_SDCC_BCR register for SDHC" added
+> support for utilizing a hardware reset and parsing it from DT, however
+> the bindings were not updated along with it.
+> 
+> So, document the usage of "resets" property with the limit of only one
+> item.
+> 
+> Signed-off-by: Robert Marko <robimarko@gmail.com>
 
-Signed-off-by: Robert Marko <robimarko@gmail.com>
----
- arch/arm64/boot/dts/qcom/ipq8074.dtsi | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq8074.dtsi b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-index ddafc7de6c5f..d685ca1969a3 100644
---- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-@@ -482,6 +482,7 @@ sdhc_1: mmc@7824900 {
- 				 <&gcc GCC_SDCC1_APPS_CLK>,
- 				 <&xo>;
- 			clock-names = "iface", "core", "xo";
-+			resets = <&gcc GCC_SDCC1_BCR>;
- 			max-frequency = <384000000>;
- 			mmc-ddr-1_8v;
- 			mmc-hs200-1_8v;
--- 
-2.36.1
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+
+Best regards,
+Krzysztof
