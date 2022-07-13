@@ -2,367 +2,135 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CFF8572AC4
-	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jul 2022 03:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7241C572BB7
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Jul 2022 05:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbiGMBZk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 12 Jul 2022 21:25:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60724 "EHLO
+        id S231157AbiGMDE6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Jul 2022 23:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233360AbiGMBZg (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Jul 2022 21:25:36 -0400
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF45BD3A6
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Jul 2022 18:25:32 -0700 (PDT)
-Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20220713012531epoutp018cc41090f328b20ffe86171f7d82c04a~BPxzfvfcD2035620356epoutp01C
-        for <linux-mmc@vger.kernel.org>; Wed, 13 Jul 2022 01:25:31 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20220713012531epoutp018cc41090f328b20ffe86171f7d82c04a~BPxzfvfcD2035620356epoutp01C
+        with ESMTP id S233227AbiGMDE3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Jul 2022 23:04:29 -0400
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08FB357215
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Jul 2022 20:04:24 -0700 (PDT)
+Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20220713030419epoutp03287cd965b3fae3a057080f2e86b33efc~BRIETaO002028120281epoutp03Z
+        for <linux-mmc@vger.kernel.org>; Wed, 13 Jul 2022 03:04:19 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20220713030419epoutp03287cd965b3fae3a057080f2e86b33efc~BRIETaO002028120281epoutp03Z
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1657675531;
-        bh=QPCmKDfkOyojrvl06gPY20z3R9a4i5xdPH4MTj42Ajs=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=nVaXdDPEYqdOjBID2piVruZZeB52QuFUUMNtR6Iu3viQ/oKcrWbQStODnDTwZd+9v
-         KyNlhAL7PIlUf6fz0GvPyERQU2tDTi0bGKjMnau4wCZKNwcV8gECipvXVmzGPUDrau
-         JThqefde6wmNE0+AjrzX4uclu7dLZOORvYoR/9v8=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20220713012530epcas1p155be1c43bbb6af6e473561ee11940ec7~BPxy43Uto1067810678epcas1p1w;
-        Wed, 13 Jul 2022 01:25:30 +0000 (GMT)
-Received: from epsmges1p3.samsung.com (unknown [182.195.38.249]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 4LjKgZ0VTHz4x9Pw; Wed, 13 Jul
-        2022 01:25:30 +0000 (GMT)
-Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
-        epsmges1p3.samsung.com (Symantec Messaging Gateway) with SMTP id
-        3F.D8.09661.90F1EC26; Wed, 13 Jul 2022 10:25:29 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        s=mail20170921; t=1657681459;
+        bh=HYzVJDqez6I+TXazHS58TQY1IFa+m54F3SecZN7oQlE=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=j/phSEVev81NE5gbJKdNrV+5/AJQKX3yAejvHF8AVoqdK4VcklieZu+mGwT7gorlu
+         RUZenajz+PbLf2LQFdslgu2+eV19R+PgzsblzCPurxLIRNXX2RdshlwiuW/sTxWU6i
+         P5e7Kscc/vO+vK7A8ZdRT1PkQVTvs0hP8xv/Ng08=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20220713030418epcas1p28a1d74fc9c99902805b5ace92993b18a~BRIEAm6ol1932219322epcas1p2O;
+        Wed, 13 Jul 2022 03:04:18 +0000 (GMT)
+Received: from epsmges1p1.samsung.com (unknown [182.195.38.248]) by
+        epsnrtp2.localdomain (Postfix) with ESMTP id 4LjMsZ4MsDz4x9Q3; Wed, 13 Jul
+        2022 03:04:18 +0000 (GMT)
+Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
+        epsmges1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+        D0.10.09657.2363EC26; Wed, 13 Jul 2022 12:04:18 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
         epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
-        20220713012529epcas1p4938326d4c7fd39ea65ce7d3aa1c8b3fa~BPxyFwRih1605016050epcas1p4d;
-        Wed, 13 Jul 2022 01:25:29 +0000 (GMT)
+        20220713030417epcas1p4645d69539b295df914057b57d1c09c86~BRIDWh4YJ3162931629epcas1p4I;
+        Wed, 13 Jul 2022 03:04:17 +0000 (GMT)
 Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20220713012529epsmtrp2a3b84ee4ec21995e2c4d4054cee7e8af~BPxyE0MfQ2131221312epsmtrp2Z;
-        Wed, 13 Jul 2022 01:25:29 +0000 (GMT)
-X-AuditID: b6c32a37-2cfff700000025bd-bd-62ce1f09f4be
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20220713030417epsmtrp136d01a363213b608cbfc6cf98d740d2a~BRIDV7vRw0204302043epsmtrp1y;
+        Wed, 13 Jul 2022 03:04:17 +0000 (GMT)
+X-AuditID: b6c32a35-71dff700000025b9-61-62ce3632c31b
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
         epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        7E.42.08905.90F1EC26; Wed, 13 Jul 2022 10:25:29 +0900 (KST)
-Received: from sh043lee03 (unknown [10.253.101.72]) by epsmtip2.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20220713012529epsmtip27fdf08f93d60544c81e6f68e77b54501~BPxx2-Cvp1744617446epsmtip23;
-        Wed, 13 Jul 2022 01:25:29 +0000 (GMT)
-From:   "Seunghui Lee" <sh043.lee@samsung.com>
-To:     "'Ulf Hansson'" <ulf.hansson@linaro.org>
-Cc:     <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <grant.jung@samsung.com>, <jt77.jang@samsung.com>,
-        <dh0421.hwang@samsung.com>, <junwoo80.lee@samsung.com>,
-        <jangsub.yi@samsung.com>, <cw9316.lee@samsung.com>,
-        <sh8267.baek@samsung.com>, <wkon.kim@samsung.com>,
-        <seunghwan.hyun@samsung.com>
-In-Reply-To: <CAPDyKFodLj7McOsT1ObGFU03g0iBLaydo-E5QV=hy+0tOi846A@mail.gmail.com>
-Subject: RE: [PATCH] mmc: use mmc_card_* macro and add it for sd_combo
-Date:   Wed, 13 Jul 2022 10:25:29 +0900
-Message-ID: <056d01d89657$70127a90$50376fb0$@samsung.com>
+        02.2E.08905.1363EC26; Wed, 13 Jul 2022 12:04:17 +0900 (KST)
+Received: from localhost.localdomain (unknown [10.253.101.71]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20220713030417epsmtip1c6b5332ac51e029325933bddd470ad40~BRIDJKGeB2344123441epsmtip1s;
+        Wed, 13 Jul 2022 03:04:17 +0000 (GMT)
+From:   Seunghui Lee <sh043.lee@samsung.com>
+To:     ulf.hansson@linaro.org, linux-mmc@vger.kernel.org
+Cc:     Seunghui Lee <sh043.lee@samsung.com>
+Subject: [PATCH v2 0/2] mmc: use mmc_card_* macro and add it for sd_combo
+Date:   Wed, 13 Jul 2022 12:36:33 +0900
+Message-Id: <20220713033635.28432-1-sh043.lee@samsung.com>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: ko
-Thread-Index: AQGsnp/peaG99Yte9Le8RtwF2g9pOAIxCFJ0AWMm+setts6W0A==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMJsWRmVeSWpSXmKPExsWy7bCmgS6n/Lkkg1l/bCxmnGpjtdh37SS7
-        xa+/69ktOrZOZrLY8fwMu8Wuv81MFpd3zWGzOPK/n9Hi3MlPrBbXzpxgtTi+Ntxi86VvLA48
-        Hneu7WHz6NuyitHj8ya5AOaobJuM1MSU1CKF1Lzk/JTMvHRbJe/geOd4UzMDQ11DSwtzJYW8
-        xNxUWyUXnwBdt8wcoKOUFMoSc0qBQgGJxcVK+nY2RfmlJakKGfnFJbZKqQUpOQVmBXrFibnF
-        pXnpenmpJVaGBgZGpkCFCdkZ21duZSq45VXxen0rawPjZLMuRg4OCQETiXt32LsYuTiEBHYw
-        SnRsPcwM4XxilLgxcycjhPONUeLWr9VAZZxgHVsP/WaFSOxllDg8fSUzSEJI4AWjxJ2vXiA2
-        m4COxJtP/1lBbBEge8abZrAGZoGdTBK37t1gAUlwCgRKHN/zFGyqsICbxKlP/5hAbBYBVYlp
-        Vw6xgdi8ApYS39rXsUPYghInZz4B62UW0JZYtvA1M8RFChI/ny5jhYiLSMzubGMG+U1EwEni
-        7SwXiJKVHBKbfrFC2C4S3w68grKFJV4d3wL1mJTE53d72SDsYom2f/+gxldIHOz7AmUbS3z6
-        /JkRZDyzgKbE+l36EGFFiZ2/5zJCXMAn8e5rDyskdHklOtqEIEqUJV4+WsYEYUtKLGm/xTyB
-        UWkWkr9mIflrFpJfZiEsW8DIsopRLLWgODc9tdiwwBge1cn5uZsYwalVy3wH47S3H/QOMTJx
-        MB5ilOBgVhLh/XP2VJIQb0piZVVqUX58UWlOavEhRlNgSE9klhJNzgcm97ySeEMTSwMTMyMT
-        C2NLYzMlcd5V004nCgmkJ5akZqemFqQWwfQxcXBKNTBF9Dznup3+aGa4hP3TtINartnlszpt
-        V9dzlz3+N+18xexPsYHKf3XYj636veXiB+O3u39f+Cn31MKFWeXHWc+1m2qdLzzvSZiTOZ3r
-        hGKZ6l0D9v5td9VOn3FlWBRie+lwq+EJvfjnE7lkmwTP/+ZlY5+WuT5llnM1660GG5f6oJXW
-        N0wZc1bMWXJrwqV/s5rsss/OXx81WVaj+F30y7D5oh+tKlwvMnyOPv43M+N3TKfY3Py3BiLx
-        en49fiFi3l8+3mVMueNmpr6H9edqFqXes09vaDTnFnlPnvfc+xn3mn6po/peexZJ9pzm/XbE
-        clbm50fbbDZ9EzcOmyPdOXvL1/kHLwlMfRCgkMo4eXGEEktxRqKhFnNRcSIA4ddRqDYEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupjkeLIzCtJLcpLzFFi42LZdlhJXpdT/lySwZrZchYzTrWxWuy7dpLd
-        4tff9ewWHVsnM1nseH6G3WLX32Ymi8u75rBZHPnfz2hx7uQnVotrZ06wWhxfG26x+dI3Fgce
-        jzvX9rB59G1ZxejxeZNcAHMUl01Kak5mWWqRvl0CV8adRv6CpR4Vs46FNTA+MO5i5OSQEDCR
-        2HroN2sXIxeHkMBuRonla/6wQyQkJRY/esjWxcgBZAtLHD5cDBIWEnjGKHH1ER+IzSagI/Hm
-        039WEFsEyJ7xphlsDrPAYSaJncv2sEMMvcgo8er/OTaQKk6BQInje56CLRAWcJM49ekfE4jN
-        IqAqMe3KIbAaXgFLiW/t69ghbEGJkzOfsIDYzALaEr0PWxlh7GULXzNDHKog8fPpMlaIuIjE
-        7M42ZpCjRQScJN7OcpnAKDwLyaRZSCbNQjJpFpLuBYwsqxglUwuKc9Nziw0LDPNSy/WKE3OL
-        S/PS9ZLzczcxgqNMS3MH4/ZVH/QOMTJxMB5ilOBgVhLh/XP2VJIQb0piZVVqUX58UWlOavEh
-        RmkOFiVx3gtdJ+OFBNITS1KzU1MLUotgskwcnFINTM0cQqem3eM8K9Nk/aF7Weqyf52CXP5W
-        h39nKibUeYUH/F2cafnyetsM/6V/+T77ifTpfd11TzP1gukE67q6FSGpJ13m3ytacv1E67Or
-        FqHNuzcwpoZZTzjq01P2U2jb/wp7+/XJRk0zjCWnHSmf0vjC7sfTS+Htc+Y289bo21v0z/AU
-        TJ0xZ0dVr/zGZOM92t+X5S3iuqM3517F2trwWlPLwv0XDm8t8jplp+MhH7jL2eaRX+Zlu4Od
-        yw2bD0dsC62+yMx4XcfS5tLnhQabL2fFOR/xX3PRqYppvcQZwboA++DD6zyW9OqtXaF1sf6K
-        g80SHd0Qq7WmxyTWZHWVRz7jTSooaDPf0fW7/zufEktxRqKhFnNRcSIAuCHR9yEDAAA=
-X-CMS-MailID: 20220713012529epcas1p4938326d4c7fd39ea65ce7d3aa1c8b3fa
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrHKsWRmVeSWpSXmKPExsWy7bCmvq6R2bkkg2UzeC2O/O9ntGj6s4/F
+        4vjacAdmjzvX9rB59G1ZxejxeZNcAHNUtk1GamJKapFCal5yfkpmXrqtkndwvHO8qZmBoa6h
+        pYW5kkJeYm6qrZKLT4CuW2YO0B4lhbLEnFKgUEBicbGSvp1NUX5pSapCRn5xia1SakFKToFZ
+        gV5xYm5xaV66Xl5qiZWhgYGRKVBhQnbG0oN6BdPYKpq3zGJpYPzN0sXIySEhYCLR92AbWxcj
+        F4eQwA5GiXnnTkA5nxgljvSdZIdwvjFKLJz+ix2m5evC8ywQib2MEs/2nmCFcD4zSnyZ1cMI
+        UsUmoCUxfdMWJhBbRMBUomV3I1icWUBD4mXDBKAdHBzCAp4S6w5Yg4RZBFQlnrwGCXNy8ApY
+        Sdzcv48RYpm8xJ/7PcwQcUGJkzOfsECMkZdo3jqbGWSvhMA8dol3828xQTS4SFzY0wJ1qbDE
+        q+NboGwpiZf9bVB2sUTbv3/MEHaFxMG+L1C2scSnz58ZQW5jFtCUWL9LHyKsKLHz91yo8/kk
+        3n3tYQUpkRDglehoE4IoUZZ4+WgZ1AWSEkvabzFDlHhIHHslARIWEoiVWL7/F8sERvlZSJ6Z
+        heSZWQh7FzAyr2IUSy0ozk1PLTYsMIRHaXJ+7iZGcELTMt3BOPHtB71DjEwcjIcYJTiYlUR4
+        /5w9lSTEm5JYWZValB9fVJqTWnyI0RQYvBOZpUST84EpNa8k3tDE0sDEzMjEwtjS2ExJnHfV
+        tNOJQgLpiSWp2ampBalFMH1MHJxSDUzm4mETLjz/b6Sdwl7XGH8xYG91zrSjHuEOs3YscDtT
+        O0dY74EGZ3Bc3tJD7Ht+crx1mPo6euWPg4e2KZj92MF8b+Ftn08JkhFcPdO4r7LVf42/+fP8
+        7LTQvY7d54+mtT37/GlNjrGNUWTmtvbyFyHW9v73lgYVNhpP3pHXOrE+QHrGXiHtBMEnjJlK
+        JRVClw3zJpjxmN34qV5mFrg095CVX+si6ef2y8vvqfxy+3w16rq2xLF+det0rSjWXmUx1uff
+        Nr5forhM/GVqgKm6jkS7xkJ78VVibwSira4qZmz7lW3SqTFrQveWi+5PL7+aEnJcrTu57b2R
+        1ZKKHWaim/5zO3z/5GxYu2jLdkfD70osxRmJhlrMRcWJAI0ISyvxAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuplluLIzCtJLcpLzFFi42LZdlhJTtfQ7FySwfpGM4sj//sZLZr+7GOx
+        OL423IHZ4861PWwefVtWMXp83iQXwBzFZZOSmpNZllqkb5fAlbH0oF7BNLaK5i2zWBoYf7N0
+        MXJySAiYSHxdeB7I5uIQEtjNKPFh4jpmiISkxOJHD9m6GDmAbGGJw4eLIWo+MkosOHCEFaSG
+        TUBLYvqmLUwgtoiAucTDZS1gvcwCGhIvGyaA9QoLeEqsO2ANEmYRUJV48hokzMnBK2AlcXP/
+        PkaIVfISf+73MEPEBSVOznzCAjFGXqJ562zmCYx8s5CkZiFJLWBkWsUomVpQnJueW2xYYJiX
+        Wq5XnJhbXJqXrpecn7uJERxiWpo7GLev+qB3iJGJg/EQowQHs5II75+zp5KEeFMSK6tSi/Lj
+        i0pzUosPMUpzsCiJ817oOhkvJJCeWJKanZpakFoEk2Xi4JRqYJIrULRxMMr8IbnobZp0Z3NV
+        d8HV5duffNVJDhSYcb/98kl535Q9iSpeLQelM4/dWJe/Z/WHYC3xHYZH+oJ0n/V/nbf2jdT7
+        NcqJ1S1XH8tn2b+WWZt6tdD3wtrJDN+3zz659gqve5XLRfcd82P6phwzkVscxCNzt9a8/Z/R
+        bzHVzPam8oxbexZG5jzS3ePbbZ9ewjudW1XM+OXR7U/ddhk8LVEqFfh1egmrJss8i2/RZm1a
+        T0qiV3Q/DvgokJzO71Vw50iG6+ElS2JcDhzZpxTeLfF62yxhDubK+NXxEpcV0rkNlGbKlCi9
+        Pv9qmrT2iveB/iYtU3Sz/HJZr6+y5vOtUc7dMit57al+bp+pSizFGYmGWsxFxYkAVqz17aAC
+        AAA=
+X-CMS-MailID: 20220713030417epcas1p4645d69539b295df914057b57d1c09c86
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 X-Sendblock-Type: SVC_REQ_APPROVE
 CMS-TYPE: 101P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20220705012516epcas1p2c15e9e9984735c32bcc754ff646ccbf3
-References: <CGME20220705012516epcas1p2c15e9e9984735c32bcc754ff646ccbf3@epcas1p2.samsung.com>
-        <20220705015729.14455-1-sh043.lee@samsung.com>
-        <CAPDyKFodLj7McOsT1ObGFU03g0iBLaydo-E5QV=hy+0tOi846A@mail.gmail.com>
+X-CMS-RootMailID: 20220713030417epcas1p4645d69539b295df914057b57d1c09c86
+References: <CGME20220713030417epcas1p4645d69539b295df914057b57d1c09c86@epcas1p4.samsung.com>
 X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dear Uffe,
+add mmc_card_sd_combo() macro for sd combo type card and
+use mmc_card_* macro to simplify instead of comparing card->type
 
-Thank you for your review comment. :)
-I'll split this patch into two, and re-submit this as your request.
+Changes compared to v1:
+- Reviewed v1 by Uffe.
+- Split into two. One for the core and one for the mxcmmc driver.
 
+* previous discussion
+https://patchwork.kernel.org/project/linux-mmc/patch/20220705015729.14455-1-sh043.lee@samsung.com/
 
-> -----Original Message-----
-> From: Ulf Hansson <ulf.hansson=40linaro.org>
-> Sent: Tuesday, July 12, 2022 7:57 PM
-> To: Seunghui Lee <sh043.lee=40samsung.com>
-> Cc: linux-mmc=40vger.kernel.org; linux-kernel=40vger.kernel.org;
-> axboe=40kernel.dk; Avri.Altman=40wdc.com; shawn.lin=40rock-chips.com;
-> adrian.hunter=40intel.com; grant.jung=40samsung.com; jt77.jang=40samsung.=
-com;
-> dh0421.hwang=40samsung.com; junwoo80.lee=40samsung.com; jangsub.yi=40sams=
-ung.com;
-> cw9316.lee=40samsung.com; sh8267.baek=40samsung.com; wkon.kim=40samsung.c=
-om;
-> seunghwan.hyun=40samsung.com
-> Subject: Re: =5BPATCH=5D mmc: use mmc_card_* macro and add it for sd_comb=
-o
->=20
-> On Tue, 5 Jul 2022 at 03:25, Seunghui Lee <sh043.lee=40samsung.com> wrote=
-:
-> >
-> > add mmc_card_sd_combo() macro for sd combo type card and use
-> > mmc_card_* macro to simplify instead of comparing card->type
-> >
-> > Signed-off-by: Seunghui Lee <sh043.lee=40samsung.com>
->=20
-> Nice cleanup=21 I minor thing though, see below.
->=20
-> > ---
-> >  drivers/mmc/core/block.c  =7C  4 ++--
-> >  drivers/mmc/core/bus.c    =7C  4 ++--
-> >  drivers/mmc/core/sd.c     =7C  2 +-
-> >  drivers/mmc/core/sdio.c   =7C 16 ++++++++--------
-> >  drivers/mmc/host/mxcmmc.c =7C  2 +-
->=20
-> Please split this patch into two. One for the core and one for the mxcmmc
-> driver.
->=20
-> Otherwise this looks good to me=21
->=20
-> Kind regards
-> Uffe
->=20
-> >  include/linux/mmc/card.h  =7C  1 +
-> >  6 files changed, 15 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c index
-> > bda6c67ce93f..4d7ae8fc2901 100644
-> > --- a/drivers/mmc/core/block.c
-> > +++ b/drivers/mmc/core/block.c
-> > =40=40 -2987,7 +2987,7 =40=40 static int mmc_blk_probe(struct mmc_card =
-*card)
-> >          * Don't enable runtime PM for SD-combo cards here. Leave that
-> >          * decision to be taken during the SDIO init sequence instead.
-> >          */
-> > -       if (card->type =21=3D MMC_TYPE_SD_COMBO) =7B
-> > +       if (=21mmc_card_sd_combo(card)) =7B
-> >                 pm_runtime_set_active(&card->dev);
-> >                 pm_runtime_enable(&card->dev);
-> >         =7D
-> > =40=40 -3014,7 +3014,7 =40=40 static void mmc_blk_remove(struct mmc_car=
-d *card)
-> >                 mmc_blk_part_switch(card, md->part_type);
-> >                 mmc_release_host(card->host);
-> >         =7D
-> > -       if (card->type =21=3D MMC_TYPE_SD_COMBO)
-> > +       if (=21mmc_card_sd_combo(card))
-> >                 pm_runtime_disable(&card->dev);
-> >         pm_runtime_put_noidle(&card->dev);
-> >         mmc_blk_remove_req(md);
-> > diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c index
-> > 58a60afa650b..d8762fa3d5cd 100644
-> > --- a/drivers/mmc/core/bus.c
-> > +++ b/drivers/mmc/core/bus.c
-> > =40=40 -85,7 +85,7 =40=40 mmc_bus_uevent(struct device *dev, struct
-> kobj_uevent_env *env)
-> >                         return retval;
-> >         =7D
-> >
-> > -       if (card->type =3D=3D MMC_TYPE_SDIO =7C=7C card->type =3D=3D
-> MMC_TYPE_SD_COMBO) =7B
-> > +       if (mmc_card_sdio(card) =7C=7C mmc_card_sd_combo(card)) =7B
-> >                 retval =3D add_uevent_var(env, =22SDIO_ID=3D%04X:%04X=
-=22,
-> >                                         card->cis.vendor, card->cis.dev=
-ice);
-> >                 if (retval)
-> > =40=40 -107,7 +107,7 =40=40 mmc_bus_uevent(struct device *dev, struct
-> kobj_uevent_env *env)
-> >          * SDIO (non-combo) cards are not handled by mmc_block driver a=
-nd
-> do not
-> >          * have accessible CID register which used by mmc_card_name()
-> function.
-> >          */
-> > -       if (card->type =3D=3D MMC_TYPE_SDIO)
-> > +       if (mmc_card_sdio(card))
-> >                 return 0;
-> >
-> >         retval =3D add_uevent_var(env, =22MMC_NAME=3D%s=22,
-> > mmc_card_name(card)); diff --git a/drivers/mmc/core/sd.c
-> > b/drivers/mmc/core/sd.c index c5f1df6ce4c0..f0186bdf2025 100644
-> > --- a/drivers/mmc/core/sd.c
-> > +++ b/drivers/mmc/core/sd.c
-> > =40=40 -793,7 +793,7 =40=40 static umode_t sd_std_is_visible(struct kob=
-ject
-> *kobj, struct attribute *attr,
-> >              attr =3D=3D &dev_attr_info2.attr =7C=7C
-> >              attr =3D=3D &dev_attr_info3.attr =7C=7C
-> >              attr =3D=3D &dev_attr_info4.attr
-> > -           ) && card->type =21=3D MMC_TYPE_SD_COMBO)
-> > +           ) &&=21mmc_card_sd_combo(card))
-> >                 return 0;
-> >
-> >         return attr->mode;
-> > diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c index
-> > 25799accf8a0..b589df1c35e0 100644
-> > --- a/drivers/mmc/core/sdio.c
-> > +++ b/drivers/mmc/core/sdio.c
-> > =40=40 -335,7 +335,7 =40=40 static int sdio_disable_4bit_bus(struct mmc=
-_card
-> > *card)  =7B
-> >         int err;
-> >
-> > -       if (card->type =3D=3D MMC_TYPE_SDIO)
-> > +       if (mmc_card_sdio(card))
-> >                 goto out;
-> >
-> >         if (=21(card->host->caps & MMC_CAP_4_BIT_DATA)) =40=40 -360,7 +=
-360,7
-> > =40=40 static int sdio_enable_4bit_bus(struct mmc_card *card)
-> >         err =3D sdio_enable_wide(card);
-> >         if (err <=3D 0)
-> >                 return err;
-> > -       if (card->type =3D=3D MMC_TYPE_SDIO)
-> > +       if (mmc_card_sdio(card))
-> >                 goto out;
-> >
-> >         if (card->scr.bus_widths & SD_SCR_BUS_WIDTH_4) =7B =40=40 -415,=
-7
-> > +415,7 =40=40 static int sdio_enable_hs(struct mmc_card *card)
-> >         int ret;
-> >
-> >         ret =3D mmc_sdio_switch_hs(card, true);
-> > -       if (ret <=3D 0 =7C=7C card->type =3D=3D MMC_TYPE_SDIO)
-> > +       if (ret <=3D 0 =7C=7C mmc_card_sdio(card))
-> >                 return ret;
-> >
-> >         ret =3D mmc_sd_switch_hs(card);
-> > =40=40 -441,7 +441,7 =40=40 static unsigned mmc_sdio_get_max_clock(stru=
-ct
-> mmc_card *card)
-> >                 max_dtr =3D card->cis.max_dtr;
-> >         =7D
-> >
-> > -       if (card->type =3D=3D MMC_TYPE_SD_COMBO)
-> > +       if (mmc_card_sd_combo(card))
-> >                 max_dtr =3D min(max_dtr, mmc_sd_get_max_clock(card));
-> >
-> >         return max_dtr;
-> > =40=40 -689,7 +689,7 =40=40 static int mmc_sdio_init_card(struct mmc_ho=
-st *host,
-> u32 ocr,
-> >             mmc_sd_get_cid(host, ocr & rocr, card->raw_cid, NULL) =3D=
-=3D 0) =7B
-> >                 card->type =3D MMC_TYPE_SD_COMBO;
-> >
-> > -               if (oldcard && (oldcard->type =21=3D MMC_TYPE_SD_COMBO =
-=7C=7C
-> > +               if (oldcard && (=21mmc_card_sd_combo(oldcard) =7C=7C
-> >                     memcmp(card->raw_cid, oldcard->raw_cid, sizeof(card=
--
-> >raw_cid)) =21=3D 0)) =7B
-> >                         err =3D -ENOENT;
-> >                         goto mismatch; =40=40 -697,7 +697,7 =40=40 stat=
-ic int
-> > mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
-> >         =7D else =7B
-> >                 card->type =3D MMC_TYPE_SDIO;
-> >
-> > -               if (oldcard && oldcard->type =21=3D MMC_TYPE_SDIO) =7B
-> > +               if (oldcard && =21mmc_card_sdio(oldcard)) =7B
-> >                         err =3D -ENOENT;
-> >                         goto mismatch;
-> >                 =7D
-> > =40=40 -754,7 +754,7 =40=40 static int mmc_sdio_init_card(struct mmc_ho=
-st *host,
-> u32 ocr,
-> >         /*
-> >          * Read CSD, before selecting the card
-> >          */
-> > -       if (=21oldcard && card->type =3D=3D MMC_TYPE_SD_COMBO) =7B
-> > +       if (=21oldcard && mmc_card_sd_combo(card)) =7B
-> >                 err =3D mmc_sd_get_csd(card);
-> >                 if (err)
-> >                         goto remove;
-> > =40=40 -827,7 +827,7 =40=40 static int mmc_sdio_init_card(struct mmc_ho=
-st
-> > *host, u32 ocr,
-> >
-> >         mmc_fixup_device(card, sdio_fixup_methods);
-> >
-> > -       if (card->type =3D=3D MMC_TYPE_SD_COMBO) =7B
-> > +       if (mmc_card_sd_combo(card)) =7B
-> >                 err =3D mmc_sd_setup_card(host, card, oldcard =21=3D NU=
-LL);
-> >                 /* handle as SDIO-only card if memory init failed */
-> >                 if (err) =7B
-> > diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
-> > index 613f13306433..2cf0413407ea 100644
-> > --- a/drivers/mmc/host/mxcmmc.c
-> > +++ b/drivers/mmc/host/mxcmmc.c
-> > =40=40 -923,7 +923,7 =40=40 static void mxcmci_init_card(struct mmc_hos=
-t *host,
-> struct mmc_card *card)
-> >          * One way to prevent this is to only allow 1-bit transfers.
-> >          */
-> >
-> > -       if (is_imx31_mmc(mxcmci) && card->type =3D=3D MMC_TYPE_SDIO)
-> > +       if (is_imx31_mmc(mxcmci) && mmc_card_sdio(card))
-> >                 host->caps &=3D =7EMMC_CAP_4_BIT_DATA;
-> >         else
-> >                 host->caps =7C=3D MMC_CAP_4_BIT_DATA; diff --git
-> > a/include/linux/mmc/card.h b/include/linux/mmc/card.h index
-> > 37f975875102..156a7b673a28 100644
-> > --- a/include/linux/mmc/card.h
-> > +++ b/include/linux/mmc/card.h
-> > =40=40 -348,5 +348,6 =40=40 bool mmc_card_is_blockaddr(struct mmc_card =
-*card);
-> >  =23define mmc_card_mmc(c)                ((c)->type =3D=3D MMC_TYPE_MM=
-C)
-> >  =23define mmc_card_sd(c)         ((c)->type =3D=3D MMC_TYPE_SD)
-> >  =23define mmc_card_sdio(c)       ((c)->type =3D=3D MMC_TYPE_SDIO)
-> > +=23define mmc_card_sd_combo(c)   ((c)->type =3D=3D MMC_TYPE_SD_COMBO)
-> >
-> >  =23endif /* LINUX_MMC_CARD_H */
-> > --
-> > 2.29.0
-> >
+Seunghui Lee (2):
+  mmc: core: use mmc_card_* macro and add it for sd_combo
+  mmc: host: use mmc_card_sdio macro
+
+ drivers/mmc/core/block.c  |  4 ++--
+ drivers/mmc/core/bus.c    |  4 ++--
+ drivers/mmc/core/sd.c     |  2 +-
+ drivers/mmc/core/sdio.c   | 16 ++++++++--------
+ drivers/mmc/host/mxcmmc.c |  2 +-
+ include/linux/mmc/card.h  |  1 +
+ 6 files changed, 15 insertions(+), 14 deletions(-)
+
+-- 
+2.29.0
 
