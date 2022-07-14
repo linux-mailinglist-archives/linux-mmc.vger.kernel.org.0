@@ -2,97 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E99B5746F5
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Jul 2022 10:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F96F5747E0
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Jul 2022 11:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236424AbiGNIhC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Jul 2022 04:37:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60218 "EHLO
+        id S237661AbiGNJKy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 14 Jul 2022 05:10:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236437AbiGNIg4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Jul 2022 04:36:56 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F9593ED72
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Jul 2022 01:36:50 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id a9so1607955lfk.11
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Jul 2022 01:36:50 -0700 (PDT)
+        with ESMTP id S237656AbiGNJKu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Jul 2022 05:10:50 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DDB52B1BC
+        for <linux-mmc@vger.kernel.org>; Thu, 14 Jul 2022 02:10:48 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id n18so1791487lfq.1
+        for <linux-mmc@vger.kernel.org>; Thu, 14 Jul 2022 02:10:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=XrPG1uZaQRn1UCA0WJJ2pmJQ1csZW3HabgB7E+QXuACfRhko5FjAocWwoGAFMQM+4K
-         maoBv4gTZQXqu9EJzYUg27HWYGn7H4ps8X1YfFKAamIhhLSUESO1F6QG9mJgGHe0KMpr
-         yS6EmWRT7znGhWAi5CHDysnG1OxosqIxRYFf098GB0Xs4T6zMcBwQ+Ijt6ciUPeVVUwm
-         NwEO+Wz1v4Oa+mBtHNRupxuLErGpDho6oqFPRIm2MU+57eHEreDtv9TWX6BBq17KbV3w
-         UCTpqQeOnk576xhvUmMdcgTy5b4PgstjqS11/4Py/0diTc9tD3MngzVuJ3uMtq9Qr/CL
-         qkvw==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Yas1EK+Lg1tB+k2/KKrOSpNmOwlnNNkyZMQY2cJgMdc=;
+        b=vjjPOwMoQLpDt3HEOqYUUUodyCCgSNFmWzdk99MWY7QCQr7YwfC1uAEkoyX8kjaUzj
+         oV5Vh3L5ox15ZxfBvadHW2p5xQEj7tX7+3E7tFzyb6fN/L5hR+ra1y2/7QlhlmD0pJp+
+         XK7KjicnR3sq1sCUIRETdas1I9hRBj6oIO39moM5vD3tdhs/a7VdLUe//CbReO5UakEi
+         bSLOjfQRUHyWwDoPuJUHjeSM+K/Or1yhMjI3gt+4oCXd31v+3P5jkHLRVi75OKQYrvjP
+         dwcUJPlcVcLKZr8EAW+XDnr83SLWtIfFsQjZ98D2tcrA5aUJQe+hNmIhFm4IBQRFTJux
+         mCgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=ehJELR7YU3RejoJwjD5WvgZ9KpwXM5zKcwfK8/qeVKZpIh7QfltWiA00qH7n42cunA
-         +UykIi3iGjxR/tSmHFFGZOOwXQLX1JAMfjEA7GMMyEHE6/LIZ4zAEtD5A0gnA8PQ5JWt
-         gsnLZMzeqhTkwqCBqp1oziacZFizSEtGoNDwaAueYkSkqgNIfQYrk63ranuwp4iXDEpC
-         lUTQ/zUDE5SBlP522gJdfxX+LQ7+shUiu4EJ4zVrDwhPbpfp/OZO7lhJuvdqZL+YTZsa
-         nFeelnWxgp5fxAHqpoR63dqg0BPk0s/Q7kc+WHEzm7CGrrOBfgma1b0umytGq9rS90mg
-         blOg==
-X-Gm-Message-State: AJIora9SgH9OdyhQ6Y0AYLCmP6NzkR23Sp4ktz3P4MVH6Vq7HmS+T+Ka
-        63DmV4ERsSsfeunaTN3PmSJ7h2tRz7wmCXNoHgc=
-X-Google-Smtp-Source: AGRyM1u3j4Kh8ROf600mZ9n+2mzPHZx1NFVtrSntlSiwIK2NP6HVto6IIpM3hlWxyt39lgmrdSwWdCXGiGrSzCPb6JE=
-X-Received: by 2002:a05:6512:3d27:b0:489:e623:f244 with SMTP id
- d39-20020a0565123d2700b00489e623f244mr4930609lfv.236.1657787809582; Thu, 14
- Jul 2022 01:36:49 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Yas1EK+Lg1tB+k2/KKrOSpNmOwlnNNkyZMQY2cJgMdc=;
+        b=Lcn/Lct8pM48T5Ga7kXyiXeMaA6UTXOPpvkKTWKJkOeSsGEDkmLQcvh7mEKHAZW//A
+         hkkkR9k+xScwfLwDfFllH5BddtT+uiOwA/wp9WOUWOBMCvYXFs094Wv7D1rsDi/UHFDn
+         PaOIrQ4PL7voeVg3hELKxM4iQU8sd1jL47LYoRQ56VljOXwXCNeUKXYGu4ge2LR0zL77
+         g0Z3qrw+fNPSlDagS3jV505GODUBujSonrSOADIcT63Fd1UBx7miI8k81MyMDSKqylil
+         YDbPjThpHivoCIzXeIcNOF1sUMLLyoNPlnWDWIs9hphrFua1WBB4MaU4+9MKEaS9Mm4g
+         8GSA==
+X-Gm-Message-State: AJIora9yEwfkkj4IyGZ3GRMZla2xs/fTaLNT73fZw6BdjBeC10PFUxKd
+        O2/U6ukRdpEVO7wR7lTBvvLOXA==
+X-Google-Smtp-Source: AGRyM1sLJwQoozs92CJqWSGGa9WPh444ya80rvOJn8Q+ePhAzDhHUOJKjery6nvv8cgsM1CQ+4xNbA==
+X-Received: by 2002:a05:6512:3ca6:b0:489:cebe:a944 with SMTP id h38-20020a0565123ca600b00489cebea944mr4534921lfv.387.1657789846824;
+        Thu, 14 Jul 2022 02:10:46 -0700 (PDT)
+Received: from krzk-bin.. (fwa5da9-171.bb.online.no. [88.93.169.171])
+        by smtp.gmail.com with ESMTPSA id d8-20020a056512368800b004790ef191e3sm250006lfs.216.2022.07.14.02.10.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Jul 2022 02:10:46 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Doug Anderson <dianders@chromium.org>
+Subject: [PATCH v3 0/3] dt-bindings: mmc: / ARM: qcom: add MSM8998 and cleanup driver of_device_id
+Date:   Thu, 14 Jul 2022 11:10:39 +0200
+Message-Id: <20220714091042.22287-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received: by 2002:a2e:9041:0:0:0:0:0 with HTTP; Thu, 14 Jul 2022 01:36:48
- -0700 (PDT)
-Reply-To: abdwabbomaddahm@gmail.com
-From:   Abdwabbo Maddah <abdwabbomaddah746@gmail.com>
-Date:   Thu, 14 Jul 2022 09:36:48 +0100
-Message-ID: <CAFC-3ifKFkAVLmD=8z4VAKFLX0pV+_h5OJ=Ks62m+0uk+DimKQ@mail.gmail.com>
-Subject: Get back to me... URGENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:12f listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4925]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [abdwabbomaddah746[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [abdwabbomaddah746[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Hi,
+
+Rationale/background:
+https://lore.kernel.org/linux-devicetree/CAD=FV=WGxQF4vPuRi7kWKoqTpe0RFsgH+J82C=sQbmncK_AFpw@mail.gmail.com/
+
+Changes since v2
+================
+1. Add Rb tags.
+2. Add a comment to SDHCI driver to hopefully prevent re-adding of compatibles
+(suggested by Doug).
+
+Changes since v1
+================
+1. Add Rb tags.
+2. Rework driver patch (now last in the series), after talk with Doug.
+
+Best regards,
+Krzysztof
+
+Cc: Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc: Bhupesh Sharma <bhupesh.sharma@linaro.org>
+Cc: Doug Anderson <dianders@chromium.org>
+
+Krzysztof Kozlowski (3):
+  dt-bindings: mmc: sdhci-msm: add MSM8998
+  arm64: dts: qcom: msm8998: add MSM8998 SDCC specific compatible
+  mmc: sdhci-msm: drop redundant of_device_id entries
+
+ .../devicetree/bindings/mmc/sdhci-msm.yaml    |  1 +
+ arch/arm64/boot/dts/qcom/msm8998.dtsi         |  2 +-
+ drivers/mmc/host/sdhci-msm.c                  | 29 +++----------------
+ 3 files changed, 6 insertions(+), 26 deletions(-)
+
 -- 
-Dear,
-I had sent you a mail but i don't think you received it that's why am
-writing you again.It is important you get back to me as soon as you
-can.
-Abd-Wabbo Maddah
+2.34.1
+
