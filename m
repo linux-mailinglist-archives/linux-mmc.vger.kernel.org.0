@@ -2,180 +2,131 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 055A3576637
-	for <lists+linux-mmc@lfdr.de>; Fri, 15 Jul 2022 19:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A920457657A
+	for <lists+linux-mmc@lfdr.de>; Fri, 15 Jul 2022 19:02:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229598AbiGORlD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Fri, 15 Jul 2022 13:41:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45310 "EHLO
+        id S235390AbiGORBZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 15 Jul 2022 13:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiGORlB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 15 Jul 2022 13:41:01 -0400
-Received: from mail3.swissbit.com (mail3.swissbit.com [176.95.1.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3032A7BE01
-        for <linux-mmc@vger.kernel.org>; Fri, 15 Jul 2022 10:41:01 -0700 (PDT)
-Received: from mail3.swissbit.com (localhost [127.0.0.1])
-        by DDEI (Postfix) with ESMTP id 299E34634BA;
-        Fri, 15 Jul 2022 18:55:28 +0200 (CEST)
-Received: from mail3.swissbit.com (localhost [127.0.0.1])
-        by DDEI (Postfix) with ESMTP id 160C44634AD;
-        Fri, 15 Jul 2022 18:55:28 +0200 (CEST)
-X-TM-AS-ERS: 10.149.2.84-127.5.254.253
-X-TM-AS-SMTP: 1.0 ZXguc3dpc3NiaXQuY29t Y2xvZWhsZUBoeXBlcnN0b25lLmNvbQ==
-X-DDEI-TLS-USAGE: Used
-Received: from ex.swissbit.com (SBDEEX02.sbitdom.lan [10.149.2.84])
-        by mail3.swissbit.com (Postfix) with ESMTPS;
-        Fri, 15 Jul 2022 18:55:28 +0200 (CEST)
-Received: from sbdeex02.sbitdom.lan (10.149.2.84) by sbdeex02.sbitdom.lan
- (10.149.2.84) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.9; Fri, 15 Jul
- 2022 18:55:27 +0200
-Received: from sbdeex02.sbitdom.lan ([fe80::e0eb:ade8:2d90:1f74]) by
- sbdeex02.sbitdom.lan ([fe80::e0eb:ade8:2d90:1f74%8]) with mapi id
- 15.02.1118.009; Fri, 15 Jul 2022 18:55:27 +0200
-From:   Christian Loehle <CLoehle@hyperstone.com>
-To:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>
-Subject: [PATCH] mmc-utils: Add softreset command for issuing CMD0
-Thread-Topic: [PATCH] mmc-utils: Add softreset command for issuing CMD0
-Thread-Index: AdiYa4ilV6urRmNnRce3UkF3rZaOvg==
-Date:   Fri, 15 Jul 2022 16:55:27 +0000
-Message-ID: <1d1b023572934d71ae75bf46c5439ed0@hyperstone.com>
-Accept-Language: en-US, de-DE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.153.3.44]
+        with ESMTP id S235127AbiGORBY (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 15 Jul 2022 13:01:24 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5961382385
+        for <linux-mmc@vger.kernel.org>; Fri, 15 Jul 2022 10:01:05 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id mf4so10040813ejc.3
+        for <linux-mmc@vger.kernel.org>; Fri, 15 Jul 2022 10:01:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kohlschutter-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=dIRVpOqiqH59RP0AoZiD2s3xlmYa2fxQT3tSFC8Essc=;
+        b=HRy26nf+hmKczXYwhz8g5F1tYXyzvWLNDZbn+FWf+AiEATRROmPI+AoL9+m/YxBlLS
+         K3uRB9w/1ZIIZV6E+hgu7GNHmQQFNvxB7fbmvBWEyxKY1+RF5dNWI1Q2veOAs8c8cW+Y
+         hhxBqUOvZnpOaa4+p9EQ7lw6c5Q3W7aDFgdjclMTKaQPL3uGM28Bn1IA3BAeAjxiYckB
+         N6bl61gRnYmN0esXHP2QkHcXNMWT09uysgJvDCcpyB8F5rNRlSdwFWt37o2tmfk27cWL
+         MEKgBmxUvEYNaNwjpKnJDgT/2Uo2IqAtSUdBXGKFinOK3WxS7OTqYmAgx/rOf5b9UOzq
+         L7nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=dIRVpOqiqH59RP0AoZiD2s3xlmYa2fxQT3tSFC8Essc=;
+        b=KDJvKtYdpKVCTp0RcmbzEEKO6dxgnXLSt8mW8ENA2cEZ4MUUF/s7Ewebw7QMZgJvUM
+         vAc2/nu6M4dVbA3We46kCS7y5ay5KkFBgxKDnaBjWIv3yB2m6LxLkZeGUR+WGomcALYY
+         g7Q2qMJGcDZWmbRRRygduMc6/BSmw062daZPCdlIiUAHaGqb12oZ2Bgu6cXZr4uWhOhH
+         9/1TdRrQOVuKlgN0rT9uL2xoPK93VSNfG2LNMfu1Kc0QyCaXgUfq4T1afO+g3PFXtlms
+         vIaRENlzaTzlbn8z24WlNZBSIv6hZ+O9K6xcrXfEMnfPO7VF+BwB0Nl8gcE3SvGP0D05
+         K3gg==
+X-Gm-Message-State: AJIora9nfUH0yZ199DQR/cLIuB9BYxC4BhqQ4yr/7mHP4jmbNIzl4tDX
+        y2JTZL6Kc8GyxX7m0OSDbacbs5i04V/pdTNI
+X-Google-Smtp-Source: AGRyM1s485bZlc9JnrL6z/lbu4yj3ep3vPK+ktztWjflB/3vWNqvh4mR5HlbnzXJR9uF9cnStQ2dMA==
+X-Received: by 2002:a17:906:8a4d:b0:72b:6b8d:3779 with SMTP id gx13-20020a1709068a4d00b0072b6b8d3779mr14677191ejc.759.1657904463891;
+        Fri, 15 Jul 2022 10:01:03 -0700 (PDT)
+Received: from smtpclient.apple (ip5b434222.dynamic.kabel-deutschland.de. [91.67.66.34])
+        by smtp.gmail.com with ESMTPSA id f24-20020a056402069800b004316f94ec4esm3142765edy.66.2022.07.15.10.01.02
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 15 Jul 2022 10:01:03 -0700 (PDT)
 Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-TMASE-Version: DDEI-5.1-9.0.1002-27018.001
-X-TMASE-Result: 10--5.532100-10.000000
-X-TMASE-MatchedRID: 2wfub8HDRfPyaWDdlFBzB5lQbjWLQqObsXm0OsXi/nXe6dEbvIyrxZKP
-        VSCA9cWVjx5X3FdI4UDmn3xyPJAJoh2P280ZiGmR8IK7yRWPRNEYH39vFLryE54Q+L3BXIWuaqB
-        jsGYT41oXjQchKpIrqptCs4DdnIBwXd2C0i9IY+mF0P4btTlf9ARryDXHx6oXX/yUapWy0lf64E
-        XalNg4NQJSVkTADkn2fyYDewMOrQDkwjHXXC/4IzsAVzN+Ov/sFB93SnvedLt9akUwUiXe/8QNW
-        UILFhRaXfNQHYdxzlLm3j97dEt+7A==
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-X-TMASE-INERTIA: 0-0;;;;
-X-TMASE-XGENCLOUD: 9106ea64-9009-4590-8061-8012359d1515-0-0-200-0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
+Subject: [PATCH v3] arm64: dts: rockchip: Fix SD card init on rk3399-nanopi4
+From:   =?utf-8?Q?Christian_Kohlsch=C3=BCtter?= 
+        <christian@kohlschutter.com>
+In-Reply-To: <502b3fbe-3077-407e-6010-a8cb3ffce7d6@arm.com>
+Date:   Fri, 15 Jul 2022 19:01:02 +0200
+Cc:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <449292CA-CE60-4B90-90F7-295FBFEAB3F8@kohlschutter.com>
+References: <C639AD88-77A1-4485-BAEA-2FF8FC15A844@kohlschutter.com>
+ <12878108.O9o76ZdvQC@diego> <103b714c-b07c-f016-1062-84bd94786b22@arm.com>
+ <9AF1E75F-5947-49B0-887D-82C426527B99@kohlschutter.com>
+ <590f7a08-a6ca-be54-4254-363343642a52@arm.com>
+ <A6B896E5-CD25-4441-B6A5-0BE1FA284B2C@kohlschutter.com>
+ <A9634366-A012-43D2-B253-8BB9BF6005C7@kohlschutter.com>
+ <CAGb2v65Ehbu1wrib2CzF1fDZuD3fHZQDhKfVusyUF9KnxTvi+Q@mail.gmail.com>
+ <5ca9bd94-54d9-04f8-0098-a56ffb6f5fe1@arm.com>
+ <502b3fbe-3077-407e-6010-a8cb3ffce7d6@arm.com>
+To:     Robin Murphy <robin.murphy@arm.com>, wens@kernel.org,
+        =?utf-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+        Markus Reichl <m.reichl@fivetechno.de>
+X-Mailer: Apple Mail (2.3696.100.31)
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,NO_DNS_FOR_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,T_SPF_TEMPERROR autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-CMD0 may be used to see if the hardware can handle a UHS card
-that completed the voltage switch. If a UHS card has problems
-coming back up after CMD0 your hardware may not support a hard
-reset properly.
+mmc/SD-card initialization may fail on NanoPi R4S with
+"mmc1: problem reading SD Status register" /
+"mmc1: error -110 whilst initialising SD card"
+either on cold boot or after a reboot.
 
-Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+Moreover, the system would also sometimes hang upon reboot.
+
+This is prevented by setting an explicit undervoltage protection limit
+for the SD-card-specific vcc3v0_sd voltage regulator.
+
+While using a limit of 3V seems to work, an additional safety buffer
+should prevent accidental tripping, preventing a system hang.
+
+Set the undervoltage protection limit to 2.7V, which is the minimum
+permissible SD card operating voltage.
+
+Signed-off-by: Christian Kohlsch=C3=BCtter <christian@kohlschutter.com>
 ---
- mmc.c      |  5 +++++
- mmc.h      |  3 +++
- mmc_cmds.c | 30 ++++++++++++++++++++++++++++++
- mmc_cmds.h |  1 +
- 4 files changed, 39 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
+ mode change 100644 =3D> 100755 =
+arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
 
-diff --git a/mmc.c b/mmc.c
-index 6c56387..ba2c883 100644
---- a/mmc.c
-+++ b/mmc.c
-@@ -245,6 +245,11 @@ static struct Command commands[] = {
- 		"be 1.",
- 	NULL
- 	},
-+	{ do_soft_reset, -1,
-+	  "softreset", "<device>\n"
-+	  "Issues a CMD0 softreset, e.g. for testing if hardware reset for UHS works\n\n",
-+	  NULL
-+	},
- 	{ 0, 0, 0, 0 }
- };
- 
-diff --git a/mmc.h b/mmc.h
-index daff62c..9796d2e 100644
---- a/mmc.h
-+++ b/mmc.h
-@@ -21,6 +21,7 @@
- #include <linux/mmc/ioctl.h>
- 
- /* From kernel linux/mmc/mmc.h */
-+#define MMC_GO_IDLE_STATE         0   /* bc                          */
- #define MMC_SWITCH		6	/* ac	[31:0] See below	R1b */
- #define MMC_SEND_EXT_CSD	8	/* adtc				R1  */
- #define MMC_SEND_STATUS		13	/* ac   [31:16] RCA        R1  */
-@@ -226,6 +227,7 @@
- 
- 
- /* From kernel linux/mmc/core.h */
-+#define MMC_RSP_NONE	0			/* no response */
- #define MMC_RSP_PRESENT	(1 << 0)
- #define MMC_RSP_136	(1 << 1)		/* 136 bit response */
- #define MMC_RSP_CRC	(1 << 2)		/* expect valid crc */
-@@ -234,6 +236,7 @@
- 
- #define MMC_CMD_AC	(0 << 5)
- #define MMC_CMD_ADTC	(1 << 5)
-+#define MMC_CMD_BC	(2 << 5)
- 
- #define MMC_RSP_SPI_S1	(1 << 7)		/* one status byte */
- #define MMC_RSP_SPI_BUSY (1 << 10)		/* card may send busy */
-diff --git a/mmc_cmds.c b/mmc_cmds.c
-index 12b7802..c027cfa 100644
---- a/mmc_cmds.c
-+++ b/mmc_cmds.c
-@@ -3039,3 +3039,33 @@ out:
- 	close(dev_fd);
- 	return ret;
- }
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi =
+b/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
+old mode 100644
+new mode 100755
+index 8c0ff6c96e03..669c74ce4d13
+--- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
+@@ -73,6 +73,10 @@ vcc3v0_sd: vcc3v0-sd {
+ 		regulator-always-on;
+ 		regulator-min-microvolt =3D <3000000>;
+ 		regulator-max-microvolt =3D <3000000>;
 +
-+int do_soft_reset(int nargs, char **argv)
-+{
-+	int fd;
-+	char *device;
-+	struct mmc_ioc_cmd idata;
++		// must be initialized or SD card may fail to initialize =
+/ system may hang
++		regulator-uv-protection-microvolt =3D <2700000>;
 +
-+	if (nargs != 2) {
-+		fprintf(stderr, "Usage: mmc status softreset </path/to/mmcblkX>\n");
-+		exit(1);
-+	}
-+
-+	device = argv[1];
-+
-+	fd = open(device, O_RDWR);
-+	if (fd < 0) {
-+		perror("open");
-+		exit(1);
-+	}
-+
-+	memset(&idata, 0, sizeof(idata));
-+	idata.opcode = MMC_GO_IDLE_STATE;
-+	idata.flags = MMC_RSP_NONE | MMC_CMD_BC;
-+
-+	/* No need to check for error, it is expected */
-+	ioctl(fd, MMC_IOC_CMD, &idata);
-+	close(fd);
-+
-+	return 0;
-+}
-diff --git a/mmc_cmds.h b/mmc_cmds.h
-index 0f7c004..c112a95 100644
---- a/mmc_cmds.h
-+++ b/mmc_cmds.h
-@@ -47,3 +47,4 @@ int do_read_cid(int argc, char **argv);
- int do_read_csd(int argc, char **argv);
- int do_erase(int nargs, char **argv);
- int do_general_cmd_read(int nargs, char **argv);
-+int do_soft_reset(int nargs, char **argv);
--- 
+ 		regulator-name =3D "vcc3v0_sd";
+ 		vin-supply =3D <&vcc3v3_sys>;
+ 	};
+--=20
 2.36.1
 
-Hyperstone GmbH | Reichenaustr. 39a  | 78467 Konstanz
-Managing Director: Dr. Jan Peter Berns.
-Commercial register of local courts: Freiburg HRB381782
 
