@@ -2,73 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BAEB575DA2
-	for <lists+linux-mmc@lfdr.de>; Fri, 15 Jul 2022 10:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 055A3576637
+	for <lists+linux-mmc@lfdr.de>; Fri, 15 Jul 2022 19:41:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232859AbiGOIi7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 15 Jul 2022 04:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60168 "EHLO
+        id S229598AbiGORlD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Fri, 15 Jul 2022 13:41:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230300AbiGOIi6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 15 Jul 2022 04:38:58 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CFBC222AE;
-        Fri, 15 Jul 2022 01:38:56 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id D9A7C6601A3F;
-        Fri, 15 Jul 2022 09:38:53 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1657874335;
-        bh=xceY5L9JgEvByY8nXCTLgaBCnqvDhcWlIlGmTkrx17k=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=TqlX6/gCeHEiZoI0yoHG+QC5sbGN3BKmS5kgMokC+Wf5J2LWsFFqOi2HA2YX4wuh4
-         rn2kkegT3gCv1F/+wbt5Q4rebneP3gep0ampKjPzTQgNdl9ohLXHiDhP5foQ0DC+uj
-         iB8aHJkjpB553i7OjjqK9xJu6JBSOEe5Nkd8RXFU19cJjbPbiPQKijjToAwgol3dOI
-         E/GbVxqPcHnq7YLmp0bWRWnae/8rvz4bC6F6wgv8R/h4038I6OrUizvscjwZPu9mbP
-         9vj2L9BH6MkfET0UMPcaqt4hXWZjCX1aFSBvAeXb2CiD1350CTuc9EAIWrKrmd4uMm
-         6+28pJslpu5CQ==
-Message-ID: <86c06111-9c9d-804e-32ec-df4f3d4a8376@collabora.com>
-Date:   Fri, 15 Jul 2022 10:38:51 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v13 3/3] mmc: mediatek: add support for SDIO eint wakup
- IRQ
+        with ESMTP id S229463AbiGORlB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 15 Jul 2022 13:41:01 -0400
+Received: from mail3.swissbit.com (mail3.swissbit.com [176.95.1.57])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3032A7BE01
+        for <linux-mmc@vger.kernel.org>; Fri, 15 Jul 2022 10:41:01 -0700 (PDT)
+Received: from mail3.swissbit.com (localhost [127.0.0.1])
+        by DDEI (Postfix) with ESMTP id 299E34634BA;
+        Fri, 15 Jul 2022 18:55:28 +0200 (CEST)
+Received: from mail3.swissbit.com (localhost [127.0.0.1])
+        by DDEI (Postfix) with ESMTP id 160C44634AD;
+        Fri, 15 Jul 2022 18:55:28 +0200 (CEST)
+X-TM-AS-ERS: 10.149.2.84-127.5.254.253
+X-TM-AS-SMTP: 1.0 ZXguc3dpc3NiaXQuY29t Y2xvZWhsZUBoeXBlcnN0b25lLmNvbQ==
+X-DDEI-TLS-USAGE: Used
+Received: from ex.swissbit.com (SBDEEX02.sbitdom.lan [10.149.2.84])
+        by mail3.swissbit.com (Postfix) with ESMTPS;
+        Fri, 15 Jul 2022 18:55:28 +0200 (CEST)
+Received: from sbdeex02.sbitdom.lan (10.149.2.84) by sbdeex02.sbitdom.lan
+ (10.149.2.84) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.9; Fri, 15 Jul
+ 2022 18:55:27 +0200
+Received: from sbdeex02.sbitdom.lan ([fe80::e0eb:ade8:2d90:1f74]) by
+ sbdeex02.sbitdom.lan ([fe80::e0eb:ade8:2d90:1f74%8]) with mapi id
+ 15.02.1118.009; Fri, 15 Jul 2022 18:55:27 +0200
+From:   Christian Loehle <CLoehle@hyperstone.com>
+To:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>
+Subject: [PATCH] mmc-utils: Add softreset command for issuing CMD0
+Thread-Topic: [PATCH] mmc-utils: Add softreset command for issuing CMD0
+Thread-Index: AdiYa4ilV6urRmNnRce3UkF3rZaOvg==
+Date:   Fri, 15 Jul 2022 16:55:27 +0000
+Message-ID: <1d1b023572934d71ae75bf46c5439ed0@hyperstone.com>
+Accept-Language: en-US, de-DE
 Content-Language: en-US
-To:     Axe Yang <axe.yang@mediatek.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Satya Tangirala <satyat@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Lucas Stach <dev@lynxeye.de>,
-        Eric Biggers <ebiggers@google.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Kiwoong Kim <kwmad.kim@samsung.com>,
-        Yue Hu <huyue2@yulong.com>, Tian Tao <tiantao6@hisilicon.com>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Project_Global_Chrome_Upstream_Group@mediatek.com,
-        Yong Mao <yong.mao@mediatek.com>
-References: <20220623090445.1401-1-axe.yang@mediatek.com>
- <20220623090445.1401-4-axe.yang@mediatek.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20220623090445.1401-4-axe.yang@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.153.3.44]
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-TMASE-Version: DDEI-5.1-9.0.1002-27018.001
+X-TMASE-Result: 10--5.532100-10.000000
+X-TMASE-MatchedRID: 2wfub8HDRfPyaWDdlFBzB5lQbjWLQqObsXm0OsXi/nXe6dEbvIyrxZKP
+        VSCA9cWVjx5X3FdI4UDmn3xyPJAJoh2P280ZiGmR8IK7yRWPRNEYH39vFLryE54Q+L3BXIWuaqB
+        jsGYT41oXjQchKpIrqptCs4DdnIBwXd2C0i9IY+mF0P4btTlf9ARryDXHx6oXX/yUapWy0lf64E
+        XalNg4NQJSVkTADkn2fyYDewMOrQDkwjHXXC/4IzsAVzN+Ov/sFB93SnvedLt9akUwUiXe/8QNW
+        UILFhRaXfNQHYdxzlLm3j97dEt+7A==
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+X-TMASE-INERTIA: 0-0;;;;
+X-TMASE-XGENCLOUD: 9106ea64-9009-4590-8061-8012359d1515-0-0-200-0
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,40 +68,114 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Il 23/06/22 11:04, Axe Yang ha scritto:
-> Add support for eint IRQ when MSDC is used as an SDIO host. This
-> feature requires SDIO device support async IRQ function. With this
-> feature, SDIO host can be awakened by SDIO card in suspend state,
-> without additional pin.
-> 
-> MSDC driver will time-share the SDIO DAT1 pin. During suspend, MSDC
-> turn off clock and switch SDIO DAT1 pin to GPIO mode. And during
-> resume, switch GPIO function back to DAT1 mode then turn on clock.
-> 
-> Some device tree property should be added or modified in MSDC node
-> to support SDIO eint IRQ. Pinctrls "state_eint" is mandatory. Since
-> this feature depends on asynchronous interrupts, "wakeup-source",
-> "keep-power-in-suspend" and "cap-sdio-irq" flags are necessary, and
-> the interrupts list should be extended(the interrupt named with
-> sdio_wakeup):
->          &mmcX {
-> 		...
-> 		interrupt-names = "msdc", "sdio_wakeup";
-> 		interrupts-extended = <...>,
->                                	      <&pio xxx IRQ_TYPE_LEVEL_LOW>;
->                  ...
->                  pinctrl-names = "default", "state_uhs", "state_eint";
->                  ...
->                  pinctrl-2 = <&mmc2_pins_eint>;
->                  ...
->                  cap-sdio-irq;
-> 		keep-power-in-suspend;
-> 		wakeup-source;
->                  ...
->          };
-> 
-> Co-developed-by: Yong Mao <yong.mao@mediatek.com>
-> Signed-off-by: Yong Mao <yong.mao@mediatek.com>
-> Signed-off-by: Axe Yang <axe.yang@mediatek.com>
+CMD0 may be used to see if the hardware can handle a UHS card
+that completed the voltage switch. If a UHS card has problems
+coming back up after CMD0 your hardware may not support a hard
+reset properly.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+---
+ mmc.c      |  5 +++++
+ mmc.h      |  3 +++
+ mmc_cmds.c | 30 ++++++++++++++++++++++++++++++
+ mmc_cmds.h |  1 +
+ 4 files changed, 39 insertions(+)
+
+diff --git a/mmc.c b/mmc.c
+index 6c56387..ba2c883 100644
+--- a/mmc.c
++++ b/mmc.c
+@@ -245,6 +245,11 @@ static struct Command commands[] = {
+ 		"be 1.",
+ 	NULL
+ 	},
++	{ do_soft_reset, -1,
++	  "softreset", "<device>\n"
++	  "Issues a CMD0 softreset, e.g. for testing if hardware reset for UHS works\n\n",
++	  NULL
++	},
+ 	{ 0, 0, 0, 0 }
+ };
+ 
+diff --git a/mmc.h b/mmc.h
+index daff62c..9796d2e 100644
+--- a/mmc.h
++++ b/mmc.h
+@@ -21,6 +21,7 @@
+ #include <linux/mmc/ioctl.h>
+ 
+ /* From kernel linux/mmc/mmc.h */
++#define MMC_GO_IDLE_STATE         0   /* bc                          */
+ #define MMC_SWITCH		6	/* ac	[31:0] See below	R1b */
+ #define MMC_SEND_EXT_CSD	8	/* adtc				R1  */
+ #define MMC_SEND_STATUS		13	/* ac   [31:16] RCA        R1  */
+@@ -226,6 +227,7 @@
+ 
+ 
+ /* From kernel linux/mmc/core.h */
++#define MMC_RSP_NONE	0			/* no response */
+ #define MMC_RSP_PRESENT	(1 << 0)
+ #define MMC_RSP_136	(1 << 1)		/* 136 bit response */
+ #define MMC_RSP_CRC	(1 << 2)		/* expect valid crc */
+@@ -234,6 +236,7 @@
+ 
+ #define MMC_CMD_AC	(0 << 5)
+ #define MMC_CMD_ADTC	(1 << 5)
++#define MMC_CMD_BC	(2 << 5)
+ 
+ #define MMC_RSP_SPI_S1	(1 << 7)		/* one status byte */
+ #define MMC_RSP_SPI_BUSY (1 << 10)		/* card may send busy */
+diff --git a/mmc_cmds.c b/mmc_cmds.c
+index 12b7802..c027cfa 100644
+--- a/mmc_cmds.c
++++ b/mmc_cmds.c
+@@ -3039,3 +3039,33 @@ out:
+ 	close(dev_fd);
+ 	return ret;
+ }
++
++int do_soft_reset(int nargs, char **argv)
++{
++	int fd;
++	char *device;
++	struct mmc_ioc_cmd idata;
++
++	if (nargs != 2) {
++		fprintf(stderr, "Usage: mmc status softreset </path/to/mmcblkX>\n");
++		exit(1);
++	}
++
++	device = argv[1];
++
++	fd = open(device, O_RDWR);
++	if (fd < 0) {
++		perror("open");
++		exit(1);
++	}
++
++	memset(&idata, 0, sizeof(idata));
++	idata.opcode = MMC_GO_IDLE_STATE;
++	idata.flags = MMC_RSP_NONE | MMC_CMD_BC;
++
++	/* No need to check for error, it is expected */
++	ioctl(fd, MMC_IOC_CMD, &idata);
++	close(fd);
++
++	return 0;
++}
+diff --git a/mmc_cmds.h b/mmc_cmds.h
+index 0f7c004..c112a95 100644
+--- a/mmc_cmds.h
++++ b/mmc_cmds.h
+@@ -47,3 +47,4 @@ int do_read_cid(int argc, char **argv);
+ int do_read_csd(int argc, char **argv);
+ int do_erase(int nargs, char **argv);
+ int do_general_cmd_read(int nargs, char **argv);
++int do_soft_reset(int nargs, char **argv);
+-- 
+2.36.1
+
+Hyperstone GmbH | Reichenaustr. 39a  | 78467 Konstanz
+Managing Director: Dr. Jan Peter Berns.
+Commercial register of local courts: Freiburg HRB381782
+
