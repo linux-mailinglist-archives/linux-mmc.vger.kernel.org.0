@@ -2,64 +2,71 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4228257853A
-	for <lists+linux-mmc@lfdr.de>; Mon, 18 Jul 2022 16:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A2B5785CB
+	for <lists+linux-mmc@lfdr.de>; Mon, 18 Jul 2022 16:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234657AbiGROVd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 18 Jul 2022 10:21:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48594 "EHLO
+        id S234477AbiGROuw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 18 Jul 2022 10:50:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234434AbiGROVc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 18 Jul 2022 10:21:32 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC07612D12
-        for <linux-mmc@vger.kernel.org>; Mon, 18 Jul 2022 07:21:31 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id o8so7234677wms.2
-        for <linux-mmc@vger.kernel.org>; Mon, 18 Jul 2022 07:21:31 -0700 (PDT)
+        with ESMTP id S233949AbiGROuv (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 18 Jul 2022 10:50:51 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD9414D08;
+        Mon, 18 Jul 2022 07:50:49 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id q5so9227424plr.11;
+        Mon, 18 Jul 2022 07:50:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=2X8HXtEcU/ZehxuPCgIPz4aOGr6MXTRGr5kvCe3jveI=;
-        b=AGaoAZ8ml24T/xt9w0CoIyhC90I0Qb2kP2BNkK9cPslwpZfIlLPNJM/v8noaojI5vh
-         SZ3KcJfcfdPhPsQNz4GTQbJ07GLpsI59cIDqpk2aJKjPqx+rGJpVn4bjCGbl9WcR33Af
-         VtoVFHOsXw+5+r8l/9eiMtZo8A40OcOzN65+c6SwuEA8oExFAXkpD97ij04KJsOOnUg5
-         CW+nJMd4uRVgFKgcB2tDmjdf8ck3E92FH9AHEv6GStmB+MDWCx71ZbLwzawlo0zBlFIn
-         OCwIUVdNHwKGFKUVm9Pbt8223CXnlJSQ2S0/FsrKTwaUaWdV51M2kCGWnNnxqTXPWsRd
-         7FkA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=vWu6+Y1l1EuPBNVi8wHSs4XnZYKZiVD1hMz9Y5lMF2Q=;
+        b=n2dNzfNjhPdrLUZX5nWmRfEj0l9h//NdNtGNq5oo8OgCTbbXa9VuUTr2OdSeFzH1PS
+         8de0acKvfKfiYlgmnJeBz/etvBuCG44ocqCb4RqaRRxFu05q72Pxcd5AxLb9sFAsfAxV
+         GOhnAkM3ZzlKhYvda86OKhVGzGy9GpNF0dVIVH54dLfgpIuqM1g5BT+JPO/fX/qoMr7X
+         cVKT0aMz8B8aCQJFfCLOdkiTGJjwojpaYiYQCEO4dV8r3psD4TnvzATuJEQu1TE2ZHpp
+         WTckI+vRQAGdy4/wfIXV5CQTYGc0bFDq4dixFmD3ASzx6/GL1fD8hHtEA3355eK3Amcx
+         ZCbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=2X8HXtEcU/ZehxuPCgIPz4aOGr6MXTRGr5kvCe3jveI=;
-        b=5VTW/CcZiwuDb4tmDz+rd50ph5orAXnDnbGCts59uDbpgPpvvxzNbt//3YMCOGqsQh
-         QzfMvAtJkMjirlrnCcDrRFTRouVUe43NL1IVUuf6ceEBGCEn5xGua2hJjE423r21d5Qu
-         7nyKm7Mh8woU9oOtEDi1B1BNtrl+m2AiDMG42MBSIlGCH6HUOZlHR+mEAOOJc9Q4tB46
-         JuuQz6FQkt0v/C+gkBtY/uy9JRRpKyY4gR6EM4FmeOqzGCKE1K+IPnIhI0QQCNnCj0OV
-         chu4m7etJUnuxFkax/0P6miz2zxlTjzSx3rciMrDrwhn0cSPT8VPo0/KbQzUFOcnB8M3
-         qB8Q==
-X-Gm-Message-State: AJIora9xw8GXhjuQFk66mecYVF+XB1ycGL2omqThUBYMEi3D6GYWIfnO
-        CUEdxxtlWIeBR5PPTaEfuHRO9ijn3nn/ENybM4c=
-X-Google-Smtp-Source: AGRyM1uGs36n8cDeEnmHof1GW5dOo5X2NkPaK89mdXtxiiRra1tPLDf4dsIWeeUfodGR3YrE1qCgHST1dEfttWyFjsE=
-X-Received: by 2002:a05:600c:4f05:b0:3a3:18ed:6cda with SMTP id
- l5-20020a05600c4f0500b003a318ed6cdamr6707786wmq.34.1658154090462; Mon, 18 Jul
- 2022 07:21:30 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=vWu6+Y1l1EuPBNVi8wHSs4XnZYKZiVD1hMz9Y5lMF2Q=;
+        b=J1teOosMl9AVlCtGP8dc2e+8UTocg4XeMzcLrWlJbfMtRHUG0cTpIVFQLhTZlaN0YE
+         kB3Whpal4vnewSPhPLwjsA8p1zCfji+RP9xe7sU3HsmwLDt22RFvEaMkr1VMC5iVfLxy
+         hHr/zGYGVPGDvpdPfszIOk/W6see2vYoEXvWzlu8KKkccuo+oExLCCHY6rH77QFXWZY1
+         W0HjU6Yypr7P2C0HaRYstZrgorFV1IrQJNIHfYeCiFZPw1Ja0nCZmMXwvUOVStUO1WQS
+         hL6KOdYterm/tqQ0KbkYfNjPCxI6BugCFo7HIQhvz3tXl0kz/y6iVYTbD+uvL76aBdid
+         tKiQ==
+X-Gm-Message-State: AJIora/8asEneeP813if3KhDWrxwHPQqyzYtYtBkYDSXYNCgN422UrZT
+        rAamq8VRSLIN2z0IQm17vzo=
+X-Google-Smtp-Source: AGRyM1u8uSbXGcl4RxfyVEMJDiMbVqiw+axbZ5aPKidOI2WUuxJG/krmRO0RQGnwGAYXoeV9sS6onQ==
+X-Received: by 2002:a17:90a:fb8d:b0:1ef:8d22:35e with SMTP id cp13-20020a17090afb8d00b001ef8d22035emr37829602pjb.229.1658155848837;
+        Mon, 18 Jul 2022 07:50:48 -0700 (PDT)
+Received: from ?IPV6:2600:8802:b00:4a48:c1c9:5ca7:2a60:8cc5? ([2600:8802:b00:4a48:c1c9:5ca7:2a60:8cc5])
+        by smtp.gmail.com with ESMTPSA id j11-20020a170902690b00b0016bf10203d9sm9585728plk.144.2022.07.18.07.50.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Jul 2022 07:50:48 -0700 (PDT)
+Message-ID: <e09b7a80-7966-4c71-3139-d6b234afc25d@gmail.com>
+Date:   Mon, 18 Jul 2022 07:50:47 -0700
 MIME-Version: 1.0
-Reply-To: sgtkaylama@gmail.com
-Sender: tatandji59@gmail.com
-Received: by 2002:a05:600c:1d14:0:0:0:0 with HTTP; Mon, 18 Jul 2022 07:21:30
- -0700 (PDT)
-From:   sgtkaylama <sgtkaylama@gmail.com>
-Date:   Mon, 18 Jul 2022 14:21:30 +0000
-X-Google-Sender-Auth: ehddc96FDlnQ6AdDIvnUT4hPQfk
-Message-ID: <CAK4FRFcNHiVuty_5_72Kfy_NdUs=mMLfTGht_q=SVeWP-rdtwQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0.2
+Subject: Re: [PATCH] mmc: sdhci-bcm-kona: Fix comment typo
+Content-Language: en-US
+To:     Jason Wang <wangborong@cdjrlc.com>, ulf.hansson@linaro.org
+Cc:     adrian.hunter@intel.com, f.fainelli@gmail.com, rjui@broadcom.com,
+        sbranden@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220715051912.31180-1-wangborong@cdjrlc.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20220715051912.31180-1-wangborong@cdjrlc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,4 +74,13 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-5L2g5aW977yM5L2g5pS25Yiw5oiR5LmL5YmN55qE5Lik5p2h5raI5oGv5LqG5ZCX77yfDQo=
+
+
+On 7/14/2022 10:19 PM, Jason Wang wrote:
+> The double `that' is duplicated in line 171, remove one.
+> 
+> Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
+
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian
