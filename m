@@ -2,95 +2,69 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A1ED57B719
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jul 2022 15:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3259C57BCF0
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Jul 2022 19:42:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232328AbiGTNNF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 20 Jul 2022 09:13:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42584 "EHLO
+        id S231251AbiGTRmB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 20 Jul 2022 13:42:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234317AbiGTNND (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jul 2022 09:13:03 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6DD5B056
-        for <linux-mmc@vger.kernel.org>; Wed, 20 Jul 2022 06:13:00 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id b21-20020a05600c4e1500b003a32bc8612fso742522wmq.3
-        for <linux-mmc@vger.kernel.org>; Wed, 20 Jul 2022 06:13:00 -0700 (PDT)
+        with ESMTP id S229909AbiGTRmB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 20 Jul 2022 13:42:01 -0400
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6794B4332D
+        for <linux-mmc@vger.kernel.org>; Wed, 20 Jul 2022 10:42:00 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-31d85f82f0bso181657197b3.7
+        for <linux-mmc@vger.kernel.org>; Wed, 20 Jul 2022 10:42:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=9LgN/S0aDXYI9VGCuWlvvgvQnGpuTnnqHsiuzMd2wxQ=;
-        b=hZDBwVWDP5UPXoM/26p/r+j251hc2vAqDOCERxSqp1n7sS06JhTWTNUFrAn/iDVTDd
-         sk1s9gAeT8g6iMlidLoC2ByWsp6jDzKjyGiwTrHFM+kSqmhnpOGy27aGmIOCRSPQXtjU
-         iuHcWvpuEBu/GQL3HjFfyH38HWdcfRwpw/QCs8xRs37MzT7Ik+pcHBHS4PQz7Y7kmEGs
-         2zEZT/L22GV5s5xGf/GZOt2FikEOhhfo8etSuo2R+s9KR06g6oLOKoKJ9cp2Devph4aN
-         HYnuH9yadQ7mkeUaGKIxYyw+FFFXzGLODhmRa8DXLmg2/yBLqQ88/ndcWxmAnabBH3H2
-         gPtg==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=2X8HXtEcU/ZehxuPCgIPz4aOGr6MXTRGr5kvCe3jveI=;
+        b=qJf5kPtScAdUlkTNjuKSESynUMGUhkrAI4Ca/2aJiOZjNFXCX2RKU0p5ZD6NiV0tsY
+         S5lGtkwOJTSXaqBf+VlyFXKIBUPxTqfOU/QMMnR1fP0vLms+dwUWKBM/KkMBLBjLc5qQ
+         Ts29nDLVRwT8wSfa44cUfU9QrJbONVw300PJIPM8R9oW1mRBWsPT8Tp3SkYf5dBzE7hN
+         CLOCYkS64Frc2Bi1BKbtZYDsTeRg3YI5mBeNG22kW3xoDMC30hgvG2yr4rwuMM4AZXl8
+         hVoKL41970Mcqmq33SjhEgokf43lgaBrM09eXsnLlY+eSAEyTF+1GXvy4btUg8X/o/0e
+         eKlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=9LgN/S0aDXYI9VGCuWlvvgvQnGpuTnnqHsiuzMd2wxQ=;
-        b=PsxNUBlyHo4dC7VM0hpFmDdvI0tajaEdGYNK0LKG+qCCE1hQ8gUnaM/vhBv4Bfvtki
-         foxjbLFw9KELeXjofO/C3dC8RLbh6qavZHvuwT9kVSdnf3uu59IIY+S3WtExr/txSP3Y
-         rSir3fnfijPOuGnlrWKKgJppF9nOjF/RfjEzi5ZOqHV8UjCI/Ee4qE70DbHVUahNh03Q
-         kjjIN2eX2NXpPNPC/k+Yji4NyrqwZ9HItnB1U+2s8r2dom+VVTFmTxwYj1AZeJu7sya+
-         4+CAFi07CgWhRfLH6Z2hYS5yN8UeMxyg3u0OiH1S6SygqKJJUqiRZfJIa8F4HLK73XC5
-         KxGw==
-X-Gm-Message-State: AJIora+0OYv+UXrGHNRF82za+f4bv1pXqAH7xsP1zUzfJ7qgfClDiYwF
-        9AkdyhLXrw/XY4bvPqTxpEITXg==
-X-Google-Smtp-Source: AGRyM1tHJE+D+NzsNowU+goDfK+LE01p5AmV4nGBMM9nPZVjT15IP9nJaaafPk1bF4qVs2pE8TNv1A==
-X-Received: by 2002:a05:600c:3b91:b0:3a3:1cbe:d531 with SMTP id n17-20020a05600c3b9100b003a31cbed531mr3812400wms.159.1658322779330;
-        Wed, 20 Jul 2022 06:12:59 -0700 (PDT)
-Received: from amjad-ThinkPad-T490.home (2a01cb040613180084408ac44a1fa242.ipv6.abo.wanadoo.fr. [2a01:cb04:613:1800:8440:8ac4:4a1f:a242])
-        by smtp.googlemail.com with ESMTPSA id y11-20020adfc7cb000000b0021d6924b777sm16853316wrg.115.2022.07.20.06.12.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 06:12:58 -0700 (PDT)
-From:   Amjad Ouled-Ameur <aouledameur@baylibre.com>
-To:     fparent@baylibre.com
-Cc:     broonie@kernel.org, chaotian.jing@mediatek.com,
-        chunfeng.yun@mediatek.com, devicetree@vger.kernel.org,
-        dmaengine@vger.kernel.org, jic23@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux@roeck-us.net,
-        matthias.bgg@gmail.com, qii.wang@mediatek.com, robh+dt@kernel.org,
-        srinivas.kandagatla@linaro.org, ulf.hansson@linaro.org,
-        vkoul@kernel.org, wim@linux-watchdog.org
-Subject: Re: [PATCH 16/17] arm64: dts: mediatek: add mt8365 device-tree
-Date:   Wed, 20 Jul 2022 15:12:57 +0200
-Message-Id: <20220720131257.530168-1-aouledameur@baylibre.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220531135026.238475-17-fparent@baylibre.com>
-References: <20220531135026.238475-17-fparent@baylibre.com>
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=2X8HXtEcU/ZehxuPCgIPz4aOGr6MXTRGr5kvCe3jveI=;
+        b=AsaQEYgpLrx6DP71wMlkDiEH24GegtiZUdyKVA74nKQ7hUfr6r/idumDF4y/ias2Cj
+         Rq9/tvyOuMZBVSs8oRlI4jEW6WfR2hQZylO3xV/q32YU/hCEdahNrZ4Iry5XQFU1KZRk
+         10q3NsDh4YquDqvk/mZQB0X5K/6yWlbTec59f3G80TklIFsoISdd/ZCRA1l8r438Dzoi
+         gjdXXLmAEsaQg5R6yxblbvV9gbo2GsVwe+7EIqtxJXM2H9/XMrb1DVdsk6fJ3C3MLuOq
+         BjKTpBOFWchyXaX02DMlJx66P1pMA19HQNf46mimykTu4WYJQ9o0QXgqyn1dJ1g2COrV
+         zWVg==
+X-Gm-Message-State: AJIora8H7Fbez62JCYQl5J9VvZ/CIBH6Nn+fhO4SaEHrUb5sZfz9wPue
+        /+ujgIl1lU3AOr6JSASobe9epA2oeXv34TQ0rEA=
+X-Google-Smtp-Source: AGRyM1uJgch5tZBtq7ZNZxzaBCqHBPG8c0/bMwS/nkKLlkiWwSCMepriBrNgZsEgJhC2dBczMrkfFCxcpJOMOKpnkxM=
+X-Received: by 2002:a81:920e:0:b0:31e:7664:fa04 with SMTP id
+ j14-20020a81920e000000b0031e7664fa04mr1861840ywg.385.1658338919663; Wed, 20
+ Jul 2022 10:41:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Reply-To: sgtkaylama@gmail.com
+Sender: gavonkomi32@gmail.com
+Received: by 2002:a05:7010:de0a:b0:2e8:7f1a:1f28 with HTTP; Wed, 20 Jul 2022
+ 10:41:59 -0700 (PDT)
+From:   sgtkaylama <sgtkaylama@gmail.com>
+Date:   Wed, 20 Jul 2022 17:41:59 +0000
+X-Google-Sender-Auth: HSPLTg-FBqDdYLtodapkaaTjLYw
+Message-ID: <CA+rrxF1Cc9sHg6cDi91E4oNhnm0c3mAuR4cgiKeiX7-N171vmA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Fabien,
-
-> +		tzts4: tzts4-thermal {
-> +			polling-delay-passive = <0>;
-> +			polling-delay = <0>;
-> +			thermal-sensors = <&thermal 4>;
-> +			trips {};
-> +			cooling-maps {};
-> +		};
-
-AFAIK mt8365 has only 3 thermal sensors, therefore tzts4 should not be
-added.
-
-Regards,
-Amjad
+5L2g5aW977yM5L2g5pS25Yiw5oiR5LmL5YmN55qE5Lik5p2h5raI5oGv5LqG5ZCX77yfDQo=
