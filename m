@@ -2,75 +2,103 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACA6A57D17E
-	for <lists+linux-mmc@lfdr.de>; Thu, 21 Jul 2022 18:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 892F357D11E
+	for <lists+linux-mmc@lfdr.de>; Thu, 21 Jul 2022 18:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229576AbiGUQa3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 21 Jul 2022 12:30:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35172 "EHLO
+        id S233742AbiGUQO3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 21 Jul 2022 12:14:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229681AbiGUQa2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 Jul 2022 12:30:28 -0400
-Received: from smtpbg.qq.com (unknown [43.155.67.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6BE1929D;
-        Thu, 21 Jul 2022 09:30:20 -0700 (PDT)
-X-QQ-mid: bizesmtp82t1658420979t2qk79c7
-Received: from localhost.localdomain ( [171.223.97.251])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Fri, 22 Jul 2022 00:29:36 +0800 (CST)
-X-QQ-SSF: 01000000002000F0U000B00A0000000
-X-QQ-FEAT: 9E3Ddn8eo0KhR0G4R2hlVZSMQQFWPkUDXyw8LJYpaLCpeVQ+YWs7fxvtUZQxv
-        b9loq/ZFy7C9sVqPaMFh8tm7fq9ByAJiCzF31LBlqgAPn84zNL3Ee5IO54qr96X3vt4eb6m
-        wtJv9znTD/I1Azjto4R2HWKckFrPBJNAtHtLCzKhIadDTN0HbFj6Uiy+1HtSyGLLTUkSQML
-        nX0+aRl0xdthOlhDmJ2YxhweAHrx4ZuZpvxlTOrmuqtf4RCnyrXFI2KaWf7SzQ/lEHZUVKr
-        Napap63FLAh82670T1J/g1JKHlkstZckqcdkoI2MnvEEz0DWv6LxW7RlfncIunDQKJGU4vK
-        2natlCpSKe/v1aHXcBDyp4ZLhkKaRjZRlsArZIjPmmSbRx3cT0=
-X-QQ-GoodBg: 0
-From:   Jason Wang <wangborong@cdjrlc.com>
-To:     ulf.hansson@linaro.org
-Cc:     adrian.hunter@intel.com, haibo.chen@nxp.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, kishon@ti.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Jason Wang <wangborong@cdjrlc.com>
-Subject: [PATCH 3/3] mmc: sdhci-omap: Fix comment typo
-Date:   Mon, 18 Jul 2022 16:26:50 +0800
-Message-Id: <20220718082650.9784-3-wangborong@cdjrlc.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220718082650.9784-1-wangborong@cdjrlc.com>
-References: <20220718082650.9784-1-wangborong@cdjrlc.com>
+        with ESMTP id S233804AbiGUQOL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 Jul 2022 12:14:11 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3E488E34
+        for <linux-mmc@vger.kernel.org>; Thu, 21 Jul 2022 09:14:01 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id q7so2368800lji.12
+        for <linux-mmc@vger.kernel.org>; Thu, 21 Jul 2022 09:14:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=q7QxXiKuOMghvUoMABhfwVp87oQHsGQTWf296DamJr8=;
+        b=CG2JQ4EukEwGNSvxcr9I3T1ZqzVuaQtGpMQsL2kTdDNk7uY6tPpBLFsetBDclPBiAm
+         nzCgYCI22VulV+wGp1y4hhQnmI/lf2pajB2NoMdaMq5RIk9WZBGds+YGY+9PrALc3rJo
+         B8aH5HjNGnaMap00UsKhV94JwgExvmDZzk/6l6sokRz7EN4JZa9jzQLm+8hzZ6QW+xOi
+         ujUdN9ihoFCutB5cOgfZfF+McWOLfSJjgQmH0MSm0+OWCZspR8A1luxaGavkrDWntEl+
+         jCmEFEKzPtzbph5MxBT8vXqBluLwkYs3vEcpK26KcGofZXl7VhVeNPFqOXbzc1r91TF8
+         T5Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=q7QxXiKuOMghvUoMABhfwVp87oQHsGQTWf296DamJr8=;
+        b=ZlapARS45vy7BgPPKSdfZQGafWjaSm//hrgwL/46VNG9XFOHqRiEPREtOgERosmZFq
+         +F32ZnQEtPfQTMaL4QgwhQ90T+1bS1nQhnE0L/YltIdIEreepfO7QMygPZvo7IyeHw+j
+         0v5ROI65BQtPnZqLomEN0YkeOdXxxJ7ZS1MlQPblZRtcOPlYdkGMuBrVn3R9j8lO9NNo
+         riY850Pa2j7KtG+Z3t2f9sugrXnKzdwOHZZ056QQQIOkZKl2Xa7cnBFIaZm/5PU9h8Xw
+         QdFcfMSF5Av0sSjgYInyaGCH4v91KI5cBU63l/XLhuus82q+QENgcDUAbxar/tcNrOuC
+         8lZg==
+X-Gm-Message-State: AJIora+gPvRjMRcQSuzQZWK1V2XFfNH3kkALn5bihbyC6zIC4DpXC7CW
+        0Ln49p7WFOyaCHUBDbKG3jILrsE+fJDrtzXmBzOsAP5q5nA=
+X-Google-Smtp-Source: AGRyM1uaTibP1p6+rVwjenRGlQLD3r3GqYUVSCWFdRSfgFkvi3+039aelzZqBQRVzAJLimaklHPFf5iNtEMlwtAX0L8=
+X-Received: by 2002:a2e:804d:0:b0:25d:d98a:a908 with SMTP id
+ p13-20020a2e804d000000b0025dd98aa908mr2589681ljg.4.1658420020702; Thu, 21 Jul
+ 2022 09:13:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr6
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,SPF_PASS,
-        T_SPF_HELO_TEMPERROR autolearn=no autolearn_force=no version=3.4.6
+References: <20220719091051.1210806-1-windhl@126.com>
+In-Reply-To: <20220719091051.1210806-1-windhl@126.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 21 Jul 2022 18:13:03 +0200
+Message-ID: <CAPDyKFo=WZAAKYxQsveMr4aDG7K5OuvPJWAhnUEp+ux2YoAV5w@mail.gmail.com>
+Subject: Re: [PATCH] mmc: core: quirks: Add of_node_put() when breaking out of loop
+To:     Liang He <windhl@126.com>
+Cc:     linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The double `any' is duplicated in the comment, remove one.
+On Tue, 19 Jul 2022 at 11:10, Liang He <windhl@126.com> wrote:
+>
+> In mmc_fixup_of_compatible_match(), we should call of_node_put()
+> when breaking out of for_each_child_of_node() which will increase
+> and decrease the refcount during one iteration.
+>
+> Fixes: b360b1102670 ("mmc: core: allow to match the device tree to apply quirks")
+> Signed-off-by: Liang He <windhl@126.com>
 
-Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
----
- drivers/mmc/host/sdhci-omap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied for next, thanks!
 
-diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
-index 033be559a730..8ed9256b83da 100644
---- a/drivers/mmc/host/sdhci-omap.c
-+++ b/drivers/mmc/host/sdhci-omap.c
-@@ -370,7 +370,7 @@ static int sdhci_omap_execute_tuning(struct mmc_host *mmc, u32 opcode)
- 
- 	/*
- 	 * Stage 1: Search for a maximum pass window ignoring any
--	 * any single point failures. If the tuning value ends up
-+	 * single point failures. If the tuning value ends up
- 	 * near it, move away from it in stage 2 below
- 	 */
- 	while (phase_delay <= MAX_PHASE_DELAY) {
--- 
-2.35.1
+Kind regards
+Uffe
 
+
+
+> ---
+>  drivers/mmc/core/quirks.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+> index f879dc63d936..be4393988086 100644
+> --- a/drivers/mmc/core/quirks.h
+> +++ b/drivers/mmc/core/quirks.h
+> @@ -163,8 +163,10 @@ static inline bool mmc_fixup_of_compatible_match(struct mmc_card *card,
+>         struct device_node *np;
+>
+>         for_each_child_of_node(mmc_dev(card->host)->of_node, np) {
+> -               if (of_device_is_compatible(np, compatible))
+> +               if (of_device_is_compatible(np, compatible)) {
+> +                       of_node_put(np);
+>                         return true;
+> +               }
+>         }
+>
+>         return false;
+> --
+> 2.25.1
+>
