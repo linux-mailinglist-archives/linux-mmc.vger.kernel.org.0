@@ -2,76 +2,85 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80DB8581080
-	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jul 2022 11:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9541F5810D3
+	for <lists+linux-mmc@lfdr.de>; Tue, 26 Jul 2022 12:10:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238681AbiGZJ5q (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 26 Jul 2022 05:57:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58410 "EHLO
+        id S232145AbiGZKKf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 26 Jul 2022 06:10:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238647AbiGZJ5o (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Jul 2022 05:57:44 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 588DF2F671
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Jul 2022 02:57:15 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id m17so19124628wrw.7
-        for <linux-mmc@vger.kernel.org>; Tue, 26 Jul 2022 02:57:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=iUicZLyBaZmjv2lqx7fW4HMBGqk7G7eOOVk/ONJ/4PI=;
-        b=a9jshOAIwiw5ztp0+n80iX49X5uP9g1fIPLWAKA0Oebli99rLSK1JSwbKX/TWSIEKD
-         O8RAu6x1EuYGsc6oXUYHrmfMJXvk5iAAbsgDFp3wtW13E5HsTmbU8dXiDaDJtMrBEKfo
-         BtLocFdB4gelyGOYkHzTosErUmhiDP8/zjswgy3RH2fFxA6Xdh3CA/yI5iTiW9jbWJ9K
-         oN+oMjKZdsMTijOKOP2BcUYtUHprOqVqAeK+KFkaDem1o5Ff7dUDZtyl1X5TpjYEAD8P
-         dBkE0hdxwnSaGXsfATXn6MSzu2tBqE1Ie2s0Wxg+NyX5ban32/phra4XzX8bj2k4iDT4
-         H/tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=iUicZLyBaZmjv2lqx7fW4HMBGqk7G7eOOVk/ONJ/4PI=;
-        b=LpWssKvs0u4F8D73sg344No2w3vsH/KsXkXki73L2SwmZ/fWf7cKCSaS96oMTP+dkw
-         TmNAcgoreVWmDtNcTz7O1LXxBZqMBbUBYm/3hd8OCNwcDxLlbPZ9woh+tYMzY0O6ntv0
-         MoJ1QcjQpp5VqS3pBamb98Ye4KGcfndntET26q8aUD3Y4as3gUkTbDFt9EcEnKhzMit/
-         tn3H651ZVJd/vlcnxHOuG4HfBIJZa8nIiPkniQkbe1gz2H7lPdelTgoOp0eOVwPMrp2g
-         WPht1tUiKBuMEk4ijobxMR4Kh0bGZHgao6NEP176vH7Valp+Njk4lEmwLNDaJfT4+Fyu
-         x1VA==
-X-Gm-Message-State: AJIora8CcxN/y582UXvop8cWNV+U0cL2WojtD4t6vFMBwy9cwjNoyrcY
-        KBW70p9yyflOX9SGgkNzS4PfGw==
-X-Google-Smtp-Source: AGRyM1vaVzTyQ5b+nn+RlJ42faxYO14TpuNlzllTL+nY6z4bb/G0nOBbFTz5DJTxQxp7SwpuN92A3g==
-X-Received: by 2002:adf:e84b:0:b0:21e:61cd:647e with SMTP id d11-20020adfe84b000000b0021e61cd647emr10370152wrn.715.1658829433726;
-        Tue, 26 Jul 2022 02:57:13 -0700 (PDT)
-Received: from localhost.localdomain (210.145.15.109.rev.sfr.net. [109.15.145.210])
-        by smtp.googlemail.com with ESMTPSA id t3-20020a1c4603000000b003a2d87aea57sm21170873wma.10.2022.07.26.02.57.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Jul 2022 02:57:12 -0700 (PDT)
-From:   Amjad Ouled-Ameur <aouledameur@baylibre.com>
-To:     fparent@baylibre.com
-Cc:     broonie@kernel.org, chaotian.jing@mediatek.com,
-        chunfeng.yun@mediatek.com, devicetree@vger.kernel.org,
-        dmaengine@vger.kernel.org, jic23@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux@roeck-us.net,
-        matthias.bgg@gmail.com, qii.wang@mediatek.com, robh+dt@kernel.org,
-        srinivas.kandagatla@linaro.org, ulf.hansson@linaro.org,
-        vkoul@kernel.org, wim@linux-watchdog.org
-Subject: Re: [PATCH 16/17] arm64: dts: mediatek: add mt8365 device-tree
-Date:   Tue, 26 Jul 2022 11:57:11 +0200
-Message-Id: <20220726095711.708310-1-aouledameur@baylibre.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220531135026.238475-17-fparent@baylibre.com>
-References: <20220531135026.238475-17-fparent@baylibre.com>
+        with ESMTP id S231466AbiGZKKe (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 26 Jul 2022 06:10:34 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26BE118B2F;
+        Tue, 26 Jul 2022 03:10:33 -0700 (PDT)
+X-UUID: 52d5b12705554bf6b711d92c5ed3528f-20220726
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.8,REQID:66cd931d-4551-4016-9317-e2370bcdd840,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACT
+        ION:release,TS:45
+X-CID-INFO: VERSION:1.1.8,REQID:66cd931d-4551-4016-9317-e2370bcdd840,OB:0,LOB:
+        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACTIO
+        N:release,TS:45
+X-CID-META: VersionHash:0f94e32,CLOUDID:c5cb0fee-db04-4499-9fdf-04ef44b9468c,C
+        OID:8e0b0ab940ab,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:1,File:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 52d5b12705554bf6b711d92c5ed3528f-20220726
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <axe.yang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1242299877; Tue, 26 Jul 2022 18:10:28 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with ShadowRedundancy id 15.2.792.3;
+ Tue, 26 Jul 2022 10:10:14 +0000
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Tue, 26 Jul 2022 15:46:36 +0800
+Received: from mhfsdcap04 (10.17.3.154) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 26 Jul 2022 15:46:34 +0800
+Message-ID: <aface69bc8eeb0a34805428fa36d13f7909f694d.camel@mediatek.com>
+Subject: Re: [PATCH v13 3/3] mmc: mediatek: add support for SDIO eint wakup
+ IRQ
+From:   Axe Yang <axe.yang@mediatek.com>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+CC:     Rob Herring <robh+dt@kernel.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Satya Tangirala <satyat@google.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Lucas Stach <dev@lynxeye.de>,
+        "Eric Biggers" <ebiggers@google.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        "Stephen Boyd" <swboyd@chromium.org>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        Yue Hu <huyue2@yulong.com>, Tian Tao <tiantao6@hisilicon.com>,
+        <angelogioacchino.delregno@collabora.com>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <Project_Global_Chrome_Upstream_Group@mediatek.com>,
+        Yong Mao <yong.mao@mediatek.com>
+Date:   Tue, 26 Jul 2022 15:46:34 +0800
+In-Reply-To: <CACRpkdZP-FBP8hsBfeMn1M8=VR_cYG+j9GQc9VdV-HjkvSo73w@mail.gmail.com>
+References: <20220623090445.1401-1-axe.yang@mediatek.com>
+         <20220623090445.1401-4-axe.yang@mediatek.com>
+         <CACRpkdZ5G2fMCqvkXANVEmZjNcF4U4mSDzZk6aXbqFjYVN3hcA@mail.gmail.com>
+         <3747f246650622ef65787159af5271a79401a855.camel@mediatek.com>
+         <CACRpkdZP-FBP8hsBfeMn1M8=VR_cYG+j9GQc9VdV-HjkvSo73w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,83 +88,77 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Fabien,
+On Mon, 2022-07-25 at 14:46 +0200, Linus Walleij wrote:
+> On Mon, Jul 25, 2022 at 11:13 AM Axe Yang <axe.yang@mediatek.com>
+> wrote:
+> > On Fri, 2022-07-22 at 13:21 +0200, Linus Walleij wrote:
+> > > On Thu, Jun 23, 2022 at 11:10 AM Axe Yang <axe.yang@mediatek.com>
+> > > wrote:
+> > SDIO DAT1 pin mode is changed to GPIO mode in
+> > dev_pm_set_dedicated_wake_irq_reverse():
+> > 
+> > 
+https://urldefense.com/v3/__https://elixir.bootlin.com/linux/latest/source/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c*L339__;Iw!!CTRNKA9wMg0ARbw!zE3kmi37pZw4HiBNeRipWbi3gbAqrljLVQc5JVz-WP_NaIWTVhXshkakjFNh478e$
+> >  
+> > 
+> > dev_pm_set_dedicated_wake_irq_reverse() -> ...
+> > ->request_threaded_irq()
+> > -> __setup_irq() -> irq_request_resources() ->
+> > mtk_eint_irq_request_resources()-> mtk_xt_set_gpio_as_eint()
+> 
+> This doesn't seem to have much to do with pin control?
+> No pin control functions are called on this execution path,
+> no pin control state is changed, right?
 
-Could you please add CPUIDLE support:
+That's right, no pin control state is changed.
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-index 323c814c10cc..1df4075db58f 100644
---- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-@@ -59,6 +59,7 @@ cpu0: cpu@0 {
- 			clocks = <&mcucfg CLK_MCU_BUS_SEL>,
- 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
- 			clock-names = "cpu", "intermediate";
-+			cpu-idle-states = <&MCDI_CPU &MCDI_CLUSTER &DPIDLE>;
- 			operating-points-v2 = <&cluster0_opp>;
- 			#cooling-cells = <2>;
- 			enable-method = "psci";
-@@ -72,6 +73,7 @@ cpu1: cpu@1 {
- 			clocks = <&mcucfg CLK_MCU_BUS_SEL>,
- 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
- 			clock-names = "cpu", "intermediate", "armpll";
-+			cpu-idle-states = <&MCDI_CPU &MCDI_CLUSTER &DPIDLE>;
- 			operating-points-v2 = <&cluster0_opp>;
- 			#cooling-cells = <2>;
- 			enable-method = "psci";
-@@ -85,6 +87,7 @@ cpu2: cpu@2 {
- 			clocks = <&mcucfg CLK_MCU_BUS_SEL>,
- 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
- 			clock-names = "cpu", "intermediate", "armpll";
-+			cpu-idle-states = <&MCDI_CPU &MCDI_CLUSTER &DPIDLE>;
- 			operating-points-v2 = <&cluster0_opp>;
- 			#cooling-cells = <2>;
- 			enable-method = "psci";
-@@ -98,10 +101,42 @@ cpu3: cpu@3 {
- 			clocks = <&mcucfg CLK_MCU_BUS_SEL>,
- 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
- 			clock-names = "cpu", "intermediate", "armpll";
-+			cpu-idle-states = <&MCDI_CPU &MCDI_CLUSTER &DPIDLE>;
- 			operating-points-v2 = <&cluster0_opp>;
- 			#cooling-cells = <2>;
- 			enable-method = "psci";
- 		};
-+
-+		idle-states {
-+			entry-method = "psci";
-+
-+			MCDI_CPU: mcdi-cpu {
-+				compatible = "arm,idle-state";
-+				local-timer-stop;
-+				arm,psci-suspend-param = <0x00010001>;
-+				entry-latency-us = <300>;
-+				exit-latency-us = <200>;
-+				min-residency-us = <1000>;
-+			};
-+
-+			MCDI_CLUSTER: mcdi-cluster {
-+				compatible = "arm,idle-state";
-+				local-timer-stop;
-+				arm,psci-suspend-param = <0x01010001>;
-+				entry-latency-us = <350>;
-+				exit-latency-us = <250>;
-+				min-residency-us = <1200>;
-+			};
-+
-+			DPIDLE: dpidle {
-+				compatible = "arm,idle-state";
-+				local-timer-stop;
-+				arm,psci-suspend-param = <0x01010004>;
-+				entry-latency-us = <300>;
-+				exit-latency-us = <800>;
-+				min-residency-us = <3300>;
-+			};
-+		};
- 	};
- 
- 	cluster0_opp: opp-table-0 {
+> 
+> If what you mean is that
+> it happens to poke into the same hardware registers that is
+> mainly a matter of concurrency in the driver, sometimes two
+> abstractions happen to have to poke into the same hardware
+> registers and then it is up to the driver to maintain state for
+> the hardware, this is not a question for the framework.
+> 
+> How is Mediatek developers thinking about this thing in general?
+> You are a few people who developed the driver so certainly
+> you must have some design idea to why irq_request_resources()
+> poke around in these registers? Does it even perform pin
+> control behind the back of the pin control framework?
 
-I have tested it on i350 evk and each idle state is used properly.
+I see. It is sensible to reset pin function to GPIO mode when trying to
+register the pin to eint mode, and the operation is out of pinctrl
+framework.
 
+Seems like maintain the pin state in driver is the only way to fix the
+pin function conflict.
+
+> 
+> > To restore SDIO DAT1 pin to uhs mode. I have to call
+> > pinctrl_select_state() twice(change pinctrl to another state, then
+> > change back to uhs mode). Ulf worried we might be doing something
+> > at
+> > the mmc driver level, which should really be managed at the pinctrl
+> > layer.
+> > 
+> > Do you have any comment or suggestion on this?
+> 
+> The pin control state transitions are really just finite automata.
+> 
+> Your pin control needs to be different when using wakeup from
+> when being used for SDIO and this is perfectly fine, it's no
+> different from the fact that the regulator and clock might need
+> to be in different states, so I don't quite understand the
+> question?
+
+I see. At first I thought that pinctrl framework should be aware of
+the hidden modification of pin function. But as you said, it is just
+a finite automata. Driver should correct GPIO settings by itself if pin
+state be changed outside pin control state mechanical.
+Sorry for the noise, and thanks for your comment again.
+
+> 
+> 
 Regards,
-Amjad
+Axe
+
