@@ -2,94 +2,89 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB300589352
-	for <lists+linux-mmc@lfdr.de>; Wed,  3 Aug 2022 22:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B128589636
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Aug 2022 04:41:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238784AbiHCUfu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 3 Aug 2022 16:35:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44956 "EHLO
+        id S234903AbiHDClS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 3 Aug 2022 22:41:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238757AbiHCUfr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 3 Aug 2022 16:35:47 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 541CB5B7BF
-        for <linux-mmc@vger.kernel.org>; Wed,  3 Aug 2022 13:35:46 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id kb8so18877499ejc.4
-        for <linux-mmc@vger.kernel.org>; Wed, 03 Aug 2022 13:35:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=Ut3pi8cayU++0GSGO54GljP1BR6nTHkf4mesrBKLYYA=;
-        b=Ig8uG7D7SQeo3AQ8b8GvGsJyHUlyGNbXrjLnJsGssVXhbRpS9Uhnjw1fcV0EkPhRXO
-         takrvQM5C1AuVQiSbWmBKV/dbWhOzBYicDIuZBssniivGUViQ5aAJk8/5g5+RLJoQ+4u
-         ESp/lyA1Y0abiRNY6EyVarzn1Xw6U+CGh2cuUhvJfgrU1D9fhswRbarZ2jrGdUrVJf84
-         gfEl4QKSLvRePRYhGb5YGqc10Ihrv0FShrARKau4lFvB1u0FUt42chEClh5Vh0L47j3R
-         oDxH/Oibm2MTwlKqCLtbP/hC4/q5G6lWtrmZaafX9cDqJjkX1pzz8kOpdU3mCKJyEE0b
-         +hwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=Ut3pi8cayU++0GSGO54GljP1BR6nTHkf4mesrBKLYYA=;
-        b=STbhC0avoOwP0uEOGnXZofUsl3dJirc1eAvo1wm8aBc7nkoNWwvIewjZ/VArKEz6ef
-         wSsYsxDB1JLnVjqAZ6E0IonB7k6Ie4Iw3mCoyRaABZKJHbGhMKNtvm+7ZlpkijmHU5Rk
-         Pn/ytIZSrXnATVB8Dq3MO9AvebqFV7TREI1SsaK2JihXRSNWHh0q23aFblAWVoUeESu7
-         bLCmzmImjWZn+hNKV5kt/zTDPD2Nfm8gjPjzElc9S66qF8QWOIjwQ8g2FYBRYKXm65sD
-         5txI4aakBMtGYF6HXAh3s3plOZVvwPdQeHjBU4Cvs/wU36u/zRDRfjshMn3+bq0mnj+6
-         bUgA==
-X-Gm-Message-State: ACgBeo2van0SUs8zjwwSLUMZkR1AnZu4iEvmFagp8rG3qrGJmSAUILPb
-        eQIhknI438UT8XFfivtbik+3MJQU3oJnwlmcWY6UjA==
-X-Google-Smtp-Source: AA6agR4rci+47W6uIwtnAZ4XTxeilLBmi8neIg2vdL5uiCYrUmfa+mIzMW+SHI5G4zdbCyQxdDEp36YqTxz6Ne0Xmo0=
-X-Received: by 2002:a17:907:9726:b0:730:9e04:f738 with SMTP id
- jg38-20020a170907972600b007309e04f738mr8431225ejc.631.1659558944675; Wed, 03
- Aug 2022 13:35:44 -0700 (PDT)
+        with ESMTP id S231136AbiHDClR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 3 Aug 2022 22:41:17 -0400
+X-Greylist: delayed 242 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 03 Aug 2022 19:41:15 PDT
+Received: from lvs-smtpgate3.nz.fh-koeln.de (lvs-smtpgate3.nz.FH-Koeln.DE [139.6.1.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C1C41A3BA;
+        Wed,  3 Aug 2022 19:41:14 -0700 (PDT)
+Message-Id: <c8230b$21d9j5@smtp.intranet.fh-koeln.de>
+X-IPAS-Result: =?us-ascii?q?A2D//wCcLuti/wQiBotaHQEBPAEFBQECAQkBFYFRARoIA?=
+ =?us-ascii?q?YEWAgFPAQEBgRSBLAEBK4ROg0+IT4NDAYEpgnWLFYFjBQKPBAsBAQEBAQEBA?=
+ =?us-ascii?q?QEJEgIlCQQBAYUDAVMBAQEBB4QdJjgTAQIEAQEBAQMCAwEBAQEBAQMBAQgBA?=
+ =?us-ascii?q?QEBBgSBHIUvOQ1fAQEBgQw0AQEBhBABAQEGAQEBK2sgAhkNAkkWRwEBAQGCR?=
+ =?us-ascii?q?kUBAQGCHQEBMxOiK4dhgTGBAYIpgSYBgQuCKQWCcoEXKgIBAQGHZ5BcgQ8BA?=
+ =?us-ascii?q?oUYHROCUgSXbwICGjgDNBEeNwsDXQgJFxIgAgQRGgsGAxY/CQIEDgNACA0DE?=
+ =?us-ascii?q?QQDDxgJEggQBAYDMQwlCwMUDAEGAwYFAwEDGwMUAwUkBwMcDyMNDQQfHQMDB?=
+ =?us-ascii?q?SUDAgIbBwICAwIGFQYCAk45CAQIBCsjDwUCBy8FBC8CHgQFBhEIAhYCBgQEB?=
+ =?us-ascii?q?AQWAhAIAggnFwcTMxkBBVkQCSEcCR8QBQYTAyBtBUUPKDM1PCsfGwpgJwsqJ?=
+ =?us-ascii?q?wQVAwQEAwIGEwMDIgIQLjEDFQYpExItCSp1CQIDIm0DAwQoLgMJPgcJJixMP?=
+ =?us-ascii?q?g+WQ4INgTgCMIcLjUKDZQWKVKBbCoNRgUQCk32MKIJGknQOBJF9CYVvhHaME?=
+ =?us-ascii?q?KdXgXiBfnCBbgolgRtRGQ+SEopfdAI5AgYBCgEBAwmMZIEKgRgBAQ?=
+IronPort-Data: A9a23:lq+fN6AUlJvFxRVW/7rkw5YqxClBgxIJ4kV8jS/XYbTApDkk1GFVm
+ GVNXWyHbKmDajfyKdp+PIW090sG68SEyIQwOVdlrnsFo1CmCCbm6XZ1Cm+qYkt+++WaFBoPA
+ /02M4WGdoZsJpPljk/FGqD7qnVh3r2/SLP5CerVUgh8XgYMpB0J0HqPpsZg6mJWqYnha++yk
+ Y6qyyHvEAfN8yJ5NGsS95WCpHtH1BglkGpF1rCWTakjUG72zxH5PrpGTU2CByeQrr1vIwKPb
+ 72rIIdVXo/u10xF5tuNyt4Xe6CRK1LYFVDmZnF+A8BOjvXez8A/+v5TCRYSVatYozqCsulL4
+ cxrjsCLTSgRDquWicU4YSANRkmSPYUekFPGCV2WmpXO4RaAbWPqhftuSUIxMIkevOp6aY1M3
+ aVDeXZTKEvfwb7eLLGTE4GAguwmJcLoMYUNu3wl0SzFEfIraZvKBb/Qo9Rf2V/cg+gQTauPP
+ JBEMVKDajznWQVgPA5PDqhumeCBnyPcKyYJrmKK8P9fD2/7llUqieO9YbI5YOeiWd9cmF2Tv
+ GPe423/BBgHMt2B4TWA+3OowOTImEvTRJgbEqaz7P9ynFCV33ESEgw+Wl6yoP3/gUm7M/pAJ
+ kYR8zEyoLIa71a2CNTxQnWQq3eHuhcMVsB4HOgz6QXLwa3Riy6QHWsFUhZQb8YlqYk9TFQC3
+ V6VnsHkAzdovrOYRFqS876VqXW5Pi19BXMHYjUeTBAe7sX/rak9hAnDR8pqVqWyi7XdAzb6z
+ iqW6jMjnagRh84C0Y2851nMhz/qrZ/MJiY/6B/WUmu0xg5iecioa5HAwUDS/O5JKJyUUkSbu
+ mMsh8Wa8fsPC42AjiqEXOQKGritof2CNVX0nAY3RJQ5/iW18nq5cJxN+jdlDFtkNtsfeDn1b
+ VXVsB9Q45laOD2haqofS4u9Fckw0an7FNLqXffRadpJfbB+cQaG+GdlYkv492vomVMhlKwlN
+ pqdeteEAnMTCKAhxz2zL88W1LYw7is7zHiVQor0pzy73LG2b3ucUvECKlTmRvsh64uPpQzOt
+ dFFOKOizhxeVKjlfzHP9pQPBVsPJGN9Aor5w+RMa/abJRB6MGokAuSXxqkuE6R+grxNkf3U1
+ nK6UV1Vzlfjw33aQS2BbXVqcq/0dZ9i6383IEQR0U2AwyB4Pd73sOEBb51yc+F7suJjiP1zQ
+ v0DPcmNahhSdtjZ0zsWQKDHhZVET0iQgS22Dyz/cRkaTac1EmQl5eTYkhvTGDgmV3Tq5Jdm/
+ uT9j2s3UrJeH1Q4XZi+hOaHkQLh5CN1dPdaBhOgHzVFRKn72KRHQ8AbpsA6ONoBLRTFyVN2P
+ C7LWUxI9IEhT6cT98PVhei+r4avHq5BE1FGB2nS6be/XRQ2H1ZPIqcZDo5khRiHCAvJFFyKP
+ I24D5jUaZXrZmpivYtmCKpMxqkj/dbprLIy5l06QSSWMg33Ue4xfCLuMSxzWktlmeIxVeyeB
+ RnnxzWmEe/VZqsJ7XZOdVp1P7XZvR3qsmWDtKxsSKkF2MOH1ODeChwJb0jkZN11ILZoLJguw
+ eo68MAR8Re0igcsPc2AgzxGn1lg3VRfO5jKd/gyXufWt+bc4gofPMOFVnKnsMnnhhclGhBCH
+ wJ4TZHq39x0rncuuVJqfZQR9YKxXagzhS0=
+IronPort-HdrOrdr: A9a23:Bt8KMaMEyq21fcBcTtajsMiBIKoaSvp037Hjv3ocdfUzSKGlfq
+ GV98jzuiWVtN98YhAdcLO7UpVoKEm0naKdh7NhXotLmWLdyQ6VxepZgrcKrQePJ8SEzJ8+6Z
+ td
+X-IronPort-Anti-Spam-Filtered: true
+THK-HEADER: Antispam--identified_spam--outgoing_filter
+Received: from p034004.vpn-f04.fh-koeln.de (HELO MAC15F3.vpn.fh-koeln.de) ([139.6.34.4])
+  by smtp.intranet.fh-koeln.de with ESMTP/TLS/DHE-RSA-AES128-SHA; 04 Aug 2022 04:33:57 +0200
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20220715040354.2629856-1-davidgow@google.com>
-In-Reply-To: <20220715040354.2629856-1-davidgow@google.com>
-From:   Brendan Higgins <brendanhiggins@google.com>
-Date:   Wed, 3 Aug 2022 16:35:33 -0400
-Message-ID: <CAFd5g44h5viRSA_CU=4A0bPyj8yxQ8KgEVHKb=-JZENQwaGEnA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-of-aspeed: test: Fix dependencies when KUNIT=m
-To:     David Gow <davidgow@google.com>
-Cc:     Daniel Latypov <dlatypov@google.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, Sadiya Kazi <sadiyakazi@google.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Charity Donation
+To:     You <mackenzie-tuttle@ca.rr.com>
+From:   "MacKenzie Scott" <mackenzie-tuttle@ca.rr.com>
+Date:   Thu, 04 Aug 2022 03:33:54 +0100
+Reply-To: mackenzie-tuttle@californiamail.com
+X-Priority: 1 (High)
+Sensitivity: Company-Confidential
+X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,MSGID_FROM_MTA_HEADER,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, Jul 15, 2022 at 12:04 AM David Gow <davidgow@google.com> wrote:
->
-> While the sdhci-of-aspeed KUnit tests do work when builtin, and do work
-> when KUnit itself is being built as a module, the two together break.
->
-> This is because the KUnit tests (understandably) depend on KUnit, so a
-> built-in test cannot build if KUnit is a module.
->
-> Fix this by adding a dependency on (MMC_SDHCI_OF_ASPEED=m || KUNIT=y),
-> which only excludes this one problematic configuration.
->
-> This was reported on a nasty openrisc-randconfig run by the kernel test
-> robot, though for some reason (compiler optimisations removing the test
-> code?) I wasn't able to reproduce it locally on x86:
-> https://lore.kernel.org/linux-mm/202207140122.fzhlf60k-lkp@intel.com/T/
->
-> Fixes: 291cd54e5b05 ("mmc: sdhci-of-aspeed: test: Use kunit_test_suite() macro")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: David Gow <davidgow@google.com>
+Hi,
+  My name is MacKenzie Scott Tuttle; I'm a philanthropist and founder of one of the largest private foundations in the world. I'm on a mission to give it all away as I believe in ‘giving while living.’ I always had the idea that never changed in my mind — that wealth should be used to help each other, which has made me decide to donate to you. Kindly acknowledge this message and I will get back to you with more details.
 
-Acked-by: Brendan Higgins <brendanhiggins@google.com>
+Visit the web page to know more about me: https://www.nytimes.com/2022/04/10/business/mackenzie-scott-charity.html
+
+Regards,
+MacKenzie Scott Tuttle.
