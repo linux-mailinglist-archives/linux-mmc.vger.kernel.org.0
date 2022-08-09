@@ -2,85 +2,92 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49B0358DE11
-	for <lists+linux-mmc@lfdr.de>; Tue,  9 Aug 2022 20:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05F4758E1B1
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Aug 2022 23:20:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345142AbiHISKG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 9 Aug 2022 14:10:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51928 "EHLO
+        id S229457AbiHIVTl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 9 Aug 2022 17:19:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345150AbiHISJc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 9 Aug 2022 14:09:32 -0400
-Received: from blackstone.apzort.in (unknown [202.142.85.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAC829C8C
-        for <linux-mmc@vger.kernel.org>; Tue,  9 Aug 2022 11:03:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=anurav.com;
-        s=default; h=Content-Type:MIME-Version:Message-ID:Reply-To:From:Date:Subject:
-        To:Sender:Cc:Content-Transfer-Encoding:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=YC2OZCaRVHccupr4C95OTr/KZ67+Q/i8utOxeo+u1sU=; b=WGZQbg3OTr3ZkTujlRaH0iLdn6
-        YBjFzhWYK6RN7RK7LrcXkvQxcQbR2anKNDhI5q3Uu8oZf7rhFwbK6uj5cp/rO/S1sKM4N3hSYEdit
-        2nPbXdDpNN0HDLth9z4NzjaupcG8hSnuA+oDO06cD3bMWsDRzqFgl/anGgsS0Jn2M/ioKCJ9UJ+PN
-        yPTYSDI3zEu4xAyMfcLZAuCqwqEgHnLvCDzi4GmcUiWdlYilX20l53Zx71D0rWSXgvqfEHpZXwBbq
-        /+bJcc8APR/mzie2DDtr8NT5U2JSjX6nKttkuqEbbiZsQqwtmP9qu8uPA5ZqQgpzikESyhi4y2njz
-        JZhYw9Uw==;
-Received: from apzort by blackstone.apzort.in with local (Exim 4.94.2)
-        (envelope-from <apzort@blackstone.apzort.in>)
-        id 1oLNXf-00FGg6-UZ
-        for linux-mmc@vger.kernel.org; Tue, 09 Aug 2022 17:07:00 +0530
-To:     linux-mmc@vger.kernel.org
-Subject: =?us-ascii?Q?Anurav_Dhwaj__"Kryptowahrung_macht_Sie_zum_Mill?=  =?us-ascii?Q?ionar"?=
-X-PHP-Script: www.anurav.com/index.php for 191.101.31.24
-X-PHP-Originating-Script: 1000:PHPMailer.php
-Date:   Tue, 9 Aug 2022 11:36:59 +0000
-From:   Anurav Dhwaj <mail@anurav.com>
-Reply-To: mail@anurav.com
-Message-ID: <4ZmyHDQRENWeL53QjDsZKJYGY8L4Cf1X106vu1p4nU@www.anurav.com>
-X-Mailer: PHPMailer 6.6.0 (https://github.com/PHPMailer/PHPMailer)
+        with ESMTP id S229480AbiHIVTb (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 9 Aug 2022 17:19:31 -0400
+Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1CBF65801;
+        Tue,  9 Aug 2022 14:19:30 -0700 (PDT)
+Received: by mail-il1-f170.google.com with SMTP id x2so1121845ilp.10;
+        Tue, 09 Aug 2022 14:19:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=6M/FU7adSM+py46tX1SaYYVRLASGwO2gMfEt0TKFxyg=;
+        b=bjkNCBtKZelSUFY0C3TKG9U+T34nccQzbGUvLx8f7/D3nOtFGgyjXOurmForIRnIgb
+         gCqxNASGiKAiy1cL+qSi/Bu8caPfU6F8RDzlRLZlHvsaHOUfaqCotGBHLXkOsX3X4WyV
+         JX6AxCWUQ5mNJqqX0YTJbifK4QolLbj+JxrXqjK1D1yU0cHpJcc0tQWfkWQUJuHiv+oc
+         k4c1ZBWQOOpAd49LjwZ7/6ljt1eDOiTFy2tLCdOt7MlWQzo3mooeR8Ir5WHFS0fSxJr9
+         QUdGjRv30VkGwzX7uhGvULK8PvqwTtkCe0JtUEepCcancX2FgpEoqWnghvmMZFvQHkuO
+         roGQ==
+X-Gm-Message-State: ACgBeo0IjJVhS5qcGFmlQZejP7ZrX1ckgDhb39KVobZFTwAM90T7+l++
+        bhi+q37EXDNsQuNNzh5l9w==
+X-Google-Smtp-Source: AA6agR5bFw3+/PqucyVOoY3afOh/9y5TDMia+P843qb/iw0Un2IGsb1EqNiKHGZvoLHYUnrJ+VGFlw==
+X-Received: by 2002:a92:6e11:0:b0:2df:3082:a28d with SMTP id j17-20020a926e11000000b002df3082a28dmr11284313ilc.199.1660079969888;
+        Tue, 09 Aug 2022 14:19:29 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id bs27-20020a056638451b00b0033f51f165e3sm6670989jab.140.2022.08.09.14.19.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Aug 2022 14:19:29 -0700 (PDT)
+Received: (nullmailer pid 2420839 invoked by uid 1000);
+        Tue, 09 Aug 2022 21:19:27 -0000
+Date:   Tue, 9 Aug 2022 15:19:27 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Bhupesh Sharma <bhupesh.sharma@linaro.org>
+Cc:     agross@kernel.org, devicetree@vger.kernel.org,
+        ulf.hansson@linaro.org, linux-arm-msm@vger.kernel.org,
+        bhupesh.linux@gmail.com, bjorn.andersson@linaro.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: mmc: sdhci-msm: Fix 'operating-points-v2
+ was unexpected' issue
+Message-ID: <20220809211927.GA2419725-robh@kernel.org>
+References: <20220725202709.2861789-1-bhupesh.sharma@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - blackstone.apzort.in
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [1000 989] / [47 12]
-X-AntiAbuse: Sender Address Domain - blackstone.apzort.in
-X-Get-Message-Sender-Via: blackstone.apzort.in: authenticated_id: apzort/from_h
-X-Authenticated-Sender: blackstone.apzort.in: mail@anurav.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Spam-Status: Yes, score=7.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,PHP_SCRIPT,
-        RCVD_IN_PBL,RDNS_NONE,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  3.3 RCVD_IN_PBL RBL: Received via a relay in Spamhaus PBL
-        *      [202.142.85.54 listed in zen.spamhaus.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 HEADER_FROM_DIFFERENT_DOMAINS From and EnvelopeFrom 2nd level
-        *      mail domains are different
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
-        *  2.3 PHP_SCRIPT Sent by PHP script
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220725202709.2861789-1-bhupesh.sharma@linaro.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Message Body:
-Investieren Sie noch heute und werden Sie der nachste Milliardar... https://telegra.ph/Deutschland-hat-eine-neue-Einnahmequelle-von-633697-Euro-pro-Woche-08-07-2
+On Tue, 26 Jul 2022 01:57:09 +0530, Bhupesh Sharma wrote:
+> As Rob reported in [1], there is one more issue present
+> in the 'sdhci-msm' dt-binding which shows up when a fix for
+> 'unevaluatedProperties' handling is applied:
+> 
+>  Documentation/devicetree/bindings/mmc/sdhci-msm.example.dtb:
+>   mmc@8804000: Unevaluated properties are not allowed
+>    ('operating-points-v2' was unexpected)
+> 
+> Fix the same.
+> 
+> [1]. https://lore.kernel.org/lkml/20220514220116.1008254-1-bhupesh.sharma@linaro.org/
+> 
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Bhupesh Sharma <bhupesh.sharma@linaro.org>
+> ---
+>  - Rebased on linux-next/master.
+> 
+>  Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
--- 
-This e-mail was sent from a contact form on Anurav Dhwaj  (https://www.anurav.com)
+I picked this one up so it can be fixed for rc1.
 
+Rob
