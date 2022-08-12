@@ -2,79 +2,86 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCD12590FC9
-	for <lists+linux-mmc@lfdr.de>; Fri, 12 Aug 2022 12:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFED8591316
+	for <lists+linux-mmc@lfdr.de>; Fri, 12 Aug 2022 17:33:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237765AbiHLKzs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 12 Aug 2022 06:55:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35710 "EHLO
+        id S237405AbiHLPde (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 12 Aug 2022 11:33:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233226AbiHLKzr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 12 Aug 2022 06:55:47 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4105B9C20D
-        for <linux-mmc@vger.kernel.org>; Fri, 12 Aug 2022 03:55:45 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id k14so671074pfh.0
-        for <linux-mmc@vger.kernel.org>; Fri, 12 Aug 2022 03:55:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc;
-        bh=447DttLGWlnXVhl3+i4qWwJxEj6tFprhGwRHCuyrWEY=;
-        b=CJ8cmabUBS6s6xxd/K2d4ioKxSyRIqE+ZbMGdtOsB0xEii8PW96QxCDErfQIjC5BLN
-         N2ucmgiycJJWzTi4cqrjfE9/Qd9qFAIMAw3S3lJYynV7FOantBCVlh8p1SpJp0OmBkJd
-         zJ1W862js8LoAcODPIYF/9lavQGzrv9SxLLzKYwZYs+aFDugs4i1SnnikoRnH73/HBzk
-         m18p9qWtHEY7DEvtYfAV2/hTbPa+PdePCQgit6nPZjTo7qoxPOQVMH1Q9ud8T5lQAHsP
-         cKX6gM3XXgZAfM0H0ll1XdJ5ldBa3MmWx9WKcy61QJhphhLbPc4wMweOQcNzCq3zEyrE
-         y24w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=447DttLGWlnXVhl3+i4qWwJxEj6tFprhGwRHCuyrWEY=;
-        b=ajoRgXabS02elIA4ady9I/OxvnJS/3n2b2Ggc4fLyiOrMzChHWWYIMkWUyMbjFKbrN
-         xA/Q4fwva7miBmHUvNgda4G0FctXTOtUE10xIIlmMSzFdEXlVSMba8hXoaXdCqrANjoK
-         /hWAEgpA79GxwDd1ozeUr9ailLqfCmCOLU4HgcI+yot5PnX1Irc8qm74tniIoGeTiTWw
-         kkcYolbzggOPC+d1a/zICLxkoFjd1GRD8pg34omu1xelJHT5tq+4MXTH+X4vJy4yORqU
-         FK05QGjQ93eBDD/S6+p+UnB2ikb5gof7uSTknMEZhgeobTMwN+vR65g7J1Ivno7NIqc2
-         QpOg==
-X-Gm-Message-State: ACgBeo1qCgEwZSJEDewx4RsZ/H8s9t8QsrQMFC/MoXth+PPQpu0oGl9e
-        8VBVkUf7Q+f9r2SrluqhUZtij3QpxRxryzcHBwQ=
-X-Google-Smtp-Source: AA6agR5zQzBmW33GmQFIhAp2AFpk7CL7LTn9PCx8JAiUD3jKsaMXzwesI8XRy+JYh8XJgI9UhTgK6vqxdcdpvvJuJ30=
-X-Received: by 2002:a65:688f:0:b0:41d:e38a:e8c4 with SMTP id
- e15-20020a65688f000000b0041de38ae8c4mr2677864pgt.437.1660301744807; Fri, 12
- Aug 2022 03:55:44 -0700 (PDT)
+        with ESMTP id S237168AbiHLPdc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 12 Aug 2022 11:33:32 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF4E4816A4;
+        Fri, 12 Aug 2022 08:33:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7ABC6B8246D;
+        Fri, 12 Aug 2022 15:33:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295FDC433C1;
+        Fri, 12 Aug 2022 15:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660318409;
+        bh=YymeiL+WDfDKCoj1tmnKtG9kNBYdc1gBFHeYC0V+36Q=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=K8V0UPAN+767lxx0acYoJqE+0nqYT8S/28FkXA+2dhyHIkj0cmlwGFdW8HOgKhZ/3
+         rZn4L6q/ry3Ncn0qo8FCf2hP5BF6D+MltiC7F19CTg5CyaNh028dy2xo2oJDKWBm6t
+         u9IseS5Ausd5jty8iasPLw3M+mioKnPZuwZNxVPC3kDAwCBRF+ekMlq+EhEBBDxvbV
+         mjUofxNQbWe55E/Sqhy4zODtvgRORcTxT67pdRInsW6xv1Avj206NzxxbjgwQ2f2Zy
+         WoLm4Toj83jjA8zGklaTvQldMELaB1a9x7wgukXXag6lTGCj6yUeTiauHia38asQjC
+         qvBn07Y1iUrUQ==
+Received: by mail-ua1-f47.google.com with SMTP id f15so434947uao.12;
+        Fri, 12 Aug 2022 08:33:29 -0700 (PDT)
+X-Gm-Message-State: ACgBeo2HoIPn5yDqW8w5oN92ft9RW58d2zG4sy2fwLLVl8DkAdrnJTtY
+        VmsDAvAjE7cajGE/fUpBHCXXIJQxH4qxPT0LGA==
+X-Google-Smtp-Source: AA6agR66vMv23MxHlhU/il+hwIYBXtv92JhHAY7m+89EGlZ5dlwcJwMP0buqMazwUiLaB7y24s6RjJRmgxBq8ONC6fs=
+X-Received: by 2002:ab0:2505:0:b0:384:cc62:9a75 with SMTP id
+ j5-20020ab02505000000b00384cc629a75mr2089792uan.36.1660318408105; Fri, 12 Aug
+ 2022 08:33:28 -0700 (PDT)
 MIME-Version: 1.0
-Sender: bazarkowanigeria@gmail.com
-Received: by 2002:a17:90a:9f91:0:0:0:0 with HTTP; Fri, 12 Aug 2022 03:55:44
- -0700 (PDT)
-From:   "Mrs. Margaret Christopher" <mrsmargaretchristopher01@gmail.com>
-Date:   Fri, 12 Aug 2022 03:55:44 -0700
-X-Google-Sender-Auth: 9ez0BQ54ybr4-2FSOghKq3nW-Ek
-Message-ID: <CAPgaJa30zdehdauxJA=VaWKLgjKBywWenmnn-VngZ4tZAfQP_Q@mail.gmail.com>
-Subject: Humanitarian Project For Less Privileged.
-To:     undisclosed-recipients:;
+References: <20220811203151.179258-1-mail@conchuod.ie>
+In-Reply-To: <20220811203151.179258-1-mail@conchuod.ie>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Fri, 12 Aug 2022 09:33:17 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLOGLZD6vrNPqDUqYypkz8xoCPJ4DA4JF-BrG=WHWPurw@mail.gmail.com>
+Message-ID: <CAL_JsqLOGLZD6vrNPqDUqYypkz8xoCPJ4DA4JF-BrG=WHWPurw@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: mmc: cdns: add card-detect-delay property
+To:     Conor Dooley <mail@conchuod.ie>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Piotr Sroka <piotrs@cadence.com>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org,
+        Conor Dooley <conor.dooley@microchip.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
--- 
-Hello Dear
+On Thu, Aug 11, 2022 at 2:32 PM Conor Dooley <mail@conchuod.ie> wrote:
+>
+> From: Conor Dooley <conor.dooley@microchip.com>
+>
+> Upgrading dt-schema to v2022.08 brings with it better handling of
+> unevaluatedProperties, exposing a previously undetected missing
+> property in the cadence sdhci dt-binding:
+> arch/riscv/boot/dts/microchip/mpfs-icicle-kit.dtb: mmc@20008000: Unevaluated properties are not allowed ('card-detect-delay' was unexpected)
+>         From schema: Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+>
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+> Should this have a fixes tag? If anything, it'd be
+> Fixes: 84723eec251d ("dt-bindings: mmc: cdns: document Microchip MPFS MMC/SDHCI controller")
+> but idk.
 
-  Am a dying woman here in the hospital, i was diagnose as a
-Coronavirus patient over 2 months ago. I am A business woman who is
-dealing with Gold Exportation, I Am 59 year old from USA California i
-have a charitable and unfufilling  project that am about to handover
-to you, if you are interested to know more about this project please reply me.
+No, the common property 'cd-debounce-delay-ms' should be used instead.
 
- Hope to hear from you
-
-Best Regard
-
-Mrs. Margaret
+Rob
