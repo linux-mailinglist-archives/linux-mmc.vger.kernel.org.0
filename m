@@ -2,63 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B4DC599DC8
-	for <lists+linux-mmc@lfdr.de>; Fri, 19 Aug 2022 16:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CA0559A602
+	for <lists+linux-mmc@lfdr.de>; Fri, 19 Aug 2022 21:17:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349579AbiHSOuX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 19 Aug 2022 10:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60078 "EHLO
+        id S1351104AbiHSTIn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 19 Aug 2022 15:08:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349209AbiHSOuX (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Aug 2022 10:50:23 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BAA0EE6B0
-        for <linux-mmc@vger.kernel.org>; Fri, 19 Aug 2022 07:50:22 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id v10so4726111ljh.9
-        for <linux-mmc@vger.kernel.org>; Fri, 19 Aug 2022 07:50:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=1FWqXs5Wx4+ii9O0yTd+UOY7aeTlUNQo9eTTQ/Pwdds=;
-        b=poRali4aA0RFjxnsLM4MDdbP8SK0CzFqhbyi6jGdr+yyiY2sWoSF98X5g46gY1fbfo
-         VoliPo0+7dxiqlUQ4TVosiPcNExGO3oLOAtVdCuhxWZ3BOiglKLATjhS1U16rEEMynSO
-         eWH1iHe6mzbhYOTMI2CWDDm9qYie5ITwuPZFeKciadE2U+x+0zd0jD+mblc3/+qd8ZVU
-         eakvGmGXhDJ3DA7KAoG5o259GfxxBKFRNxlQ7nOAq1QF6et44ReEEF9w1tEY1+d2IoWV
-         JPijZ1bmNDtrp3XXW5m5sgEiY3W91TT2VYKI7vINCYQqynI4wEIwT57dyzX39Hix8RSA
-         y74A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=1FWqXs5Wx4+ii9O0yTd+UOY7aeTlUNQo9eTTQ/Pwdds=;
-        b=4ZH9Rzj0T+jnHN5XDs8Y9AWy8vL/XWZxgSoKUm3hyzd8QcKz/kJ64Q84+Tc/DIQGg2
-         PCfZjspQxRipsFwKKF9dGi1I1IQlNbtCeamFuf3PzyLMtqj/xybH1HiaJPLejPDTMiFe
-         Ud+xEfmhOnXpeIfv58XzMHCfbwZdYhSBgO6bLVsPCYuu9u/CTY5nd8ia4D1EXdDZFJqV
-         mX/mNA4U9MUgywZhmN1jZwZD5cro2W005liAwLLIP2tI64bj3ZSe9vRDHBha5p9T+wRS
-         57w+0pBWSW0Ej3Dj27IzescsbK00wDbfdNlFpKkGLys6QJZVDqrTx0/frXVxXkQeHvyo
-         +1ag==
-X-Gm-Message-State: ACgBeo282+cnDNUa7GuJbFLFW41PU07NQYJXQ/N8bhCZvA91A6xCkIso
-        dYqOt/SchIfBR5XrBJvRYAizwaWRE/QoQq5hwyQ+Pg==
-X-Google-Smtp-Source: AA6agR7XJ8a3HtJDoNBCaaLBYEfMgT4vAkCc1/WPMfnv+63vIloLV5zzdxlcjGHLjdaR4WDsbzkARFw/43qVs6xgTm0=
-X-Received: by 2002:a2e:a409:0:b0:25e:724a:f788 with SMTP id
- p9-20020a2ea409000000b0025e724af788mr2135653ljn.300.1660920620344; Fri, 19
- Aug 2022 07:50:20 -0700 (PDT)
+        with ESMTP id S1351089AbiHSTI2 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Aug 2022 15:08:28 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73EB532AA9;
+        Fri, 19 Aug 2022 12:08:25 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 27JJ7ZR4090751;
+        Fri, 19 Aug 2022 14:07:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1660936055;
+        bh=u9P/5Oz+onGjKnverq4DWRIAD3ByWF1SyU5y0haCG5c=;
+        h=From:To:CC:Subject:Date;
+        b=OU120/eiD1tFkJStijVybhM3IjU8LE4xI31Dz7a1nKhKJI8C3ScfNp41BCV21tjHm
+         RS/iTeHk/aqCSLpGyCvyzTn4dcV9HPSQ6uh22Mg9tHeXV6gg2JH5sNra3eSZKrf8an
+         Bpj9i6KKbd++ir6hozvaxL4mDIRLnIOrCzlDiIsA=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 27JJ7ZVP123338
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 19 Aug 2022 14:07:35 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Fri, 19
+ Aug 2022 14:07:35 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
+ Frontend Transport; Fri, 19 Aug 2022 14:07:35 -0500
+Received: from LT5CD112GSQZ.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 27JJ7T2s051038;
+        Fri, 19 Aug 2022 14:07:30 -0500
+From:   Apurva Nandan <a-nandan@ti.com>
+To:     Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>
+CC:     Apurva Nandan <a-nandan@ti.com>, Hari Nagalla <hnagalla@ti.com>
+Subject: [PATCH 0/3] Fix ti,sci-inta/intr and mmc dtbs_check warnings for TI K3 platforms
+Date:   Sat, 20 Aug 2022 00:37:26 +0530
+Message-ID: <20220819190729.32358-1-a-nandan@ti.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220815073321.63382-1-adrian.hunter@intel.com>
-In-Reply-To: <20220815073321.63382-1-adrian.hunter@intel.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 19 Aug 2022 16:49:43 +0200
-Message-ID: <CAPDyKFovPD_VdZqedzF8AX6i0DHFk0O2=6FcsRwxvYTwzfeZiQ@mail.gmail.com>
-Subject: Re: [PATCH 0/2] mmc: sd: Fix inconsistent sd3_bus_mode with failed
- voltage switch
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Seunghui Lee <sh043.lee@samsung.com>,
-        DooHyun Hwang <dh0421.hwang@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,25 +69,29 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 15 Aug 2022 at 09:33, Adrian Hunter <adrian.hunter@intel.com> wrote:
->
-> Hi
->
-> Here are 2 SD card fixes prompted by the following email thread:
->
->         https://lore.kernel.org/linux-mmc/20220721055924.9043-1-sh043.lee@samsung.com/T/#u
->
->
-> Adrian Hunter (2):
->       mmc: sd: Fix 1.8V workaround branch
->       mmc: sd: Fix inconsistent sd3_bus_mode with failed voltage switch
->
->  drivers/mmc/core/sd.c | 46 ++++++++++++++++++----------------------------
->  1 file changed, 18 insertions(+), 28 deletions(-)
->
->
+This series fixes the following warnings common across all TI K3
+platforms:
 
-Applied for fixes and by adding stable tags to both the patches, thanks!
+k3-j721e-common-proc-board.dtb: interrupt-controller@33d00000: Unevaluated properties are not allowed ('#interrupt-cells' was unexpected)
+From schema: linux/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml
 
-Kind regards
-Uffe
+k3-j721s2-common-proc-board.dtb: mmc@4f80000: Unevaluated properties are not allowed ('dma-coherent' was unexpected)
+From schema: linux/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
+
+k3-j721s2-common-proc-board.dtb: interrupt-controller@310e0000: Unevaluated properties are not allowed ('reg' was unexpected)
+From schema: linux/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml
+
+Apurva Nandan (3):
+  dt-bindings: irqchip: ti, sci-intr/inta: Fix warning
+    '#interrupt-cells' was unexpected
+  dt-bindings: mmc: Fix 'dma-coherent' was unexpected
+  dt-bindings: interrupt-controller: Fix 'reg' was unexpected
+
+ .../devicetree/bindings/interrupt-controller/ti,sci-inta.yaml  | 3 +++
+ .../devicetree/bindings/interrupt-controller/ti,sci-intr.yaml  | 3 +++
+ Documentation/devicetree/bindings/mmc/sdhci-am654.yaml         | 3 +++
+ 3 files changed, 9 insertions(+)
+
+-- 
+2.17.1
+
