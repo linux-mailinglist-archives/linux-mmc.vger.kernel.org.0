@@ -2,43 +2,43 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CA0559A602
-	for <lists+linux-mmc@lfdr.de>; Fri, 19 Aug 2022 21:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A94D359A620
+	for <lists+linux-mmc@lfdr.de>; Fri, 19 Aug 2022 21:17:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351104AbiHSTIn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 19 Aug 2022 15:08:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44202 "EHLO
+        id S1350789AbiHSTIP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 19 Aug 2022 15:08:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351089AbiHSTI2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Aug 2022 15:08:28 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73EB532AA9;
-        Fri, 19 Aug 2022 12:08:25 -0700 (PDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 27JJ7ZR4090751;
-        Fri, 19 Aug 2022 14:07:35 -0500
+        with ESMTP id S1351060AbiHSTID (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 Aug 2022 15:08:03 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA1310AE14;
+        Fri, 19 Aug 2022 12:07:59 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 27JJ7fOr115796;
+        Fri, 19 Aug 2022 14:07:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1660936055;
-        bh=u9P/5Oz+onGjKnverq4DWRIAD3ByWF1SyU5y0haCG5c=;
-        h=From:To:CC:Subject:Date;
-        b=OU120/eiD1tFkJStijVybhM3IjU8LE4xI31Dz7a1nKhKJI8C3ScfNp41BCV21tjHm
-         RS/iTeHk/aqCSLpGyCvyzTn4dcV9HPSQ6uh22Mg9tHeXV6gg2JH5sNra3eSZKrf8an
-         Bpj9i6KKbd++ir6hozvaxL4mDIRLnIOrCzlDiIsA=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 27JJ7ZVP123338
+        s=ti-com-17Q1; t=1660936061;
+        bh=i1NuIgqPXRGTGN8FoZMoWICP0m5oma4h3hunqbYx3z0=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=lqq/2/ppFbxq1P9iRjdBeoXjBO/EzsMaXgszq8/ReVDhf5x4UhqBdxO+uzfKzmCxy
+         gzVCbghNljHDLJ0DAsaZbBauL9Uq0Yq8ByKiYE0F3g8en+ZqyEZw4xuxzjg7OkdaRS
+         rtFTWMXS7sfg/p368nKzuqK0R1HdF1OqSue0bl2I=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 27JJ7f96130045
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 19 Aug 2022 14:07:35 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 19 Aug 2022 14:07:41 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Fri, 19
- Aug 2022 14:07:35 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2022 14:07:40 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Fri, 19 Aug 2022 14:07:35 -0500
+ Frontend Transport; Fri, 19 Aug 2022 14:07:40 -0500
 Received: from LT5CD112GSQZ.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 27JJ7T2s051038;
-        Fri, 19 Aug 2022 14:07:30 -0500
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 27JJ7T2t051038;
+        Fri, 19 Aug 2022 14:07:36 -0500
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
         Santosh Shilimkar <ssantosh@kernel.org>,
@@ -51,10 +51,12 @@ To:     Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
         <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-mmc@vger.kernel.org>
 CC:     Apurva Nandan <a-nandan@ti.com>, Hari Nagalla <hnagalla@ti.com>
-Subject: [PATCH 0/3] Fix ti,sci-inta/intr and mmc dtbs_check warnings for TI K3 platforms
-Date:   Sat, 20 Aug 2022 00:37:26 +0530
-Message-ID: <20220819190729.32358-1-a-nandan@ti.com>
+Subject: [PATCH 1/3] dt-bindings: irqchip: ti,sci-inta: Fix warning '#interrupt-cells' was unexpected
+Date:   Sat, 20 Aug 2022 00:37:27 +0530
+Message-ID: <20220819190729.32358-2-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220819190729.32358-1-a-nandan@ti.com>
+References: <20220819190729.32358-1-a-nandan@ti.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -69,29 +71,39 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This series fixes the following warnings common across all TI K3
-platforms:
+#interrupt-cells = <0> property is required in device tree for
+ti,sci-inta nodes, or else we will have following warning when building
+device tree files with W=2 warning level.
+
+arch/arm64/boot/dts/ti/k3-j721e-main.dtsi:147.51-156.5: Warning (interrupt_provider): /bus@100000/main-navss/interrupt-controller@33d00000: Missing #interrupt-cells in interrupt provider
+
+And further, #interrupt-cells is required to be in yaml bindings as well
+to prevent following schema warnings:
 
 k3-j721e-common-proc-board.dtb: interrupt-controller@33d00000: Unevaluated properties are not allowed ('#interrupt-cells' was unexpected)
 From schema: linux/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml
 
-k3-j721s2-common-proc-board.dtb: mmc@4f80000: Unevaluated properties are not allowed ('dma-coherent' was unexpected)
-From schema: linux/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
+Add #interrupt-cells property in ti,sci-inta.yaml
 
-k3-j721s2-common-proc-board.dtb: interrupt-controller@310e0000: Unevaluated properties are not allowed ('reg' was unexpected)
-From schema: linux/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml
-
-Apurva Nandan (3):
-  dt-bindings: irqchip: ti, sci-intr/inta: Fix warning
-    '#interrupt-cells' was unexpected
-  dt-bindings: mmc: Fix 'dma-coherent' was unexpected
-  dt-bindings: interrupt-controller: Fix 'reg' was unexpected
-
+Signed-off-by: Apurva Nandan <a-nandan@ti.com>
+---
  .../devicetree/bindings/interrupt-controller/ti,sci-inta.yaml  | 3 +++
- .../devicetree/bindings/interrupt-controller/ti,sci-intr.yaml  | 3 +++
- Documentation/devicetree/bindings/mmc/sdhci-am654.yaml         | 3 +++
- 3 files changed, 9 insertions(+)
+ 1 file changed, 3 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml
+index 88c46e61732e..1151518859bd 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml
++++ b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml
+@@ -59,6 +59,9 @@ properties:
+ 
+   interrupt-controller: true
+ 
++  '#interrupt-cells':
++    const: 0
++
+   msi-controller: true
+ 
+   ti,interrupt-ranges:
 -- 
 2.17.1
 
