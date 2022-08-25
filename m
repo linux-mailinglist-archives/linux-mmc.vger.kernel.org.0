@@ -2,282 +2,104 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B8415A19DB
-	for <lists+linux-mmc@lfdr.de>; Thu, 25 Aug 2022 21:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D63B5A1A1C
+	for <lists+linux-mmc@lfdr.de>; Thu, 25 Aug 2022 22:13:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232114AbiHYT4g (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 25 Aug 2022 15:56:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59288 "EHLO
+        id S231398AbiHYUN4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 25 Aug 2022 16:13:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234643AbiHYT4c (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Aug 2022 15:56:32 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A6171983
-        for <linux-mmc@vger.kernel.org>; Thu, 25 Aug 2022 12:56:31 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id gb36so41549765ejc.10
-        for <linux-mmc@vger.kernel.org>; Thu, 25 Aug 2022 12:56:31 -0700 (PDT)
+        with ESMTP id S243342AbiHYUNz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Aug 2022 16:13:55 -0400
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8942BFEA2
+        for <linux-mmc@vger.kernel.org>; Thu, 25 Aug 2022 13:13:54 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id bq23so20634848lfb.7
+        for <linux-mmc@vger.kernel.org>; Thu, 25 Aug 2022 13:13:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=8ps/qML9omF5+FvNRyrrWAK6UGFnmN6YM3mUqF1S6qQ=;
-        b=XfWaZoxp0rYT1YgXXpKB3OJ4zOGdcOsiR8LcxeNZgAwjzGS2bhU7ogiaN3fKp2dVD9
-         ntUJBp9UZhlisZ2AS+3vz7ZJgEAA/kBogaMgTUA6cVZdfStYQM8rotFJ0wMEUBMR70OO
-         otWPyO0XRrd8SHNPI1k2DD7fVarG5SkhabZrkxbDjKx/HDErwOHxRjH9m6+TAFHjIRhE
-         aqyQcXdTi5cUDzWpxdV1BqeXQ0UZOmJM/88JNEcznTLgbR6sKgdHsyH1PSjGCduoi0YU
-         LK+1WVexuTdvXvSqBTb+VcWRZH6+gcqYZCPKmftAylGiW0PF/mFwNI+1rj0sxEWKWk8h
-         9cdg==
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=dI1VmNFiMljjIEyb8rkVr4fGpUcefvCbMk4RwwtTRTI=;
+        b=G0IogqYosZHSOoeaNmpaJo0sUWyOIcqorzAOWBA+x+GT8+sIQ+rWfY5iAxgEPNC6Z7
+         O7JneUqvBGy695FqpnE5y5YVl+xD5rYzSLZCAJDOg205Y/z0OcTMoYLhG2jpfRggzRGD
+         +5vpd9zKn1dYCvc+aoQN8er+Mqq3hoLqkiJvg+L89NnZkQt9dZm1m2euFJxdKAovQg5D
+         TCb296qghcTAfXUX8+T27r94ThAqg0TkHfpJTbSdgJYeMyBSln2GZAIn8wqOju8r6jir
+         L3G8xUIVADC631Mw2fdIHjchGvlGTIqueyq276lv3ixX7anXXfmqBFCR3jHsF2RUtERm
+         y1MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=to:subject:message-id:date:from:reply-to:mime-version
          :x-gm-message-state:from:to:cc;
-        bh=8ps/qML9omF5+FvNRyrrWAK6UGFnmN6YM3mUqF1S6qQ=;
-        b=fUqYiMVjeFVWOGAzSDCbJSgi2iAjBy7LX9Ul44IOuqn6H771bWNDO/rsDQc/tK3/c7
-         akvWIXnMsEqnHySC/Xn8NDqlQCMR2/djFJNVezPvurNdNKToipKj6dXhGdWf+O+z1ZmW
-         hSbFEVLzRZ21Bh3JK7VqbGa0dS2pzqLqfuaT0xjS9otM7va6phyizJsq/lJOsD/6XmMP
-         W6CG4EhkNZkriIDL79f/IfHqPZYl16NHi14BIk7Dv6HLPbUwYt1N4jcQ/oCZNQzqe8AH
-         /DYIvi7+tKI5acWUh7I67/dzzLGsjwN9iUz6RfXWW4+8RIDlS06VGZEVyiU2DqZLtjrB
-         MtHA==
-X-Gm-Message-State: ACgBeo1wSpMkuigIWohQPKsAImDe0J8r6t8r8DUtCrN4sXnmL/+GkS7G
-        Nuxmt6/79nYHmh116bUUI/M=
-X-Google-Smtp-Source: AA6agR5wzMUDaddLzqQnpriQbiaTexMy7eiBE0l6EjNKUZ32xqk0cNOfxplBHK/F3U0J5fDhb4A9Ng==
-X-Received: by 2002:a17:907:2816:b0:73d:7af2:37f5 with SMTP id eb22-20020a170907281600b0073d7af237f5mr3533538ejc.588.1661457389738;
-        Thu, 25 Aug 2022 12:56:29 -0700 (PDT)
-Received: from ?IPV6:2a01:c22:72a6:5f00:b844:7c7d:e964:bb65? (dynamic-2a01-0c22-72a6-5f00-b844-7c7d-e964-bb65.c22.pool.telefonica.de. [2a01:c22:72a6:5f00:b844:7c7d:e964:bb65])
-        by smtp.googlemail.com with ESMTPSA id gx6-20020a1709068a4600b0073dc691063dsm19362ejc.192.2022.08.25.12.56.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Aug 2022 12:56:29 -0700 (PDT)
-Message-ID: <27bffe3c-e579-3581-95e8-2587733487d2@gmail.com>
-Date:   Thu, 25 Aug 2022 21:56:19 +0200
+        bh=dI1VmNFiMljjIEyb8rkVr4fGpUcefvCbMk4RwwtTRTI=;
+        b=fyOjHLejsI5RoJ8g4UJFLdjTxZIy9wAOBdiqbqJuUJqRLVU3bsiR/0I5Z1QwKHjtqY
+         cdEkcmzTK7fS8gVPGQ8yXlSrMQH7L+L2/dlPOWSCFWkBi+tR6MlcdV2B534PY7EucS6d
+         ZJbvtBezr7RM2sNL85aGT0HhC6NPJgCp4Kr8UtxQ+ZcToWlrJk6KJKE7dF7hOyGqNQOC
+         4I7jSqRz4BUwfaYLSe7Uy2qg9KykHUHV79xxp2uIYI4HwgeAZFlxq9i1dOn+x8/5OKkG
+         +PR3JnZmrVTFuZUU+J5fqZjgJ95ci4pjc2njHKfRO02sqgSWl2kVbETVTMzyxQTMNNdR
+         RCOg==
+X-Gm-Message-State: ACgBeo1wJyIyDfDVg3kwSTppxMFnu5aeTPV7SwuPwnS7D920WjO5xeJ/
+        ymOi02NTs5g1mwa1qeQws5AYaOJNDSiCNI4tQ6A=
+X-Google-Smtp-Source: AA6agR6Nv2D+tPvSHfQJNtDEayNBhmfPts8reeYCAUQaAtR1L1sZbIUrPBtABJO7RYyuCojalsa+X5DBvNtwDvvMZAU=
+X-Received: by 2002:ac2:51af:0:b0:492:d9a5:82b8 with SMTP id
+ f15-20020ac251af000000b00492d9a582b8mr1442790lfk.250.1661458433024; Thu, 25
+ Aug 2022 13:13:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: [PATCH v3 2/2] mmc: meson-gx: add SDIO interrupt support
-Content-Language: en-US
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>
-References: <72459a46-fd20-60d8-a7e7-076d8f321816@gmail.com>
-In-Reply-To: <72459a46-fd20-60d8-a7e7-076d8f321816@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Received: by 2002:a05:6504:51c1:b0:1dc:9997:314a with HTTP; Thu, 25 Aug 2022
+ 13:13:52 -0700 (PDT)
+Reply-To: wijh555@gmail.com
+From:   "Mr. Sanon Abdoulaye" <sanonabdoulaye119@gmail.com>
+Date:   Thu, 25 Aug 2022 13:13:52 -0700
+Message-ID: <CAA6p7Uok1qs+bNs4tw3By47gv2ix2y3WE3zSk2v9dP7ky1D3+g@mail.gmail.com>
+Subject: Good Day,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.0 required=5.0 tests=BAYES_60,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:142 listed in]
+        [list.dnswl.org]
+        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.7961]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [sanonabdoulaye119[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [sanonabdoulaye119[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [wijh555[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add SDIO interrupt support. Successfully tested on a S905X4-based
-system (V3 register layout) with a BRCM4334 SDIO wifi module
-(brcmfmac driver).
-
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
----
-v2:
-- use new SDIO IRQ API
-v3:
-- don't duplicate checking mmc->sdio_irq_pending
-  Device works fine w/o it.
----
- drivers/mmc/host/meson-gx-mmc.c | 70 ++++++++++++++++++++++++++++-----
- 1 file changed, 60 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
-index 9a4da2544..b6afaccf7 100644
---- a/drivers/mmc/host/meson-gx-mmc.c
-+++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -41,14 +41,17 @@
- #define   CLK_V2_TX_DELAY_MASK GENMASK(19, 16)
- #define   CLK_V2_RX_DELAY_MASK GENMASK(23, 20)
- #define   CLK_V2_ALWAYS_ON BIT(24)
-+#define   CLK_V2_IRQ_SDIO_SLEEP BIT(25)
- 
- #define   CLK_V3_TX_DELAY_MASK GENMASK(21, 16)
- #define   CLK_V3_RX_DELAY_MASK GENMASK(27, 22)
- #define   CLK_V3_ALWAYS_ON BIT(28)
-+#define   CLK_V3_IRQ_SDIO_SLEEP BIT(29)
- 
- #define   CLK_TX_DELAY_MASK(h)		(h->data->tx_delay_mask)
- #define   CLK_RX_DELAY_MASK(h)		(h->data->rx_delay_mask)
- #define   CLK_ALWAYS_ON(h)		(h->data->always_on)
-+#define   CLK_IRQ_SDIO_SLEEP(h)		(h->data->irq_sdio_sleep)
- 
- #define SD_EMMC_DELAY 0x4
- #define SD_EMMC_ADJUST 0x8
-@@ -135,6 +138,7 @@ struct meson_mmc_data {
- 	unsigned int rx_delay_mask;
- 	unsigned int always_on;
- 	unsigned int adjust;
-+	unsigned int irq_sdio_sleep;
- };
- 
- struct sd_emmc_desc {
-@@ -174,6 +178,7 @@ struct meson_host {
- 	bool vqmmc_enabled;
- 	bool needs_pre_post_req;
- 
-+	spinlock_t lock;
- };
- 
- #define CMD_CFG_LENGTH_MASK GENMASK(8, 0)
-@@ -430,6 +435,7 @@ static int meson_mmc_clk_init(struct meson_host *host)
- 	clk_reg |= FIELD_PREP(CLK_CORE_PHASE_MASK, CLK_PHASE_180);
- 	clk_reg |= FIELD_PREP(CLK_TX_PHASE_MASK, CLK_PHASE_0);
- 	clk_reg |= FIELD_PREP(CLK_RX_PHASE_MASK, CLK_PHASE_0);
-+	clk_reg |= CLK_IRQ_SDIO_SLEEP(host);
- 	writel(clk_reg, host->regs + SD_EMMC_CLOCK);
- 
- 	/* get the mux parents */
-@@ -934,32 +940,54 @@ static void meson_mmc_read_resp(struct mmc_host *mmc, struct mmc_command *cmd)
- 	}
- }
- 
-+static void __meson_mmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
-+{
-+	struct meson_host *host = mmc_priv(mmc);
-+	u32 reg_irqen = IRQ_EN_MASK;
-+
-+	if (enable)
-+		reg_irqen |= IRQ_SDIO;
-+	writel(reg_irqen, host->regs + SD_EMMC_IRQ_EN);
-+}
-+
- static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
- {
- 	struct meson_host *host = dev_id;
- 	struct mmc_command *cmd;
--	struct mmc_data *data;
- 	u32 status, raw_status;
- 	irqreturn_t ret = IRQ_NONE;
- 
- 	raw_status = readl(host->regs + SD_EMMC_STATUS);
--	status = raw_status & IRQ_EN_MASK;
-+	status = raw_status & (IRQ_EN_MASK | IRQ_SDIO);
- 
- 	if (!status) {
- 		dev_dbg(host->dev,
- 			"Unexpected IRQ! irq_en 0x%08lx - status 0x%08x\n",
--			 IRQ_EN_MASK, raw_status);
-+			 IRQ_EN_MASK | IRQ_SDIO, raw_status);
- 		return IRQ_NONE;
- 	}
- 
--	if (WARN_ON(!host) || WARN_ON(!host->cmd))
-+	if (WARN_ON(!host))
- 		return IRQ_NONE;
- 
- 	/* ack all raised interrupts */
- 	writel(status, host->regs + SD_EMMC_STATUS);
- 
- 	cmd = host->cmd;
--	data = cmd->data;
-+
-+	if (status & IRQ_SDIO) {
-+		spin_lock(&host->lock);
-+		__meson_mmc_enable_sdio_irq(host->mmc, 0);
-+		sdio_signal_irq(host->mmc);
-+		spin_unlock(&host->lock);
-+		status &= ~IRQ_SDIO;
-+		if (!status)
-+			return IRQ_HANDLED;
-+	}
-+
-+	if (WARN_ON(!cmd))
-+		return IRQ_NONE;
-+
- 	cmd->error = 0;
- 	if (status & IRQ_CRC_ERR) {
- 		dev_dbg(host->dev, "CRC Error - status 0x%08x\n", status);
-@@ -977,12 +1005,9 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
- 
- 	meson_mmc_read_resp(host->mmc, cmd);
- 
--	if (status & IRQ_SDIO) {
--		dev_dbg(host->dev, "IRQ: SDIO TODO.\n");
--		ret = IRQ_HANDLED;
--	}
--
- 	if (status & (IRQ_END_OF_CHAIN | IRQ_RESP_STATUS)) {
-+		struct mmc_data *data = cmd->data;
-+
- 		if (data && !cmd->error)
- 			data->bytes_xfered = data->blksz * data->blocks;
- 		if (meson_mmc_bounce_buf_read(data) ||
-@@ -1125,6 +1150,21 @@ static int meson_mmc_voltage_switch(struct mmc_host *mmc, struct mmc_ios *ios)
- 	return -EINVAL;
- }
- 
-+static void meson_mmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
-+{
-+	struct meson_host *host = mmc_priv(mmc);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	__meson_mmc_enable_sdio_irq(mmc, enable);
-+	spin_unlock_irqrestore(&host->lock, flags);
-+}
-+
-+static void meson_mmc_ack_sdio_irq(struct mmc_host *mmc)
-+{
-+	meson_mmc_enable_sdio_irq(mmc, 1);
-+}
-+
- static const struct mmc_host_ops meson_mmc_ops = {
- 	.request	= meson_mmc_request,
- 	.set_ios	= meson_mmc_set_ios,
-@@ -1134,6 +1174,8 @@ static const struct mmc_host_ops meson_mmc_ops = {
- 	.execute_tuning = meson_mmc_resampling_tuning,
- 	.card_busy	= meson_mmc_card_busy,
- 	.start_signal_voltage_switch = meson_mmc_voltage_switch,
-+	.enable_sdio_irq = meson_mmc_enable_sdio_irq,
-+	.ack_sdio_irq	= meson_mmc_ack_sdio_irq,
- };
- 
- static int meson_mmc_probe(struct platform_device *pdev)
-@@ -1237,7 +1279,13 @@ static int meson_mmc_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_init_clk;
- 
-+	spin_lock_init(&host->lock);
-+
- 	mmc->caps |= MMC_CAP_CMD23;
-+
-+	if (mmc->caps & MMC_CAP_SDIO_IRQ)
-+		mmc->caps2 |= MMC_CAP2_SDIO_IRQ_NOTHREAD;
-+
- 	if (host->dram_access_quirk) {
- 		/* Limit segments to 1 due to low available sram memory */
- 		mmc->max_segs = 1;
-@@ -1328,6 +1376,7 @@ static const struct meson_mmc_data meson_gx_data = {
- 	.rx_delay_mask	= CLK_V2_RX_DELAY_MASK,
- 	.always_on	= CLK_V2_ALWAYS_ON,
- 	.adjust		= SD_EMMC_ADJUST,
-+	.irq_sdio_sleep	= CLK_V2_IRQ_SDIO_SLEEP,
- };
- 
- static const struct meson_mmc_data meson_axg_data = {
-@@ -1335,6 +1384,7 @@ static const struct meson_mmc_data meson_axg_data = {
- 	.rx_delay_mask	= CLK_V3_RX_DELAY_MASK,
- 	.always_on	= CLK_V3_ALWAYS_ON,
- 	.adjust		= SD_EMMC_V3_ADJUST,
-+	.irq_sdio_sleep	= CLK_V3_IRQ_SDIO_SLEEP,
- };
- 
- static const struct of_device_id meson_mmc_of_match[] = {
 -- 
-2.37.2
+The Board Directors want to know if you are in good health doing great and
+with the hope that this mail will meet you in good condition, We are
+privileged and delighted to reach you via email" And we are urgently
+waiting to hear from you. and again your number is not connecting.
 
-
+Sincerely,
+Mr. Sanon Abdoulaye
