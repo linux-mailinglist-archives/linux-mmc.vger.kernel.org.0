@@ -2,103 +2,92 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D1D65A0D44
-	for <lists+linux-mmc@lfdr.de>; Thu, 25 Aug 2022 11:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A04E35A0EBA
+	for <lists+linux-mmc@lfdr.de>; Thu, 25 Aug 2022 13:09:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240973AbiHYJxE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 25 Aug 2022 05:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35232 "EHLO
+        id S235069AbiHYLJQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 25 Aug 2022 07:09:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240869AbiHYJwe (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Aug 2022 05:52:34 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4185CABF31
-        for <linux-mmc@vger.kernel.org>; Thu, 25 Aug 2022 02:49:43 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id x10so18896921ljq.4
-        for <linux-mmc@vger.kernel.org>; Thu, 25 Aug 2022 02:49:43 -0700 (PDT)
+        with ESMTP id S241358AbiHYLJO (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 25 Aug 2022 07:09:14 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57139AE9C8
+        for <linux-mmc@vger.kernel.org>; Thu, 25 Aug 2022 04:09:14 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-f2a4c51c45so24419591fac.9
+        for <linux-mmc@vger.kernel.org>; Thu, 25 Aug 2022 04:09:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=1kMg/2p/VcNDyKRVfg3f4w41z9TXz8csd9rtLeh30yg=;
-        b=JPJ4blOvYwitTMl23yXWeycie0bBgeSFYvPKyHK5c+DX/UV3eLOi7ipKWFd7gxSiID
-         /niOBRbGue7lXXtpqXVz9K4MC5YZOv28slYAWFSUZHe/+GGkWekd8KCqkcWim0h9C/bH
-         VOE5c2x4+8CV5xEbrPnGdWySF3I7otsX6MgXZl7BZ63oqVvmbLeqiIosca1DCN5pNoj6
-         Ko6/bOQNX4P5dKOl4Ovas5sEMXZWL1hVgWCTTrYIR23AMZMivV+7ee9XUYKnsTPzRu33
-         UX46wgmW2LtAoGwTB32nSmxubTRpMeEokfdKjGb9Cq04TO4zBxwqWLIoIlnujIMjjwvq
-         7UIQ==
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=NcQgfGWmNtGVcmYOkqhvmNWuEth66CXwSKmPdJfqqgM=;
+        b=CHBqK1QKe85QYSj4xZvDZ4U7ZfP0wWmG4+32RqVkNdpnrPDePcZos3nRtZU5m6tMcb
+         X5CdeI/wRo5IsrNHPMbF41vR/KyS/aWwZYL/zb/MaY7jGWpgLiS3MNL8om685vAKmPJ+
+         vM7QofTvxm/r0VPhXV1A5Sdu9MbUsR7kJ5tTROmSilM9/zAWnK2AbO5NUJcf4TYN5Z/u
+         DE1sVqjUrfinexy6lA05mi/XQXZ19ipHxhTuXvU/NRlg4ZLVfsXURMi38yHc9Nu/poDI
+         nAnfqiGH8w/80y6RlkYNtN/jIp4Y0xzdSdkLpKuYn9hNDp70qDy0VpxFZsyAYs0qMh3d
+         I1Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=1kMg/2p/VcNDyKRVfg3f4w41z9TXz8csd9rtLeh30yg=;
-        b=7aZ+ycF/5YW8p/id/VJIk62lUa2pv104zUPI1lgiG7HYVNG5XHXzuXk8JMniqdLSzA
-         bG44gCCdboQbyF9Ay6h5WhatCC8OEX2K9DaqR/sI8bfQm7LLVDYV/2HtQJTgEQwnL9tC
-         /IdCVFfGX13m7Ot24mnNi91VTHWPSXF3VFUAkVjAEfs34X7H+JYHjUcRpf2XNRQXsWyK
-         lI0k4bYAFc+9jG3P6l6TixwU2ERqJeKR46ODq6q0Q2cyJ/nQ+FQdvGlyJ2QKvAf2Nb8+
-         KA/N0fwsU7v3E7iDv0VpR+VTDFquhYUeRCx01alhgcLpL4h8g1CcSUmsQdOypxhJFhYh
-         7kYA==
-X-Gm-Message-State: ACgBeo193WTolNtHSj2b6Ttz5GO1wMBgTFa2tpelNKh1QEfZWQI0nm6t
-        XbS3IJWWg3353EPEKzXA/p0YLSou9VKKsYk/z8OYRQ==
-X-Google-Smtp-Source: AA6agR5VFuzVZBBnz6OLJeVypCiPXq+1ADkMDZL2eMmhYiYGO41+tPsO3k2IUM59LGmJN5qCZIaiCFiTYWPyb75F7o8=
-X-Received: by 2002:a2e:884c:0:b0:261:ca69:6023 with SMTP id
- z12-20020a2e884c000000b00261ca696023mr788260ljj.300.1661420981618; Thu, 25
- Aug 2022 02:49:41 -0700 (PDT)
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=NcQgfGWmNtGVcmYOkqhvmNWuEth66CXwSKmPdJfqqgM=;
+        b=PkaSL6WmhzSmVyQbBcQg/PTs5Evou4zfPybwFDZVfKiy5J5EDNCVK5kJbZIiD4kKhq
+         mhUJgeRaH65HRUCjLm/d7pfKxta/3MUtl82q3zh9HYl37d58KOoKfT4nuK2P8IGP7bVE
+         DsEhW9Bq4DOSvtSnvvOqwFPzWU03csliZLqTtYS7aiIOYEY+GBYm3luw7vkwPc36FA5A
+         gNZukdTnQADW5qTSjGitEtqsn/Pp/ro0TZAaPJKfJ/uKHJBTY/1P3UF4kemfGyAex95r
+         x8X4ZM6WDdGcS17rt9rHEbShobxk4T5pqii5pT//uRLfbBQj7nv/qDEXJ9URwDJ4CC4t
+         m8ng==
+X-Gm-Message-State: ACgBeo06NlbeCk08B9LooRrTqOfB/yFmMrqmje+7qBFVfWg8sPYaIOhx
+        cpKcMBbGPw2TIDHxJn10d7Ru87L4Yr2U6ncgY2s=
+X-Google-Smtp-Source: AA6agR7mqiIqn4i/xzOZQg0uzufoHF13EjbWV08N3lIdQCYMI61hajWbgVQyDXW2zCtX+ls6zlACD+66qCKGRME9fA8=
+X-Received: by 2002:a05:6870:b51f:b0:11e:39c8:cc10 with SMTP id
+ v31-20020a056870b51f00b0011e39c8cc10mr361745oap.184.1661425753602; Thu, 25
+ Aug 2022 04:09:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220823143034.20543-1-wangjianli@cdjrlc.com>
-In-Reply-To: <20220823143034.20543-1-wangjianli@cdjrlc.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 25 Aug 2022 11:49:05 +0200
-Message-ID: <CAPDyKFroJgv=47Q2sAn3cT4rgeu3ntk6euxJ7k-ZQOAMQpeteg@mail.gmail.com>
-Subject: Re: [PATCH] mmc/host: fix repeated words in comments
-To:     wangjianli <wangjianli@cdjrlc.com>
-Cc:     jh80.chung@samsung.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Received: by 2002:ac9:5ec3:0:0:0:0:0 with HTTP; Thu, 25 Aug 2022 04:09:13
+ -0700 (PDT)
+Reply-To: sgtkaylla202@gmail.com
+From:   kayla manthey <tadjokes@gmail.com>
+Date:   Thu, 25 Aug 2022 11:09:13 +0000
+Message-ID: <CAHi6=KZU3u5Nfw6vBcaGxxGz+Vj48Y-E8BDa7od_+nLUGF20Tg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2001:4860:4864:20:0:0:0:2d listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4997]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [tadjokes[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [sgtkaylla202[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 23 Aug 2022 at 16:30, wangjianli <wangjianli@cdjrlc.com> wrote:
->
-> Delete the redundant word 'the'.
-
-Patches that correct spelling mistakes make sense to me. However, I am
-no longer willing to pick one patch per spelling mistake, it's just
-silly and I feel like I waste my time.
-
-Instead, I suggest you go through all mmc host drivers and fix *all*
-of the spelling mistakes in one single patch. The similar can be done
-for the mmc core.
-
-Kind regards
-Uffe
-
->
-> Signed-off-by: wangjianli <wangjianli@cdjrlc.com>
-> ---
->  drivers/mmc/host/dw_mmc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-> index 581614196a84..7f00d7d7e35e 100644
-> --- a/drivers/mmc/host/dw_mmc.c
-> +++ b/drivers/mmc/host/dw_mmc.c
-> @@ -1363,7 +1363,7 @@ static void __dw_mci_start_request(struct dw_mci *host,
->                  * is just about to roll over.
->                  *
->                  * We do this whole thing under spinlock and only if the
-> -                * command hasn't already completed (indicating the the irq
-> +                * command hasn't already completed (indicating the irq
->                  * already ran so we don't want the timeout).
->                  */
->                 spin_lock_irqsave(&host->irq_lock, irqflags);
-> --
-> 2.36.1
->
+Bok draga, mogu li razgovarati s tobom, molim te?
