@@ -2,115 +2,80 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D15395A4407
-	for <lists+linux-mmc@lfdr.de>; Mon, 29 Aug 2022 09:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AA3E5A4B11
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Aug 2022 14:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229464AbiH2Hmf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Aug 2022 03:42:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34932 "EHLO
+        id S229516AbiH2MHi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Aug 2022 08:07:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiH2Hmf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Aug 2022 03:42:35 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E3A4DF16
-        for <linux-mmc@vger.kernel.org>; Mon, 29 Aug 2022 00:42:33 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id d12-20020a05600c34cc00b003a83d20812fso2356643wmq.1
-        for <linux-mmc@vger.kernel.org>; Mon, 29 Aug 2022 00:42:33 -0700 (PDT)
+        with ESMTP id S231230AbiH2MHL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Aug 2022 08:07:11 -0400
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C47C41A062
+        for <linux-mmc@vger.kernel.org>; Mon, 29 Aug 2022 04:52:21 -0700 (PDT)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-33dba2693d0so187746887b3.12
+        for <linux-mmc@vger.kernel.org>; Mon, 29 Aug 2022 04:52:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc;
-        bh=Ord4hpx3Xd+i/UwyGaCf/vKkWqcTfQ/IC1j07fGcrjc=;
-        b=pLmBdFIRDpgWHv7Lo3wLPl012iBHd7T+73AUNhvejNTCf4dcym6kgdYcnYPCSPWayy
-         d+XipCcPP4cn8cAnJcI9Efs8GJmPVGnXTb9Iamu3ln7rQqxCeM8uLtr8lEcZ5A/Q2t6q
-         p3J+CjGwZ1IGzAVEEmJDoPP05iDOqD9LEleyiimOBY5LSpDSZ3G9nD6q5L85vvqK/t6a
-         Ubj/dshtG+r9KbPfrD+IX4bdkhAtE5UjL76+7mazkV9YeAxNiY4quhZQrX24h+fZeRC7
-         O5yRxW9gy0CGdh/2gbBIlF734fjyCUs8XE+62DugwAdp/VCjIJVRyiwqu/abRwuEIBgy
-         FfTQ==
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc;
+        bh=6VzaTuMkSaoKWgUM6Q1+SMdSDfZtUEniQTBorD4F7ME=;
+        b=OUx87rS8b+0e8paS9czdLj3OAKtW0lgsoc62KDXNlc0VHR5WDIwrrDreEiwQmdsSI7
+         Bv4bWf7psCwskYaxPZJ/E4FiJRqaiedfvZ6yngqsvrr6Gpt4yEStXIGdsLM4ZbC/1f9O
+         g5pLOVTdWukGGZrH37EFZFU6kLZdr06CGv4eA30/idMkycXOjM3RSbtlq//kCCtThHr9
+         VNyNtpIowCyrlk1mTgxgGeq27vnBA1OGMwX++VS0y/BdpRPYCk77dCXgGHKO5E3lbAWo
+         mw1lg2gVD0FSxcI+p3HxPiTasHNmdrkRuccSR3hBAEKUuRq23bTmYYQ0eghl0NiNx48p
+         XuLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc;
-        bh=Ord4hpx3Xd+i/UwyGaCf/vKkWqcTfQ/IC1j07fGcrjc=;
-        b=P/kIjABA1P9QJCYMw20d8s62vkEpE7vOrWcTBPde0JYlDiYPMao/NB1yKS6aptZciS
-         8qzqjD5ZIh3uph6e9iMtA9eld338bvKLSS+ArNoZdXc3K+3xAmWXfDlc4ZqY0ImajQGT
-         sbReZQwWqGkPoQsgFNttgj68/jHGB2/tKvTPvXTmL7WGLhmKdyRlnaQL1hZEeNIPgBgG
-         VXnRw4/PvA2TLCllVdENjCTG+xvz/gZ4oFZM9NkquSIXG3O+SMyazXFF3C79bVQ+fgh3
-         V1Kh+/ck8RoV8MKMMYlbMfMQenxJA/l5eAjOYCmODmhFVOJsKnKu3H854/j3RvFtR1N2
-         UqsA==
-X-Gm-Message-State: ACgBeo1d00VHWl8+JMGxq4sbxhGhDKkXmZm8k1iLmy9MdR1k0uBmC0vx
-        6lItYK42oFkrT+TQU3smsCNMLw==
-X-Google-Smtp-Source: AA6agR6vOedkOEDaDT8D7fDwrbld9zNfqqhvSnpkpkYnYN1bjv7xc3q3VttNTvVWvYdBibwNeVjBcg==
-X-Received: by 2002:a7b:c045:0:b0:3a5:ff4e:5528 with SMTP id u5-20020a7bc045000000b003a5ff4e5528mr6257372wmc.150.1661758951904;
-        Mon, 29 Aug 2022 00:42:31 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:6124:6b74:2847:d37b? ([2a01:e0a:982:cbb0:6124:6b74:2847:d37b])
-        by smtp.gmail.com with ESMTPSA id l26-20020a05600c1d1a00b003a62052053csm9768603wms.18.2022.08.29.00.42.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Aug 2022 00:42:31 -0700 (PDT)
-Message-ID: <e970e07d-9bb8-707d-1dc6-09fae2abbfff@baylibre.com>
-Date:   Mon, 29 Aug 2022 09:42:30 +0200
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=6VzaTuMkSaoKWgUM6Q1+SMdSDfZtUEniQTBorD4F7ME=;
+        b=FjuiWxGX2S4PXZow8lCWgkJhtUs2TUgOXaN+z4EXM4wThk5DCyU7T3hPgdAaiHI622
+         d7AKeNnTxgf9uNOTfk0/emtqZI/7lly9HbXvm7QkWF5+nuXRv47c2vceSPxeGjHcckPb
+         ssKvgoNq0MXznNdDgHCIUYDUse1Al8XIyMOs9JOSaKQnyaqj9Yp0jipTMg5GgsXyXqhA
+         ofl+r29JzMqO7aqNtJxMked24f6SpLQV0mAZ4awzmVa0VeMwj6tJ52DveEoAChrenJwm
+         pN1jd37o1TUXeAyPcWWcagnHmlEUK8bATCUg0K1A2RvLBH5qNoBFcU4DCWlKkZe8ZcOk
+         0/GQ==
+X-Gm-Message-State: ACgBeo0vueVmAsVQs7GJBsBpS2UqwRFT3exQU0oAV1MLXMN3ulRRZYZQ
+        lyyFRlj4k+laDpQ5bAvVnUYKAxBFwNtb2FGmCpo=
+X-Google-Smtp-Source: AA6agR7Sn7KtMqCTMVFnRKzwoF2knQo6Qk39TsyceCVynFYu5HQA9y75APzJdS0A1Bn1Q5+BoO1CD3t9Y0MD/tGqJbI=
+X-Received: by 2002:a25:23d4:0:b0:695:65fb:bf66 with SMTP id
+ j203-20020a2523d4000000b0069565fbbf66mr8148849ybj.3.1661773779310; Mon, 29
+ Aug 2022 04:49:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v3 0/2] mmc: meson-gx: add SDIO interrupt support
-Content-Language: en-US
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>
-References: <72459a46-fd20-60d8-a7e7-076d8f321816@gmail.com>
- <CAPDyKFokmJr7e8=gvsYbBbdxceG6kCa57vbYy1tUT_b+B=8P8Q@mail.gmail.com>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Organization: Baylibre
-In-Reply-To: <CAPDyKFokmJr7e8=gvsYbBbdxceG6kCa57vbYy1tUT_b+B=8P8Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Sender: aishanafiukaura@gmail.com
+Received: by 2002:a05:7108:6893:0:0:0:0 with HTTP; Mon, 29 Aug 2022 04:49:39
+ -0700 (PDT)
+From:   "Mrs. Margaret Christopher" <mrsmargaretchristopher01@gmail.com>
+Date:   Mon, 29 Aug 2022 04:49:39 -0700
+X-Google-Sender-Auth: HW61Yr9zkN-MW0FpP64TgTutiL4
+Message-ID: <CABET1+h0MuPTkEkmXR6Vg4ARCwozApMKLUkDyhn0__VDCChWSA@mail.gmail.com>
+Subject: Humanitarian Project For Less Privileged.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Uffe, Heiner,
+-- 
+Hello Dear
 
-On 26/08/2022 11:16, Ulf Hansson wrote:
-> On Thu, 25 Aug 2022 at 21:52, Heiner Kallweit <hkallweit1@gmail.com> wrote:
->>
->> Add SDIO interrupt support. Successfully tested on a S905X4-based
->> system (V3 register layout) with a BRCM4334 SDIO wifi module
->> (brcmfmac driver).
->>
->> v2:
->> - use new SDIO interrupt API
->> v3:
->> - don't duplicate checking mmc->sdio_irq_pending
->>
->> Heiner Kallweit (2):
->>    mmc: meson: adjust and re-use constant IRQ_EN_MASK
->>    mmc: meson-gx: add SDIO interrupt support
->>
->>   drivers/mmc/host/meson-gx-mmc.c | 84 +++++++++++++++++++++++++--------
->>   1 file changed, 65 insertions(+), 19 deletions(-)
->>
-> 
-> Applied for next, thanks!
+  Am a dying woman here in the hospital, i was diagnose as a
+Coronavirus patient over 2 months ago. I am A business woman who is
+dealing with Gold Exportation, I Am 59 year old from USA California i
+have a charitable and unfufilling  project that am about to handover
+to you, if you are interested to know more about this project please reply me.
 
-Thanks for applying, but I was off (like many of reviewers) and I would have like
-this patchset to be tested on earlier SoCs aswell, or only enabled on S4 for now.
+ Hope to hear from you
 
-Neil
+Best Regard
 
-> 
-> Kind regards
-> Uffe
-
+Margaret
