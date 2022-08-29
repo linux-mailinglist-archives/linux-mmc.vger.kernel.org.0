@@ -2,57 +2,61 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47FF15A4B99
-	for <lists+linux-mmc@lfdr.de>; Mon, 29 Aug 2022 14:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CA4B5A4E23
+	for <lists+linux-mmc@lfdr.de>; Mon, 29 Aug 2022 15:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231169AbiH2MYR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 29 Aug 2022 08:24:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58062 "EHLO
+        id S229898AbiH2Nal (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 29 Aug 2022 09:30:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230487AbiH2MXv (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Aug 2022 08:23:51 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB12A98D1
-        for <linux-mmc@vger.kernel.org>; Mon, 29 Aug 2022 05:08:20 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id k18so1419075lji.13
-        for <linux-mmc@vger.kernel.org>; Mon, 29 Aug 2022 05:08:20 -0700 (PDT)
+        with ESMTP id S229868AbiH2NaQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 29 Aug 2022 09:30:16 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7718D2B277
+        for <linux-mmc@vger.kernel.org>; Mon, 29 Aug 2022 06:29:55 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id bq11so10192179wrb.12
+        for <linux-mmc@vger.kernel.org>; Mon, 29 Aug 2022 06:29:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=qKsvNRH86aHNC8UItEtemRj4TbqiQ2+V87OtP5n+W9U=;
-        b=zHPi+7sXaz5JENCfXEQx7Yq5zfDdqNY45Hwj6On/9m+zjWpB2m8QoWkm+ufzkCCCF6
-         ZEA3TgJaIgwANSD3EOLByZLh50uz4gHUQFwyoadJsqSurnFETVhnIZTHUUqxHuArYOd3
-         pgP2kxhXR2CV0EUjm+Mz7zERQzUYfPbn6XXMBL1l/m7htLHT1Rb02q4ksHGwwSANgg9p
-         T+MhFyHldMWegzdUYRFbfG/H5wy5sN3xWbYOqGpEV8kkvRc88PiEukiGFeDz/tWSOtCz
-         scAmXLL2Q4K51pG3BBUys8tmbzvrl5fEMHD9dzuzQsl5IY31ZwM0Gzj+Td28LoCkjha6
-         tM/w==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date;
+        bh=0rzM7C+X4i/7+BgYPEAODopBKOgCUDXP2Yabdqjl+eg=;
+        b=j+G31/aZ6ifEmtGsEbtR20sGXfhwMKDtYQLAWAdKkrUdgeF2sCNTMxYtoDuTRRSF79
+         Q+j3CHhHyWyy3CSrxSAO0ElnySwHymijyMimdnVvNojKGUT6twlktQYFueAQ1Es3Yafq
+         RB1QC4pcbYxz+QXEIln2qeTOoyXhuMUTG+TbWHlnJWBEELTzg5ZrrYReMUXCc4bBydtb
+         4L2nhcwVlMc39A5QiRdEwF2I3wYP283KZutvasz+hfOf02tUyDIC/2+ndt1Yof3JztU2
+         e356qtHbIYSgfgn9ExG1rEp9cVgtC698jO6g0SKAwrARZD0crR28Fwg3hjrQCWfizV7l
+         KLCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=qKsvNRH86aHNC8UItEtemRj4TbqiQ2+V87OtP5n+W9U=;
-        b=d0+8CWakO41snv0BWQ40UIDeO3or3mJ9kvu8pun1s34S+GTDcC+x08dLj3S79Yf8Sc
-         /oBEkcduS+soEJt4rVU80StCboXUyAjwotfWO8/xC0M0msCup2G3l/8UW4nBoim63rEV
-         X6nMXh/66Kk/m6l/kxB6pcYPl2IBMZJI9rmmIKh5TMdRl93YCOESjKaNSiy+5oEa1kMs
-         gGRV6W9TVKGG2WFPaci5wyD75ei052xcSg3/d+Z+0rYIcINZenDT/QpsfXmyzHeLCuS7
-         AOoo/YP2UAIzq63GgDClTWi3tiFykoiMse93VrLcUmnEoacj6bwQkqqEUoPP7OQCcFZZ
-         xO1A==
-X-Gm-Message-State: ACgBeo0HgTMM6s9mX5VoYuW6uQbGT2mPeAl26Nl47dW4YJfx/W8sd+04
-        IVxDwqqAVDQAdlzhaxapRIjuOdJxNFHzIQFRy0zu8g==
-X-Google-Smtp-Source: AA6agR58Pd3QqgEFFfCQUNOIxS3mN6JInRUCJqFY4oKIWBp+p0J+d610owS1EoNj+kbjCQKDNsXeZfGpuE2gjrwhsWQ=
-X-Received: by 2002:a2e:9799:0:b0:261:e51d:8576 with SMTP id
- y25-20020a2e9799000000b00261e51d8576mr6068713lji.367.1661774891703; Mon, 29
- Aug 2022 05:08:11 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date;
+        bh=0rzM7C+X4i/7+BgYPEAODopBKOgCUDXP2Yabdqjl+eg=;
+        b=zyI5Xiv53NhoUjG/I1AEtnG/mNiRwn9M1/O+To9ddaUAfr7m9FbmHRfYHS2u/3assO
+         /+3YRSD9rj+84DrGI7zp45xQzJUPNDn5q2PhiBz+1vHNiOtc0kYbo5VDSak5Fs9L9m3Q
+         6aEKZsUPd7GHtJNcUtSwpesidan+AfBD1XyIppLslNvzcsnb+L2n418JsTjwWip/7AhB
+         GlD8D97Rz4AoP4y4kwfgWEJrQ1eCB3x+z09pTdveJ1lM6FV9ZGs2Clm8IbN9N6KZnM+h
+         wLnd9hOOWBBokuQjYsxTqD1Fr4xxGWiWiN7Icjdt0HNMqoshpnxqY5ctzlvM6pUQga54
+         FmQA==
+X-Gm-Message-State: ACgBeo2rMHfwXLeokzLvHEFFhXOiI1DgEB5OwKgVsGbBeQi32mUTHX9e
+        0gZAEKzBs1tIyY4tZKjnT5enFg==
+X-Google-Smtp-Source: AA6agR5lGVIfTvRtLKqvSwvLM/w54qDXbW6ptavzy0/El/cYWWyFKOkiRmSLjKpDkoaAWwl6Scaigg==
+X-Received: by 2002:adf:dece:0:b0:226:dc0a:8b1a with SMTP id i14-20020adfdece000000b00226dc0a8b1amr2261100wrn.401.1661779793279;
+        Mon, 29 Aug 2022 06:29:53 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:6124:6b74:2847:d37b? ([2a01:e0a:982:cbb0:6124:6b74:2847:d37b])
+        by smtp.gmail.com with ESMTPSA id h16-20020adff4d0000000b00226dbf4f607sm2815907wrp.10.2022.08.29.06.29.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Aug 2022 06:29:52 -0700 (PDT)
+Message-ID: <67f29dfe-a579-125e-cb84-f6b554932b42@baylibre.com>
+Date:   Mon, 29 Aug 2022 15:29:51 +0200
 MIME-Version: 1.0
-References: <72459a46-fd20-60d8-a7e7-076d8f321816@gmail.com>
- <CAPDyKFokmJr7e8=gvsYbBbdxceG6kCa57vbYy1tUT_b+B=8P8Q@mail.gmail.com> <e970e07d-9bb8-707d-1dc6-09fae2abbfff@baylibre.com>
-In-Reply-To: <e970e07d-9bb8-707d-1dc6-09fae2abbfff@baylibre.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 29 Aug 2022 14:07:35 +0200
-Message-ID: <CAPDyKFqRm=RVn__3HJDk_0bBemudh_y7YEYPZe3W7iJCfP50fg@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
 Subject: Re: [PATCH v3 0/2] mmc: meson-gx: add SDIO interrupt support
-To:     Neil Armstrong <narmstrong@baylibre.com>
+Content-Language: en-US
+To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
         Kevin Hilman <khilman@baylibre.com>,
         Jerome Brunet <jbrunet@baylibre.com>,
@@ -61,51 +65,68 @@ Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
         "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <72459a46-fd20-60d8-a7e7-076d8f321816@gmail.com>
+ <CAPDyKFokmJr7e8=gvsYbBbdxceG6kCa57vbYy1tUT_b+B=8P8Q@mail.gmail.com>
+ <e970e07d-9bb8-707d-1dc6-09fae2abbfff@baylibre.com>
+ <CAPDyKFqRm=RVn__3HJDk_0bBemudh_y7YEYPZe3W7iJCfP50fg@mail.gmail.com>
+From:   Neil Armstrong <narmstrong@baylibre.com>
+Organization: Baylibre
+In-Reply-To: <CAPDyKFqRm=RVn__3HJDk_0bBemudh_y7YEYPZe3W7iJCfP50fg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 29 Aug 2022 at 09:42, Neil Armstrong <narmstrong@baylibre.com> wrote:
->
-> Hi Uffe, Heiner,
->
-> On 26/08/2022 11:16, Ulf Hansson wrote:
-> > On Thu, 25 Aug 2022 at 21:52, Heiner Kallweit <hkallweit1@gmail.com> wrote:
-> >>
-> >> Add SDIO interrupt support. Successfully tested on a S905X4-based
-> >> system (V3 register layout) with a BRCM4334 SDIO wifi module
-> >> (brcmfmac driver).
-> >>
-> >> v2:
-> >> - use new SDIO interrupt API
-> >> v3:
-> >> - don't duplicate checking mmc->sdio_irq_pending
-> >>
-> >> Heiner Kallweit (2):
-> >>    mmc: meson: adjust and re-use constant IRQ_EN_MASK
-> >>    mmc: meson-gx: add SDIO interrupt support
-> >>
-> >>   drivers/mmc/host/meson-gx-mmc.c | 84 +++++++++++++++++++++++++--------
-> >>   1 file changed, 65 insertions(+), 19 deletions(-)
-> >>
-> >
-> > Applied for next, thanks!
->
-> Thanks for applying, but I was off (like many of reviewers) and I would have like
-> this patchset to be tested on earlier SoCs aswell, or only enabled on S4 for now.
+On 29/08/2022 14:07, Ulf Hansson wrote:
+> On Mon, 29 Aug 2022 at 09:42, Neil Armstrong <narmstrong@baylibre.com> wrote:
+>>
+>> Hi Uffe, Heiner,
+>>
+>> On 26/08/2022 11:16, Ulf Hansson wrote:
+>>> On Thu, 25 Aug 2022 at 21:52, Heiner Kallweit <hkallweit1@gmail.com> wrote:
+>>>>
+>>>> Add SDIO interrupt support. Successfully tested on a S905X4-based
+>>>> system (V3 register layout) with a BRCM4334 SDIO wifi module
+>>>> (brcmfmac driver).
+>>>>
+>>>> v2:
+>>>> - use new SDIO interrupt API
+>>>> v3:
+>>>> - don't duplicate checking mmc->sdio_irq_pending
+>>>>
+>>>> Heiner Kallweit (2):
+>>>>     mmc: meson: adjust and re-use constant IRQ_EN_MASK
+>>>>     mmc: meson-gx: add SDIO interrupt support
+>>>>
+>>>>    drivers/mmc/host/meson-gx-mmc.c | 84 +++++++++++++++++++++++++--------
+>>>>    1 file changed, 65 insertions(+), 19 deletions(-)
+>>>>
+>>>
+>>> Applied for next, thanks!
+>>
+>> Thanks for applying, but I was off (like many of reviewers) and I would have like
+>> this patchset to be tested on earlier SoCs aswell, or only enabled on S4 for now.
+> 
+> To actually make use of the new code, an update to the corresponding
+> DTS files are needed to set the cap-sdio-irq property.
 
-To actually make use of the new code, an update to the corresponding
-DTS files are needed to set the cap-sdio-irq property.
+I know but it changed the IRQ handling, let's hope we don't see any regressions.
 
-If that isn't sufficient, I prefer if we make a patch on top of the
-$subject series.
+> 
+> If that isn't sufficient, I prefer if we make a patch on top of the
+> $subject series.
 
-Kind regards
-Uffe
+OK, let's wait and see
+
+> 
+> Kind regards
+> Uffe
+
+Thanks,
+Neil
