@@ -2,92 +2,69 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAE885BACCF
-	for <lists+linux-mmc@lfdr.de>; Fri, 16 Sep 2022 13:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 422375BB081
+	for <lists+linux-mmc@lfdr.de>; Fri, 16 Sep 2022 17:46:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230199AbiIPL4I (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 16 Sep 2022 07:56:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43544 "EHLO
+        id S229759AbiIPPqp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 16 Sep 2022 11:46:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbiIPL4H (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 16 Sep 2022 07:56:07 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF8437FA5
-        for <linux-mmc@vger.kernel.org>; Fri, 16 Sep 2022 04:56:06 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id dv25so48829498ejb.12
-        for <linux-mmc@vger.kernel.org>; Fri, 16 Sep 2022 04:56:06 -0700 (PDT)
+        with ESMTP id S229801AbiIPPql (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 16 Sep 2022 11:46:41 -0400
+Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED2F5B285A
+        for <linux-mmc@vger.kernel.org>; Fri, 16 Sep 2022 08:46:39 -0700 (PDT)
+Received: by mail-vs1-xe31.google.com with SMTP id c3so23115168vsc.6
+        for <linux-mmc@vger.kernel.org>; Fri, 16 Sep 2022 08:46:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=x14L5nWN4Vy/JiW326iHsOtIjJf1QJbgmD95EAtZRbE=;
-        b=WqJhRC6Jhe9fMZsv5wEIKkEdPLGutrQ7JDTdPexz21O9E3nlaIMpQp6Fp4z2ZVD4pf
-         3s7AQByd87b9QM7mkv9RuGz1mwYFXtPe3FBW0/GqyQ9Zh/526EJzoperb/IZV8m4tCTJ
-         P+wNPKWgPno/0UhunQqWXGMe97HUhNm5bIey+RCKlNIPmij4Gihfg6GUYAJMhO0LWZOy
-         lnzyfrIoWiVfeAzKkvtnaFUvvKx2eVcMHtaLDr3CbAUIhiOUZJvyoeDe7eU/bCF1kXnJ
-         uVb/CBJyp0yyzvuisZ/nqwQA6a6FQDHF2U/taSpIByq1MfTL0bPQhDm1tVKjjujjG86u
-         z2xw==
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=FcyQcUXi9xALQQ6Lm7VNXiWYStBjH/LCUTADg6v4m+k=;
+        b=eMRl7M+KbFRvw1pT8JFw3a+LKSgCZjr5U3TtB9Qh21GdS2xdZWp2/hPKRjLFg/iXkz
+         cwlJmGwqX9C11ynoBGljXOQiXz5SOH+042xZwc+4yCJASirWL9HvtlEImXvDRxsYuVzk
+         AYtLqLadEROIvCrJhjXqe4skZuWtH2n/PWfKF5MmQNzuPLIHYmTdZGHKBqL7qAiaqIwm
+         IQv41xOGtXwvuqfZ2mWStmDTFo7+VL/uWzZUKCaFe1910rMijcA7WlWIC836ydImHzKj
+         hArMHU158UHAphtVqPT63oOMEe4u9pzFi1Mi3IYp9Q1xSs8cTiqT3KE0y38dqDofpXIs
+         akrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=x14L5nWN4Vy/JiW326iHsOtIjJf1QJbgmD95EAtZRbE=;
-        b=rZAA+fQNBhiV/76aWuuYQpLlNY5qz9qUG3ixqHPs3VuRuMvqpG1iXmJmDAj7kd8DRu
-         XoYxqwiNbxqkZ7j6MARKGtsTEVWtumRHuCysySpb3Nlx7d9qvb6Kx2k2haI5lPZjI1p+
-         iYi/75GvNmrEyvQII52ijkBbE9mv/hIKZR488FDiTxkTwMaaKjfE2J7N9SFNFpnHYsqM
-         diRsdbP0k8OKM0kUNIxJJfVgV58cfpMgTzZsNjTnopyNSBSnQLXwfoKJkIc0gHGdsfqU
-         WQoydhk8W6XGxDk9nYP1CJ8W70C2JyMocUzM00l8CeMbsluXf4YrOEw7xmBivwW8BMhc
-         6Drw==
-X-Gm-Message-State: ACrzQf0MRTciELuIOEB2i5XFzQeQ4VqwcQBcEWU0O9MHRW6myUNBu+J7
-        0J3U9SqRtufEQSGfqyFO60g=
-X-Google-Smtp-Source: AMsMyM6kx6YpswciT5Yyc8j/z70Y0Qnb361JxWuJQ94VG8037dOBAvvfWi8mN91Wd6Bgw8hIV6sT+Q==
-X-Received: by 2002:a17:907:2e02:b0:77c:405e:e740 with SMTP id ig2-20020a1709072e0200b0077c405ee740mr3228298ejc.139.1663329365113;
-        Fri, 16 Sep 2022 04:56:05 -0700 (PDT)
-Received: from morpheus.home.roving-it.com (3.e.2.0.0.0.0.0.0.0.0.0.0.0.0.0.1.8.6.2.1.1.b.f.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:fb11:2681::2e3])
-        by smtp.googlemail.com with ESMTPSA id w21-20020a1709064a1500b0077a1dd3e7b7sm10233407eju.102.2022.09.16.04.56.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Sep 2022 04:56:04 -0700 (PDT)
-From:   Peter Robinson <pbrobinson@gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
-        Andrew Jeffery <andrew@aj.id.au>,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org
-Cc:     Peter Robinson <pbrobinson@gmail.com>
-Subject: [PATCH] mmc: sdhci-of-aspeed: Add dependency on ARCH_ASPEED
-Date:   Fri, 16 Sep 2022 12:56:02 +0100
-Message-Id: <20220916115602.370003-1-pbrobinson@gmail.com>
-X-Mailer: git-send-email 2.37.3
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=FcyQcUXi9xALQQ6Lm7VNXiWYStBjH/LCUTADg6v4m+k=;
+        b=02n03oQuwCmlBUOPeKqI1byPookNfX1CKmlyA4hdUQ13ZpoBVk3rUuP4rOphxy5BlX
+         J3pwzka+Ndr3dvHx/rG0PdvAlfoXx6lBrC7/S9Ih/LXNNoLopGlHTKJtJEphlu3RgNNX
+         uMAjZPiW+3gXzbc5OB4r6/zloxAWua/s8xbIqYZl4MoGEZyzIYem/SqNr8OFWsrJ/viT
+         6U2BcwCtCdX7nu9liXAQZwzwu0sWbYzK5WCG+2xBlMLIEgCYFt5jQbJBZjr3YBTIuhtt
+         BsKqxNkgV5fNV4v9CT18wXzWlX4iIX6GIj+a5MmZfJPLcdkWAsW8gP+DIf/IzY1xhhfH
+         MPUg==
+X-Gm-Message-State: ACrzQf0fjN0hAVao5bFQFe+DU4m82L/cQoxAajr6FP7ZySvuceQ67DmL
+        jj24/JeB7tAr2g1ZoYofvvKP+3z2iUgD7N+WFes=
+X-Google-Smtp-Source: AMsMyM5V8BXW7dqah3GqHhSSsG94vJvPfUe6JaxahAMdP+MDEZE4ws/G4GLG72/NMS2DS5Hv+K8xCYrqAyWCQSi3v/0=
+X-Received: by 2002:a67:ac09:0:b0:388:70e9:63a0 with SMTP id
+ v9-20020a67ac09000000b0038870e963a0mr2291507vse.56.1663343199105; Fri, 16 Sep
+ 2022 08:46:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a67:f6d9:0:0:0:0:0 with HTTP; Fri, 16 Sep 2022 08:46:38
+ -0700 (PDT)
+Reply-To: maryalbertt00045@gmail.com
+From:   Mary Albert <alassisidemion@gmail.com>
+Date:   Fri, 16 Sep 2022 16:46:38 +0100
+Message-ID: <CAG8=Qaiv8VPxj67PXt14qL-6_xr3KR0Fh5vCqb0JuuQRNrkwMQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The MMC_SDHCI_OF_ASPEED is part of the Aspeed silicon so it makes
-sense to depend on ARCH_ASPEED and for compile testing.
-
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
----
- drivers/mmc/host/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index e63608834411..f324daadaf70 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -157,6 +157,7 @@ config MMC_SDHCI_OF_ARASAN
- 
- config MMC_SDHCI_OF_ASPEED
- 	tristate "SDHCI OF support for the ASPEED SDHCI controller"
-+	depends on ARCH_ASPEED || COMPILE_TEST
- 	depends on MMC_SDHCI_PLTFM
- 	depends on OF && OF_ADDRESS
- 	select MMC_SDHCI_IO_ACCESSORS
 -- 
-2.37.3
-
+Hello,
+how are you?
