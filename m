@@ -2,159 +2,128 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF3105BD497
-	for <lists+linux-mmc@lfdr.de>; Mon, 19 Sep 2022 20:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D28D5BD5D1
+	for <lists+linux-mmc@lfdr.de>; Mon, 19 Sep 2022 22:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbiISSNr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 19 Sep 2022 14:13:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41834 "EHLO
+        id S229757AbiISUrO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 19 Sep 2022 16:47:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbiISSNd (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 19 Sep 2022 14:13:33 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA2111829;
-        Mon, 19 Sep 2022 11:13:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E82F2B81AF4;
-        Mon, 19 Sep 2022 18:13:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1751C43470;
-        Mon, 19 Sep 2022 18:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663611209;
-        bh=efA1CI5eOVyKy7cjXgpsD9blr8sPtb3UFq3HG0Pc0+Y=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X//UfQHzk5E0JvfMhDcQzujwBePorEFPZIFZe94xkAnBPdVNUsGCL4/mTQRdqwYyO
-         vuxSzUzzpl/1LZGUXpozoxbhEMrBrcYXHex8UI4hKNFBoiw106TGwT6U7fC48as71B
-         ysWjORPHuLXU3EtvPz6bKdD4KvCWon6GE5UN9ARVD0JSitJIzTeJRWgJS4WhFwFkeC
-         g7Z9FzMjXpr0QxaP6hgekTYpFkzDvR/uOfWv26P5S2A3llgw1l7WvInXFH/o1ogi8M
-         YQpIJq+DwUBUFwHeFuuz/bU05gacGp26iEPOD7KOz/YycyWId/k7s76YW1XVEw3IdK
-         yUmMIKmXwdTJA==
-From:   Dinh Nguyen <dinguyen@kernel.org>
-To:     jh80.chung@samsung.com
-Cc:     dinguyen@kernel.org, ulf.hansson@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH 2/2] mmc: dw_mmc-pltfm: socfpga: add method to configure clk-phase
-Date:   Mon, 19 Sep 2022 13:13:09 -0500
-Message-Id: <20220919181309.286611-2-dinguyen@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220919181309.286611-1-dinguyen@kernel.org>
-References: <20220919181309.286611-1-dinguyen@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229698AbiISUrN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 19 Sep 2022 16:47:13 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7B314A83A
+        for <linux-mmc@vger.kernel.org>; Mon, 19 Sep 2022 13:47:12 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-349e90aa547so3034397b3.8
+        for <linux-mmc@vger.kernel.org>; Mon, 19 Sep 2022 13:47:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date;
+        bh=2VpmpPOU+YCJvEpT9wllRVbdFOmf6SySHisIVkYbNR0=;
+        b=MxyLPkp2cx9Vw+U01IHnp/7KzFjf8iDt42l5C5qhNipvJtbzOZdY/CD1C5Ri8FU959
+         HgennBpDerr8NkeAK6dgLRMAiXSac7nW9cV2FVMkgu7z6dA7yNPCuypWrRC1mqSoabQa
+         +pkzbuvKjhI/eXROIrF7HzTk+e5N/6YRR42ZAw71GbKee8ZoKq4rWE9BwCYhtRGud4vH
+         2v5EYGC8KSLoHHUIQUB+Vf77IsP5REgjrVFUYHSV2dkRtZbWaHt8Yfw6loWcU0YsnzDh
+         l5ARnKQthRj+lxzrQ0OTpepwFztBsLl3GVTKdwgXW+r+b5FsHXM28W017Cpi2uy0g1QL
+         CEIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=2VpmpPOU+YCJvEpT9wllRVbdFOmf6SySHisIVkYbNR0=;
+        b=bPfLktNgtsBjVGoPwyeLahs66cydjqpVKleXnVybo85btUGGW5mMZAwQ67xlu80IVB
+         nH/WcY5D+nOi7daqQHgTFRjCwQX2PNRTiGv9qLG2m8WzaBHWSENJsL54h1cQtwfof/6z
+         mUVax5RsphX+RLvinzfXxNQAtztPyL1E7UZeGWxtAULNDaXiMoIix6YEiJNhCWVMamTB
+         R/6eBE3eIqO52lPCnZWlilxCXINpLBi1z6tpmYGYWNJ9fnPkMBJFlagXkm/UveZ5fK2r
+         aoeCadoBSp+76CydPZERfx8Xv48GnlwmGn8Y49wgmq2/J9kHvDHPYasKnb+h+1UCerrQ
+         sX2g==
+X-Gm-Message-State: ACrzQf0crfRegze7uM7QCQ4a0WN/ZybwhYJZerbUu1TTynt3MybqcHeR
+        NHv9mM874GmxX68rzNg2oIOLowFZTt1pAsLejhdLSq4EGOm3isGy5hWpoGZzXrxlPewL43RvwY6
+        eTdUEb7ociVC6z2ij1nKA5kfki1oZQjCxZLdsoyNH9eW2H3eW9P4tZKrRpQ==
+X-Google-Smtp-Source: AMsMyM68ZevqarY5r0B78474DGXHr/QLHL34TGinEO0JyK3r+IWQFGYuoeDk4/W10gTO87K+htZuJgo=
+X-Received: from ptf16.nyc.corp.google.com ([2620:0:1003:314:fa14:2d2d:5271:3002])
+ (user=ptf job=sendgmr) by 2002:a81:155:0:b0:345:7ab3:5a18 with SMTP id
+ 82-20020a810155000000b003457ab35a18mr15774365ywb.228.1663620431974; Mon, 19
+ Sep 2022 13:47:11 -0700 (PDT)
+Date:   Mon, 19 Sep 2022 16:46:51 -0400
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.37.3.968.ga6b4b080e4-goog
+Message-ID: <20220919204651.1517899-1-ptf@google.com>
+Subject: [PATCH v2] mmc: sdhci-pci-core: Disable ES for ASUS BIOS on Jasper Lake
+From:   Patrick Thompson <ptf@google.com>
+To:     Linux MMC Development <linux-mmc@vger.kernel.org>
+Cc:     Sangwhan Moon <sxm@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Patrick Thompson <ptf@google.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The clock-phase settings for the SDMMC controller in the SoCFPGA
-Strarix10/Agilex/N5X platforms reside in a register in the System
-Manager. Add a method to access that register through the syscon
-interface.
+Enhanced Strobe (ES) does not work correctly on the ASUS 1100 series of
+devices. Jasper Lake eMMCs (pci_id 8086:4dc4) are supposed to support
+ES. There are also two system families under the series, thus this is
+being scoped to the ASUS BIOS.
 
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+The failing ES prevents the installer from writing to disk. Falling back
+to HS400 without ES fixes the issue.
+
+Signed-off-by: Patrick Thompson <ptf@google.com>
+
 ---
- drivers/mmc/host/dw_mmc-pltfm.c | 68 ++++++++++++++++++++++++++++++++-
- 1 file changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/dw_mmc-pltfm.c b/drivers/mmc/host/dw_mmc-pltfm.c
-index 9901208be797..9e3237c18a9d 100644
---- a/drivers/mmc/host/dw_mmc-pltfm.c
-+++ b/drivers/mmc/host/dw_mmc-pltfm.c
-@@ -17,10 +17,15 @@
- #include <linux/mmc/host.h>
- #include <linux/mmc/mmc.h>
- #include <linux/of.h>
-+#include <linux/mfd/altera-sysmgr.h>
-+#include <linux/regmap.h>
+Changes in v2:
+V1->V2:
+* Only disable ES instead of CQE in its entirety.
+* Target Jasper Lake (JSL)
+* Target ASUS BIOS instead of specific system family
+
+ drivers/mmc/host/sdhci-pci-core.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+index 622b7de96c7f..42406f76f65c 100644
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -893,6 +893,12 @@ static bool glk_broken_cqhci(struct sdhci_pci_slot *slot)
+ 		dmi_match(DMI_SYS_VENDOR, "IRBIS"));
+ }
  
- #include "dw_mmc.h"
- #include "dw_mmc-pltfm.h"
- 
-+#define SYSMGR_SDMMC_CTRL_SET(smplsel, drvsel) \
-+	((((smplsel) & 0x7) << 4) | (((drvsel) & 0x7) << 0))
-+
- int dw_mci_pltfm_register(struct platform_device *pdev,
- 			  const struct dw_mci_drv_data *drv_data)
- {
-@@ -62,9 +67,70 @@ const struct dev_pm_ops dw_mci_pltfm_pmops = {
- };
- EXPORT_SYMBOL_GPL(dw_mci_pltfm_pmops);
- 
-+static int dw_mci_socfpga_priv_init(struct dw_mci *host)
++static bool jsl_broken_hs400es(struct sdhci_pci_slot *slot)
 +{
-+	struct device_node *np = host->dev->of_node;
-+	struct regmap *sys_mgr_base_addr;
-+	u32 clk_phase[2] = {0}, reg_offset;
-+	int i, rc, hs_timing;
-+
-+	rc = of_property_read_variable_u32_array(np, "clk-phase-sd-hs", &clk_phase[0], 2, 0);
-+	if (rc) {
-+		sys_mgr_base_addr =
-+			altr_sysmgr_regmap_lookup_by_phandle(np, "altr,sysmgr-syscon");
-+		if (IS_ERR(sys_mgr_base_addr)) {
-+			pr_err("%s: failed to find altr,sys-mgr regmap!\n", __func__);
-+			return 1;
-+		}
-+	} else
-+		return 1;
-+
-+	of_property_read_u32_index(np, "altr,sysmgr-syscon", 1, &reg_offset);
-+
-+	for (i = 0; i < ARRAY_SIZE(clk_phase); i++) {
-+		switch (clk_phase[i]) {
-+		case 0:
-+			clk_phase[i] = 0;
-+			break;
-+		case 45:
-+			clk_phase[i] = 1;
-+			break;
-+		case 90:
-+			clk_phase[i] = 2;
-+			break;
-+		case 135:
-+			clk_phase[i] = 3;
-+			break;
-+		case 180:
-+			clk_phase[i] = 4;
-+			break;
-+		case 225:
-+			clk_phase[i] = 5;
-+			break;
-+		case 270:
-+			clk_phase[i] = 6;
-+			break;
-+		case 315:
-+			clk_phase[i] = 7;
-+			break;
-+		default:
-+			clk_phase[i] = 0;
-+			break;
-+		}
-+	}
-+	hs_timing = SYSMGR_SDMMC_CTRL_SET(clk_phase[0], clk_phase[1]);
-+	regmap_write(sys_mgr_base_addr, reg_offset, hs_timing);
-+
-+	return 0;
++	return slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_JSL_EMMC &&
++			dmi_match(DMI_BIOS_VENDOR, "ASUSTeK COMPUTER INC.");
 +}
 +
-+static const struct dw_mci_drv_data socfpga_drv_data = {
-+	.init		= dw_mci_socfpga_priv_init,
-+};
-+
- static const struct of_device_id dw_mci_pltfm_match[] = {
- 	{ .compatible = "snps,dw-mshc", },
--	{ .compatible = "altr,socfpga-dw-mshc", },
-+	{ .compatible = "altr,socfpga-dw-mshc", .data = &socfpga_drv_data, },
- 	{ .compatible = "img,pistachio-dw-mshc", },
- 	{},
- };
+ static int glk_emmc_probe_slot(struct sdhci_pci_slot *slot)
+ {
+ 	int ret = byt_emmc_probe_slot(slot);
+@@ -901,9 +907,13 @@ static int glk_emmc_probe_slot(struct sdhci_pci_slot *slot)
+ 		slot->host->mmc->caps2 |= MMC_CAP2_CQE;
+ 
+ 	if (slot->chip->pdev->device != PCI_DEVICE_ID_INTEL_GLK_EMMC) {
+-		slot->host->mmc->caps2 |= MMC_CAP2_HS400_ES;
+-		slot->host->mmc_host_ops.hs400_enhanced_strobe =
+-						intel_hs400_enhanced_strobe;
++		if (jsl_broken_hs400es(slot)) {
++			slot->host->mmc->caps2 |= MMC_CAP2_HS400;
++		} else {
++			slot->host->mmc->caps2 |= MMC_CAP2_HS400_ES;
++			slot->host->mmc_host_ops.hs400_enhanced_strobe =
++							intel_hs400_enhanced_strobe;
++		}
+ 		slot->host->mmc->caps2 |= MMC_CAP2_CQE_DCMD;
+ 	}
+ 
 -- 
-2.25.1
+2.37.3.968.ga6b4b080e4-goog
 
