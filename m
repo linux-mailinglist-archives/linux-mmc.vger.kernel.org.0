@@ -2,86 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65FED5E745D
-	for <lists+linux-mmc@lfdr.de>; Fri, 23 Sep 2022 08:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEF795E7556
+	for <lists+linux-mmc@lfdr.de>; Fri, 23 Sep 2022 10:02:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229785AbiIWGu2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 23 Sep 2022 02:50:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53724 "EHLO
+        id S231183AbiIWICS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 23 Sep 2022 04:02:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbiIWGu1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 23 Sep 2022 02:50:27 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 407511181C8;
-        Thu, 22 Sep 2022 23:50:25 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 28N6oK94072900;
-        Fri, 23 Sep 2022 01:50:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1663915820;
-        bh=6QIVtrn9JTu7sNxwfqOYqvv3q8bxYNWI4ye9ltUKYy0=;
-        h=From:To:CC:Subject:Date;
-        b=VKsoIzTlivKOtvZ/15QdsD+KCQl3GWrBdlvx/tXXGwTL6wgx06AnwI7AxWNzN6Lcg
-         WyvtfKn5b7oT5Vm/DdVMenieLKEQiTHnVZNmHVJQo+978Sf0qxytRm4eDvntZY065v
-         2UOknDhDTJLo5Wd7w8npUcOcsYH/elZNmbTWYij8=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 28N6oKlJ122143
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 23 Sep 2022 01:50:20 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Fri, 23
- Sep 2022 01:50:20 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Fri, 23 Sep 2022 01:50:20 -0500
-Received: from a0393678ub.dal.design.ti.com (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 28N6oHmO006470;
-        Fri, 23 Sep 2022 01:50:18 -0500
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     <linux-mmc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>
-Subject: [PATCH] MAINTAINERS: Add Vignesh as maintainer of TI SDHCI OMAP DRIVER
-Date:   Fri, 23 Sep 2022 12:20:05 +0530
-Message-ID: <20220923065005.20062-1-kishon@ti.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S231152AbiIWICM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 23 Sep 2022 04:02:12 -0400
+Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03FE12AECF
+        for <linux-mmc@vger.kernel.org>; Fri, 23 Sep 2022 01:02:10 -0700 (PDT)
+Received: by mail-yb1-xb44.google.com with SMTP id 198so16131941ybc.1
+        for <linux-mmc@vger.kernel.org>; Fri, 23 Sep 2022 01:02:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=/fuJxEvQ8hWJBVA+YQn5WV9w4flp3A4j0tI4rSSd1Ck=;
+        b=cfIxv64ssPCAsFkiNHHMFgdJK+aS3ek+iLqUHDY6WnbjhiOIdSnQ44wWRghl+HhmM+
+         ZgInIkmqqBXRmr0iLX3qhhwZFhR/JPfzleN6mm2nw1mLuOcoAzAHWkBFiHwZ7tqjMZgF
+         PsKRUIHjUUQqGprd2uONY74u1xE5BTvss8qSBbNp7Z+Aq70BRE20eriiNGYVyBXq+Hsq
+         b5rkcgTekY6IxWT4nPGAarRMzqwaFzSMb85FKRftobSoeGzks+ft+jlIfNWEogJG+3AZ
+         NOSobbcfUtAgxZtAvcYwJWnSzI9bh6dTNyppITL3cUvgwoUGwW3iGN9w6X1aRyfg5wnI
+         lcKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=/fuJxEvQ8hWJBVA+YQn5WV9w4flp3A4j0tI4rSSd1Ck=;
+        b=04dL1WKx9QXVje35WyTy29onHTBxHOruofQ5u384sjLk7o1u+pWWaNT60ktgu9/As7
+         d0CCSpgkRlIFAx3wR+/uM8vClTwy8VLo/M12uTDQQXGXeCjYrKyccQFDlLec1lB+RO6P
+         q1aRsA9091cFJYot2d346xbUUDz0zEzEDlmuJDqBKKBhv+b33qOxrdXMHdrq8tpfMORm
+         5IoQqijmNLMPh7u29899Mmotveyap0LqAqxT99zHG2eDJmQzIjvRZRVqHbNJGcqgEG2w
+         nInDvo7+00qth8zWaPRw9t0EiVMt5u8K3psGKdzxhZUuzxF4xEp5se2T9s/pqWc+TNn/
+         e4uQ==
+X-Gm-Message-State: ACrzQf0RX6Mrq4N7KwY0UmHaskKHTPkPEwAlQi8dIy7nw5haM3Ul3n29
+        ygzbCkfQ5OI3WdEdQmYE2DC6NNyS/PzOAhlJE7A=
+X-Google-Smtp-Source: AMsMyM4xZCf+qxLt2Ywm13M7JqasT1TK3BugpgoPjyQSFw4MK8Zlc9YURZmRkEz6rKorJr4UyEvKaVmMnfEZ87d4MnU=
+X-Received: by 2002:a25:2f12:0:b0:6b3:e5e4:aeeb with SMTP id
+ v18-20020a252f12000000b006b3e5e4aeebmr7800323ybv.22.1663920129070; Fri, 23
+ Sep 2022 01:02:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a25:3256:0:0:0:0:0 with HTTP; Fri, 23 Sep 2022 01:02:08
+ -0700 (PDT)
+Reply-To: seybasaniel@gmail.com
+From:   Seyba Daniel <bellomouse33@gmail.com>
+Date:   Fri, 23 Sep 2022 10:02:08 +0200
+Message-ID: <CAC0qSW7sc6GUJtHgf3r23GFt653_aZzwewRn531NjpkWamAU7A@mail.gmail.com>
+Subject: HELLO,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.2 required=5.0 tests=BAYES_95,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b44 listed in]
+        [list.dnswl.org]
+        *  3.0 BAYES_95 BODY: Bayes spam probability is 95 to 99%
+        *      [score: 0.9694]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [bellomouse33[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [bellomouse33[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add Vignesh Raghavendra as maintainer of TI SDHCI OMAP DRIVER.
+I urgently seek your service to represent me in investing in
+your region / country and you will be rewarded for your service without
+affecting your present job with very little time invested in it, which you will
+be communicated in details upon response.
 
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+My dearest regards
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c368f5aa7429..ffad3f1dfe9c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18302,7 +18302,7 @@ S:	Maintained
- F:	drivers/mmc/host/sdhci-spear.c
- 
- SECURE DIGITAL HOST CONTROLLER INTERFACE (SDHCI) TI OMAP DRIVER
--M:	Kishon Vijay Abraham I <kishon@ti.com>
-+M:	Vignesh Raghavendra <vigneshr@ti.com>
- L:	linux-mmc@vger.kernel.org
- S:	Maintained
- F:	drivers/mmc/host/sdhci-omap.c
--- 
-2.17.1
-
+Seyba Daniel
