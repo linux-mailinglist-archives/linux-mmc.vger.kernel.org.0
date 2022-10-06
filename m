@@ -2,92 +2,135 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AD115F6D98
-	for <lists+linux-mmc@lfdr.de>; Thu,  6 Oct 2022 20:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FE045F6DDA
+	for <lists+linux-mmc@lfdr.de>; Thu,  6 Oct 2022 21:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229610AbiJFSkg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 6 Oct 2022 14:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43742 "EHLO
+        id S231180AbiJFTF2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 6 Oct 2022 15:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbiJFSkf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 6 Oct 2022 14:40:35 -0400
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE9D8357E3;
-        Thu,  6 Oct 2022 11:40:33 -0700 (PDT)
-Received: by mail-pf1-f180.google.com with SMTP id v186so2822034pfv.11;
-        Thu, 06 Oct 2022 11:40:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z2pht9RoqtyP284j+C1cC7Lqj7p0xiPE6PS482Bfdnw=;
-        b=EaMiFdi95Tagr/hFleFBTrERXnt12mcZfJ1pkM5nibyPJ/SYTPQo6LrVgyyz4Kyw4f
-         r64veENn+c/AbskZGcrzfxh1gAY4tuJKWKz9BbG+7EwAzmh7mqkfL6XNcGm0JDl7MdiK
-         yx8aOKWonsA7xhPK3eEXeRhQ6enMTRmMmJg14f0wN2Wr3UY0Hzbh0aS9NdnPCkEktHlX
-         zDnRKEb2nzaQWgapJnljklHc5Z37KDZGtavqWvuYpb1f2izUADc04rqBsFDzJSBCxwbo
-         6YbF28iKIfiIZsfx+OY7a+FXpzA0iMQqsuyCL6Jpe3F31JLOdOY8ZwVtSriue+PPuH8a
-         l6qA==
-X-Gm-Message-State: ACrzQf1SQl5z73SJnGNs99IEOxtTeoI4xU2w4HgOPmQZ/5RxZPytlTVq
-        NqSKUgpd9tkJdBtOvzVZunA=
-X-Google-Smtp-Source: AMsMyM7O6ZwP1XgoQZ4RryLenvCTr4zIfNbhwRmXnxmeC6wuX+8NTfy6f3FcAAjd7qKs80T2PObciA==
-X-Received: by 2002:a62:ee17:0:b0:55b:b0d:bc9f with SMTP id e23-20020a62ee17000000b0055b0b0dbc9fmr1228763pfi.39.1665081632917;
-        Thu, 06 Oct 2022 11:40:32 -0700 (PDT)
-Received: from ?IPV6:2620:15c:211:201:1d3c:9be0:da66:6729? ([2620:15c:211:201:1d3c:9be0:da66:6729])
-        by smtp.gmail.com with ESMTPSA id x22-20020a170902821600b0017a0668befasm12537245pln.124.2022.10.06.11.40.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Oct 2022 11:40:32 -0700 (PDT)
-Message-ID: <51f62009-777f-8958-8d28-b29e64bbff09@acm.org>
-Date:   Thu, 6 Oct 2022 11:40:29 -0700
+        with ESMTP id S232083AbiJFTFM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 6 Oct 2022 15:05:12 -0400
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE90812D28
+        for <linux-mmc@vger.kernel.org>; Thu,  6 Oct 2022 12:05:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=eg3lq46r5Z1oVAOyVdCgPqNupNG
+        GqPqiJ2NAOmWzYE4=; b=CKiVp7nuR8eANSRLaQWiQL3xICM9Gjji+eu6NHUcbBn
+        pQNkVK8RVTdZH542a+hTT86vET3IVmCiGX8NbIg30NlV1c0yYfo/g0+2Mcq2MYn/
+        ACuC3flVWla1tOi3XQhef1uwTA6TTKp/dbg0eqJgznS5Qsd00yy7Y501aLfPSOPo
+        =
+Received: (qmail 1467487 invoked from network); 6 Oct 2022 21:05:01 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 6 Oct 2022 21:05:01 +0200
+X-UD-Smtp-Session: l3s3148p1@ZTGNXmLqkO4ucrRL
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH RFC 0/6] mmc: renesas_sdhi: add support for DMA end irqs
+Date:   Thu,  6 Oct 2022 21:04:46 +0200
+Message-Id: <20221006190452.5316-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [RFC PATCH 01/21] block: add and use init tagset helper
-Content-Language: en-US
-To:     Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Cc:     "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>
-References: <20221005032257.80681-1-kch@nvidia.com>
- <20221005032257.80681-2-kch@nvidia.com>
- <6fee2d7a-7fd1-73ee-2911-87a4ed3e8769@opensource.wdc.com>
- <CAPDyKFpBpiydQn+=24CqtaH_qa3tQfN2gQSiUrHCjnLSuy4=Kg@mail.gmail.com>
- <e0ea0b0a-5077-de37-046f-62902aca93b6@acm.org>
- <a7e4fe12-64f2-3164-d675-26310ac07c9e@nvidia.com>
- <7e9ce6b2-70c8-cf85-95ab-de09090db64d@nvidia.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <7e9ce6b2-70c8-cf85-95ab-de09090db64d@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 10/6/22 11:13, Chaitanya Kulkarni wrote:
-> I will trim down the argument list with the most common arguments
-> and keep it to max 4-5 mandatory arguments identical to what we
-> have done this for blk_next_bio() and bio_alloc_bioset() [1]
-> where mandatory arguments are part of the initialization API
-> than repeating the code all the in the tree, that creates
-> maintenance work of treewide patches.
-> 
-> Also, instead of doing tree wide change in series I'll start small
-> and gradually add more patches over time.
-> 
-> This definitely adds a more value to the code where code is not
-> repeated for mandatory arguments, which are way less than 9.
+Motivation for this series from patch 5:
 
-Hmm ... I'm not convinced that the approach outlined above will result
-in a valuable patch series. I think my objections also apply to the
-approach outlined above.
+===
+So far, we have been relying on access_end interrupts only to mark DMA
+transfers as done implying that DMA end interrupts have occurred by then
+anyhow. On some SoCs under some conditions, this turned out to be not
+enough. So, we enable DMA interrupts as well and make sure that both
+events, DMA irq and access_end irq, have happened before finishing the
+DMA transfer.
+===
 
-Bart.
+The first two patches are cleanups. For the rest, the basis were BSP
+patches, but they have been refactored heavily, so they look very
+different now:
+
+* self-contained
+  except for the new dma_irq callback which is for the TMIO core, all
+  other code is self-contained in renesas_sdhi_internal_dmac now.
+* concise
+  Less new members for the existing structs, also code duplication was
+  avoided by moving code to more suitable locations
+* replaced the spinlock with atomic bit operators
+* used quirk mechanism for the old INFO1 layout
+
+Tested on a Salvator-X board with M3-W (r8a77960) and a Salvator-XS
+board with M3-N (r8a77965). No regression encountered in functionality
+and performance. A branch can be found here:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/sdhi/upport_dmaend
+
+
+Here are excerpts of a log when booting the M3-N with patch 6 applied to
+show that all combinations of incoming irqs are handled:
+
+=== DMA first, Access second ===
+
+          <idle>-0       [000] d.h..     0.505454: renesas_sdhi_internal_dmac_dma_irq: DMA end
+          <idle>-0       [000] d.h..     0.505496: renesas_sdhi_internal_dmac_dataend_dma: Access end: 0
+          <idle>-0       [000] ..s..     0.505498: renesas_sdhi_internal_dmac_complete_tasklet_fn: Tasklet
+
+=== Access first, DMA second ===
+
+     kworker/0:2-42      [000] d.h..     0.510603: renesas_sdhi_internal_dmac_dataend_dma: Access end: 0
+     kworker/0:2-42      [000] d.h..     0.510605: renesas_sdhi_internal_dmac_dma_irq: DMA end
+     kworker/0:2-42      [000] ..s..     0.510606: renesas_sdhi_internal_dmac_complete_tasklet_fn: Tasklet
+
+=== Access first, Simulated DMA second ===
+
+          <idle>-0       [000] d.H..     0.510635: renesas_sdhi_internal_dmac_dataend_dma: Access end: 0
+          <idle>-0       [000] ..s..     0.510637: renesas_sdhi_internal_dmac_issue_tasklet_fn: Simulated DMA end
+          <idle>-0       [000] ..s..     0.510638: renesas_sdhi_internal_dmac_complete_tasklet_fn: Tasklet
+
+(I have never seen Simulated DMA (= CMD error happened) first, but it
+should be handled like regular DMA end as well(tm).)
+
+=== Access first, no DMA end needed because of DATA error (EILSEQ) ===
+
+          <idle>-0       [000] d.H..     0.510894: renesas_sdhi_internal_dmac_dataend_dma: Access end: -84
+          <idle>-0       [000] ..s..     0.510896: renesas_sdhi_internal_dmac_complete_tasklet_fn: Tasklet
+
+===
+
+I think this is as far as I can reach alone. I'd love to get review
+comments and further testing. Shimoda-san, can you kindly ask the BSP
+team to do further testing?
+
+Thank you everyone and happy hacking,
+
+   Wolfram
+
+
+Wolfram Sang (6):
+  mmc: renesas_sdhi: remove accessor function for internal_dmac
+  mmc: renesas_sdhi: improve naming of DMA struct
+  mmc: tmio: add callback for dma irq
+  mmc: renesas_sdhi: add quirk for broken register layout
+  mmc: renesas_sdhi: take DMA end interrupts into account
+  DEBUG mmc: renesas_sdhi: debug end_flags for DMA
+
+ drivers/mmc/host/renesas_sdhi.h               | 14 ++-
+ drivers/mmc/host/renesas_sdhi_core.c          |  2 +-
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c | 86 ++++++++++++-------
+ drivers/mmc/host/tmio_mmc.h                   |  1 +
+ drivers/mmc/host/tmio_mmc_core.c              |  3 +
+ 5 files changed, 72 insertions(+), 34 deletions(-)
+
+-- 
+2.35.1
+
