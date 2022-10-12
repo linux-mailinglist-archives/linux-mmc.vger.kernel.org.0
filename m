@@ -2,94 +2,90 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 583AA5FCB27
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Oct 2022 20:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC7F25FCB44
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Oct 2022 21:03:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbiJLS4H (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 12 Oct 2022 14:56:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36736 "EHLO
+        id S229591AbiJLTDv convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 12 Oct 2022 15:03:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbiJLSzm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 12 Oct 2022 14:55:42 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB81B9783
-        for <linux-mmc@vger.kernel.org>; Wed, 12 Oct 2022 11:55:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=k1; bh=6V+6UcZTXGX2VLQKCnVLZ2qcgTY4
-        LWkSv1U+UTAcveo=; b=Jwz4z6h8FHe+Y/VXnrSr4MEOJOVva8dpxcnDYz7WZ8jw
-        x9HPSPjF0xUSOwayweDzi6fwzU3reCoxQHH5ZXj0lXyHecOdzaOYwPrHeE7/mEj5
-        19Ud89uJQA/9RXoEHT8yKjzjsaE9gS60eSzDHbCogqQ2+Let3SAe+YKa5NMaKOo=
-Received: (qmail 814267 invoked from network); 12 Oct 2022 20:55:21 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 12 Oct 2022 20:55:21 +0200
-X-UD-Smtp-Session: l3s3148p1@ItVA79rqLqQgAwDtxxN7ABspc7EPVowl
-Date:   Wed, 12 Oct 2022 20:55:21 +0200
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: mmc: renesas,sdhi: Document R-Car V4H
- support
-Message-ID: <Y0cNmVylLPh0XLPO@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        with ESMTP id S229965AbiJLTDj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 12 Oct 2022 15:03:39 -0400
+Received: from mail3.swissbit.com (mail3.swissbit.com [176.95.1.57])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8906D2CC97
+        for <linux-mmc@vger.kernel.org>; Wed, 12 Oct 2022 12:03:38 -0700 (PDT)
+Received: from mail3.swissbit.com (localhost [127.0.0.1])
+        by DDEI (Postfix) with ESMTP id 7620A46377A;
+        Wed, 12 Oct 2022 21:03:36 +0200 (CEST)
+Received: from mail3.swissbit.com (localhost [127.0.0.1])
+        by DDEI (Postfix) with ESMTP id 6383B4636BA;
+        Wed, 12 Oct 2022 21:03:36 +0200 (CEST)
+X-TM-AS-ERS: 10.149.2.42-127.5.254.253
+X-TM-AS-SMTP: 1.0 ZXguc3dpc3NiaXQuY29t Y2xvZWhsZUBoeXBlcnN0b25lLmNvbQ==
+X-DDEI-TLS-USAGE: Used
+Received: from ex.swissbit.com (unknown [10.149.2.42])
+        by mail3.swissbit.com (Postfix) with ESMTPS;
+        Wed, 12 Oct 2022 21:03:36 +0200 (CEST)
+Received: from sbdeex04.sbitdom.lan (10.149.2.42) by sbdeex04.sbitdom.lan
+ (10.149.2.42) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.9; Wed, 12 Oct
+ 2022 21:03:35 +0200
+Received: from sbdeex04.sbitdom.lan ([fe80::2047:4968:b5a0:1818]) by
+ sbdeex04.sbitdom.lan ([fe80::2047:4968:b5a0:1818%9]) with mapi id
+ 15.02.1118.009; Wed, 12 Oct 2022 21:03:35 +0200
+From:   =?iso-8859-1?Q?Christian_L=F6hle?= <CLoehle@hyperstone.com>
+To:     Avri Altman <Avri.Altman@wdc.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-References: <7ee7fdb6a46fc9f0e50c2b803ede6b4b2fdfa450.1665558324.git.geert+renesas@glider.be>
+        Linux MMC List <linux-mmc@vger.kernel.org>
+Subject: [PATCHv2 0/2] Introduce custom sanitize timeout
+Thread-Topic: [PATCHv2 0/2] Introduce custom sanitize timeout
+Thread-Index: AdjebPBvxn8zfevZRzeWVLD6WuLesg==
+Date:   Wed, 12 Oct 2022 19:03:35 +0000
+Message-ID: <2633a557a76c48e1b5785eba5a29e207@hyperstone.com>
+Accept-Language: en-US, de-DE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.242.2.2]
+Content-Type: text/plain;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="N4BRG1+r5rYw7aNW"
-Content-Disposition: inline
-In-Reply-To: <7ee7fdb6a46fc9f0e50c2b803ede6b4b2fdfa450.1665558324.git.geert+renesas@glider.be>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+X-TMASE-Version: DDEI-5.1-9.0.1002-27198.002
+X-TMASE-Result: 10-1.016700-10.000000
+X-TMASE-MatchedRID: 9886Ub8IUalINlHl+WuFyrPx3rO+jk2QTSz0JdEAJbQHNq0HeN2LVOS9
+        slBM8vbuAxKfrdkYxYYU/FrOclzESho/F4wweNBuuce7gFxhKa19LQinZ4QefIFD/hZ+jeimnYH
+        vJGPl9zkd+FalTlP/BGrz/G/ZSbVq+gtHj7OwNO0PXZPurZ0hS0LJSy9W3b468fzBJgutpzVs8+
+        Rbjz5V4xAI+LoLjJdS
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+X-TMASE-INERTIA: 0-0;;;;
+X-TMASE-XGENCLOUD: 0ee9e13a-5310-4882-a3f1-76addddb8ea5-0-0-200-0
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+Sanitize operation has been shown to take longer on some cards.
+Refactor switch calls to include a timeout and let the user input
+a timeout.
 
---N4BRG1+r5rYw7aNW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+v2: Make refactor patch usable on its own
 
-On Wed, Oct 12, 2022 at 09:05:56AM +0200, Geert Uytterhoeven wrote:
-> Document support for the SD Card/MMC Interface on the Renesas R-Car V4H
-> (R8A779G0) SoC.
->=20
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Christian Loehle (2):
+  mmc-utils: Refactor switch to allow custom timeout
+  mmc-utils: Allow for custom sanitize timeout
 
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+ mmc.c      |  2 +-
+ mmc_cmds.c | 90 +++++++++++++++++++++++++++++++++++-------------------
+ 2 files changed, 60 insertions(+), 32 deletions(-)
 
+-- 
+2.37.3
 
---N4BRG1+r5rYw7aNW
-Content-Type: application/pgp-signature; name="signature.asc"
+Hyperstone GmbH | Reichenaustr. 39a  | 78467 Konstanz
+Managing Director: Dr. Jan Peter Berns.
+Commercial register of local courts: Freiburg HRB381782
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmNHDZkACgkQFA3kzBSg
-KbZdKw/8Dc2rL1pG3gX39oKoFkXn7EswueTAmuOZjAHaRK4QSIR4tyALQSfncySE
-Be1sLBzc5kXBsak1ku88SbEsKbzUmA9wO9LUKJ+VfNU/BWcT+M7Illr4jEdk+3uz
-uV1youFr4JbYtXnIEXCA/q4xI2OJCkQTkFW0vvm/E8kD8KkrvJk4/aGmmvyO4Ox3
-egfGH5BYrOr7XC6jVs3x0IFfgk0Sy3hD828QiHz9YdUrgiLnUUgKV6ftxvM/7iUD
-2y5LKJHsuc3WjjkDUgxslRjBqey/Z/PPmr+O5ETELpKjFYj/c5jxa+zARA7uqTxl
-FfFd3cdgXUTEmYG+akhJwiczk91h2ojSP6vLLjRzxKQM8QKNtd6ZlzABgOeOvKWA
-yQ6ptG5F3pzoDp7z5YgHylTWK9oaxec7pZcaY8YH3+iSX0X7o5UEWDLV3i/85etR
-62ZfnjCvVD5WDy2KCS3U5DMeAmpNPjBP1RQfidzMhRco1SCNWKj2MRLaLtwyIlxp
-OqPun/g5pBjP5ATclc+oBsrs20QGoEq2gHhzLgfRDZSoqxCxTtaxmOK54+aDBWXc
-Q4FagE7rC0T7m3M3jVjFei1QUR4OTdvmE9Nl1yUwRQq34vxJFIGioZEyuWywtUUu
-MsYO5V7AerOnBHVGQ3TZuUBMJ38cSSuU+lCf1/bdtgDuJkaa9DA=
-=Y973
------END PGP SIGNATURE-----
-
---N4BRG1+r5rYw7aNW--
