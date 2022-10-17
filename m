@@ -2,80 +2,79 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F061600DCE
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Oct 2022 13:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09587600DCA
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Oct 2022 13:33:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230051AbiJQLdC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Oct 2022 07:33:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39482 "EHLO
+        id S229973AbiJQLdB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Oct 2022 07:33:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230157AbiJQLcu (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Oct 2022 07:32:50 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52502FCC
-        for <linux-mmc@vger.kernel.org>; Mon, 17 Oct 2022 04:32:49 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id l1-20020a17090a72c100b0020a6949a66aso10702150pjk.1
-        for <linux-mmc@vger.kernel.org>; Mon, 17 Oct 2022 04:32:49 -0700 (PDT)
+        with ESMTP id S230165AbiJQLcy (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Oct 2022 07:32:54 -0400
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6347FFCC
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Oct 2022 04:32:53 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id h185so10167885pgc.10
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Oct 2022 04:32:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3JOlj8bYWsPP5pFO2e/L3uO1bqgZbmSulQJiNE3IFc4=;
-        b=tanG5tP9PXFhE4il2quYlWC20153Alxalmr1lUPDqkstlVNZ151jvnYCrVsO57+/wU
-         mAVQU+NkqriIG5vTRbdZJjQtw2CRjaWdmQGXE4UnJxLFSHlsmvAznz6zku9d/hSYII4s
-         LcZ+KEDxmdjb8sv4dAppFepbg8JLr/cOXVWUdqbLuoenu3ksogIWYTmkhwFz3q8fYERQ
-         HGcngnzRZz7lHHk0e+PSryEzTD8FsPQhh7DBqyg9/wKOdcGXPMyghbAFxZmlbwtTSYIB
-         qKzHEqzlEcDt9UGZq01Ai8j2iRW+pX98jGmsi57WFz/JpOr3H0hwnqd7b3fGt5pPAAj6
-         Uo9Q==
+        bh=Rrl2OknZsaWiUDo+xm2A7h8HEBYe0c3y7aA5IiC4CCA=;
+        b=jhB+41Qw6gWGX6XVB2dXsAneYHLfN2fk727EVAP3U7CqiRrLU+78WvWnC02wXgVI2x
+         QCEXvet4qoPcNEeKNwdc18k2GuUUt2yP0pBZzeXchAUTMUKld+B7eTzu8mrOrPwcTYxv
+         cNsgRFAASvvzKaCYnEPIF3/ZJoB2k4SYWRfSuVB8R3XijpixCcTD4g9ID0hVXFes96ag
+         Vu4mx0aE7pE/w2E6WwhTz4UEh36a87HUspEwUsXsFMfN0xUlCcIp60zPfuyNVUQ3g2BC
+         SPQrpyckwMQMAm2PenZLHQZOFhgma9QHqPQFS3T89DlrzwFJSQgLQaUKJzI9yyBWiGO0
+         2TSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3JOlj8bYWsPP5pFO2e/L3uO1bqgZbmSulQJiNE3IFc4=;
-        b=J0izrQE4PtfvwcoSZfnUqcUIuoz6Fye+e+J7yvZo7exqnsLdaF4MKEHMPXqZwGqJCv
-         Sb45633hMZd2gr1Mak5K4v8vjM1Ad+RPtSMSj2dApAXJ7A0/eW3wbFlmTr2oV0TVVdhz
-         L8ch43vW09C6bsX6oxfWPvcWbL7p2Ko6fpoKyG/W5OCT0FUNKsqDNOFLBjINW00LyqYO
-         /FaVngjTho2NiGgxy+Wl4M6JvjFsn+M5zOVx5KZBnOEwfKszRbRVfTkQULzA9qrICn00
-         /3oIUzPf3GSCTvOde3uW1uaH2eIJfO5lbROwsJw/7UMd+IuVyVYsvH3vvKdFZ1q/pFmB
-         Xibw==
-X-Gm-Message-State: ACrzQf2CAPXCFk+Zaao7FIExQhvaFOpqkqF4XkT5gxFyqfrndjpypKvE
-        l6lE3k7NAKZBIFVL6MbTKXMDPKPJcvphIyoXK4UA1w==
-X-Google-Smtp-Source: AMsMyM6DVCCxYbdzUQ9pRy59RBKHhtMdB9NlsZmORWScZ2ZRAGAcMlVaTBDd6xAiy1x88sqPanFTVKPnBuCeEi1FPFI=
-X-Received: by 2002:a17:902:d714:b0:17f:5813:1df4 with SMTP id
- w20-20020a170902d71400b0017f58131df4mr11992118ply.148.1666006368842; Mon, 17
- Oct 2022 04:32:48 -0700 (PDT)
+        bh=Rrl2OknZsaWiUDo+xm2A7h8HEBYe0c3y7aA5IiC4CCA=;
+        b=mjStWF1sgMu1K8DtEesoulqejBcPHGrwHNyVotLFMp8vwIj3TLki8E9JAoTsBMWxYu
+         fqkDvLrRwG26ifjZvjG+OmxbxlO4wsDAxbOkaQyB7rHq6vDPLf2+CQnOuGCcrXo5q4sn
+         dLERDa/ou0ryhFVKdHtUQ+qveQgP3/9nQLCMxsn0zcxFzi9SsNwQoOTiD1DVJgQDRtSZ
+         DVvXjvAO6R8Jh8oozYGgmUDd6IG6H98Sx5ASgbzqiw8H89kvpnB7ohQRot1hmgu3L+9p
+         4lfsDCJ33NL6bwvcbhUr01K9JbPrBrFJI9P/7QEMaHp7lscFZZy3fzz7T4KBrVskS411
+         TzYA==
+X-Gm-Message-State: ACrzQf0V+sF0kNoMs0HPiOlvL2Pm/L7vsO0aZOQUUMG+z8nxB91TmzZA
+        84JU0Pjf43yNgdAqxuev0AqTBgbm4KLDsktpEdRINg==
+X-Google-Smtp-Source: AMsMyM4OqEFxEYjNvU2z31snfcvpPzLkTeQxsTaaLdl0ZuMkoL07Y1cJeXe9yI6lV13pcRZ5g3xtZBX5Oyvl+6U7d6E=
+X-Received: by 2002:a63:1612:0:b0:461:4180:d88b with SMTP id
+ w18-20020a631612000000b004614180d88bmr10597542pgl.434.1666006372909; Mon, 17
+ Oct 2022 04:32:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221010101138.295332-1-peng.fan@oss.nxp.com>
-In-Reply-To: <20221010101138.295332-1-peng.fan@oss.nxp.com>
+References: <7ee7fdb6a46fc9f0e50c2b803ede6b4b2fdfa450.1665558324.git.geert+renesas@glider.be>
+In-Reply-To: <7ee7fdb6a46fc9f0e50c2b803ede6b4b2fdfa450.1665558324.git.geert+renesas@glider.be>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 17 Oct 2022 13:32:11 +0200
-Message-ID: <CAPDyKFqDcrr0DY3rcEer2cJcHB-ZcOLP7KO=Srg0gHLdcWWuSg@mail.gmail.com>
-Subject: Re: [PATCH] dt-binding: mmc: fsl-imx-esdhc: update i.MX8DXL compatible
-To:     "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Date:   Mon, 17 Oct 2022 13:32:15 +0200
+Message-ID: <CAPDyKFqjq5YwXwxmvyOWwqiXYPrfBgp-yBOVLH1ekF86fihZXA@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: mmc: renesas,sdhi: Document R-Car V4H support
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 10 Oct 2022 at 12:10, Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
+On Wed, 12 Oct 2022 at 09:06, Geert Uytterhoeven
+<geert+renesas@glider.be> wrote:
 >
-> From: Peng Fan <peng.fan@nxp.com>
+> Document support for the SD Card/MMC Interface on the Renesas R-Car V4H
+> (R8A779G0) SoC.
 >
-> i.MX8DXL is compatible with i.MX8QXP, so update binding doc.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
 Applied for next, thanks!
 
@@ -84,34 +83,21 @@ Uffe
 
 
 > ---
->  Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> index 29339d0196ec..ea06c1fd0862 100644
-> --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> @@ -50,11 +50,11 @@ properties:
->            - const: fsl,imx8mm-usdhc
->        - items:
+> diff --git a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> index 0424b06cb6551e00..7bfb10c6256602e2 100644
+> --- a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> @@ -64,6 +64,7 @@ properties:
 >            - enum:
-> +              - fsl,imx8dxl-usdhc
->                - fsl,imx8qm-usdhc
->            - const: fsl,imx8qxp-usdhc
->        - items:
->            - enum:
-> -              - fsl,imx8dxl-usdhc
->                - fsl,imx8mm-usdhc
->                - fsl,imx8mn-usdhc
->                - fsl,imx8mp-usdhc
-> @@ -71,6 +71,7 @@ properties:
->          deprecated: true
->        - items:
->            - enum:
-> +              - fsl,imx8dxl-usdhc
->                - fsl,imx8qm-usdhc
->            - const: fsl,imx8qxp-usdhc
->            - const: fsl,imx7d-usdhc
+>                - renesas,sdhi-r8a779a0  # R-Car V3U
+>                - renesas,sdhi-r8a779f0  # R-Car S4-8
+> +              - renesas,sdhi-r8a779g0  # R-Car V4H
+>            - const: renesas,rcar-gen4-sdhi # R-Car Gen4
+>
+>    reg:
 > --
-> 2.37.1
+> 2.25.1
 >
