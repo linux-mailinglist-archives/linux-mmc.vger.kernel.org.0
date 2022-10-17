@@ -2,78 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01573600DCD
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Oct 2022 13:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 662B6600DD8
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Oct 2022 13:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbiJQLdB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Oct 2022 07:33:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39516 "EHLO
+        id S230129AbiJQLdf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 17 Oct 2022 07:33:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230169AbiJQLc5 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Oct 2022 07:32:57 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C05D2FCC
-        for <linux-mmc@vger.kernel.org>; Mon, 17 Oct 2022 04:32:56 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id z20so10470744plb.10
-        for <linux-mmc@vger.kernel.org>; Mon, 17 Oct 2022 04:32:56 -0700 (PDT)
+        with ESMTP id S230134AbiJQLdF (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Oct 2022 07:33:05 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46591E3E6
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Oct 2022 04:33:03 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 129so10189302pgc.5
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Oct 2022 04:33:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5bdK9mneUffg7vrl8/7bCDtFIGEs6sGRdqhjkxulvnc=;
-        b=aFS7wO1yw0ZlKRkCRUv69DVp98zT90OREaESy05Z8abdYUfBmpS9/hYKI4pPqctfuf
-         T1LuZYjcFLspJztThyXrgw8/1hMigzJ4xRLCbTEazWcSoGwB3tVFv9EJVb3nPnGr0SdA
-         MFTbKZ4GvNv9bcHqh4vt845Jz8gFDwqznDyPLAstVh9nb1JBcTb1MGKaqj8hO3cZQ0Yf
-         LQnywhV0c+ioGy6hHkD6e4rHfsGPkSBGMDmrAuOwKjSi48tMII6SZU6aEpzzRmkAz/pG
-         ME4qf4+VbWm1pl0IDXqkWPt+teI62Ma84X5sHoO8hj/2DOYiAZMwjhu5hq1cm5dxYld9
-         hVAg==
+        bh=KK+EXo53xH3teNZkrCGFVk1lVgEFpbXtxVfs298qg8I=;
+        b=HTuAuT+sap6LyXtbF9CDJq/7i56C5laYDIbS8NJe5BA/8qOeb8n3sNwqunDQFR9hFW
+         C2/BtSDsHgLdRs9WJC81iXFM0cYxf+DIkFQQ0XqmzBGsD6KxROYIpb67OIHtY6PiRDCO
+         lNnLNFJ5ihblBr1VqDFpm80eth60CNzq6xRLEK+syBVKhDJh7YlpPg0j/8JFJaZWlfqt
+         kzvtzegfot9Px//p1Ob7kbmI55ywHgz1vBtUBpptNIdH7muH85k5Sx+MLatACXt92xRh
+         ineJtNidz1dn+yU+FHFUunXRA9rggp2WMU1jqwDY1avYurHV69Ic5SyjyBBfdCnQUkl2
+         MUDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5bdK9mneUffg7vrl8/7bCDtFIGEs6sGRdqhjkxulvnc=;
-        b=aZ0gUnvEIrPxnhyNvDOatcrDs7GjtgfVah0jPN67AmZgsSjNVj+iob/6kK3jqI+cLJ
-         7qmffB3WR1jnwuh/Jb0nubZ7fNJEjmT1mrjdKHkbKb09gP66otSHmyo693R+2R818BL6
-         JoiYl9P7W2I16eFGejb/p5hUMH6X0qhr0Dz1jq2xYTIkdISoIh0VWSvu8IjnqrwP8zvh
-         pv4HNLdLs23/QMnsMg//TL73LPV2+UCmMw/uRuVoXy+TPsJq6VGiZ94nkJ/dVFnw1eCS
-         O48WTOhWKuv3v627T53+iUmMWEcch7o81+pXBNq0hn9ecYw+wadGN7YnJA/fyUyE+K8k
-         rm3g==
-X-Gm-Message-State: ACrzQf0MTzoXgnkLUzPfwEIir3/aU6F8yl25BxEEmm1yW6CeyIv+slCp
-        y25cG/E9OAVrDSRxR6lyN8Kv+aik6UQOzMeYd4oROg==
-X-Google-Smtp-Source: AMsMyM64F1AByUxVpwF+xNpouI68PXnAVou2M9ZEq+osjZjmbSnoVIZ0AdFoc9/BroLt6Vdbuv3QFHt75voftbs1BLY=
-X-Received: by 2002:a17:90b:4d07:b0:1ef:521c:f051 with SMTP id
- mw7-20020a17090b4d0700b001ef521cf051mr33490233pjb.164.1666006376413; Mon, 17
- Oct 2022 04:32:56 -0700 (PDT)
+        bh=KK+EXo53xH3teNZkrCGFVk1lVgEFpbXtxVfs298qg8I=;
+        b=y7IUYOWAx32atlb/ezTBdXpcthJK4Vp9+WpgzzJNwKLAANi9pefNgpNp/+t43cGkUP
+         614ZOTU/5z2mDgSdnVny9H4HoNz0X2Z4mRKOcPp2P5aHlhccQHjHjjL/xEIhXo4ClTUF
+         AkXZgP6oAzE/k+aMA+Wuu/6Df37EcZcMVP6JHZSoJbV1OGtNT7PpnWEaRfoAldQQDSus
+         4sqP3e06sxTd68C+Ci9TgIMx7n9RRscs+hksMBg01ChiQfMmoYSzw5ou7StyAYZiJgnR
+         YYjqghS+nY05n/XncviDXWGPLo+yJC6fnuo0UoUoA2SI3Qj9vDMC5nj8+ExCYq1/DZLP
+         VEmQ==
+X-Gm-Message-State: ACrzQf1EoESepN0V6tXWSqA5qdZbLKfPtUIUa2cLVLkOrqiIEtuDx4WQ
+        9TcjiQf4MzWOQXWgM49sjwuEWC39W4sJyyBGanD/xA==
+X-Google-Smtp-Source: AMsMyM5zMeFWy2lKl6Fz9ckb/XeM2zFIV36/AvksTHriobx/KjpX5Gwr1gl4rEOssMIUi1/8xahfsXVC8FrBys9OkjE=
+X-Received: by 2002:a63:464d:0:b0:441:5968:cd0e with SMTP id
+ v13-20020a63464d000000b004415968cd0emr10687642pgk.595.1666006382483; Mon, 17
+ Oct 2022 04:33:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221013024021.121104-1-mranostay@ti.com>
-In-Reply-To: <20221013024021.121104-1-mranostay@ti.com>
+References: <20221013221242.218808-1-marex@denx.de>
+In-Reply-To: <20221013221242.218808-1-marex@denx.de>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 17 Oct 2022 13:32:19 +0200
-Message-ID: <CAPDyKFrSficTSQpWxJxcmtGgW0bOhMkJjkX2jZvsinprfLRR9g@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: mmc: sdhci-am654: add ti,itap-del-sel-ddr50
- to schema
-To:     Matt Ranostay <mranostay@ti.com>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        devicetree@vger.kernel.org, linux-mmc@vger.kernel.org
+Date:   Mon, 17 Oct 2022 13:32:24 +0200
+Message-ID: <CAPDyKFoLrxwjjrULD=6+jd4tWSffdmVr1X0z+kByid02tevNQg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] dt-bindings: mmc: arm,pl18x: Document
+ interrupt-names is ignored
+To:     Marek Vasut <marex@denx.de>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Yann Gautier <yann.gautier@foss.st.com>,
+        devicetree@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 13 Oct 2022 at 04:40, Matt Ranostay <mranostay@ti.com> wrote:
+On Fri, 14 Oct 2022 at 00:13, Marek Vasut <marex@denx.de> wrote:
 >
-> Add missing ti,itap-del-sel-ddr50 property to schema to clear up the
-> following warnings.
+> Due to inconsistency of existing DTs regarding the content of this IP
+> interrupt-names DT property, document this such that interrupt-names
+> is not used by this IP bindings.
 >
-> mmc@4fb0000: Unevaluated properties are not allowed ('ti,itap-del-sel-ddr50' was unexpected)
->
-> Signed-off-by: Matt Ranostay <mranostay@ti.com>
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
 Applied for next, thanks!
 
@@ -82,26 +92,41 @@ Uffe
 
 
 > ---
->  Documentation/devicetree/bindings/mmc/sdhci-am654.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
+> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+> Cc: Andy Gross <agross@kernel.org>
+> Cc: Bjorn Andersson <andersson@kernel.org>
+> Cc: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Yann Gautier <yann.gautier@foss.st.com>
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-mmc@vger.kernel.org
+> Cc: linux-arm-msm@vger.kernel.org
+> Cc: linux-stm32@st-md-mailman.stormreply.com
+> To: linux-arm-kernel@lists.infradead.org
+> ---
+> V2: Add deprecated:false to interrupts: description
+> ---
+>  Documentation/devicetree/bindings/mmc/arm,pl18x.yaml | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml b/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
-> index ea9121fb188d..382d5face49a 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
-> @@ -159,6 +159,12 @@ properties:
->      minimum: 0
->      maximum: 0x1f
+> diff --git a/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml b/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml
+> index 1e69a5a42439b..1c96da04f0e53 100644
+> --- a/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml
+> @@ -95,7 +95,9 @@ properties:
+>        PIO (polled I/O) interrupt and occurs when the FIFO needs to be
+>        emptied as part of a bulk read from the card. Some variants have these
+>        two interrupts wired into the same line (logic OR) and in that case
+> -      only one interrupt may be provided.
+> +      only one interrupt may be provided. The interrupt-names property is
+> +      not used due to inconsistency of existing DTs regarding its content.
+> +    deprecated: false
+>      minItems: 1
+>      maxItems: 2
 >
-> +  ti,itap-del-sel-ddr50:
-> +    description: Input tap delay for MMC DDR50 timing
-> +    $ref: "/schemas/types.yaml#/definitions/uint32"
-> +    minimum: 0
-> +    maximum: 0x1f
-> +
->    ti,itap-del-sel-ddr52:
->      description: Input tap delay for MMC DDR52 timing
->      $ref: "/schemas/types.yaml#/definitions/uint32"
 > --
-> 2.38.0.rc0.52.gdda7228a83
+> 2.35.1
 >
