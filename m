@@ -2,118 +2,120 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBC0A609CDE
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 Oct 2022 10:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE81260AB73
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 Oct 2022 15:52:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbiJXIgl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 Oct 2022 04:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33388 "EHLO
+        id S236593AbiJXNwc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 Oct 2022 09:52:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229933AbiJXIgk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Oct 2022 04:36:40 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 239B860500;
-        Mon, 24 Oct 2022 01:36:31 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29O7WQx4032750;
-        Mon, 24 Oct 2022 10:36:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=ykLzKEUdSBnu1ViK9+reJrmjgCeEvaT2J8wFmcU66mw=;
- b=Gf6OqbX16TFbFtVfgRbUsDbwegpzBhH1L/tt/zaHjcyhrq5Bn4SoXgmWFdAah8+KgDCN
- 0zH0KSNYDpjx7jDsz8iEyL+RHxj+oCfXh9qworc5xGSpz0LuIIcvLoxIcnK7ouzemHjs
- oNz+UihDjw44keA0K6ZlBcEBPxDyqtTZxyKtiqLL9kDCOGgdfaK5aJFQ5UtWVo6OFzSi
- if6wcB+bznYTwnyHeGjOcM/IHYT0DmUCGnCJWeVuqyBQjmGiGdYZ1Yc3WF5+yMYqdX/q
- NFyFnw/SXS/M4cya56pMm4b/fUU2Mzh46B/2EJJn6xxl3RpG0yA7c5Ma8HH6VHnVQ0jh 3g== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3kc7dk1vyg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 24 Oct 2022 10:36:09 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 62E6310002A;
-        Mon, 24 Oct 2022 10:36:03 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 439F5216ECE;
-        Mon, 24 Oct 2022 10:36:03 +0200 (CEST)
-Received: from [10.201.21.93] (10.201.21.93) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 24 Oct
- 2022 10:36:01 +0200
-Message-ID: <776917d2-bb09-1175-1457-dc929e871e5f@foss.st.com>
-Date:   Mon, 24 Oct 2022 10:36:00 +0200
+        with ESMTP id S236605AbiJXNvz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Oct 2022 09:51:55 -0400
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74997BBE1B
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 05:42:48 -0700 (PDT)
+Received: by mail-pf1-f170.google.com with SMTP id m6so8900540pfb.0
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 05:42:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Jh8UQ4JmTZN9hL0/8CXAkNYRnuwMy/n4/v6mITjc4KY=;
+        b=y0W+zUyiBftSd0JgAGoPOqPtmV13guRpqzbMHskUNvLCEuQ6pihIc7oGP6TuC3oQt5
+         NjC6zT2GBgFpwt3TaO3sCktoTg2zHU1fTtWzfcwSmh6ykgmIp95Eot8a0sqsecpFyW7x
+         1HT6dR9s6lU9w8AQMYPhYLXd1Gu3x1edoP1WhBwFF/jIaERMSCG6bAABteTZbOS+Taz8
+         m7SCCh9de8RQXNTOTCxekuN5wUYGpUE+af/pdLsiLsH9H7ozUi1IJplIrGjD7sC4Tf7t
+         s+A+OHtLvPIWSHgE+4xzSs5FzW53+pzJ7Liv/i1SA0R2VvOs5lkPyZK2zhrwcwhQeqwz
+         cUfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jh8UQ4JmTZN9hL0/8CXAkNYRnuwMy/n4/v6mITjc4KY=;
+        b=xPKQ4E/YvzxQIM4vuQPbw8m2va0Z6ikobEYNS9MgLev973Q6QgppUUJR0mj6UuSUgq
+         760mnh8zgkEcZPwWvKw2+5sHn9feQt/ZpR9m152r1e8RpXNVeZvMcfmpnLJ6pB1T08VB
+         2eIkpBpBUZquE+GDAYyxGPjzxv1ATkSw8Hq3NqwH8k0HbgVLbleUr+onxX6G92snYSeM
+         1vwlJ7cy9+857rUXrXMKPNJIWh8nlozv8kG53g0kr0m6Ylyu+jllvYtRx0q+S8IjGw/q
+         deOMFxJOFVPH/5VUb43IG9ygl1SDGfwN8U+S8xZMc0gdU/L6AxeLmYr9baWrhQuatV/h
+         bD7w==
+X-Gm-Message-State: ACrzQf29M1xPcw+TSWi3CjVXVZN8Zrj6xSoGIaWQZi7Ci9hVHSlea2ib
+        TBAiS9WrhFZn3YzlIcdu5KcvWVmisu5Pgg==
+X-Google-Smtp-Source: AMsMyM64HS96JA+t5NegWTBhGoXrPmUTvN8S9j1oIuC6j5JnhVzd28Edhbio8VxlddWIvdR7T0/thQ==
+X-Received: by 2002:a0c:8ccc:0:b0:4b2:382e:ddaa with SMTP id q12-20020a0c8ccc000000b004b2382eddaamr27200510qvb.33.1666614368794;
+        Mon, 24 Oct 2022 05:26:08 -0700 (PDT)
+Received: from [192.168.1.8] ([64.57.193.93])
+        by smtp.gmail.com with ESMTPSA id u30-20020a37ab1e000000b006ef0350db8asm9109052qke.128.2022.10.24.05.26.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Oct 2022 05:26:08 -0700 (PDT)
+Message-ID: <a354c24d-0355-7c9d-ad05-4c21561af4dc@linaro.org>
+Date:   Mon, 24 Oct 2022 08:26:05 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v2 3/3] ARM: dts: stm32: Drop MMCI interrupt-names
+ Thunderbird/102.4.0
+Subject: Re: [PATCH 02/21] ARM: s3c: remove s3c24xx specific hacks
 Content-Language: en-US
-To:     Marek Vasut <marex@denx.de>, <linux-arm-kernel@lists.infradead.org>
-CC:     Linus Walleij <linus.walleij@linaro.org>,
-        Yann Gautier <yann.gautier@foss.st.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
+To:     Arnd Bergmann <arnd@kernel.org>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, Ben Dooks <ben-linux@fluff.org>,
+        Simtec Linux Team <linux@simtec.co.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        <devicetree@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-References: <20221013221242.218808-1-marex@denx.de>
- <20221013221242.218808-3-marex@denx.de>
-From:   Alexandre TORGUE <alexandre.torgue@foss.st.com>
-In-Reply-To: <20221013221242.218808-3-marex@denx.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org
+References: <20221021202254.4142411-1-arnd@kernel.org>
+ <20221021203329.4143397-2-arnd@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221021203329.4143397-2-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.201.21.93]
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-24_02,2022-10-21_01,2022-06-22_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 10/14/22 00:12, Marek Vasut wrote:
-> The pl18x MMCI driver does not use the interrupt-names property,
-> the binding document has been updated to recommend this property
-> be unused, remove it.
+On 21/10/2022 16:27, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Reviewed-by: Yann Gautier <yann.gautier@foss.st.com>
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-> Cc: Andy Gross <agross@kernel.org>
-> Cc: Bjorn Andersson <andersson@kernel.org>
-> Cc: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Yann Gautier <yann.gautier@foss.st.com>
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-mmc@vger.kernel.org
-> Cc: linux-arm-msm@vger.kernel.org
-> Cc: linux-stm32@st-md-mailman.stormreply.com
-> To: linux-arm-kernel@lists.infradead.org
-> ---
-> V2: Add RB from Linus and Yann
-> ---
->   arch/arm/boot/dts/stm32h743.dtsi  | 2 --
->   arch/arm/boot/dts/stm32mp131.dtsi | 2 --
->   arch/arm/boot/dts/stm32mp151.dtsi | 3 ---
->   3 files changed, 7 deletions(-)
+> A number of device drivers reference CONFIG_ARM_S3C24XX_CPUFREQ or
+> similar symbols that are no longer available with the platform gone,
+> though the drivers themselves are still used on newer platforms,
+> so remove these hacks.
 > 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Applied on stm32-next.
 
-Cheers
-Alex
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
