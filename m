@@ -2,119 +2,150 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66A9560B620
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 Oct 2022 20:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A891F60B4F3
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 Oct 2022 20:10:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232797AbiJXSsR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 Oct 2022 14:48:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40166 "EHLO
+        id S230175AbiJXSKC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 Oct 2022 14:10:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231582AbiJXSrj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Oct 2022 14:47:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 481E33C8D6;
-        Mon, 24 Oct 2022 10:29:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 350BB614CA;
-        Mon, 24 Oct 2022 16:43:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495C4C433D7;
-        Mon, 24 Oct 2022 16:43:19 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="R/LWqL0H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1666629797;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=jVwnCaFZdOk86y5jBEGAHVTaPFA8qqxydDorS9HQrxk=;
-        b=R/LWqL0HmERHhgI7BdwcGOaB3Q8XsPIH6B/Gdo3HJUMIuT9hwUE+2aIfUs7T5AhOI79Jt6
-        d8ngYNFZKfkYsUwIv2qdXPqC/aoaC88pmme7vJsjJeVfqbHgYDfmh3RufMLuzpN+0qp8US
-        fVJyhkYuwNudc5bRrrZ+Jls0DQkggGI=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 885087f8 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Mon, 24 Oct 2022 16:43:17 +0000 (UTC)
-Date:   Mon, 24 Oct 2022 18:43:09 +0200
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     Theodore Ts'o <tytso@mit.edu>
-Cc:     Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Christoph =?utf-8?Q?B=C3=B6hmwalder?= 
-        <christoph.boehmwalder@linbit.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        "Darrick J . Wong" <djwong@kernel.org>,
-        SeongJae Park <sj@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Helge Deller <deller@gmx.de>, netdev@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mmc@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH v1 0/5] convert tree to
- get_random_u32_{below,above,between}()
-Message-ID: <Y1bAnU4pCczkw5j8@zx2c4.com>
-References: <20221022014403.3881893-1-Jason@zx2c4.com>
- <20221021205522.6b56fd24@kernel.org>
- <Y1NwJJOIB4gI5G11@zx2c4.com>
- <20221021223242.05df0a5b@kernel.org>
- <Y1OD2tdVwQsydSNV@zx2c4.com>
- <20221021230322.00dd045c@kernel.org>
- <Y1WtAZfciG1z2CC7@mit.edu>
+        with ESMTP id S233516AbiJXSJX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Oct 2022 14:09:23 -0400
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB801C20A3
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 09:51:18 -0700 (PDT)
+Received: by mail-qt1-x82a.google.com with SMTP id f22so5953631qto.3
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 09:51:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IUL2O9wbBAu6ztSDG3ElgZvx99nzcRnOeYgEYBuGPRA=;
+        b=EEmIXtqXupNZGMQusrGu9cSwDxciaaGSv2LhhL0tX6byMmK28IsBk8c6ClWRq6lYkA
+         5+dolwExw1XyN7N2ZUnUo6goPkhL7uOXaTIp+47CzWhPnD5qROzOOFZav4k7YHRwqMEH
+         FUMPtqxOPxGTW4BVMVkUU5EW2Xr8k2N+TpV67Fm2aVZNsQK2YGa5ARYpVK2ZvjpFSstW
+         5LGsb9+H93HpawF9AoNVTC4rjX5VhkPFm7zaO/rvKQjhCs45phjNvhnsoAZmagQcq/C/
+         HnRdp7bCxBKgaIB0yVFB18J5KwAXnMljceuUkDgw1IMXcatnvOp8r7QAReZIeerM+SnW
+         dxVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IUL2O9wbBAu6ztSDG3ElgZvx99nzcRnOeYgEYBuGPRA=;
+        b=pAMSFFglsjxBGd1/nqr0/wGViFJ1MdB1MbMEFgWBqDLyaXC3a+/UjrrGChE/lDvmP/
+         K/OkRrW/dTaRS6h2WYRoyIi4QqKpgZ7+P1kAIdvF5nMxJddazv0AY/eB91htLXlXiTX4
+         goM3S+pF41oQMEu3zfXNGLusKt4d/rpCpIB/zJn3DFfFx2j5N1vb5g+Zn5jjbrG4vf/E
+         7+qtjBvuqsLY7Jilye1gh8uZDM8yF7nJu9NaTz/K/wF4bqjgVP3QwjGDOQAwFIRDMAlG
+         VhIChkUZWrHFGSBXItkvTb1lwD3TVNJvdC4+ZTFKGcW/XpDO4TaX6veiV83YkAu4Ne7G
+         RCjw==
+X-Gm-Message-State: ACrzQf2y56w970IDnmQupfM0FVeCSY5TTJK6sXKiDGD6p1fmiV7p/ySG
+        aG7DfR0AB9/YKiKPWeuSTvaxkg==
+X-Google-Smtp-Source: AMsMyM57TE1ja12+inLNwlTcq5BSzAd/+4nM91OaJJGzUPwVHrd3YNRlGWdmd5z78YjGbtZPGpbilw==
+X-Received: by 2002:ac8:5c11:0:b0:39c:fd77:336d with SMTP id i17-20020ac85c11000000b0039cfd77336dmr24199445qti.479.1666630114992;
+        Mon, 24 Oct 2022 09:48:34 -0700 (PDT)
+Received: from [192.168.1.8] ([64.57.193.93])
+        by smtp.gmail.com with ESMTPSA id q8-20020a37f708000000b006ce0733caebsm279848qkj.14.2022.10.24.09.48.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Oct 2022 09:48:34 -0700 (PDT)
+Message-ID: <0b9d7768-3f30-c084-9a14-f439cd49d643@linaro.org>
+Date:   Mon, 24 Oct 2022 12:48:32 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Y1WtAZfciG1z2CC7@mit.edu>
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: Aw: Re: [PATCH v3 3/7] dt-bindings: mmc: mtk-sd: add mt7986
+Content-Language: en-US
+To:     Frank Wunderlich <frank-w@public-files.de>
+Cc:     Frank Wunderlich <linux@fw-web.de>,
+        linux-mediatek@lists.infradead.org,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Wenbin Mei <wenbin.mei@mediatek.com>,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20221023091247.70586-1-linux@fw-web.de>
+ <20221023091247.70586-4-linux@fw-web.de>
+ <a0121e0a-9f62-8630-45c5-d32eaa91d46f@linaro.org>
+ <trinity-95441a68-0025-49de-8c73-9730fb9cec42-1666623320110@3c-app-gmx-bap55>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <trinity-95441a68-0025-49de-8c73-9730fb9cec42-1666623320110@3c-app-gmx-bap55>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, Oct 23, 2022 at 05:07:13PM -0400, Theodore Ts'o wrote:
-> On Fri, Oct 21, 2022 at 11:03:22PM -0700, Jakub Kicinski wrote:
-> > On Sat, 22 Oct 2022 07:47:06 +0200 Jason A. Donenfeld wrote:
-> > > On Fri, Oct 21, 2022 at 10:32:42PM -0700, Jakub Kicinski wrote:
-> > > > But whatever. I mean - hopefully there aren't any conflicts in the ~50
-> > > > networking files you touch. I just wish that people didn't pipe up with
-> > > > the tree wide changes right after the merge window. Feels like the
-> > > > worst possible timing.  
-> > > 
-> > > Oh, if the timing is what makes this especially worrisome, I have
-> > > no qualms about rebasing much later, and reposting this series then.
-> > > I'll do that.
-> > 
-> > Cool, thanks! I promise to not be grumpy if you repost around rc6 :)
+On 24/10/2022 10:55, Frank Wunderlich wrote:
+> Hi
 > 
-> One way of making things less painful for the stable branch and for
-> the upstream branch is to *add* new helpers instead of playing
-> replacement games like s/prandom_u32_max/get_random_u32_below/.  This
-> is what causes the patch conflict problems.
+>> Gesendet: Sonntag, 23. Oktober 2022 um 14:56 Uhr
+>> Von: "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>
+>> An: "Frank Wunderlich" <linux@fw-web.de>, linux-mediatek@lists.infradead.org
+>> Cc: "Frank Wunderlich" <frank-w@public-files.de>, "Chaotian Jing" <chaotian.jing@mediatek.com>, "Ulf Hansson" <ulf.hansson@linaro.org>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Matthias Brugger" <matthias.bgg@gmail.com>, "Wenbin Mei" <wenbin.mei@mediatek.com>, linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+>> Betreff: Re: [PATCH v3 3/7] dt-bindings: mmc: mtk-sd: add mt7986
+>>
+>> On 23/10/2022 05:12, Frank Wunderlich wrote:
+>>> From: Frank Wunderlich <frank-w@public-files.de>
+>>>
+>>> Add SoC specific section for defining clock configuration.
+>>>
+>>> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+>>
+>>
+>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
-> One advantage of at least adding the new functions to the stable
-> branches, even if we don't do the wholesale replacement, is that it
+> Hi,
+> 
+> got another config from mtk which requires changing binding a bit
+> 
+>                        clocks = <&topckgen CLK_TOP_EMMC_416M_SEL>,
+>                                 <&infracfg CLK_INFRA_MSDC_HCK_CK>,
+>                                 <&infracfg CLK_INFRA_MSDC_CK>,
+>                                 <&infracfg CLK_INFRA_MSDC_133M_CK>,
+>                                  <&infracfg CLK_INFRA_MSDC_66M_CK>;
+>                        clock-names = "source", "hclk", "source_cg", "bus_clk",
+>                                      "sys_cg";
+> in binding:
+> 
+> +++ b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
+> @@ -241,15 +241,17 @@ allOf:
+>            items:
+>              - description: source clock
+>              - description: HCLK which used for host
+> -            - description: AXI bus clock gate
+> -            - description: AHB bus clock gate
+> +            - description: independent source clock gate
+> +            - description: bus clock used for internal register access (required for MSDC0/3).
+> +            - description: msdc subsys clock gate
+>          clock-names:
+>            minItems: 3
+>            items:
+>              - const: source
+>              - const: hclk
+> -            - const: axi_cg
+> -            - const: ahb_cg
+> +            - const: "source_cg"
+> +            - const: "bus_clk"
+> +            - const: "sys_cg"
+> 
+> will send an updated v4...old version was working but i should use the new one.
+> 
+> @Krzysztof can i take your RB here or should i leave it as Patch was changed?
 
-That's a good idea. I'll also save the removal commit, anyhow, for a
-separate thing at the end of 6.2 rc1, so that -next doesn't have issues
-either.  That's how things wound up going down for the first tranche of
-these, and that worked well.
+Please drop my tag, so I will re-review it.
 
-Jason
+Thanks!
+
+Best regards,
+Krzysztof
+
