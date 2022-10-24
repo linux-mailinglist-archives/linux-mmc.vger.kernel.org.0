@@ -2,1237 +2,404 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98B1C60B569
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 Oct 2022 20:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78E2060B589
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 Oct 2022 20:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231857AbiJXSYm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 Oct 2022 14:24:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33616 "EHLO
+        id S230321AbiJXSa6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 Oct 2022 14:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231936AbiJXSYW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Oct 2022 14:24:22 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E28ED1BB950
-        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 10:05:47 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id n7so8990514plp.1
-        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 10:05:47 -0700 (PDT)
+        with ESMTP id S230481AbiJXSaj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Oct 2022 14:30:39 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E40853A58
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 10:12:10 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id j12so8995323plj.5
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 10:12:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MPbkrry9wZuk2Z4zBRUws+dZG/gGUXYhR2jn+a6N0gs=;
-        b=oBWmWvfOOXPUy73y/jgkw9pMkJJBbDiMBXSxcrGiAz3xwdOuAgMlflAhMnm6VQIa6W
-         hvjJ/BdiLkiU1RP94AGF9FO/AoXAU4o8WEr/o6QrX0j1HKFxQiUbhg/cV2XdhQx8gbys
-         qVJImdnQSi4ZfS6hVhl6KXfE+eY4cQ64OlBs/Xc/YKIjD6PVXkf1vIlNaOYO0/73IfHA
-         +GO4j0Q4ys1Kp5NmGJuVYiDP/nRkfCCSa34fpP1y2AErAsCwUMjT2nCIVQsNcGj6PU7P
-         lDimp5/FOnseBQUbZu9JOV+zzqACG+WVLXlB1KFv8/ZZNOqyWZoSVvHnBNrVzkAptPqk
-         fcww==
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LX6lchgbTLeyYCJJeMFMm6zW4t3o7jRcCwnfR6/LgV0=;
+        b=J8kaB2ms2iYKYPIuYlwmcPG7QvCPBDE8IZz689f2sHqVtf7ezpETi8/9rk+YIrAf73
+         XOEM9QhYYgB9TSxZZfJN+56avz5CV0TcZRq5SpF90TrpyNp5zNWxzRZ5S+FP7ZAOAXXf
+         W+lpBI8IydDvzakRVnIuPk5rgZDRFPgdu3yODXX3jAmL/nKWy+XEIsl/bJr1vogvxUnV
+         MWirOQSyy2lRrmeolHPTcwl5j9Fz/oXWJrNAfHtQoVxazau7uLpZvVTvkO03uQyzTAKf
+         A1YuhLRKwgNOaKrwJRw0+fyU1OhuToGnu9Dv9HFKSAroUdVYe01EXUiNHuloSqnR8ImG
+         C9Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MPbkrry9wZuk2Z4zBRUws+dZG/gGUXYhR2jn+a6N0gs=;
-        b=A8CUdTe99T9bUZzVF3b4tMhelFOmEmBwVqfD3XUCbVRQIDNuHqDmNfg9btOhy/oMcM
-         PX2zzQoeNKQx1uqI4IIRroLFg9cx81e0Qayy2HetMiukidBuWai5eHjBttLBj7xsa208
-         TJZsP/7w4cYkB3Fiwy5hFzbbXUU/mqPbWH4Sc2GmOn4WpSz4/mdXflOJAmPTQ9Kjg+LE
-         M8+qjTxoLAusxl3e17hpzCCojVQJdkqXMlvxqEGsvcABmN29bNVgmD8JOi+6sLFgWFQ7
-         iZ1ctqwMwqJH5t/p+nGP38k5E5qZGtv1ShLaZMDd2wf679VEyWOws7thxR2kM4Ac1gO1
-         6KBw==
-X-Gm-Message-State: ACrzQf2wfa72qp3ge70UVcdjwWC/rO2aBFc6i6gJ8rB2W1R8uRz3G84l
-        Zq2668Gh47juK+zL2AoAKJbfjw/mA69KxVPHRNxzdmijDS8=
-X-Google-Smtp-Source: AMsMyM6Lz8p05eSaiRzOyggaj9hdbqVcOfNzjupOq1m/j0Ie6nS9n13xQ4TMPWkZCb2VGcpkmLSrxdeXcim/NOvo73c=
-X-Received: by 2002:a05:6a00:24c2:b0:52e:7181:a8a0 with SMTP id
- d2-20020a056a0024c200b0052e7181a8a0mr34617105pfv.57.1666630421333; Mon, 24
- Oct 2022 09:53:41 -0700 (PDT)
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LX6lchgbTLeyYCJJeMFMm6zW4t3o7jRcCwnfR6/LgV0=;
+        b=FkwLAWjzuNDIw1sOxia0JNb/jtm7LulE2gLtTol1e0k5+X16NbSoBfmYKEwt8U8Ixk
+         hfItZ+sRJiFt2UNL2rObpkOQnsvbAfx1b22eYB8VBAeeH2IeDSmPi2/ugeA5tw/M1mwr
+         JUTT0VE6oqLGi/ueAVCdaCjYSN7jR6Ct3AnPEWp0sSUqSMyKG78UUjtN+Zs/Q5NwFfTv
+         2MeetoqdPsPZh/yaAPQRFJg3NZLg5Gwj6Rhau8atAcFJvidxguyYKwFpMKvDzmBQB8qG
+         JRyyQblu0zEV4Ino9M+vWfnJ9zLHH9LER77LKAo3YQNdw3xmxOglN0ZhHcWkOXUGlf3p
+         V1dA==
+X-Gm-Message-State: ACrzQf0RiI+yNSeO5SuB4CoNiKQrcfgVT3z3RsaRhQQ6+GJB5aGeAyfq
+        QJQvIc2q5+nOPv6Ev4IpL4Qs7oZLxCgbINk5HOgYsozUTls=
+X-Google-Smtp-Source: AMsMyM7k+FqKSEVe1hKFUisZlG1f4qgmact/ta77+ZpE5KUpLJdHZHqWqKpZ3tGUDJj9633DRC+49I3KZJcwe5VHr78=
+X-Received: by 2002:a17:903:100c:b0:186:63a1:3b5d with SMTP id
+ a12-20020a170903100c00b0018663a13b5dmr24047719plb.148.1666630936165; Mon, 24
+ Oct 2022 10:02:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221021202254.4142411-1-arnd@kernel.org> <20221021203329.4143397-2-arnd@kernel.org>
-In-Reply-To: <20221021203329.4143397-2-arnd@kernel.org>
+References: <a64ce8be9687452b8da6c9816ca42b5b@hyperstone.com>
+In-Reply-To: <a64ce8be9687452b8da6c9816ca42b5b@hyperstone.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 24 Oct 2022 18:53:03 +0200
-Message-ID: <CAPDyKFoaaFkT+8OKRKVPRwkCoQZh12=B2_2CPOZCuMbzj+G5eQ@mail.gmail.com>
-Subject: Re: [PATCH 02/21] ARM: s3c: remove s3c24xx specific hacks
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-kernel@vger.kernel.org, Ben Dooks <ben-linux@fluff.org>,
-        Simtec Linux Team <linux@simtec.co.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org
+Date:   Mon, 24 Oct 2022 19:01:39 +0200
+Message-ID: <CAPDyKFrG7GrenvW6MGdhxrF1vP7tNJk-vcquuN4VUfLr083zAg@mail.gmail.com>
+Subject: Re: [PATCHv3 1/2] mmc-utils: Refactor switch to allow custom timeout
+To:     =?UTF-8?Q?Christian_L=C3=B6hle?= <CLoehle@hyperstone.com>
+Cc:     Avri Altman <Avri.Altman@wdc.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 21 Oct 2022 at 22:37, Arnd Bergmann <arnd@kernel.org> wrote:
+On Thu, 13 Oct 2022 at 11:10, Christian L=C3=B6hle <CLoehle@hyperstone.com>=
+ wrote:
 >
-> From: Arnd Bergmann <arnd@arndb.de>
+> Certain commands require a longer switch timeout.
+> Refactor accordingly to allow e.g. for future sanitize change.
 >
-> A number of device drivers reference CONFIG_ARM_S3C24XX_CPUFREQ or
-> similar symbols that are no longer available with the platform gone,
-> though the drivers themselves are still used on newer platforms,
-> so remove these hacks.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # For MMC
+Applied to git.kernel.org/pub/scm//utils/mmc/mmc-utils.git master, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  arch/arm/include/debug/s3c24xx.S              |  10 -
->  arch/arm/mach-s3c/Makefile                    |   2 -
->  arch/arm/mach-s3c/devs.c                      |   1 -
->  arch/arm/mach-s3c/dma.h                       |   7 -
->  arch/arm/mach-s3c/gpio-samsung.h              |   7 -
->  arch/arm/mach-s3c/irqs.h                      |   7 -
->  arch/arm/mach-s3c/map.h                       |   7 -
->  arch/arm/mach-s3c/pm-core.h                   |   7 -
->  arch/arm/mach-s3c/regs-clock.h                |   7 -
->  arch/arm/mach-s3c/regs-gpio.h                 |   7 -
->  arch/arm/mach-s3c/regs-irq.h                  |   7 -
->  drivers/clocksource/Kconfig                   |   2 +-
->  drivers/i2c/busses/Kconfig                    |   3 +-
->  drivers/i2c/busses/i2c-s3c2410.c              |  72 -------
->  drivers/iio/adc/Kconfig                       |   6 +-
->  .../media/platform/samsung/s3c-camif/Kconfig  |   8 +-
->  drivers/mmc/host/Kconfig                      |   5 +-
->  drivers/mtd/nand/raw/Kconfig                  |   2 +-
->  drivers/mtd/nand/raw/s3c2410.c                |  60 ------
->  drivers/pinctrl/samsung/pinctrl-samsung.c     |  10 -
->  drivers/rtc/Kconfig                           |   8 +-
->  drivers/tty/serial/Kconfig                    |   8 +-
->  drivers/tty/serial/samsung_tty.c              | 199 ------------------
->  drivers/usb/host/Kconfig                      |   8 +-
->  drivers/watchdog/Kconfig                      |   9 +-
->  drivers/watchdog/s3c2410_wdt.c                |  84 +-------
->  include/linux/clk/samsung.h                   |  32 ---
->  include/linux/soc/samsung/s3c-pm.h            |  58 -----
->  28 files changed, 29 insertions(+), 614 deletions(-)
+>  mmc_cmds.c | 60 ++++++++++++++++++++++++++++--------------------------
+>  1 file changed, 31 insertions(+), 29 deletions(-)
 >
-> diff --git a/arch/arm/include/debug/s3c24xx.S b/arch/arm/include/debug/s3c24xx.S
-> index af873b526677..7ab5e577cd42 100644
-> --- a/arch/arm/include/debug/s3c24xx.S
-> +++ b/arch/arm/include/debug/s3c24xx.S
-> @@ -28,16 +28,6 @@
->                 and     \rd, \rd, #S3C2410_UFSTAT_TXMASK
->         .endm
->
-> -/* Select the correct implementation depending on the configuration. The
-> - * S3C2440 will get selected by default, as these are the most widely
-> - * used variants of these
-> -*/
-> -
-> -#if defined(CONFIG_DEBUG_S3C2410_UART)
-> -#define fifo_full  fifo_full_s3c2410
-> -#define fifo_level fifo_level_s3c2410
-> -#endif
-> -
->  /* include the reset of the code which will do the work */
->
->  #include <debug/samsung.S>
-> diff --git a/arch/arm/mach-s3c/Makefile b/arch/arm/mach-s3c/Makefile
-> index e7f18039b149..a5135137e648 100644
-> --- a/arch/arm/mach-s3c/Makefile
-> +++ b/arch/arm/mach-s3c/Makefile
-> @@ -2,9 +2,7 @@
->  #
->  # Copyright 2009 Simtec Electronics
->
-> -ifdef CONFIG_ARCH_S3C64XX
->  include $(src)/Makefile.s3c64xx
-> -endif
->
->  # Objects we always build independent of SoC choice
->
-> diff --git a/arch/arm/mach-s3c/devs.c b/arch/arm/mach-s3c/devs.c
-> index 9ac07c023adf..a31d1c3038e8 100644
-> --- a/arch/arm/mach-s3c/devs.c
-> +++ b/arch/arm/mach-s3c/devs.c
-> @@ -29,7 +29,6 @@
->  #include <linux/sizes.h>
->  #include <linux/platform_data/s3c-hsudc.h>
->  #include <linux/platform_data/s3c-hsotg.h>
-> -#include <linux/platform_data/dma-s3c24xx.h>
->
->  #include <linux/platform_data/media/s5p_hdmi.h>
->
-> diff --git a/arch/arm/mach-s3c/dma.h b/arch/arm/mach-s3c/dma.h
-> index 59a4578c5f00..48057cb90070 100644
-> --- a/arch/arm/mach-s3c/dma.h
-> +++ b/arch/arm/mach-s3c/dma.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "dma-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "dma-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/gpio-samsung.h b/arch/arm/mach-s3c/gpio-samsung.h
-> index 02f6f4a96862..4233515eddaa 100644
-> --- a/arch/arm/mach-s3c/gpio-samsung.h
-> +++ b/arch/arm/mach-s3c/gpio-samsung.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "gpio-samsung-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "gpio-samsung-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/irqs.h b/arch/arm/mach-s3c/irqs.h
-> index 0bff1c1c8eb0..3ff0e0963080 100644
-> --- a/arch/arm/mach-s3c/irqs.h
-> +++ b/arch/arm/mach-s3c/irqs.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "irqs-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "irqs-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/map.h b/arch/arm/mach-s3c/map.h
-> index 7cfb517d4886..778d6f81cb2b 100644
-> --- a/arch/arm/mach-s3c/map.h
-> +++ b/arch/arm/mach-s3c/map.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "map-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "map-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/pm-core.h b/arch/arm/mach-s3c/pm-core.h
-> index b0e1d277f599..3e0c2df79120 100644
-> --- a/arch/arm/mach-s3c/pm-core.h
-> +++ b/arch/arm/mach-s3c/pm-core.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "pm-core-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "pm-core-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/regs-clock.h b/arch/arm/mach-s3c/regs-clock.h
-> index 7df31f203d28..fc7e3886b07c 100644
-> --- a/arch/arm/mach-s3c/regs-clock.h
-> +++ b/arch/arm/mach-s3c/regs-clock.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "regs-clock-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "regs-clock-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/regs-gpio.h b/arch/arm/mach-s3c/regs-gpio.h
-> index 0d41cb76d440..4e08e8609663 100644
-> --- a/arch/arm/mach-s3c/regs-gpio.h
-> +++ b/arch/arm/mach-s3c/regs-gpio.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "regs-gpio-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "regs-gpio-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/regs-irq.h b/arch/arm/mach-s3c/regs-irq.h
-> index 57f0dda8dbf5..4243daa54bd1 100644
-> --- a/arch/arm/mach-s3c/regs-irq.h
-> +++ b/arch/arm/mach-s3c/regs-irq.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "regs-irq-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "regs-irq-s3c64xx.h"
-> -#endif
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index 4469e7f555e9..fc10ecc3602d 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -441,7 +441,7 @@ config CLKSRC_EXYNOS_MCT
->  config CLKSRC_SAMSUNG_PWM
->         bool "PWM timer driver for Samsung S3C, S5P" if COMPILE_TEST
->         depends on HAS_IOMEM
-> -       depends on ARCH_EXYNOS || ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210 || COMPILE_TEST
-> +       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S5PV210 || COMPILE_TEST
->         help
->           This is a new clocksource driver for the PWM timer found in
->           Samsung S3C, S5P and Exynos SoCs, replacing an earlier driver
-> diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-> index f427c8ea5c7b..84d21e0a7cdf 100644
-> --- a/drivers/i2c/busses/Kconfig
-> +++ b/drivers/i2c/busses/Kconfig
-> @@ -1009,8 +1009,7 @@ config I2C_RZV2M
->
->  config I2C_S3C2410
->         tristate "S3C/Exynos I2C Driver"
-> -       depends on ARCH_EXYNOS || ARCH_S3C24XX || ARCH_S3C64XX || \
-> -                  ARCH_S5PV210 || COMPILE_TEST
-> +       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S5PV210 || COMPILE_TEST
->         help
->           Say Y here to include support for I2C controller in the
->           Samsung SoCs (S3C, S5Pv210, Exynos).
-> diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
-> index 36dab9cd208c..45e9df81345a 100644
-> --- a/drivers/i2c/busses/i2c-s3c2410.c
-> +++ b/drivers/i2c/busses/i2c-s3c2410.c
-> @@ -116,9 +116,6 @@ struct s3c24xx_i2c {
->         struct s3c2410_platform_i2c     *pdata;
->         struct gpio_desc        *gpios[2];
->         struct pinctrl          *pctrl;
-> -#if defined(CONFIG_ARM_S3C24XX_CPUFREQ)
-> -       struct notifier_block   freq_transition;
-> -#endif
->         struct regmap           *sysreg;
->         unsigned int            sys_i2c_cfg;
->  };
-> @@ -885,65 +882,6 @@ static int s3c24xx_i2c_clockrate(struct s3c24xx_i2c *i2c, unsigned int *got)
->         return 0;
+> diff --git a/mmc_cmds.c b/mmc_cmds.c
+> index 2957aa9..3337ded 100644
+> --- a/mmc_cmds.c
+> +++ b/mmc_cmds.c
+> @@ -76,7 +76,7 @@ int read_extcsd(int fd, __u8 *ext_csd)
+>         return ret;
 >  }
 >
-> -#if defined(CONFIG_ARM_S3C24XX_CPUFREQ)
-> -
-> -#define freq_to_i2c(_n) container_of(_n, struct s3c24xx_i2c, freq_transition)
-> -
-> -static int s3c24xx_i2c_cpufreq_transition(struct notifier_block *nb,
-> -                                         unsigned long val, void *data)
-> -{
-> -       struct s3c24xx_i2c *i2c = freq_to_i2c(nb);
-> -       unsigned int got;
-> -       int delta_f;
-> -       int ret;
-> -
-> -       delta_f = clk_get_rate(i2c->clk) - i2c->clkrate;
-> -
-> -       /* if we're post-change and the input clock has slowed down
-> -        * or at pre-change and the clock is about to speed up, then
-> -        * adjust our clock rate. <0 is slow, >0 speedup.
-> -        */
-> -
-> -       if ((val == CPUFREQ_POSTCHANGE && delta_f < 0) ||
-> -           (val == CPUFREQ_PRECHANGE && delta_f > 0)) {
-> -               i2c_lock_bus(&i2c->adap, I2C_LOCK_ROOT_ADAPTER);
-> -               ret = s3c24xx_i2c_clockrate(i2c, &got);
-> -               i2c_unlock_bus(&i2c->adap, I2C_LOCK_ROOT_ADAPTER);
-> -
-> -               if (ret < 0)
-> -                       dev_err(i2c->dev, "cannot find frequency (%d)\n", ret);
-> -               else
-> -                       dev_info(i2c->dev, "setting freq %d\n", got);
-> -       }
-> -
-> -       return 0;
-> -}
-> -
-> -static inline int s3c24xx_i2c_register_cpufreq(struct s3c24xx_i2c *i2c)
-> -{
-> -       i2c->freq_transition.notifier_call = s3c24xx_i2c_cpufreq_transition;
-> -
-> -       return cpufreq_register_notifier(&i2c->freq_transition,
-> -                                        CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -static inline void s3c24xx_i2c_deregister_cpufreq(struct s3c24xx_i2c *i2c)
-> -{
-> -       cpufreq_unregister_notifier(&i2c->freq_transition,
-> -                                   CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -#else
-> -static inline int s3c24xx_i2c_register_cpufreq(struct s3c24xx_i2c *i2c)
-> -{
-> -       return 0;
-> -}
-> -
-> -static inline void s3c24xx_i2c_deregister_cpufreq(struct s3c24xx_i2c *i2c)
-> -{
-> -}
-> -#endif
-> -
->  #ifdef CONFIG_OF
->  static int s3c24xx_i2c_parse_dt_gpio(struct s3c24xx_i2c *i2c)
+> -int write_extcsd_value(int fd, __u8 index, __u8 value)
+> +int write_extcsd_value(int fd, __u8 index, __u8 value, unsigned int time=
+out_ms)
 >  {
-> @@ -1152,13 +1090,6 @@ static int s3c24xx_i2c_probe(struct platform_device *pdev)
->                 }
->         }
+>         int ret =3D 0;
+>         struct mmc_ioc_cmd idata;
+> @@ -89,6 +89,8 @@ int write_extcsd_value(int fd, __u8 index, __u8 value)
+>                         (value << 8) |
+>                         EXT_CSD_CMD_SET_NORMAL;
+>         idata.flags =3D MMC_RSP_SPI_R1B | MMC_RSP_R1B | MMC_CMD_AC;
+> +       /* Kernel will set cmd_timeout_ms if 0 is set */
+> +       idata.cmd_timeout_ms =3D timeout_ms;
 >
-> -       ret = s3c24xx_i2c_register_cpufreq(i2c);
-> -       if (ret < 0) {
-> -               dev_err(&pdev->dev, "failed to register cpufreq notifier\n");
-> -               clk_unprepare(i2c->clk);
-> -               return ret;
-> -       }
-> -
->         /*
->          * Note, previous versions of the driver used i2c_add_adapter()
->          * to add the bus at any number. We now pass the bus number via
-> @@ -1175,7 +1106,6 @@ static int s3c24xx_i2c_probe(struct platform_device *pdev)
->         ret = i2c_add_numbered_adapter(&i2c->adap);
->         if (ret < 0) {
->                 pm_runtime_disable(&pdev->dev);
-> -               s3c24xx_i2c_deregister_cpufreq(i2c);
->                 clk_unprepare(i2c->clk);
->                 return ret;
->         }
-> @@ -1192,8 +1122,6 @@ static int s3c24xx_i2c_remove(struct platform_device *pdev)
->
->         pm_runtime_disable(&pdev->dev);
->
-> -       s3c24xx_i2c_deregister_cpufreq(i2c);
-> -
->         i2c_del_adapter(&i2c->adap);
->
->         return 0;
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 791612ca6012..9de7f05d40e2 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -437,11 +437,11 @@ config EP93XX_ADC
->
->  config EXYNOS_ADC
->         tristate "Exynos ADC driver support"
-> -       depends on ARCH_EXYNOS || ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210 || (OF && COMPILE_TEST)
-> +       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S5PV210 || (OF && COMPILE_TEST)
->         depends on HAS_IOMEM
->         help
-> -         Driver for the ADC block found in the Samsung S3C (S3C2410, S3C2416,
-> -         S3C2440, S3C2443, S3C6410), S5Pv210 and Exynos SoCs.
-> +         Driver for the ADC block found in the Samsung S3C6410, S5Pv210 and
-> +         Exynos SoCs.
->           Choose Y here only if you build for such Samsung SoC.
->
->           To compile this driver as a module, choose M here: the module will be
-> diff --git a/drivers/media/platform/samsung/s3c-camif/Kconfig b/drivers/media/platform/samsung/s3c-camif/Kconfig
-> index 8cb8d1ac3edc..f359f6382fff 100644
-> --- a/drivers/media/platform/samsung/s3c-camif/Kconfig
-> +++ b/drivers/media/platform/samsung/s3c-camif/Kconfig
-> @@ -1,15 +1,15 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  config VIDEO_S3C_CAMIF
-> -       tristate "Samsung S3C24XX/S3C64XX SoC Camera Interface driver"
-> +       tristate "Samsung 3C64XX SoC Camera Interface driver"
->         depends on V4L_PLATFORM_DRIVERS
->         depends on VIDEO_DEV && I2C && PM
-> -       depends on ARCH_S3C64XX || PLAT_S3C24XX || COMPILE_TEST
-> +       depends on ARCH_S3C64XX || COMPILE_TEST
->         select MEDIA_CONTROLLER
->         select VIDEO_V4L2_SUBDEV_API
->         select VIDEOBUF2_DMA_CONTIG
->         help
-> -         This is a v4l2 driver for s3c24xx and s3c64xx SoC series camera
-> -         host interface (CAMIF).
-> +         This is a v4l2 driver for s3c64xx SoC series camera host interface
-> +         (CAMIF).
->
->           To compile this driver as a module, choose M here: the module
->           will be called s3c-camif.
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 84dd37ff2735..79d8ddf1f616 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -312,9 +312,8 @@ config MMC_SDHCI_S3C
->         depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
->         help
->           This selects the Secure Digital Host Controller Interface (SDHCI)
-> -         often referrered to as the HSMMC block in some of the Samsung S3C
-> -         (S3C2416, S3C2443, S3C6410), S5Pv210 and Exynos (Exynso4210,
-> -         Exynos4412) SoCs.
-> +         often referrered to as the HSMMC block in some of the Samsung
-> +         S3C6410, S5Pv210 and Exynos (Exynso4210, Exynos4412) SoCs.
->
->           If you have a controller with this interface (thereforeyou build for
->           such Samsung SoC), say Y or M here.
-> diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
-> index 280a55139387..a347833b8f29 100644
-> --- a/drivers/mtd/nand/raw/Kconfig
-> +++ b/drivers/mtd/nand/raw/Kconfig
-> @@ -79,7 +79,7 @@ config MTD_NAND_NDFC
->
->  config MTD_NAND_S3C2410
->         tristate "Samsung S3C NAND controller"
-> -       depends on ARCH_S3C24XX || ARCH_S3C64XX
-> +       depends on ARCH_S3C64XX
->         help
->           This enables the NAND flash controller on the S3C24xx and S3C64xx
->           SoCs
-> diff --git a/drivers/mtd/nand/raw/s3c2410.c b/drivers/mtd/nand/raw/s3c2410.c
-> index f0a4535c812a..80d96f94d6cb 100644
-> --- a/drivers/mtd/nand/raw/s3c2410.c
-> +++ b/drivers/mtd/nand/raw/s3c2410.c
-> @@ -166,10 +166,6 @@ struct s3c2410_nand_info {
->         enum s3c_nand_clk_state         clk_state;
->
->         enum s3c_cpu_type               cpu_type;
-> -
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -       struct notifier_block   freq_transition;
-> -#endif
->  };
->
->  struct s3c24XX_nand_devtype_data {
-> @@ -711,54 +707,6 @@ static void s3c2440_nand_write_buf(struct nand_chip *this, const u_char *buf,
->         }
->  }
->
-> -/* cpufreq driver support */
-> -
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -
-> -static int s3c2410_nand_cpufreq_transition(struct notifier_block *nb,
-> -                                         unsigned long val, void *data)
-> -{
-> -       struct s3c2410_nand_info *info;
-> -       unsigned long newclk;
-> -
-> -       info = container_of(nb, struct s3c2410_nand_info, freq_transition);
-> -       newclk = clk_get_rate(info->clk);
-> -
-> -       if ((val == CPUFREQ_POSTCHANGE && newclk < info->clk_rate) ||
-> -           (val == CPUFREQ_PRECHANGE && newclk > info->clk_rate)) {
-> -               s3c2410_nand_setrate(info);
-> -       }
-> -
-> -       return 0;
-> -}
-> -
-> -static inline int s3c2410_nand_cpufreq_register(struct s3c2410_nand_info *info)
-> -{
-> -       info->freq_transition.notifier_call = s3c2410_nand_cpufreq_transition;
-> -
-> -       return cpufreq_register_notifier(&info->freq_transition,
-> -                                        CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -static inline void
-> -s3c2410_nand_cpufreq_deregister(struct s3c2410_nand_info *info)
-> -{
-> -       cpufreq_unregister_notifier(&info->freq_transition,
-> -                                   CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -#else
-> -static inline int s3c2410_nand_cpufreq_register(struct s3c2410_nand_info *info)
-> -{
-> -       return 0;
-> -}
-> -
-> -static inline void
-> -s3c2410_nand_cpufreq_deregister(struct s3c2410_nand_info *info)
-> -{
-> -}
-> -#endif
-> -
->  /* device management functions */
->
->  static int s3c24xx_nand_remove(struct platform_device *pdev)
-> @@ -768,8 +716,6 @@ static int s3c24xx_nand_remove(struct platform_device *pdev)
->         if (info == NULL)
->                 return 0;
->
-> -       s3c2410_nand_cpufreq_deregister(info);
-> -
->         /* Release all our mtds  and their partitions, then go through
->          * freeing the resources used
->          */
-> @@ -1184,12 +1130,6 @@ static int s3c24xx_nand_probe(struct platform_device *pdev)
->         if (err != 0)
->                 goto exit_error;
->
-> -       err = s3c2410_nand_cpufreq_register(info);
-> -       if (err < 0) {
-> -               dev_err(&pdev->dev, "failed to init cpufreq support\n");
-> -               goto exit_error;
-> -       }
-> -
->         if (allow_clk_suspend(info)) {
->                 dev_info(&pdev->dev, "clock idle support enabled\n");
->                 s3c2410_nand_clk_set_state(info, CLOCK_SUSPEND);
-> diff --git a/drivers/pinctrl/samsung/pinctrl-samsung.c b/drivers/pinctrl/samsung/pinctrl-samsung.c
-> index bd13b5ef246d..1a478854293f 100644
-> --- a/drivers/pinctrl/samsung/pinctrl-samsung.c
-> +++ b/drivers/pinctrl/samsung/pinctrl-samsung.c
-> @@ -1322,16 +1322,6 @@ static const struct of_device_id samsung_pinctrl_dt_match[] = {
->  #ifdef CONFIG_PINCTRL_S3C64XX
->         { .compatible = "samsung,s3c64xx-pinctrl",
->                 .data = &s3c64xx_of_data },
-> -#endif
-> -#ifdef CONFIG_PINCTRL_S3C24XX
-> -       { .compatible = "samsung,s3c2412-pinctrl",
-> -               .data = &s3c2412_of_data },
-> -       { .compatible = "samsung,s3c2416-pinctrl",
-> -               .data = &s3c2416_of_data },
-> -       { .compatible = "samsung,s3c2440-pinctrl",
-> -               .data = &s3c2440_of_data },
-> -       { .compatible = "samsung,s3c2450-pinctrl",
-> -               .data = &s3c2450_of_data },
->  #endif
->         {},
->  };
-> diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-> index 312dccfa3f18..d13ca620ea5d 100644
-> --- a/drivers/rtc/Kconfig
-> +++ b/drivers/rtc/Kconfig
-> @@ -1406,18 +1406,14 @@ config RTC_DRV_OMAP
->
->  config RTC_DRV_S3C
->         tristate "Samsung S3C series SoC RTC"
-> -       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S3C24XX || ARCH_S5PV210 || \
-> +       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S5PV210 || \
->                    COMPILE_TEST
->         help
->           RTC (Realtime Clock) driver for the clock inbuilt into the
-> -         Samsung S3C24XX series of SoCs. This can provide periodic
-> +         Samsung S3C64XX series of SoCs. This can provide periodic
->           interrupt rates from 1Hz to 64Hz for user programs, and
->           wakeup from Alarm.
->
-> -         The driver currently supports the common features on all the
-> -         S3C24XX range, such as the S3C2410, S3C2412, S3C2413, S3C2440
-> -         and S3C2442.
-> -
->           This driver can also be build as a module. If so, the module
->           will be called rtc-s3c.
->
-> diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
-> index 434f83168546..3ba8a39655a3 100644
-> --- a/drivers/tty/serial/Kconfig
-> +++ b/drivers/tty/serial/Kconfig
-> @@ -242,23 +242,23 @@ config SERIAL_SAMSUNG
->         select SERIAL_CORE
->         help
->           Support for the on-chip UARTs on the Samsung
-> -         S3C24xx/S3C64xx/S5Pv210/Exynos and Apple M1 SoCs, providing
-> +         S3C64xx/S5Pv210/Exynos and Apple M1 SoCs, providing
->           /dev/ttySAC0, 1 and 2 (note, some machines may not provide all of
->           these ports, depending on how the serial port pins are configured.
-> +
->           Choose Y/M here only if you build for such SoC.
->
->  config SERIAL_SAMSUNG_UARTS_4
->         bool
->         depends on SERIAL_SAMSUNG
-> -       default y if !(CPU_S3C2410 || CPU_S3C2412 || CPU_S3C2440 || CPU_S3C2442)
-> +       default y
->         help
->           Internal node for the common case of 4 Samsung compatible UARTs
->
->  config SERIAL_SAMSUNG_UARTS
->         int
->         depends on SERIAL_SAMSUNG
-> -       default 4 if SERIAL_SAMSUNG_UARTS_4 || CPU_S3C2416
-> -       default 3
-> +       default 4
->         help
->           Select the number of available UART ports for the Samsung S3C
->           serial driver
-> diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
-> index 77d1363029f5..5adf3963b2f6 100644
-> --- a/drivers/tty/serial/samsung_tty.c
-> +++ b/drivers/tty/serial/samsung_tty.c
-> @@ -152,10 +152,6 @@ struct s3c24xx_uart_port {
->         const struct s3c2410_uartcfg    *cfg;
->
->         struct s3c24xx_uart_dma         *dma;
-> -
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -       struct notifier_block           freq_transition;
-> -#endif
->  };
->
->  static void s3c24xx_serial_tx_chars(struct s3c24xx_uart_port *ourport);
-> @@ -1859,93 +1855,6 @@ static void s3c24xx_serial_resetport(struct uart_port *port,
->         udelay(1);
->  }
->
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -
-> -static int s3c24xx_serial_cpufreq_transition(struct notifier_block *nb,
-> -                                            unsigned long val, void *data)
-> -{
-> -       struct s3c24xx_uart_port *port;
-> -       struct uart_port *uport;
-> -
-> -       port = container_of(nb, struct s3c24xx_uart_port, freq_transition);
-> -       uport = &port->port;
-> -
-> -       /* check to see if port is enabled */
-> -
-> -       if (port->pm_level != 0)
-> -               return 0;
-> -
-> -       /* try and work out if the baudrate is changing, we can detect
-> -        * a change in rate, but we do not have support for detecting
-> -        * a disturbance in the clock-rate over the change.
-> -        */
-> -
-> -       if (IS_ERR(port->baudclk))
-> -               goto exit;
-> -
-> -       if (port->baudclk_rate == clk_get_rate(port->baudclk))
-> -               goto exit;
-> -
-> -       if (val == CPUFREQ_PRECHANGE) {
-> -               /* we should really shut the port down whilst the
-> -                * frequency change is in progress.
-> -                */
-> -
-> -       } else if (val == CPUFREQ_POSTCHANGE) {
-> -               struct ktermios *termios;
-> -               struct tty_struct *tty;
-> -
-> -               if (uport->state == NULL)
-> -                       goto exit;
-> -
-> -               tty = uport->state->port.tty;
-> -
-> -               if (tty == NULL)
-> -                       goto exit;
-> -
-> -               termios = &tty->termios;
-> -
-> -               if (termios == NULL) {
-> -                       dev_warn(uport->dev, "%s: no termios?\n", __func__);
-> -                       goto exit;
-> -               }
-> -
-> -               s3c24xx_serial_set_termios(uport, termios, NULL);
-> -       }
-> -
-> -exit:
-> -       return 0;
-> -}
-> -
-> -static inline int
-> -s3c24xx_serial_cpufreq_register(struct s3c24xx_uart_port *port)
-> -{
-> -       port->freq_transition.notifier_call = s3c24xx_serial_cpufreq_transition;
-> -
-> -       return cpufreq_register_notifier(&port->freq_transition,
-> -                                        CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -static inline void
-> -s3c24xx_serial_cpufreq_deregister(struct s3c24xx_uart_port *port)
-> -{
-> -       cpufreq_unregister_notifier(&port->freq_transition,
-> -                                   CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -#else
-> -static inline int
-> -s3c24xx_serial_cpufreq_register(struct s3c24xx_uart_port *port)
-> -{
-> -       return 0;
-> -}
-> -
-> -static inline void
-> -s3c24xx_serial_cpufreq_deregister(struct s3c24xx_uart_port *port)
-> -{
-> -}
-> -#endif
-> -
->  static int s3c24xx_serial_enable_baudclk(struct s3c24xx_uart_port *ourport)
->  {
->         struct device *dev = ourport->port.dev;
-> @@ -2237,10 +2146,6 @@ static int s3c24xx_serial_probe(struct platform_device *pdev)
->         if (!IS_ERR(ourport->baudclk))
->                 clk_disable_unprepare(ourport->baudclk);
->
-> -       ret = s3c24xx_serial_cpufreq_register(ourport);
-> -       if (ret < 0)
-> -               dev_err(&pdev->dev, "failed to add cpufreq notifier\n");
-> -
->         probe_index++;
->
->         return 0;
-> @@ -2251,7 +2156,6 @@ static int s3c24xx_serial_remove(struct platform_device *dev)
->         struct uart_port *port = s3c24xx_dev_to_port(&dev->dev);
->
->         if (port) {
-> -               s3c24xx_serial_cpufreq_deregister(to_ourport(port));
->                 uart_remove_one_port(&s3c24xx_uart_drv, port);
->         }
->
-> @@ -2589,94 +2493,6 @@ static struct console s3c24xx_serial_console = {
->  };
->  #endif /* CONFIG_SERIAL_SAMSUNG_CONSOLE */
->
-> -#ifdef CONFIG_CPU_S3C2410
-> -static const struct s3c24xx_serial_drv_data s3c2410_serial_drv_data = {
-> -       .info = {
-> -               .name           = "Samsung S3C2410 UART",
-> -               .type           = TYPE_S3C24XX,
-> -               .port_type      = PORT_S3C2410,
-> -               .fifosize       = 16,
-> -               .rx_fifomask    = S3C2410_UFSTAT_RXMASK,
-> -               .rx_fifoshift   = S3C2410_UFSTAT_RXSHIFT,
-> -               .rx_fifofull    = S3C2410_UFSTAT_RXFULL,
-> -               .tx_fifofull    = S3C2410_UFSTAT_TXFULL,
-> -               .tx_fifomask    = S3C2410_UFSTAT_TXMASK,
-> -               .tx_fifoshift   = S3C2410_UFSTAT_TXSHIFT,
-> -               .def_clk_sel    = S3C2410_UCON_CLKSEL0,
-> -               .num_clks       = 2,
-> -               .clksel_mask    = S3C2410_UCON_CLKMASK,
-> -               .clksel_shift   = S3C2410_UCON_CLKSHIFT,
-> -       },
-> -       .def_cfg = {
-> -               .ucon           = S3C2410_UCON_DEFAULT,
-> -               .ufcon          = S3C2410_UFCON_DEFAULT,
-> -       },
-> -};
-> -#define S3C2410_SERIAL_DRV_DATA (&s3c2410_serial_drv_data)
-> -#else
-> -#define S3C2410_SERIAL_DRV_DATA NULL
-> -#endif
-> -
-> -#ifdef CONFIG_CPU_S3C2412
-> -static const struct s3c24xx_serial_drv_data s3c2412_serial_drv_data = {
-> -       .info = {
-> -               .name           = "Samsung S3C2412 UART",
-> -               .type           = TYPE_S3C24XX,
-> -               .port_type      = PORT_S3C2412,
-> -               .fifosize       = 64,
-> -               .has_divslot    = 1,
-> -               .rx_fifomask    = S3C2440_UFSTAT_RXMASK,
-> -               .rx_fifoshift   = S3C2440_UFSTAT_RXSHIFT,
-> -               .rx_fifofull    = S3C2440_UFSTAT_RXFULL,
-> -               .tx_fifofull    = S3C2440_UFSTAT_TXFULL,
-> -               .tx_fifomask    = S3C2440_UFSTAT_TXMASK,
-> -               .tx_fifoshift   = S3C2440_UFSTAT_TXSHIFT,
-> -               .def_clk_sel    = S3C2410_UCON_CLKSEL2,
-> -               .num_clks       = 4,
-> -               .clksel_mask    = S3C2412_UCON_CLKMASK,
-> -               .clksel_shift   = S3C2412_UCON_CLKSHIFT,
-> -       },
-> -       .def_cfg = {
-> -               .ucon           = S3C2410_UCON_DEFAULT,
-> -               .ufcon          = S3C2410_UFCON_DEFAULT,
-> -       },
-> -};
-> -#define S3C2412_SERIAL_DRV_DATA (&s3c2412_serial_drv_data)
-> -#else
-> -#define S3C2412_SERIAL_DRV_DATA NULL
-> -#endif
-> -
-> -#if defined(CONFIG_CPU_S3C2440) || defined(CONFIG_CPU_S3C2416) || \
-> -       defined(CONFIG_CPU_S3C2443) || defined(CONFIG_CPU_S3C2442)
-> -static const struct s3c24xx_serial_drv_data s3c2440_serial_drv_data = {
-> -       .info = {
-> -               .name           = "Samsung S3C2440 UART",
-> -               .type           = TYPE_S3C24XX,
-> -               .port_type      = PORT_S3C2440,
-> -               .fifosize       = 64,
-> -               .has_divslot    = 1,
-> -               .rx_fifomask    = S3C2440_UFSTAT_RXMASK,
-> -               .rx_fifoshift   = S3C2440_UFSTAT_RXSHIFT,
-> -               .rx_fifofull    = S3C2440_UFSTAT_RXFULL,
-> -               .tx_fifofull    = S3C2440_UFSTAT_TXFULL,
-> -               .tx_fifomask    = S3C2440_UFSTAT_TXMASK,
-> -               .tx_fifoshift   = S3C2440_UFSTAT_TXSHIFT,
-> -               .def_clk_sel    = S3C2410_UCON_CLKSEL2,
-> -               .num_clks       = 4,
-> -               .clksel_mask    = S3C2412_UCON_CLKMASK,
-> -               .clksel_shift   = S3C2412_UCON_CLKSHIFT,
-> -               .ucon_mask      = S3C2440_UCON0_DIVMASK,
-> -       },
-> -       .def_cfg = {
-> -               .ucon           = S3C2410_UCON_DEFAULT,
-> -               .ufcon          = S3C2410_UFCON_DEFAULT,
-> -       },
-> -};
-> -#define S3C2440_SERIAL_DRV_DATA (&s3c2440_serial_drv_data)
-> -#else
-> -#define S3C2440_SERIAL_DRV_DATA NULL
-> -#endif
-> -
->  #if defined(CONFIG_CPU_S3C6400) || defined(CONFIG_CPU_S3C6410)
->  static const struct s3c24xx_serial_drv_data s3c6400_serial_drv_data = {
->         .info = {
-> @@ -2845,15 +2661,6 @@ static const struct s3c24xx_serial_drv_data artpec8_serial_drv_data = {
->
->  static const struct platform_device_id s3c24xx_serial_driver_ids[] = {
->         {
-> -               .name           = "s3c2410-uart",
-> -               .driver_data    = (kernel_ulong_t)S3C2410_SERIAL_DRV_DATA,
-> -       }, {
-> -               .name           = "s3c2412-uart",
-> -               .driver_data    = (kernel_ulong_t)S3C2412_SERIAL_DRV_DATA,
-> -       }, {
-> -               .name           = "s3c2440-uart",
-> -               .driver_data    = (kernel_ulong_t)S3C2440_SERIAL_DRV_DATA,
-> -       }, {
->                 .name           = "s3c6400-uart",
->                 .driver_data    = (kernel_ulong_t)S3C6400_SERIAL_DRV_DATA,
->         }, {
-> @@ -2881,12 +2688,6 @@ MODULE_DEVICE_TABLE(platform, s3c24xx_serial_driver_ids);
->
->  #ifdef CONFIG_OF
->  static const struct of_device_id s3c24xx_uart_dt_match[] = {
-> -       { .compatible = "samsung,s3c2410-uart",
-> -               .data = S3C2410_SERIAL_DRV_DATA },
-> -       { .compatible = "samsung,s3c2412-uart",
-> -               .data = S3C2412_SERIAL_DRV_DATA },
-> -       { .compatible = "samsung,s3c2440-uart",
-> -               .data = S3C2440_SERIAL_DRV_DATA },
->         { .compatible = "samsung,s3c6400-uart",
->                 .data = S3C6400_SERIAL_DRV_DATA },
->         { .compatible = "samsung,s5pv210-uart",
-> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-> index fb7b603dddf8..8ba4fe9364b1 100644
-> --- a/drivers/usb/host/Kconfig
-> +++ b/drivers/usb/host/Kconfig
-> @@ -443,12 +443,12 @@ config USB_OHCI_HCD_STI
->           STMicroelectronics consumer electronics SoC's.
->
->  config USB_OHCI_HCD_S3C2410
-> -       tristate "OHCI support for Samsung S3C24xx/S3C64xx SoC series"
-> -       depends on USB_OHCI_HCD && (ARCH_S3C24XX || ARCH_S3C64XX || COMPILE_TEST)
-> -       default y if (ARCH_S3C24XX || ARCH_S3C64XX)
-> +       tristate "OHCI support for Samsung S3C64xx SoC series"
-> +       depends on USB_OHCI_HCD && (ARCH_S3C64XX || COMPILE_TEST)
-> +       default ARCH_S3C64XX
->         help
->           Enables support for the on-chip OHCI controller on
-> -         S3C24xx/S3C64xx chips.
-> +         S3C64xx chips.
->
->  config USB_OHCI_HCD_LPC32XX
->         tristate "Support for LPC on-chip OHCI USB controller"
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> index b64bc49c7f30..eee7df45347a 100644
-> --- a/drivers/watchdog/Kconfig
-> +++ b/drivers/watchdog/Kconfig
-> @@ -491,14 +491,13 @@ config IXP4XX_WATCHDOG
->           Say N if you are unsure.
->
->  config S3C2410_WATCHDOG
-> -       tristate "S3C2410 Watchdog"
-> -       depends on ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210 || ARCH_EXYNOS || \
-> -                  COMPILE_TEST
-> +       tristate "S3C6410/S5Pv210/Exynos Watchdog"
-> +       depends on ARCH_S3C64XX || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
->         select WATCHDOG_CORE
->         select MFD_SYSCON if ARCH_EXYNOS
->         help
-> -         Watchdog timer block in the Samsung S3C24xx, S3C64xx, S5Pv210 and
-> -         Exynos SoCs. This will reboot the system when the timer expires with
-> +         Watchdog timer block in the Samsung S3C64xx, S5Pv210 and Exynos
-> +         SoCs. This will reboot the system when the timer expires with
->           the watchdog enabled.
->
->           The driver is limited by the speed of the system's PCLK
-> diff --git a/drivers/watchdog/s3c2410_wdt.c b/drivers/watchdog/s3c2410_wdt.c
-> index d3fc8ed886ff..200ba236a72e 100644
-> --- a/drivers/watchdog/s3c2410_wdt.c
-> +++ b/drivers/watchdog/s3c2410_wdt.c
-> @@ -562,73 +562,6 @@ static irqreturn_t s3c2410wdt_irq(int irqno, void *param)
->         return IRQ_HANDLED;
->  }
->
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -
-> -static int s3c2410wdt_cpufreq_transition(struct notifier_block *nb,
-> -                                         unsigned long val, void *data)
-> -{
-> -       int ret;
-> -       struct s3c2410_wdt *wdt = freq_to_wdt(nb);
-> -
-> -       if (!s3c2410wdt_is_running(wdt))
-> -               goto done;
-> -
-> -       if (val == CPUFREQ_PRECHANGE) {
-> -               /* To ensure that over the change we don't cause the
-> -                * watchdog to trigger, we perform an keep-alive if
-> -                * the watchdog is running.
-> -                */
-> -
-> -               s3c2410wdt_keepalive(&wdt->wdt_device);
-> -       } else if (val == CPUFREQ_POSTCHANGE) {
-> -               s3c2410wdt_stop(&wdt->wdt_device);
-> -
-> -               ret = s3c2410wdt_set_heartbeat(&wdt->wdt_device,
-> -                                               wdt->wdt_device.timeout);
-> -
-> -               if (ret >= 0)
-> -                       s3c2410wdt_start(&wdt->wdt_device);
-> -               else
-> -                       goto err;
-> -       }
-> -
-> -done:
-> -       return 0;
-> -
-> - err:
-> -       dev_err(wdt->dev, "cannot set new value for timeout %d\n",
-> -                               wdt->wdt_device.timeout);
-> -       return ret;
-> -}
-> -
-> -static inline int s3c2410wdt_cpufreq_register(struct s3c2410_wdt *wdt)
-> -{
-> -       wdt->freq_transition.notifier_call = s3c2410wdt_cpufreq_transition;
-> -
-> -       return cpufreq_register_notifier(&wdt->freq_transition,
-> -                                        CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -static inline void s3c2410wdt_cpufreq_deregister(struct s3c2410_wdt *wdt)
-> -{
-> -       wdt->freq_transition.notifier_call = s3c2410wdt_cpufreq_transition;
-> -
-> -       cpufreq_unregister_notifier(&wdt->freq_transition,
-> -                                   CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -#else
-> -
-> -static inline int s3c2410wdt_cpufreq_register(struct s3c2410_wdt *wdt)
-> -{
-> -       return 0;
-> -}
-> -
-> -static inline void s3c2410wdt_cpufreq_deregister(struct s3c2410_wdt *wdt)
-> -{
-> -}
-> -#endif
-> -
->  static inline unsigned int s3c2410wdt_get_bootstatus(struct s3c2410_wdt *wdt)
->  {
->         unsigned int rst_stat;
-> @@ -761,12 +694,6 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->         wdt->wdt_device.min_timeout = 1;
->         wdt->wdt_device.max_timeout = s3c2410wdt_max_timeout(wdt);
->
-> -       ret = s3c2410wdt_cpufreq_register(wdt);
-> -       if (ret < 0) {
-> -               dev_err(dev, "failed to register cpufreq\n");
-> -               goto err_src_clk;
-> -       }
-> -
->         watchdog_set_drvdata(&wdt->wdt_device, wdt);
->
->         /* see if we can actually set the requested timer margin, and if
-> @@ -783,7 +710,7 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->                                  S3C2410_WATCHDOG_DEFAULT_TIME);
->                 } else {
->                         dev_err(dev, "failed to use default timeout\n");
-> -                       goto err_cpufreq;
-> +                       goto err_src_clk;
->                 }
->         }
->
-> @@ -791,7 +718,7 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->                                pdev->name, pdev);
->         if (ret != 0) {
->                 dev_err(dev, "failed to install irq (%d)\n", ret);
-> -               goto err_cpufreq;
-> +               goto err_src_clk;
->         }
->
->         watchdog_set_nowayout(&wdt->wdt_device, nowayout);
-> @@ -817,7 +744,7 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->
->         ret = watchdog_register_device(&wdt->wdt_device);
+>         ret =3D ioctl(fd, MMC_IOC_CMD, &idata);
 >         if (ret)
-> -               goto err_cpufreq;
-> +               goto err_src_clk;
+> @@ -341,7 +343,7 @@ int do_writeprotect_boot_set(int nargs, char **argv)
+>         value |=3D permanent ? EXT_CSD_BOOT_WP_B_PERM_WP_EN
+>                            : EXT_CSD_BOOT_WP_B_PWR_WP_EN;
 >
->         ret = s3c2410wdt_enable(wdt, true);
->         if (ret < 0)
-> @@ -839,9 +766,6 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->   err_unregister:
->         watchdog_unregister_device(&wdt->wdt_device);
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_BOOT_WP, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_BOOT_WP, value, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n",
+> @@ -508,7 +510,7 @@ int do_writeprotect_user_set(int nargs, char **argv)
+>                         break;
+>                 }
+>                 if (user_wp !=3D ext_csd[EXT_CSD_USER_WP]) {
+> -                       ret =3D write_extcsd_value(fd, EXT_CSD_USER_WP, u=
+ser_wp);
+> +                       ret =3D write_extcsd_value(fd, EXT_CSD_USER_WP, u=
+ser_wp, 0);
+>                         if (ret) {
+>                                 fprintf(stderr, "Error setting EXT_CSD\n"=
+);
+>                                 exit(1);
+> @@ -526,7 +528,7 @@ int do_writeprotect_user_set(int nargs, char **argv)
+>         }
+>         if (wptype !=3D WPTYPE_NONE) {
+>                 ret =3D write_extcsd_value(fd, EXT_CSD_USER_WP,
+> -                                       ext_csd[EXT_CSD_USER_WP]);
+> +                               ext_csd[EXT_CSD_USER_WP], 0);
+>                 if (ret) {
+>                         fprintf(stderr, "Error restoring EXT_CSD\n");
+>                         exit(1);
+> @@ -571,7 +573,7 @@ int do_disable_512B_emulation(int nargs, char **argv)
 >
-> - err_cpufreq:
-> -       s3c2410wdt_cpufreq_deregister(wdt);
-> -
->   err_src_clk:
->         clk_disable_unprepare(wdt->src_clk);
+>         if (native_sector_size && !data_sector_size &&
+>            (wr_rel_param & EN_REL_WR)) {
+> -               ret =3D write_extcsd_value(fd, EXT_CSD_USE_NATIVE_SECTOR,=
+ 1);
+> +               ret =3D write_extcsd_value(fd, EXT_CSD_USE_NATIVE_SECTOR,=
+ 1, 0);
 >
-> @@ -862,8 +786,6 @@ static int s3c2410wdt_remove(struct platform_device *dev)
+>                 if (ret) {
+>                         fprintf(stderr, "Could not write 0x%02x to EXT_CS=
+D[%d] in %s\n",
+> @@ -650,7 +652,7 @@ int do_write_boot_en(int nargs, char **argv)
+>         else
+>                 value &=3D ~EXT_CSD_PART_CONFIG_ACC_ACK;
 >
->         watchdog_unregister_device(&wdt->wdt_device);
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_PART_CONFIG, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_PART_CONFIG, value, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n",
+> @@ -720,7 +722,7 @@ int do_boot_bus_conditions_set(int nargs, char **argv=
+)
+>         printf("Changing ext_csd[BOOT_BUS_CONDITIONS] from 0x%02x to 0x%0=
+2x\n",
+>                 ext_csd[EXT_CSD_BOOT_BUS_CONDITIONS], value);
 >
-> -       s3c2410wdt_cpufreq_deregister(wdt);
-> -
->         clk_disable_unprepare(wdt->src_clk);
->         clk_disable_unprepare(wdt->bus_clk);
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_BOOT_BUS_CONDITIONS, value=
+);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_BOOT_BUS_CONDITIONS, value=
+, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n",
+> @@ -771,7 +773,7 @@ int do_hwreset(int value, int nargs, char **argv)
+>                 exit(1);
+>         }
 >
-> diff --git a/include/linux/clk/samsung.h b/include/linux/clk/samsung.h
-> index 38b774001712..0cf7aac83439 100644
-> --- a/include/linux/clk/samsung.h
-> +++ b/include/linux/clk/samsung.h
-> @@ -21,36 +21,4 @@ static inline void s3c64xx_clk_init(struct device_node *np,
->                                     bool s3c6400, void __iomem *base) { }
->  #endif /* CONFIG_S3C64XX_COMMON_CLK */
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_RST_N_FUNCTION, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_RST_N_FUNCTION, value, 0);
+>         if (ret) {
+>                 fprintf(stderr,
+>                         "Could not write 0x%02x to EXT_CSD[%d] in %s\n",
+> @@ -825,9 +827,9 @@ int do_write_bkops_en(int nargs, char **argv)
+>                         fprintf(stderr, "%s doesn't support AUTO_EN in th=
+e BKOPS_EN register\n", device);
+>                         exit(1);
+>                 }
+> -               ret =3D write_extcsd_value(fd, EXT_CSD_BKOPS_EN, BKOPS_AU=
+TO_ENABLE);
+> +               ret =3D write_extcsd_value(fd, EXT_CSD_BKOPS_EN, BKOPS_AU=
+TO_ENABLE, 0);
+>         } else if (strcmp(en_type, "manual") =3D=3D 0) {
+> -               ret =3D write_extcsd_value(fd, EXT_CSD_BKOPS_EN, BKOPS_MA=
+N_ENABLE);
+> +               ret =3D write_extcsd_value(fd, EXT_CSD_BKOPS_EN, BKOPS_MA=
+N_ENABLE, 0);
+>         } else {
+>                 fprintf(stderr, "%s invalid mode for BKOPS_EN requested: =
+%s. Valid options: auto or manual\n", en_type, device);
+>                 exit(1);
+> @@ -1002,7 +1004,7 @@ int set_partitioning_setting_completed(int dry_run,=
+ const char * const device,
+>         }
 >
-> -#ifdef CONFIG_S3C2410_COMMON_CLK
-> -void s3c2410_common_clk_init(struct device_node *np, unsigned long xti_f,
-> -                            int current_soc,
-> -                            void __iomem *reg_base);
-> -#else
-> -static inline void s3c2410_common_clk_init(struct device_node *np,
-> -                                          unsigned long xti_f,
-> -                                          int current_soc,
-> -                                          void __iomem *reg_base) { }
-> -#endif /* CONFIG_S3C2410_COMMON_CLK */
-> -
-> -#ifdef CONFIG_S3C2412_COMMON_CLK
-> -void s3c2412_common_clk_init(struct device_node *np, unsigned long xti_f,
-> -                            unsigned long ext_f, void __iomem *reg_base);
-> -#else
-> -static inline void s3c2412_common_clk_init(struct device_node *np,
-> -                                          unsigned long xti_f,
-> -                                          unsigned long ext_f,
-> -                                          void __iomem *reg_base) { }
-> -#endif /* CONFIG_S3C2412_COMMON_CLK */
-> -
-> -#ifdef CONFIG_S3C2443_COMMON_CLK
-> -void s3c2443_common_clk_init(struct device_node *np, unsigned long xti_f,
-> -                            int current_soc,
-> -                            void __iomem *reg_base);
-> -#else
-> -static inline void s3c2443_common_clk_init(struct device_node *np,
-> -                                          unsigned long xti_f,
-> -                                          int current_soc,
-> -                                          void __iomem *reg_base) { }
-> -#endif /* CONFIG_S3C2443_COMMON_CLK */
-> -
->  #endif /* __LINUX_CLK_SAMSUNG_H_ */
-> diff --git a/include/linux/soc/samsung/s3c-pm.h b/include/linux/soc/samsung/s3c-pm.h
-> index f9164559c99f..5b23d85d20ab 100644
-> --- a/include/linux/soc/samsung/s3c-pm.h
-> +++ b/include/linux/soc/samsung/s3c-pm.h
-> @@ -14,58 +14,10 @@
+>         fprintf(stderr, "setting OTP PARTITION_SETTING_COMPLETED!\n");
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_PARTITION_SETTING_COMPLETE=
+D, 0x1);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_PARTITION_SETTING_COMPLETE=
+D, 0x1, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x1 to "
+>                         "EXT_CSD[%d] in %s\n",
+> @@ -1188,7 +1190,7 @@ int do_create_gp_partition(int nargs, char **argv)
+>         gp_size_mult =3D (length_kib + align/2l) / align;
 >
->  /* PM debug functions */
+>         /* set EXT_CSD_ERASE_GROUP_DEF bit 0 */
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_ERASE_GROUP_DEF, 0x1);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_ERASE_GROUP_DEF, 0x1, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x1 to EXT_CSD[%d] in %s=
+\n",
+>                         EXT_CSD_ERASE_GROUP_DEF, device);
+> @@ -1197,7 +1199,7 @@ int do_create_gp_partition(int nargs, char **argv)
 >
-> -/**
-> - * struct pm_uart_save - save block for core UART
-> - * @ulcon: Save value for S3C2410_ULCON
-> - * @ucon: Save value for S3C2410_UCON
-> - * @ufcon: Save value for S3C2410_UFCON
-> - * @umcon: Save value for S3C2410_UMCON
-> - * @ubrdiv: Save value for S3C2410_UBRDIV
-> - *
-> - * Save block for UART registers to be held over sleep and restored if they
-> - * are needed (say by debug).
-> -*/
-> -struct pm_uart_save {
-> -       u32     ulcon;
-> -       u32     ucon;
-> -       u32     ufcon;
-> -       u32     umcon;
-> -       u32     ubrdiv;
-> -       u32     udivslot;
-> -};
-> -
-> -#ifdef CONFIG_SAMSUNG_PM_DEBUG
-> -/**
-> - * s3c_pm_dbg() - low level debug function for use in suspend/resume.
-> - * @msg: The message to print.
-> - *
-> - * This function is used mainly to debug the resume process before the system
-> - * can rely on printk/console output. It uses the low-level debugging output
-> - * routine printascii() to do its work.
-> - */
-> -extern void s3c_pm_dbg(const char *msg, ...);
-> -
-> -#define S3C_PMDBG(fmt...) s3c_pm_dbg(fmt)
-> -
-> -extern void s3c_pm_save_uarts(bool is_s3c24xx);
-> -extern void s3c_pm_restore_uarts(bool is_s3c24xx);
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
-> -extern void s3c_pm_arch_update_uart(void __iomem *regs,
-> -                                   struct pm_uart_save *save);
-> -#else
-> -static inline void
-> -s3c_pm_arch_update_uart(void __iomem *regs, struct pm_uart_save *save)
-> -{
-> -}
-> -#endif
-> -
-> -#else
->  #define S3C_PMDBG(fmt...) pr_debug(fmt)
+>         value =3D (gp_size_mult >> 16) & 0xff;
+>         address =3D EXT_CSD_GP_SIZE_MULT_1_2 + (partition - 1) * 3;
+> -       ret =3D write_extcsd_value(fd, address, value);
+> +       ret =3D write_extcsd_value(fd, address, value, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to EXT_CSD[%d] in=
+ %s\n",
+>                         value, address, device);
+> @@ -1205,7 +1207,7 @@ int do_create_gp_partition(int nargs, char **argv)
+>         }
+>         value =3D (gp_size_mult >> 8) & 0xff;
+>         address =3D EXT_CSD_GP_SIZE_MULT_1_1 + (partition - 1) * 3;
+> -       ret =3D write_extcsd_value(fd, address, value);
+> +       ret =3D write_extcsd_value(fd, address, value, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to EXT_CSD[%d] in=
+ %s\n",
+>                         value, address, device);
+> @@ -1213,7 +1215,7 @@ int do_create_gp_partition(int nargs, char **argv)
+>         }
+>         value =3D gp_size_mult & 0xff;
+>         address =3D EXT_CSD_GP_SIZE_MULT_1_0 + (partition - 1) * 3;
+> -       ret =3D write_extcsd_value(fd, address, value);
+> +       ret =3D write_extcsd_value(fd, address, value, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to EXT_CSD[%d] in=
+ %s\n",
+>                         value, address, device);
+> @@ -1226,7 +1228,7 @@ int do_create_gp_partition(int nargs, char **argv)
+>         else
+>                 value &=3D ~(1 << partition);
 >
->  static inline void s3c_pm_save_uarts(bool is_s3c24xx) { }
->  static inline void s3c_pm_restore_uarts(bool is_s3c24xx) { }
-> -#endif
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_PARTITIONS_ATTRIBUTE, valu=
+e);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_PARTITIONS_ATTRIBUTE, valu=
+e, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write EXT_CSD_ENH_%x to EXT_CS=
+D[%d] in %s\n",
+>                         partition, EXT_CSD_PARTITIONS_ATTRIBUTE, device);
+> @@ -1240,7 +1242,7 @@ int do_create_gp_partition(int nargs, char **argv)
+>         else
+>                 value &=3D (0xF << (4 * ((partition % 2))));
 >
->  /* suspend memory checking */
+> -       ret =3D write_extcsd_value(fd, address, value);
+> +       ret =3D write_extcsd_value(fd, address, value, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%x to EXT_CSD[%d] in %=
+s\n",
+>                         value, address, device);
+> @@ -1317,7 +1319,7 @@ int do_enh_area_set(int nargs, char **argv)
+>         enh_start_addr *=3D align;
 >
-> @@ -81,14 +33,4 @@ extern void s3c_pm_check_store(void);
->  #define s3c_pm_check_store()   do { } while (0)
->  #endif
+>         /* set EXT_CSD_ERASE_GROUP_DEF bit 0 */
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_ERASE_GROUP_DEF, 0x1);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_ERASE_GROUP_DEF, 0x1, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x1 to "
+>                         "EXT_CSD[%d] in %s\n",
+> @@ -1327,7 +1329,7 @@ int do_enh_area_set(int nargs, char **argv)
 >
-> -/* system device subsystems */
-> -
-> -extern struct bus_type s3c2410_subsys;
-> -extern struct bus_type s3c2410a_subsys;
-> -extern struct bus_type s3c2412_subsys;
-> -extern struct bus_type s3c2416_subsys;
-> -extern struct bus_type s3c2440_subsys;
-> -extern struct bus_type s3c2442_subsys;
-> -extern struct bus_type s3c2443_subsys;
-> -
->  #endif
+>         /* write to ENH_START_ADDR and ENH_SIZE_MULT and PARTITIONS_ATTRI=
+BUTE's ENH_USR bit */
+>         value =3D (enh_start_addr >> 24) & 0xff;
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_START_ADDR_3, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_START_ADDR_3, value, 0=
+);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n", value,
+> @@ -1335,7 +1337,7 @@ int do_enh_area_set(int nargs, char **argv)
+>                 exit(1);
+>         }
+>         value =3D (enh_start_addr >> 16) & 0xff;
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_START_ADDR_2, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_START_ADDR_2, value, 0=
+);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n", value,
+> @@ -1343,7 +1345,7 @@ int do_enh_area_set(int nargs, char **argv)
+>                 exit(1);
+>         }
+>         value =3D (enh_start_addr >> 8) & 0xff;
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_START_ADDR_1, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_START_ADDR_1, value, 0=
+);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n", value,
+> @@ -1351,7 +1353,7 @@ int do_enh_area_set(int nargs, char **argv)
+>                 exit(1);
+>         }
+>         value =3D enh_start_addr & 0xff;
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_START_ADDR_0, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_START_ADDR_0, value, 0=
+);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n", value,
+> @@ -1360,7 +1362,7 @@ int do_enh_area_set(int nargs, char **argv)
+>         }
+>
+>         value =3D (enh_size_mult >> 16) & 0xff;
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_SIZE_MULT_2, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_SIZE_MULT_2, value, 0)=
+;
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n", value,
+> @@ -1368,7 +1370,7 @@ int do_enh_area_set(int nargs, char **argv)
+>                 exit(1);
+>         }
+>         value =3D (enh_size_mult >> 8) & 0xff;
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_SIZE_MULT_1, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_SIZE_MULT_1, value, 0)=
+;
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n", value,
+> @@ -1376,7 +1378,7 @@ int do_enh_area_set(int nargs, char **argv)
+>                 exit(1);
+>         }
+>         value =3D enh_size_mult & 0xff;
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_SIZE_MULT_0, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_ENH_SIZE_MULT_0, value, 0)=
+;
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to "
+>                         "EXT_CSD[%d] in %s\n", value,
+> @@ -1384,7 +1386,7 @@ int do_enh_area_set(int nargs, char **argv)
+>                 exit(1);
+>         }
+>         value =3D ext_csd[EXT_CSD_PARTITIONS_ATTRIBUTE] | EXT_CSD_ENH_USR=
+;
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_PARTITIONS_ATTRIBUTE, valu=
+e);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_PARTITIONS_ATTRIBUTE, valu=
+e, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write EXT_CSD_ENH_USR to "
+>                         "EXT_CSD[%d] in %s\n",
+> @@ -1455,7 +1457,7 @@ int do_write_reliability_set(int nargs, char **argv=
+)
+>         }
+>
+>         value =3D ext_csd[EXT_CSD_WR_REL_SET] | (1<<partition);
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_WR_REL_SET, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_WR_REL_SET, value, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to EXT_CSD[%d] in=
+ %s\n",
+>                                 value, EXT_CSD_WR_REL_SET, device);
+> @@ -1998,7 +2000,7 @@ int do_sanitize(int nargs, char **argv)
+>                 exit(1);
+>         }
+>
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_SANITIZE_START, 1);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_SANITIZE_START, 1, 0);
+>         if (ret) {
+>                 fprintf(stderr, "Could not write 0x%02x to EXT_CSD[%d] in=
+ %s\n",
+>                         1, EXT_CSD_SANITIZE_START, device);
+> @@ -2587,7 +2589,7 @@ int do_cache_ctrl(int value, int nargs, char **argv=
+)
+>                         device);
+>                 exit(1);
+>         }
+> -       ret =3D write_extcsd_value(fd, EXT_CSD_CACHE_CTRL, value);
+> +       ret =3D write_extcsd_value(fd, EXT_CSD_CACHE_CTRL, value, 0);
+>         if (ret) {
+>                 fprintf(stderr,
+>                         "Could not write 0x%02x to EXT_CSD[%d] in %s\n",
 > --
-> 2.29.2
+> 2.37.3
+>
+> Hyperstone GmbH | Reichenaustr. 39a  | 78467 Konstanz
+> Managing Director: Dr. Jan Peter Berns.
+> Commercial register of local courts: Freiburg HRB381782
 >
