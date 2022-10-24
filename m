@@ -2,50 +2,50 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C753B60B751
-	for <lists+linux-mmc@lfdr.de>; Mon, 24 Oct 2022 21:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C719860B75A
+	for <lists+linux-mmc@lfdr.de>; Mon, 24 Oct 2022 21:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232106AbiJXTWs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 24 Oct 2022 15:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39748 "EHLO
+        id S232341AbiJXTXF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 24 Oct 2022 15:23:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230178AbiJXTVv (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Oct 2022 15:21:51 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 988CB1FCFA
-        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 10:57:10 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id z5-20020a17090a8b8500b00210a3a2364fso9448616pjn.0
-        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 10:57:10 -0700 (PDT)
+        with ESMTP id S232515AbiJXTVz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 24 Oct 2022 15:21:55 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8A744CF1
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 10:57:23 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id z5-20020a17090a8b8500b00210a3a2364fso9448707pjn.0
+        for <linux-mmc@vger.kernel.org>; Mon, 24 Oct 2022 10:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FWp3gLeR18gDUBWllj7p7A295JT2g0xhsqKP4jhnM/M=;
-        b=A/JR5Rj+tGKKJmsT6QxHlUP2Ul2+BXbXtagTpnwvYnwmKxL5N2i2722xv3L4gmoVxL
-         enNvMIwKR66QuY/eIput2Ma8qJZNhgvTyyEjn1HJFLvoIFpN3488+3tfqob8hEH8ryhu
-         aV+VtyqiHt+tNyB8m0QKqS8JkPsGe2ZQsAOq4=
+        bh=N4yDlVPTic37KZH9AxC8wwe58VczX65vPPEZffD7EQE=;
+        b=M3glaN3KH7v0Fj2TVX/4rEpKIqio36DUJjjhUWq3EPd2n2k/0Wvh02RurfIdEzV+9M
+         eqcD/iUxn2JpiQDZOvX04A+jwTMsRrIANx1MRiQUV29n9kQ7J2AobjK/cvv/YRt4F8TJ
+         Q0m4E4bXsFTCCwhixA4Dgy+lEpaZb3laJvH4w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FWp3gLeR18gDUBWllj7p7A295JT2g0xhsqKP4jhnM/M=;
-        b=DIuwyoG0kD/BciMpVcdYU6HYK7wu3Yvu4SeS0NytVz319yUJsxx4w3Ur8CC6s5r8P4
-         91bgQhrLvyrE7G03865v5Ir4jhUEjeiR11eXtAK55+Fq+wEyAD9eh+At+D90v7b5Zu15
-         A7J+/Zp/qwKOCrXSS6d3wEspLuL43A0snxIBSaZAQJg078g9esGCHSfjZtR9SDUxSXjA
-         FaP1NwUVQPreOtPjImRLXccKU+HyGoRGaz8MuzZcncixv2gJ220w0THh5YZqJ1hvxTwn
-         LI4wtFYx7jgvc1N/NVia1b6Omxw1tuOgLxALSGl7B+XOjB1lvR5L6vNkgcck+AXcoCGO
-         NuLA==
-X-Gm-Message-State: ACrzQf1fmTHrlCN8i78hd+vdR4BEi5pEW2q9YpawYX4Hq6qKNHUcIPij
-        YLOqxJipeZUb0cISC1wk4bsUTA==
-X-Google-Smtp-Source: AMsMyM6xehe4fg+ZHFo4TFClgOHOiWTRdft7HPelDaGN1nci+/HaPTuEVoT43nSFrBu3QLvD9IqL+A==
-X-Received: by 2002:a17:90b:954:b0:213:c01:b8ce with SMTP id dw20-20020a17090b095400b002130c01b8cemr7841306pjb.168.1666634186333;
-        Mon, 24 Oct 2022 10:56:26 -0700 (PDT)
+        bh=N4yDlVPTic37KZH9AxC8wwe58VczX65vPPEZffD7EQE=;
+        b=nmqS0kyPcGXyDDqoofAAUyxwqFbMfB9BOiTBMYQEG+4t31TSJ0hiaDhuNMT0Bxugrd
+         YS+UVeosSDKz7aA+1z1mXJ6uaZx1X1hvQs9Dd1okN8nbjp3XJT9ISR72Jdd4HzS0i/6r
+         Fsouho6AJ9tvrfIwMnPUBd5Zl/zEECTeyf389KXXxVeJ92luTqFhwjqJAIPycmTZQdPM
+         zR9cI7HcjUde9S2PV743g1/biLIkb8FKs4IOLr7xBnCdrNKQpmRTsfbpn8/t+1WpmxO5
+         8hS48iRC+QcRdZUdmANTSIkU9kjydAlT5ZQ8tBGFnRATOnPdL4PlLFLejgyzwd75sre4
+         liEQ==
+X-Gm-Message-State: ACrzQf1pb5XwFdYxiEU/qbXSnqrR16XrW66sjFURx+oCkej+A+HBDN0D
+        A9ftNEQXWkqR4K/ElCpqzqLBjg==
+X-Google-Smtp-Source: AMsMyM6ny+LJ0qluFB3FlBn0XusNLAlRcF+64cHrIlzkiXcZYyKZQ4gXt6vO1NIgvPzupD8Xwm8dXg==
+X-Received: by 2002:a17:90b:3d8e:b0:213:c01:b8bb with SMTP id pq14-20020a17090b3d8e00b002130c01b8bbmr7616310pjb.68.1666634189383;
+        Mon, 24 Oct 2022 10:56:29 -0700 (PDT)
 Received: from localhost ([2620:15c:9d:2:808b:e2f6:edcf:ccb0])
-        by smtp.gmail.com with UTF8SMTPSA id g29-20020aa79ddd000000b0056bdb5197f4sm103804pfq.35.2022.10.24.10.56.24
+        by smtp.gmail.com with UTF8SMTPSA id r24-20020aa79638000000b0056bab544100sm80142pfg.197.2022.10.24.10.56.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Oct 2022 10:56:25 -0700 (PDT)
+        Mon, 24 Oct 2022 10:56:28 -0700 (PDT)
 From:   Brian Norris <briannorris@chromium.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Shawn Lin <shawn.lin@rock-chips.com>, linux-mmc@vger.kernel.org,
@@ -70,9 +70,9 @@ Cc:     Shawn Lin <shawn.lin@rock-chips.com>, linux-mmc@vger.kernel.org,
         Faiz Abbas <faiz_abbas@ti.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         Brian Norris <briannorris@chromium.org>
-Subject: [PATCH v3 5/7] mmc: sdhci-tegra: Fix SDHCI_RESET_ALL for CQHCI
-Date:   Mon, 24 Oct 2022 10:54:59 -0700
-Message-Id: <20221024105229.v3.5.I418c9eaaf754880fcd2698113e8c3ef821a944d7@changeid>
+Subject: [PATCH v3 6/7] mmc: sdhci_am654: Fix SDHCI_RESET_ALL for CQHCI
+Date:   Mon, 24 Oct 2022 10:55:00 -0700
+Message-Id: <20221024105229.v3.6.I35ca9d6220ba48304438b992a76647ca8e5b126f@changeid>
 X-Mailer: git-send-email 2.38.0.135.g90850a2211-goog
 In-Reply-To: <20221024175501.2265400-1-briannorris@chromium.org>
 References: <20221024175501.2265400-1-briannorris@chromium.org>
@@ -80,7 +80,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -103,40 +104,37 @@ occur in some suspend or error recovery scenarios.
 
 Include this fix by way of the new sdhci_and_cqhci_reset() helper.
 
-Fixes: 3c4019f97978 ("mmc: tegra: HW Command Queue Support for Tegra SDMMC")
+Fixes: f545702b74f9 ("mmc: sdhci_am654: Add Support for Command Queuing Engine to J721E")
 Signed-off-by: Brian Norris <briannorris@chromium.org>
 ---
 
 Changes in v3:
  - Use new SDHCI+CQHCI helper
 
-Changes in v2:
- - Drop unnecessary 'enable_hwcq' check
-
- drivers/mmc/host/sdhci-tegra.c | 3 ++-
+ drivers/mmc/host/sdhci_am654.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index 413925bce0ca..c71000a07656 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -28,6 +28,7 @@
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index 8f1023480e12..6a282c7a221e 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -15,6 +15,7 @@
+ #include <linux/sys_soc.h>
  
- #include <soc/tegra/common.h>
- 
+ #include "cqhci.h"
 +#include "sdhci-cqhci.h"
  #include "sdhci-pltfm.h"
- #include "cqhci.h"
  
-@@ -367,7 +368,7 @@ static void tegra_sdhci_reset(struct sdhci_host *host, u8 mask)
- 	const struct sdhci_tegra_soc_data *soc_data = tegra_host->soc_data;
- 	u32 misc_ctrl, clk_ctrl, pad_ctrl;
+ /* CTL_CFG Registers */
+@@ -378,7 +379,7 @@ static void sdhci_am654_reset(struct sdhci_host *host, u8 mask)
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
  
 -	sdhci_reset(host, mask);
 +	sdhci_and_cqhci_reset(host, mask);
  
- 	if (!(mask & SDHCI_RESET_ALL))
- 		return;
+ 	if (sdhci_am654->quirks & SDHCI_AM654_QUIRK_FORCE_CDTEST) {
+ 		ctrl = sdhci_readb(host, SDHCI_HOST_CONTROL);
 -- 
 2.38.0.135.g90850a2211-goog
 
