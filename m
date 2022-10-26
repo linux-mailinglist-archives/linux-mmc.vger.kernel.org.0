@@ -2,61 +2,50 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D214060E31B
-	for <lists+linux-mmc@lfdr.de>; Wed, 26 Oct 2022 16:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9CB360E303
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Oct 2022 16:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234301AbiJZORT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 26 Oct 2022 10:17:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60558 "EHLO
+        id S233569AbiJZOQo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 26 Oct 2022 10:16:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234272AbiJZORH (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 26 Oct 2022 10:17:07 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B43221119D9
-        for <linux-mmc@vger.kernel.org>; Wed, 26 Oct 2022 07:16:56 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id b11so8011809pjp.2
-        for <linux-mmc@vger.kernel.org>; Wed, 26 Oct 2022 07:16:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2aCkXJ3/E5kIsgcvjrlWJkcK9UIk/FwpFvw0TBvEhQs=;
-        b=XXerNSUAAtAyO09OVK1S8loCnDU8Uq2DlLCcqb++RjYle9GSjcpTpOAxPQv0Fkb7rp
-         EGNklaYucvSEecLhwRipKP5bxxrWR7ev2ZpZVJwXHjpo3uptunqLAJDc7Lnt3cCt2BNw
-         dKMCuiQvf48kV5vAG+QVBFZ3P4rTXWpqGGiDwnfsREslwB0VVLOF0ljAOutIkvV1yBRl
-         y0/4W7yduSlsTgfnLT4+h3j8u1f4ZIX7loTKYzxeYRGN9bT8U0Ub34MZT33C6jgo2UIs
-         KvU/GxI/N2oZB6rBb1xMNjlRJ4fr4AlML5pWlePhDirogArHTgcbQv+9PGwvhkCSlvKZ
-         qKfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2aCkXJ3/E5kIsgcvjrlWJkcK9UIk/FwpFvw0TBvEhQs=;
-        b=0V04mPJUxeb4KkDproDiCRoQiXIE1yzcmTmc68FpghXvfbAfZmmxjI0ZNCT9BOm8sR
-         rWwisDGnF5tKEyXBuDNTriNzheweJ2kcZHFkoQ9MrDFTO0z+waIr+xei5mt3lnqtBJrq
-         skXPhFBlv+gEw2B2l2lE3PBYXrCJxgV4c7EVZsZjCwcRzCA/01+UnHvFDSCgkcTywoLy
-         iFKE5SfOXe4voIm1qHallhz9lcsMUcu3HySMLchR/cvQcL/yuooWuteYFgEJbcStHROO
-         AtFTf8zAnyAE+EgGRNT+yAnHePpHL53zaEUsrC2gwBOXD9e8vio0lD6AXuvcL6NG3f9t
-         QJBQ==
-X-Gm-Message-State: ACrzQf0LwH63Z7VTKNv7wKHkkELvIP4IvCOG3FB2hTamW5/Fp/JGS/8T
-        T04D3JL64AASPcfPtHuMzcU4nOOEZpLZat2WqTOX27uDz7DMsQ==
-X-Google-Smtp-Source: AMsMyM6iyi+51XGotsLLwU0U4SEvki1VwmuQAFuE0VoGoDlO9tzGbzWyaKXocdQuaVR1HS5bA3243qXPQVZhqAUsnPQ=
-X-Received: by 2002:a17:90b:70a:b0:211:f163:ddff with SMTP id
- s10-20020a17090b070a00b00211f163ddffmr4490569pjz.202.1666793816169; Wed, 26
- Oct 2022 07:16:56 -0700 (PDT)
+        with ESMTP id S232906AbiJZOQn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 26 Oct 2022 10:16:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FC8F682C;
+        Wed, 26 Oct 2022 07:16:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5E6561F08;
+        Wed, 26 Oct 2022 14:16:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F146C433D6;
+        Wed, 26 Oct 2022 14:16:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666793802;
+        bh=4sbYQ1JjOf2cO851WHCHY1Zq78kCtJj8OQbcl0ns6Wc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tRcZLhtkJvU8yKeyyubVEGg+DXBbc1HY/0UNCdAgOpzQyoUF1OazH9+UOZf1nehfR
+         qWqlGu07+4CP+8J3jordoCgUepnM4owBzenmDpn5/nAVkfLmHbHtLE9Hedht+dTRkv
+         RLxilEJYU2bjy3FqWtntfgVvR8DOrglOeWkW0f60TQSKYJicGaXnkzP7aQkI/8wq6P
+         XNExJVm9vn0+pV75FFAdwnXj83n+Jzx0TsIfvE+4RRUnl7mZ1bW5aabFEqAqrT7Wtl
+         plM4OJfyOxQzAQH3s+ef3X6wWee/s9WMopIa+naIPDoOxx8yiqiDnL6jocMzTw4Ecd
+         tTtOhw9yzIy/Q==
+From:   Dinh Nguyen <dinguyen@kernel.org>
+To:     jh80.chung@samsung.com
+Cc:     dinguyen@kernel.org, ulf.hansson@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, mturquette@baylibre.com,
+        sboyd@kernel.org, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: [PATCHv6 1/6] dt-bindings: mmc: synopsys-dw-mshc: document "altr,sysmgr-syscon"
+Date:   Wed, 26 Oct 2022 09:16:26 -0500
+Message-Id: <20221026141631.696863-1-dinguyen@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <972a1ea1-7431-21fe-c8af-027c4271f6a2@foss.st.com>
-In-Reply-To: <972a1ea1-7431-21fe-c8af-027c4271f6a2@foss.st.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 26 Oct 2022 16:16:19 +0200
-Message-ID: <CAPDyKFqaJea9MA9KwkkuQt7YcUj5LCw46yeTKyomx1bCRnUzoA@mail.gmail.com>
-Subject: Re: Issue with an SD-card switching to high speed
-To:     Yann Gautier <yann.gautier@foss.st.com>
-Cc:     linux-mmc@vger.kernel.org, christophe.kerello@foss.st.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,77 +54,63 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 19 Oct 2022 at 17:50, Yann Gautier <yann.gautier@foss.st.com> wrote:
->
-> Hi Ulf (and mailing-list),
->
-> I've an SD-card on a STM32MP157F-DK2 board that cannot switch to
-> high-speed mode:
-> "mmc0: Problem switching card into high-speed mode!"
->
-> On this board, it is not possible to switch to UHS modes.
-> And there is no power cycle done in kernel.
->
-> When checking the differences when I add full-pwr-cycle in DT, I see
-> that the OCR we ask the card is different:
-> 0x300000 (MMC_VDD_32_33 | MMC_VDD_33_34) vs 0x200000 (MMC_VDD_33_34).
->
-> If I add this missing MMC_VDD_32_33 voltage range (without power cycle),
-> then the card can switch to high-speed.
->
-> Checking where this is done in the framework, I've seen something that
-> could correct my issue in mmc_select_voltage():
->
-> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-> index 368f10405e13..bcd8fa81f78b 100644
-> --- a/drivers/mmc/core/core.c
-> +++ b/drivers/mmc/core/core.c
-> @@ -1132,7 +1132,7 @@ u32 mmc_select_voltage(struct mmc_host *host, u32 ocr)
->                  mmc_power_cycle(host, ocr);
->          } else {
->                  bit = fls(ocr) - 1;
-> -               ocr &= 3 << bit;
-> +               ocr &= 3 << (bit - 1);
+Document the optional "altr,sysmgr-syscon" binding that is used to
+access the System Manager register that controls the SDMMC clock
+phase.
 
-To me, this looks like you may be fixing a very old bug. Unless I am
-wrong, it seems like the current code might as well have been:
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+---
+v6: make "altr,sysmgr-syscon" optional
+v5: document reg shift
+v4: add else statement
+v3: document that the "altr,sysmgr-syscon" binding is only applicable to
+    "altr,socfpga-dw-mshc"
+v2: document "altr,sysmgr-syscon" in the MMC section
+---
+ .../bindings/mmc/synopsys-dw-mshc.yaml        | 23 ++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-ocr &= 1 << bit;
+diff --git a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc.yaml b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc.yaml
+index ae6d6fca79e2..0e2024eb9018 100644
+--- a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc.yaml
++++ b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc.yaml
+@@ -6,9 +6,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Synopsys Designware Mobile Storage Host Controller Binding
+ 
+-allOf:
+-  - $ref: "synopsys-dw-mshc-common.yaml#"
+-
+ maintainers:
+   - Ulf Hansson <ulf.hansson@linaro.org>
+ 
+@@ -38,6 +35,26 @@ properties:
+       - const: biu
+       - const: ciu
+ 
++allOf:
++  - $ref: synopsys-dw-mshc-common.yaml#
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: altr,socfpga-dw-mshc
++    then:
++      properties:
++        altr,sysmgr-syscon:
++          $ref: /schemas/types.yaml#/definitions/phandle-array
++          items:
++            - description: phandle to the sysmgr node
++            - description: register offset that controls the SDMMC clock phase
++            - description: register shift for the smplsel(drive in) setting
++    else:
++      properties:
++        altr,sysmgr-syscon: false
++
+ required:
+   - compatible
+   - reg
+-- 
+2.25.1
 
-The upper bit that the '3' is trying to allow to be set, can in fact
-never be set, because we have already done "ocr &= host->ocr_avail" a
-few lines above.
-
-
->                  if (bit != host->ios.vdd)
->                          dev_warn(mmc_dev(host), "exceeding card's
-> volts\n");
->          }
->
-> The ocr given to mmc_select_voltage() is 0x300000.
-> fls(ocr) = 22, bit = 21, 3 << bit = 0x600000.
-> With the &= operator, we then have only 0x200000 and have removed
-> MMC_VDD_32_33 mode.
-> The architecture is an Armv7, I hope that the fls() has the same
-> behavior on other architectures.
->
-> But as this function is also used for eMMC and SDIO, this could have
-> impacts I've not seen.
->
->
-> Maybe the issue is just with this SD-card, that doesn't properly handle
-> the range MMC_VDD_33_34 alone, and it could be out of spec.
->
-> I then have 3 possibilities:
-> - stop using this type of card if it is out-of-specs
-> - add full-pwr-cycle in this board's DT, but I'll have issues with other
-> boards that really cannot do power cycle
-> - push the proposed patch in mmc_select_voltage()
-
-Yes, please - so we can discuss it better.
-
-Also, please try to add a relevant comment in the code too, so it
-becomes a bit more obvious of what goes on.
-
-Kind regards
-Uffe
