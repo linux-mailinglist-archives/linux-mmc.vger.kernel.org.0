@@ -2,95 +2,153 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E15F560E318
-	for <lists+linux-mmc@lfdr.de>; Wed, 26 Oct 2022 16:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35FCF60E386
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Oct 2022 16:39:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234266AbiJZORG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 26 Oct 2022 10:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60642 "EHLO
+        id S232842AbiJZOjY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 26 Oct 2022 10:39:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234231AbiJZOQy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 26 Oct 2022 10:16:54 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4972910F89F;
-        Wed, 26 Oct 2022 07:16:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 00932B822B3;
-        Wed, 26 Oct 2022 14:16:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92519C43141;
-        Wed, 26 Oct 2022 14:16:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666793809;
-        bh=g/TFpBgxMMZqURiLLWUGN40leXx3CKJGLqcUxhIb9O8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KPtsDd4pw0/CTvV7jbKIiAIVPMA0P47HPqLp7hxifJy8HStyY2YRHqPh2uNUQD3P1
-         FnOehrCj7USbQ+uFtkxFMTHPyxpZWHQwzpYWEedebmByviObeXisSBCtzENfPt9Qm5
-         DlTWDYCOZvLP95xLk2rwNEczaxJPdZZLBD1FZS7eunwOdHPi/KMXBsMo5a/epjneSP
-         Y7an2IoAMm0+vR4SQ62nu0+jChrOk+529eu0bQHPBtOeuzdaG23ViqYqQAp9OUTBc9
-         A54fCkW9o2t3VquDnJyj5gbNvRrfjb+vNSeWnNpQQKmQBRLgib5b2MpRK64SxkrpG7
-         8Pcjk5OsX3P5Q==
-From:   Dinh Nguyen <dinguyen@kernel.org>
-To:     jh80.chung@samsung.com
-Cc:     dinguyen@kernel.org, ulf.hansson@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, mturquette@baylibre.com,
-        sboyd@kernel.org, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: [PATCHv6 6/6] arm: dts: socfpga: remove "clk-phase" in sdmmc_clk
-Date:   Wed, 26 Oct 2022 09:16:31 -0500
-Message-Id: <20221026141631.696863-6-dinguyen@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221026141631.696863-1-dinguyen@kernel.org>
-References: <20221026141631.696863-1-dinguyen@kernel.org>
+        with ESMTP id S233569AbiJZOjX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 26 Oct 2022 10:39:23 -0400
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4D7DB7F7F
+        for <linux-mmc@vger.kernel.org>; Wed, 26 Oct 2022 07:39:22 -0700 (PDT)
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29QCV3gc020233;
+        Wed, 26 Oct 2022 16:39:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=xjV4zaXSi3O2VhDk3xNQfFNuMKu+DRubg1cXcw/xIvQ=;
+ b=EQSuFaLL1fY2xZZpfJOXPJgYY6Jsc742iWtF04sa719V0CJpHJHqCORXf7U8QJ8Sw52q
+ gQdpgI4hd7fXdRWesKotMuevGlC/u+/8tuQFhTkjTOMwAXOhtDMXKVv2J/yXPf0skcQs
+ uY+LpYPm9mGfGymbyRGFXZox+6uFQFU//3JQTv4je/E5Oefln2MBKFSin3PMA4QWScDS
+ SPiM0B7U8Lfy8YtmjGwvY5Syahkud4CkqSDrOrAFpue0nYusKl3LFVSk6pD0ounjnBC9
+ YNSNONvJ+PqeveJgMyQ753ehQhEEr8OrbnILJ4hX87kby5/Pv3zsimMSi7Haf9NMVY4m gQ== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3kebqttvg8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Oct 2022 16:39:20 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3F79010002A;
+        Wed, 26 Oct 2022 16:39:17 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3AA2F22F7AE;
+        Wed, 26 Oct 2022 16:39:17 +0200 (CEST)
+Received: from [10.201.20.201] (10.201.20.201) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 26 Oct
+ 2022 16:39:14 +0200
+Message-ID: <db0d75a2-83d9-d752-47b7-8452b9ec945d@foss.st.com>
+Date:   Wed, 26 Oct 2022 16:39:13 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: Issue with an SD-card switching to high speed
+Content-Language: en-US
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     <linux-mmc@vger.kernel.org>, <christophe.kerello@foss.st.com>
+References: <972a1ea1-7431-21fe-c8af-027c4271f6a2@foss.st.com>
+ <CAPDyKFqaJea9MA9KwkkuQt7YcUj5LCw46yeTKyomx1bCRnUzoA@mail.gmail.com>
+From:   Yann Gautier <yann.gautier@foss.st.com>
+In-Reply-To: <CAPDyKFqaJea9MA9KwkkuQt7YcUj5LCw46yeTKyomx1bCRnUzoA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.201.20.201]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-26_06,2022-10-26_01,2022-06-22_01
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Now that the SDMMC driver can use the "clk-phase-sd-hs" binding, we don't
-need the clk-phase in the sdmmc_clk anymore.
+On 10/26/22 16:16, Ulf Hansson wrote:
+> On Wed, 19 Oct 2022 at 17:50, Yann Gautier <yann.gautier@foss.st.com> wrote:
+>>
+>> Hi Ulf (and mailing-list),
+>>
+>> I've an SD-card on a STM32MP157F-DK2 board that cannot switch to
+>> high-speed mode:
+>> "mmc0: Problem switching card into high-speed mode!"
+>>
+>> On this board, it is not possible to switch to UHS modes.
+>> And there is no power cycle done in kernel.
+>>
+>> When checking the differences when I add full-pwr-cycle in DT, I see
+>> that the OCR we ask the card is different:
+>> 0x300000 (MMC_VDD_32_33 | MMC_VDD_33_34) vs 0x200000 (MMC_VDD_33_34).
+>>
+>> If I add this missing MMC_VDD_32_33 voltage range (without power cycle),
+>> then the card can switch to high-speed.
+>>
+>> Checking where this is done in the framework, I've seen something that
+>> could correct my issue in mmc_select_voltage():
+>>
+>> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+>> index 368f10405e13..bcd8fa81f78b 100644
+>> --- a/drivers/mmc/core/core.c
+>> +++ b/drivers/mmc/core/core.c
+>> @@ -1132,7 +1132,7 @@ u32 mmc_select_voltage(struct mmc_host *host, u32 ocr)
+>>                   mmc_power_cycle(host, ocr);
+>>           } else {
+>>                   bit = fls(ocr) - 1;
+>> -               ocr &= 3 << bit;
+>> +               ocr &= 3 << (bit - 1);
+> 
+> To me, this looks like you may be fixing a very old bug. Unless I am
+> wrong, it seems like the current code might as well have been:
+> 
+> ocr &= 1 << bit;
+> 
+> The upper bit that the '3' is trying to allow to be set, can in fact
+> never be set, because we have already done "ocr &= host->ocr_avail" a
+> few lines above.
+> 
+> 
+>>                   if (bit != host->ios.vdd)
+>>                           dev_warn(mmc_dev(host), "exceeding card's
+>> volts\n");
+>>           }
+>>
+>> The ocr given to mmc_select_voltage() is 0x300000.
+>> fls(ocr) = 22, bit = 21, 3 << bit = 0x600000.
+>> With the &= operator, we then have only 0x200000 and have removed
+>> MMC_VDD_32_33 mode.
+>> The architecture is an Armv7, I hope that the fls() has the same
+>> behavior on other architectures.
+>>
+>> But as this function is also used for eMMC and SDIO, this could have
+>> impacts I've not seen.
+>>
+>>
+>> Maybe the issue is just with this SD-card, that doesn't properly handle
+>> the range MMC_VDD_33_34 alone, and it could be out of spec.
+>>
+>> I then have 3 possibilities:
+>> - stop using this type of card if it is out-of-specs
+>> - add full-pwr-cycle in this board's DT, but I'll have issues with other
+>> boards that really cannot do power cycle
+>> - push the proposed patch in mmc_select_voltage()
+> 
+> Yes, please - so we can discuss it better.
+> 
+> Also, please try to add a relevant comment in the code too, so it
+> becomes a bit more obvious of what goes on.
+> 
+> Kind regards
+> Uffe
 
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
----
-v6: no changes
-v5: new
----
- arch/arm/boot/dts/socfpga.dtsi         | 1 -
- arch/arm/boot/dts/socfpga_arria10.dtsi | 1 -
- 2 files changed, 2 deletions(-)
+Thanks Ulf,
 
-diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
-index 604fc6e0c4ad..a2419a5c6c26 100644
---- a/arch/arm/boot/dts/socfpga.dtsi
-+++ b/arch/arm/boot/dts/socfpga.dtsi
-@@ -453,7 +453,6 @@ sdmmc_clk: sdmmc_clk {
- 						compatible = "altr,socfpga-gate-clk";
- 						clocks = <&f2s_periph_ref_clk>, <&main_nand_sdmmc_clk>, <&per_nand_mmc_clk>;
- 						clk-gate = <0xa0 8>;
--						clk-phase = <0 135>;
- 					};
- 
- 					sdmmc_clk_divided: sdmmc_clk_divided {
-diff --git a/arch/arm/boot/dts/socfpga_arria10.dtsi b/arch/arm/boot/dts/socfpga_arria10.dtsi
-index b6ebe207e2bc..eb528c103d70 100644
---- a/arch/arm/boot/dts/socfpga_arria10.dtsi
-+++ b/arch/arm/boot/dts/socfpga_arria10.dtsi
-@@ -365,7 +365,6 @@ sdmmc_clk: sdmmc_clk {
- 						compatible = "altr,socfpga-a10-gate-clk";
- 						clocks = <&sdmmc_free_clk>;
- 						clk-gate = <0xC8 5>;
--						clk-phase = <0 135>;
- 					};
- 
- 					qspi_clk: qspi_clk {
--- 
-2.25.1
+I'll send the patch in the coming days, with the required comments.
 
+Best regards,
+Yann
