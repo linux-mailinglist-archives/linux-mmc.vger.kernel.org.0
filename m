@@ -2,50 +2,50 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A32B460E94F
-	for <lists+linux-mmc@lfdr.de>; Wed, 26 Oct 2022 21:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E401C60E942
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Oct 2022 21:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234352AbiJZTnf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 26 Oct 2022 15:43:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40738 "EHLO
+        id S233721AbiJZTnc (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 26 Oct 2022 15:43:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235079AbiJZTms (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 26 Oct 2022 15:42:48 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8755FE91D
-        for <linux-mmc@vger.kernel.org>; Wed, 26 Oct 2022 12:42:34 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id z5-20020a17090a8b8500b00210a3a2364fso4360178pjn.0
-        for <linux-mmc@vger.kernel.org>; Wed, 26 Oct 2022 12:42:34 -0700 (PDT)
+        with ESMTP id S234538AbiJZTm4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 26 Oct 2022 15:42:56 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B27151057F6
+        for <linux-mmc@vger.kernel.org>; Wed, 26 Oct 2022 12:42:37 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id c24so15182929pls.9
+        for <linux-mmc@vger.kernel.org>; Wed, 26 Oct 2022 12:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OP/jpiXLlD32ihmuaQEisQ+o2cyp9ywlsHpK/BoVXYw=;
-        b=jIbj4VPfhvDYQIKBdqCPB7rCCl8cb8N0uMtORU/8idM1msip0PJNFW8t1Tsq6UghFQ
-         1NVt00V8DqN9+0rdST/hMLOLcAixEjGcC4+0AJtX6OPzOYc7mVA+cH/cYq9oKQY+vYPR
-         Cr8pF7qUMSS4oL2KezQ3wAEovOTMTkvDVNa2s=
+        bh=Y45Z9F5+/R9uqywDzN7icoG5SzFxInaah2IApmdYfxw=;
+        b=Iy9rHMtN9Rv2jganlhmWgo4QVH8Z7RUUGpg2ylFrGCK3WZN2XS7hhrGR9N3EkAipMB
+         Iwx6g7aDxY2T1V1+Jm761uVArvrg2ri/fPYwbk0fiE4ko/o4cdje9BwYuxpIrfgvmK72
+         KB/rlobuS5mS4s+bNIjyb46By3UIsEOQ4qZwA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OP/jpiXLlD32ihmuaQEisQ+o2cyp9ywlsHpK/BoVXYw=;
-        b=LoWwCMURkKlOYsxrp4tgGL/wUVSLi61DQPJnQbxib/2OnIswfCQ8ZIQqXRT+d9WkYX
-         VtGXQvE1ecGZIdqBPo6ZlDUSU3P+q6DLt6xGKuC0YytZiabY02Lk2BSWckcHhftgsGAt
-         mTGskHBt9ZYF4GFWJhNoTNJfOqpOwPIShoz/mzaulJq19ehI/ZdQC7FE7njGnH6cwSHO
-         MO+nlncB2XVJDiHkIRKmdN3s8LGIhsPiXyBpUWWT+pXy8ePwf1SLjktZ+aPo2zFvW0Mw
-         12EGuG/k1aIKCvjWlQv8mJqam7ZzuC6Zbu99vUCcQt6NdMt9E+6hreSbS0iJukqp+D+x
-         IJjA==
-X-Gm-Message-State: ACrzQf2xnU2mY859jJq0Gaan8zkcH9UsUfmC6JEB86RjMfSqPRg31ezw
-        zDl3YJQ5ZjoG/FfUczJyR9bTnQ==
-X-Google-Smtp-Source: AMsMyM4Bs+rRHohZ2DACI+XW7RSFhufaX5l272kIQlvmDvY/No85n14oIKITViZzWTWJOu4fUf7wTw==
-X-Received: by 2002:a17:902:b18d:b0:186:9bb5:a92 with SMTP id s13-20020a170902b18d00b001869bb50a92mr20552157plr.11.1666813354356;
-        Wed, 26 Oct 2022 12:42:34 -0700 (PDT)
+        bh=Y45Z9F5+/R9uqywDzN7icoG5SzFxInaah2IApmdYfxw=;
+        b=beiVqif9nrETbqcsOEI8R7MLZ6TDjlsdzHM22GhTkiEES8uNT8o9pk+r7fTAcfWMEl
+         ILKYIFECYEdzMRa7BIrx7xEUGmL2++ZyXu3k04til6VsDNOT5QZ0sKlUzI6x7yRaUKZF
+         pGqTOJOmIargTxr/NBojFElE9p9rB0nmKYK22je+9Siv9qfoQ9hLG5j26rNyn3Jtn1yh
+         f5iI301bc8oEl2kvuYckufidtDu6l8/rShWpignS2DDvVJ7hWb0p1Qjg1LMLhbhnVKVR
+         x32qlBg3oS4PkjUKD8sR3LAH51HQbx/uHwbYxpeNw678PGm9K9Clh0EODsVXrt0LLbZf
+         Wudw==
+X-Gm-Message-State: ACrzQf2dgYdQT5oBdA8dZeyfEV6NR7h6TyjqkjyiIaiRgz1c65WdMnTm
+        yxeBTl8wgcRohbDbHiUHfjtQCA==
+X-Google-Smtp-Source: AMsMyM6bJdMa7N5QxnACd3Ttb0ThzapeCiUxb/MbTJVAXotHLUcV2tMCdTodRYT9wH43R9ASc1A4qg==
+X-Received: by 2002:a17:90b:1e49:b0:20b:36a3:aba6 with SMTP id pi9-20020a17090b1e4900b0020b36a3aba6mr6128720pjb.2.1666813357227;
+        Wed, 26 Oct 2022 12:42:37 -0700 (PDT)
 Received: from localhost ([2620:15c:9d:2:c9e3:74f3:6b2b:135])
-        by smtp.gmail.com with UTF8SMTPSA id e21-20020a635015000000b004582e25a595sm3151642pgb.41.2022.10.26.12.42.32
+        by smtp.gmail.com with UTF8SMTPSA id s27-20020aa78bdb000000b0056bc30e618dsm3341776pfd.38.2022.10.26.12.42.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Oct 2022 12:42:33 -0700 (PDT)
+        Wed, 26 Oct 2022 12:42:36 -0700 (PDT)
 From:   Brian Norris <briannorris@chromium.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Shawn Guo <shawnguo@kernel.org>, linux-mmc@vger.kernel.org,
@@ -71,9 +71,9 @@ Cc:     Shawn Guo <shawnguo@kernel.org>, linux-mmc@vger.kernel.org,
         Haibo Chen <haibo.chen@nxp.com>,
         Sowjanya Komatineni <skomatineni@nvidia.com>,
         Brian Norris <briannorris@chromium.org>
-Subject: [PATCH v4 3/7] mmc: sdhci-brcmstb: Fix SDHCI_RESET_ALL for CQHCI
-Date:   Wed, 26 Oct 2022 12:42:05 -0700
-Message-Id: <20221026124150.v4.3.I6a715feab6d01f760455865e968ecf0d85036018@changeid>
+Subject: [PATCH v4 4/7] mms: sdhci-esdhc-imx: Fix SDHCI_RESET_ALL for CQHCI
+Date:   Wed, 26 Oct 2022 12:42:06 -0700
+Message-Id: <20221026124150.v4.4.I7d01f9ad11bacdc9213dee61b7918982aea39115@changeid>
 X-Mailer: git-send-email 2.38.0.135.g90850a2211-goog
 In-Reply-To: <20221026194209.3758834-1-briannorris@chromium.org>
 References: <20221026194209.3758834-1-briannorris@chromium.org>
@@ -81,8 +81,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -105,58 +105,51 @@ occur in some suspend or error recovery scenarios.
 
 Include this fix by way of the new sdhci_and_cqhci_reset() helper.
 
-I only patch the bcm7216 variant even though others potentially *could*
-provide the 'supports-cqe' property (and thus enable CQHCI), because
-d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing
-(CQE)") and some Broadcom folks confirm that only the 7216 variant
-actually supports it.
-
 This patch depends on (and should not compile without) the patch
 entitled "mmc: cqhci: Provide helper for resetting both SDHCI and
 CQHCI".
 
-Fixes: d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)")
+Fixes: bb6e358169bf ("mmc: sdhci-esdhc-imx: add CMDQ support")
 Signed-off-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
 Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
 
 Changes in v4:
- - Improve commit notes
+ - Add dependency notes
  - Add Adrian's Ack
- - Add Florian's Reviewed-by
 
 Changes in v3:
  - Use new SDHCI+CQHCI helper
+ - Add Reviewed-by
 
 Changes in v2:
- - Rely on cqhci_deactivate() to handle NULL cqe_private, instead of
-   moving around CQE capability flags
+ - Drop unnecessary ESDHC_FLAG_CQHCI check
 
- drivers/mmc/host/sdhci-brcmstb.c | 3 ++-
+ drivers/mmc/host/sdhci-esdhc-imx.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-index aff36a933ebe..55d8bd232695 100644
---- a/drivers/mmc/host/sdhci-brcmstb.c
-+++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -12,6 +12,7 @@
- #include <linux/bitops.h>
- #include <linux/delay.h>
- 
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index 55981b0f0b10..b297c3c360eb 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -25,6 +25,7 @@
+ #include <linux/of_device.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/pm_runtime.h>
 +#include "sdhci-cqhci.h"
  #include "sdhci-pltfm.h"
+ #include "sdhci-esdhc.h"
  #include "cqhci.h"
+@@ -1288,7 +1289,7 @@ static void esdhc_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
  
-@@ -55,7 +56,7 @@ static void brcmstb_reset(struct sdhci_host *host, u8 mask)
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
- 
+ static void esdhc_reset(struct sdhci_host *host, u8 mask)
+ {
 -	sdhci_reset(host, mask);
 +	sdhci_and_cqhci_reset(host, mask);
  
- 	/* Reset will clear this, so re-enable it */
- 	if (priv->flags & BRCMSTB_PRIV_FLAGS_GATE_CLOCK)
+ 	sdhci_writel(host, host->ier, SDHCI_INT_ENABLE);
+ 	sdhci_writel(host, host->ier, SDHCI_SIGNAL_ENABLE);
 -- 
 2.38.0.135.g90850a2211-goog
 
