@@ -2,113 +2,175 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F060610B69
-	for <lists+linux-mmc@lfdr.de>; Fri, 28 Oct 2022 09:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0540B610D1D
+	for <lists+linux-mmc@lfdr.de>; Fri, 28 Oct 2022 11:26:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230217AbiJ1Hik (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 28 Oct 2022 03:38:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45072 "EHLO
+        id S230106AbiJ1J0H (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 28 Oct 2022 05:26:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230308AbiJ1HiW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 28 Oct 2022 03:38:22 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02EB41BF861;
-        Fri, 28 Oct 2022 00:38:21 -0700 (PDT)
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29S15iSN013328;
-        Fri, 28 Oct 2022 09:38:08 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=selector1;
- bh=Ls6XpX4UfWNReha8+iqxNKjy/N+ngxJZgqPEgE1QHsg=;
- b=5ShIB/gID5SL1hkzcP5DcrnxioKBHTO1Ydsuo/J052grC4OY7BTxRW43g2mxEzjpWffM
- 0lsEBG64Dqk2+dX2Lo85HLDcBC9zYqqItMq7k0G0bcrAO4WMZsU3UlsrJgNSMCTqAdN+
- SniB9XS3uxjs5hc6xx99qjVohu0jtPTpBE+rdsBIuWS4zIPv1tw4eGUIZRAl59bWmJXw
- W1k7Cx8laBgCSQDAQ7/5cLc9CbsXVaYD0Cy3zQPo/RKhjiacMiTQgEvPXfb6+g95U6UC
- 0N3lt2qNSQAdt6/lNDGNU7rt+rxBUJkknEwFB0SVs+JgH2lQNbIPn04yP2MKGm4q99nu qQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3kfahu2u0d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 28 Oct 2022 09:38:08 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 325DF100039;
-        Fri, 28 Oct 2022 09:38:02 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2AB1621160F;
-        Fri, 28 Oct 2022 09:38:02 +0200 (CEST)
-Received: from localhost (10.201.20.201) by SHFDAG1NODE2.st.com (10.75.129.70)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 28 Oct
- 2022 09:38:01 +0200
-From:   Yann Gautier <yann.gautier@foss.st.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Darrick J . Wong" <djwong@kernel.org>,
-        Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>,
-        <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <christophe.kerello@foss.st.com>,
-        Yann Gautier <yann.gautier@foss.st.com>
-Subject: [PATCH] mmc: core: properly select voltage range without power cycle
-Date:   Fri, 28 Oct 2022 09:37:40 +0200
-Message-ID: <20221028073740.7259-1-yann.gautier@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.201.20.201]
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-28_04,2022-10-27_01,2022-06-22_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230149AbiJ1JZc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 28 Oct 2022 05:25:32 -0400
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF3581AF33
+        for <linux-mmc@vger.kernel.org>; Fri, 28 Oct 2022 02:25:16 -0700 (PDT)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6EA921A0DC7;
+        Fri, 28 Oct 2022 11:25:15 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0FEF81A0DC5;
+        Fri, 28 Oct 2022 11:25:15 +0200 (CEST)
+Received: from local (shlinux2.ap.freescale.net [10.192.224.44])
+        by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 8BD4B180327D;
+        Fri, 28 Oct 2022 17:25:13 +0800 (+08)
+From:   haibo.chen@nxp.com
+To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org
+Cc:     linux-imx@nxp.com, haibo.chen@nxp.com, sherry.sun@nxp.com,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com
+Subject: [PATCH] mmc: sdhci-esdhc-imx: reset the tuning logic before execute tuning
+Date:   Fri, 28 Oct 2022 17:04:29 +0800
+Message-Id: <1666947869-7904-1-git-send-email-haibo.chen@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-In mmc_select_voltage(), if there is no full power cycle, the voltage
-range selected at the end of the function will be on a single range
-(e.g. 3.3V/3.4V). To keep a range around the selected voltage (3.2V/3.4V),
-the mask shift should be reduced by 1.
+From: Haibo Chen <haibo.chen@nxp.com>
 
-This issue was triggered by using a specific SD-card (Verbatim Premium
-16GB UHS-1) on an STM32MP157C-DK2 board. This board cannot do UHS modes
-and there is no power cycle. And the card was failing to switch to
-high-speed mode. When adding the range 3.2V/3.3V for this card with the
-proposed shift change, the card can switch to high-speed mode.
+For standard tuning method on usdhc, the previous tuning result can
+impact current tuning result, let current tuning can't set the correct
+delay cell. And from the logic, this is also reasonable for manual
+tuning method. So reset the tuning logic before execute tuning.
+To avoid compile issue, this patch also move the esdhc_reset_tuning()
+upper.
 
-Fixes: ce69d37b7d8f ("mmc: core: Prevent violation of specs while initializing cards")
-Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
+Find this issue when support SDIO WiFi in band wakeup feature. After
+system resume back, will do re-tuning, but then meet data CRC error.
+
+Do not meet this issue on SD/eMMC, because we already call
+esdhc_reset_tuning() when config the legency ios, and SD/eMMC need
+to re-init when system resume back, but SDIO device don't do re-init
+if it has MMC_PM_KEEP_POWER pm_flags.
+
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 ---
- drivers/mmc/core/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 82 ++++++++++++++++--------------
+ 1 file changed, 44 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index 95fa8fb1d45f..c5de202f530a 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -1134,7 +1134,13 @@ u32 mmc_select_voltage(struct mmc_host *host, u32 ocr)
- 		mmc_power_cycle(host, ocr);
- 	} else {
- 		bit = fls(ocr) - 1;
--		ocr &= 3 << bit;
-+		/*
-+		 * The bit variable represents the highest voltage bit set in
-+		 * the OCR register.
-+		 * To keep a range of 2 values (e.g. 3.2V/3.3V and 3.3V/3.4V),
-+		 * we must shift the mask '3' with (bit - 1).
-+		 */
-+		ocr &= 3 << (bit - 1);
- 		if (bit != host->ios.vdd)
- 			dev_warn(mmc_dev(host), "exceeding card's volts\n");
- 	}
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index b073e79dcd99..4559599d897d 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1012,6 +1012,44 @@ static void esdhc_pltfm_set_bus_width(struct sdhci_host *host, int width)
+ 			SDHCI_HOST_CONTROL);
+ }
+ 
++static void esdhc_reset_tuning(struct sdhci_host *host)
++{
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
++	u32 ctrl;
++	int ret;
++
++	/* Reset the tuning circuit */
++	if (esdhc_is_usdhc(imx_data)) {
++		if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING) {
++			ctrl = readl(host->ioaddr + ESDHC_MIX_CTRL);
++			ctrl &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
++			ctrl &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
++			writel(ctrl, host->ioaddr + ESDHC_MIX_CTRL);
++			writel(0, host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
++		} else if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
++			ctrl = readl(host->ioaddr + SDHCI_AUTO_CMD_STATUS);
++			ctrl &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
++			ctrl &= ~ESDHC_MIX_CTRL_EXE_TUNE;
++			writel(ctrl, host->ioaddr + SDHCI_AUTO_CMD_STATUS);
++			/* Make sure ESDHC_MIX_CTRL_EXE_TUNE cleared */
++			ret = readl_poll_timeout(host->ioaddr + SDHCI_AUTO_CMD_STATUS,
++				ctrl, !(ctrl & ESDHC_MIX_CTRL_EXE_TUNE), 1, 50);
++			if (ret == -ETIMEDOUT)
++				dev_warn(mmc_dev(host->mmc),
++				 "Warning! clear execute tuning bit failed\n");
++			/*
++			 * SDHCI_INT_DATA_AVAIL is W1C bit, set this bit will clear the
++			 * usdhc IP internal logic flag execute_tuning_with_clr_buf, which
++			 * will finally make sure the normal data transfer logic correct.
++			 */
++			ctrl = readl(host->ioaddr + SDHCI_INT_STATUS);
++			ctrl |= SDHCI_INT_DATA_AVAIL;
++			writel(ctrl, host->ioaddr + SDHCI_INT_STATUS);
++		}
++	}
++}
++
+ static int usdhc_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ {
+ 	struct sdhci_host *host = mmc_priv(mmc);
+@@ -1023,6 +1061,12 @@ static int usdhc_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 	if (host->timing == MMC_TIMING_UHS_DDR50)
+ 		return 0;
+ 
++	/*
++	 * Reset tuning circuit logic. If not, the previous tuning result
++	 * will impact current tuning, make current tuning can't set the
++	 * correct delay cell.
++	 */
++	esdhc_reset_tuning(host);
+ 	return sdhci_execute_tuning(mmc, opcode);
+ }
+ 
+@@ -1196,44 +1240,6 @@ static void esdhc_set_strobe_dll(struct sdhci_host *host)
+ 		"warning! HS400 strobe DLL status REF/SLV not lock in 50us, STROBE DLL status is %x!\n", v);
+ }
+ 
+-static void esdhc_reset_tuning(struct sdhci_host *host)
+-{
+-	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+-	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+-	u32 ctrl;
+-	int ret;
+-
+-	/* Reset the tuning circuit */
+-	if (esdhc_is_usdhc(imx_data)) {
+-		if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING) {
+-			ctrl = readl(host->ioaddr + ESDHC_MIX_CTRL);
+-			ctrl &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
+-			ctrl &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
+-			writel(ctrl, host->ioaddr + ESDHC_MIX_CTRL);
+-			writel(0, host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+-		} else if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
+-			ctrl = readl(host->ioaddr + SDHCI_AUTO_CMD_STATUS);
+-			ctrl &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
+-			ctrl &= ~ESDHC_MIX_CTRL_EXE_TUNE;
+-			writel(ctrl, host->ioaddr + SDHCI_AUTO_CMD_STATUS);
+-			/* Make sure ESDHC_MIX_CTRL_EXE_TUNE cleared */
+-			ret = readl_poll_timeout(host->ioaddr + SDHCI_AUTO_CMD_STATUS,
+-				ctrl, !(ctrl & ESDHC_MIX_CTRL_EXE_TUNE), 1, 50);
+-			if (ret == -ETIMEDOUT)
+-				dev_warn(mmc_dev(host->mmc),
+-				 "Warning! clear execute tuning bit failed\n");
+-			/*
+-			 * SDHCI_INT_DATA_AVAIL is W1C bit, set this bit will clear the
+-			 * usdhc IP internal logic flag execute_tuning_with_clr_buf, which
+-			 * will finally make sure the normal data transfer logic correct.
+-			 */
+-			ctrl = readl(host->ioaddr + SDHCI_INT_STATUS);
+-			ctrl |= SDHCI_INT_DATA_AVAIL;
+-			writel(ctrl, host->ioaddr + SDHCI_INT_STATUS);
+-		}
+-	}
+-}
+-
+ static void esdhc_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
+ {
+ 	u32 m;
 -- 
-2.25.1
+2.34.1
 
