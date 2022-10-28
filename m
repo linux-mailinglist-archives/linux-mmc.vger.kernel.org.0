@@ -2,57 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE8AA610D19
-	for <lists+linux-mmc@lfdr.de>; Fri, 28 Oct 2022 11:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6755E610D25
+	for <lists+linux-mmc@lfdr.de>; Fri, 28 Oct 2022 11:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230129AbiJ1JZk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 28 Oct 2022 05:25:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35622 "EHLO
+        id S229938AbiJ1J01 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 28 Oct 2022 05:26:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230131AbiJ1JZO (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 28 Oct 2022 05:25:14 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAA2475CC3;
-        Fri, 28 Oct 2022 02:25:07 -0700 (PDT)
+        with ESMTP id S230115AbiJ1JZi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 28 Oct 2022 05:25:38 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC6032B85;
+        Fri, 28 Oct 2022 02:25:35 -0700 (PDT)
 Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id F3BCB6602910;
-        Fri, 28 Oct 2022 10:25:05 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 01C1F6602910;
+        Fri, 28 Oct 2022 10:25:33 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1666949106;
-        bh=f6ptsnReV3a9VJBtHj0GZyQSgb/myI+fsdeM0fiT+jI=;
+        s=mail; t=1666949134;
+        bh=LvswVNx54C9wiErF7sJ0zCEyXuSuFf8n0AySygPtKqk=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Biu+pmWwfqcoNzL/LIPjiksYzL/0MpFKje9T6GXG3CeyHZkmz7oSKFdDhP/b//v+O
-         Lf3NxoMopsfcwwx2dVT177p8LEW5rQh5MIsfjzmVcsMUmM/6FkQzsnlVtGndSiOaYJ
-         Lkh4J0N8w2OE8xunH8eXl20CI+LCK8YwUobFE8YMDd/Qyv6YWsVnVqxAvuORdCsSqS
-         pE6QCiv5zagm8TKOiaBz3lV5WNrjV8WO82KiS6SBJZzlFDR+4BcnlayBlaz+ATAV4E
-         u+8Qtg3Q43SDFLRBsbsk4m4yIJG+8+UXdAeo/Wr2EOX2hOxC9cOzVTUmVlx4T9pcBQ
-         ds455YPvEUfJw==
-Message-ID: <e797d832-a6b7-f153-f01e-6320216375db@collabora.com>
-Date:   Fri, 28 Oct 2022 11:25:03 +0200
+        b=ok0mK8kPt9nuNOkQewkQYwn+LZGR4aoypCBRqgelU5q6UJpbo9N3lLL+yYBdhymKr
+         2IFJlIr/PKStSDJf20Szqp2cjBYJx49uCfNx4+VTAx8HZbmzbTh7ikzJJv2nXtgpl/
+         ZyfvPnc/1cOAOVAimNa/DCbx+PogDj/VgQdHhyf0fSpFTuBLqh2MUwjNg0q1rv1LpK
+         OPGLwP09IJFNm+pEeSQweee0UGOlG8ddiSj/T4eLSw0tpDrHBpJbhTfJPPrsdQ2taX
+         p1WzabdnjKeQDV1wRJYcICP2br0nc3GhTUOlWfZ5Q77xiS/kva2wZek0S9DRYDyPIv
+         /ivAaPPtRuM5A==
+Message-ID: <6fb93012-f923-f653-1865-5ce28ef3cec4@collabora.com>
+Date:   Fri, 28 Oct 2022 11:25:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.3
-Subject: Re: [PATCH v5 2/6] dt-bindings: mmc: Add support for Mediatek MT7986
+Subject: Re: [PATCH v5 3/6] arm64: dts: mediatek: mt2712e: swap last 2 clocks
+ to match binding
 Content-Language: en-US
 To:     Frank Wunderlich <linux@fw-web.de>,
         linux-mediatek@lists.infradead.org
 Cc:     devicetree@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
         Wenbin Mei <wenbin.mei@mediatek.com>,
-        Sam Shih <sam.shih@mediatek.com>, linux-mmc@vger.kernel.org,
+        Sam Shih <Sam.Shih@mediatek.com>, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Chaotian Jing <chaotian.jing@mediatek.com>
 References: <20221025132953.81286-1-linux@fw-web.de>
- <20221025132953.81286-3-linux@fw-web.de>
+ <20221025132953.81286-4-linux@fw-web.de>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20221025132953.81286-3-linux@fw-web.de>
+In-Reply-To: <20221025132953.81286-4-linux@fw-web.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -65,15 +66,12 @@ List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
 Il 25/10/22 15:29, Frank Wunderlich ha scritto:
-> From: Sam Shih <sam.shih@mediatek.com>
+> From: Frank Wunderlich <frank-w@public-files.de>
 > 
-> This commit adds dt-binding documentation of mmc for Mediatek MT7986 SoC
-> Platform.
-> Add SoC specific section for defining clock configuration.
+> First 3 clocks for mt2712 need to be "source", "hclk", "source_cg"
+> so swap last 2 of mmc0 to match the binding.
 > 
-> Signed-off-by: Sam Shih <sam.shih@mediatek.com>
 > Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
