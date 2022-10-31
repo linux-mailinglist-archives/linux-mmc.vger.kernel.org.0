@@ -2,80 +2,110 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D6D5613AC0
-	for <lists+linux-mmc@lfdr.de>; Mon, 31 Oct 2022 16:54:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ED69613E5D
+	for <lists+linux-mmc@lfdr.de>; Mon, 31 Oct 2022 20:37:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231945AbiJaPya (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 31 Oct 2022 11:54:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58628 "EHLO
+        id S230112AbiJaThL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 31 Oct 2022 15:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231905AbiJaPy3 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 31 Oct 2022 11:54:29 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806B812610
-        for <linux-mmc@vger.kernel.org>; Mon, 31 Oct 2022 08:54:27 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id f5so8969278ejc.5
-        for <linux-mmc@vger.kernel.org>; Mon, 31 Oct 2022 08:54:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=54IXG2FPqhGXRhjbMJeBZJCoE2PKYVWz3wVMDeZTLCU=;
-        b=ggQuzJDmtFt6ASf4MAUPpLpVRWq6C7d6tt/xb2JvHAUqilqDuKCKdgzoD+ZHtcZ4fq
-         1eGGH4GCkwFmv29dMVSA+sfIupMAQoPy3Udm0shqfwmjwPGRMgse5DloY6LJ1rN88fY5
-         7w6hrxuUesvdnXYoKXWNpBj8Pr4Xr8VccPz4cuzn5bfujDLgEBPPC3xuLT0jbsm1ipxh
-         FUhqBkZXPIIrWP2PsdxLUGOhzhmQjhACQa60SJn3FJ739vynVm2k1qMYY8Csfsj0y2lM
-         nw2YA5xx80yJfSa/JhPpfgs1o84qgLa+OLcJIGH+THHb6qZkx3Z3XMPBiJeb5RsMIDTj
-         0+FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=54IXG2FPqhGXRhjbMJeBZJCoE2PKYVWz3wVMDeZTLCU=;
-        b=YWuWVxv1RSWKA0ypt0dSbm4JxqJ34j6HlOOVKAc1aXSzT2uATWvFzAG90oBuSsrD8W
-         Ul6OhutY+UoRZbVQs4rBXDjljtYmom2CI/0mtLMgXXURlBVNzPJk7Df4GJGrBYkC6xuK
-         HkyiA8K68P3yVXkdKAYyTMcy+F1xjhh7AavGgb/FbVYgfR8ourUlqBJCze/QVUQD5E/n
-         U22JvvaUmNNSkybdZxXyJomvV7Bm+jkmPgyRYEfaRIeqM/0KjBa0vE4kQV3fydfH2IgH
-         AMGVE0c+0VLC8V03xeL9/6VLIVKbkXXxQ3iXpi8zgf4zFPVBA7sCkk/TjdXOR6Y7HoNj
-         4VtA==
-X-Gm-Message-State: ACrzQf2XWBbde9yCE8xH4wXUGUm7wBlKFzttddMsZQGO/MqE9C0VnbFB
-        ZBzuQ5LZe/ljweF5d9tjSpzc9MBtoVxgDPfD+wM=
-X-Google-Smtp-Source: AMsMyM5ij4ZkrsD6JU9uNQElQEIR/nCACjnjtY6wVFIdrV6cBJv1SK5jJ5zr23msglTQ3T5SKFNEM5GHVkDHr+Qm+NE=
-X-Received: by 2002:a17:906:3054:b0:7ad:e82b:ac23 with SMTP id
- d20-20020a170906305400b007ade82bac23mr282876ejd.235.1667231665911; Mon, 31
- Oct 2022 08:54:25 -0700 (PDT)
+        with ESMTP id S230111AbiJaThB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 31 Oct 2022 15:37:01 -0400
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D1F313F46
+        for <linux-mmc@vger.kernel.org>; Mon, 31 Oct 2022 12:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=k1; bh=8oAWEy/NUHRiH0BlpnQq/zyLbpk/
+        KJSWrramJU5Iy7Y=; b=T8BgccJ6BGBdNI/RhQ5iYbsW1qVw4NmFCmauO4FN7ixF
+        KRyDEtmDsgHN/K9kExXrzUpy4klxuVBSKl+UCuTp6CqLUpfwOYBe+cXoQqOt510n
+        KA3TGKX8XCgj/78eFW9XdDtLJP1c8jkOiHNB189sCnrQ3rzNT9ib3wDlN+Ji+JM=
+Received: (qmail 1497143 invoked from network); 31 Oct 2022 20:36:58 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 31 Oct 2022 20:36:58 +0100
+X-UD-Smtp-Session: l3s3148p1@dTHiulnsTqMujns0
+Date:   Mon, 31 Oct 2022 20:36:55 +0100
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-mmc@vger.kernel.org
+Subject: Re: [PATCH 11/14] mmc: tmio_mmc_core: Remove
+ local_irq_{save,restore}() around k[un]map_atomic()
+Message-ID: <Y2Aj15elzHIPEYqz@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-mmc@vger.kernel.org
+References: <20221005101951.3165-1-adrian.hunter@intel.com>
+ <20221005101951.3165-12-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7208:608b:b0:5d:5fd:eaac with HTTP; Mon, 31 Oct 2022
- 08:54:25 -0700 (PDT)
-Reply-To: victorinaquezon01@yahoo.com
-From:   Victorina <victorinaquezon@gmail.com>
-Date:   Mon, 31 Oct 2022 15:54:25 +0000
-Message-ID: <CAAOoKduTk21eCti1a2TBD7guF=FZ3iOogb8zsgEqi1wEJNe+NQ@mail.gmail.com>
-Subject: Good Morning
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ml+MGP4tzBghihDH"
+Content-Disposition: inline
+In-Reply-To: <20221005101951.3165-12-adrian.hunter@intel.com>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
--- 
-I am Madam Victorina Quezon a citizen of philippine,A widow
-I am  woman going through so much pain and suffer and might not walk
-again if nothing is been done fast
-Please  I want you to help me retrieve the only Thing I have now in a
-box  which contains my jewelries and 585,000 thounsand dollars   which
- my late husband left for me which is currently in a Security company,
-I have no strength to do this due to my health condition and safety
-Please Keep this Confidential
-I await your response
-Please reply me at     victorinaquezon01@yahoo.com
-So i can explain more
-With love
-Victorina Quezon
+
+--ml+MGP4tzBghihDH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Oct 05, 2022 at 01:19:48PM +0300, Adrian Hunter wrote:
+> A long time ago the kmap_atomic API required a slot to be provided which
+> risked the possibility that other code might use the same slot at the
+> same time. Disabling interrupts prevented the possibility of an interrupt
+> handler doing that. However, that went away with
+> commit 3e4d3af501cc ("mm: stack based kmap_atomic()").
+>=20
+> When the second argument to kmap_atomic was removed by commit 482fce997e14
+> ("mmc: remove the second argument of k[un]map_atomic()"),
+> local_irq_{save,restore}() should have been removed also.
+>=20
+> Remove it now.
+>=20
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+
+Thank you for cleaning this cruft! Looks good.
+
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+
+I should be able to set up a board for testing this week as well.
+
+
+--ml+MGP4tzBghihDH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmNgI9IACgkQFA3kzBSg
+KbbUJw//dcAYEvUUpyOAMVHayzjJiGj6ALdQcJMLliMJcLd6p7+KB3t7Tk0kmGHM
+QSRvqaMXzQhVtEes5r7sR1I+Qxzmxw84PTPRGz9oZMJLwQDa0AXmdChFGuK9PZUS
+JFyCYcFnMmpypfT9RBL4NqgFq30Jpdu+6dxHe0z0OiQHsjsgwnz8Sd0c0Zvyi1JB
+3p0jN8o/L65AY53u/Ch88xq50zSwYjrsvIVnMJ/6Blvb0dosAlj4SMYesmTv+ztC
+4bT7TQ9K3MeutfuQlC9UvuzpCpNiKnw18u/6nRQ5U3z58Z2vXa9jDHzE6FNaQQd0
+bVD7RycXkhyCGCRmzoe1HKGWHz9ZKwfCl5tiTtGga20hUQv+5rrdyGGxfkogZC7c
+5+HCrGIfwLFmRJLbdd3jPoMQA+SczyvgF3+OLa+iHLAe+EUQVGpVdArhzxfLgIv9
+aOWApKV0bBapCy80y2nwPBNpSd6utYDQWwfx/ldocvHZu0T3KyiUv0eESFUoiJ1o
+BQyBsJpEJ8xQFR3OtyfHmy9GNwEMkMgQ1IxDVbzwK/iqoEo8hGHJMqSfq77Igb1c
+3n+VzsWga84QW7+T9VCX9/3YCls5pfBtPmDTkuWJhh54uLayfrl4TQ8pa38rv6Eo
+QBZK56oFkVKzSx8atSQYxFCbUAbhEUTYx8wjGKKiMcsqHX7eF7I=
+=6wwZ
+-----END PGP SIGNATURE-----
+
+--ml+MGP4tzBghihDH--
