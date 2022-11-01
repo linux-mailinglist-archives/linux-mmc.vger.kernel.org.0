@@ -2,23 +2,23 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EDEA6144AE
+	by mail.lfdr.de (Postfix) with ESMTP id 35CCB6144AF
 	for <lists+linux-mmc@lfdr.de>; Tue,  1 Nov 2022 07:32:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbiKAGb4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 1 Nov 2022 02:31:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50088 "EHLO
+        id S229531AbiKAGb5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 1 Nov 2022 02:31:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiKAGbz (ORCPT
+        with ESMTP id S229649AbiKAGbz (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Tue, 1 Nov 2022 02:31:55 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A1C313FAB
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4DB1140B8
         for <linux-mmc@vger.kernel.org>; Mon, 31 Oct 2022 23:31:54 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4N1gCV5WtPzHvTL;
-        Tue,  1 Nov 2022 14:31:34 +0800 (CST)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N1gCp3bNBzmVWx;
+        Tue,  1 Nov 2022 14:31:50 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2375.31; Tue, 1 Nov 2022 14:31:52 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
@@ -28,9 +28,9 @@ Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-mmc@vger.kernel.org>
 CC:     <ulf.hansson@linaro.org>, <yangyingliang@huawei.com>
-Subject: [PATCH 3/9] mmc: mxcmmc: fix return value check of mmc_add_host()
-Date:   Tue, 1 Nov 2022 14:30:17 +0800
-Message-ID: <20221101063023.1664968-4-yangyingliang@huawei.com>
+Subject: [PATCH 4/9] mmc: pxamci: fix return value check of mmc_add_host()
+Date:   Tue, 1 Nov 2022 14:30:18 +0800
+Message-ID: <20221101063023.1664968-5-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221101063023.1664968-1-yangyingliang@huawei.com>
 References: <20221101063023.1664968-1-yangyingliang@huawei.com>
@@ -54,26 +54,29 @@ that allocated in mmc_alloc_host() will be leaked and it will lead a kernel
 crash because of deleting not added device in the remove path.
 
 So fix this by checking the return value and goto error path which will call
-mmc_free_host().
+mmc_free_host(), besides, ->exit() need be called to uninit the pdata.
 
-Fixes: d96be879ff46 ("mmc: Add a MX2/MX3 specific SDHC driver")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/mmc/host/mxcmmc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/pxamci.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
-index 2cf0413407ea..668f865f3efb 100644
---- a/drivers/mmc/host/mxcmmc.c
-+++ b/drivers/mmc/host/mxcmmc.c
-@@ -1143,7 +1143,9 @@ static int mxcmci_probe(struct platform_device *pdev)
- 
- 	timer_setup(&host->watchdog, mxcmci_watchdog, 0);
+diff --git a/drivers/mmc/host/pxamci.c b/drivers/mmc/host/pxamci.c
+index e4003f6058eb..2a988f942b6c 100644
+--- a/drivers/mmc/host/pxamci.c
++++ b/drivers/mmc/host/pxamci.c
+@@ -763,7 +763,12 @@ static int pxamci_probe(struct platform_device *pdev)
+ 			dev_warn(dev, "gpio_ro and get_ro() both defined\n");
+ 	}
  
 -	mmc_add_host(mmc);
 +	ret = mmc_add_host(mmc);
-+	if (ret)
-+		goto out_free_dma;
++	if (ret) {
++		if (host->pdata && host->pdata->exit)
++			host->pdata->exit(dev, mmc);
++		goto out;
++	}
  
  	return 0;
  
