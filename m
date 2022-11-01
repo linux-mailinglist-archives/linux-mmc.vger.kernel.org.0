@@ -2,48 +2,48 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 107BD61503F
-	for <lists+linux-mmc@lfdr.de>; Tue,  1 Nov 2022 18:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAB5461504B
+	for <lists+linux-mmc@lfdr.de>; Tue,  1 Nov 2022 18:14:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230266AbiKARNG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 1 Nov 2022 13:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43588 "EHLO
+        id S230503AbiKAROk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 1 Nov 2022 13:14:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbiKARM5 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 1 Nov 2022 13:12:57 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 239F91DA59;
-        Tue,  1 Nov 2022 10:12:56 -0700 (PDT)
+        with ESMTP id S231136AbiKAROO (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 1 Nov 2022 13:14:14 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7D16329;
+        Tue,  1 Nov 2022 10:13:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667322776; x=1698858776;
+  t=1667322831; x=1698858831;
   h=message-id:date:mime-version:from:subject:to:cc:
    references:in-reply-to:content-transfer-encoding;
-  bh=uLxasX73yNq8uwZ5AARUffTEEStbLjYfR7QyiSXf6dI=;
-  b=H7dWDcr7faTqwxIjvKOsNN74BCGTwIfkzEsMqIWQWx3C/gqnD14CKjic
-   0isKPNddsRhgPc/pvaZCGkMQ3iUtBtZ+6PxNV1+D50f1M/BXKek0tb06v
-   xKDKNjq81hhbzATIOKwVnAjpCfegcIDp66q9cy4jFlx1w+dPRrVtxb1E9
-   vEX+n1Hm/C1yNzRfKlGYhJSK7R+OBOvwjqKdk0HcXiLwPmfjvw+kYEk5v
-   xmrp0lmnJZ4Qc0/h/13wyPf6/QKRuvdFSd9QkT/n6XgLcl1FG5wxu9eYh
-   cTkI/WJczwGZ+f0ZCytXbz5vhQLy5LflFNcmTMhCFo04Ktu7y3kneYoIM
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="309189952"
+  bh=KTvWMa0hQMXT7OsBaw/UoYuLMTgDttKWDdCMw+Ct78c=;
+  b=mX/7zsYQBbjEfyUNJAH/LKUVXdv0C8gsN0SCxnP5RppBKIMSelx9RPiC
+   pZE9pwdpw3YaJxk5xxyi0riFjmcRbXwJJJZngQhZ8TD3HD4y50ihVbVY9
+   W/DLHG81Pd4zVcGNcuXkj+/lHAz+67HlGH3sTbOgFirFDmGtng57R91GS
+   aMCJhmiXJOT721klAnVYjAWBG1dEjYUX4gXyQOhV6KM554WxMu+97ERNr
+   qrEDmTqt6gS31X+4BUiKfhOFeDqM5cwzzEfsYk09Am+eGcv4UgdggwPtI
+   V6UhQ/Kj3HEgzc9aqXQQ4YDY4n8rdsAilqralkIRKwDYA8fs1NDsrGjo9
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="310288060"
 X-IronPort-AV: E=Sophos;i="5.95,231,1661842800"; 
-   d="scan'208";a="309189952"
+   d="scan'208";a="310288060"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2022 10:12:55 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="723228661"
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2022 10:13:08 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="723228787"
 X-IronPort-AV: E=Sophos;i="5.95,231,1661842800"; 
-   d="scan'208";a="723228661"
+   d="scan'208";a="723228787"
 Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.55.64])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2022 10:12:52 -0700
-Message-ID: <a154ee25-e1e7-8709-abad-8064edc3c43f@intel.com>
-Date:   Tue, 1 Nov 2022 19:12:48 +0200
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2022 10:13:04 -0700
+Message-ID: <3b36c596-3353-bb2c-b92f-fb475934503a@intel.com>
+Date:   Tue, 1 Nov 2022 19:13:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Firefox/102.0 Thunderbird/102.4.1
 From:   Adrian Hunter <adrian.hunter@intel.com>
-Subject: Re: [PATCH V5 09/26] mmc: sdhci: add UHS-II module
+Subject: Re: [PATCH V5 10/26] mmc: sdhci-uhs2: dump UHS-II registers
 To:     Victor Shih <victorshihgli@gmail.com>, ulf.hansson@linaro.org
 Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         benchuanggli@gmail.com, HL.Liu@genesyslogic.com.tw,
@@ -51,17 +51,17 @@ Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         dlunev@chromium.org, Victor Shih <victor.shih@genesyslogic.com.tw>,
         Ben Chuang <ben.chuang@genesyslogic.com.tw>
 References: <20221019110647.11076-1-victor.shih@genesyslogic.com.tw>
- <20221019110647.11076-10-victor.shih@genesyslogic.com.tw>
+ <20221019110647.11076-11-victor.shih@genesyslogic.com.tw>
 Content-Language: en-US
 Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
  Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20221019110647.11076-10-victor.shih@genesyslogic.com.tw>
+In-Reply-To: <20221019110647.11076-11-victor.shih@genesyslogic.com.tw>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -71,83 +71,86 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 On 19/10/22 14:06, Victor Shih wrote:
 > From: AKASHI Takahiro <takahiro.akashi@linaro.org>
 > 
-> This patch adds sdhci-uhs2.c as a module for UHS-II support.
-> This is a skelton for further development in this patch series.
+> Dump UHS-II specific registers, if available, in sdhci_dumpregs()
+> for informative/debugging use.
 > 
 > Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 > Signed-off-by: AKASHI Takahiro <takahiro.akashi@linaro.org>
 > ---
->  drivers/mmc/host/Makefile     |  1 +
->  drivers/mmc/host/sdhci-uhs2.c | 46 +++++++++++++++++++++++++++++++++++
->  2 files changed, 47 insertions(+)
->  create mode 100644 drivers/mmc/host/sdhci-uhs2.c
+>  drivers/mmc/host/sdhci-uhs2.c | 30 ++++++++++++++++++++++++++++++
+>  drivers/mmc/host/sdhci-uhs2.h |  4 ++++
+>  drivers/mmc/host/sdhci.c      |  3 +++
+>  3 files changed, 37 insertions(+)
 > 
-> diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
-> index 4e4ceb32c4b4..c4ae7c6d9c04 100644
-> --- a/drivers/mmc/host/Makefile
-> +++ b/drivers/mmc/host/Makefile
-> @@ -11,6 +11,7 @@ obj-$(CONFIG_MMC_PXA)		+= pxamci.o
->  obj-$(CONFIG_MMC_MXC)		+= mxcmmc.o
->  obj-$(CONFIG_MMC_MXS)		+= mxs-mmc.o
->  obj-$(CONFIG_MMC_SDHCI)		+= sdhci.o
-> +obj-$(CONFIG_MMC_SDHCI_UHS2)	+= sdhci-uhs2.o
->  obj-$(CONFIG_MMC_SDHCI_PCI)	+= sdhci-pci.o
->  sdhci-pci-y			+= sdhci-pci-core.o sdhci-pci-o2micro.o sdhci-pci-arasan.o \
->  				   sdhci-pci-dwc-mshc.o sdhci-pci-gli.o
 > diff --git a/drivers/mmc/host/sdhci-uhs2.c b/drivers/mmc/host/sdhci-uhs2.c
-> new file mode 100644
-> index 000000000000..f29d3a4ed43c
-> --- /dev/null
+> index f29d3a4ed43c..08905ed081fb 100644
+> --- a/drivers/mmc/host/sdhci-uhs2.c
 > +++ b/drivers/mmc/host/sdhci-uhs2.c
-> @@ -0,0 +1,46 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + *  linux/drivers/mmc/host/sdhci_uhs2.c - Secure Digital Host Controller
-> + *  Interface driver
-> + *
-> + *  Copyright (C) 2014 Intel Corp, All Rights Reserved.
-> + *  Copyright (C) 2020 Genesys Logic, Inc.
-> + *  Authors: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> + *  Copyright (C) 2020 Linaro Limited
-> + *  Author: AKASHI Takahiro <takahiro.akashi@linaro.org>
-> + */
+> @@ -18,6 +18,36 @@
+>  #define DRIVER_NAME "sdhci_uhs2"
+>  #define DBG(f, x...) \
+>  	pr_debug(DRIVER_NAME " [%s()]: " f, __func__, ## x)
+> +#define SDHCI_UHS2_DUMP(f, x...) \
+> +	pr_err("%s: " DRIVER_NAME ": " f, mmc_hostname(host->mmc), ## x)
 > +
-> +#include <linux/module.h>
-> +
-> +#include "sdhci.h"
-> +#include "sdhci-uhs2.h"
-> +
-> +#define DRIVER_NAME "sdhci_uhs2"
-> +#define DBG(f, x...) \
-> +	pr_debug(DRIVER_NAME " [%s()]: " f, __func__, ## x)
-> +
-> +/*****************************************************************************\
-> + *                                                                           *
-> + * Driver init/exit                                                          *
-> + *                                                                           *
-> +\*****************************************************************************/
-> +
-> +static int sdhci_uhs2_host_ops_init(struct sdhci_host *host)
+> +void sdhci_uhs2_dump_regs(struct sdhci_host *host)
 > +{
-> +	return 0;
-> +}
-> +
-> +static int __init sdhci_uhs2_mod_init(void)
-> +{
-> +	return 0;
-> +}
-> +module_init(sdhci_uhs2_mod_init);
-> +
-> +static void __exit sdhci_uhs2_exit(void)
+> +	if (!host->mmc || !(host->mmc->flags & MMC_UHS2_SUPPORT))
 
-It would be better to match the form of the init name
-e.g. sdhci_uhs2_mod_exit
+!host->mmc is not possible
 
-> +{
-> +}
-> +module_exit(sdhci_uhs2_exit);
+> +		return;
 > +
-> +MODULE_AUTHOR("Intel, Genesys Logic, Linaro");
-> +MODULE_DESCRIPTION("MMC UHS-II Support");
-> +MODULE_LICENSE("GPL v2");
+> +	SDHCI_UHS2_DUMP("==================== UHS2 ==================\n");
+> +	SDHCI_UHS2_DUMP("Blk Size:  0x%08x | Blk Cnt:  0x%08x\n",
+> +			sdhci_readw(host, SDHCI_UHS2_BLOCK_SIZE),
+> +			sdhci_readl(host, SDHCI_UHS2_BLOCK_COUNT));
+> +	SDHCI_UHS2_DUMP("Cmd:       0x%08x | Trn mode: 0x%08x\n",
+> +			sdhci_readw(host, SDHCI_UHS2_COMMAND),
+> +			sdhci_readw(host, SDHCI_UHS2_TRANS_MODE));
+> +	SDHCI_UHS2_DUMP("Int Stat:  0x%08x | Dev Sel : 0x%08x\n",
+> +			sdhci_readw(host, SDHCI_UHS2_DEV_INT_STATUS),
+> +			sdhci_readb(host, SDHCI_UHS2_DEV_SELECT));
+> +	SDHCI_UHS2_DUMP("Dev Int Code:  0x%08x\n",
+> +			sdhci_readb(host, SDHCI_UHS2_DEV_INT_CODE));
+> +	SDHCI_UHS2_DUMP("Reset:     0x%08x | Timer:    0x%08x\n",
+> +			sdhci_readw(host, SDHCI_UHS2_SW_RESET),
+> +			sdhci_readw(host, SDHCI_UHS2_TIMER_CTRL));
+> +	SDHCI_UHS2_DUMP("ErrInt:    0x%08x | ErrIntEn: 0x%08x\n",
+> +			sdhci_readl(host, SDHCI_UHS2_ERR_INT_STATUS),
+> +			sdhci_readl(host, SDHCI_UHS2_ERR_INT_STATUS_EN));
+> +	SDHCI_UHS2_DUMP("ErrSigEn:  0x%08x\n",
+> +			sdhci_readl(host, SDHCI_UHS2_ERR_INT_SIG_EN));
+> +}
+> +EXPORT_SYMBOL_GPL(sdhci_uhs2_dump_regs);
+>  
+>  /*****************************************************************************\
+>   *                                                                           *
+> diff --git a/drivers/mmc/host/sdhci-uhs2.h b/drivers/mmc/host/sdhci-uhs2.h
+> index 5610affebdf3..afdb05d6056b 100644
+> --- a/drivers/mmc/host/sdhci-uhs2.h
+> +++ b/drivers/mmc/host/sdhci-uhs2.h
+> @@ -207,4 +207,8 @@
+>  #define SDHCI_UHS2_EMBED_CTRL	0xE6
+>  #define SDHCI_UHS2_VENDOR	0xE8
+>  
+> +struct sdhci_host;
+> +
+> +void sdhci_uhs2_dump_regs(struct sdhci_host *host);
+> +
+>  #endif /* __SDHCI_UHS2_H */
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index fef03de85b99..2cdd183c8ada 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -110,6 +110,9 @@ void sdhci_dumpregs(struct sdhci_host *host)
+>  		}
+>  	}
+>  
+> +	if (host->ops->dump_uhs2_regs)
+> +		host->ops->dump_uhs2_regs(host);
+> +
+>  	if (host->ops->dump_vendor_regs)
+>  		host->ops->dump_vendor_regs(host);
+>  
 
