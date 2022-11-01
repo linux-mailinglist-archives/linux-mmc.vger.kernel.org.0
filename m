@@ -2,23 +2,23 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B3C96144B6
-	for <lists+linux-mmc@lfdr.de>; Tue,  1 Nov 2022 07:33:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D0A16144B0
+	for <lists+linux-mmc@lfdr.de>; Tue,  1 Nov 2022 07:32:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229827AbiKAGdD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 1 Nov 2022 02:33:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50328 "EHLO
+        id S229649AbiKAGb5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 1 Nov 2022 02:31:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbiKAGdD (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 1 Nov 2022 02:33:03 -0400
+        with ESMTP id S229772AbiKAGb4 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 1 Nov 2022 02:31:56 -0400
 Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B95E916587
-        for <linux-mmc@vger.kernel.org>; Mon, 31 Oct 2022 23:33:02 -0700 (PDT)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N1gF73kgXz15MCd;
-        Tue,  1 Nov 2022 14:32:59 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6738915710
+        for <linux-mmc@vger.kernel.org>; Mon, 31 Oct 2022 23:31:55 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N1gCr1sF1z15MBS;
+        Tue,  1 Nov 2022 14:31:52 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2375.31; Tue, 1 Nov 2022 14:31:53 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
@@ -28,9 +28,9 @@ Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-mmc@vger.kernel.org>
 CC:     <ulf.hansson@linaro.org>, <yangyingliang@huawei.com>
-Subject: [PATCH 6/9] mmc: rtsx_usb_sdmmc: fix return value check of mmc_add_host()
-Date:   Tue, 1 Nov 2022 14:30:20 +0800
-Message-ID: <20221101063023.1664968-7-yangyingliang@huawei.com>
+Subject: [PATCH 7/9] mmc: toshsd: fix return value check of mmc_add_host()
+Date:   Tue, 1 Nov 2022 14:30:21 +0800
+Message-ID: <20221101063023.1664968-8-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221101063023.1664968-1-yangyingliang@huawei.com>
 References: <20221101063023.1664968-1-yangyingliang@huawei.com>
@@ -53,45 +53,39 @@ mmc_add_host() may return error, if we ignore its return value, the memory
 that allocated in mmc_alloc_host() will be leaked and it will lead a kernel
 crash because of deleting not added device in the remove path.
 
-So fix this by checking the return value and calling mmc_free_host() in the
-error path, besides, led_classdev_unregister() and pm_runtime_disable() also
-need be called.
+So fix this by checking the return value and goto error path which will call
+mmc_free_host(), besides, free_irq() also needs be called.
 
-Fixes: c7f6558d84af ("mmc: Add realtek USB sdmmc host driver")
+Fixes: a5eb8bbd66cc ("mmc: add Toshiba PCI SD controller driver")
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/mmc/host/rtsx_usb_sdmmc.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/mmc/host/toshsd.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
-index 5798aee06653..2c650cd58693 100644
---- a/drivers/mmc/host/rtsx_usb_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
-@@ -1329,6 +1329,7 @@ static int rtsx_usb_sdmmc_drv_probe(struct platform_device *pdev)
- #ifdef RTSX_USB_USE_LEDS_CLASS
- 	int err;
- #endif
-+	int ret;
+diff --git a/drivers/mmc/host/toshsd.c b/drivers/mmc/host/toshsd.c
+index 8d037c2071ab..497791ffada6 100644
+--- a/drivers/mmc/host/toshsd.c
++++ b/drivers/mmc/host/toshsd.c
+@@ -651,7 +651,9 @@ static int toshsd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (ret)
+ 		goto unmap;
  
- 	ucr = usb_get_intfdata(to_usb_interface(pdev->dev.parent));
- 	if (!ucr)
-@@ -1365,7 +1366,15 @@ static int rtsx_usb_sdmmc_drv_probe(struct platform_device *pdev)
- 	INIT_WORK(&host->led_work, rtsx_usb_update_led);
- 
- #endif
 -	mmc_add_host(mmc);
 +	ret = mmc_add_host(mmc);
-+	if (ret) {
-+#ifdef RTSX_USB_USE_LEDS_CLASS
-+		led_classdev_unregister(&host->led);
-+#endif
-+		mmc_free_host(mmc);
-+		pm_runtime_disable(&pdev->dev);
-+		return ret;
-+	}
++	if (ret)
++		goto free_irq;
+ 
+ 	base = pci_resource_start(pdev, 0);
+ 	dev_dbg(&pdev->dev, "MMIO %pa, IRQ %d\n", &base, pdev->irq);
+@@ -660,6 +662,8 @@ static int toshsd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
  	return 0;
- }
+ 
++free_irq:
++	free_irq(pdev->irq, host);
+ unmap:
+ 	pci_iounmap(pdev, host->ioaddr);
+ release:
 -- 
 2.25.1
 
