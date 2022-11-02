@@ -2,88 +2,189 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 958CF6156FA
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Nov 2022 02:27:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19BC1616044
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Nov 2022 10:57:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230008AbiKBB1G (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 1 Nov 2022 21:27:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48270 "EHLO
+        id S229539AbiKBJ5T (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Nov 2022 05:57:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229933AbiKBB1D (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 1 Nov 2022 21:27:03 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6EF01FCDD
-        for <linux-mmc@vger.kernel.org>; Tue,  1 Nov 2022 18:26:53 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.54])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N28PN6fNpz15MGQ;
-        Wed,  2 Nov 2022 09:26:48 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 2 Nov 2022 09:26:51 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 2 Nov
- 2022 09:26:51 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-mmc@vger.kernel.org>
-CC:     <ulf.hansson@linaro.org>, <yangyingliang@huawei.com>
-Subject: [PATCH v2 3/3] mmc: sdio: fix possible memory leak in mmc_attach_sdio()
-Date:   Wed, 2 Nov 2022 09:25:33 +0800
-Message-ID: <20221102012533.1270876-4-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221102012533.1270876-1-yangyingliang@huawei.com>
-References: <20221102012533.1270876-1-yangyingliang@huawei.com>
+        with ESMTP id S229459AbiKBJ5S (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Nov 2022 05:57:18 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA0B91F9EC;
+        Wed,  2 Nov 2022 02:57:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667383037; x=1698919037;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Y4JaRDQ1UjEawhCzQ3jBuUwFG5WGst8q8wXZ5tjw4Xw=;
+  b=h3fkaLGkPKt5+hHpCDo02ZbcAz84gadkMICUHMFsM01COQFSuudxuqVn
+   56Apw7D35Q2CxKS9Y/Nxz2eGgeTAsZPdgtIfSfVTOSwqQgVz4lQI5n71W
+   WI8AokK+rpIJ6Evj3PkV2Ipprtc+Ylx4RrzdM59PBY4xmwi8oxcEVqwpt
+   Gfis4XpM7F0VpTe1s5hE1fPsUY+Jv5+B/+RnfGDcVJYhgNJhgbhbGK/zm
+   sKytwKUTwDN+TXJekhXfwHJh9HZbZpVgx2Wsy9X0FIQkIaFCPnRuuTR4Z
+   gP7w9tXFKYTUzfo2dM8mVgaZBmFTH/gAWiIPbBmHF0lJUq0cIWwecbvTO
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="371453206"
+X-IronPort-AV: E=Sophos;i="5.95,232,1661842800"; 
+   d="scan'208";a="371453206"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 02:57:17 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="636722728"
+X-IronPort-AV: E=Sophos;i="5.95,232,1661842800"; 
+   d="scan'208";a="636722728"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.47.170])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 02:57:14 -0700
+Message-ID: <54973f0b-33ab-6cbb-82ce-be769fe82bd9@intel.com>
+Date:   Wed, 2 Nov 2022 11:37:19 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.4.1
+Subject: Re: [PATCH] mmc: sdhci-of-arasan: Add support for dynamic
+ configuration
+To:     Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, saikrishna12468@gmail.com,
+        git@amd.com
+References: <20221019054857.8286-1-sai.krishna.potthuri@amd.com>
+Content-Language: en-US
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20221019054857.8286-1-sai.krishna.potthuri@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-If sdio_add_func() returns error in mmc_attach_sdio(),
-sdio_remove_func() can not free the memory that allocated
-in sdio_init_func(), because the sdio function is not
-presented and sdio_remove_func() will return directly.
+On 19/10/22 08:48, Sai Krishna Potthuri wrote:
+> Add dynamic configuration support for Xilinx ZynqMP which takes care of
+> configuring the SD secure space configuration registers using EEMI APIs,
+> performing SD reset assert and deassert.
+> High level sequence:
+> - Check for the PM dynamic configuration support, if no error proceed with
+> SD dynamic configurations(next steps) otherwise skip the dynamic
+> configuration.
+> - Put the SD Controller in reset.
+> - Configure SD Fixed configurations.
+> - Configure the SD Slot Type.
+> - Configure the BASE_CLOCK.
+> - Configure the 8-bit support.
+> - Bring the SD Controller out of reset.
+> - Wait for 1msec delay.
+> 
+> Signed-off-by: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
 
-To fix these leaks, we can call put_device() to give up
-the reference which was set in device_initialize(), then
-the memory can be freed in sdio_release_func().
+Can we get an Ack from xilinx folks?
 
-Fixes: 3d10a1ba0d37 ("sdio: fix reference counting in sdio_remove_func()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/mmc/core/sdio_bus.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/mmc/core/sdio_bus.c b/drivers/mmc/core/sdio_bus.c
-index b9308813a226..c4d3f721567e 100644
---- a/drivers/mmc/core/sdio_bus.c
-+++ b/drivers/mmc/core/sdio_bus.c
-@@ -379,11 +379,10 @@ int sdio_add_func(struct sdio_func *func)
-  */
- void sdio_remove_func(struct sdio_func *func)
- {
--	if (!sdio_func_present(func))
--		return;
--
--	device_del(&func->dev);
--	of_node_put(func->dev.of_node);
-+	if (sdio_func_present(func)) {
-+		device_del(&func->dev);
-+		of_node_put(func->dev.of_node);
-+	}
- 	put_device(&func->dev);
- }
- 
--- 
-2.25.1
+> ---
+>  drivers/mmc/host/sdhci-of-arasan.c | 69 ++++++++++++++++++++++++++++++
+>  1 file changed, 69 insertions(+)
+> 
+> diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
+> index 3997cad1f793..f051f3802aff 100644
+> --- a/drivers/mmc/host/sdhci-of-arasan.c
+> +++ b/drivers/mmc/host/sdhci-of-arasan.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/of_device.h>
+>  #include <linux/phy/phy.h>
+>  #include <linux/regmap.h>
+> +#include <linux/reset.h>
+>  #include <linux/of.h>
+>  #include <linux/firmware/xlnx-zynqmp.h>
+>  
+> @@ -1521,6 +1522,65 @@ static int sdhci_arasan_register_sdclk(struct sdhci_arasan_data *sdhci_arasan,
+>  	return 0;
+>  }
+>  
+> +static int sdhci_zynqmp_set_dynamic_config(struct device *dev,
+> +					   struct sdhci_arasan_data *sdhci_arasan)
+> +{
+> +	struct sdhci_host *host = sdhci_arasan->host;
+> +	struct clk_hw *hw = &sdhci_arasan->clk_data.sdcardclk_hw;
+> +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +	const char *clk_name = clk_hw_get_name(hw);
+> +	u32 mhz, node_id = !strcmp(clk_name, "clk_out_sd0") ? NODE_SD_0 : NODE_SD_1;
+> +	struct reset_control *rstc;
+> +	int ret;
+> +
+> +	/* Obtain SDHC reset control */
+> +	rstc = devm_reset_control_get_optional_exclusive(dev, NULL);
+> +	if (IS_ERR(rstc)) {
+> +		dev_err(dev, "Cannot get SDHC reset.\n");
+> +		return PTR_ERR(rstc);
+> +	}
+> +
+> +	ret = reset_control_assert(rstc);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = zynqmp_pm_set_sd_config(node_id, SD_CONFIG_FIXED, 0);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = zynqmp_pm_set_sd_config(node_id, SD_CONFIG_EMMC_SEL,
+> +				      !!(host->mmc->caps & MMC_CAP_NONREMOVABLE));
+> +	if (ret)
+> +		return ret;
+> +
+> +	mhz = DIV_ROUND_CLOSEST_ULL(clk_get_rate(pltfm_host->clk), 1000000);
+> +	if (mhz > 100 && mhz <= 200)
+> +		mhz = 200;
+> +	else if (mhz > 50 && mhz <= 100)
+> +		mhz = 100;
+> +	else if (mhz > 25 && mhz <= 50)
+> +		mhz = 50;
+> +	else
+> +		mhz = 25;
+> +
+> +	ret = zynqmp_pm_set_sd_config(node_id, SD_CONFIG_BASECLK, mhz);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = zynqmp_pm_set_sd_config(node_id, SD_CONFIG_8BIT,
+> +				      !!(host->mmc->caps & MMC_CAP_8_BIT_DATA));
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = reset_control_deassert(rstc);
+> +	if (ret)
+> +		return ret;
+> +
+> +	usleep_range(1000, 1500);
+> +
+> +	return 0;
+> +}
+> +
+>  static int sdhci_arasan_add_host(struct sdhci_arasan_data *sdhci_arasan)
+>  {
+>  	struct sdhci_host *host = sdhci_arasan->host;
+> @@ -1685,6 +1745,15 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
+>  		goto unreg_clk;
+>  	}
+>  
+> +	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a")) {
+> +		ret = zynqmp_pm_is_function_supported(PM_IOCTL, IOCTL_SET_SD_CONFIG);
+> +		if (!ret) {
+> +			ret = sdhci_zynqmp_set_dynamic_config(dev, sdhci_arasan);
+> +			if (ret)
+> +				goto unreg_clk;
+> +		}
+> +	}
+> +
+>  	sdhci_arasan->phy = ERR_PTR(-ENODEV);
+>  	if (of_device_is_compatible(np, "arasan,sdhci-5.1")) {
+>  		sdhci_arasan->phy = devm_phy_get(dev, "phy_arasan");
 
