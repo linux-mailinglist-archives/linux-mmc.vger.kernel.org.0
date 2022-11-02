@@ -2,91 +2,173 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8585C616111
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Nov 2022 11:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69076616299
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Nov 2022 13:21:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230379AbiKBKmd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 2 Nov 2022 06:42:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58940 "EHLO
+        id S230294AbiKBMVI (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 2 Nov 2022 08:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbiKBKmb (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Nov 2022 06:42:31 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2079CDA8;
-        Wed,  2 Nov 2022 03:42:31 -0700 (PDT)
+        with ESMTP id S229516AbiKBMVH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 2 Nov 2022 08:21:07 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0BD24F26
+        for <linux-mmc@vger.kernel.org>; Wed,  2 Nov 2022 05:21:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667385751; x=1698921751;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=41ekdGX94sGrdL7Y9CpsvKlQT10EsJz+L8UI/Z/dwJk=;
-  b=A+9R/7mAHMwWhSyBkC6Gv4H1Zzne1TyOaIiMrllnhjU2fxG5lnzmz0y9
-   wtq70KQ7oXou5eVkDQsio+gOn1yZiEJqX/aJLXGAFQSBWNCV+zIlsa7+2
-   EUuicjEPIQpiYYAZkO/ruhUZHiE1Yd/u39OY5fAuEIYJceRAZndZcH57B
-   d+ERUbHBnj7wxFr24ONxL/kqv6f5a7T+xX465bvrzSFlm1UpNjQjcbf4K
-   FK54g9ZBRmnbbYlMxQYYba1sB/VMk+ubE6YmnXuEiidDTBWRD+XafNyUv
-   Bgz5uRwM/To3TTd/LEyTiW0QqIfkLTUWZbr+J3DlNevg/4KmCNRVks05g
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="311091757"
+  t=1667391666; x=1698927666;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QTKSYTvGdG0H5D815nQysvtl8Z57bsCRdI2NUB1na3Y=;
+  b=N8yRF49BbUnFe/iRIsGj89CevsgXzz2GxiJovo3L912zpsXt8edTrY/B
+   eAxosuxBBBP4UHAX1X6l+OwnSFqN2W9p/zz3c+DNBHwNiqGInJb+20hrX
+   Gq3zCPj4lly/DNwVxvlAQrH0d7DSYzad8gvgbohrKuyLrlOrHodaW1UBc
+   JMh3t9dyzOw8H+TU0UFPlXil2tPB2VIl1ZN+KmpVrzezB8pNJRn+s9N4w
+   VAhcfkMaQLBeZroJqMLe1r5iI2Ye+JZp/WMj8/kuvHrhjBQg0vmEK+Xd4
+   QZUIDKKQRXuXLKM5c5Wg5KrKZr8XMGA+r73xz9a8WzEnHi7HzKzbJoZbH
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="395699563"
 X-IronPort-AV: E=Sophos;i="5.95,232,1661842800"; 
-   d="scan'208";a="311091757"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 03:42:30 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="963479750"
+   d="scan'208";a="395699563"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 05:21:06 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10518"; a="636761555"
 X-IronPort-AV: E=Sophos;i="5.95,232,1661842800"; 
-   d="scan'208";a="963479750"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.47.170])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 03:42:29 -0700
-Message-ID: <bc14b1e4-2034-c70d-66b9-47da89726037@intel.com>
-Date:   Wed, 2 Nov 2022 12:22:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.4.1
-Subject: Re: [PATCH] mmc: sdhci_am654: Use dev_err_probe() for mmc_of_parse()
- return code
-Content-Language: en-US
-To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221101105242.2019036-1-matthias.schiffer@ew.tq-group.com>
+   d="scan'208";a="636761555"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.252.47.170])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 05:21:05 -0700
 From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20221101105242.2019036-1-matthias.schiffer@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org
+Subject: [PATCH] mmc: Remove duplicate words in comments
+Date:   Wed,  2 Nov 2022 14:01:05 +0200
+Message-Id: <20221102120105.5747-1-adrian.hunter@intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 1/11/22 12:52, Matthias Schiffer wrote:
-> Checking phandle references like mmc-pwrseq can result in -EPROBE_DEFER.
-> 
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Remove duplicate words in comments found using the following commands:
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+pcregrep --color=always -n \
+	'([^a-zA-Z_])([a-zA-Z_]+)[[:space:]]+\2[^a-zA-Z_]' \
+	drivers/mmc/host/*.[ch] drivers/mmc/core/*.[ch] \
+	include/linux/mmc/*.h \
+	include/uapi/linux/mmc/*.h | \
+	grep -v 'long long'
 
-> ---
->  drivers/mmc/host/sdhci_am654.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-> index 8f1023480e12..4e17efa8ab97 100644
-> --- a/drivers/mmc/host/sdhci_am654.c
-> +++ b/drivers/mmc/host/sdhci_am654.c
-> @@ -835,7 +835,7 @@ static int sdhci_am654_probe(struct platform_device *pdev)
->  
->  	ret = mmc_of_parse(host->mmc);
->  	if (ret) {
-> -		dev_err(dev, "parsing dt failed (%d)\n", ret);
-> +		dev_err_probe(dev, ret, "parsing dt failed\n");
->  		goto pm_runtime_put;
->  	}
->  
+pcregrep --color=always -n -M \
+	'([^a-zA-Z_])([a-zA-Z_]+)[ \t]*\n[[:space:]*]+\2[^a-zA-Z_]' \
+	drivers/mmc/host/*.[ch] \
+	drivers/mmc/core/*.[ch] \
+	include/linux/mmc/*.h \
+	include/uapi/linux/mmc/*.h
+
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+---
+ drivers/mmc/core/core.c           | 4 ++--
+ drivers/mmc/core/host.c           | 2 +-
+ drivers/mmc/host/sdhci-acpi.c     | 2 +-
+ drivers/mmc/host/sdhci-bcm-kona.c | 2 +-
+ drivers/mmc/host/sdhci-omap.c     | 2 +-
+ drivers/mmc/host/sdhci.h          | 2 +-
+ 6 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index 95fa8fb1d45f..757208b5a65c 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -56,7 +56,7 @@ static const unsigned freqs[] = { 400000, 300000, 200000, 100000 };
+ /*
+  * Enabling software CRCs on the data blocks can be a significant (30%)
+  * performance cost, and for other reasons may not always be desired.
+- * So we allow it it to be disabled.
++ * So we allow it to be disabled.
+  */
+ bool use_spi_crc = 1;
+ module_param(use_spi_crc, bool, 0);
+@@ -527,7 +527,7 @@ EXPORT_SYMBOL(mmc_cqe_post_req);
+  * mmc_cqe_recovery - Recover from CQE errors.
+  * @host: MMC host to recover
+  *
+- * Recovery consists of stopping CQE, stopping eMMC, discarding the queue in
++ * Recovery consists of stopping CQE, stopping eMMC, discarding the queue
+  * in eMMC, and discarding the queue in CQE. CQE must call
+  * mmc_cqe_request_done() on all requests. An error is returned if the eMMC
+  * fails to discard its queue.
+diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
+index b89dca1f15e9..5457c8aeeea1 100644
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -269,7 +269,7 @@ EXPORT_SYMBOL(mmc_of_parse_clk_phase);
+  * @host: host whose properties should be parsed.
+  *
+  * To keep the rest of the MMC subsystem unaware of whether DT has been
+- * used to to instantiate and configure this host instance or not, we
++ * used to instantiate and configure this host instance or not, we
+  * parse the properties and set respective generic mmc-host flags and
+  * parameters.
+  */
+diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
+index bddfaba091a9..8f0e639236b1 100644
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -651,7 +651,7 @@ static int sdhci_acpi_emmc_amd_probe_slot(struct platform_device *pdev,
+ 	 *       instead use the SDR104 preset register.
+ 	 *
+ 	 *    If the above issues are resolved we could remove this quirk for
+-	 *    firmware that that has valid presets (i.e., SDR12 <= 12 MHz).
++	 *    firmware that has valid presets (i.e., SDR12 <= 12 MHz).
+ 	 */
+ 	host->quirks2 |= SDHCI_QUIRK2_PRESET_VALUE_BROKEN;
+ 
+diff --git a/drivers/mmc/host/sdhci-bcm-kona.c b/drivers/mmc/host/sdhci-bcm-kona.c
+index 61a12f2f7f03..6a93a54fe067 100644
+--- a/drivers/mmc/host/sdhci-bcm-kona.c
++++ b/drivers/mmc/host/sdhci-bcm-kona.c
+@@ -168,7 +168,7 @@ static void sdhci_bcm_kona_init_74_clocks(struct sdhci_host *host,
+ 	/*
+ 	 *  JEDEC and SD spec specify supplying 74 continuous clocks to
+ 	 * device after power up. With minimum bus (100KHz) that
+-	 * that translates to 740us
++	 * translates to 740us
+ 	 */
+ 	if (power_mode != MMC_POWER_OFF)
+ 		udelay(740);
+diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
+index 033be559a730..8ed9256b83da 100644
+--- a/drivers/mmc/host/sdhci-omap.c
++++ b/drivers/mmc/host/sdhci-omap.c
+@@ -370,7 +370,7 @@ static int sdhci_omap_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 
+ 	/*
+ 	 * Stage 1: Search for a maximum pass window ignoring any
+-	 * any single point failures. If the tuning value ends up
++	 * single point failures. If the tuning value ends up
+ 	 * near it, move away from it in stage 2 below
+ 	 */
+ 	while (phase_delay <= MAX_PHASE_DELAY) {
+diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+index d750c464bd1e..908da47ac5ba 100644
+--- a/drivers/mmc/host/sdhci.h
++++ b/drivers/mmc/host/sdhci.h
+@@ -345,7 +345,7 @@ struct sdhci_adma2_64_desc {
+  */
+ #define SDHCI_MAX_SEGS		128
+ 
+-/* Allow for a a command request and a data request at the same time */
++/* Allow for a command request and a data request at the same time */
+ #define SDHCI_MAX_MRQS		2
+ 
+ /*
+-- 
+2.34.1
 
