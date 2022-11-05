@@ -2,73 +2,88 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DCA961DA49
-	for <lists+linux-mmc@lfdr.de>; Sat,  5 Nov 2022 13:40:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D80BE61DAFF
+	for <lists+linux-mmc@lfdr.de>; Sat,  5 Nov 2022 15:33:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbiKEMkB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 5 Nov 2022 08:40:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40828 "EHLO
+        id S229882AbiKEOdf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 5 Nov 2022 10:33:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229955AbiKEMjt (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 5 Nov 2022 08:39:49 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327291ADB3
-        for <linux-mmc@vger.kernel.org>; Sat,  5 Nov 2022 05:39:48 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id b1-20020a17090a7ac100b00213fde52d49so6673678pjl.3
-        for <linux-mmc@vger.kernel.org>; Sat, 05 Nov 2022 05:39:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=c8XA1N0uaxkLO/wKHErNWHaSuu64k5Pjb5u9dmcZrOc=;
-        b=mu8m7znM9duu/MEuox3wxE9uI+enJzfHDrHCiCJ0dxXEnbtqlugP30RV4pUA4LaD8D
-         DTqzL6R3iJdygnN0tebcl2jKMC1xnk2qmH9yHj5ZpYJsig0zgAkFbQEJMtQOsyMS9E9+
-         9mZsd+BXbCYizoNZILloIeJgVKBYQDDlfcxWmhtehgP0gShVz6QbysTuA73O0zNW89oN
-         M95vp9qd39mlLDduLYXTQkqHXtcuCB6sr4c0ysKpoCTw5s/vT8zmw06SHC/DLusZ9o66
-         sNkDbmLIhAcJBtA+VmbRSjB+l+4rXBDt3pKOG75zF9L+vjSBjo5n2zZjo+rRsufLH5jZ
-         6xmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c8XA1N0uaxkLO/wKHErNWHaSuu64k5Pjb5u9dmcZrOc=;
-        b=fAjIE9nk4YqOaJHsIfiTQm/n+7heGZc4r40VedSwh0rvSKssn/vNLJESy0s0LERtzr
-         BvKDDm5XuQRaPNb9NQmWrRL+cgMmOmq5rjjHCTETJSwCXimJbNliQhelo/v9rsACWwqJ
-         pPtyW9dUlNLSpwqb8OdT+PV11xU+TWhVodihc6CXAtUKTbL3nKabSF5aDUNnEnZlA8i6
-         bqZ+AfDQ348l0ChbFBo3WeGAa6Mf0rxmBYYFodMKyjY52grkTZBYM1WOvqXiet4+FbJV
-         QQbYPtz7Tr3eED9Dhh6OSccTqWHUqO8BhUJvo6n8IbDsjulNcQyj0cr66SGm5zBMr1Hp
-         J7Wg==
-X-Gm-Message-State: ACrzQf1Nyr2EQI5HrsccirVO6xLvKX3FXlBe0BlTgAHu8isPylSfxx8L
-        qZyZdo9xOVmMumGR2n8lu+tUZ3vVxk9NFBVXpIg=
-X-Google-Smtp-Source: AMsMyM5GFe2gsiMaHXHXvp99K7JeNN2UuK6dELDyLpsoJjIUkQcn4q3aD74FbKEapmwctM2YF8x1D4LMLHeg4fM3LVk=
-X-Received: by 2002:a17:90b:4ac3:b0:213:3918:f276 with SMTP id
- mh3-20020a17090b4ac300b002133918f276mr57022678pjb.19.1667651987563; Sat, 05
- Nov 2022 05:39:47 -0700 (PDT)
+        with ESMTP id S229486AbiKEOde (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 5 Nov 2022 10:33:34 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCE5DFF3;
+        Sat,  5 Nov 2022 07:33:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5F916B80159;
+        Sat,  5 Nov 2022 14:33:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E192C433D6;
+        Sat,  5 Nov 2022 14:33:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667658810;
+        bh=1TDRmbhSSHThH7G6bhltqeMsDuHL0/99z97pCjW6ghw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=UlCOzLrU/xIunyk4HIiSbuVamAW4vq2m+18yFlFzh2C9fUUtKsyD2fxm+JOL82jPd
+         mwINIT9GZgDqHku8VRq+RnrFsvRzl5QRM8h3yXbVK5MgsV8O6HFtPEHKbkxCkA7DYz
+         QAF12bZUKjqbNVlkT8KR4+DSrOgjA6IsAYhkNdDiCEF1Do2X5nQf/emblGWXP/M8K/
+         Q3Qmw4ub1IHxfkR6SZPLkpbNn1C6iu3HKKFZEVwiali6t8586szPalrm9D8K4KNXtk
+         pZXaDMhZUVdf+9zw5Ibn+Gt4c4XkiR9uHJYM83hDLoVbpNnN5iihgokquHufzZT3Jx
+         QkhfELS3WSFXg==
+Date:   Sat, 5 Nov 2022 14:33:17 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, agross@kernel.org,
+        andersson@kernel.org, konrad.dybcio@somainline.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        lee@kernel.org, ulf.hansson@linaro.org,
+        srinivas.kandagatla@linaro.org, lars@metafoo.de,
+        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
+        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
+        kernel@collabora.com, luca@z3ntu.xyz, a39.skl@gmail.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: Re: [PATCH 1/9] dt-bindings: iio: qcom-spmi-vadc: Add definitions
+ for USB DP/DM VADCs
+Message-ID: <20221105143317.13cf93a9@jic23-huawei>
+In-Reply-To: <5bafce51-5f03-499c-65d4-3040cfc03ed9@linaro.org>
+References: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
+        <20221104172122.252761-2-angelogioacchino.delregno@collabora.com>
+        <5bafce51-5f03-499c-65d4-3040cfc03ed9@linaro.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 2002:a05:7301:2e91:b0:83:922d:c616 with HTTP; Sat, 5 Nov 2022
- 05:39:47 -0700 (PDT)
-Reply-To: stefanopessia755@hotmail.com
-From:   Stefano Pessina <wamathaibenard@gmail.com>
-Date:   Sat, 5 Nov 2022 15:39:47 +0300
-Message-ID: <CAN7bvZKO8GxFn7CG_EtS_Of+AZ+KsuqTkq40Mq-yJDNrEHyakg@mail.gmail.com>
-Subject: Geldspende
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
---=20
-Die Summe von 500.000,00 =E2=82=AC wurde Ihnen von STEFANO PESSINA gespende=
-t.
-Bitte kontaktieren Sie uns f=C3=BCr weitere Informationen =C3=BCber
-stefanopessia755@hotmail.com
+On Fri, 4 Nov 2022 14:25:15 -0400
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+
+> On 04/11/2022 13:21, AngeloGioacchino Del Regno wrote:
+> > From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> > 
+> > Some SoCs do have a USB DP/DM ADC at 0x43, 0x44.
+> >   
+> 
+> 
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> 
+> Best regards,
+> Krzysztof
+> 
+
