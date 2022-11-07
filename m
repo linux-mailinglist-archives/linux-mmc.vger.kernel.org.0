@@ -2,154 +2,128 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E893661EF88
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Nov 2022 10:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1188061F06F
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Nov 2022 11:24:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231878AbiKGJsj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 7 Nov 2022 04:48:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42502 "EHLO
+        id S231936AbiKGKY1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 7 Nov 2022 05:24:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230449AbiKGJsg (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Nov 2022 04:48:36 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836A1E51;
-        Mon,  7 Nov 2022 01:48:35 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id b2so28507343eja.6;
-        Mon, 07 Nov 2022 01:48:35 -0800 (PST)
+        with ESMTP id S231919AbiKGKYR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Nov 2022 05:24:17 -0500
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7458018E30
+        for <linux-mmc@vger.kernel.org>; Mon,  7 Nov 2022 02:24:03 -0800 (PST)
+Received: by mail-pj1-x1044.google.com with SMTP id u8-20020a17090a5e4800b002106dcdd4a0so14130657pji.1
+        for <linux-mmc@vger.kernel.org>; Mon, 07 Nov 2022 02:24:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s5L/b/iiv4bE6DnHSKSmrFG5dDWyQhbSZwF9NlGUYx8=;
-        b=LvU8zWB72HOIroDkSZ7/lodrDW3JujAAGCgt5V/BrjQk7LZlkPClWG7hdpPRAGHWTd
-         nPOS9Guj3pOsR5RNexowZazwzwimNyhP+XTYeA+R75qEej/V3j/UqYLWb5DRN58yByRY
-         oJEJWBgJwP1PPRFe79AxPSvMKu1rVLqJe2NBderzxuvk4Xrte+bTz9MZl2QX73OxKwnC
-         4Jvp6baDTRbD3Fba67Iex7RcVjU4IOFxBu4F6vQRl5/II1yqrM76FGyyfM2TWm3odpWl
-         ahodhBChBL7OeP8jJn4n9bopKtbnL0rMjhB/51As3XeYRyoH15FvrKECAQyb8sbi990T
-         CaSg==
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
+        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
+         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
+         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
+         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
+         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
+         SKzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s5L/b/iiv4bE6DnHSKSmrFG5dDWyQhbSZwF9NlGUYx8=;
-        b=avvo9N9nKX3ZZ66Va0obskCKOYl/DURW1gSnSh83bbla1ifUXqHNmh/gc344VzPJo7
-         8LQuZWj3Wxak9PxwC3jM7DksKpM/TBaDhxPvu8K7rjNf1/DktQV6Dj4x7ugqUpM7OmhB
-         gd7XR2i0UyzjwySrkGdNt4pWDE5Y667i+IoqH3L99BmpfPY0LwDUns59P9MayEtr+CZ/
-         CNIWn1uJBy2RJ+6CTNiS464MGa7AnBtSIofoNQtAoayqYDAbQKoOh23HGVczZeRXvKIP
-         Qvp7Q9wv17sufwaXZM1vCmiQBLEJcLdymOT3VfRZrQ/Nktnzgoq8F6RF9K+QNmj14FQx
-         NUzQ==
-X-Gm-Message-State: ACrzQf3h8U6BKFgY2bZeqcunHca+qspCUOF3J5fEcx6tEJXqUHnErXH3
-        adj+oNgSF+Gp+7HzdXcVrd4=
-X-Google-Smtp-Source: AMsMyM6vwdAsY7KinVXJMHyPxPpqrdQ/wNM1Ho0qlIueUgBZmzwv11T342tFeKwcw7BjQudiO+GfBw==
-X-Received: by 2002:a17:907:3d88:b0:7ae:943:1cc2 with SMTP id he8-20020a1709073d8800b007ae09431cc2mr25128404ejc.675.1667814513845;
-        Mon, 07 Nov 2022 01:48:33 -0800 (PST)
-Received: from orome (p200300e41f201d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f20:1d00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id e17-20020a50fb91000000b0045bd14e241csm3931494edq.76.2022.11.07.01.48.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Nov 2022 01:48:33 -0800 (PST)
-Date:   Mon, 7 Nov 2022 10:48:31 +0100
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Prathamesh Shete <pshete@nvidia.com>, joro@8bytes.org,
-        adrian.hunter@intel.com, jonathanh@nvidia.com,
-        p.zabel@pengutronix.de, linux-mmc@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        will@kernel.org, iommu@lists.linux.dev, anrao@nvidia.com,
-        smangipudi@nvidia.com, kyarlagadda@nvidia.com,
-        Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH v10 1/4] iommu: Always define struct iommu_fwspec
-Message-ID: <Y2jUb3UNeEJVekYS@orome>
-References: <CAPDyKFqJdiCDkAfrONfnBVKw1v8=jZ+hEJiKGK70EQ4o7BSxaQ@mail.gmail.com>
- <20221103043852.24718-1-pshete@nvidia.com>
- <6be39bae-f325-12e0-374b-a27c9ee2ef2b@arm.com>
- <Y2PJq27wkVwPg6rp@orome>
- <CAPDyKFq8szzryFBNkw20wFoPTbAa8YDy0wJnb57yckZ-HFTAMw@mail.gmail.com>
- <4cae5c8d-d6e9-79dc-670d-22ec9fda10a2@arm.com>
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
+        b=yE1yLXtyaAGJ3syaPPMouSMqcHqUOfCQhvJQC7Sef/uinbC/CVHvwE3pT5ner9RVh5
+         yxXHxCzPRnDayn27NfMKSubGBGHtwzjrLEAZzAj9lKxyNAkRlTamNWvIRp8Jtt/6Ch2m
+         rXDcXDozDEihRLYtuP2JEZiz0zag8bFBa1U45awcaVb+u2Dkqw6w9VyvaqTahA/laDuj
+         85SBwLoDLBsrR+xSlkrTs3Iv32TPI1sUfsAnZk94eCkGgBA095OcpQtaPU2y9JXTZcHc
+         N8FrhDeJ/DKo9l2uWVhv+2zwEqJ8O3D59NJ0a/pJB+WrhRds79UE4a3XNFstGjbjsl6X
+         hy2A==
+X-Gm-Message-State: ACrzQf0xrTBOIbENp0kPq52lSQmw0Xu6SN6cYIZJP76aYwIS7cZ8P4Ae
+        AGVJpt93i26NiuMk6681OeQT0yvR/YeKyGpV9kk2MdF0fBg=
+X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
+X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
+ p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
+ Nov 2022 02:23:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="jYpMxqzTZ1vFLQJC"
-Content-Disposition: inline
-In-Reply-To: <4cae5c8d-d6e9-79dc-670d-22ec9fda10a2@arm.com>
-User-Agent: Mutt/2.2.7 (2022-08-07)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
+ 02:23:51 -0800 (PST)
+Reply-To: contact@ammico.it
+From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
+Date:   Mon, 7 Nov 2022 11:23:51 +0100
+Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
+Subject: Re:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
+        BAYES_20,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1044 listed in]
+        [list.dnswl.org]
+        * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
+        *      [score: 0.1824]
+        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [977638ib[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-
---jYpMxqzTZ1vFLQJC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Nov 03, 2022 at 05:35:19PM +0000, Robin Murphy wrote:
-[...]
-> Now, there does happen to be a tacit contract between the ACPI IORT code =
-and
-> the Arm SMMU drivers for how SMMU StreamIDs are encoded in their respecti=
-ve
-> fwspecs, but it was never intended for wider consumption. If Tegra drivers
-> want to have a special relationship with arm-smmu then fair enough, but t=
-hey
-> can do the same as MSM and formalise it somewhere that the SMMU driver
-> maintainers are at least aware of, rather than holding the whole generic
-> IOMMU API hostage.
-
-Are you talking about qcom_adrena_smmu_is_gpu_device()? That's the only
-place I can find where MSM uses iommu_fwspec directly and in a "special"
-way.
-
-> Since apparently it wasn't clear, what I was proposing is a driver helper=
- at
-> least something like this:
->=20
-> int tegra_arm_smmu_streamid(struct device *dev)
-> {
-> #ifdef CONFIG_IOMMU_API
-> 	struct iommu_fwspec *fwspec =3D dev_iommu_fwspec_get(dev)
->=20
-> 	if (fwspec && fwspec->num_ids =3D=3D 1)
-> 		return fwspec->ids[0] & 0xffff;
-> #endif
-> 	return -EINVAL;
-> }
-
-We actually also use this mechanism on devices that predate the ARM
-SMMU, so it'd need to be even more generic. Also, since we need to
-access this from a wide range of subsystems, it'd need to be in a
-centralized place. Do you think iommu.h would be acceptable for this?
-
-How about if I also add a comment to struct iommu_fwspec about the
-intended use?
-
-Thierry
-
---jYpMxqzTZ1vFLQJC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmNo1G8ACgkQ3SOs138+
-s6G+AhAAuekGtAmbQT+FO9REjTNcbYsrloj9hB5mgAnet2fyTFqbqaJUeyxXAbqI
-F8DfTRRkDH4ivVN3LCySjQxJlP4Gsjs+pokCFZ9fHmUZLXYiVgCMIC1c58c6+NTp
-7Zxl4zim6O9d9xI6FqCPhraTLHtfb30IjNi351Ql2D6qzoUsJvqoctKwlDTmddP0
-vLaAfr1b3c4CYkSd+UkKV7JXWwAtKc+NiXUUpFDNPXA/7XF6M8DGHOGEPsjiPrjw
-Y0y/jixRtybEBixlgEBdDBadi7r2NQ7aKTXSt6U2Y8Z5s939/FL9VXBx6GVGRa3s
-KYZZoJ1Rdk13Q4ZEKj7pcvjdbduIskOtMyKAEOt/pKa+/Mc/y2p1L4PArwo4wFUn
-VGAhRQsFdFHTzNxanwyK6MuTCYXahA1WdSVlAd8dqrVyG9xefH5QD8ty8muwmIJS
-OshziqAHJPPOpPNXEKfXNnIvil+oUkdazKbRyBuybQJpcECcz597WQrzbhuY1BFn
-RWq2lneqzXIeiidn7+vyWxfgjzd8aASh6N3A4T+SYcbNEDvkdtJsahZxF9EFesyT
-s85i1sseVWa+UPFtKds8AKcAg9AzHm40ZJixa/YzNQ8jEH+R14getVCULMLrvYqy
-88RHhjDdRmxg/cxB3Ao+NzP7Lf3KzHcDSit2pVLxh2HXZ0Lb6dw=
-=IlwD
------END PGP SIGNATURE-----
-
---jYpMxqzTZ1vFLQJC--
+Hei ja miten voit?
+Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
+ toivolla
+v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
+leikkaus
+t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
+suudet selviyty=C3=A4.
+Mutta ennen kuin min=C3=A4
+Tee toinen vaarallinen operaatio, annan sen sinulle
+Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
+sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
+voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
+iden auttamista
+ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
+=C3=A4 minulla ei ole niit=C3=A4
+kenelt=C3=A4 perii rahaa.
+Vastaa minulle nopeasti
+terveisi=C3=A4
+Rouva Monika Evereen
+Florida, Amerikan Yhdysvallat
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+Hi and how are you?
+My name is Mrs. Evereen, I am sending this message with great hope for
+an immediate response, as I have to undergo heart reoperation in my
+current poor health with little chance of survival. But before I
+undertake the second dangerous operation, I will give you the
+$6,550,000 I have in my US bank account to invest well, manage and use
+the profits to run a charity project for me. I count helping the sick
+and the poor as my last wish on earth, because I have no one to
+inherit money from.
+Please give me a quick reply
+regards
+Mrs. Monika Evereen
+Florida, United States of America
