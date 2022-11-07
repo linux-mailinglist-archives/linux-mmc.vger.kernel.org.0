@@ -2,128 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1188061F06F
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Nov 2022 11:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6EE461F806
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Nov 2022 16:55:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231936AbiKGKY1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 7 Nov 2022 05:24:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35642 "EHLO
+        id S231539AbiKGPzY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 7 Nov 2022 10:55:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231919AbiKGKYR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Nov 2022 05:24:17 -0500
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7458018E30
-        for <linux-mmc@vger.kernel.org>; Mon,  7 Nov 2022 02:24:03 -0800 (PST)
-Received: by mail-pj1-x1044.google.com with SMTP id u8-20020a17090a5e4800b002106dcdd4a0so14130657pji.1
-        for <linux-mmc@vger.kernel.org>; Mon, 07 Nov 2022 02:24:03 -0800 (PST)
+        with ESMTP id S232402AbiKGPzX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Nov 2022 10:55:23 -0500
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B3C1CB3E;
+        Mon,  7 Nov 2022 07:55:22 -0800 (PST)
+Received: by mail-qt1-x82c.google.com with SMTP id hh9so7062237qtb.13;
+        Mon, 07 Nov 2022 07:55:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
-         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
-         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
-         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
-         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
-         SKzA==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Cyfnek7GcKCYztRwEEteaAUP1JbSEVGwmlhNomSJ9DQ=;
+        b=Qb2rhdwl5kKh3DP3eKzJ51Ip4dUtLDWZTKx/yBg98j4iBVqpQ9ejkVjdMnlEnJySXs
+         F3vXSTypH7o+LgRfw+sWzi8/08wqNYEg8PmmqUh3zS+A0IoRgB9B1FNpNU94mt7jdBh8
+         MDYNMU8c46TD4C3FrndlIW2iwGZX/yubRhJVDtMXmHYeBB3HnqV5HWlz6+skafta8uUl
+         nw802QL/rd2hwQXD4Zob8ISIPWF7nuu1OpvCN3vmH+uWsCdglWMjuNZD3g/I/SqXe0ST
+         nwqVQzL0zWtj/s5YbySQSzvz5Al5MprPrZCbWGxAA1YBdMUXmmV3GEzg+aGxVhC6V4s0
+         Zm5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=yE1yLXtyaAGJ3syaPPMouSMqcHqUOfCQhvJQC7Sef/uinbC/CVHvwE3pT5ner9RVh5
-         yxXHxCzPRnDayn27NfMKSubGBGHtwzjrLEAZzAj9lKxyNAkRlTamNWvIRp8Jtt/6Ch2m
-         rXDcXDozDEihRLYtuP2JEZiz0zag8bFBa1U45awcaVb+u2Dkqw6w9VyvaqTahA/laDuj
-         85SBwLoDLBsrR+xSlkrTs3Iv32TPI1sUfsAnZk94eCkGgBA095OcpQtaPU2y9JXTZcHc
-         N8FrhDeJ/DKo9l2uWVhv+2zwEqJ8O3D59NJ0a/pJB+WrhRds79UE4a3XNFstGjbjsl6X
-         hy2A==
-X-Gm-Message-State: ACrzQf0xrTBOIbENp0kPq52lSQmw0Xu6SN6cYIZJP76aYwIS7cZ8P4Ae
-        AGVJpt93i26NiuMk6681OeQT0yvR/YeKyGpV9kk2MdF0fBg=
-X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
-X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
- p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
- Nov 2022 02:23:52 -0800 (PST)
+        bh=Cyfnek7GcKCYztRwEEteaAUP1JbSEVGwmlhNomSJ9DQ=;
+        b=p5XtY+gVm9lUYbUlrGSSxWDBw+CgIA570alxYZAnEFRorEAOdXckzT00Pc+GrvcvAb
+         9qwPey7lJwvmX6gLZ55FlIY5KOs/oDKDrfUhF1MYzZcg+kJ7AnNay+iPDQsK4/jfgVbs
+         kdyPRe5f6dCHRbCsLgDstc3znr4EUxFiVTBkR0JvbD1hmTWnggNQaKxWGb3ga1E9/g5e
+         68a7tKILjno9xWRk5h3qi0Iy1gpTbo5EPmmxNunk5NC7FBXnH151i+o26FDDpoK0jki2
+         bELlxOhMP5v3zfH/hr9oLK9Mmll6lS6bLbW2AGWuvkhMKAhgVtsqxPhgRLy5WCnEm8QG
+         UMrA==
+X-Gm-Message-State: ANoB5pn0VY/o4qX7hYYLCY5S3Y12GlKZVAPw5iq5Tdj9EZD6Lzs+Tq4M
+        sy0rp7WlbwbEXllM8GDdiAxL5tThiYq88A==
+X-Google-Smtp-Source: AA0mqf6ZL8FmMgQ1Z7gQccrehDQhUWdMkI2RboZSu6xgHS0hJDwtdHLwFvHZ5ygOTKnEFr+nFIbjEQ==
+X-Received: by 2002:ac8:598a:0:b0:3a5:a09e:4154 with SMTP id e10-20020ac8598a000000b003a5a09e4154mr136491qte.160.1667836521282;
+        Mon, 07 Nov 2022 07:55:21 -0800 (PST)
+Received: from glsvmlin.ini.cmu.edu (GLSVMLIN.INI.CMU.EDU. [128.2.16.9])
+        by smtp.gmail.com with ESMTPSA id u11-20020a05622a17cb00b003972790deb9sm6309617qtk.84.2022.11.07.07.55.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Nov 2022 07:55:20 -0800 (PST)
+From:   Gabriel Somlo <gsomlo@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mmc@vger.kernel.org, ulf.hansson@linaro.org,
+        kgugala@antmicro.com, mholenko@antmicro.com, joel@jms.id.au,
+        andy.shevchenko@gmail.com, mdudek@internships.antmicro.com,
+        paulus@ozlabs.org
+Subject: [PATCH] mmc: litex_mmc: ensure `host->irq == 0` if polling
+Date:   Mon,  7 Nov 2022 10:55:16 -0500
+Message-Id: <20221107155516.2535912-1-gsomlo@gmail.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
- 02:23:51 -0800 (PST)
-Reply-To: contact@ammico.it
-From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
-Date:   Mon, 7 Nov 2022 11:23:51 +0100
-Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_20,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1044 listed in]
-        [list.dnswl.org]
-        * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
-        *      [score: 0.1824]
-        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [977638ib[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hei ja miten voit?
-Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
- toivolla
-v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
-leikkaus
-t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
-suudet selviyty=C3=A4.
-Mutta ennen kuin min=C3=A4
-Tee toinen vaarallinen operaatio, annan sen sinulle
-Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
-sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
-voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
-iden auttamista
-ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
-=C3=A4 minulla ei ole niit=C3=A4
-kenelt=C3=A4 perii rahaa.
-Vastaa minulle nopeasti
-terveisi=C3=A4
-Rouva Monika Evereen
-Florida, Amerikan Yhdysvallat
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-Hi and how are you?
-My name is Mrs. Evereen, I am sending this message with great hope for
-an immediate response, as I have to undergo heart reoperation in my
-current poor health with little chance of survival. But before I
-undertake the second dangerous operation, I will give you the
-$6,550,000 I have in my US bank account to invest well, manage and use
-the profits to run a charity project for me. I count helping the sick
-and the poor as my last wish on earth, because I have no one to
-inherit money from.
-Please give me a quick reply
-regards
-Mrs. Monika Evereen
-Florida, United States of America
+Ensure the flag is explicitly set to 0 if we determine that polling is
+needed during driver probe, to cover all possible cases.
+
+Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
+Signed-off-by: Gabriel Somlo <gsomlo@gmail.com>
+---
+ drivers/mmc/host/litex_mmc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/mmc/host/litex_mmc.c b/drivers/mmc/host/litex_mmc.c
+index 6ba0d63b8c07..39c6707fdfdb 100644
+--- a/drivers/mmc/host/litex_mmc.c
++++ b/drivers/mmc/host/litex_mmc.c
+@@ -502,6 +502,7 @@ static int litex_mmc_irq_init(struct platform_device *pdev,
+ 
+ use_polling:
+ 	host->mmc->caps |= MMC_CAP_NEEDS_POLL;
++	host->irq = 0;
+ 	return 0;
+ }
+ 
+-- 
+2.37.3
+
