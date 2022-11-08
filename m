@@ -2,106 +2,106 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60563620B4B
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 09:36:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D2BD620B57
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 09:40:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233506AbiKHIgB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Nov 2022 03:36:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46240 "EHLO
+        id S229931AbiKHIku (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Nov 2022 03:40:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233481AbiKHIgB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 03:36:01 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A2D85F00A
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Nov 2022 00:35:59 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A88ZFksC013582, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A88ZFksC013582
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 8 Nov 2022 16:35:15 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 8 Nov 2022 16:35:53 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 8 Nov 2022 16:35:52 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Tue, 8 Nov 2022 16:35:52 +0800
-From:   =?utf-8?B?SnlhbiBDaG91IFvlkajoirflrold?= <jyanchou@realtek.com>
-To:     Shawn Lin <shawn.lin@rock-chips.com>
-CC:     linux-mmc <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Subject: RE: Question about EMMC CMDQ HOST CONTROLLER INTERFACE (CQHCI) DRIVER
-Thread-Topic: Question about EMMC CMDQ HOST CONTROLLER INTERFACE (CQHCI)
- DRIVER
-Thread-Index: AdjzQ08CVJgRjyAuSMquwM9U5+w9rf//iSAAgAACSYD//3lxEA==
-Date:   Tue, 8 Nov 2022 08:35:52 +0000
-Message-ID: <d0f6fbc4351748e0bd6f02baef1785ab@realtek.com>
-References: <5842d536cb0d4086a225ea0fa2d42e72@realtek.com>
- <c97df3b4-0038-616d-ef10-953eba595638@intel.com>
- <0f8f0d91-9e1f-c71e-86a6-25a6bdb4f6b1@rock-chips.com>
-In-Reply-To: <0f8f0d91-9e1f-c71e-86a6-25a6bdb4f6b1@rock-chips.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.190.236]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzgg5LiK5Y2IIDA2OjAwOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S233295AbiKHIks (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 03:40:48 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B5822DFE;
+        Tue,  8 Nov 2022 00:40:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667896847; x=1699432847;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=XiCgmwfFwaPwY+8uHUHAzxPyz0OpKzFmJlOm58spYyM=;
+  b=a5V2thwPV5mWV1jGKMu7vsf+f2+zsG+pFF6rIb0wnOKzHPfxm4OE9zdE
+   gN7b6P6TxwDcFuv2zaKVi5xOUFDRFLRBHakYrgBnHHu+A3IfBGXnqlWXm
+   rriqn7xT+tgVRm5hMpvqtLRk2hBr/+FMqosjEV9erz2Oi0uBzpid/lt7C
+   uwkciJEeP1cWhQ+meeg0l7FPvJ6pVqKEkGRofYQcvQfnecM8/1e8C9yJn
+   YJGHgJ5dAuLna9geVNTrB3MmShT0T/VXWpG7FnZwdgyv41Dh/s7LLByMH
+   ZelDgHLREo9hIckmcWJAuSTjXUqeUEdt4NU5k8ihduuYcVb9yjhSaU52M
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10524"; a="396937644"
+X-IronPort-AV: E=Sophos;i="5.96,147,1665471600"; 
+   d="scan'208";a="396937644"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2022 00:40:40 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10524"; a="699840954"
+X-IronPort-AV: E=Sophos;i="5.96,147,1665471600"; 
+   d="scan'208";a="699840954"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.56.164])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2022 00:40:37 -0800
+Message-ID: <8dc73d23-f063-4fae-1849-816c48f3a4da@intel.com>
+Date:   Tue, 8 Nov 2022 10:40:33 +0200
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.4.2
+Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: use the correct host caps for
+ MMC_CAP_8_BIT_DATA
+Content-Language: en-US
+To:     haibo.chen@nxp.com, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org
+Cc:     linux-imx@nxp.com, stable@vger.kernel.org, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com
+References: <1667893503-20583-1-git-send-email-haibo.chen@nxp.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <1667893503-20583-1-git-send-email-haibo.chen@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-SGVsbG8sDQoNCkJ1dCB3ZSBmb3VuZCB0aGF0IHRoaXMgY29tbWl0IGI4NWM5OTdkMmNmZWZlN2Qx
-ZjcwNmI4NWFlNDZlMzVhNTBlMzEzMWMgKCJtbWM6IHNkaGNpLW9mLWR3Y21zaGM6IHNvbHZlIDEy
-OE1CIERNQSBib3VuZGFyeSBsaW1pdGF0aW9uIikNCmlzIHN1cHBvcnRlZCBmb3Igc2RoY2kgaG9z
-dCBkcml2ZXIsIG5vdCBmb3IgZU1NQyBkcml2ZXINCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
-LS0NCkZyb206IFNoYXduIExpbiA8c2hhd24ubGluQHJvY2stY2hpcHMuY29tPiANClNlbnQ6IFR1
-ZXNkYXksIE5vdmVtYmVyIDgsIDIwMjIgNDoyOCBQTQ0KVG86IEp5YW4gQ2hvdSBb5ZGo6Iq35a6J
-XSA8anlhbmNob3VAcmVhbHRlay5jb20+DQpDYzogc2hhd24ubGluQHJvY2stY2hpcHMuY29tOyBs
-aW51eC1tbWMgPGxpbnV4LW1tY0B2Z2VyLmtlcm5lbC5vcmc+OyBBZHJpYW4gSHVudGVyIDxhZHJp
-YW4uaHVudGVyQGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBRdWVzdGlvbiBhYm91dCBFTU1DIENN
-RFEgSE9TVCBDT05UUk9MTEVSIElOVEVSRkFDRSAoQ1FIQ0kpIERSSVZFUg0KDQpPbiAyMDIyLzEx
-LzggMTY6MjAsIEFkcmlhbiBIdW50ZXIgd3JvdGU6DQo+IE9uIDgvMTEvMjIgMDk6MjUsIEp5YW4g
-Q2hvdSBb5ZGo6Iq35a6JXSB3cm90ZToNCj4+IEhlbGxvIEFkcmlhbiBIdW50ZXIsDQo+Pg0KPj4g
-V2UgYXJlIG5vdyB1c2luZyB0aGUgdXBzdHJlYW0gY29kZSBvZiBFTU1DIENNRFEgSE9TVCBDT05U
-Uk9MTEVSIElOVEVSRkFDRSAoQ1FIQ0kpIERSSVZFUiwgYnV0IHdlIGZvdW5kIHRoYXQgdGhlIGV4
-aXN0aW5nIGRyaXZlciBjYW5ub3Qgc3VwcG9ydCB0aGUgbGltaXRhdGlvbiBvZiBTeW5vcHN5cyBJ
-UC4NCj4+DQo+PiBTeW5vcHN5cyBJUCBoYXMgYSBkZXNjcmlwdGlvbiBvbiB0aGVpciBkYXRhIGJv
-b2sgIiBXaGlsZSB1c2luZyBETUEsIHRoZSBob3N0IG1lbW9yeSBkYXRhIGJ1ZmZlciBzaXplIGFu
-ZCBzdGFydCBhZGRyZXNzIG11c3Qgbm90IGV4Y2VlZCAxMjggTUIiLg0KDQpTeW5vcHN5cy1iYXNl
-ZCBTREhDSSBJUCBkb2VzIGhhdmUgYSBsaW1pdGF0aW9uIG9mIDEyOE1CIGJvdW5kYXJ5LiBCdXQg
-aXQgaGFzIGFscmVhZHkgYmVlbiBzb2x2ZWQgYnkgdXBzdHJlYW0gZHJpdmVyLg0KDQpGWUk6DQoN
-CmNvbW1pdCBiODVjOTk3ZDJjZmVmZTdkMWY3MDZiODVhZTQ2ZTM1YTUwZTMxMzFjICgibW1jOiBz
-ZGhjaS1vZi1kd2Ntc2hjOiANCnNvbHZlIDEyOE1CIERNQSBib3VuZGFyeSBsaW1pdGF0aW9uIikN
-Cg0KDQoNCg0KDQo+Pg0KPj4gSSBhbSB3b25kZXJpbmcgd2hldGhlciB0aGVyZSBpcyBhIG1ldGhv
-ZCBvciBwYXRjaCB0aGF0IGNhbiBmaXggdGhpcyBib3VuZGFyeSBsaW1pdGF0aW9uLg0KPj4gVGhh
-bmtzLg0KPj4gQmVzdCBSZWdhcmRzLA0KPj4gSnlhbiBDaG91DQo+IA0KPiBIZWxsbyBKeWFuIENo
-b3UNCj4gDQo+IEkgYW0gbm90IGNsZWFyIG9uIHdoYXQgdGhlIGV4YWN0IGxpbWl0YXRpb24gaXMu
-ICBUaGUgZHJpdmVyIG5ldmVyIHVzZXMgYnVmZmVycyBhcyBiaWcgYXMgMTI4IE1CLg0KPiBUbyBy
-ZXN0cmljdCBETUEgdG8gbG93IG1lbW9yeSBhZGRyZXNzZXMgYSBETUEgbWFzayBjYW4gYmUgdXNl
-ZC4NCj4gDQo+IEJ1dCBwZXJoYXBzIHlvdSBtZWFuIG5vdCB0byBjcm9zcyBhIDEyOCBNQiBib3Vu
-ZGFyeT8NCj4gDQo+IFBsZWFzZSBjYyB5b3VyIHF1ZXN0aW9ucyB0byB0aGUgbGludXgga2VybmVs
-IG1tYyBtYWlsaW5nIGxpc3Q6IA0KPiBsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnIGJlY2F1c2Ug
-b3RoZXJzIGNhbiBhbnN3ZXIgdG9vLg0KPiANCj4gUmVnYXJkcw0KPiBBZHJpYW4NCg0KLS0tLS0t
-UGxlYXNlIGNvbnNpZGVyIHRoZSBlbnZpcm9ubWVudCBiZWZvcmUgcHJpbnRpbmcgdGhpcyBlLW1h
-aWwuDQo=
+On 8/11/22 09:45, haibo.chen@nxp.com wrote:
+> From: Haibo Chen <haibo.chen@nxp.com>
+> 
+> MMC_CAP_8_BIT_DATA belongs to struct mmc_host, not struct sdhci_host.
+> So correct it here.
+> 
+> Fixes: 1ed5c3b22fc7 ("mmc: sdhci-esdhc-imx: Propagate ESDHC_FLAG_HS400* only on 8bit bus")
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> Cc: stable@vger.kernel.org
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
+
+> ---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index a54f1806dd57..004c6352d954 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1679,14 +1679,14 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
+>  	if (imx_data->socdata->flags & ESDHC_FLAG_ERR004536)
+>  		host->quirks |= SDHCI_QUIRK_BROKEN_ADMA;
+>  
+> -	if (host->caps & MMC_CAP_8_BIT_DATA &&
+> +	if (host->mmc->caps & MMC_CAP_8_BIT_DATA &&
+>  	    imx_data->socdata->flags & ESDHC_FLAG_HS400)
+>  		host->mmc->caps2 |= MMC_CAP2_HS400;
+>  
+>  	if (imx_data->socdata->flags & ESDHC_FLAG_BROKEN_AUTO_CMD23)
+>  		host->quirks2 |= SDHCI_QUIRK2_ACMD23_BROKEN;
+>  
+> -	if (host->caps & MMC_CAP_8_BIT_DATA &&
+> +	if (host->mmc->caps & MMC_CAP_8_BIT_DATA &&
+>  	    imx_data->socdata->flags & ESDHC_FLAG_HS400_ES) {
+>  		host->mmc->caps2 |= MMC_CAP2_HS400_ES;
+>  		host->mmc_host_ops.hs400_enhanced_strobe =
+
