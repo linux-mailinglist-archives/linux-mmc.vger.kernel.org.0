@@ -2,83 +2,97 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F14E3621208
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 14:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B9A6216BF
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 15:32:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234323AbiKHNLX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Nov 2022 08:11:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52116 "EHLO
+        id S233410AbiKHOcR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Nov 2022 09:32:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234248AbiKHNLW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 08:11:22 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E2C126D0
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Nov 2022 05:11:21 -0800 (PST)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N67gJ1psqzpWH2;
-        Tue,  8 Nov 2022 21:07:40 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 8 Nov 2022 21:11:19 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 8 Nov
- 2022 21:11:19 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-mmc@vger.kernel.org>
-CC:     <brucechang@via.com.tw>, <HaraldWelte@viatech.com>,
-        <ulf.hansson@linaro.org>
-Subject: [PATCH] mmc: via-sdmmc: fix return value check of mmc_add_host()
-Date:   Tue, 8 Nov 2022 21:09:49 +0800
-Message-ID: <20221108130949.1067699-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S234331AbiKHObM (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 09:31:12 -0500
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03F5D120BD
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Nov 2022 06:31:05 -0800 (PST)
+Received: by mail-pf1-x430.google.com with SMTP id b185so13955072pfb.9
+        for <linux-mmc@vger.kernel.org>; Tue, 08 Nov 2022 06:31:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=plCZMl07mNxOy4FwEnJyPWecERqsJQyrHYHIsHPByWrtU1k24II845ABLvzsZ/utuV
+         xrfZ6D/e/ZRoyRjpbZ5oMDY9h9ndbu6gtWFiQs/CjHcVVSqci/vjYPMMyy1pnVJ69u5N
+         OM2Kwkcs/9db1KNzWi4t4Kki8xmdjDy37F969+9phg4q7Iutyq/zyteGqROU9T6wdO4n
+         lS/c2RFkn8H1h3UlswE5jNY6oMt5wQG8oq965L41J8fDh6fe1zek7KZifUk151Do70De
+         k9oKwcRkEhDvguAg4zcTYagV5rrGsvTLwyNtdWlzI5EY/CPrjAga8S7nNTzf3DHImH9S
+         a/jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=BQbEeX6u5dcd+XK8lLGA1Ih+sFHzGdcNFoA8bxvFmAsxpbC3wt6B1yykH6FMQglpKk
+         IZ0xCNzBvST5Wxwa9fyJ/Vigapr2iEo1AxJ0JHUBOp/F53qoAwCTpCkMQQG9ZWcFYo7E
+         2N+3B1x/Hwp+BOWOq+NxjQM1ZJIsg/pCfdvoG0EQV3nws3nAVcEiGxH0Rc97yM3zIb0s
+         MkH4NKgRrqG8XL0Nj+FHvhpQyTPIg4EazVhtHGuKsduxAa5e/7nJjBUkCeDN08oMMB9w
+         JmTCcJXkxaWrYwr5+1mVOjj/5NprONJ+PnrRg3FJ9X/BOEzCsLLd2v2TMXpT4l4qIsu6
+         RsmA==
+X-Gm-Message-State: ACrzQf0kLPtziZUUjtZP4rcOKhbzw/3jmabQHiZMpkhCLeoTKcoEMMxV
+        m+m4vdmLEB1DDNTtKdkh2h6z8JO+P+I326NXFwY=
+X-Google-Smtp-Source: AMsMyM5cpw1VKvG8gEasOMmG4UhkblJY7gBReqfbYX80x9OXEWSZokzXOm90JDY4L5h3JbfU+3ckCU+QNWhG8SGrNVo=
+X-Received: by 2002:a05:6a00:1da6:b0:56c:318a:f8ab with SMTP id
+ z38-20020a056a001da600b0056c318af8abmr56843835pfw.82.1667917864342; Tue, 08
+ Nov 2022 06:31:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:ac4:c8c2:0:b0:56a:d900:eb11 with HTTP; Tue, 8 Nov 2022
+ 06:31:03 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <davidbraddy01@gmail.com>
+Date:   Tue, 8 Nov 2022 14:31:03 +0000
+Message-ID: <CAHGOU4PvdrNhE2KifzdPkFxZTCG5gy+23qf130PwnSmJcLRSew@mail.gmail.com>
+Subject: Greeting
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:430 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4857]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mr.abraham022[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [davidbraddy01[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [davidbraddy01[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-mmc_add_host() may return error, if we ignore its return value,
-it will lead two issues:
-1. The memory that allocated in mmc_alloc_host() is leaked.
-2. In the remove() path, mmc_remove_host() will be called to
-   delete device, but it's not added yet, it will lead a kernel
-   crash because of null-ptr-deref in device_del().
-
-Fix this by checking the return value and goto error path which
-will call mmc_free_host().
-
-Fixes: f0bf7f61b840 ("mmc: Add new via-sdmmc host controller driver")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/mmc/host/via-sdmmc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/via-sdmmc.c b/drivers/mmc/host/via-sdmmc.c
-index 88662a90ed96..a2b0d9461665 100644
---- a/drivers/mmc/host/via-sdmmc.c
-+++ b/drivers/mmc/host/via-sdmmc.c
-@@ -1151,7 +1151,9 @@ static int via_sd_probe(struct pci_dev *pcidev,
- 	    pcidev->subsystem_device == 0x3891)
- 		sdhost->quirks = VIA_CRDR_QUIRK_300MS_PWRDELAY;
- 
--	mmc_add_host(mmc);
-+	ret = mmc_add_host(mmc);
-+	if (ret)
-+		goto unmap;
- 
- 	return 0;
- 
--- 
-2.25.1
-
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham
