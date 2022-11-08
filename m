@@ -2,97 +2,84 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E4346210B4
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 13:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A35976210DC
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 13:35:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233934AbiKHMaP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Nov 2022 07:30:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48292 "EHLO
+        id S233214AbiKHMfu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Nov 2022 07:35:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234071AbiKHMaI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 07:30:08 -0500
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4AA049B7A
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Nov 2022 04:30:06 -0800 (PST)
-Received: by mail-qk1-x72f.google.com with SMTP id v8so8928605qkg.12
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Nov 2022 04:30:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=cigNPlEtEE1k5xiZ9PvVBazoo9lUtOBUwB6YZSwBfhiXaLfnGYlViGJ/CkI7QbpyRc
-         DUkc/pXyGXkzwxwNKmQ/AVr17gtcnro/HIxn3z8V8Vc+39bff1bepY3CjxGya/RlhJQD
-         pm03SLH1zh1vk5Et08W05yayJWnxdxRnbNjb7jCohrMzy/0/FJWKkATniYBbpKgsaBKE
-         Z+OGb8Lsc3JgCU/vlNmJzwFukVrY1yODwKOWdcEffdpTGbLPgR5Erg+jlwzjZKljWkGx
-         l6m9q0cv+BGPJ+GX+X1NDb4hrmrYY0d2qQvBndPhFSr7mcH+QfGu5TnM80huZaOEkW4m
-         IdPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=1O0LBLqhkIhhJJfp59V0Tv3ojtZBe4j7Is7zRyXj/Pb696JJOKVacEiO5ESfPUrQcn
-         Bt2Byx3Le+FRy7XaeTOHl0frCRK21oAVGWw279Cu6wuZqXCQ4D4SH3tFMazomBqkXB2G
-         4ZDGZrm4gT2jlerhzmnpPdYsQ5RWRYKcr4bvwXVnSjV+m0qWo733wU3igh0Yg0x+aQyk
-         wndSTUvZ0VqojVRI7+xiy4sn67ZevFll7FpGCQdn0CgAoTDqQ2T1jFxrOXJIrhmjc0KH
-         GOW/YihsNJRgMp5FaBgbL76+B58yazUpAWewvYiE4bmYRyA6xhzYwuru8ic48COl9PYy
-         cIRw==
-X-Gm-Message-State: ACrzQf2JFmTBVZflGMjZ5q3E53U0FTpJVV6/ql3ZqcIYnStEwgPtaXGy
-        yq09WWNDDjLi2idtlCmY7PJSCx5Xu7xofqfKu5I=
-X-Google-Smtp-Source: AMsMyM58hZ1EPsKu7coHtKEAadQRfLUwq2/6MbLEjdgMZ+NpfmCkJjte0dLlRzUMReSpEc0nbvrKDwByTED+/niEF+4=
-X-Received: by 2002:ae9:eb48:0:b0:6fa:d61:4510 with SMTP id
- b69-20020ae9eb48000000b006fa0d614510mr37684535qkg.768.1667910605712; Tue, 08
- Nov 2022 04:30:05 -0800 (PST)
+        with ESMTP id S233865AbiKHMft (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 07:35:49 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4007E43849
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Nov 2022 04:35:48 -0800 (PST)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N66tH0FPKzpWDN;
+        Tue,  8 Nov 2022 20:32:07 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 8 Nov 2022 20:35:46 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 8 Nov
+ 2022 20:35:46 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-mmc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>
+CC:     <ulf.hansson@linaro.org>, <neil.armstrong@linaro.org>,
+        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
+        <martin.blumenstingl@googlemail.com>, <yangyingliang@huawei.com>
+Subject: [PATCH] mmc: meson-gx: fix return value check of mmc_add_host()
+Date:   Tue, 8 Nov 2022 20:34:17 +0800
+Message-ID: <20221108123417.479045-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a05:6214:2f8a:b0:4bb:6e86:8303 with HTTP; Tue, 8 Nov 2022
- 04:30:05 -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   Mr Abraham <mr.abraham2021@gmail.com>
-Date:   Tue, 8 Nov 2022 12:30:05 +0000
-Message-ID: <CAJ2UK+YqK-OgWa-GbqjTU89edKqVZ5nqmL-j=gKpwP5uFtkvUA@mail.gmail.com>
-Subject: Greeting
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:72f listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4971]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mr.abraham022[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [mr.abraham2021[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mr.abraham2021[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+mmc_add_host() may return error, if we ignore its return value,
+it will lead two issues:
+1. The memory that allocated in mmc_alloc_host() is leaked.
+2. In the remove() path, mmc_remove_host() will be called to
+   delete device, but it's not added yet, it will lead a kernel
+   crash because of null-ptr-deref in device_del().
+
+Fix this by checking the return value and goto error path which
+will call mmc_free_host().
+
+Fixes: 51c5d8447bd7 ("MMC: meson: initial support for GX platforms")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/mmc/host/meson-gx-mmc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+index df05e60bed9a..6e5ea0213b47 100644
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -1335,7 +1335,9 @@ static int meson_mmc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	mmc->ops = &meson_mmc_ops;
+-	mmc_add_host(mmc);
++	ret = mmc_add_host(mmc);
++	if (ret)
++		goto err_free_irq;
+ 
+ 	return 0;
+ 
+-- 
+2.25.1
+
