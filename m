@@ -2,86 +2,89 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7D22620B1F
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 09:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5D5C620B53
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 09:37:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233486AbiKHI0z (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Nov 2022 03:26:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41154 "EHLO
+        id S233546AbiKHIhr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Nov 2022 03:37:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbiKHI0r (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 03:26:47 -0500
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 96CA627B11
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Nov 2022 00:26:44 -0800 (PST)
-Received: from unknown (HELO iyokan2-ex.css.socionext.com) ([172.31.9.54])
-  by mx.socionext.com with ESMTP; 08 Nov 2022 17:25:40 +0900
-Received: from mail.mfilter.local (m-filter-1 [10.213.24.61])
-        by iyokan2-ex.css.socionext.com (Postfix) with ESMTP id A2DAD20584CE;
-        Tue,  8 Nov 2022 17:25:40 +0900 (JST)
-Received: from 172.31.9.51 (172.31.9.51) by m-FILTER with ESMTP; Tue, 8 Nov 2022 17:25:40 +0900
-Received: from plum.e01.socionext.com (unknown [10.212.243.119])
-        by kinkan2.css.socionext.com (Postfix) with ESMTP id 6A655B62A4;
-        Tue,  8 Nov 2022 17:25:40 +0900 (JST)
-From:   Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Jassi Brar <jaswinder.singh@linaro.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Subject: [PATCH 4/4] mmc: f-sdh30: Add compatible string for Socionext F_SDH30_E51
-Date:   Tue,  8 Nov 2022 17:25:33 +0900
-Message-Id: <20221108082533.21384-5-hayashi.kunihiko@socionext.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221108082533.21384-1-hayashi.kunihiko@socionext.com>
-References: <20221108082533.21384-1-hayashi.kunihiko@socionext.com>
+        with ESMTP id S229931AbiKHIhq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 03:37:46 -0500
+X-Greylist: delayed 556 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 08 Nov 2022 00:37:45 PST
+Received: from mail-m11880.qiye.163.com (mail-m11880.qiye.163.com [115.236.118.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E67A5F89
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Nov 2022 00:37:45 -0800 (PST)
+Received: from [172.16.12.69] (unknown [58.22.7.114])
+        by mail-m11880.qiye.163.com (Hmail) with ESMTPA id C877020185;
+        Tue,  8 Nov 2022 16:28:25 +0800 (CST)
+Message-ID: <0f8f0d91-9e1f-c71e-86a6-25a6bdb4f6b1@rock-chips.com>
+Date:   Tue, 8 Nov 2022 16:28:25 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Cc:     shawn.lin@rock-chips.com, linux-mmc <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>
+Subject: Re: Question about EMMC CMDQ HOST CONTROLLER INTERFACE (CQHCI) DRIVER
+To:     =?UTF-8?B?SnlhbiBDaG91IFvlkajoirflrold?= <jyanchou@realtek.com>
+References: <5842d536cb0d4086a225ea0fa2d42e72@realtek.com>
+ <c97df3b4-0038-616d-ef10-953eba595638@intel.com>
+Content-Language: en-GB
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+In-Reply-To: <c97df3b4-0038-616d-ef10-953eba595638@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+        tZV1koWUFJSktLSjdXWS1ZQUlXWQ8JGhUIEh9ZQVkZTEseVkMZQkhDGB5MTB4dTlUTARMWGhIXJB
+        QOD1lXWRgSC1lBWU5DVUlJVUxVSkpPWVdZFhoPEhUdFFlBWU9LSFVKSktISkNVSktLVUtZBg++
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6OjI6SSo6Ez0jA0gqEgotDwIy
+        Lk8KCx1VSlVKTU1MQ0JNSktNSUNMVTMWGhIXVQgTGgwVVRcSFTsJFBgQVhgTEgsIVRgUFkVZV1kS
+        C1lBWU5DVUlJVUxVSkpPWVdZCAFZQUlMSkg3Bg++
+X-HM-Tid: 0a84565adbc92eb6kusnc877020185
+X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add compatible string for Socionext F_SDH30_E51. Currently there are
-no new features for this IP, just add it.
+On 2022/11/8 16:20, Adrian Hunter wrote:
+> On 8/11/22 09:25, Jyan Chou [周芷安] wrote:
+>> Hello Adrian Hunter,
+>>
+>> We are now using the upstream code of EMMC CMDQ HOST CONTROLLER INTERFACE (CQHCI) DRIVER, but we found that the existing driver cannot support the limitation of Synopsys IP.
+>>
+>> Synopsys IP has a description on their data book " While using DMA, the host memory data buffer size and start address must not exceed 128 MB".
 
-And add missing Copyright and MODULE_AUTHOR.
+Synopsys-based SDHCI IP does have a limitation of 128MB boundary. But it
+has already been solved by upstream driver.
 
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
----
- drivers/mmc/host/sdhci_f_sdh30.c | 3 +++
- 1 file changed, 3 insertions(+)
+FYI:
 
-diff --git a/drivers/mmc/host/sdhci_f_sdh30.c b/drivers/mmc/host/sdhci_f_sdh30.c
-index af30343eaf33..2643ae97b2e7 100644
---- a/drivers/mmc/host/sdhci_f_sdh30.c
-+++ b/drivers/mmc/host/sdhci_f_sdh30.c
-@@ -5,6 +5,7 @@
-  * Copyright (C) 2013 - 2015 Fujitsu Semiconductor, Ltd
-  *              Vincent Yang <vincent.yang@tw.fujitsu.com>
-  * Copyright (C) 2015 Linaro Ltd  Andy Green <andy.green@linaro.org>
-+ * Copyright (C) 2019 Socionext Inc.
-  */
- 
- #include <linux/acpi.h>
-@@ -228,6 +229,7 @@ static int sdhci_f_sdh30_remove(struct platform_device *pdev)
- #ifdef CONFIG_OF
- static const struct of_device_id f_sdh30_dt_ids[] = {
- 	{ .compatible = "fujitsu,mb86s70-sdhci-3.0" },
-+	{ .compatible = "socionext,f-sdh30-e51-mmc" },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, f_sdh30_dt_ids);
-@@ -258,4 +260,5 @@ module_platform_driver(sdhci_f_sdh30_driver);
- MODULE_DESCRIPTION("F_SDH30 SD Card Controller driver");
- MODULE_LICENSE("GPL v2");
- MODULE_AUTHOR("FUJITSU SEMICONDUCTOR LTD.");
-+MODULE_AUTHOR("Socionext Inc.");
- MODULE_ALIAS("platform:f_sdh30");
--- 
-2.25.1
+commit b85c997d2cfefe7d1f706b85ae46e35a50e3131c ("mmc: sdhci-of-dwcmshc: 
+solve 128MB DMA boundary limitation")
 
+
+
+
+
+>>
+>> I am wondering whether there is a method or patch that can fix this boundary limitation.
+>> Thanks.
+>> Best Regards,
+>> Jyan Chou
+> 
+> Hello Jyan Chou
+> 
+> I am not clear on what the exact limitation is.  The driver never uses buffers as big as 128 MB.
+> To restrict DMA to low memory addresses a DMA mask can be used.
+> 
+> But perhaps you mean not to cross a 128 MB boundary?
+> 
+> Please cc your questions to the linux kernel mmc mailing list: linux-mmc@vger.kernel.org because others
+> can answer too.
+> 
+> Regards
+> Adrian
