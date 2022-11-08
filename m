@@ -2,114 +2,105 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04A97620BFD
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 10:20:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41001620EDA
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Nov 2022 12:24:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233682AbiKHJUi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Nov 2022 04:20:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39664 "EHLO
+        id S233945AbiKHLYL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Nov 2022 06:24:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233658AbiKHJUc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 04:20:32 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 22B84248CA
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Nov 2022 01:20:30 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 2A89Jg8J2000950, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 2A89Jg8J2000950
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 8 Nov 2022 17:19:42 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 8 Nov 2022 17:19:56 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 8 Nov 2022 17:19:56 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Tue, 8 Nov 2022 17:19:56 +0800
-From:   =?utf-8?B?SnlhbiBDaG91IFvlkajoirflrold?= <jyanchou@realtek.com>
-To:     Shawn Lin <shawn.lin@rock-chips.com>,
-        Adrian Hunter <adrian.hunter@intel.com>
-CC:     linux-mmc <linux-mmc@vger.kernel.org>,
-        "Jisheng.Zhang@synaptics.com" <Jisheng.Zhang@synaptics.com>
-Subject: RE: Question about EMMC CMDQ HOST CONTROLLER INTERFACE (CQHCI) DRIVER
-Thread-Topic: Question about EMMC CMDQ HOST CONTROLLER INTERFACE (CQHCI)
- DRIVER
-Thread-Index: AdjzQ08CVJgRjyAuSMquwM9U5+w9rf//iSAAgAACSYCAAAHWgIAACxsA//95HJA=
-Date:   Tue, 8 Nov 2022 09:19:55 +0000
-Message-ID: <20fda8f718384317a8393baefc553d1b@realtek.com>
-References: <5842d536cb0d4086a225ea0fa2d42e72@realtek.com>
- <c97df3b4-0038-616d-ef10-953eba595638@intel.com>
- <0f8f0d91-9e1f-c71e-86a6-25a6bdb4f6b1@rock-chips.com>
- <38161cf2-4e6e-dbb3-4743-a21657b92451@intel.com>
- <dcac1f10-98a7-b831-005c-542b8a0d4337@rock-chips.com>
-In-Reply-To: <dcac1f10-98a7-b831-005c-542b8a0d4337@rock-chips.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.190.236]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzExLzgg5LiK5Y2IIDA4OjA0OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S233871AbiKHLYH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Nov 2022 06:24:07 -0500
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 423D031FAE
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Nov 2022 03:24:00 -0800 (PST)
+Received: by mail-io1-xd30.google.com with SMTP id r81so11190760iod.2
+        for <linux-mmc@vger.kernel.org>; Tue, 08 Nov 2022 03:24:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5B7dfi7xVJ3OslQ0ALi00lhJojz9IHhiYsVHA/RHqOE=;
+        b=Z2xz0F62PYjCBDaPJAMQlwAdSUUQxdVmjdSE1e/TEz5D6nfB7qYhDRauEt75dK7gsB
+         gtVoTdjw0oTaDS+z3idasRk9nIwydmI3O/a8UQatcsDJqkbGbIVyT1SuNX1kSLffYta+
+         MRaPM04Hv5NGx1PX+KL+YO7lfN7BHKCLYUZEhYaO6bT3eGqzCEeqoQdWOoaKJxxIWVcR
+         X5vaz/veLMrOj/9U4MKzAbNWDLkTVcyykPfCiQUtOALLeK724DexTS9gS8OIc8PPRbY4
+         YNmg+MP12x4a8uFh/63hJCJOP6eBt/pwec9yaAniUfCEq02k0DzqkBqfTrX2eYh/P4iT
+         mINw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5B7dfi7xVJ3OslQ0ALi00lhJojz9IHhiYsVHA/RHqOE=;
+        b=EgasfME3vqxyuDLT2OU/CCXWEdgm5R1OMN3HdPeEmvvipd7K0mIBcCWmvthQhebdud
+         kXRHolgVCNFEZc77IgS/oX43yfaMNevuq0YeAF38uX8KHFeERSnPXytp9FoWAcg/1If3
+         1yQ5rYQ84lmFqh97W8Z5z9CXIQVTfUd4S5/A3WZTGF4mrzWPe91itb7QNlCYsdUltXys
+         X5QalkCkKqVb0SrALROP7wFFZQiizYFfOrEkeDBNXwtIizFMx0HnUwwxB6YGeFtULEYF
+         jjJscufFa5Oa8Tdmb1kE2dp6H+P2p94tDWkqyvkE/zYjmgp4SFfeU9sih1YT9rAEa7lo
+         /gfw==
+X-Gm-Message-State: ACrzQf0Z31lozf9vA3uNwxnMcCRY6mmMel+R3EVd3uK8RgoQoxhbfECF
+        9WrkMGI5x8Ja/Szq8O3GqA4KiaQGPblooUZeorw=
+X-Google-Smtp-Source: AMsMyM5kag4nOyXiv058CAI4vKxtxp06JiPON4WELDl5Ot316dAXYP1rZp27aB4pLGdFMhJREf8MTcDs+CaUCGO8K58=
+X-Received: by 2002:a05:6602:2b06:b0:67f:fdf6:ffc2 with SMTP id
+ p6-20020a0566022b0600b0067ffdf6ffc2mr34602043iov.111.1667906639638; Tue, 08
+ Nov 2022 03:23:59 -0800 (PST)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6638:1921:0:0:0:0 with HTTP; Tue, 8 Nov 2022 03:23:59
+ -0800 (PST)
+Reply-To: mrinvest1010@gmail.com
+From:   "K. A. Mr. Kairi" <ctocik10@gmail.com>
+Date:   Tue, 8 Nov 2022 03:23:59 -0800
+Message-ID: <CAEbPynvH+BZ99HK-COU1=n6MNs96giewbsO80XYSawcxKUtHrA@mail.gmail.com>
+Subject: Re: My Response..
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:d30 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mrinvest1010[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [ctocik10[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [ctocik10[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-PiBDUUhDSSBoYXMgaXRzIG93biBETUEgZGVzY3JpcHRvcnMsIHNvIG1heWJlIGEgc2ltaWxhciBj
-aGFuZ2UgaXMgbmVlZGVkIGZvciBDUUhDST8NCg0KSSBkaWRuJ3QgZmluZCB0aGlzIGxpbWl0YXRp
-b24gaW4gc3lub3BzeXMgRFcgSVAgZGF0YWJvb2suDQo+PiBJIGZvdW5kIGl0IG9uIHBhZ2UgODQg
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBTaGF3biBMaW4gPHNoYXduLmxp
-bkByb2NrLWNoaXBzLmNvbT4gDQpTZW50OiBUdWVzZGF5LCBOb3ZlbWJlciA4LCAyMDIyIDU6MTUg
-UE0NClRvOiBBZHJpYW4gSHVudGVyIDxhZHJpYW4uaHVudGVyQGludGVsLmNvbT4NCkNjOiBzaGF3
-bi5saW5Acm9jay1jaGlwcy5jb207IGxpbnV4LW1tYyA8bGludXgtbW1jQHZnZXIua2VybmVsLm9y
-Zz47IEp5YW4gQ2hvdSBb5ZGo6Iq35a6JXSA8anlhbmNob3VAcmVhbHRlay5jb20+OyBKaXNoZW5n
-LlpoYW5nQHN5bmFwdGljcy5jb20NClN1YmplY3Q6IFJlOiBRdWVzdGlvbiBhYm91dCBFTU1DIENN
-RFEgSE9TVCBDT05UUk9MTEVSIElOVEVSRkFDRSAoQ1FIQ0kpIERSSVZFUg0KDQorIEppc2hlbmcg
-WmhhbmcNCg0KT24gMjAyMi8xMS84IDE2OjM0LCBBZHJpYW4gSHVudGVyIHdyb3RlOg0KPiBPbiA4
-LzExLzIyIDEwOjI4LCBTaGF3biBMaW4gd3JvdGU6DQo+PiBPbiAyMDIyLzExLzggMTY6MjAsIEFk
-cmlhbiBIdW50ZXIgd3JvdGU6DQo+Pj4gT24gOC8xMS8yMiAwOToyNSwgSnlhbiBDaG91IFvlkajo
-irflroldIHdyb3RlOg0KPj4+PiBIZWxsbyBBZHJpYW4gSHVudGVyLA0KPj4+Pg0KPj4+PiBXZSBh
-cmUgbm93IHVzaW5nIHRoZSB1cHN0cmVhbSBjb2RlIG9mIEVNTUMgQ01EUSBIT1NUIENPTlRST0xM
-RVIgSU5URVJGQUNFIChDUUhDSSkgRFJJVkVSLCBidXQgd2UgZm91bmQgdGhhdCB0aGUgZXhpc3Rp
-bmcgZHJpdmVyIGNhbm5vdCBzdXBwb3J0IHRoZSBsaW1pdGF0aW9uIG9mIFN5bm9wc3lzIElQLg0K
-Pj4+Pg0KPj4+PiBTeW5vcHN5cyBJUCBoYXMgYSBkZXNjcmlwdGlvbiBvbiB0aGVpciBkYXRhIGJv
-b2sgIiBXaGlsZSB1c2luZyBETUEsIHRoZSBob3N0IG1lbW9yeSBkYXRhIGJ1ZmZlciBzaXplIGFu
-ZCBzdGFydCBhZGRyZXNzIG11c3Qgbm90IGV4Y2VlZCAxMjggTUIiLg0KPj4NCj4+IFN5bm9wc3lz
-LWJhc2VkIFNESENJIElQIGRvZXMgaGF2ZSBhIGxpbWl0YXRpb24gb2YgMTI4TUIgYm91bmRhcnku
-IEJ1dCANCj4+IGl0IGhhcyBhbHJlYWR5IGJlZW4gc29sdmVkIGJ5IHVwc3RyZWFtIGRyaXZlci4N
-Cj4+DQo+PiBGWUk6DQo+Pg0KPj4gY29tbWl0IGI4NWM5OTdkMmNmZWZlN2QxZjcwNmI4NWFlNDZl
-MzVhNTBlMzEzMWMgKCJtbWM6IA0KPj4gc2RoY2ktb2YtZHdjbXNoYzogc29sdmUgMTI4TUIgRE1B
-IGJvdW5kYXJ5IGxpbWl0YXRpb24iKQ0KPiANCj4gQ1FIQ0kgaGFzIGl0cyBvd24gRE1BIGRlc2Ny
-aXB0b3JzLCBzbyBtYXliZSBhIHNpbWlsYXIgY2hhbmdlIGlzIG5lZWRlZCBmb3IgQ1FIQ0k/DQoN
-CkkgZGlkbid0IGZpbmQgdGhpcyBsaW1pdGF0aW9uIGluIHN5bm9wc3lzIERXIElQIGRhdGFib29r
-Lg0KDQo+IA0KPj4NCj4+Pj4NCj4+Pj4gSSBhbSB3b25kZXJpbmcgd2hldGhlciB0aGVyZSBpcyBh
-IG1ldGhvZCBvciBwYXRjaCB0aGF0IGNhbiBmaXggdGhpcyBib3VuZGFyeSBsaW1pdGF0aW9uLg0K
-Pj4+PiBUaGFua3MuDQo+Pj4+IEJlc3QgUmVnYXJkcywNCj4+Pj4gSnlhbiBDaG91DQo+Pj4NCj4+
-PiBIZWxsbyBKeWFuIENob3UNCj4+Pg0KPj4+IEkgYW0gbm90IGNsZWFyIG9uIHdoYXQgdGhlIGV4
-YWN0IGxpbWl0YXRpb24gaXMuwqAgVGhlIGRyaXZlciBuZXZlciB1c2VzIGJ1ZmZlcnMgYXMgYmln
-IGFzIDEyOCBNQi4NCj4+PiBUbyByZXN0cmljdCBETUEgdG8gbG93IG1lbW9yeSBhZGRyZXNzZXMg
-YSBETUEgbWFzayBjYW4gYmUgdXNlZC4NCj4+Pg0KPj4+IEJ1dCBwZXJoYXBzIHlvdSBtZWFuIG5v
-dCB0byBjcm9zcyBhIDEyOCBNQiBib3VuZGFyeT8NCj4+Pg0KPj4+IFBsZWFzZSBjYyB5b3VyIHF1
-ZXN0aW9ucyB0byB0aGUgbGludXgga2VybmVsIG1tYyBtYWlsaW5nIGxpc3Q6IA0KPj4+IGxpbnV4
-LW1tY0B2Z2VyLmtlcm5lbC5vcmcgYmVjYXVzZSBvdGhlcnMgY2FuIGFuc3dlciB0b28uDQo+Pj4N
-Cj4+PiBSZWdhcmRzDQo+Pj4gQWRyaWFuDQo+IA0KDQotLS0tLS1QbGVhc2UgY29uc2lkZXIgdGhl
-IGVudmlyb25tZW50IGJlZm9yZSBwcmludGluZyB0aGlzIGUtbWFpbC4NCg==
+-- 
+Dear
+
+How are you, I have a serious client, whom will be interested to
+invest in your country, I got your Details through the Investment
+Network and world Global Business directory.
+
+Let me know if you are interested for more details.....
+
+Sincerely,
+Mr. Kairi Andrew
