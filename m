@@ -2,135 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 032FB627294
-	for <lists+linux-mmc@lfdr.de>; Sun, 13 Nov 2022 21:41:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AAB562742D
+	for <lists+linux-mmc@lfdr.de>; Mon, 14 Nov 2022 02:32:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233909AbiKMUlC (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 13 Nov 2022 15:41:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38526 "EHLO
+        id S235610AbiKNBcS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 13 Nov 2022 20:32:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233954AbiKMUlB (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 13 Nov 2022 15:41:01 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04EF0DF08
-        for <linux-mmc@vger.kernel.org>; Sun, 13 Nov 2022 12:40:59 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id m7-20020a05600c090700b003cf8a105d9eso6466588wmp.5
-        for <linux-mmc@vger.kernel.org>; Sun, 13 Nov 2022 12:40:58 -0800 (PST)
+        with ESMTP id S235571AbiKNBcR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 13 Nov 2022 20:32:17 -0500
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B4FC4E
+        for <linux-mmc@vger.kernel.org>; Sun, 13 Nov 2022 17:32:16 -0800 (PST)
+Received: by mail-ej1-x642.google.com with SMTP id bj12so24858600ejb.13
+        for <linux-mmc@vger.kernel.org>; Sun, 13 Nov 2022 17:32:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:message-id:in-reply-to:date:subject:to:from:user-agent
-         :references:from:to:cc:subject:date:message-id:reply-to;
-        bh=smMBG8cth6Wetp8FRPQwBWABZlQNfxVO31AeOc5lUC8=;
-        b=JEVEeqze3UWXQn+koWcOG/UYGjm8nnam7/ZT1kq93GITnzz0svZPjyJjIbeGkrMhKY
-         f+wWDphZaY5X0RS6HDGXS098J6iKV3q5d4XFJkWcg5PhvCj17J+ajy4dZGFaEdM689ND
-         QppIbT6JM0Rq0184K0CBNc6QSBRlRiUv8N5C3M8C3nsqvJq5BYnl7dqvdVPwo5farIcH
-         uuYDpi7Eywn0wACmBjB5/XuilV++BSUH4cytjAAiRKsN34CigB2mEw91IM3mHWCsbsv3
-         3+uAe5prI0fFbgVE/T+Ree/+K70r1oRnx3/Ftv898mpo5twBX3cuJ4Nu0qDwc9VNX7NS
-         mTvA==
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2A5Zw4wTof6wwwRVMT2EklD6tpS33zcb3kC2X1CkRqg=;
+        b=cVSrKxrWfTF+zSdGici4PM07zxG67TR+qaSgbucf2F1NLpGQAC5yUL1JJiA05RBWLk
+         ABlOkBX5SJOrE+e+f2e9aKNtklegGpCzTIca9QIxiM01NAG/eO1A+h+yNW+LnR+z2/T0
+         X8DkeT0hL50I8T+1b+xiY+LKKbkz0c1Cl5F2cCdEp4f2LdUC0qqvXeu0zTBrSlIh/3zM
+         RA4yRVgpImE46NM+r4T4mObkDyrwrB8DxPtPsNat7u3yl3eS3uvMe5cW4b/IPYxcf2W9
+         OpcIe8uWqwy2Ss0sUkXdlgZELOVlxRcFW7IUDSxseJK7OKPHPYobnVZxqwupX+iYdnvB
+         Ys2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:message-id:in-reply-to:date:subject:to:from:user-agent
-         :references:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=smMBG8cth6Wetp8FRPQwBWABZlQNfxVO31AeOc5lUC8=;
-        b=mMBxdeJi6SIRnXgwFs5b8fg4lX2/Nf0gv6wRRSjoYQkJbkfxqbNqrUIsDAAjLQzWZe
-         c3SxgqaXNmwAtbCoNDU0eCCV2byZImiZIMoTVZhwI3lXoOYL90olWWquj2Uo+C7mxR4i
-         CcKVS9yd1GLejkP+KoYLR8lxnRGE2sh31fvcN7rw4P1YRFRgK2YL0IIjco2aB/mMbA+H
-         QSnDmuMI6jerdUgqlXYqngIOZbXi66qtG2AqbIUenQjTx3izoc5DhSxQ/Sw5RcYjnGBE
-         J4WkBF+GFL1hpWu3Id/u8wMNKLhIXM4/28DNJdweBBPB99ChymKH70hsV3zuA1tKSeur
-         LbdA==
-X-Gm-Message-State: ANoB5pl4t10g4rSKfOFEACI7DYOrEn3ZmLxs8O4ohFIBTvZxLy/xXiTR
-        oC2vRqtqgOt0yfmyY76fWiRsvgTwJwhMUQ==
-X-Google-Smtp-Source: AA0mqf6DKEqamvPE5yKKuqNWJTOSNf6Z6IDCyJRkxZBFiXxsNuUILEzLvjWteuvVbXn5OMMxZPkt0g==
-X-Received: by 2002:a7b:c00b:0:b0:3cf:a985:7692 with SMTP id c11-20020a7bc00b000000b003cfa9857692mr6261764wmb.104.1668372057473;
-        Sun, 13 Nov 2022 12:40:57 -0800 (PST)
-Received: from localhost (82-65-169-74.subs.proxad.net. [82.65.169.74])
-        by smtp.gmail.com with ESMTPSA id u18-20020a05600c19d200b003c6f8d30e40sm17246093wmq.31.2022.11.13.12.40.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Nov 2022 12:40:56 -0800 (PST)
-References: <20221110150035.2824580-1-adeep@lexina.in>
-User-agent: mu4e 1.8.10; emacs 28.2
-From:   Jerome Brunet <jbrunet@baylibre.com>
-To:     Vyacheslav Bocharov <adeep@lexina.in>, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] arm64: amlogic: mmc: meson-gx: Add core, tx, rx
-Date:   Sun, 13 Nov 2022 21:06:44 +0100
-In-reply-to: <20221110150035.2824580-1-adeep@lexina.in>
-Message-ID: <1jk03y37vs.fsf@starbuckisacylon.baylibre.com>
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2A5Zw4wTof6wwwRVMT2EklD6tpS33zcb3kC2X1CkRqg=;
+        b=HLZKztyzsqN53yv1t74EuxCI8D2tu2NNQa9nIMIrmMykr4iPFVXcs9wpkgjkSz/zUM
+         GzvUul7ldHSdBjQSr5FjoM4Ll4lnsV1KpNn/ld3SEvcfpmcETwjg+cfQy1VfjIa75Flz
+         xwcdfMrIBva/FR6BfrMhuxgCfiF3QC43PLpNRUKIPGb3t18n2iwrPuI761gYTU+2JoFb
+         xQaVBzMIdQfUqeC6GnlIhGvlkkYh49+s0Jr7p7w7qNVlY/0kBz62YONgMnrCVZmWoRTC
+         Vsv2FGPkBGsMSfwlsm3thlfASBKm9JAzsaxW2oVd94fXB5vrR9zEGqxZQvPPk8bRyJDV
+         yUOA==
+X-Gm-Message-State: ANoB5plzehIA8Xwv4sBXe2Hf/dN+SDTpDJXv6cWgx2Nrp/avVoONmwGA
+        alkmtcrNEsCOOxq7WEbairPTJaBOzgwNG0nmPmU=
+X-Google-Smtp-Source: AA0mqf6+GACnFv7dkky0qVX2+Wib1yT2HKORJaJkTf4fU8HCrF+ZffGDNNolX+oydNmx3Xrm5XsvY3PMY0UChOxLc1I=
+X-Received: by 2002:a17:906:824e:b0:7ae:77ef:d048 with SMTP id
+ f14-20020a170906824e00b007ae77efd048mr9070417ejx.740.1668389534685; Sun, 13
+ Nov 2022 17:32:14 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Sender: khwajasalman03@gmail.com
+Received: by 2002:a17:906:60c8:b0:770:af02:b99a with HTTP; Sun, 13 Nov 2022
+ 17:32:13 -0800 (PST)
+From:   "Mrs.Yu  Ging" <yuging9567@gmail.com>
+Date:   Mon, 14 Nov 2022 01:32:13 +0000
+X-Google-Sender-Auth: vS0z2V14QX6ZGzINSc8HbglTGjo
+Message-ID: <CAPvpH87Kr8N0V69Wa7C-Y7vEUvWnBp8E5a6PMOB6E7wue0AmAQ@mail.gmail.com>
+Subject: Hello Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_80,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_USD,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:642 listed in]
+        [list.dnswl.org]
+        *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
+        *      [score: 0.9087]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [yuging9567[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [khwajasalman03[at]gmail.com]
+        *  0.4 MILLION_USD BODY: Talks about millions of dollars
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+I am Mrs Yu. Ging Yunnan, and i have Covid-19 and the doctor said I
+will not survive it because all vaccines has been given to me but to
+no avian, am a China
 
-On Thu 10 Nov 2022 at 18:00, Vyacheslav Bocharov <adeep@lexina.in> wrote:
+woman but I base here in France because am married here and I have no
+child for my late husband and now am a widow.
 
-> The mmc driver use the same phase values (core - 180, tx/rx - 0) for all
-> meson64 platforms. However, some platforms (and even some boards) require
-> different values
+My reason of communicating you is that i have $9.2million USD which
+was deposited in BNP Paribas Bank here in France by my late husband
+which am the next of
 
-Where does it stops ? Trying to solve the instabilities of this
-IP/driver by tweaking the phase has proven to be dead-end.
+kin to and I want you to stand as the beneficiary for the claim now
+that am about to end my race according to my doctor.
 
-Soon, you'll end up tweaking these settings depending on the on
-particular version of the device because it ships with a different eMMC
-manufacturer. Then comes multi sourcing, sdio modules, sdcards ...
+I will want you to use the fund to build an orphanage home in my name
+there in your country, please kindly reply to this message urgently if
+willing to handle this project.
 
-> (axg for example use 270 degree for core clock).
-
-Where ? Upstream linux does not
-
-u-boot does something of the sort for sm1 and I'm not entirely sure this
-appropriate either.
-
-IMO, this setting has more to do with the mode the mmc device is
-operating at - not the platform or board.
-
-We had some discussions with the HW designers at AML and they recommended
-to keep a phase shift of 180 between the Core and Tx. They also
-recommended to leave Rx alone (actually, starting from the v3, the Rx
-field has no effect. It is not even wired to actual HW)
-
-Funnily, that is not what the vendor driver does. It also does A LOT of
-extremely complex and 'debatable' things, which mostly mask how much the
-driver is unstable.
-
-With the upstream drivers, modes up to SDR50 and HS200 have been stable
-lately. SDR104 and DDR modes (DDR52 or HS400) remains problematic.
-
-Changing the settings further would require more discussion with AML.
-Blindly poking these value until you get something stablish for 1
-particular use case is a recipe for disaster.
-
-> This patch
-> transfers the values from the code to the variables in the device-tree files.
-> If not set in dts, use old default values.
-
-I think going that way is opening a big can of worms. 
-I don't think this should be applied
-
->
-> Vyacheslav Bocharov (4):
->   arm64: amlogic: mmc: meson-gx: Add core, tx, rx eMMC/SD/SDIO phase
->     clock settings from devicetree data
->   arm64: amlogic: mmc: meson-gx: Add dts binding include for core, tx,
->     rx eMMC/SD/SDIO phase clock settings from devicetree data
->   arm64: amlogic: dts: meson: update meson-axg device-tree for new core,
->     tx, rx phase clock settings.
->   arm64: dts: docs: Update mmc meson-gx documentation for new config
->     option amlogic,mmc-phase
->
->  .../bindings/mmc/amlogic,meson-gx.txt         |  7 ++++
->  arch/arm64/boot/dts/amlogic/meson-axg.dtsi    |  3 ++
->  drivers/mmc/host/meson-gx-mmc.c               | 18 +++++++---
->  include/dt-bindings/mmc/meson-gx-mmc.h        | 35 +++++++++++++++++++
->  4 files changed, 58 insertions(+), 5 deletions(-)
->  create mode 100644 include/dt-bindings/mmc/meson-gx-mmc.h
-
+Mrs Yu. Ging Yunnan.
