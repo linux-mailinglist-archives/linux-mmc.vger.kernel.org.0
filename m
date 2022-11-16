@@ -2,147 +2,142 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0644B62BE42
-	for <lists+linux-mmc@lfdr.de>; Wed, 16 Nov 2022 13:37:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68F6962BEB0
+	for <lists+linux-mmc@lfdr.de>; Wed, 16 Nov 2022 13:52:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238605AbiKPMhS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 16 Nov 2022 07:37:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53064 "EHLO
+        id S232916AbiKPMwp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 16 Nov 2022 07:52:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239108AbiKPMhA (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 16 Nov 2022 07:37:00 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B6ED15FE2
-        for <linux-mmc@vger.kernel.org>; Wed, 16 Nov 2022 04:36:28 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id z18so26319007edb.9
-        for <linux-mmc@vger.kernel.org>; Wed, 16 Nov 2022 04:36:28 -0800 (PST)
+        with ESMTP id S231952AbiKPMwo (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 16 Nov 2022 07:52:44 -0500
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF7824F00
+        for <linux-mmc@vger.kernel.org>; Wed, 16 Nov 2022 04:52:43 -0800 (PST)
+Received: by mail-pl1-x62a.google.com with SMTP id g24so16341891plq.3
+        for <linux-mmc@vger.kernel.org>; Wed, 16 Nov 2022 04:52:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9knGLouoTps4CKpPqceRV5XIDseNqgQ7sZc1gE16638=;
-        b=qjmi7EO0Q3ZK0wLJ26bcXUy3mpm2LA3KcypW1YTD2x+H1Gyl+KnVa29/K4vNKe44JD
-         tj+7r69AyCovNdl8StLXox3u0lXGRljnwbBDzXrdYTvslvuw7iEe6f11nXlIXkm2R/7M
-         hoRiEk3FclmBC1AAzg48O3A3yzYc7kgOED3dwR8P62dppPJdbuA2OrYtAm3FxPQwH3sZ
-         hHk4Utj7VTKcwlAWFZR0w9RFpjH0d2cpaZX6/3euuove650ZnQjYzo9DG2i6k7o/uV5x
-         UpPqL7dg0Sr4gYrdqVI/NKx+QvS1kQKR3QL9E0CdD1PSW5R4XlWKKpBlkAy4oqF0zuwc
-         QP9g==
+        bh=1RZGzo0g5YiKQNzOpKzrK1gUhH6Ui/pzSnhn6q3izHk=;
+        b=oTm5T88WAIt5VT3YxL8Civfnv02MHz2mxQfaxnURIcZoihPKJ5jU9swyhQi95XrntS
+         mZNsj5x2fDFxaWs/KIMcAEyIjs7ifEwJoNCj+UE5j+gvBrGmzKdUSJwxIei0e4le5oF6
+         UYO6kdoadAJ3+MdBNmzToEBaX2iX9+5hM00it9fbAdYJTJRGbW4Ayy4Z61MG6BGf6dzH
+         FCfMyc0qeAKBW5wnGgFfsLEZeHNbrDAqIMd6/p/Pu9fXf5zhMlF7FMZkrAnP2mEqL5BB
+         dPl1jJL7gGPR9gRAiigt+svasc6MAW1owd5y+AD7gVZndDvYYL/WTtEFZpFai216qb73
+         ifKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9knGLouoTps4CKpPqceRV5XIDseNqgQ7sZc1gE16638=;
-        b=LLc2cAwC8Q+hJ70XBGdFl99rKj2LLbbHHlnyMHgcRrMk8DhPy8W89vbLs96342rsVe
-         aFni5jTehV2CiMjkNR/xn9I2WKonxbl8ScymE1qFxNv2NLjm0ya8d8+Lt714RwKo4uk9
-         vZ3mKZu2mLxCY3poaPAjuOkbkl5f8uTwPybFFTsoq8aqQv/qbIh2soawHhfAuEkgpFFI
-         8oc7dvKNrLR+wQA1jcYmLFBorgxF14AKj1k31AejIl2WQOvYX2kv8drIghaOt068cYzI
-         lyMP9gg9Uk3jwCrU5h9bHPzoRmEGqBLsQhlNDZCnf607fj8NgUutBqhR8pPG4O3l3d0O
-         iHeg==
-X-Gm-Message-State: ANoB5pkEf068FO2J8Mw1qtBlSgDnmDCKDQnvSjHiYSoujbAXwWk29loS
-        yr60q9bHVrDSFci+WXysrvX84g==
-X-Google-Smtp-Source: AA0mqf5f2OOBISSSop2/aD8oGQWUikOqaakhD27e00BH0r1sbmwrW9N3WTpKVPPyH6eOAClfCJt9ug==
-X-Received: by 2002:aa7:c405:0:b0:461:4f34:d8f4 with SMTP id j5-20020aa7c405000000b004614f34d8f4mr19536298edq.144.1668602186978;
-        Wed, 16 Nov 2022 04:36:26 -0800 (PST)
-Received: from localhost.localdomain ([194.29.137.22])
-        by smtp.gmail.com with ESMTPSA id cb13-20020a170906a44d00b007abafe43c3bsm6773346ejb.86.2022.11.16.04.36.25
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 16 Nov 2022 04:36:26 -0800 (PST)
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-To:     linux-arm-msm@vger.kernel.org, andersson@kernel.org,
-        agross@kernel.org, krzysztof.kozlowski@linaro.org
-Cc:     patches@linaro.org, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>
-Subject: [PATCH v2 4/4] arm64: dts: qcom: sm8350-sagami: Wire up SDHCI2
-Date:   Wed, 16 Nov 2022 13:36:12 +0100
-Message-Id: <20221116123612.34302-4-konrad.dybcio@linaro.org>
-X-Mailer: git-send-email 2.32.0 (Apple Git-132)
-In-Reply-To: <20221116123612.34302-1-konrad.dybcio@linaro.org>
-References: <20221116123612.34302-1-konrad.dybcio@linaro.org>
+        bh=1RZGzo0g5YiKQNzOpKzrK1gUhH6Ui/pzSnhn6q3izHk=;
+        b=FZT7py4nOiCcilzIM9MAsmH6qKPjS3FrKUjLEGCR53fn2XuiPd4OhSJoo7QL9M7Hvx
+         MYgOujaaiEoI5Z2wKIlkZztGS4XAbrqBZkdNdnqRyp1QyJSZ2oblPtMP+vdn5ktakbwl
+         OeGHXOlRTJazFFMPAB118Ue/HxqAtgMr3duTy7SMLlx2jNZkcKx+rzYXVVYzyu/ANB/U
+         WsO9Lp865AnRzniogwUVY2IZtNVxfJO6iHeMAES2lovNNnoO/XXXnBqlVaqeLspfVPm+
+         nNT2UZlPmFAaHbecD3NLf22j6e46IGtunKwH26UtL8094kBKGmsH150vcjwOzcQDiMxi
+         deJQ==
+X-Gm-Message-State: ANoB5pmYEEeuYqcEyHUIvyZmgeGmZMG/MGYqn451Z3H01LcfYqvfLN3A
+        CyuTjpeNqN6DJA8BFnLp5xwTZBaQ4IHEnbmp/aTdnw==
+X-Google-Smtp-Source: AA0mqf573iUOuohxs/WDJJF3vSdEApKn5V6LsqvAYLzFM6odtTKa0xju8NCcUFP4RfQv05qQZMRKdgUirwhVv/TsKiE=
+X-Received: by 2002:a17:902:d48a:b0:188:6baf:2011 with SMTP id
+ c10-20020a170902d48a00b001886baf2011mr8329879plg.165.1668603162940; Wed, 16
+ Nov 2022 04:52:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2c8d249c6bb74d688a625654559bacbb@hyperstone.com>
+In-Reply-To: <2c8d249c6bb74d688a625654559bacbb@hyperstone.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 16 Nov 2022 13:52:06 +0100
+Message-ID: <CAPDyKFooANh5Jj1tjG+JriK2vrC4DxK0JGiR5bEtJ1iCMu78QA@mail.gmail.com>
+Subject: Re: [PATCHv2 1/3] block: Requeue req as head if driver touched it
+To:     =?UTF-8?Q?Christian_L=C3=B6hle?= <CLoehle@hyperstone.com>
+Cc:     "axboe@kernel.dk" <axboe@kernel.dk>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        Avri Altman <Avri.Altman@wdc.com>,
+        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+        "vincent.whitchurch@axis.com" <vincent.whitchurch@axis.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Adjust regulators, add required pin setup and finally enable SDHCI2
-to get the SD Card slot going on Sagami Xperias.
+On Mon, 14 Nov 2022 at 16:29, Christian L=C3=B6hle <CLoehle@hyperstone.com>=
+ wrote:
+>
+> In case the driver set RQF_DONTPREP flag, requeue the request as head as
+> it is likely that the backing storage already had a request to an
+> adjacent region, so getting the requeued request out as soon as possible
+> may give us some performance benefit.
+>
+> The are various reasons a driver may requeue a request
+> (and therefore RQF_DONTPREP being set).
+> One reason may be that the driver or the hardware cannot satisfy
+> the block layer alignment/sizes.
+>
+> This for example is the case with mmcblk with a host driver that
+> cannot deal with multiple block transfers.
+> Consider a request for lba 42 for one page so 4K or 8 blocks.
+> mmcblk will do a single block request for lba 42 and requeue for
+> the rest if the host can only perform single block transfers.
+> In this case the device only delivered 512 bytes of data at lba 42,
+> but may have performed a readahead itself for the following lbas,
+> or do an 'implicit' readahead as it only deals with larger block
+> size mappings itself.
+> In that case it would be beneificial if the request for lba 43 and
+> the rest of the remaining blocks follow immediately after the initial
+> lba 42 request.
+> Requeueing already partially processed requests as head preserves the
+> intended request order (unless the driver has a queue of its own)
+> and therefore mitigates this problem .
+>
+> Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
----
-Changes in v2:
-- drop stray newline
+Thanks for updating the commit message!
 
- .../dts/qcom/sm8350-sony-xperia-sagami.dtsi   | 29 ++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350-sony-xperia-sagami.dtsi b/arch/arm64/boot/dts/qcom/sm8350-sony-xperia-sagami.dtsi
-index a428ce31ab4e..6ae700e72d1e 100644
---- a/arch/arm64/boot/dts/qcom/sm8350-sony-xperia-sagami.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350-sony-xperia-sagami.dtsi
-@@ -312,7 +312,8 @@ pm8350c_l8: ldo8 {
- 		pm8350c_l9: ldo9 {
- 			regulator-name = "pm8350c_l9";
- 			regulator-min-microvolt = <2960000>;
--			regulator-max-microvolt = <3008000>;
-+			/* Originally max = 3008000 but SDHCI expects 2960000 */
-+			regulator-max-microvolt = <2960000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
- 
-@@ -558,6 +559,18 @@ &qupv3_id_2 {
- 	status = "okay";
- };
- 
-+&sdhc_2 {
-+	cd-gpios = <&tlmm 92 GPIO_ACTIVE_HIGH>;
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&sdc2_default_state &sdc2_card_det_active>;
-+	pinctrl-1 = <&sdc2_sleep_state &sdc2_card_det_sleep>;
-+	vmmc-supply = <&pm8350c_l9>;
-+	vqmmc-supply = <&pm8350c_l6>;
-+	no-sdio;
-+	no-mmc;
-+	status = "okay";
-+};
-+
- &slpi {
- 	status = "okay";
- 	firmware-name = "qcom/sm8350/Sony/sagami/slpi.mbn";
-@@ -782,6 +795,20 @@ ts_int_default: ts-int-default-state {
- 		bias-disable;
- 		input-enable;
- 	};
-+
-+	sdc2_card_det_active: sd-card-det-active-state {
-+		pins = "gpio92";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
-+	sdc2_card_det_sleep: sd-card-det-sleep-state {
-+		pins = "gpio92";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
- };
- 
- /* BIG WARNING! DO NOT TOUCH UFS, YOUR DEVICE WILL DIE! */
--- 
-2.38.1
+As I said for v1, this seems reasonable to me, but I am deferring to
+Jens to get his opinion. Beyond that, I will have a look at pacth2 and
+patch3 too.
 
+Kind regards
+Uffe
+
+> ---
+> -v2: Extended commit message with example use case, no code change
+>
+>  block/blk-mq.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/block/blk-mq.c b/block/blk-mq.c
+> index 33292c01875d..d863c826fb23 100644
+> --- a/block/blk-mq.c
+> +++ b/block/blk-mq.c
+> @@ -1429,7 +1429,7 @@ static void blk_mq_requeue_work(struct work_struct =
+*work)
+>                  * merge.
+>                  */
+>                 if (rq->rq_flags & RQF_DONTPREP)
+> -                       blk_mq_request_bypass_insert(rq, false, false);
+> +                       blk_mq_request_bypass_insert(rq, true, false);
+>                 else
+>                         blk_mq_sched_insert_request(rq, true, false, fals=
+e);
+>         }
+> --
+> 2.37.3
+> Hyperstone GmbH | Reichenaustr. 39a  | 78467 Konstanz
+> Managing Director: Dr. Jan Peter Berns.
+> Commercial register of local courts: Freiburg HRB381782
+>
