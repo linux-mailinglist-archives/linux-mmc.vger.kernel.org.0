@@ -2,74 +2,98 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC35A62FF92
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Nov 2022 22:46:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77FCD630AEF
+	for <lists+linux-mmc@lfdr.de>; Sat, 19 Nov 2022 04:04:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231202AbiKRVqP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Nov 2022 16:46:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49746 "EHLO
+        id S230293AbiKSDE1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Nov 2022 22:04:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbiKRVqJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Nov 2022 16:46:09 -0500
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8285C92B53
-        for <linux-mmc@vger.kernel.org>; Fri, 18 Nov 2022 13:46:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=k1; bh=2YN4GpfLMSX35Q
-        RmvN2ddNeP7kM87itheot8NMxQmbs=; b=e4ntffbMIoIE3kZbu2DSOMfuT6irdM
-        2JuGJjM5UTUT7RTruVsMi73i3sUJyh/ngQhaRu6Bo/TpeUpdIAdYR9DuiXMt2kSr
-        nRXG6ohBVF43YjutMldKpuSwT1y2qJma2J8zpoaAfjfLO7JFV7CbUOPWqW7FkGg8
-        bDLYP4ydm2iOE=
-Received: (qmail 1916316 invoked from network); 18 Nov 2022 22:46:06 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Nov 2022 22:46:06 +0100
-X-UD-Smtp-Session: l3s3148p1@OS8MosXtaIdehh99
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 2/2] mmc: renesas_sdhi: better reset from HS400 mode
-Date:   Fri, 18 Nov 2022 22:45:56 +0100
-Message-Id: <20221118214556.81763-3-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221118214556.81763-1-wsa+renesas@sang-engineering.com>
-References: <20221118214556.81763-1-wsa+renesas@sang-engineering.com>
+        with ESMTP id S229606AbiKSDE0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Nov 2022 22:04:26 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EBCEB4822
+        for <linux-mmc@vger.kernel.org>; Fri, 18 Nov 2022 19:04:25 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id bs21so12090099wrb.4
+        for <linux-mmc@vger.kernel.org>; Fri, 18 Nov 2022 19:04:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iPJdTHNAM1d4uLbOJ4Nh1sKzPtELk6RB1/xiZvxNEPc=;
+        b=n/eTdnubGh5pyfLdpo62Ug37gwnpmFmO5KXiAffeVPtNnGU8iNNhre80imncySj0vw
+         qNMsV3UJuf/hefyBue7ZVg/O7IkS312xh6xm+SYiDVArMCSbZBLVec/qz27W7mxGaKiT
+         2Z/ZSz2MUpqCX5zqVoBsRDoGY0fqlyJcNodxBB1JH51EmGYbNnrSWoRixPt12zjq375W
+         a/vCFKEpUatLpkY2BNQ/DwVIRNV7Ee5Ju+tYhbuRmg5S1cM6U/S5WTaZ3NQqqOB/6NnG
+         4RRWhG4PeTpkiRkWK3EQnw8L6xKZMIphThLNFgSa5OlHptlv7ZYmiuoZNA0VuptgzR0L
+         pSzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iPJdTHNAM1d4uLbOJ4Nh1sKzPtELk6RB1/xiZvxNEPc=;
+        b=BQksC7F5uWDUFXZYoOeZo47Aah9405GOictfEybt489kDBHoee8g/BES4OWtO7ay5E
+         /zExE5a1aEQh9YN57eQRgcA1nttAXoHQPFQ4fRnQ0PILvbx19SRpr1m73HwZtTRbQeGx
+         Sj1Kb/2fgvnXnN/yD7gR0YgdguS6YgwMuC3jEg2SuSM0SMp11ShM6gbIw+TUMZ8bWvlQ
+         VrS8vtah+MXh+trjcJu5fKfpKWSstAE7y9CWIaVOG5y7dp+9ZRsyu2Hb8oyenBZSSvYV
+         BP7Nz6KPyeNImD0ez+hmu4kSQva88kwaUu5OQ6k6xoubfGO3DiTTCwIFw2qBLtJQlufM
+         lbaA==
+X-Gm-Message-State: ANoB5pnnwNZuu3NUObslR1AtDxUbKxCY8llIybavMlijDgsxFY0qon/9
+        e3ia0O710ieQllboWbCOJQ==
+X-Google-Smtp-Source: AA0mqf6rNrih0tMxNe+eWlgH+Xiwcu7K23UaOHfapqOwXLUMkeSUgsSO2wkLwheBXFOh+WSBAIaSWw==
+X-Received: by 2002:adf:ffd2:0:b0:236:59ab:cf33 with SMTP id x18-20020adfffd2000000b0023659abcf33mr5755519wrs.568.1668827063778;
+        Fri, 18 Nov 2022 19:04:23 -0800 (PST)
+Received: from v2202209183747202483.. ([2a03:4000:54:fac:a8fb:beff:fe0f:de18])
+        by smtp.gmail.com with ESMTPSA id e2-20020adfdbc2000000b00241b95cae91sm4971650wrj.58.2022.11.18.19.04.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Nov 2022 19:04:23 -0800 (PST)
+From:   Sebastian Falbesoner <sebastian.falbesoner@gmail.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org,
+        Sebastian Falbesoner <sebastian.falbesoner@gmail.com>
+Subject: [PATCH] mmc: sdhci-esdhc-imx: correct CQHCI exit halt state check
+Date:   Sat, 19 Nov 2022 04:04:00 +0100
+Message-Id: <20221119030400.1789919-1-sebastian.falbesoner@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Up to now, HS400 adjustment mode was only disabled on soft reset when a
-calibration table was in use. It is safer, though, to disable it as soon
-as the instance has an adjustment related quirk set, i.e. bad taps or a
-calibration table.
+With the current logic the "failed to exit halt state" error would be
+shown even if any other bit than CQHCI_HALT was set in the CQHCI_CTL
+register, since the right hand side is always true. Fix this by using
+the correct operator (bit-wise instead of logical AND) to only check for
+the halt bit flag, which was obviously intended here.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sebastian Falbesoner <sebastian.falbesoner@gmail.com>
 ---
- drivers/mmc/host/renesas_sdhi_core.c | 2 +-
+ drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index af6aa637bd49..e995f312878d 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -546,7 +546,7 @@ static void renesas_sdhi_reset_hs400_mode(struct tmio_mmc_host *host,
- 			 SH_MOBILE_SDHI_SCC_TMPPORT2_HS400OSEL) &
- 			sd_scc_read32(host, priv, SH_MOBILE_SDHI_SCC_TMPPORT2));
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index 31ea0a2fce35..ffeb5759830f 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1512,7 +1512,7 @@ static void esdhc_cqe_enable(struct mmc_host *mmc)
+ 	 * system resume back.
+ 	 */
+ 	cqhci_writel(cq_host, 0, CQHCI_CTL);
+-	if (cqhci_readl(cq_host, CQHCI_CTL) && CQHCI_HALT)
++	if (cqhci_readl(cq_host, CQHCI_CTL) & CQHCI_HALT)
+ 		dev_err(mmc_dev(host->mmc),
+ 			"failed to exit halt state when enable CQE\n");
  
--	if (priv->adjust_hs400_calib_table)
-+	if (sdhi_has_quirk(priv, hs400_calib_table) || sdhi_has_quirk(priv, hs400_bad_taps))
- 		renesas_sdhi_adjust_hs400_mode_disable(host);
- 
- 	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, CLK_CTL_SCLKEN |
 -- 
-2.30.2
+2.34.1
 
