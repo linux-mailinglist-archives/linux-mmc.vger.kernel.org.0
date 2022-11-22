@@ -2,84 +2,99 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C79B163385E
-	for <lists+linux-mmc@lfdr.de>; Tue, 22 Nov 2022 10:27:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA7D4633BD0
+	for <lists+linux-mmc@lfdr.de>; Tue, 22 Nov 2022 12:53:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232445AbiKVJ1L (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 22 Nov 2022 04:27:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59570 "EHLO
+        id S233159AbiKVLxF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 22 Nov 2022 06:53:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232827AbiKVJ1A (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Nov 2022 04:27:00 -0500
-X-Greylist: delayed 470 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Nov 2022 01:26:58 PST
-Received: from cstnet.cn (smtp23.cstnet.cn [159.226.251.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9364549B61
-        for <linux-mmc@vger.kernel.org>; Tue, 22 Nov 2022 01:26:58 -0800 (PST)
-Received: from localhost.localdomain (unknown [124.16.138.125])
-        by APP-03 (Coremail) with SMTP id rQCowAAHDpYBlHxjrWbEAA--.49387S2;
-        Tue, 22 Nov 2022 17:18:58 +0800 (CST)
-From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
-To:     maximlevitsky@gmail.com, oakad@yahoo.com, ulf.hansson@linaro.org,
-        christophe.jaillet@wanadoo.fr, axboe@kernel.dk, hare@suse.de
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Subject: [PATCH] memstick/ms_block: Add check for alloc_ordered_workqueue
-Date:   Tue, 22 Nov 2022 17:18:56 +0800
-Message-Id: <20221122091856.47606-1-jiasheng@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S232440AbiKVLxD (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Nov 2022 06:53:03 -0500
+X-Greylist: delayed 585 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Nov 2022 03:52:57 PST
+Received: from mx4.securetransport.de (mx4.securetransport.de [178.254.6.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9CDC9167C0;
+        Tue, 22 Nov 2022 03:52:53 -0800 (PST)
+Received: from mail.dh-electronics.com (unknown [77.24.89.57])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx4.securetransport.de (Postfix) with ESMTPSA id 582B67204BB;
+        Tue, 22 Nov 2022 12:42:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
+        s=dhelectronicscom; t=1669117365;
+        bh=2ZV0bTDb7qgkQDDGXEMdO4IEDitBFvE2cMMeUtDgqK8=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+        b=TnjAuy6HNThxX8BxOJ6PJ1rLq6P8Bd+IagVBhxojTdee3uzR3yFS4KhAJ0+ruQAa4
+         JzUVWuC39Hw0too9T3fj4oNMzH16h5QBSYUWIQ1GrwazrOfezI/rTDnZVITm4p7IUx
+         TSjKEWfcZRpXnyMgf0P0bLtwxsjHBk5gAF27w77IQDJkgttT4guOXnIeiqKjnc68BD
+         uOBrhdZzUFk2Z0cwvcmVFHh5dZW+nysU/BUu9CxXqWBxGFtDbQQFP0ibn6TVeYCUET
+         PdlEp16wDstM5RfDt8dh58ZaHly3av8uTB6MN4Ot9nuLVCLYg69s6WUf8Z2qQkqIjk
+         c6fRRTdUPKhEg==
+Received: from DHPWEX01.DH-ELECTRONICS.ORG (10.64.2.30) by
+ DHPWEX01.DH-ELECTRONICS.ORG (10.64.2.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.20; Tue, 22 Nov 2022 12:12:35 +0100
+Received: from localhost.localdomain (172.16.51.2) by
+ DHPWEX01.DH-ELECTRONICS.ORG (10.64.2.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.20 via Frontend Transport; Tue, 22 Nov 2022 12:12:35 +0100
+From:   Christoph Niedermaier <cniedermaier@dh-electronics.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Marek Vasut <marex@denx.de>, <kernel@dh-electronics.com>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH] dt-bindings: mmc: Make comment on wakeup-source less confusing
+Date:   Tue, 22 Nov 2022 12:11:24 +0100
+Message-ID: <20221122111124.6828-3-cniedermaier@dh-electronics.com>
+X-Mailer: git-send-email 2.11.0
+X-klartext: yes
+In-Reply-To: <20221122111124.6828-1-cniedermaier@dh-electronics.com>
+References: <20221122111124.6828-1-cniedermaier@dh-electronics.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: rQCowAAHDpYBlHxjrWbEAA--.49387S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtw1UZFykAryxWr4kXFyxXwb_yoWfurXEkr
-        yxZF48tFW0k3W8AryUAryruF9ayw40gryFqayrtwsxJrW7CF15Zr1jv345ur18uFWUCry3
-        Ca4DX34rZw1UKjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbwAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-        A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-        6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-        Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCF04k20xvY0x0EwIxG
-        rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-        vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-        x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
-        xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
-        wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUq38nUUUUU=
-X-Originating-IP: [124.16.138.125]
-X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-As the alloc_ordered_workqueue may return NULL pointer,
-it should be better to add check for the return
-value.
+The current comment on wakeup-source is a bit confusing, because it isn't
+clear at first sight which property is actually deprecated.
+Change the comment to one that is less confusing.
 
-Fixes: 0ab30494bc4f ("memstick: add support for legacy memorysticks")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 ---
- drivers/memstick/core/ms_block.c | 3 +++
- 1 file changed, 3 insertions(+)
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Marek Vasut <marex@denx.de>
+Cc: kernel@dh-electronics.com
+Cc: linux-mmc@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+To: linux-kernel@vger.kernel.org
+---
+ Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/memstick/core/ms_block.c b/drivers/memstick/core/ms_block.c
-index ba8414519515..ccfdb3dea30a 100644
---- a/drivers/memstick/core/ms_block.c
-+++ b/drivers/memstick/core/ms_block.c
-@@ -2116,6 +2116,9 @@ static int msb_init_disk(struct memstick_dev *card)
- 	dbg("Set total disk size to %lu sectors", capacity);
+diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+index 802e3ca8be4d..a921442c6c1d 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
++++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+@@ -293,7 +293,7 @@ properties:
+     description:
+       SDIO only. Preserves card power during a suspend/resume cycle.
  
- 	msb->io_queue = alloc_ordered_workqueue("ms_block", WQ_MEM_RECLAIM);
-+	if (!msb->io_queue)
-+		goto out_cleanup_disk;
-+
- 	INIT_WORK(&msb->io_work, msb_io_work);
- 	sg_init_table(msb->prealloc_sg, MS_BLOCK_MAX_SEGS+1);
- 
+-  # Deprecated: enable-sdio-wakeup
++  # Use wakeup-source instead of the deprecated enable-sdio-wakeup
+   wakeup-source:
+     $ref: /schemas/types.yaml#/definitions/flag
+     description:
 -- 
-2.25.1
+2.11.0
 
