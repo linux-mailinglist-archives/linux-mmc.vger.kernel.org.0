@@ -2,75 +2,68 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A00AD63369D
-	for <lists+linux-mmc@lfdr.de>; Tue, 22 Nov 2022 09:06:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73D8A6338C6
+	for <lists+linux-mmc@lfdr.de>; Tue, 22 Nov 2022 10:41:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230242AbiKVIGK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 22 Nov 2022 03:06:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43418 "EHLO
+        id S233313AbiKVJlN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 22 Nov 2022 04:41:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232503AbiKVIGJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Nov 2022 03:06:09 -0500
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8A43E097
-        for <linux-mmc@vger.kernel.org>; Tue, 22 Nov 2022 00:06:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding; s=k1; bh=o0fa1HEr9vZ107vfHlc1Gai8454
-        sHlcyCcDHT0d5hRY=; b=1eqsbELF0c3bqiItB637rZjgU8IWUECkmy/GE5DboXr
-        +FKceuS9XFOP5pebwe6vulAKOHabNaJfH4o1BLLivCDzd3Ljv5ttvHUmpbTgCOai
-        +e5Fcgy6vbNb1oivMW/Zl35kc7nghg9iRGBeoOl0t2zC6Xq52dF7aNDYsxl7pyZ8
-        =
-Received: (qmail 162135 invoked from network); 22 Nov 2022 09:06:03 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 22 Nov 2022 09:06:03 +0100
-X-UD-Smtp-Session: l3s3148p1@vKp6pAruzshehh99
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>
-Subject: [PATCH] mmc: renesas_sdhi: use plain numbers for end_flags
-Date:   Tue, 22 Nov 2022 09:05:54 +0100
-Message-Id: <20221122080554.4468-1-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S233321AbiKVJlL (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 22 Nov 2022 04:41:11 -0500
+X-Greylist: delayed 903 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Nov 2022 01:41:08 PST
+Received: from mail.axisfairfi.com (mail.axisfairfi.com [94.177.230.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E7151C1C
+        for <linux-mmc@vger.kernel.org>; Tue, 22 Nov 2022 01:41:07 -0800 (PST)
+Received: by mail.axisfairfi.com (Postfix, from userid 1001)
+        id B108E8254B; Tue, 22 Nov 2022 09:15:33 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=axisfairfi.com;
+        s=mail; t=1669108537;
+        bh=0BgaW9t8GFER5QecxVkFsHrVi3gO/4V5KAZgJaiRYBs=;
+        h=Date:From:To:Subject:From;
+        b=kIihny/6RV0+pzd4jnzUYifeV+KlByFw7A/3PfDUADy14j0OHh70T6vCh+TzDDGPH
+         x+FfdFiICoOcQtl9HyBxG0GrC7NJpTruGlPI1DpDmGM0UQnqXyGfBJzjh63OKiyuys
+         gm/h4Gv1J+hsW00Vkp3IMVIXkvwqBMvdU6bgBsu/DednN33u4rF/OPlZihhf+avQIF
+         GLomm7T592W9PPWrPSyl6aONpxU0mhWYu/2uLThbvZsSVyGVm+EScP7ggjCGITD135
+         6UEGadU9AshBgfFaO5dGmwXUT2a4Z20eeCL4qUIeuieRDws8VrXv+F02oWWIl8aMcX
+         +pHkRsS3bdE3w==
+Received: by mail.axisfairfi.com for <linux-mmc@vger.kernel.org>; Tue, 22 Nov 2022 09:15:27 GMT
+Message-ID: <20221122074500-0.1.d.oe3.0.5cvdhe5d88@axisfairfi.com>
+Date:   Tue, 22 Nov 2022 09:15:27 GMT
+From:   "Zbynek Spacek" <zbynek.spacek@axisfairfi.com>
+To:     <linux-mmc@vger.kernel.org>
+Subject: Silikonmischungen
+X-Mailer: mail.axisfairfi.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=1.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_FMBLA_NEWDOM14,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Linux *_bit accessors take plain bit numbers, no need for BIT().
+Good morning,
 
-Fixes: 8d901e2ba566 ("mmc: renesas_sdhi: take DMA end interrupts into account")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/mmc/host/renesas_sdhi.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+do you need intermediates for processing, plastics (e.g. rubber) or silic=
+one mixtures?
 
-diff --git a/drivers/mmc/host/renesas_sdhi.h b/drivers/mmc/host/renesas_sdhi.h
-index ea2a85174a09..68da3da9e2e5 100644
---- a/drivers/mmc/host/renesas_sdhi.h
-+++ b/drivers/mmc/host/renesas_sdhi.h
-@@ -57,8 +57,8 @@ struct renesas_sdhi_of_data_with_quirks {
- };
- 
- /* We want both end_flags to be set before we mark DMA as finished */
--#define SDHI_DMA_END_FLAG_DMA		BIT(0)
--#define SDHI_DMA_END_FLAG_ACCESS	BIT(1)
-+#define SDHI_DMA_END_FLAG_DMA		0
-+#define SDHI_DMA_END_FLAG_ACCESS	1
- 
- struct renesas_sdhi_dma {
- 	unsigned long end_flags;
--- 
-2.30.2
+We provide a wide range of silicone rubbers with various properties, sili=
+cone mixtures from renowned manufacturers such as Wacker, Elastosil LR an=
+d dyes, stabilizers, primers and anti-adhesive additives.
 
+We also produce technical silicone compounds with increased resistance to=
+ oils, resistant to high temperatures and water vapor, conductive and man=
+y more.
+
+We provide fast order fulfillment, timely deliveries and cost optimizatio=
+n.
+
+Can I introduce what we can offer you?
+
+
+Zbynek Spacek
