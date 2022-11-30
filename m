@@ -2,114 +2,130 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5344C63D515
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Nov 2022 12:58:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85C9763D55B
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Nov 2022 13:18:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234450AbiK3L6o (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Nov 2022 06:58:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50366 "EHLO
+        id S234408AbiK3MSH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Nov 2022 07:18:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232445AbiK3L6n (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Nov 2022 06:58:43 -0500
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8BB56F34B;
-        Wed, 30 Nov 2022 03:58:41 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id e7-20020a17090a77c700b00216928a3917so1699808pjs.4;
-        Wed, 30 Nov 2022 03:58:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aWiaIM/RLdCXMf3+kK2o0eHaoRkScfMlFpmz93oiZvg=;
-        b=KgyBBrvoTl8ZK6B3XyV7ajz4tvkA9eTCbZ1Y7pjlVM+lzaIh5R4viXDEj5KlAj/tZ+
-         JNgS30D2D12HClBeseFCcDGr2620EOCMEU2BoXW9wuki4xQZGsnK1GdNF31gCzCSMWdN
-         JE4wxJNhcyoWQlIHSPc/xix/USQqZt7xNLW6w7veo8vc/lU/zHE6tOLIJ1Wws9wL0Jst
-         3VV0QUMC2msr4h3izEUnsd4PFqxMBwq06UXOJ9AzASXxvUgXU+OyS5P6gRke7GnSBkxO
-         NOUR3FJLYDJKJNewA5IpWghH/xchqsBOPpv+X7NyzfGha17PBvux6QSJGdgb76kvOzNp
-         HU0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aWiaIM/RLdCXMf3+kK2o0eHaoRkScfMlFpmz93oiZvg=;
-        b=shdiVdp6zOHSpipZ1Uxi5vuLXor+TQf3k/92adYyEuj1TZ9FXo0cbTFAHPd03rvBYQ
-         hlw+f73FPs5qnkqtsHtHWdQjuQFFlKwEMkhtXm2d3I/7/tsTcmghMLsdm2KZ0MB37Nvy
-         rWhb3r3MnodA/lSKe2S9Dp6mMbsaavvxPQWpHS+7slwXJ64LrKATBQHs0VBpOUyBneYx
-         E+y0oU9dFCKELQRtZqSjzAnvgVfzDzoslFQkWlKQ9uyse6ZLkGIxGXofN41LGHuw+kMO
-         cbycYawz37CAmz87Y4pXE4fCMaFtSniPda2ug0POE/2H4gHKDLE8uXUxb7BozXhzUr7H
-         nlow==
-X-Gm-Message-State: ANoB5pnxLSVc2h8DPR9w4hLNVY7K1cuSO5GmtIC2plpZq6Nrabbf1LQb
-        UzlmGD29XWzuBVWNOhFQjAZrcqxsLnxuTv1BVHM=
-X-Google-Smtp-Source: AA0mqf4OsPK5DKFWhTrZn18tpVAP2Z+hwtnajgpvT2Bph0B5dFDjxUS66DKpb+bd1gnbV4k3TzXAF7S2UHzHNV/dIt8=
-X-Received: by 2002:a17:90a:d918:b0:219:3e68:1d03 with SMTP id
- c24-20020a17090ad91800b002193e681d03mr13782340pjv.77.1669809520974; Wed, 30
- Nov 2022 03:58:40 -0800 (PST)
+        with ESMTP id S230415AbiK3MSG (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Nov 2022 07:18:06 -0500
+X-Greylist: delayed 322 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 30 Nov 2022 04:18:03 PST
+Received: from mx3.securetransport.de (mx3.securetransport.de [IPv6:2a01:4f8:c0c:92be::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 43F7F192B8;
+        Wed, 30 Nov 2022 04:18:03 -0800 (PST)
+Received: from mail.dh-electronics.com (unknown [77.24.89.57])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx3.securetransport.de (Postfix) with ESMTPSA id 246875DE3E;
+        Wed, 30 Nov 2022 13:12:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
+        s=dhelectronicscom; t=1669810329;
+        bh=mbWc09qzvq+TsmeKSXKlW9F4y+FGW/fHcrpI/xzbG2Y=;
+        h=From:To:CC:Subject:Date:From;
+        b=JkTHmZoQ/3vbGL8WmJeJQtbUNTpFIKpMNr6l1TdVUljcYPT177Qc8j3KfjTOKCMwl
+         Ly3WQwI6o9aZivrktgLec2wQQhm8ib0IySiOmRUixssjNIlEfCDPriESRFKPS573q3
+         ob23A87GwMvAYqsEEM3sMxk4eE/M2bSugjdNkIjb2/BnWSfDzFA6YPT2CzixXhUutz
+         Rqy9NhYsKcyug1b/REq4Eh9hy2Tn1k5t1LJZ74wSkhuiX36lO0BOfwq1C8KpKl2Bq+
+         m+0F9/R69I5SJdiAihKF7tX/bk0n0kXEG9oc5J+fzjDOMYwIjlaaMO+NGalLg5pwiO
+         PO2GXQXUor5iw==
+Received: from DHPWEX01.DH-ELECTRONICS.ORG (10.64.2.30) by
+ DHPWEX01.DH-ELECTRONICS.ORG (10.64.2.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.20; Wed, 30 Nov 2022 13:11:50 +0100
+Received: from localhost.localdomain (172.16.51.2) by
+ DHPWEX01.DH-ELECTRONICS.ORG (10.64.2.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.20 via Frontend Transport; Wed, 30 Nov 2022 13:11:50 +0100
+From:   Christoph Niedermaier <cniedermaier@dh-electronics.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Marek Vasut <marex@denx.de>, <kernel@dh-electronics.com>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH V3] dt-bindings: mmc: Remove comment on wakeup-source property
+Date:   Wed, 30 Nov 2022 13:10:33 +0100
+Message-ID: <20221130121033.7270-1-cniedermaier@dh-electronics.com>
+X-Mailer: git-send-email 2.11.0
+X-klartext: yes
 MIME-Version: 1.0
-References: <20221130080224.12831-1-wenchao.chen@unisoc.com> <9c93dd3e-f80d-7421-05b8-9f692d33d2f2@linux.alibaba.com>
-In-Reply-To: <9c93dd3e-f80d-7421-05b8-9f692d33d2f2@linux.alibaba.com>
-From:   Wenchao Chen <wenchao.chen666@gmail.com>
-Date:   Wed, 30 Nov 2022 19:58:29 +0800
-Message-ID: <CA+Da2qzFh3_5Z0Po5C+ds4xo0qAudkbo=xM3tYHfpsNb=BE6hw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-sprd: Fix no reset data and command after
- voltage switch
-To:     Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc:     Wenchao Chen <wenchao.chen@unisoc.com>, adrian.hunter@intel.com,
-        ulf.hansson@linaro.org, orsonzhai@gmail.com, zhang.lyra@gmail.com,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        zhenxiong.lai@unisoc.com, yuelin.tang@unisoc.com,
-        gengcixi@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, Nov 30, 2022 at 6:48 PM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 11/30/2022 4:02 PM, Wenchao Chen wrote:
-> > After switching the voltage, no reset data and command will cause
-> > CMD2 timeout.
-> >
-> > Fixes: 29ca763fc26f ("mmc: sdhci-sprd: Add pin control support for voltage switch")
-> > Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
-> > ---
-> >   drivers/mmc/host/sdhci-sprd.c | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-> > index b92a408f138d..464508be8ec8 100644
-> > --- a/drivers/mmc/host/sdhci-sprd.c
-> > +++ b/drivers/mmc/host/sdhci-sprd.c
-> > @@ -470,7 +470,7 @@ static int sdhci_sprd_voltage_switch(struct mmc_host *mmc, struct mmc_ios *ios)
-> >       }
-> >
-> >       if (IS_ERR(sprd_host->pinctrl))
-> > -             return 0;
-> > +             goto reset;
-> >
-> >       switch (ios->signal_voltage) {
-> >       case MMC_SIGNAL_VOLTAGE_180:
-> > @@ -496,6 +496,7 @@ static int sdhci_sprd_voltage_switch(struct mmc_host *mmc, struct mmc_ios *ios)
-> >               break;
-> >       }
-> >
-> > +reset:
-> >       /* Wait for 300 ~ 500 us for pin state stable */
-> >       usleep_range(300, 500);
->
-> If no pin state switching, still need stable time? Otherwise looks good
-> to me.
->
+The current comment on wakeup-source is a little confusing because
+the word deprecated can be interpreted at first glance to mean that
+wakeup-source is deprecated. Also mentioning the obsolete property
+confuses more than it helps. Therefore, the comment should be removed
+completely because the enable-sdio-wakeup property is not used in
+any current DTs. Also remove enable-sdio-wakeup reference in
+wakeup-source.txt
 
-Thank you for your review. I will update it in the next version.
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+---
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Marek Vasut <marex@denx.de>
+Cc: kernel@dh-electronics.com
+Cc: linux-mmc@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+To: linux-kernel@vger.kernel.org
+---
+V2: - Instead of changing the comment, remove it
+V3: - Remove also reference in power/wakeup-source.txt
+---
+ Documentation/devicetree/bindings/mmc/mmc-controller.yaml |  1 -
+ Documentation/devicetree/bindings/power/wakeup-source.txt | 13 ++++++-------
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-> >       sdhci_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
+diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+index 802e3ca8be4d..e82c00368088 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
++++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+@@ -293,7 +293,6 @@ properties:
+     description:
+       SDIO only. Preserves card power during a suspend/resume cycle.
+ 
+-  # Deprecated: enable-sdio-wakeup
+   wakeup-source:
+     $ref: /schemas/types.yaml#/definitions/flag
+     description:
+diff --git a/Documentation/devicetree/bindings/power/wakeup-source.txt b/Documentation/devicetree/bindings/power/wakeup-source.txt
+index cfd74659fbed..697333a56d5e 100644
+--- a/Documentation/devicetree/bindings/power/wakeup-source.txt
++++ b/Documentation/devicetree/bindings/power/wakeup-source.txt
+@@ -17,15 +17,14 @@ interrupt.
+ List of legacy properties and respective binding document
+ ---------------------------------------------------------
+ 
+-1. "enable-sdio-wakeup"		Documentation/devicetree/bindings/mmc/mmc.txt
+-2. "gpio-key,wakeup"		Documentation/devicetree/bindings/input/gpio-keys{,-polled}.txt
+-3. "has-tpo"			Documentation/devicetree/bindings/rtc/rtc-opal.txt
+-4. "linux,wakeup"		Documentation/devicetree/bindings/input/gpio-matrix-keypad.txt
++1. "gpio-key,wakeup"		Documentation/devicetree/bindings/input/gpio-keys{,-polled}.txt
++2. "has-tpo"			Documentation/devicetree/bindings/rtc/rtc-opal.txt
++3. "linux,wakeup"		Documentation/devicetree/bindings/input/gpio-matrix-keypad.txt
+ 				Documentation/devicetree/bindings/mfd/tc3589x.txt
+ 				Documentation/devicetree/bindings/input/touchscreen/ads7846.txt
+-5. "linux,keypad-wakeup"	Documentation/devicetree/bindings/input/qcom,pm8xxx-keypad.txt
+-6. "linux,input-wakeup"		Documentation/devicetree/bindings/input/samsung-keypad.txt
+-7. "nvidia,wakeup-source"	Documentation/devicetree/bindings/input/nvidia,tegra20-kbc.txt
++4. "linux,keypad-wakeup"	Documentation/devicetree/bindings/input/qcom,pm8xxx-keypad.txt
++5. "linux,input-wakeup"		Documentation/devicetree/bindings/input/samsung-keypad.txt
++6. "nvidia,wakeup-source"	Documentation/devicetree/bindings/input/nvidia,tegra20-kbc.txt
+ 
+ Examples
+ --------
+-- 
+2.11.0
+
