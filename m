@@ -2,145 +2,130 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A40F364094F
-	for <lists+linux-mmc@lfdr.de>; Fri,  2 Dec 2022 16:27:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25E44640AF1
+	for <lists+linux-mmc@lfdr.de>; Fri,  2 Dec 2022 17:37:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233565AbiLBP1E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 2 Dec 2022 10:27:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59944 "EHLO
+        id S233803AbiLBQhl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 2 Dec 2022 11:37:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233635AbiLBP07 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Dec 2022 10:26:59 -0500
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B13D0390;
-        Fri,  2 Dec 2022 07:26:57 -0800 (PST)
-Received: by mail-ej1-x635.google.com with SMTP id fc4so5378237ejc.12;
-        Fri, 02 Dec 2022 07:26:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1yABTotUF1aHfY2MvDhzL0Nasx3orq8o9ESsBCAmUe4=;
-        b=LQOtUd70pxQF/PYBI+E7Ast5RY8z/1CQLkbm0kM3GR6fjttSEg9vUcgH9JB9/fCQrF
-         SMVbuN1a364G1jwA2a9nzy8MVHfY3vPAe9D9sO+xJxGNQg1lk2mBI4b0jlK8wKW+2wVe
-         t/QB9Uh96vYG9zrPGwE53IG/zdhGnQfFuVvNCQiRfJ1OhahG5VUY3QoHK0Op6amzmA1T
-         4o9BK0OK18W33uPmC8qw1i2z23CtdFTh8x35RwMHetjTdZxmfyneFr0kGoEk22jweqrw
-         Ql8xIJlowkCw2viJBvSyYE/ofgB9wec0mcXXhGiglHBAhF3bYYawjwCh6aONR6cVD8kk
-         +kbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1yABTotUF1aHfY2MvDhzL0Nasx3orq8o9ESsBCAmUe4=;
-        b=WNbeMkN68O6LIpalJRifYwYVE9bgwNJT1r36x9S25hP6LI+cNCrG0FzIiOYTc5Zqhj
-         RhAaPNh5k/c2dYi8pE9zWWX/1rNhDBnKYFcl6FpxqdnIOrXuUXMNTjbGexwk7lXX9jT5
-         6T6PfATOQhzMEC4O4UKROOnYdQICKXYZH3SiJo6g7h5346VbE0opr16V9YT8rJBFPzPw
-         7zp/iBpNanO37EExm2NDLPvtLvZSDqf90dk/MU1g8ECSTs7Iel48tFov/B3BQpuSOJWf
-         fG2E1/zUKJ6b4lotuLirZNuyLL/DNs4Vqir74pzOaeTfCk6uXVmGceajr3q6yTnnzusH
-         2/tA==
-X-Gm-Message-State: ANoB5pkD6G69QJ+eQJJtrqKD1g/U9FBzJvBtFI4Q3ulznORSt86agTXp
-        FuHyhavZhumxujiUAqGKr1A=
-X-Google-Smtp-Source: AA0mqf7fF9YbsaKeHpA/1+LF6sgvUbDCFvfeZvxpbLCimbL4kRbRCVmTwTsIy6UffpRKqhriTPD8DA==
-X-Received: by 2002:a17:907:3f8a:b0:7bf:4ae6:c36 with SMTP id hr10-20020a1709073f8a00b007bf4ae60c36mr23176828ejc.674.1669994816065;
-        Fri, 02 Dec 2022 07:26:56 -0800 (PST)
-Received: from localhost (p200300e41f201d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f20:1d00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id d18-20020a05640208d200b0046150ee13besm3001605edz.65.2022.12.02.07.26.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Dec 2022 07:26:55 -0800 (PST)
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Joerg Roedel <joro@8bytes.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Robin Murphy <robin.murphy@arm.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Prathamesh Shete <pshete@nvidia.com>,
-        Will Deacon <will@kernel.org>,
-        iommu@lists.linux-foundation.org, linux-mmc@vger.kernel.org,
-        linux-tegra@vger.kernel.org, Thierry Reding <treding@nvidia.com>
-Subject: [PATCH v12 6/6] mmc: sdhci-tegra: Issue CMD and DAT resets together
-Date:   Fri,  2 Dec 2022 16:26:44 +0100
-Message-Id: <20221202152644.29450-7-thierry.reding@gmail.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221202152644.29450-1-thierry.reding@gmail.com>
-References: <20221202152644.29450-1-thierry.reding@gmail.com>
+        with ESMTP id S233987AbiLBQhj (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Dec 2022 11:37:39 -0500
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84D7EBDCE0
+        for <linux-mmc@vger.kernel.org>; Fri,  2 Dec 2022 08:37:31 -0800 (PST)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B2E4n4n028115;
+        Fri, 2 Dec 2022 17:37:09 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=gvm29KcgRx6Y6DpO4Z9kCMQrYj9ZmsGke8wJ4E+7ARQ=;
+ b=iocEfI6nEQ2D5aMQmrQqw8x/mYxIVN1UqDLInA3vjRU9Gc1U5AOg3zEhvWlmudCNjsjV
+ /jf8hamPehmdhokOHppvgZ0AuQimF2+7wHew6Jv26en0/hpTvrzVf5G/zo0OkBs4GiNm
+ 4VVktdrkByjV1L6QNK8qVoczEpaFk2Djh9AazwHpN7xlStWiKY1VuuDo6xJGO+sDSvRN
+ XvSLRoVJv6FkVLYFrhqYb0dOd3/fXQHZlDOPuK+B0KJTHhndEq90AchRBdVpPnllNh04
+ GCIKQPKrw/uC9AynIepy4hssVkqoMCEqyXe/FPc0RRafHtgRsG1P4QMowGSjsR70SOCd PA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3m6k713cn7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 02 Dec 2022 17:37:09 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 579D3100038;
+        Fri,  2 Dec 2022 17:37:05 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3BCBA2309D9;
+        Fri,  2 Dec 2022 17:37:05 +0100 (CET)
+Received: from [10.201.20.201] (10.201.20.201) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.13; Fri, 2 Dec
+ 2022 17:37:04 +0100
+Message-ID: <daf69d14-6d99-703a-8a32-51729855b2c2@foss.st.com>
+Date:   Fri, 2 Dec 2022 17:37:04 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: stm32mp157c eMMC DDR50 mode
+To:     Sean Nyekjaer <sean@geanix.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Christophe Kerello <christophe.kerello@foss.st.com>,
+        Ludovic Barre <ludovic.barre@foss.st.com>,
+        <linux-mmc@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Neeraj Dantu <dantuguf14105@gmail.com>
+References: <ff88a991-02da-f292-5958-c584344752c9@geanix.com>
+Content-Language: en-US
+From:   Yann Gautier <yann.gautier@foss.st.com>
+In-Reply-To: <ff88a991-02da-f292-5958-c584344752c9@geanix.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.201.20.201]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-02_09,2022-12-01_01,2022-06-22_01
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Prathamesh Shete <pshete@nvidia.com>
+On 12/2/22 08:27, Sean Nyekjaer wrote:
+> Hi,
+> 
+> We are testing using the Octavo RED board with OSD32MP157c SoC 
+> (stm32mp157c).
+> 
+> We are using vanilla u-boot 2022.10(in basic mode without TF-A) and 
+> Linux kernel version 6.0.x.
+> I have ported the devicetree's from Octavo combined with upstream 
+> stm32mp1 boards.
+> But we are facing issues with running the eMMC in DDR50 mode, works fine 
+> in normal 50Mhz mode (without the mmc-ddr-3_3v in dts).
+> 
+> It works fine though, with the ST u-boot and ST Linux kernel.
+> 
+> One further note is it seems to work fine, when mounting a squashfs (aka 
+> readonly) in DDR50.
+> 
+> But ext4 fails with:
+> root@osd32mp1-red:~# mount /dev/mmcblk0p7 /media/
+> I/O error, dev mmcblk0, sector 1060144 op 0x1:(WRITE) flags 0x800 
+> phys_seg 1 prio class 2
+> Buffer I/O error on dev mmcblk0p7, logical block 422, lost async page write
+> I/O error, dev mmcblk0, sector 1060016 op 0x1:(WRITE) flags 0x800 
+> phys_seg 1 prio class 2
+> Buffer I/O error on dev mmcblk0p7, logical block 406, lost async page write
+> I/O error, dev mmcblk0, sector 1056768 op 0x1:(WRITE) flags 0x800 
+> phys_seg 2 prio class 2
+> Buffer I/O error on dev mmcblk0p7, logical block 0, lost async page write
+> Buffer I/O error on dev mmcblk0p7, logical block 1, lost async page write
+> 
+> /Sean
 
-In case of error condition to avoid system crash Tegra SDMMC controller
-requires CMD and DAT resets issued together. SDHCI controller FSM goes
-into bad state due to rapid SD card hot-plug event. Issuing reset on the
-CMD FSM before DATA FSM results in kernel panic, hence add support to
-issue CMD and DAT resets together.
+Hi Sean,
 
-This is applicable to Tegra186 and later chips.
+I've seen from the Octavo website, that the DT was available here:
+https://github.com/octavosystems/OSD32MP1-RED-Device-tree
 
-Signed-off-by: Aniruddha TVS Rao <anrao@nvidia.com>
-Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
----
- drivers/mmc/host/sdhci-tegra.c | 3 ++-
- drivers/mmc/host/sdhci.c       | 5 +++++
- drivers/mmc/host/sdhci.h       | 2 ++
- 3 files changed, 9 insertions(+), 1 deletion(-)
+I've added Neeraj Dantu who made this DT, maybe he has more info.
+ From github, it seems the DT was made for kernel 5.10.
+And it has the mmc-ddr-3_3v property.
+Was DDR52 mode properly working on the eMMC with this kernel version?
 
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index c17700fa9899..49f60e292551 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -1528,7 +1528,8 @@ static const struct sdhci_pltfm_data sdhci_tegra186_pdata = {
- 		  SDHCI_QUIRK_NO_HISPD_BIT |
- 		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
- 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-+		   SDHCI_QUIRK2_ISSUE_CMD_DAT_RESET_TOGETHER,
- 	.ops  = &tegra186_sdhci_ops,
- };
- 
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index df1c1d10a338..81f4fed11629 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -270,6 +270,11 @@ enum sdhci_reset_reason {
- 
- static void sdhci_reset_for_reason(struct sdhci_host *host, enum sdhci_reset_reason reason)
- {
-+	if (host->quirks2 & SDHCI_QUIRK2_ISSUE_CMD_DAT_RESET_TOGETHER) {
-+		sdhci_do_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
-+		return;
-+	}
-+
- 	switch (reason) {
- 	case SDHCI_RESET_FOR_INIT:
- 		sdhci_do_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
-diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
-index b6f31a7d6152..605eaee805f7 100644
---- a/drivers/mmc/host/sdhci.h
-+++ b/drivers/mmc/host/sdhci.h
-@@ -478,6 +478,8 @@ struct sdhci_host {
-  * block count.
-  */
- #define SDHCI_QUIRK2_USE_32BIT_BLK_CNT			(1<<18)
-+/* Issue CMD and DATA reset together */
-+#define SDHCI_QUIRK2_ISSUE_CMD_DAT_RESET_TOGETHER	(1<<19)
- 
- 	int irq;		/* Device IRQ */
- 	void __iomem *ioaddr;	/* Mapped address */
--- 
-2.38.1
+If yes, then could you bisect the issue and try to find the patch that 
+caused the regression?
+
+Maybe you could also enable dynamic traces on mmc.
+That could help tracking the issue.
+
+
+Best regards,
+Yann
+
 
