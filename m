@@ -2,82 +2,133 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFDDB64012A
-	for <lists+linux-mmc@lfdr.de>; Fri,  2 Dec 2022 08:44:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62903640245
+	for <lists+linux-mmc@lfdr.de>; Fri,  2 Dec 2022 09:35:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231808AbiLBHoK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 2 Dec 2022 02:44:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53216 "EHLO
+        id S232480AbiLBIfq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 2 Dec 2022 03:35:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230094AbiLBHoJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Dec 2022 02:44:09 -0500
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D144765E6A;
-        Thu,  1 Dec 2022 23:44:08 -0800 (PST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 682CB1A09F4;
-        Fri,  2 Dec 2022 08:44:07 +0100 (CET)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 3153A1A09DA;
-        Fri,  2 Dec 2022 08:44:07 +0100 (CET)
-Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
-        by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id F1474180031C;
-        Fri,  2 Dec 2022 15:44:05 +0800 (+08)
-From:   andy.tang@nxp.com
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Tang <andy.tang@nxp.com>
-Subject: [PATCH] mmc: sdhci-of-esdhc: limit the SDHC clock frequency
-Date:   Fri,  2 Dec 2022 15:59:05 +0800
-Message-Id: <20221202075905.25363-1-andy.tang@nxp.com>
-X-Mailer: git-send-email 2.17.1
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231705AbiLBIfS (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 2 Dec 2022 03:35:18 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58F8EBF911
+        for <linux-mmc@vger.kernel.org>; Fri,  2 Dec 2022 00:33:26 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id bp15so6303753lfb.13
+        for <linux-mmc@vger.kernel.org>; Fri, 02 Dec 2022 00:33:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WVzvAUcs+pe9QgxoA/HnlnK/S+641sb2KvL8G5I/JNY=;
+        b=i7PEmYYkzgLRz6PZ8y/HBf+T54YBa+jmIpzZ/dncYFG/jAr0a05Ok7iVbnWNERg+yz
+         p1jQqtMHQnPzh7q/FTDWuxtBXGha7LRAKydy1FBoxxEP6+cVpDb73FOlkzcfj23Ht8Rq
+         v9VAKc+sq7kfq6xX885Eu/CX5yeVppI8dXXTpMIqxVanbKLTumcqV3/oK8EYivag3/oy
+         Uty6rKfWdGSScZ8e/6HY9pqTqfsfEphu0tJ4v770M+niW/1uQAhMkniVVN6XDSbYORBA
+         FbHOoZU66XWh9KIpk844UJ1Fr0FOMsT5+DNMmfgRAsxVMppmYS2Owl/OqXlrIY2Qdfn6
+         zFxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WVzvAUcs+pe9QgxoA/HnlnK/S+641sb2KvL8G5I/JNY=;
+        b=NI+jWdjodrdHEhOs/NSnSONFOpFi6BhNGdyA2WhlVHo6MWWPhpLXhtUNzCypD+NVuj
+         38MFVUV1Pt1B1Qau/01HO7MwhNB2YImBJ+AjL8i80H9c6g+XKbsBjRF7T1sTomNiMrGm
+         e/fpmdi2cXomV0pDstDpgEIFYebel1CK5tQK+WzBRqLnJjH1aGCBRvd19VMMPEPa5dB4
+         692FcVIiLs1yQoVsdQ/VDiwYqbbcDaHMdDItTWDhca1BB8wrH5ogyIgui9tbxiRq4dNZ
+         FZSCRb+qBR9Lo4N6ru7nv/47d+/a3A7kSbEzQoH6Wvy27e4V19F26Bj+42AF1sSHqNQb
+         uQpw==
+X-Gm-Message-State: ANoB5plKywxR18VhFBLR/ZXq6mMRsN1Y0K/o4L4SrUb73Rrxy9CMxsig
+        yAHMKhy/iTck4GZzirBifWftgQ==
+X-Google-Smtp-Source: AA0mqf6IoHRI5SGuUrPmvfzVcaSe27jWfxi92PQYNR/yCBomfHy+oXIL1a+61mCpztE45BogZoufSA==
+X-Received: by 2002:ac2:43d8:0:b0:4ab:7f8d:472 with SMTP id u24-20020ac243d8000000b004ab7f8d0472mr9137lfl.65.1669970005181;
+        Fri, 02 Dec 2022 00:33:25 -0800 (PST)
+Received: from uffe-XPS13.. ([148.122.187.2])
+        by smtp.gmail.com with ESMTPSA id r10-20020a19ac4a000000b00499cf3e3edcsm939326lfc.296.2022.12.02.00.33.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Dec 2022 00:33:24 -0800 (PST)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC fixes for v6.1-rc7
+Date:   Fri,  2 Dec 2022 09:33:10 +0100
+Message-Id: <20221202083310.136427-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Andy Tang <andy.tang@nxp.com>
+Hi Linus,
 
-The highest clock frequency for eMMC HS200 mode on ls1043a
-is 116.7Mhz according to its specification.
-So add the limit to gate the frequency.
+Here's a PR with a couple of MMC fixes intended for v6.1-rc7. Details about the
+highlights are as usual found in the signed tag.
 
-Signed-off-by: Andy Tang <andy.tang@nxp.com>
----
-v2: change the author to andy tang
+Please pull this in!
 
- drivers/mmc/host/sdhci-of-esdhc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Kind regards
+Ulf Hansson
 
-diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-index 00542dd74c07..1fd4ae10862d 100644
---- a/drivers/mmc/host/sdhci-of-esdhc.c
-+++ b/drivers/mmc/host/sdhci-of-esdhc.c
-@@ -43,6 +43,12 @@ static const struct esdhc_clk_fixup ls1021a_esdhc_clk = {
- 	.max_clk[MMC_TIMING_SD_HS] = 46500000,
- };
- 
-+static const struct esdhc_clk_fixup ls1043a_esdhc_clk = {
-+	.sd_dflt_max_clk = 25000000,
-+	.max_clk[MMC_TIMING_UHS_SDR104] = 116700000,
-+	.max_clk[MMC_TIMING_MMC_HS200] = 116700000,
-+};
-+
- static const struct esdhc_clk_fixup ls1046a_esdhc_clk = {
- 	.sd_dflt_max_clk = 25000000,
- 	.max_clk[MMC_TIMING_UHS_SDR104] = 167000000,
-@@ -64,6 +70,7 @@ static const struct esdhc_clk_fixup p1010_esdhc_clk = {
- 
- static const struct of_device_id sdhci_esdhc_of_match[] = {
- 	{ .compatible = "fsl,ls1021a-esdhc", .data = &ls1021a_esdhc_clk},
-+	{ .compatible = "fsl,ls1043a-esdhc", .data = &ls1043a_esdhc_clk},
- 	{ .compatible = "fsl,ls1046a-esdhc", .data = &ls1046a_esdhc_clk},
- 	{ .compatible = "fsl,ls1012a-esdhc", .data = &ls1012a_esdhc_clk},
- 	{ .compatible = "fsl,p1010-esdhc",   .data = &p1010_esdhc_clk},
--- 
-2.25.1
 
+The following changes since commit 222cfa0118aa68687ace74aab8fdf77ce8fbd7e6:
+
+  mmc: sdhci-pci: Fix possible memory leak caused by missing pci_dev_put() (2022-11-16 17:00:39 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v6.1-rc5-2
+
+for you to fetch changes up to dd30dcfa7a74a06f8dcdab260d8d5adf32f17333:
+
+  mmc: sdhci-sprd: Fix no reset data and command after voltage switch (2022-12-01 11:28:39 +0100)
+
+----------------------------------------------------------------
+MMC core:
+ - Fix ambiguous TRIM and DISCARD args
+ - Fix removal of debugfs file for mmc_test
+
+MMC host:
+ - mtk-sd: Add missing clk_disable_unprepare() in an error path
+ - sdhci: Fix I/O voltage switch delay for UHS-I SD cards
+ - sdhci-esdhc-imx: Fix CQHCI exit halt state check
+ - sdhci-sprd: Fix voltage switch
+
+----------------------------------------------------------------
+Adrian Hunter (1):
+      mmc: sdhci: Fix voltage switch delay
+
+Christian Löhle (1):
+      mmc: core: Fix ambiguous TRIM and DISCARD arg
+
+Gaosheng Cui (1):
+      mmc: mtk-sd: Fix missing clk_disable_unprepare in msdc_of_clock_parse()
+
+Sebastian Falbesoner (1):
+      mmc: sdhci-esdhc-imx: correct CQHCI exit halt state check
+
+Wenchao Chen (1):
+      mmc: sdhci-sprd: Fix no reset data and command after voltage switch
+
+Ye Bin (1):
+      mmc: mmc_test: Fix removal of debugfs file
+
+ drivers/mmc/core/core.c            |  9 ++++--
+ drivers/mmc/core/mmc_test.c        |  3 +-
+ drivers/mmc/host/mtk-sd.c          |  6 ++--
+ drivers/mmc/host/sdhci-esdhc-imx.c |  2 +-
+ drivers/mmc/host/sdhci-sprd.c      |  4 ++-
+ drivers/mmc/host/sdhci.c           | 61 +++++++++++++++++++++++++++++++++-----
+ drivers/mmc/host/sdhci.h           |  2 ++
+ include/linux/mmc/mmc.h            |  2 +-
+ 8 files changed, 72 insertions(+), 17 deletions(-)
