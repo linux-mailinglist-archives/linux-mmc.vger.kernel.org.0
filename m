@@ -2,92 +2,91 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1990642450
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Dec 2022 09:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2580264251F
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Dec 2022 09:55:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231991AbiLEIRF (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 5 Dec 2022 03:17:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40360 "EHLO
+        id S232231AbiLEIzS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 5 Dec 2022 03:55:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231956AbiLEIQ6 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 5 Dec 2022 03:16:58 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15B0CBF52;
-        Mon,  5 Dec 2022 00:16:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670228218; x=1701764218;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sH9q+xEpJF7iv5b2TXJrMpoGv7B/IMq9/DUHAv34X4M=;
-  b=eEfgmx5Ii9D6MlfCh7uNd4idQRO+uzKHwvidEf8whuR4Qzui06lUl5bC
-   43xEAzAuJoJD+aPP13Vv/zKPwr6tKE2pgdaxEEQVAKa49w4OOHKv/4Y1N
-   CIBoSmj61I3g5qM4jyG5kIXD/byGgGeXG46KLd7M7JR9UN5xxkTlryqky
-   UrrjsbtxnpYUWf/7gtEHL+ZgMcUziAWlgTYGCmUKXbb8Z9th1D9L+KveQ
-   BnckSuqn4oSldRdZR/CQZQ5zc+DWlTnV78vLl3YUb+olj98IgJtOWpBls
-   k3/Q5V1mzQzJbpm/WXrIiYFF9u3d1IzGl5xqcYwQRF52h/IGSmwIm8Yeg
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10551"; a="343283513"
-X-IronPort-AV: E=Sophos;i="5.96,218,1665471600"; 
-   d="scan'208";a="343283513"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2022 00:16:54 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10551"; a="734507723"
-X-IronPort-AV: E=Sophos;i="5.96,218,1665471600"; 
-   d="scan'208";a="734507723"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.55.104])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2022 00:16:52 -0800
-Message-ID: <973a9f5c-6798-3f92-cdeb-ce4571273cf1@intel.com>
-Date:   Mon, 5 Dec 2022 10:16:44 +0200
+        with ESMTP id S232354AbiLEIyn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 5 Dec 2022 03:54:43 -0500
+Received: from maillog.nuvoton.com (maillog.nuvoton.com [202.39.227.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CDC5E64C1;
+        Mon,  5 Dec 2022 00:54:01 -0800 (PST)
+Received: from NTHCCAS01.nuvoton.com (NTHCCAS01.nuvoton.com [10.1.8.28])
+        by maillog.nuvoton.com (Postfix) with ESMTP id 454FC1C8128E;
+        Mon,  5 Dec 2022 16:53:59 +0800 (CST)
+Received: from NTHCML01A.nuvoton.com (10.1.8.177) by NTHCCAS01.nuvoton.com
+ (10.1.8.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 5 Dec 2022
+ 16:53:59 +0800
+Received: from NTHCCAS01.nuvoton.com (10.1.8.28) by NTHCML01A.nuvoton.com
+ (10.1.8.177) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 5 Dec 2022
+ 16:53:58 +0800
+Received: from taln60.nuvoton.co.il (10.191.1.180) by NTHCCAS01.nuvoton.com
+ (10.1.12.25) with Microsoft SMTP Server id 15.1.2375.7 via Frontend
+ Transport; Mon, 5 Dec 2022 16:53:58 +0800
+Received: by taln60.nuvoton.co.il (Postfix, from userid 10070)
+        id AAE45637C4; Mon,  5 Dec 2022 10:53:57 +0200 (IST)
+From:   Tomer Maimon <tmaimon77@gmail.com>
+To:     <ulf.hansson@linaro.org>, <avifishman70@gmail.com>,
+        <tali.perry1@gmail.com>, <joel@jms.id.au>, <venture@google.com>,
+        <yuenn@google.com>, <benjaminfair@google.com>,
+        <adrian.hunter@intel.com>, <skhan@linuxfoundation.org>,
+        <davidgow@google.com>, <pbrobinson@gmail.com>, <gsomlo@gmail.com>,
+        <briannorris@chromium.org>, <arnd@arndb.de>,
+        <krakoczy@antmicro.com>, <andy.shevchenko@gmail.com>
+CC:     <openbmc@lists.ozlabs.org>, <linux-mmc@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Tomer Maimon <tmaimon77@gmail.com>
+Subject: [PATCH v2 0/2] MMC: add NPCM SDHCI driver support
+Date:   Mon, 5 Dec 2022 10:53:49 +0200
+Message-ID: <20221205085351.27566-1-tmaimon77@gmail.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.5.1
-Subject: Re: [PATCH] MAINTAINERS: Update maintainer for SDHCI Broadcom BRCMSTB
- driver
-Content-Language: en-US
-To:     Kamal Dasu <kdasu.kdev@gmail.com>, ulf.hansson@linaro.org,
-        linux-kernel@vger.kernel.org, alcooperx@gmail.com,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org
-Cc:     f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com
-References: <20221202212119.43214-1-kdasu.kdev@gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20221202212119.43214-1-kdasu.kdev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 2/12/22 23:21, Kamal Dasu wrote:
-> Taking over as upstream maintainer for Broadcom SDHCI
-> driver from Al Cooper.
-> 
-> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+This patch set adds SDHCI support for the Nuvoton NPCM Baseboard 
+Management Controller (BMC).
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+The NPCM SDHCI driver tested on NPCM750 and NPCM845 EVB.
 
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 1daadaa4d48b..90beddcf84b0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -18497,6 +18497,7 @@ K:	\bsecure_computing
->  K:	\bTIF_SECCOMP\b
->  
->  SECURE DIGITAL HOST CONTROLLER INTERFACE (SDHCI) Broadcom BRCMSTB DRIVER
-> +M:	Kamal Dasu <kdasu.kdev@gmail.com>
->  M:	Al Cooper <alcooperx@gmail.com>
->  R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
->  L:	linux-mmc@vger.kernel.org
+Addressed comments from:
+ - Rob Herring : https://www.spinics.net/lists/devicetree/msg556099.html
+ - Andy Shevchenko : https://www.spinics.net/lists/devicetree/msg555247.html
+ - Adrian Hunter : https://www.spinics.net/lists/devicetree/msg555583.html
+
+Changes since version 1:
+ - Use correct spaces in the dt-bindings.
+ - Drop unused labels from dt-bindings.
+ - Order by module name in the make a configuration.
+ - Remove unnecessary blank lines.
+ - Using devm_clk_get_optional instead of devm_clk_get.
+
+Tomer Maimon (2):
+  dt-bindings: mmc: npcm,sdhci: Document NPCM SDHCI controller
+  mmc: sdhci-npcm: Add NPCM SDHCI driver
+
+ .../devicetree/bindings/mmc/npcm,sdhci.yaml   | 45 ++++++++++
+ drivers/mmc/host/Kconfig                      |  8 ++
+ drivers/mmc/host/Makefile                     |  1 +
+ drivers/mmc/host/sdhci-npcm.c                 | 84 +++++++++++++++++++
+ 4 files changed, 138 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/npcm,sdhci.yaml
+ create mode 100644 drivers/mmc/host/sdhci-npcm.c
+
+-- 
+2.33.0
 
