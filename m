@@ -2,69 +2,143 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B67E764448D
-	for <lists+linux-mmc@lfdr.de>; Tue,  6 Dec 2022 14:31:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F27526449B6
+	for <lists+linux-mmc@lfdr.de>; Tue,  6 Dec 2022 17:50:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234159AbiLFNb4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 6 Dec 2022 08:31:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34642 "EHLO
+        id S235622AbiLFQuE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 6 Dec 2022 11:50:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234091AbiLFNbz (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 6 Dec 2022 08:31:55 -0500
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E278F2250B
-        for <linux-mmc@vger.kernel.org>; Tue,  6 Dec 2022 05:31:53 -0800 (PST)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-3b5d9050e48so151959757b3.2
-        for <linux-mmc@vger.kernel.org>; Tue, 06 Dec 2022 05:31:53 -0800 (PST)
+        with ESMTP id S235496AbiLFQth (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 6 Dec 2022 11:49:37 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5019B103B;
+        Tue,  6 Dec 2022 08:49:33 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id m19so11624166wms.5;
+        Tue, 06 Dec 2022 08:49:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=OeyCMsHYScRvVh8RXebzMnb6pRDfFrPhGFM5Oo/oZrwyoa5Qe6A4MFoFU3Mp0QEA1i
-         SYxbR4sBY6B2f4vL1OEJybUifemEqA8IjQX2J09dxjCQRODPxlkwi9ZEZSAu9TEhort/
-         rwllpgNt60odz5Nl0j8spOK2S4UH94zHMFD6KX6br/bHNI2fZHIzqWvZlcUTMKyD9vqw
-         pbBkxrH6eRDakHg6i3SDW/XG3pxdEfflEK99JxjqsHbJ7YAIkEj/5S6ueT5UYlPSmqQ/
-         Hub6z0zknduscVyttBCDKyxn8xzrz/kgtfd7lHkiDU9nHicul2vZth5Aja6oh/8jcMGO
-         G90g==
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1EyXZfRg87HbcHT02i5mCcXdi496dRd0fvYL07ZXEvE=;
+        b=kCZnx9gFbQCVQMSE1Q+ES8idpWPt7Vz2Oo3DbVGXceFZ9Vok+640T0EPoJto7J7a1j
+         Mby4l2NEafqOtjZsXGiQi9qZ46Yq/C1gPrp7QMNBuPfcAn5FroH5gcP+dZuOrGqjShg5
+         72a06iLQYytVu7vIt8Omlq1b23Qjb28fPvgTCPae1R1SWp5ie/SIJ68eRCsZ2MfSnqnE
+         wriGYa85ccISiZCizxp9tEB6YwpaEDOI4WvJ3ERqOXKY+g2gwnXQjO6O92YAfRKWLCjh
+         4+DF8khU0KniLs4jUXAvC6sawvKrpAuXpLwqnjcNfpaWA/e3SJQPeAb6fS8axZi4JZKQ
+         LqWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=S++tCzqVcJ6nnOEug+QXz9ZmupShoYpZDOXnWIBPE5bOiR/Zu5XOdyxM6Wqind+We6
-         q6ZOEisszKg3FLpEpABp7E3lFXkh2/6PAOZ7D+YIn4HBnCXOOsCcJTnl9LH9e+49D/yH
-         zJWgqrnDLDrnvK9/FxBS7Ub2OmDFcHVuLTjH3fJU32EFeDNy8ixY+rbFzk69zld+XLaL
-         w6qOLIgmWCLxHVvX3umrlZHmZT+Os1IyOR5LfoHkRksUADgKdYlPPXA3u8kzVUK8MIbm
-         OZC6k8QUH+umOca0cODaRxWnTguiouTnpmx6GH/KdfgdpsqcUSdQfPHnrhiiO/QzSGYV
-         ci1A==
-X-Gm-Message-State: ANoB5plrQCSQ30JZc6r91rKOEOeXO4YG75BXOlrLGJMMAvz9X3Gk+eqr
-        f/cssMiaZeCkM71yU9K3sgQ03F6D2d4tmhajJxs=
-X-Google-Smtp-Source: AA0mqf7Z2Y5k3chtNt8kbVNLNOAPCXtgRbw0oMU6LK5Q/RiR2Ia6QNch2ZuKx5+xFv9D2teTY/76/SaSp4zD3zNfpik=
-X-Received: by 2002:a81:5243:0:b0:3d2:2098:c5fb with SMTP id
- g64-20020a815243000000b003d22098c5fbmr31214777ywb.121.1670333513086; Tue, 06
- Dec 2022 05:31:53 -0800 (PST)
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1EyXZfRg87HbcHT02i5mCcXdi496dRd0fvYL07ZXEvE=;
+        b=05AI84Cjtt63S9qWasFlb8PuFfixxmTyUf32oislIjktC7xJUv8w7pSMieKoOZbR66
+         iDvCifoOtHdE0IibCmvIezaHvuajrKeVY8+0D/BcYxEe33AAa0+y5lQUhm2Ax09egRFP
+         tpcwklEXwUzurH9pEPU/WT1ggNcQ554gNnXQTt9fnj/Ub2/d4zXrzlr1F/UTMgvqpElv
+         A8y7+NeBiDD3HF4647sxdmgyim+opfzLWC8GT+G2yXonD1nptm5OFOd07uaWy8FYaZuH
+         p5VypdXVx6CXdi0bJubakVfZZi9zPyTCwgMLkh0vPrkTt1Y9oyd4qg+7+kT8nSBS0JSN
+         /5/g==
+X-Gm-Message-State: ANoB5plmt7hj8KbhDBBX7AsIggFgTOIgrSGLzomF6nO8OJrerMDE9UR6
+        H96HuhU1dwKCiZG7YmI4VI1K2PWUhlQ=
+X-Google-Smtp-Source: AA0mqf6OwEBYyWxX8dEN9fljnlTeUSAYW9ad/NXT7wHCuKRYInaser8Y6WAiAPU2l1z+HeELEAdRNQ==
+X-Received: by 2002:a05:600c:a4f:b0:3d1:f298:5fde with SMTP id c15-20020a05600c0a4f00b003d1f2985fdemr383472wmq.171.1670345371742;
+        Tue, 06 Dec 2022 08:49:31 -0800 (PST)
+Received: from orome (p200300e41f201d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f20:1d00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id k26-20020a05600c1c9a00b003b47b80cec3sm28310667wms.42.2022.12.06.08.49.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Dec 2022 08:49:31 -0800 (PST)
+Date:   Tue, 6 Dec 2022 17:49:29 +0100
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Joerg Roedel <joro@8bytes.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Prathamesh Shete <pshete@nvidia.com>,
+        Will Deacon <will@kernel.org>,
+        iommu@lists.linux-foundation.org, linux-mmc@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v12 2/6] iommu/tegra: Add tegra_dev_iommu_get_stream_id()
+ helper
+Message-ID: <Y49ymcvbdpiJkHIY@orome>
+References: <20221202152644.29450-1-thierry.reding@gmail.com>
+ <20221202152644.29450-3-thierry.reding@gmail.com>
+ <0df4bfa7-4e76-b6b2-c8cf-a0776ec0fbfa@arm.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7010:a205:b0:314:d2a3:70a with HTTP; Tue, 6 Dec 2022
- 05:31:52 -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <mrkojofofone01@gmail.com>
-Date:   Tue, 6 Dec 2022 13:31:52 +0000
-Message-ID: <CACJtp8vgE8Nrmo+zWDrnXRqoM_o=MmruUY09Qi=4vFfLMPDrtA@mail.gmail.com>
-Subject: Hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="uq55OuK5Wlr58DNv"
+Content-Disposition: inline
+In-Reply-To: <0df4bfa7-4e76-b6b2-c8cf-a0776ec0fbfa@arm.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+
+--uq55OuK5Wlr58DNv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Dec 05, 2022 at 07:03:09PM +0000, Robin Murphy wrote:
+> On 2022-12-02 15:26, Thierry Reding wrote:
+> > From: Thierry Reding <treding@nvidia.com>
+> >=20
+> > Access to the internals of struct iommu_fwspec by non-IOMMU drivers is
+> > discouraged. Many drivers for Tegra SoCs, however, need access to their
+> > IOMMU stream IDs so that they can be programmed into various hardware
+> > registers.
+> >=20
+> > Formalize this access into a common helper to make it easier to audit
+> > and maintain.
+>=20
+> In many ways I'd be happier if this could go somewhere in include/soc/teg=
+ra/
+> rather than the generic IOMMU API header, but I see the argument for keep=
+ing
+> fwspec usage close to home as well, so no overwhelming preference one way=
+ or
+> the other. Mostly I'd just like to get something landed so that all those
+> other drivers can be cleaned up as well, and I reckon this counts as good
+> enough.
+
+Yeah, given Joerg's comment about potentially hiding struct iommu_fwspec
+better from others at some point in the future, I figured it'd be better
+to have this in a more central location.
+
+> Unless Joerg has a stronger opinion,
+>=20
+> Acked-by: Robin Murphy <robin.murphy@arm.com>
+
+Thanks,
+Thierry
+
+--uq55OuK5Wlr58DNv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmOPcpkACgkQ3SOs138+
+s6ESNQ//W5ZAWVWsRdDhvLZX8+FPqCDJ7Fd3h3kcdUq9BItKXWBpM+xUWz6rtDlH
++MSh7I2Lwi4nM0lYSLhv4kw2VD4neCtmBfpBa5AWdNyw+79KruUPWZa11qm+6Xhq
+B60h3zFItM4fMmElflkLwG+g6ZnOsT2ASwwU178DYbFk+v60PIp2SQ4r91YBfQhF
+9IW4NF80q0A05c9/r1k67CQzVM8Pk4mJ28Ni27jMMNjwt9EjDqQwY9JMZbjTwv/l
+SF93vK0G7eZnjjSFjXBS5qT5tn6H7YXVd+D65hq8oVzVfkFXH1yunezqFGOkgJs7
+nfL2pyQtS8emcuHBxJEnC1Bd4VgdOg/mJjTV/MsgsaKFQvsb5SbzRD8MGGlFY47D
+xiKD2fIP1+cpbQUkX6HJGFIQ+XSjFKNqZN50FdJ+0VQtf3qhW1jmDC9pPivrytAf
+dW50DVf0by1b7ha7rDzwaKwfc6CY5X5mud+evSc/DQTnHApjU0ikTXxDN9ESbKgQ
+j0viVZLL6ZVcSF912uup9Ywyk7jiERzRoeeeZKZbERKsREWCeDluxa79I3jQUX7Z
+MZxgPGYahEyASUCw1cq8LkYOS0ChWyT1KK+qYXe1s004T7sE3oY/zIFQQqikYCc6
+Ay26iES1iQ0VXjNXjmnYOXRw0z53GpDuxVyfGlVqdNeLrNMDUvQ=
+=YmHk
+-----END PGP SIGNATURE-----
+
+--uq55OuK5Wlr58DNv--
