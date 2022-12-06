@@ -2,101 +2,69 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 096306439CC
-	for <lists+linux-mmc@lfdr.de>; Tue,  6 Dec 2022 01:10:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B67E764448D
+	for <lists+linux-mmc@lfdr.de>; Tue,  6 Dec 2022 14:31:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232266AbiLFAKX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 5 Dec 2022 19:10:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39338 "EHLO
+        id S234159AbiLFNb4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 6 Dec 2022 08:31:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbiLFAKW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 5 Dec 2022 19:10:22 -0500
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C764A1834E;
-        Mon,  5 Dec 2022 16:10:21 -0800 (PST)
-Received: by mail-pl1-x629.google.com with SMTP id g10so12357365plo.11;
-        Mon, 05 Dec 2022 16:10:21 -0800 (PST)
+        with ESMTP id S234091AbiLFNbz (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 6 Dec 2022 08:31:55 -0500
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E278F2250B
+        for <linux-mmc@vger.kernel.org>; Tue,  6 Dec 2022 05:31:53 -0800 (PST)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-3b5d9050e48so151959757b3.2
+        for <linux-mmc@vger.kernel.org>; Tue, 06 Dec 2022 05:31:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1d6azkoMx+wYQ6ybc9BfX8jifk/2ngAE1j6INpsRQhs=;
-        b=VkA0qRksnnNUCz8hgZN4tt80YmP0ZEiafD7R4E6A9f7sDbd4LnLvZpBy3oqGzhMk7W
-         ubgwm11WvHY3CpNIhAelRKoYCF8nk25tST40pR9nk+aYSRQ1Wl15jXLX3aacUE9eRD5y
-         9NKdwdOYk3d1z0AYsy4rLz+NjC2wbTv0bFCpcEY5jYhkNL3dmHxVI7j1LatS7ygUD+YQ
-         f2IoqOYi0z5ZG0+Phc3z9bTyLjIF/Z2yDnDy8r323ein9wdtf2EuXYW4DaR9ZutHOEVM
-         qNbHOW5eHsNfZTk+xAOEQvew/Pm7+BuJHfdlf7Ko64F+u/j1OCGFG8H/1nE0fETJC052
-         g03g==
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=OeyCMsHYScRvVh8RXebzMnb6pRDfFrPhGFM5Oo/oZrwyoa5Qe6A4MFoFU3Mp0QEA1i
+         SYxbR4sBY6B2f4vL1OEJybUifemEqA8IjQX2J09dxjCQRODPxlkwi9ZEZSAu9TEhort/
+         rwllpgNt60odz5Nl0j8spOK2S4UH94zHMFD6KX6br/bHNI2fZHIzqWvZlcUTMKyD9vqw
+         pbBkxrH6eRDakHg6i3SDW/XG3pxdEfflEK99JxjqsHbJ7YAIkEj/5S6ueT5UYlPSmqQ/
+         Hub6z0zknduscVyttBCDKyxn8xzrz/kgtfd7lHkiDU9nHicul2vZth5Aja6oh/8jcMGO
+         G90g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=to:subject:message-id:date:from:reply-to:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1d6azkoMx+wYQ6ybc9BfX8jifk/2ngAE1j6INpsRQhs=;
-        b=bLswIdMWsRYODJhdxm5oHMKueyH5wMUYG2vJft10SAIEBLNPq0YnJQrR5N8sV0AOhT
-         rx0Ge1/+oW8JuZ5DWWv6/Lghp4I3N9FPoPeH9qcsnk7t3NwszdT5h2L83AIemyq02Ils
-         ubfB3boCPqH0bb8rKApd6vNigthXjyyZ8LEfB33Z1IJEjD3sKx0GHR4jxwixlOdqSnG7
-         mVLq1A1WSCH8Qy4DYPI+SnKAFIKp5T0AQlb7AZMLSK8R2HXkfvBHB+Bb3RmIVy9Wc4Bk
-         ucUrux/B4aWn+jp3cKuzwI/IZdT2qq/XXHq5PK6sgMswKcZ1Q6pQoPlsYBz1+/9/VXXg
-         snAQ==
-X-Gm-Message-State: ANoB5ploLrvyvzWM+OsM+eP8neBlVJVEQiKrBRlyeaT7slHCt0gguaet
-        dbnlJ2ZswpNJOugJwK7l16k=
-X-Google-Smtp-Source: AA0mqf4OGjimZ6j13eDhruYyAcTL31kz+/U8N0ROuNsoOb3yp+af5gp70/k0M+Zd3oq9tyzRKpfO0w==
-X-Received: by 2002:a17:90b:3641:b0:219:d636:e5de with SMTP id nh1-20020a17090b364100b00219d636e5demr7383815pjb.134.1670285421263;
-        Mon, 05 Dec 2022 16:10:21 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id i9-20020a17090a058900b00210039560c0sm11400938pji.49.2022.12.05.16.10.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Dec 2022 16:10:20 -0800 (PST)
-Message-ID: <524a240a-3aa4-08bb-2d85-4eb6798af5fb@gmail.com>
-Date:   Mon, 5 Dec 2022 16:10:19 -0800
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=S++tCzqVcJ6nnOEug+QXz9ZmupShoYpZDOXnWIBPE5bOiR/Zu5XOdyxM6Wqind+We6
+         q6ZOEisszKg3FLpEpABp7E3lFXkh2/6PAOZ7D+YIn4HBnCXOOsCcJTnl9LH9e+49D/yH
+         zJWgqrnDLDrnvK9/FxBS7Ub2OmDFcHVuLTjH3fJU32EFeDNy8ixY+rbFzk69zld+XLaL
+         w6qOLIgmWCLxHVvX3umrlZHmZT+Os1IyOR5LfoHkRksUADgKdYlPPXA3u8kzVUK8MIbm
+         OZC6k8QUH+umOca0cODaRxWnTguiouTnpmx6GH/KdfgdpsqcUSdQfPHnrhiiO/QzSGYV
+         ci1A==
+X-Gm-Message-State: ANoB5plrQCSQ30JZc6r91rKOEOeXO4YG75BXOlrLGJMMAvz9X3Gk+eqr
+        f/cssMiaZeCkM71yU9K3sgQ03F6D2d4tmhajJxs=
+X-Google-Smtp-Source: AA0mqf7Z2Y5k3chtNt8kbVNLNOAPCXtgRbw0oMU6LK5Q/RiR2Ia6QNch2ZuKx5+xFv9D2teTY/76/SaSp4zD3zNfpik=
+X-Received: by 2002:a81:5243:0:b0:3d2:2098:c5fb with SMTP id
+ g64-20020a815243000000b003d22098c5fbmr31214777ywb.121.1670333513086; Tue, 06
+ Dec 2022 05:31:53 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH] mmc: sdhci-brcmstb: Resolve "unused" warnings with
- CONFIG_OF=n
-Content-Language: en-US
-To:     Brian Norris <briannorris@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Al Cooper <alcooperx@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        kernel test robot <lkp@intel.com>
-References: <20221205160353.1.I5fa28f1045f17fb9285d507accf139f8b2a8f4b5@changeid>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20221205160353.1.I5fa28f1045f17fb9285d507accf139f8b2a8f4b5@changeid>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:7010:a205:b0:314:d2a3:70a with HTTP; Tue, 6 Dec 2022
+ 05:31:52 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <mrkojofofone01@gmail.com>
+Date:   Tue, 6 Dec 2022 13:31:52 +0000
+Message-ID: <CACJtp8vgE8Nrmo+zWDrnXRqoM_o=MmruUY09Qi=4vFfLMPDrtA@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 12/5/22 16:04, Brian Norris wrote:
-> With W=1, we can see this gcc warning:
-> 
-> drivers/mmc/host/sdhci-brcmstb.c:182:34: warning: ‘sdhci_brcm_of_match’ defined but not used [-Wunused-const-variable=]
->    182 | static const struct of_device_id sdhci_brcm_of_match[] = {
->        |                                  ^~~~~~~~~~~~~~~~~~~
-> 
-> Rather than play around more with #ifdef's, the simplest solution is to
-> just mark this __maybe_unused.
-> 
-> Fixes: 1fad8422c989 ("mmc: sdhci-brcmstb: Allow building with COMPILE_TEST")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Link: https://lore.kernel.org/all/202212060700.NjMecjxS-lkp@intel.com/
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
-
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
-
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham
