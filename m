@@ -2,53 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C3B86449D4
-	for <lists+linux-mmc@lfdr.de>; Tue,  6 Dec 2022 17:59:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1330F6449D8
+	for <lists+linux-mmc@lfdr.de>; Tue,  6 Dec 2022 17:59:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235182AbiLFQ7z (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 6 Dec 2022 11:59:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39768 "EHLO
+        id S235409AbiLFQ75 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 6 Dec 2022 11:59:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234927AbiLFQ7y (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 6 Dec 2022 11:59:54 -0500
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0835028E0F;
-        Tue,  6 Dec 2022 08:59:53 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id z92so21225370ede.1;
-        Tue, 06 Dec 2022 08:59:52 -0800 (PST)
+        with ESMTP id S235201AbiLFQ7z (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 6 Dec 2022 11:59:55 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A3B72A241;
+        Tue,  6 Dec 2022 08:59:54 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id vp12so7705744ejc.8;
+        Tue, 06 Dec 2022 08:59:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oSPEHSYmi4vlcGVbczR4I6cGH/dyxfXxCF0BQRo95CI=;
-        b=eD1P+puHbw7hKL5IQgc+mzYG6cSuxGIQS/AaGX56IX7gtQYrctEtR/GW66nlDYkxIn
-         3O7JKdJpYC6Cww+cG5FXTyqPr4WsNMhOb92VA4mbgr3KwwodrphpKw6oLlpdHR4B5tHu
-         R1yO7PR4DbYCrCl9MkDa7ZzpX2qkm5YELriDt1Tc8Nv3Blka90DuFLdRZtAns5tQuHT4
-         uoPq7T+y6yrhLwybox2FbW92KSNBzBy8qLifDyK0e6YHk9iCPVZGNy9XQSfUWR93Inw4
-         E/qY4fJROOr8A1d1BFNJOJ//7U8kxc7FzewFAMGwGpzOK8nEifPJ/snMtp/nNuqkErc+
-         l57w==
+        bh=mCJXfYzTI2dyLGbCy2BhHsRfkj/QAMNTLWYIlL2SJZ0=;
+        b=HinPoVulLWiuMrle00EXPBrMG8A9+Sk8uxVoxrXc0/0vV3dDhXyhjXB2qTNL1sVrlV
+         Cpc103HnzTl3Ocdvf0KQD3PfZlWi17u8ic4bnJltjvNDvicHOhDszJx1nXihGs8QWJwS
+         PtCjY0ZluvNVkZMBkG+0NvXSNeGdO6glkJYS8f986N8tgMjl1gdUpvCgscDOruHnaFOv
+         vKg6vtBFAW4PiC6ErBWZjJ6dWagnQAo8UvlihTVII+KT/NUgz0ceCl/2cfgFHg8TdCPL
+         UjWMlkoYEsDfff+OYTjKVce1W2vkHPOo681MiS4D3GM2VYJIKfd4uAWOhtFMpJf+kEW3
+         HDoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oSPEHSYmi4vlcGVbczR4I6cGH/dyxfXxCF0BQRo95CI=;
-        b=xENjP6gEIxHUN2AUbDM+7/6123iKnhnMbcfEM27KfMJkx1GSy8EfiCiAubcBPerD8N
-         s01mIEW57JRPNueU6tWxnibytE6I7vKC0anSReWw7Xy1fSGC/aiGe9VTnQ1ltgzcYjBp
-         4bwXFdPLPFoxAEGQlVPypOHb0E6OtkxaViXNccWsHKzeRrcZfUwr6RI4zdY1br1dP2YB
-         o1f1+Md9maWg/AnaHM7L4+X19M/2ffP8K80QFQLH4GbHawDiQufAbcaK8z09jSmW2UOY
-         xMl2LiR30T8LcMFjG5qoF1OBRfne31VLbFZJCX55bLUK01ZatXKzZ8ygXIIYOLX55n89
-         gk4g==
-X-Gm-Message-State: ANoB5pmr+UdxTnOG+0Xqy3l1lRi2uOjWxbSU+j2jzV3IgyiM7gEdD643
-        xuvcOWmCuODvaRAmxdqQm/c=
-X-Google-Smtp-Source: AA0mqf6uvAmII/HzPxDOxEezJflXnVZyPaTXTzlFj/NQ1BAv82SWRi42QT4q+LHrfwih6OfFxAOZDQ==
-X-Received: by 2002:aa7:d417:0:b0:46b:203:f389 with SMTP id z23-20020aa7d417000000b0046b0203f389mr39313635edq.303.1670345991603;
-        Tue, 06 Dec 2022 08:59:51 -0800 (PST)
+        bh=mCJXfYzTI2dyLGbCy2BhHsRfkj/QAMNTLWYIlL2SJZ0=;
+        b=3gp//EsQ+bII/zib7qC8oUsaPxHboBRI8TsyeEoPr/El62d9IXfhq33kz9bGKHjuiq
+         2TS4zkz4yc4CGS9CbnWolvapS8LN79DFACmz729VqTbbnWCjq8jfUuKbomlmjSw9F0YM
+         0KD8SmbkIdnckPmW5wP/4P256cZu54v0tnJxNbrmYBL7NuHQpODbBkNqxwbT+A14bLMW
+         Qbv053Hsf6Jb/D53qILTzRS7RfPYb4sODKSsq2if0V3NW5eynqrtMy8up9iMFh75+X/7
+         EPOtap8i3FXD3OJ+rM/uGqHlOtxI4nXHKzqVHj7roNKWsSBkJ6f5OcJwM7Pc6mlC/nLE
+         hmIg==
+X-Gm-Message-State: ANoB5pnzEylxbwCBo3SCsTFhhuh56MvtpcFQXUYjeL9sqayvmsEeiVMC
+        xDUga437ZXyFBG+23PjChQQ=
+X-Google-Smtp-Source: AA0mqf5vcNP3TAUSeQz0iBOLEYKUJ1Pdk8Ld1sRW+14zAs+Oz19IfFCQud0l4ORoeb5io1a5Ap0SfA==
+X-Received: by 2002:a17:906:2854:b0:7ae:3684:84b0 with SMTP id s20-20020a170906285400b007ae368484b0mr65120459ejc.622.1670345992538;
+        Tue, 06 Dec 2022 08:59:52 -0800 (PST)
 Received: from localhost (p200300e41f201d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f20:1d00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id p4-20020a05640210c400b0046c4553010fsm1205110edu.1.2022.12.06.08.59.51
+        by smtp.gmail.com with ESMTPSA id i4-20020a056402054400b0046c64b0efdbsm1199909edx.33.2022.12.06.08.59.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Dec 2022 08:59:51 -0800 (PST)
+        Tue, 06 Dec 2022 08:59:52 -0800 (PST)
 From:   Thierry Reding <thierry.reding@gmail.com>
 To:     Joerg Roedel <joro@8bytes.org>,
         Ulf Hansson <ulf.hansson@linaro.org>
@@ -58,10 +58,10 @@ Cc:     Robin Murphy <robin.murphy@arm.com>,
         Prathamesh Shete <pshete@nvidia.com>,
         Will Deacon <will@kernel.org>,
         iommu@lists.linux-foundation.org, linux-mmc@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Subject: [PATCH v13 3/6] mmc: sdhci-tegra: Sort includes alphabetically
-Date:   Tue,  6 Dec 2022 17:59:42 +0100
-Message-Id: <20221206165945.3551774-4-thierry.reding@gmail.com>
+        linux-tegra@vger.kernel.org, Thierry Reding <treding@nvidia.com>
+Subject: [PATCH v13 4/6] mmc: sdhci-tegra: Separate Tegra194 and Tegra234 SoC data
+Date:   Tue,  6 Dec 2022 17:59:43 +0100
+Message-Id: <20221206165945.3551774-5-thierry.reding@gmail.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221206165945.3551774-1-thierry.reding@gmail.com>
 References: <20221206165945.3551774-1-thierry.reding@gmail.com>
@@ -77,61 +77,47 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Thierry Reding <treding@nvidia.com>
+From: Prathamesh Shete <pshete@nvidia.com>
 
-Sort includes alphabetically to make it easier to add new ones
-subsequently.
+Create new SoC data structure for Tegra234 platforms. Additional
+features, tap value configurations are added/updated for Tegra234
+platform hence separate Tegra194 and Tegra234 SoC data.
 
+Signed-off-by: Aniruddha Tvs Rao <anrao@nvidia.com>
+Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
 Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
- drivers/mmc/host/sdhci-tegra.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/mmc/host/sdhci-tegra.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index 9fc8a61eca54..afa9cbf9cb6f 100644
+index afa9cbf9cb6f..f3f5a4abcafb 100644
 --- a/drivers/mmc/host/sdhci-tegra.c
 +++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -3,28 +3,28 @@
-  * Copyright (C) 2010 Google, Inc.
-  */
+@@ -1553,7 +1553,21 @@ static const struct sdhci_tegra_soc_data soc_data_tegra194 = {
+ 	.max_tap_delay = 139,
+ };
  
-+#include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/dma-mapping.h>
- #include <linux/err.h>
--#include <linux/module.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/init.h>
--#include <linux/iopoll.h>
--#include <linux/platform_device.h>
--#include <linux/clk.h>
- #include <linux/io.h>
--#include <linux/of.h>
-+#include <linux/iopoll.h>
-+#include <linux/ktime.h>
-+#include <linux/mmc/card.h>
-+#include <linux/mmc/host.h>
-+#include <linux/mmc/mmc.h>
-+#include <linux/mmc/slot-gpio.h>
-+#include <linux/module.h>
- #include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/pinctrl/consumer.h>
-+#include <linux/platform_device.h>
- #include <linux/pm_opp.h>
- #include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
- #include <linux/reset.h>
--#include <linux/mmc/card.h>
--#include <linux/mmc/host.h>
--#include <linux/mmc/mmc.h>
--#include <linux/mmc/slot-gpio.h>
--#include <linux/gpio/consumer.h>
--#include <linux/ktime.h>
- 
- #include <soc/tegra/common.h>
- 
++static const struct sdhci_tegra_soc_data soc_data_tegra234 = {
++	.pdata = &sdhci_tegra186_pdata,
++	.dma_mask = DMA_BIT_MASK(39),
++	.nvquirks = NVQUIRK_NEEDS_PAD_CONTROL |
++		    NVQUIRK_HAS_PADCALIB |
++		    NVQUIRK_DIS_CARD_CLK_CONFIG_TAP |
++		    NVQUIRK_ENABLE_SDR50 |
++		    NVQUIRK_ENABLE_SDR104 |
++		    NVQUIRK_HAS_TMCLK,
++	.min_tap_delay = 95,
++	.max_tap_delay = 111,
++};
++
+ static const struct of_device_id sdhci_tegra_dt_match[] = {
++	{ .compatible = "nvidia,tegra234-sdhci", .data = &soc_data_tegra234 },
+ 	{ .compatible = "nvidia,tegra194-sdhci", .data = &soc_data_tegra194 },
+ 	{ .compatible = "nvidia,tegra186-sdhci", .data = &soc_data_tegra186 },
+ 	{ .compatible = "nvidia,tegra210-sdhci", .data = &soc_data_tegra210 },
 -- 
 2.38.1
 
