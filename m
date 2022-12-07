@@ -2,159 +2,175 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F30BF645A8F
-	for <lists+linux-mmc@lfdr.de>; Wed,  7 Dec 2022 14:17:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C04BE645AE1
+	for <lists+linux-mmc@lfdr.de>; Wed,  7 Dec 2022 14:26:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229899AbiLGNRi convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Wed, 7 Dec 2022 08:17:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49698 "EHLO
+        id S229507AbiLGN0l (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 7 Dec 2022 08:26:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229828AbiLGNRh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 7 Dec 2022 08:17:37 -0500
-Received: from ex01.ufhost.com (ex01.ufhost.com [61.152.239.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED591172;
-        Wed,  7 Dec 2022 05:17:35 -0800 (PST)
-Received: from EXMBX166.cuchost.com (unknown [175.102.18.54])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "EXMBX166", Issuer "EXMBX166" (not verified))
-        by ex01.ufhost.com (Postfix) with ESMTP id D0E4624E2AF;
-        Wed,  7 Dec 2022 21:17:34 +0800 (CST)
-Received: from EXMBX068.cuchost.com (172.16.6.68) by EXMBX166.cuchost.com
- (172.16.6.76) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Wed, 7 Dec
- 2022 21:17:35 +0800
-Received: from williamqiu-virtual-machine.starfivetech.com (171.223.208.138)
- by EXMBX068.cuchost.com (172.16.6.68) with Microsoft SMTP Server (TLS) id
- 15.0.1497.42; Wed, 7 Dec 2022 21:17:34 +0800
-From:   William Qiu <william.qiu@starfivetech.com>
-To:     <linux-riscv@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        William Qiu <william.qiu@starfivetech.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v1 3/3] riscv: dts: starfive: Add mmc node
-Date:   Wed, 7 Dec 2022 21:17:31 +0800
-Message-ID: <20221207131731.1291517-4-william.qiu@starfivetech.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221207131731.1291517-1-william.qiu@starfivetech.com>
-References: <20221207131731.1291517-1-william.qiu@starfivetech.com>
+        with ESMTP id S230045AbiLGN0X (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 7 Dec 2022 08:26:23 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E135358BF1;
+        Wed,  7 Dec 2022 05:26:04 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id p18so9951994qkg.2;
+        Wed, 07 Dec 2022 05:26:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gasjj2Warc1QIbknNKNkywz6J4OpsWmMf8ktNJGJzxM=;
+        b=bIHdWFbwnlgZ9X7ycTDJihFthCsDpZiozQ8aRPo5JuLh15PEb9zZRUQK8qp8nDk0Vz
+         JfuW+6fXd6v1zosJUbmBo1DSHPZzrgeQ4NH/RuGTFXM+l6tzYjFEJMqAyK/DnvtK+WRG
+         hYaFKDNCwaycPkz7L9zlXE/Dh2jw9yLebTR8VYUV0c2DQ5oY9Q/X4PuouvFypRwhA5Wx
+         USwVkgVJOjDKx/mSlCC/Kr/dZi+q8x8bV3j/UfJaDxQ/ivdISebJdeQQlFG1qs5GNxHU
+         M33kyTUKZI9LbjBWr9Icf107BKr2qSF8tmIgdHAQyMvy3YmTtB8gmVUXeCoUjH5wwazP
+         ivxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gasjj2Warc1QIbknNKNkywz6J4OpsWmMf8ktNJGJzxM=;
+        b=tyaC/cwwQYvyUMX3VAeYh0jZ++iXHrLp7jNpQVg60nMI0i1aIIp23y6W+LBZOFbyEP
+         jKm5FgN+vBNdNG8idp1T7TIRAts3SifyM+b3V0/qCc02WK3LHrLw/eQnqjloBoMar6Cd
+         lUrGDc/lIoumo3rIXZ+ZHQVGbDic72k2TDKu5S9x5VVS0IoiVXDmvjUYvjy+dwixf/t/
+         fdkWk0E819eS9nx6Y91ijx9QAkWA0lMiy1TsM04Cqu3Td2BXso3qNqGMtB4Kd2vQJu/6
+         Z6WmvWMGAa9LANOT0+oCHcBCD8uLd2k6m9dcgdkz3ogTMI/CA3Btt5zGPJwnUA9LZqTp
+         Tydg==
+X-Gm-Message-State: ANoB5plb6nHO5+JNgZMC9lfSJR3QtqIa5AIHUv+s24/l29en8tzBoSbC
+        ww5e1SIIND/dg/HisQ4VYM9zfc2l6NqTqcrZRbU=
+X-Google-Smtp-Source: AA0mqf5RnWnS+hISdVDsA/In+NITv+EGTmDYWDSf+CwqqDeU+RkT3eKO4lbUN9HJ6WbQczEee6OKmp48cqrdxu9QXDs=
+X-Received: by 2002:a05:620a:1aa3:b0:6fa:b56f:7ede with SMTP id
+ bl35-20020a05620a1aa300b006fab56f7edemr80678604qkb.383.1670419563989; Wed, 07
+ Dec 2022 05:26:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [171.223.208.138]
-X-ClientProxiedBy: EXCAS066.cuchost.com (172.16.6.26) To EXMBX068.cuchost.com
- (172.16.6.68)
-X-YovoleRuleAgent: yovoleflag
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221205085351.27566-1-tmaimon77@gmail.com> <20221205085351.27566-3-tmaimon77@gmail.com>
+ <CAHp75VeAzgCUiH5Z1pVJ-4X29aCK44q907DRQXX75zS4oEhHHg@mail.gmail.com>
+ <CAP6Zq1gi7-pA9wdO3=V9Uf0+pKPTHwWw66MfbYmOwodoXeRDqA@mail.gmail.com>
+ <CAHp75VctiJvvk-6AWfQSU9psHvPeKECaCWPuKL9YQ_-Vt3GBGA@mail.gmail.com>
+ <c200557f-c30a-62f9-287a-af804e818cf1@intel.com> <CAHp75VczbNpHPi-TBe81Ad=P=eXJZpAmkj=m4-apGF1e0uh5kg@mail.gmail.com>
+ <CAHp75VemBiGUTspEYDe3hwA9pEzjNMQGY6_kUoVMJyCuEWgChw@mail.gmail.com>
+ <c4e2a00c-d09e-95e2-eaf2-1de6b820ac6e@intel.com> <CAP6Zq1h9XvH501e_nH9TkUCKPNOuH7dhOM8FrsUM=PYX4gt0qw@mail.gmail.com>
+In-Reply-To: <CAP6Zq1h9XvH501e_nH9TkUCKPNOuH7dhOM8FrsUM=PYX4gt0qw@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 7 Dec 2022 15:25:27 +0200
+Message-ID: <CAHp75Vd5DzkCW0Gpouv+0Or=Yhjp_KdFGP-jXkpHD=UZrG2ajA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mmc: sdhci-npcm: Add NPCM SDHCI driver
+To:     Tomer Maimon <tmaimon77@gmail.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>, ulf.hansson@linaro.org,
+        avifishman70@gmail.com, tali.perry1@gmail.com, joel@jms.id.au,
+        venture@google.com, yuenn@google.com, benjaminfair@google.com,
+        skhan@linuxfoundation.org, davidgow@google.com,
+        pbrobinson@gmail.com, gsomlo@gmail.com, briannorris@chromium.org,
+        arnd@arndb.de, krakoczy@antmicro.com, openbmc@lists.ozlabs.org,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This adds the mmc node for the StarFive JH7110 SoC.
-Set sdioo node to emmc and set sdio1 node to sd.
+On Wed, Dec 7, 2022 at 3:01 PM Tomer Maimon <tmaimon77@gmail.com> wrote:
+> On Mon, 5 Dec 2022 at 16:33, Adrian Hunter <adrian.hunter@intel.com> wrote:
+> > On 5/12/22 16:17, Andy Shevchenko wrote:
+> > > On Mon, Dec 5, 2022 at 4:14 PM Andy Shevchenko
+> > > <andy.shevchenko@gmail.com> wrote:
+> > >> On Mon, Dec 5, 2022 at 3:41 PM Adrian Hunter <adrian.hunter@intel.com> wrote:
+> > >>> On 5/12/22 15:25, Andy Shevchenko wrote:
+> > >>>> On Mon, Dec 5, 2022 at 1:20 PM Tomer Maimon <tmaimon77@gmail.com> wrote:
 
-Signed-off-by: William Qiu <william.qiu@starfivetech.com>
----
- .../jh7110-starfive-visionfive-v2.dts         | 25 ++++++++++++
- arch/riscv/boot/dts/starfive/jh7110.dtsi      | 38 +++++++++++++++++++
- 2 files changed, 63 insertions(+)
+...
 
-diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-v2.dts b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-v2.dts
-index c8946cf3a268..6ef8e303c2e6 100644
---- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-v2.dts
-+++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-v2.dts
-@@ -47,6 +47,31 @@ &clk_rtc {
- 	clock-frequency = <32768>;
- };
- 
-+&sdio0 {
-+	max-frequency = <100000000>;
-+	card-detect-delay = <300>;
-+	bus-width = <8>;
-+	cap-mmc-highspeed;
-+	mmc-ddr-1_8v;
-+	mmc-hs200-1_8v;
-+	non-removable;
-+	cap-mmc-hw-reset;
-+	post-power-on-delay-ms = <200>;
-+	status = "okay";
-+};
-+
-+&sdio1 {
-+	max-frequency = <100000000>;
-+	card-detect-delay = <300>;
-+	bus-width = <4>;
-+	no-sdio;
-+	no-mmc;
-+	broken-cd;
-+	cap-sd-highspeed;
-+	post-power-on-delay-ms = <200>;
-+	status = "okay";
-+};
-+
- &gmac0_rmii_refin {
- 	clock-frequency = <50000000>;
- };
-diff --git a/arch/riscv/boot/dts/starfive/jh7110.dtsi b/arch/riscv/boot/dts/starfive/jh7110.dtsi
-index c22e8f1d2640..e90b085d7e41 100644
---- a/arch/riscv/boot/dts/starfive/jh7110.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110.dtsi
-@@ -331,6 +331,11 @@ aoncrg: clock-controller@17000000 {
- 			#reset-cells = <1>;
- 		};
- 
-+		sys_syscon: sys_syscon@13030000 {
-+			compatible = "syscon";
-+			reg = <0x0 0x13030000 0x0 0x1000>;
-+		};
-+
- 		gpio: gpio@13040000 {
- 			compatible = "starfive,jh7110-sys-pinctrl";
- 			reg = <0x0 0x13040000 0x0 0x10000>;
-@@ -433,5 +438,38 @@ uart5: serial@12020000 {
- 			reg-shift = <2>;
- 			status = "disabled";
- 		};
-+
-+		/* unremovable emmc as mmcblk0 */
-+		sdio0: mmc@16010000 {
-+			compatible = "starfive,jh7110-sdio";
-+			reg = <0x0 0x16010000 0x0 0x10000>;
-+			clocks = <&syscrg JH7110_SYSCLK_SDIO0_AHB>,
-+				 <&syscrg JH7110_SYSCLK_SDIO0_SDCARD>;
-+			clock-names = "biu","ciu";
-+			resets = <&syscrg JH7110_SYSRST_SDIO0_AHB>;
-+			reset-names = "reset";
-+			interrupts = <74>;
-+			fifo-depth = <32>;
-+			fifo-watermark-aligned;
-+			data-addr = <0>;
-+			starfive,sys-syscon = <&sys_syscon 0x14 0x1a 0x7c000000>;
-+			status = "disabled";
-+		};
-+
-+		sdio1: mmc@16020000 {
-+			compatible = "starfive,jh7110-sdio";
-+			reg = <0x0 0x16020000 0x0 0x10000>;
-+			clocks = <&syscrg JH7110_SYSCLK_SDIO1_AHB>,
-+				 <&syscrg JH7110_SYSCLK_SDIO1_SDCARD>;
-+			clock-names = "biu","ciu";
-+			resets = <&syscrg JH7110_SYSRST_SDIO1_AHB>;
-+			reset-names = "reset";
-+			interrupts = <75>;
-+			fifo-depth = <32>;
-+			fifo-watermark-aligned;
-+			data-addr = <0>;
-+			starfive,sys-syscon = <&sys_syscon 0x9c 0x1 0x3e>;
-+			status = "disabled";
-+		};
- 	};
- };
+> > >>>> devm_ is problematic in your case.
+> > >>>> TL;DR: you need to use clk_get_optional() and clk_put().
+> > >>>
+> > >>> devm_ calls exactly those, so what is the issue?
+> > >>
+> > >> The issue is the error path or removal stage where it may or may be
+> > >> not problematic. To be on the safe side, the best approach is to make
+> > >> sure that allocated resources are being deallocated in the reversed
+> > >> order. That said, the
+> > >>
+> > >> 1. call non-devm_func()
+> > >> 2. call devm_func()
+> > >>
+> > >> is wrong strictly speaking.
+> > >
+> > > To elaborate more, the
+> > >
+> > > 1. call all devm_func()
+> > > 2. call only non-devm_func()
+> > >
+> > > is the correct order.
+> >
+> > 1. WRT pltfm_host->clk, that is what is happening
+> > 2. WRT other resources that is simply not always possible because not every resource is wrapped by devm_
+> > e.g. mmc_alloc_host() / mmc_free_host()
+> I little confused about what to decide, should I use only
+> non-devm_func because mmc_alloc_host() / mmc_free_host() is not
+> warrped with devm_?
+
+It is up to you how to proceed. I pointed out the problem with your
+code which may or may not be fatal.
+
+If you want to solve it, there are several approaches:
+1) get rid of devm_ completely;
+2) properly shuffle the ordering in ->probe(), so all devm_ calls are
+followed by non-devm_;
+3) wrap non-devm_ cals to become managed (see
+devm_add_action_or_reset() approach);
+4) fix SDHCI / MMC layer by providing necessary devm_ calls and/or fix
+sdhci_pltfm_register() to handle the clock.
+
+Personally, the list order is from the least, what I prefer, to the
+most (i.o.w. I would like to see rather 4) than 1) to be implemented).
+
+> > > Hence in this case the driver can be worked around easily (by
+> > > shuffling the order in ->probe() to call devm_ first), but as I said
+> > > looking into implementation of the _unregister() I'm pretty sure that
+> > > clock management should be in sdhci-pltfm, rather than in all callers
+> > > who won't need the full customization.
+> > >
+> > > Hope this helps to understand my point.
+> > >
+> > >>>> Your ->remove() callback doesn't free resources in the reversed order
+> > >>>> which may or, by luck, may not be the case of all possible crashes,
+> > >>>> UAFs, races, etc during removal stage. All the same for error path in
+> > >>>> ->probe().
+> > >>
+> > >> I also pointed out above what would be the outcome of neglecting this rule.
+
+...
+
+> > >>>>>> Why can't you use sdhci_pltfm_register()?
+> > >>>>> two things are missing in sdhci_pltfm_register
+> > >>>>> 1. clock.
+> > >>>>
+> > >>>> Taking into account the implementation of the corresponding
+> > >>>> _unregister() I would add the clock handling to the _register() one.
+> > >>>> Perhaps via a new member of the platform data that supplies the name
+> > >>>> and index of the clock and hence all clk_get_optional() / clk_put will
+> > >>>> be moved there.
+> Do you mean to add it to sdhci_pltfm_register function? if yes I
+> believe it will take some time to modify sdhci_pltfm_register
+> I prefer not to use sdhci_pltfm_register.
+
+In the Linux kernel we are trying hard to avoid code duplication. Why
+do you need it to be open coded? (Yes, I heard you, but somebody
+should fix the issues with that funcion at some point, right?)
+
+> > >>>>> 2. Adding SDHCI_CAN_DO_8BIT capability according the eMMC capabilities.
+> > >>>>
+> > >>>> All the same, why can't platform data be utilised for this?
+
 -- 
-2.34.1
-
+With Best Regards,
+Andy Shevchenko
