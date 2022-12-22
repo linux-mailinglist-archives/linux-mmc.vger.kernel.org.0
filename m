@@ -2,65 +2,64 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 421486545BA
-	for <lists+linux-mmc@lfdr.de>; Thu, 22 Dec 2022 18:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAE21654640
+	for <lists+linux-mmc@lfdr.de>; Thu, 22 Dec 2022 20:00:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbiLVRsu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 22 Dec 2022 12:48:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41998 "EHLO
+        id S235498AbiLVTAu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 22 Dec 2022 14:00:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230438AbiLVRsq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 22 Dec 2022 12:48:46 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE60C2B24E;
-        Thu, 22 Dec 2022 09:48:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671731322; x=1703267322;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=BnC8T4VGuonP76djADZkjYi8kYvrKbib64niYPPMjVE=;
-  b=W+SPeXPhOfFaLkGSPiDp5cGSpuTlldtJrKAozZN0+mXNUomH8C7+xEmY
-   hqJF68Q+t/NEs+VPwJVgR7x9RwCZq3bObuXNM9Ue6opnXg7+exi5kSikE
-   koiFHaXX0YZzbtxVqOLHDyRQq0zb3To7pirqlzQWO/wePubf0E9nX2b9Z
-   Roma1v58i1M/pKUER+ewsaKYCxCRPpCyp7lgbG35MrfOYEOHE7uQUxhip
-   tWv8WLV7ESgVuqN4/o8/c/E8jC+V4U+zQ07gmI1E7ZS6GM9Ya4TwL3WrB
-   aVkT0NSQ+elZqGUTiN1oIEchLVlJz/rdVYj93KgkhoF5ySBemEzajbMjT
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10569"; a="299854195"
-X-IronPort-AV: E=Sophos;i="5.96,266,1665471600"; 
-   d="scan'208";a="299854195"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 09:48:41 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10569"; a="759044799"
-X-IronPort-AV: E=Sophos;i="5.96,266,1665471600"; 
-   d="scan'208";a="759044799"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.61.195])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 09:48:39 -0800
-Message-ID: <ba8e615a-d1b5-eb9a-1fc4-d30b0acb0db9@intel.com>
-Date:   Thu, 22 Dec 2022 19:48:33 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.6.1
-Subject: Re: [PATCH v2 6/8] mmc: sdhci-pxav2: add SDIO card IRQ workaround for
- PXA168 V1 controller
-Content-Language: en-US
-To:     Doug Brown <doug@schmorgal.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>
-References: <20221202031330.94130-1-doug@schmorgal.com>
- <20221202031330.94130-7-doug@schmorgal.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20221202031330.94130-7-doug@schmorgal.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE autolearn=ham
+        with ESMTP id S235432AbiLVTAm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 22 Dec 2022 14:00:42 -0500
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B21BD90;
+        Thu, 22 Dec 2022 11:00:41 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id o8-20020a17090a9f8800b00223de0364beso6625172pjp.4;
+        Thu, 22 Dec 2022 11:00:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7cFlHOhHC7/RmpQRJa9gEiaIHntvkmmoFbzYzTMby5Y=;
+        b=PlDDL7ZL3x2WUthmq9xSA5HiVbobKOOt85aMcEJ+jwTZK+rQ0xq/RfpsYssFH5TKHx
+         Wcyuyg14ZY8Iosw8PxR7zDjWKQrqTJ/IQb3h/6b3yzVvQB7fuEbgMf1+b3RU+Saf3U/y
+         wrDWe3IaUiW91k6F/fRo2Y+reuOk1joi8IJchc6vpSvDqXXh5KDUvvFvyxl2kzMAqccz
+         hQkUcZzdXB8q7MokCmCW25rEICuq5cTNRGrPXXbkmL0LCdcAznP/eC6PpPdRx4mtIiQe
+         FGTGZDb9Kp9uNM9jWyKNPDIpaOepaw0vBd+puiG5afsUybO/YcYPQBnufFRACNQcsjng
+         s5jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7cFlHOhHC7/RmpQRJa9gEiaIHntvkmmoFbzYzTMby5Y=;
+        b=WjNTwKU6i8ketZWDmg7990ingtLrN6gPYMMq8F8BH6ft4YkwwpltqPmiBsRMDZ7mqH
+         GTUQ4XjZNfslY7u84pzPg+hR1gNi+Nd45Js2/lurc2JVFeLiJVOnN8IjSTWT31NOYroV
+         Ps2LFSYTzXeEHv7OmqKnYZ6kJRATgY3HOZXehXbnoH/gAS9Ddt8C/UaNJ4sESzjJKpB7
+         JPHVulOZWdf83GpyCAJIB/A/8JA/R8ZTSDYQEJli3jZ4iLrxwnfRIDtAzLow/C7SmnJa
+         c8PJi912QHmDAY8d9ihy6witIn0SUcQsEjtmaibSg/Bxhxjrifb47FhkRSEQ1NDE6ZH6
+         N+Gw==
+X-Gm-Message-State: AFqh2krAGkdqoBKod/ZsvUM0zKxGpCvog5wy+L20KK1+sjVh7RFBCEIz
+        4+v7GrsvdyYBlDE5IF3OSfE=
+X-Google-Smtp-Source: AMrXdXu+d0bvQupICQM/vO8qDmVSJ5qhYWGOG6oHEIQSd01+pmglPRDQ4dBxKphtc9Ulgbv02Zp4uA==
+X-Received: by 2002:a17:903:22ca:b0:186:5fa1:1eae with SMTP id y10-20020a17090322ca00b001865fa11eaemr8858986plg.48.1671735640822;
+        Thu, 22 Dec 2022 11:00:40 -0800 (PST)
+Received: from mail.broadcom.net ([192.19.144.250])
+        by smtp.gmail.com with ESMTPSA id z6-20020a170902d54600b001925169e9f4sm61468plf.98.2022.12.22.11.00.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Dec 2022 11:00:40 -0800 (PST)
+From:   Kamal Dasu <kdasu.kdev@gmail.com>
+To:     keescook@chromium.org, linux-kernel@vger.kernel.org,
+        gmpy.liaowx@gmail.com, linux-mmc@vger.kernel.org,
+        CLoehle@hyperstone.com
+Cc:     f.fainelli@gmail.com, tony.luck@intel.com, anton@enomsg.org,
+        Kamal Dasu <kdasu.kdev@gmail.com>
+Subject: [RFC v2 0/1] mmc: Add mmc pstore backend support
+Date:   Thu, 22 Dec 2022 13:59:47 -0500
+Message-Id: <20221222185948.12717-1-kdasu.kdev@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,107 +67,36 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 2/12/22 05:13, Doug Brown wrote:
-> The PXA168 has a documented silicon bug that causes SDIO card IRQs to be
-> missed. Implement the first half of the suggested workaround, which
-> involves resetting the data port logic and issuing a dummy CMD0 to
-> restart the clock.
-> 
-> Signed-off-by: Doug Brown <doug@schmorgal.com>
-> ---
->  drivers/mmc/host/sdhci-pxav2.c | 49 ++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pxav2.c b/drivers/mmc/host/sdhci-pxav2.c
-> index 1f0c3028987a..912b2aad9f2e 100644
-> --- a/drivers/mmc/host/sdhci-pxav2.c
-> +++ b/drivers/mmc/host/sdhci-pxav2.c
-> @@ -20,6 +20,8 @@
->  #include <linux/slab.h>
->  #include <linux/of.h>
->  #include <linux/of_device.h>
-> +#include <linux/mmc/sdio.h>
-> +#include <linux/mmc/mmc.h>
->  
->  #include "sdhci.h"
->  #include "sdhci-pltfm.h"
-> @@ -43,6 +45,7 @@
->  
->  struct sdhci_pxav2_host {
->  	struct clk *clk_core;
-> +	struct mmc_request *sdio_mrq;
->  };
->  
->  static void pxav2_reset(struct sdhci_host *host, u8 mask)
-> @@ -93,6 +96,50 @@ static u16 pxav1_readw(struct sdhci_host *host, int reg)
->  	return readw(host->ioaddr + reg);
->  }
->  
-> +static u32 pxav1_irq(struct sdhci_host *host, u32 intmask)
-> +{
-> +	struct sdhci_pxav2_host *pxav2_host = sdhci_pltfm_priv(sdhci_priv(host));
-> +
-> +	if (pxav2_host->sdio_mrq && (intmask & SDHCI_INT_CMD_MASK)) {
-> +		/* The dummy CMD0 for the SDIO workaround just completed */
-> +		sdhci_writel(host, intmask & SDHCI_INT_CMD_MASK, SDHCI_INT_STATUS);
-> +		intmask &= ~SDHCI_INT_CMD_MASK;
-> +		mmc_request_done(host->mmc, pxav2_host->sdio_mrq);
-> +		pxav2_host->sdio_mrq = NULL;
+v2 changes:
 
-Pedantically, things should be finished before calling
-mmc_request_done() i.e. last 2 line the other way around
+- Fixed rebase with upstream linux master
+- Fixed build warnings
 
-		pxav2_host->sdio_mrq = NULL;
-		mmc_request_done(host->mmc, pxav2_host->sdio_mrq);
+Have been trying to provide mmc backend support for fs/pstore feature
+to be able to capture panic and dmesg logs to a emmc partition. The code is
+based on mtdpstore and used kernel mmctest also as reference to be able to
+send mmc rw requests. This code is work in progress and does not succssfully
+write to the mmc partition as expected when a magic sysrq panic is induced.
 
-> +	}
-> +
-> +	return intmask;
-> +}
-> +
-> +static void pxav1_request_done(struct sdhci_host *host, struct mmc_request *mrq)
-> +{
-> +	u16 tmp;
-> +	struct sdhci_pxav2_host *pxav2_host;
-> +
-> +	/* If this is an SDIO command, perform errata workaround for silicon bug */
-> +	if (mrq->cmd && !mrq->cmd->error &&
-> +	    (mrq->cmd->opcode == SD_IO_RW_DIRECT ||
-> +	     mrq->cmd->opcode == SD_IO_RW_EXTENDED)) {
-> +		/* Reset data port */
-> +		tmp = readw(host->ioaddr + SDHCI_TIMEOUT_CONTROL);
-> +		tmp |= 0x400;
-> +		writew(tmp, host->ioaddr + SDHCI_TIMEOUT_CONTROL);
-> +
-> +		/* Clock is now stopped, so restart it by sending a dummy CMD0 */
-> +		pxav2_host = sdhci_pltfm_priv(sdhci_priv(host));
-> +		pxav2_host->sdio_mrq = mrq;
-> +		sdhci_writel(host, 0, SDHCI_ARGUMENT);
-> +		sdhci_writew(host, 0, SDHCI_TRANSFER_MODE);
-> +		sdhci_writew(host, SDHCI_MAKE_CMD(MMC_GO_IDLE_STATE, SDHCI_CMD_RESP_NONE),
-> +			     SDHCI_COMMAND);
-> +
-> +		/* Don't finish this request until the dummy CMD0 finishes */
-> +		return;
-> +	}
-> +
-> +	mmc_request_done(host->mmc, mrq);
-> +}
-> +
->  static void pxav2_mmc_set_bus_width(struct sdhci_host *host, int width)
->  {
->  	u8 ctrl;
-> @@ -117,10 +164,12 @@ static void pxav2_mmc_set_bus_width(struct sdhci_host *host, int width)
->  static const struct sdhci_ops pxav1_sdhci_ops = {
->  	.read_w        = pxav1_readw,
->  	.set_clock     = sdhci_set_clock,
-> +	.irq           = pxav1_irq,
->  	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
->  	.set_bus_width = pxav2_mmc_set_bus_width,
->  	.reset         = pxav2_reset,
->  	.set_uhs_signaling = sdhci_set_uhs_signaling,
-> +	.request_done  = pxav1_request_done,
->  };
->  
->  static const struct sdhci_ops pxav2_sdhci_ops = {
+Needed help from original authors and mmc core and host driver experts to
+comment on missing peices. To that end I am sending an RFC patch. I have
+confirmed by enabling dynamic debug that mmcpstore read and panic_write
+routines do get called by the fs/pstore/zone driver, however I do not see
+expected results mounted /sys/fs/pstore after a reboot.
+
+Kamal Dasu (1):
+  mmc: Add mmc pstore backend support
+
+ drivers/mmc/core/Kconfig     |  13 +
+ drivers/mmc/core/Makefile    |   1 +
+ drivers/mmc/core/block.c     |   4 +
+ drivers/mmc/core/block.h     |   9 +
+ drivers/mmc/core/mmcpstore.c | 592 +++++++++++++++++++++++++++++++++++
+ drivers/mmc/host/sdhci.c     |  20 ++
+ include/linux/mmc/host.h     |   3 +
+ 7 files changed, 642 insertions(+)
+ create mode 100644 drivers/mmc/core/mmcpstore.c
+
+-- 
+2.17.1
 
