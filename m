@@ -2,96 +2,112 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63B1E65B3C6
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Jan 2023 16:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2BF565B3CE
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Jan 2023 16:07:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236020AbjABPHa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        id S236233AbjABPHa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
         Mon, 2 Jan 2023 10:07:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48982 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236240AbjABPHI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 2 Jan 2023 10:07:08 -0500
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EE2A25D6
-        for <linux-mmc@vger.kernel.org>; Mon,  2 Jan 2023 07:07:07 -0800 (PST)
-Received: by mail-pl1-x62a.google.com with SMTP id jl4so23493107plb.8
-        for <linux-mmc@vger.kernel.org>; Mon, 02 Jan 2023 07:07:07 -0800 (PST)
+        with ESMTP id S236244AbjABPHN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 2 Jan 2023 10:07:13 -0500
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F4A25D6
+        for <linux-mmc@vger.kernel.org>; Mon,  2 Jan 2023 07:07:12 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id b2so29758644pld.7
+        for <linux-mmc@vger.kernel.org>; Mon, 02 Jan 2023 07:07:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6DplKz/bdbUn4I1drkD6LUlMhNXhcjCCxMqIdGwR6jA=;
-        b=qqRjprM8LCe/yNVm2wYWqIbwmA2zv+bEGnk0qTVjpVlTDRbmE9lV2y2LKXZcueri4h
-         OsRUHz7yNFE2/4hoRKl/R+5O+CzaJ4uunl+3rYMutDM0yNlaQLVKw0tZMs+DcQcKX62U
-         0lULqsi5vEBper87ambl0Amg6GlGhnNHpGxSko7NDUKDb5ySXIHipt/5dITwwV6FlRFa
-         FAJhaJz3xIkHQPP1s7J0McxCzfY1tbE2x/KG+nR7/7HpndSEgN9iBZYQOXhDRZHd6kay
-         gew3+ESgUX23Bdd8ysrUTPBVuX+MPtM1JhpvhLqTX4z+s3WI8+Mi1XES7uqrljKFazen
-         k5IA==
+        bh=gTUmFVkUrVVxCdL9TmMtPvZBf8ZmBmUdQovn/cWoQSs=;
+        b=J/y6pHrgolcr/idbq4kQIOcfdjv7wWo5IwW+rAF2hWtg6IUup6eb+dAOl5bprfzTbr
+         4YCR/CoV4akoRP/v9fboVdUhWM1PZd8RCsUpSZxzkvLxUqEvL7Nxi4RElJMR6L+ViC0B
+         ZkBFRlhQUYPeeTyaMalEBk1+/LsppkXpYNT5zOcYiC7wDQs5L7tb1rTNbESqCr6Fa/bG
+         vCwjNkEbPpHFyWoCZ9VMA35E4OjiANdBV3XRgVMLUv0v98dYC50eQGUX93cILW5+2YNA
+         KDrOfoea0dUcui8KrMoFzv8FXd8K/RF74tbj/ejb9k/dMDVHPxwUU2p6MX3nmqaVC3wv
+         Bq+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6DplKz/bdbUn4I1drkD6LUlMhNXhcjCCxMqIdGwR6jA=;
-        b=O0fK2bTraipK7JjpxVFoWGDsfajwuDEVxzmsKrlDIkeOBOh1YU+nC9o2CHzKlWcNDA
-         dmnMZL1Mnd8hmrfBafNybDvwmv1PimvCdHRhwI3jmNMI5TswOPWp6i1b7jFWRwAflx79
-         LaXteNOh/Jb9aasRVjAj4otbJXzdrqBVJk+ftpO29EY35ROIaNGScKUi5OeDcNTK/fbh
-         9nlfzLglxUuZl43wrleZS21ovZjv77wsmIlcvzhbzZ/jarUarJsclAAOfRlh29NmYu7v
-         97TU5qXbiC5FZxhXw5dWD0/P/S8Swnc+JJO4XwXhF5RN7bTUJrNeW2znVyX98lC92wrX
-         oQCg==
-X-Gm-Message-State: AFqh2krLpndm0L5qf9Uvlm+kLlDZgXp4h8+8VbisdaE9Wc4J2OBVcEDf
-        ADhsRAKQknV4tf0VgPNjK5rys8bPS46kMUZOP6b3rw==
-X-Google-Smtp-Source: AMrXdXum0ZuGHHRxd9dbaKOzoVvRRRc/Jq5n7+i+DBDWy4+YOBN+r2yUToiRbrwGRMNlDwNaRtF+tGEfQbyQ12o5g3A=
-X-Received: by 2002:a17:902:b902:b0:190:e27b:b554 with SMTP id
- bf2-20020a170902b90200b00190e27bb554mr2443807plb.148.1672672027019; Mon, 02
- Jan 2023 07:07:07 -0800 (PST)
+        bh=gTUmFVkUrVVxCdL9TmMtPvZBf8ZmBmUdQovn/cWoQSs=;
+        b=veQLMrR7uBh7bx00CqxTDqme1zcfI521iSWV9JfVjXi9d2qqe7H8exEc5P3HsQMGnI
+         tctGglxKi7jJ+oRraTwE0VVSCZtIVmH+nWH+Fft8k1hF/c6Ht7QuqmGMvcBU/HkR7cMq
+         nW7ztWja3+isRw6RPWUSH8yPWJX5tCjVcu+iL/I4zHEdMrJgJuXfMVBRcPEht7Ib3Gyz
+         1P2KayS35PQpn9O9LJH4KcD24KKB09kJSVVNTYBkQzfQTRFiwyfOm3q937zaI/ZF53Ie
+         tpN3c2rWXGceuDPxQI9ucyFIpDR1lVNGvM7RzIuHCJ0weGz//MWZUSAkowNsLbcyr0Aq
+         90KQ==
+X-Gm-Message-State: AFqh2krHolK6dUQ0OftlkI+UV1Kq9qTFXXkscEk0C42eY7ExbD/hE+Rq
+        nbDe1Yt9X7ayLGEDeGPJ2tjbBSelHI7esKX/9ohSaw==
+X-Google-Smtp-Source: AMrXdXv8OX9M5689SnQnaSGPrLdj9p5QLmx+kBVYmhnA495PZDaD/5bf4mxIVTxVmZLdRLzgkWlifrloH6WCSDERMeE=
+X-Received: by 2002:a17:902:e053:b0:192:8d55:4599 with SMTP id
+ x19-20020a170902e05300b001928d554599mr1260768plx.165.1672672032313; Mon, 02
+ Jan 2023 07:07:12 -0800 (PST)
 MIME-Version: 1.0
-References: <20221223025022.1893102-1-haibo.chen@nxp.com>
-In-Reply-To: <20221223025022.1893102-1-haibo.chen@nxp.com>
+References: <20221213230129.549968-1-fabrizio.castro.jz@renesas.com> <20221213230129.549968-3-fabrizio.castro.jz@renesas.com>
+In-Reply-To: <20221213230129.549968-3-fabrizio.castro.jz@renesas.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 2 Jan 2023 16:06:30 +0100
-Message-ID: <CAPDyKFrYNThzEq_4vfb86U+ZNeybRKYkmKk8cMYEW7c5Co8+3g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] fix the sdio device DATA/CMD CRC and Timeout issue
- after tuning
-To:     haibo.chen@nxp.com
-Cc:     adrian.hunter@intel.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, linux-mmc@vger.kernel.org,
-        kgroeneveld@lenbrook.com
+Date:   Mon, 2 Jan 2023 16:06:36 +0100
+Message-ID: <CAPDyKFoO6pKqg2vN1fbaBE2y=1SJFJR6FByLV3Jm3r2cWR2p1g@mail.gmail.com>
+Subject: Re: [PATCH 2/4] dt-bindings: mmc: renesas,sdhi: Document RZ/V2M support
+To:     Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-clk@vger.kernel.org,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Jacopo Mondi <jacopo@jmondi.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 23 Dec 2022 at 03:50, <haibo.chen@nxp.com> wrote:
+On Wed, 14 Dec 2022 at 00:01, Fabrizio Castro
+<fabrizio.castro.jz@renesas.com> wrote:
 >
-> From: Haibo Chen <haibo.chen@nxp.com>
+> Document support for the SD Card/MMC interface on the Renesas
+> RZ/V2M (a.k.a. r9a09g011) SoC.
 >
-> V3:
->   - involve init_card() callback instead of change the common code.
->
-> V2:
->   - drop the dts/dt-binding change, since this is one IC limitation,
->     so handle this directlly in driver.
->   - simply the auto tuning code logic.
->   - To detect the SDIO device in host driver side, add some change
->     in common code, move host->card = card a bit upper.
->
-> Haibo Chen (2):
->   mmc: sdhci-esdhc-imx: simplify the auto tuning logic
->   mmc: sdhci-esdhc-imx: only enable DAT[0] and CMD line auto tuning for
->     SDIO device
->
->  drivers/mmc/host/sdhci-esdhc-imx.c | 66 ++++++++++++++++++++++++++----
->  1 file changed, 57 insertions(+), 9 deletions(-)
->
+> Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
 Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> index 7bfb10c62566..435773607489 100644
+> --- a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> @@ -59,6 +59,7 @@ properties:
+>                - renesas,sdhi-r9a07g043 # RZ/G2UL
+>                - renesas,sdhi-r9a07g044 # RZ/G2{L,LC}
+>                - renesas,sdhi-r9a07g054 # RZ/V2L
+> +              - renesas,sdhi-r9a09g011 # RZ/V2M
+>            - const: renesas,rcar-gen3-sdhi # R-Car Gen3 or RZ/G2
+>        - items:
+>            - enum:
+> --
+> 2.34.1
+>
