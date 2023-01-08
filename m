@@ -2,107 +2,158 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2DEC6614CA
-	for <lists+linux-mmc@lfdr.de>; Sun,  8 Jan 2023 12:30:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA72C661585
+	for <lists+linux-mmc@lfdr.de>; Sun,  8 Jan 2023 14:41:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233865AbjAHLaN (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 8 Jan 2023 06:30:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47352 "EHLO
+        id S233340AbjAHNlO (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 8 Jan 2023 08:41:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233843AbjAHLaI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 8 Jan 2023 06:30:08 -0500
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 596D1D2EA
-        for <linux-mmc@vger.kernel.org>; Sun,  8 Jan 2023 03:30:00 -0800 (PST)
-Received: by mail-ed1-x542.google.com with SMTP id v6so8509018edd.6
-        for <linux-mmc@vger.kernel.org>; Sun, 08 Jan 2023 03:30:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HcpM41K3Tg/Gq2Sy2fOw39ukTQf5X/VzmfsS+yU67xU=;
-        b=CBHoltcPCly7GiqaZisHIdHagk3j88LH6gwUStENc7TmK8kPc76KHKYcnJY6iDZZMK
-         zeZqsA1ff0w5XpZ+4glFWl1GyviVBRgntqmHO/VUY/3QAM/4BEqATrvB9QC5pUObgew4
-         RetoWbsbhE7vvZNjnWF1ntu6AKusNAqL9LcfNQoL746mMOo+IU62G6AnwXIE1R5hrOEj
-         dbBWRzUB2Prz7lzjeUBado8dQNU+NHa8UO7MHqA6YBhg8o5885TQyc+TTd+AHeQCxRmz
-         W39GCfWxEXJKc5WGkow93s6w0rATs6Z97vg48xEY6ODKjV47q0qZH8Od42jePCVz7O0s
-         3ihQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HcpM41K3Tg/Gq2Sy2fOw39ukTQf5X/VzmfsS+yU67xU=;
-        b=xYJ4QZQlWtIO4PCJD/nachgUblbDb2wOjk3KCVD2sCJyKkeFlVEj7ENezJI7nor+m9
-         /f35+AWKUVNVRC2FToIbTQIxqJ1vOPO4DwNNKqCjFh7rsyzIlhyib4RuY/DS4EKH/75Q
-         iptd5fns3vR3HCmO2X6dyRBWl8PLo38M/zISA8RtAFo/FK6AjhaKqS87NaCFeGqRSCsk
-         PICsTHkbhmraSY5w69AOtMBacJQplQtmLNUg84YUqBRvQchlM0dshUDwVKrGWUhgjS2o
-         mAHrCXaMjSS7KfBi3HVG3UzyY1PQbLpC/MumMbS4kEqbMISY15usXQ9qaaeEzRxC90tY
-         6UBQ==
-X-Gm-Message-State: AFqh2krXdOSBdqzX508/IVYGV8zwOW8WFGaz7xLJPMJHbkeMrKZ5sfKW
-        aqJYgYqqzXZpmBNN3iBO0D5LcLjFQrSVI6iAREc=
-X-Google-Smtp-Source: AMrXdXutj5CXRYxZVz1GE2BcugsOWq5HiRWmZepwLQ+buZ49i5JcEFxYxazuCp1lN8B6N2AquQdaKFjZl2R0jiZqGNU=
-X-Received: by 2002:a05:6402:1614:b0:492:7e5f:2b59 with SMTP id
- f20-20020a056402161400b004927e5f2b59mr1165239edv.414.1673177398844; Sun, 08
- Jan 2023 03:29:58 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a17:906:eca7:b0:7c0:dfb2:c37b with HTTP; Sun, 8 Jan 2023
- 03:29:58 -0800 (PST)
-Reply-To: muhammadabdulrahma999@gmail.com
-From:   muhammad <nnannacollins2019@gmail.com>
-Date:   Sun, 8 Jan 2023 03:29:58 -0800
-Message-ID: <CAPQqOC2UtyuwO9Yiww_0mKLH0x1zZsfAsvJyhsRFqDWmwN2eWw@mail.gmail.com>
-Subject: Re:Re:Inquiry about your products.!!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=BAYES_50,DEAR_SOMETHING,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:542 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [nnannacollins2019[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [nnannacollins2019[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [muhammadabdulrahma999[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  2.0 DEAR_SOMETHING BODY: Contains 'Dear (something)'
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+        with ESMTP id S230205AbjAHNlN (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 8 Jan 2023 08:41:13 -0500
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F22EABCBD;
+        Sun,  8 Jan 2023 05:41:11 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id A73295C0099;
+        Sun,  8 Jan 2023 08:41:08 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Sun, 08 Jan 2023 08:41:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm2; t=1673185268; x=1673271668; bh=pzHAbdQL+W
+        AHy+4O5PrQB6Gr0C7YcxjNyQrc/0x2zps=; b=Xa60G+rAC3iidMuZ8dtIXstRWH
+        Qx5c+WT240uC48PQfQMNI8+0MAGnGwQmQfqUbbAz+wzI9BDMGSzPWf+D/zVPRzPw
+        F2Iu+jB0pwqLfON9lnzcoQrcLKIsZNHXfZj6hi+CGRFZXON3992NLMnIJnuL2wrN
+        g1pZI/k/72M3XHUMf0ZgmFwr/0Fa49KLJe6nunUkxBPk9cosv+mYzVy1eRdvM7Co
+        9LAZdLzqth0xPEIQOCM2OoItmHQy7IoTH+FznjWcrFAr1UrTmp0TeS2WVbwt6fjr
+        LJE5V1DzUPkvjyZ/+L7PjxPvSgi8WnBb1mR669kQQXo1iWjuCIbjfDSJ4xcw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm3; t=1673185268; x=1673271668; bh=pzHAbdQL+WAHy+4O5PrQB6Gr0C7Y
+        cxjNyQrc/0x2zps=; b=loQ54YCdSXJiSI9Kv2X090IUbTDQrvox1ery1xh/0BA+
+        2MFmALo/stswBhFe5HEahH12k1CTXZI9RvBH3e4+k6IespOTCnsxrlKN8BriPnVU
+        F4pD6Qx9fDrn5VDpAjfEBsozSaj9s57lUJBk/ZW0JWAEInRLe9hlvgy9Dd5weB7E
+        neGKSM4YqPWy4glkgHnwpDGl8ursUViECbhKubs37ejTWL6hPr481CuIQM3XaIoT
+        +4Jx4EnFn5OpwqlckzbO1HAHUKTPybi+1mnhsSNTIapC/v4I0l+n5os56nsnThB6
+        +tUEJoUBdBSvAFezHQxsS4gGdVUzkNh7JKQv3MByCw==
+X-ME-Sender: <xms:9Me6Y8Sa5-Hm01QBr92QnMfE4XDevhMmcSSkkQyXs7JdE_CN1abBTA>
+    <xme:9Me6Y5wZTzFcbjWJ0qwZirJan6nV7zUZP3tX_SklTpIdphp4VTl53wdLtph8ozXZa
+    PMS6OY1fLYic1ve9nA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrkeeggdehiecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:9Me6Y51n4OrHfZe-hh-e-ZOVlAqkHwyYa-McpmAwsARQ0xkOANfF8Q>
+    <xmx:9Me6YwCYQo66qrLhIxD34OOuvT14sTN25j4EwWw1PUEL5cMJKHUFYA>
+    <xmx:9Me6Y1h8LsPyPO251o6t5mM1TfzXHyVGEr8eN9Kb6jNcKSCUwFa2vQ>
+    <xmx:9Me6Y-ZumOpxlL0Jv3IWIl8XxzlJUWhs-KuDStSvLqxzrDdK-YKpfQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 23398B60089; Sun,  8 Jan 2023 08:41:08 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-1185-g841157300a-fm-20221208.002-g84115730
+Mime-Version: 1.0
+Message-Id: <2d085660-41a2-492c-a343-7df80d510a59@app.fastmail.com>
+In-Reply-To: <m2sfglh02h.fsf@free.fr>
+References: <20230105134622.254560-1-arnd@kernel.org>
+ <20230105134622.254560-5-arnd@kernel.org> <m2sfglh02h.fsf@free.fr>
+Date:   Sun, 08 Jan 2023 14:40:47 +0100
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Robert Jarzmik" <robert.jarzmik@free.fr>,
+        "Arnd Bergmann" <arnd@kernel.org>
+Cc:     "Daniel Mack" <daniel@zonque.org>,
+        "Haojian Zhuang" <haojian.zhuang@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        "Michael Turquette" <mturquette@baylibre.com>,
+        "Stephen Boyd" <sboyd@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        "Viresh Kumar" <viresh.kumar@linaro.org>,
+        "Ulf Hansson" <ulf.hansson@linaro.org>,
+        "Dominik Brodowski" <linux@dominikbrodowski.net>,
+        linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
+        "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>
+Subject: Re: [PATCH 04/27] ARM: pxa: drop pxa310/pxa320/pxa93x support
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dear Sir/Madam,
+On Sun, Jan 8, 2023, at 09:49, Robert Jarzmik wrote:
+> Arnd Bergmann <arnd@kernel.org> writes:
+>> There is currently no devicetree support for any of these three
+>> SoCs, and no board files remain. As it seems unlikely that 
+>> anyone is going to add DT support soon, let's drop the SoC specific 
+>> code now.
+>
+> Hi Arnd,
+>
+> Here you're dropping pxa variant support. For the currently 
+> "partly" working boards in devicetree, such a zylonite, this
+> will break their current support.
+>
+> For example the zylonite I have which is working on DT has a 
+> pxa310 variant.
+> The cm-x300, which also works in DT, has a pxa320 variant.
+>
+> What these boards need is their IO mappings and cpufreq to still 
+> work after
+> your serie in DT. What bothers me are the changes to :
+>  - drivers/clk/pxa/clk-pxa3xx.c
+>  - drivers/cpufreq/pxa3xx-cpufreq.c
+>
+> Here the clock changes will probably remove the clock provided to 
+> specific
+> pxa310/pxa320 drivers for example.
+>
+> I don't know how you want to proceed, yet this change will break 
+> some pxa3xx platforms.
 
-An open Tender for the supply of your company products to (Doha,
-Qatar). Urgently furnish us in full details about the standard of your
-product. We will appreciate it more if you give us with Details:
-Specification and Catalogs or Price list via Email.To avoid making a
-wrong choice of products before placing an order for it.
+Hi Robert,
 
-Terms of payment:An upfront payment of 80% (T/T) will be made to your
-account for production,While 20% will be paid before shipment.
+Thanks for pointing this out, I thought that I had caught
+all the missing dependencies ones after you pointed out
+the AC97_BUS_NEW that I fixed in patch 14.
 
-Thanks and Regards
+From what I can tell, commit b5aaaa666a85 ("ARM: pxa: add
+Kconfig dependencies for ATAGS based boards"), the
+PXA310/PXA320 DT support became dead code because
+MACH_PXA3XX_DT only selects CPU_PXA300, so if it worked
+before that commit, it now needs CONFIG_UNUSED_BOARD_FILES
+and CONFIG_EXPERT as well as enabling one of the legacy
+board files with the corresponding chip support.
+
+If that's all you think is missing, I can add this
+trivial patch as well and rework the series to not
+drop code that depends on PXA310/PXA320:
+
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -45,6 +45,8 @@ config MACH_PXA27X_DT
+ config MACH_PXA3XX_DT
+        bool "Support PXA3xx platforms from device tree"
+        select CPU_PXA300
++       select CPU_PXA310
++       select CPU_PXA320
+        select PINCTRL
+        select POWER_SUPPLY
+        select PXA3xx
+
+Can you have a look at the other patches to see if there
+are more removed drivers or platform bits that are currently
+dead code but are actually required?
+
+     Arnd
