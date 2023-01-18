@@ -2,75 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 309A06711C3
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Jan 2023 04:20:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 330626712E4
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Jan 2023 05:58:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjARDUr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 Jan 2023 22:20:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46888 "EHLO
+        id S229545AbjARE6D (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 Jan 2023 23:58:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjARDUq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Jan 2023 22:20:46 -0500
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22DDD5140F
-        for <linux-mmc@vger.kernel.org>; Tue, 17 Jan 2023 19:20:45 -0800 (PST)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id 7FCFF84D64;
-        Wed, 18 Jan 2023 04:20:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1674012043;
-        bh=bAJ7njRKpzGLJCFz/dYZmQXI9tf09SAg8UAaVxxUvuU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=hS5CO3f26QrKC9lm0GmpRj/4DS3D1rasduIf+aXRlnAAnbN4CjpiUseqbEBIFFxxx
-         R1Vt6s6DGUGJAEFUglyxiAK1s5DKve4G4Ja2eifxvlhHeo8Uc2RU7s5T/+KsKXitxn
-         ChSOWmCy9dzZL1TZHdIzLl+WvwsMF1ikhMVZjksZBpWf3VA5vq8OusaUMyZ53v6vXF
-         LuCiKK1UgVCU4zr2ewivI4KeB3qjmk6Uyvf/bj6emOVotZbylF2n/CnVUtLKFLFdvI
-         LtOdFo0o+Bar+hcKvbUg4B5p9vLzNZTcUi4EoJcl0p5GVDdBsEbYhIKgrHDLjCyp8Q
-         tco+Gv1JEEn+g==
-Message-ID: <17bbb55d-557e-28bb-77d8-1a4f0eeaffd4@denx.de>
-Date:   Wed, 18 Jan 2023 04:20:42 +0100
+        with ESMTP id S229503AbjARE6B (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Jan 2023 23:58:01 -0500
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53483D927;
+        Tue, 17 Jan 2023 20:57:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1674017880;
+  x=1705553880;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LXVxts8stmRwC9zeoYq1CfmgBzo9W/O8CtI9UiNH5k8=;
+  b=Fl4EQRB8mP0wHO5m8ft/aIOMBWc3ohvT5xBriDc70YOaG3rOIxQwozeR
+   O77w6QGNnPMu7XBYVJ2qAeWz6/1S9hdy5mct3JOQYdiYalR5ZNAmbJTa5
+   WWFcQdWOOfw8Nox/3dFMzv5vVUq4s3BEUwFqgfywxJ/2HbhAP/nigsWJM
+   dlErAppn7beCDlM1cJshd/uONplQe4Gj+k4/t7RDz5A84FZe7Rlj3B+Ie
+   AnWfy1mqknyM1grT/6W0l74HCyL4iDb3CmfFPZtC+Gi80SRZYiNCRIRG9
+   LrhIoAA5UXv4MbDQt0Guu6qs//VbpEZ89swyzvhEveX3dPVpvbJ9Q8qHW
+   A==;
+From:   Hermes Zhang <chenhuiz@axis.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     <kernel@axis.com>, Hermes Zhang <chenhuiz@axis.com>,
+        <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] mmc: core: expose MMC_CAP_AGGRESSIVE_PM to DT
+Date:   Wed, 18 Jan 2023 12:57:49 +0800
+Message-ID: <20230118045749.3913296-1-chenhuiz@axis.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH] mmc: sdhci: Always apply sdhci-caps-mask and sdhci-caps
- to caps
-Content-Language: en-US
-To:     Adrian Hunter <adrian.hunter@intel.com>, linux-mmc@vger.kernel.org
-Cc:     Bough Chen <haibo.chen@nxp.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Zach Brown <zach.brown@ni.com>
-References: <20230105144628.223420-1-marex@denx.de>
- <967beb8d-93f0-55ca-8b6b-f3be96a96c6c@intel.com>
-From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <967beb8d-93f0-55ca-8b6b-f3be96a96c6c@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.6 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 1/13/23 12:32, Adrian Hunter wrote:
-> On 5/01/23 16:46, Marek Vasut wrote:
->> The original implementation in the commit referenced below only modifies
->> caps in case no caps are passed to sdhci_read_caps() via parameter, this
->> does not seem correct. Always modify the caps according to the properties
->> from DT.
->>
->> While at it, drop the always NULL caps and caps1 function parameters.
-> 
-> Please re-base on top of:
-> 
-> https://lore.kernel.org/linux-mmc/20230113110011.129835-1-adrian.hunter@intel.com/T/#t
+This patch expose the MMC_CAP_AGGRESSIVE_PM flag to DT which
+allows the host to enable it from DT.
 
-Rebase on top of that series means I can just discard this entire patch, 
-so done.
+Signed-off-by: Hermes Zhang <chenhuiz@axis.com>
+---
+ drivers/mmc/core/host.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
+index d17eda753b7e..1d98a301515d 100644
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -376,6 +376,8 @@ int mmc_of_parse(struct mmc_host *host)
+ 		host->caps |= MMC_CAP_HW_RESET;
+ 	if (device_property_read_bool(dev, "cap-sdio-irq"))
+ 		host->caps |= MMC_CAP_SDIO_IRQ;
++	if (device_property_read_bool(dev, "cap-aggressive-pm"))
++		host->caps |= MMC_CAP_AGGRESSIVE_PM;
+ 	if (device_property_read_bool(dev, "full-pwr-cycle"))
+ 		host->caps2 |= MMC_CAP2_FULL_PWR_CYCLE;
+ 	if (device_property_read_bool(dev, "full-pwr-cycle-in-suspend"))
+-- 
+2.30.2
+
