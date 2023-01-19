@@ -2,64 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0F9F674BBC
-	for <lists+linux-mmc@lfdr.de>; Fri, 20 Jan 2023 06:07:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED58674CD8
+	for <lists+linux-mmc@lfdr.de>; Fri, 20 Jan 2023 06:53:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231153AbjATFHK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 20 Jan 2023 00:07:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34916 "EHLO
+        id S230188AbjATFxw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 20 Jan 2023 00:53:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230340AbjATFGn (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 20 Jan 2023 00:06:43 -0500
+        with ESMTP id S230527AbjATFxq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 20 Jan 2023 00:53:46 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D34F11641;
-        Thu, 19 Jan 2023 20:54:25 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5CD149550;
+        Thu, 19 Jan 2023 21:53:27 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 74DB5B82482;
-        Thu, 19 Jan 2023 14:19:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4207DC433D2;
-        Thu, 19 Jan 2023 14:19:17 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9E923B825ED;
+        Thu, 19 Jan 2023 18:43:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63261C433D2;
+        Thu, 19 Jan 2023 18:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674137965;
-        bh=nHFbFijfAK88CEeJ3L488W0Py49g4R3Feb8a7Q7xov0=;
+        s=k20201202; t=1674153802;
+        bh=vF/z5qpyXP/mL10MG7EvPirP8eSE/txoS1bJzYmIYPI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dFOMC1Q6bTTJFPLlpRnM0iksgfXztxrKd3MX+LBKkzZA3FVrYP8JvM/I8JGtUYac3
-         dafX+hxkx6Pn6SmJq5cSpc7OPCiwD+2f3yAQvup7A7JfS1Lb9XDD543FOrrg9xgqb9
-         2YAoyODvMUcaUTc3YB1uFwDzVek0xo710To1OF7GpD5Zxa8v7t1YrWJ1h0bsrLerpK
-         sCq9nFgucq8G/WZ5qkxzSGk5NsuNFp32qrNdYd3CR8ZqwhQnz6qs4QK9HiiGv0P4Xu
-         nGieUsJ0Xi48MdiEreSf7APLx/TS/Jv67DIDHhj7/pKY5YAMQkJo5bL7xFQFomO2vN
-         zLj+hHeT+9izQ==
-Date:   Thu, 19 Jan 2023 14:19:14 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     Brad Larson <blarson@amd.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org,
-        adrian.hunter@intel.com, alcooperx@gmail.com,
-        andy.shevchenko@gmail.com, arnd@arndb.de, brad@pensando.io,
-        brendan.higgins@linux.dev, briannorris@chromium.org,
-        brijeshkumar.singh@amd.com, catalin.marinas@arm.com,
-        davidgow@google.com, gsomlo@gmail.com, gerg@linux-m68k.org,
-        krzk@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        lee.jones@linaro.org, broonie@kernel.org,
-        yamada.masahiro@socionext.com, p.zabel@pengutronix.de,
-        piotrs@cadence.com, p.yadav@ti.com, rdunlap@infradead.org,
-        robh+dt@kernel.org, samuel@sholland.org, fancer.lancer@gmail.com,
-        skhan@linuxfoundation.org, suravee.suthikulpanit@amd.com,
-        thomas.lendacky@amd.com, tonyhuang.sunplus@gmail.com,
-        ulf.hansson@linaro.org, vaishnav.a@ti.com, will@kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v9 05/15] dt-bindings: mfd: syscon: Add
- amd,pensando-elba-syscon compatible
-Message-ID: <Y8lRYnfLgL8SbZmW@google.com>
-References: <20230119035136.21603-1-blarson@amd.com>
- <20230119035136.21603-6-blarson@amd.com>
+        b=LzvGBaP/l+y/aBXX3v0npik84cCY1DzBJscI5jxbYKBb3zILhlGtoDoQp2ZMPy+Cy
+         WHtoa4ZVFyjrBAqRcpqpiPUejOAx5K2HtT4Qhy+TOtc08TWCeq7VxNz+1oj6ETt6Q9
+         ZMgwkoh1km/yo3W5vXjpst8RLohLNfj+t6SpayNbp+9RiQ+/sJ3a/UEg8h62bmU5aF
+         xYzqs7MNpc+TcSjmTNx5u3M4S8aSFh2tgDIUGEi/8NUzKpOwaLHXLkg8aO3Y9zqL/G
+         aS6I29C1ZmYj99R1kC4TO+c3J50+RlRyQjSYYP95R3+xabEHG/uX2JZsZazmU8POxO
+         HkuD0zfSKFb3A==
+Date:   Thu, 19 Jan 2023 18:43:17 +0000
+From:   Conor Dooley <conor@kernel.org>
+To:     William Qiu <william.qiu@starfivetech.com>
+Cc:     linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] riscv: dts: starfive: Add mmc node
+Message-ID: <Y8mPRQnGPpAhpu8C@spud>
+References: <20221227122227.460921-1-william.qiu@starfivetech.com>
+ <20221227122227.460921-4-william.qiu@starfivetech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="XKsT41m8CI9UsBxP"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230119035136.21603-6-blarson@amd.com>
+In-Reply-To: <20221227122227.460921-4-william.qiu@starfivetech.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -69,17 +58,43 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 18 Jan 2023, Brad Larson wrote:
 
-> Add the AMD Pensando Elba SoC system registers compatible
-> 
-> Acked-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Brad Larson <blarson@amd.com>
+--XKsT41m8CI9UsBxP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hey William,
+
+On Tue, Dec 27, 2022 at 08:22:27PM +0800, William Qiu wrote:
+> This adds the mmc node for the StarFive JH7110 SoC.
+> Set sdioo node to emmc and set sdio1 node to sd.
+>=20
+> Signed-off-by: William Qiu <william.qiu@starfivetech.com>
 > ---
->  Documentation/devicetree/bindings/mfd/syscon.yaml | 1 +
->  1 file changed, 1 insertion(+)
+>  .../jh7110-starfive-visionfive-v2.dts         | 25 ++++++++++++
 
-Applied, thanks
+FYI, this file does not exist in the v3 Devicetree patchset sent by Hal
+Feng:
+https://lore.kernel.org/linux-riscv/20221220011247.35560-1-hal.feng@starfiv=
+etech.com
 
--- 
-Lee Jones [李琼斯]
+Would you make sure that future revisions take into account that there
+is now a jh7110-starfive-visionfive-2.dtsi file instead?
+
+Thanks,
+Conor.
+
+
+--XKsT41m8CI9UsBxP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY8mPRQAKCRB4tDGHoIJi
+0toIAP4zpbU0OLSqlFxJVLB/Y+fIjOaoIFT/p8c4yIjZ70N3XAEA5X6zPiLp8UDG
+nNz0GgJfub7PTipxdxFuprUVZpvnkAg=
+=roCg
+-----END PGP SIGNATURE-----
+
+--XKsT41m8CI9UsBxP--
