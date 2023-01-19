@@ -2,36 +2,36 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED58674CD8
-	for <lists+linux-mmc@lfdr.de>; Fri, 20 Jan 2023 06:53:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52413674C55
+	for <lists+linux-mmc@lfdr.de>; Fri, 20 Jan 2023 06:29:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230188AbjATFxw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 20 Jan 2023 00:53:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35324 "EHLO
+        id S231239AbjATF3W (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 20 Jan 2023 00:29:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230527AbjATFxq (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 20 Jan 2023 00:53:46 -0500
+        with ESMTP id S231488AbjATF2q (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 20 Jan 2023 00:28:46 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5CD149550;
-        Thu, 19 Jan 2023 21:53:27 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E04D45895;
+        Thu, 19 Jan 2023 21:23:46 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9E923B825ED;
-        Thu, 19 Jan 2023 18:43:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63261C433D2;
-        Thu, 19 Jan 2023 18:43:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1BC96B82752;
+        Thu, 19 Jan 2023 22:17:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7243C433EF;
+        Thu, 19 Jan 2023 22:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674153802;
-        bh=vF/z5qpyXP/mL10MG7EvPirP8eSE/txoS1bJzYmIYPI=;
+        s=k20201202; t=1674166630;
+        bh=89utuYKQCGzeq83oKyHYUYUZDVIx127sMQsoQcEb2wo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LzvGBaP/l+y/aBXX3v0npik84cCY1DzBJscI5jxbYKBb3zILhlGtoDoQp2ZMPy+Cy
-         WHtoa4ZVFyjrBAqRcpqpiPUejOAx5K2HtT4Qhy+TOtc08TWCeq7VxNz+1oj6ETt6Q9
-         ZMgwkoh1km/yo3W5vXjpst8RLohLNfj+t6SpayNbp+9RiQ+/sJ3a/UEg8h62bmU5aF
-         xYzqs7MNpc+TcSjmTNx5u3M4S8aSFh2tgDIUGEi/8NUzKpOwaLHXLkg8aO3Y9zqL/G
-         aS6I29C1ZmYj99R1kC4TO+c3J50+RlRyQjSYYP95R3+xabEHG/uX2JZsZazmU8POxO
-         HkuD0zfSKFb3A==
-Date:   Thu, 19 Jan 2023 18:43:17 +0000
+        b=qbXgWUQIUKpa3h09/Ocor30Egjb4MGaL7bx1gdKjpc2q4enyEUlMoMPksx2Cf0CKc
+         oAYbo3lLTXDxvwnhRTSMe54EZETX4XQUIIsfASm1hjfv7MVEYFNjROj38OoDBRrRp8
+         UHZt2wqjGbJMPxyBmBdirkPnFiyaeLVUaK0mgkleCHMunxOVh291Y92pbDPNshygZU
+         5XxibQVOkBWbshESs3encPisolIseGbkEhJz3HflnIL5vOf3LeVICHn3vdbwoI5a+3
+         4QGTHrp/yz+f0opebObVO2TfTK2GbSs6+QAn1wJoUkNnsISE3NcHWnIGqs6aXU98hv
+         h8ZZNNVBFeFbw==
+Date:   Thu, 19 Jan 2023 22:17:06 +0000
 From:   Conor Dooley <conor@kernel.org>
 To:     William Qiu <william.qiu@starfivetech.com>
 Cc:     linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
@@ -40,15 +40,15 @@ Cc:     linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
         Jaehoon Chung <jh80.chung@samsung.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] riscv: dts: starfive: Add mmc node
-Message-ID: <Y8mPRQnGPpAhpu8C@spud>
+Subject: Re: [PATCH v2 2/3] mmc: starfive: Add sdio/emmc driver support
+Message-ID: <Y8nBYpMWZnPfIqxH@spud>
 References: <20221227122227.460921-1-william.qiu@starfivetech.com>
- <20221227122227.460921-4-william.qiu@starfivetech.com>
+ <20221227122227.460921-3-william.qiu@starfivetech.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="XKsT41m8CI9UsBxP"
+        protocol="application/pgp-signature"; boundary="NUNkl8OsrY3EJ11E"
 Content-Disposition: inline
-In-Reply-To: <20221227122227.460921-4-william.qiu@starfivetech.com>
+In-Reply-To: <20221227122227.460921-3-william.qiu@starfivetech.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,42 +59,32 @@ List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
 
---XKsT41m8CI9UsBxP
+--NUNkl8OsrY3EJ11E
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hey William,
-
-On Tue, Dec 27, 2022 at 08:22:27PM +0800, William Qiu wrote:
-> This adds the mmc node for the StarFive JH7110 SoC.
-> Set sdioo node to emmc and set sdio1 node to sd.
+On Tue, Dec 27, 2022 at 08:22:26PM +0800, William Qiu wrote:
+> Add sdio/emmc driver support for StarFive JH7110 soc.
 >=20
 > Signed-off-by: William Qiu <william.qiu@starfivetech.com>
-> ---
->  .../jh7110-starfive-visionfive-v2.dts         | 25 ++++++++++++
 
-FYI, this file does not exist in the v3 Devicetree patchset sent by Hal
-Feng:
-https://lore.kernel.org/linux-riscv/20221220011247.35560-1-hal.feng@starfiv=
-etech.com
-
-Would you make sure that future revisions take into account that there
-is now a jh7110-starfive-visionfive-2.dtsi file instead?
+Gave the patch a go w/ a chroot running on the sdcard. Seemed fine :)
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
 Thanks,
 Conor.
 
 
---XKsT41m8CI9UsBxP
+--NUNkl8OsrY3EJ11E
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY8mPRQAKCRB4tDGHoIJi
-0toIAP4zpbU0OLSqlFxJVLB/Y+fIjOaoIFT/p8c4yIjZ70N3XAEA5X6zPiLp8UDG
-nNz0GgJfub7PTipxdxFuprUVZpvnkAg=
-=roCg
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY8nBYgAKCRB4tDGHoIJi
+0ugVAQCT1oOYndDpHRFXvRmGKO5D1/5gymrPbI0BvzUu7bYCzwD/djaRzOTVgw9C
++WbQyiNFGpHXG1pGlshWuMzzbeKYYgY=
+=pLQz
 -----END PGP SIGNATURE-----
 
---XKsT41m8CI9UsBxP--
+--NUNkl8OsrY3EJ11E--
