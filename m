@@ -2,153 +2,132 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBF20679035
-	for <lists+linux-mmc@lfdr.de>; Tue, 24 Jan 2023 06:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 381F36791D7
+	for <lists+linux-mmc@lfdr.de>; Tue, 24 Jan 2023 08:23:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232921AbjAXFpx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 24 Jan 2023 00:45:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41150 "EHLO
+        id S229666AbjAXHXA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 24 Jan 2023 02:23:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232892AbjAXFpt (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 24 Jan 2023 00:45:49 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075C1367CD;
-        Mon, 23 Jan 2023 21:45:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674539120; x=1706075120;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=LKVw2yOOeRpF1A8gySOnDNhea0uoF/YrAVMAwjlZ9Dw=;
-  b=YOSVq4k2FspkTQL6fGOFPIKeFKq2UeiaOkjsg0g41Jzc7A/LvqSgOw8V
-   RbafKtmqoB1OWUHMqQiDNfJu40s7Jwg1cfYvoXhRgHmR7NrnLoZMbsq6i
-   1LJLofVdLqlK5oqacOtPSxxfjbgohpWGfchGCL6v+WRZesGY1EjHjM7WE
-   AGIcNF8ZiZRMkRzuKOUM+47zEkGnkUiKo5YVnttAIdWiDe42K/bk7iUi8
-   G/jebS/gB/UZqUv9eXbsEkpWu3SjxuIKRSVcMGoykmu6We7yOSKCPxvl/
-   8eZiPVILD8K72UFLpPe/qC0gXfXKB6u6yexqafqIOfzYTtCHzBKfVsDWK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="305895530"
-X-IronPort-AV: E=Sophos;i="5.97,241,1669104000"; 
-   d="scan'208";a="305895530"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 21:44:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="655307231"
-X-IronPort-AV: E=Sophos;i="5.97,241,1669104000"; 
-   d="scan'208";a="655307231"
-Received: from coresw01.iind.intel.com ([10.106.46.194])
-  by orsmga007.jf.intel.com with ESMTP; 23 Jan 2023 21:44:48 -0800
-From:   rashmi.a@intel.com
-To:     ulf.hansson@linaro.org, michal.simek@xilinx.com,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        robh+dt@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kishon@ti.com, vkoul@kernel.org,
-        andriy.shevchenko@linux.intel.com, linux-phy@lists.infradead.org,
-        mgross@linux.intel.com
-Cc:     kris.pan@linux.intel.com, adrian.hunter@intel.com,
-        mahesh.r.vaidya@intel.com, nandhini.srikandan@intel.com,
-        vasavi.v.itha@intel.com, kenchappa.demakkanavar@intel.com,
-        furong.zhou@intel.com, mallikarjunappa.sangannavar@intel.com,
-        rashmi.a@intel.com
-Subject: [PATCH v1 4/4] Revert "dt-bindings: phy: intel: Add Thunder Bay eMMC PHY bindings"
-Date:   Tue, 24 Jan 2023 11:14:27 +0530
-Message-Id: <20230124054427.28808-4-rashmi.a@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230124054427.28808-1-rashmi.a@intel.com>
-References: <20230124054427.28808-1-rashmi.a@intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229627AbjAXHW7 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 24 Jan 2023 02:22:59 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1684C1204C
+        for <linux-mmc@vger.kernel.org>; Mon, 23 Jan 2023 23:22:57 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id z5so12934199wrt.6
+        for <linux-mmc@vger.kernel.org>; Mon, 23 Jan 2023 23:22:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hOqIhKWmcWZHOP0TZmwFeKFhIjE5xH+rrbYLVFlCH54=;
+        b=HlnNsx1iPxPtbfpnVdPKdWVG8suPrAviFixXmIx4fqt1mo3cs95gRsDFo1LkAyACg9
+         +Gjf59A/1JloygRmOugHZHlqSx5zy3E2w4OyJPZK7sArtb6QlinASrtFhTX7Z4+sMepg
+         6W18cLx0YrHJtGMFWmbchimC1aSIGdhQclufRAVX0bogB4NF4zB35EURROHjYbdSNF5m
+         LGIol1qNNgUgMJA0dSGTFX5zB3ikCfmej1JNz9dxL+YzXBxQw8h74hZzjtZEAnRCGGda
+         qIiazs6A21ZBVXLX/WP4WnZ2l6AwbCobHjOsZBZqKkkQjMfDoifB1edlkbUKpwb1SltP
+         45kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hOqIhKWmcWZHOP0TZmwFeKFhIjE5xH+rrbYLVFlCH54=;
+        b=5jzpJnb4WiESHe/NFzNdrnkDLMjDhhbu2Jv9dJ/n6wKvMreizKS7tw34H6199VInzR
+         dfdl7iuAlQjEGtKbeIQAYS2wyprwXwzX/ivNYXjpVcbwlxNDrm4U9J7u9+nuEQEGfaFQ
+         +Cd/pAgLqTQoMNBam+1xe2eFnI534M2pdjd+mQYkt2YMkgyVWYIazNc5T9Cd9xEVjpm8
+         kkpcT+pUPMFYVWW/LvMdvJFeB/sG8VaoVKYuEmd05ksyeQPHX7/zCM8piD9mI3R/qRGJ
+         fg+wJ7+WRupHIpgeWlLpZd0T1ECeLmtjup7TI/NF5Df3Ent10DTw8WzV9avctJHThPZw
+         Hzcw==
+X-Gm-Message-State: AFqh2koxrsjh7FGFTTLWrJkSsTg0zSu3QIPgFz0iMVvWKaVBdIpZu4HF
+        6/MqQO244/LwduF9vhWjW9HW4g==
+X-Google-Smtp-Source: AMrXdXvmvg2tOjBvWsrSICSJ6SCvBHlj8KhJwTP4+sjwYqWpPuD963rZLRunfa+RjjRE3GpeDKF4Vg==
+X-Received: by 2002:a05:6000:603:b0:26b:e7e1:ad03 with SMTP id bn3-20020a056000060300b0026be7e1ad03mr26799070wrb.55.1674544975569;
+        Mon, 23 Jan 2023 23:22:55 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id w14-20020a5d608e000000b002bc84c55758sm1407059wrt.63.2023.01.23.23.22.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Jan 2023 23:22:55 -0800 (PST)
+Message-ID: <84233b60-2468-4be9-7aa7-bdd296fd96e8@linaro.org>
+Date:   Tue, 24 Jan 2023 08:22:51 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH v9 04/15] dt-bindings: spi: dw: Add AMD Pensando Elba SoC
+ SPI Controller bindings
+To:     Brad Larson <blarson@amd.com>
+Cc:     adrian.hunter@intel.com, alcooperx@gmail.com,
+        andy.shevchenko@gmail.com, arnd@arndb.de, brad@pensando.io,
+        brendan.higgins@linux.dev, briannorris@chromium.org,
+        brijeshkumar.singh@amd.com, broonie@kernel.org,
+        catalin.marinas@arm.com, davidgow@google.com,
+        devicetree@vger.kernel.org, fancer.lancer@gmail.com,
+        gerg@linux-m68k.org, gsomlo@gmail.com, krzk@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, lee.jones@linaro.org,
+        lee@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-spi@vger.kernel.org, p.yadav@ti.com, p.zabel@pengutronix.de,
+        piotrs@cadence.com, rdunlap@infradead.org, robh+dt@kernel.org,
+        samuel@sholland.org, skhan@linuxfoundation.org,
+        suravee.suthikulpanit@amd.com, thomas.lendacky@amd.com,
+        tonyhuang.sunplus@gmail.com, ulf.hansson@linaro.org,
+        vaishnav.a@ti.com, will@kernel.org, yamada.masahiro@socionext.com
+References: <322383a5-5c2b-a1e0-d14c-6c038085301d@linaro.org>
+ <20230124015721.2285-1-blarson@amd.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230124015721.2285-1-blarson@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: "A, Rashmi" <rashmi.a@intel.com>
+On 24/01/2023 02:57, Brad Larson wrote:
+> On 19/01/2023 7:55 UTC, Krzysztof Kozlowski wrote:
+>> On 19/01/2023 04:51, Brad Larson wrote:
+>>> The AMD Pensando Elba SoC has integrated the DW APB SPI Controller
+>>>
+> ...
+>>>  .../devicetree/bindings/spi/snps,dw-apb-ssi.yaml   | 14 ++++++++++++++
+>>>  1 file changed, 14 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+>>> index d33b72fabc5d..96b072835de0 100644
+>>> --- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+>>> +++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+>>> @@ -37,6 +37,18 @@ allOf:
+>>>      else:
+>>>        required:
+>>>          - interrupts
+>>> +  - if:
+>>> +      properties:
+>>> +        compatible:
+>>> +          contains:
+>>> +            const: amd,pensando-elba-spi
+>>> +    then:
+>>> +      properties:
+>>> +        amd,pensando-elba-syscon:
+>>> +          $ref: /schemas/types.yaml#/definitions/phandle-array
+>>> +          description: AMD Pensando Elba SoC system controller
+>>
+>> And nothing here - neither in commit msg nor here - explains why do you
+>> need it and what is it for.
+> 
+> Adding property amd,pensando-elba-syscon was a result of this thread:
+> https://lore.kernel.org/lkml/20220621101159.stvan53rvr6qugna@mobilestation/
+> 
 
-This reverts commit efb6935dd786a9d213ee542ed77d47ece700357c.
+But it is not in the code. The code should tell what the property does,
+what is its purpose, how it is used etc. Your property description
+basically copies the name without giving any new information.
 
-Revert Thunder Bay specific code as the product got cancelled
-and there are no end customers.
-
-Signed-off-by: A, Rashmi <rashmi.a@intel.com>
-Reviewed-by: Hunter, Adrian <adrian.hunter@intel.com>
----
- .../phy/intel,phy-thunderbay-emmc.yaml        | 45 -------------------
- MAINTAINERS                                   |  7 ---
- 2 files changed, 52 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/phy/intel,phy-thunderbay-emmc.yaml
-
-diff --git a/Documentation/devicetree/bindings/phy/intel,phy-thunderbay-emmc.yaml b/Documentation/devicetree/bindings/phy/intel,phy-thunderbay-emmc.yaml
-deleted file mode 100644
-index 361ffc35b16b..000000000000
---- a/Documentation/devicetree/bindings/phy/intel,phy-thunderbay-emmc.yaml
-+++ /dev/null
-@@ -1,45 +0,0 @@
--# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
--%YAML 1.2
-----
--$id: http://devicetree.org/schemas/phy/intel,phy-thunderbay-emmc.yaml#
--$schema: http://devicetree.org/meta-schemas/core.yaml#
--
--title: Intel Thunder Bay eMMC PHY
--
--maintainers:
--  - Srikandan Nandhini <nandhini.srikandan@intel.com>
--
--properties:
--  compatible:
--    const: intel,thunderbay-emmc-phy
--
--  "#phy-cells":
--    const: 0
--
--  reg:
--    maxItems: 1
--
--  clocks:
--    maxItems: 1
--
--  clock-names:
--    items:
--      - const: emmcclk
--
--required:
--  - "#phy-cells"
--  - compatible
--  - reg
--  - clocks
--
--additionalProperties: false
--
--examples:
--  - |
--    mmc_phy@80440800 {
--        #phy-cells = <0x0>;
--        compatible = "intel,thunderbay-emmc-phy";
--        reg = <0x80440800 0x100>;
--        clocks = <&emmc>;
--        clock-names = "emmcclk";
--    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 123216b76534..e9ca0b6364b0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10550,13 +10550,6 @@ F:	drivers/crypto/keembay/keembay-ocs-hcu-core.c
- F:	drivers/crypto/keembay/ocs-hcu.c
- F:	drivers/crypto/keembay/ocs-hcu.h
- 
--INTEL THUNDER BAY EMMC PHY DRIVER
--M:	Nandhini Srikandan <nandhini.srikandan@intel.com>
--M:	Rashmi A <rashmi.a@intel.com>
--S:	Maintained
--F:	Documentation/devicetree/bindings/phy/intel,phy-thunderbay-emmc.yaml
--F:	drivers/phy/intel/phy-intel-thunderbay-emmc.c
--
- INTEL MANAGEMENT ENGINE (mei)
- M:	Tomas Winkler <tomas.winkler@intel.com>
- L:	linux-kernel@vger.kernel.org
--- 
-2.17.1
+Best regards,
+Krzysztof
 
