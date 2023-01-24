@@ -2,233 +2,137 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 923826798C4
-	for <lists+linux-mmc@lfdr.de>; Tue, 24 Jan 2023 13:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C942A679B67
+	for <lists+linux-mmc@lfdr.de>; Tue, 24 Jan 2023 15:17:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234059AbjAXM6C (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 24 Jan 2023 07:58:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34410 "EHLO
+        id S234836AbjAXORM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 24 Jan 2023 09:17:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233521AbjAXM5x (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 24 Jan 2023 07:57:53 -0500
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB2583A9D
-        for <linux-mmc@vger.kernel.org>; Tue, 24 Jan 2023 04:57:50 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id k13so14688193plg.0
-        for <linux-mmc@vger.kernel.org>; Tue, 24 Jan 2023 04:57:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lbga1PekNQG7Wr08X5AD8bYyGj914Yhe8xMoadj6ep8=;
-        b=Wkgvt7M/3VLY+FML2DA+LVjnEPI6mopPmwB+jdxBTvY1cW+hfiTbvwPmfPCRqxGI/5
-         U3eRsnTqOG/OKrTOaCjpI+jKcytHrjhZx6z39hTcQlghqpfQlhf29szyk26EOPQ81aqv
-         RvwwXVDt+PD6CF73FMYrpZEPqnV75wK6k25xYKamIq9l28L6Gp65toSLr+8cLL6q0TLO
-         ccCO/h/ArwS/JoxxHnTzcPk2iEfgeIx30Ctb7nPpqPE37BtQA8X64Bv2FTfaU609ago/
-         JAZdxoMS/9mYTNvfvzHD4f1RyngBXoDNWTOYRxudbM0n2u2AKtqYXULrUqbNAOiL/GbG
-         s51Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Lbga1PekNQG7Wr08X5AD8bYyGj914Yhe8xMoadj6ep8=;
-        b=bFvbC91rY7p9VA+xgKfQH67k3WflfrZvEb4YDj5LTjhHpTcgsUwOdWOb0B3SW81yQ9
-         1i3Sr4JV4qQEbc9OYPgbKC2OSVgGOwrabs0JjYVQ1Pqxqb9+A5CE9LgjYgJhKRi+r4In
-         dwZ1crWEkwgmMFfR4as+Y/g0vVjJfZ8b6eFqxuVpdl8NjXFltqLXpGrwlEEVjgJujHnZ
-         8XUSRrKzwEMxRZ+feohZnYBPuOsFvL09uzF41xeKOT1fa/IUdGjFwZBC0Zn3U5G7voIM
-         njtmvSkBSVSc4FP7vgvw1stiLt0jFZo6kfUW0mIXT3G+1dfzy+e2A3WuzcTQolAOBrFX
-         02qw==
-X-Gm-Message-State: AFqh2kqhiKFsRNhSoxZZiIlvyEP5nTy3YnbynXf0IJfBOzW4oOCEH6eF
-        6OU3tflVF1MwX2f6oW9AQASflrqBbcvYFI5aS/02nA==
-X-Google-Smtp-Source: AMrXdXtCakx+gDCZWxcq7+x+5SmE+6G1+2IncnakyeXGIZcRncfenaixWLy34xEgyDCGALWUs3tkMTZmGb6hw3x1WUo=
-X-Received: by 2002:a17:90a:1d07:b0:228:f08f:a9b3 with SMTP id
- c7-20020a17090a1d0700b00228f08fa9b3mr3625899pjd.202.1674565070644; Tue, 24
- Jan 2023 04:57:50 -0800 (PST)
+        with ESMTP id S234822AbjAXORI (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 24 Jan 2023 09:17:08 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 413FED52F;
+        Tue, 24 Jan 2023 06:17:04 -0800 (PST)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30ODrUoe026106;
+        Tue, 24 Jan 2023 14:16:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=LU5OsjKuwBW6l12Ef/P6s8MXKpt4xlHQeDXksT/qW38=;
+ b=W3uJEPdGffSo+C8W5oH4MPmu92HIpCDRuLS5BKhHN/3OpDXS3hP/gVNdWTvGu/AGslxS
+ QUaaeWHIL2k2P0olZCRVf5jlj8lUqGDqX6Zhy1TBGNko/AlnCHHDbHmydcvjk+Xk71wu
+ 7yxMI4JSfE4XzTI6B02MdngOP77wki5aZel8zm1KkE/CwSDpSYrLWEHOaGCpFGm6K12M
+ GwuWf9tQVEJeSIDaFpDjW6qmtgpNGVxZ9XWcPgaAOLn4W/5iebXodgdtGmrUvNhETaiH
+ RSB1C4N5qpjQAT3k4ogt9VTx5cDUgQmbKe0dZz8r6pOy8F4MzdRMV0tkLAY0ja30esih cw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n89gt51cq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 24 Jan 2023 14:16:06 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30OEG5lN001102
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 24 Jan 2023 14:16:05 GMT
+Received: from devipriy-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Tue, 24 Jan 2023 06:15:56 -0800
+From:   devi priya <quic_devipriy@quicinc.com>
+To:     <agross@kernel.org>, <andersson@kernel.org>,
+        <konrad.dybcio@linaro.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <mturquette@baylibre.com>,
+        <sboyd@kernel.org>, <ulf.hansson@linaro.org>,
+        <linus.walleij@linaro.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <p.zabel@pengutronix.de>, <shawnguo@kernel.org>,
+        <arnd@arndb.de>, <marcel.ziswiler@toradex.com>,
+        <dmitry.baryshkov@linaro.org>, <nfraprado@collabora.com>,
+        <broonie@kernel.org>, <tdas@codeaurora.org>,
+        <bhupesh.sharma@linaro.org>, <linux-arm-msm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+CC:     <quic_srichara@quicinc.com>, <quic_gokulsri@quicinc.com>,
+        <quic_sjaganat@quicinc.com>, <quic_kathirav@quicinc.com>,
+        <quic_arajkuma@quicinc.com>, <quic_anusha@quicinc.com>,
+        <quic_poovendh@quicinc.com>
+Subject: [PATCH V1 0/8] Add minimal boot support for IPQ9574
+Date:   Tue, 24 Jan 2023 19:45:33 +0530
+Message-ID: <20230124141541.8290-1-quic_devipriy@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20221117-b4-amlogic-bindings-convert-v3-0-e28dd31e3bed@linaro.org>
- <20221117-b4-amlogic-bindings-convert-v3-6-e28dd31e3bed@linaro.org>
-In-Reply-To: <20221117-b4-amlogic-bindings-convert-v3-6-e28dd31e3bed@linaro.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 24 Jan 2023 13:57:14 +0100
-Message-ID: <CAPDyKFrRN-+fhvWQNmQfD2u-0+2iqP-iONaKx61K685ZqcrZOg@mail.gmail.com>
-Subject: Re: [PATCH v3 6/7] dt-bindings: mmc: convert amlogic,meson-gx.txt to dt-schema
-To:     Neil Armstrong <neil.armstrong@linaro.org>
-Cc:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: rruTB5FWrRxVWp7Wn7edqIj4v3CnEP1W
+X-Proofpoint-ORIG-GUID: rruTB5FWrRxVWp7Wn7edqIj4v3CnEP1W
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-23_12,2023-01-24_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=650 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
+ clxscore=1011 mlxscore=0 suspectscore=0 phishscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301240129
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Mon, 23 Jan 2023 at 11:10, Neil Armstrong <neil.armstrong@linaro.org> wrote:
->
-> Convert the Amlogic SD / eMMC controller for S905/GXBB family SoCs
-> to dt-schema.
->
-> Take in account the used variant with amlogic,meson-gx-mmc.
->
-> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+The IPQ9574 is Qualcomm's 802.11ax SoC for Routers,
+Gateways and Access Points.
 
-Applied for next, thanks!
+This series adds minimal board boot support for ipq9574-al02-c7 board
 
-Kind regards
-Uffe
+[V1]
+	Fixed all the review comments
+
+Poovendhan Selvaraj (1):
+  arm64: dts: qcom: Add ipq9574 SoC and AL02 board support
+
+devi priya (7):
+  dt-bindings: Add ipq9574 clock and reset definitions
+  clk: qcom: Add Global Clock Controller driver for IPQ9574
+  dt-bindings: pinctrl: qcom: Document IPQ9574 pinctrl driver
+  pinctrl: qcom: Add IPQ9574 pinctrl driver
+  dt-bindings: arm: qcom: Add ipq9574 compatible
+  dt-bindings: mmc: sdhci-msm: Document the IPQ9574 compatible
+  arm64: defconfig: Enable IPQ9574 SoC base configs
+
+ .../devicetree/bindings/arm/qcom.yaml         |    7 +
+ .../bindings/clock/qcom,gcc-other.yaml        |   39 +-
+ .../devicetree/bindings/mmc/sdhci-msm.yaml    |    1 +
+ .../bindings/pinctrl/qcom,ipq9574-tlmm.yaml   |  135 +
+ arch/arm64/boot/dts/qcom/Makefile             |    1 +
+ arch/arm64/boot/dts/qcom/ipq9574-al02-c7.dts  |   78 +
+ arch/arm64/boot/dts/qcom/ipq9574.dtsi         |  285 ++
+ arch/arm64/configs/defconfig                  |    2 +
+ drivers/clk/qcom/Kconfig                      |    8 +
+ drivers/clk/qcom/Makefile                     |    1 +
+ drivers/clk/qcom/gcc-ipq9574.c                | 4301 +++++++++++++++++
+ drivers/pinctrl/qcom/Kconfig                  |   11 +
+ drivers/pinctrl/qcom/Makefile                 |    1 +
+ drivers/pinctrl/qcom/pinctrl-ipq9574.c        | 1007 ++++
+ include/dt-bindings/clock/qcom,ipq9574-gcc.h  |  213 +
+ include/dt-bindings/reset/qcom,ipq9574-gcc.h  |  164 +
+ 16 files changed, 6251 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/qcom,ipq9574-tlmm.yaml
+ create mode 100644 arch/arm64/boot/dts/qcom/ipq9574-al02-c7.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/ipq9574.dtsi
+ create mode 100644 drivers/clk/qcom/gcc-ipq9574.c
+ create mode 100644 drivers/pinctrl/qcom/pinctrl-ipq9574.c
+ create mode 100644 include/dt-bindings/clock/qcom,ipq9574-gcc.h
+ create mode 100644 include/dt-bindings/reset/qcom,ipq9574-gcc.h
 
 
-> ---
->  .../bindings/mmc/amlogic,meson-gx-mmc.yaml         | 73 ++++++++++++++++++++++
->  .../devicetree/bindings/mmc/amlogic,meson-gx.txt   | 39 ------------
->  2 files changed, 73 insertions(+), 39 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/amlogic,meson-gx-mmc.yaml b/Documentation/devicetree/bindings/mmc/amlogic,meson-gx-mmc.yaml
-> new file mode 100644
-> index 000000000000..46e235bf228b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mmc/amlogic,meson-gx-mmc.yaml
-> @@ -0,0 +1,73 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mmc/amlogic,meson-gx-mmc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Amlogic SD / eMMC controller for S905/GXBB family SoCs
-> +
-> +description:
-> +  The MMC 5.1 compliant host controller on Amlogic provides the
-> +  interface for SD, eMMC and SDIO devices
-> +
-> +maintainers:
-> +  - Neil Armstrong <neil.armstrong@linaro.org>
-> +
-> +allOf:
-> +  - $ref: mmc-controller.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - const: amlogic,meson-axg-mmc
-> +      - items:
-> +          - const: amlogic,meson-gx-mmc
-> +          - const: amlogic,meson-gxbb-mmc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 3
-> +
-> +  clock-names:
-> +    items:
-> +      - const: core
-> +      - const: clkin0
-> +      - const: clkin1
-> +
-> +  resets:
-> +    maxItems: 1
-> +
-> +  amlogic,dram-access-quirk:
-> +    type: boolean
-> +    description:
-> +      set when controller's internal DMA engine cannot access the DRAM memory,
-> +      like on the G12A dedicated SDIO controller.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - clock-names
-> +  - resets
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    mmc@70000 {
-> +        compatible = "amlogic,meson-gx-mmc", "amlogic,meson-gxbb-mmc";
-> +        reg = <0x70000 0x2000>;
-> +        interrupts = <GIC_SPI 216 IRQ_TYPE_EDGE_RISING>;
-> +        clocks = <&clk_mmc>, <&xtal>, <&clk_div>;
-> +        clock-names = "core", "clkin0", "clkin1";
-> +        pinctrl-0 = <&emm_pins>;
-> +        resets = <&reset_mmc>;
-> +    };
-> diff --git a/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt b/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt
-> deleted file mode 100644
-> index ccc5358db131..000000000000
-> --- a/Documentation/devicetree/bindings/mmc/amlogic,meson-gx.txt
-> +++ /dev/null
-> @@ -1,39 +0,0 @@
-> -Amlogic SD / eMMC controller for S905/GXBB family SoCs
-> -
-> -The MMC 5.1 compliant host controller on Amlogic provides the
-> -interface for SD, eMMC and SDIO devices.
-> -
-> -This file documents the properties in addition to those available in
-> -the MMC core bindings, documented by mmc.txt.
-> -
-> -Required properties:
-> -- compatible : contains one of:
-> -  - "amlogic,meson-gx-mmc"
-> -  - "amlogic,meson-gxbb-mmc"
-> -  - "amlogic,meson-gxl-mmc"
-> -  - "amlogic,meson-gxm-mmc"
-> -  - "amlogic,meson-axg-mmc"
-> -- clocks     : A list of phandle + clock-specifier pairs for the clocks listed in clock-names.
-> -- clock-names: Should contain the following:
-> -       "core" - Main peripheral bus clock
-> -       "clkin0" - Parent clock of internal mux
-> -       "clkin1" - Other parent clock of internal mux
-> -  The driver has an internal mux clock which switches between clkin0 and clkin1 depending on the
-> -  clock rate requested by the MMC core.
-> -- resets     : phandle of the internal reset line
-> -
-> -Optional properties:
-> -- amlogic,dram-access-quirk: set when controller's internal DMA engine cannot access the
-> -  DRAM memory, like on the G12A dedicated SDIO controller.
-> -
-> -Example:
-> -
-> -       sd_emmc_a: mmc@70000 {
-> -               compatible = "amlogic,meson-gxbb-mmc";
-> -               reg = <0x0 0x70000 0x0 0x2000>;
-> -               interrupts = < GIC_SPI 216 IRQ_TYPE_EDGE_RISING>;
-> -               clocks = <&clkc CLKID_SD_EMMC_A>, <&xtal>, <&clkc CLKID_FCLK_DIV2>;
-> -               clock-names = "core", "clkin0", "clkin1";
-> -               pinctrl-0 = <&emmc_pins>;
-> -               resets = <&reset RESET_SD_EMMC_A>;
-> -       };
->
-> --
-> 2.34.1
->
+base-commit: 7bf70dbb18820b37406fdfa2aaf14c2f5c71a11a
+-- 
+2.17.1
+
