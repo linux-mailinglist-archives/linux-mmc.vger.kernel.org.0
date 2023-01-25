@@ -2,81 +2,76 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 477E767B0A0
-	for <lists+linux-mmc@lfdr.de>; Wed, 25 Jan 2023 12:08:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75BB367B0B5
+	for <lists+linux-mmc@lfdr.de>; Wed, 25 Jan 2023 12:10:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235708AbjAYLIR (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 25 Jan 2023 06:08:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34602 "EHLO
+        id S230146AbjAYLKa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 25 Jan 2023 06:10:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235684AbjAYLIK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 Jan 2023 06:08:10 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE3D4B75C
-        for <linux-mmc@vger.kernel.org>; Wed, 25 Jan 2023 03:08:04 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id f19-20020a1c6a13000000b003db0ef4dedcso955897wmc.4
-        for <linux-mmc@vger.kernel.org>; Wed, 25 Jan 2023 03:08:04 -0800 (PST)
+        with ESMTP id S234955AbjAYLK3 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 25 Jan 2023 06:10:29 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 868AD7698
+        for <linux-mmc@vger.kernel.org>; Wed, 25 Jan 2023 03:10:23 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id d14so12981568wrr.9
+        for <linux-mmc@vger.kernel.org>; Wed, 25 Jan 2023 03:10:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+        h=content-transfer-encoding:in-reply-to:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tgNd6pdprwR64P3gTI1USNLkbTKHZW562SWliCwEACM=;
-        b=ADO6TqbweMkdaSb2eI1zg9+zyiYl+laiAa083zdMlJDzys8Pf2H6WOla5OukORSZeo
-         qQd3U9cLObqdPg4kvHCN8gkLJMsRbMBGs3k+6IznwRBEDwR/gjZTZ5A7hF9w82nwVdCT
-         RedDxB9/P2okicTBIOud0z319G2b+A8QZo+C5w4tjPRm1us3gDknrA9THTS+N9qvlek2
-         IMuWpuLGH1QyqJmEGZYJ99izXbJuT009pX6TxtGhLnLrGbrzHDytRSy+D5F/EKF5MuWc
-         uwEvTVsgwUdzzu7D/VcoM+l/INLsrvkbf3OEDuRNoDsQqtZ6kenhhqImeTyHgc9SK+cg
-         P61Q==
+        bh=XJtTZhrwaqH3s3nH8A+0YXY5lPVl4tJDj1mXgSnDowA=;
+        b=zbL5Bo69yM/6w4xhXqFMJxIAOw5UQ2yCYIiDsIeWN/3gNv75Jg/yCr4CRpp1Sd2I04
+         fBaFHe6vVl4gQ6Ckg/IvwWyI6ydZ4qoFacpmRsSNzfGBnG0dwjsggENeR33EMM2zkIeW
+         0q/5r7I/Ud2lPjFrJAzeXuJCSfgvgviZQSur1oSIJFAK+5DcO5FTF8fkHTz15ujOeJ0J
+         P7yTUoZeTcjdTSyXpMcVod77Xw1kl2/FqISs4d620/jYZ/7qkaxN23CPY2/sQOEH3Ow1
+         cVZMldgnUYxW2UJxSQC4PL2kygFLma+OcTySfRN2Rh0uHKR4gfJMcROwrn1tEP31C0EJ
+         7NxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+        h=content-transfer-encoding:in-reply-to:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tgNd6pdprwR64P3gTI1USNLkbTKHZW562SWliCwEACM=;
-        b=stEu7IwKYPzTLpR7a2oMy0uiP9Rb5SdwuX3T1A6jXeaC3PWT3NBTOcts5xsNuJ9wl6
-         ts3OFaT5pzF0GghlgXh9GqcSMZZLhpGbykmdzhvJnPtU6wZE+8ZE+J00t8cJjltRWsFA
-         v3xrbNErBSBHS5hDeA5wRgD/Z70UDR2/kHl4/Gv/P8ME9O5dIdTRuaNJDQ372q8rXDQP
-         0GgEf+EZ8HeBfl5YwJCwh24povTo07vKb3hNW+vuibq3WhDp89KjE2fkjuL8c9RM8XXZ
-         oRu7AMLWokMqC8q7gn4qDy/vZQbvWxrfwYZJsZKdsvVUuh4f8HUrHwYEjsA0gKf9PAcG
-         kMPg==
-X-Gm-Message-State: AFqh2kqt1zq1sC1MhQJZSQ4LQImdK2NbfWc9y/8GIp0b9mogDsbeR9/L
-        P4KfUoxSLwXdbg2V/421ZTUmgA==
-X-Google-Smtp-Source: AMrXdXsPehuhP8/0wsrKQRHY7pty6KTDfGXFEaq+5JL6AFSYRRELry8uhLX7C+8zyV2XA47766i/fQ==
-X-Received: by 2002:a05:600c:46cb:b0:3db:1afd:ac45 with SMTP id q11-20020a05600c46cb00b003db1afdac45mr26226470wmo.7.1674644882380;
-        Wed, 25 Jan 2023 03:08:02 -0800 (PST)
+        bh=XJtTZhrwaqH3s3nH8A+0YXY5lPVl4tJDj1mXgSnDowA=;
+        b=ojzOhz6yoIIkUVbsEXxmfcZIJPmblZ45IDUcyQkqMjzvabm36K6rvNdb4Ip50x3lOt
+         VBvBOunxt2jaDNftGnpIUoBiCSzbbU0nQYa+AhkGmefGHsit0cpsGy0r/kg1P0ANmK5h
+         k8gbLzFcxxjW6CBWpTcXx2hz4ZB744zqW2zpDOULpb6tDDBDzG4Ps1Gpm5hS+6FN13M9
+         3DpbQXfzUxaWjuykx/osY+fQRorNmBrTTiPAKr2jtnQ7Zvxmtadg37ZRKPiM6ygYCWjz
+         r+pxOYqVDBXAa85WnEYDt5LAC0czPArXyunx326jaQ3X3tHZcbO+piDoGv0YKFuvIKTv
+         FTpg==
+X-Gm-Message-State: AFqh2krNO/zy80H40X0bHT3zeyZ3qQ5JU7nVGFfpYR+51QxXetpVjKDr
+        Gq0ysitga6PJw769hwZ5T7+WQw==
+X-Google-Smtp-Source: AMrXdXtSIH3syXyxnqXwjnP6DbOMmtoF5w7xPN0YIgvt87MuZJe5f5fhpWIcO4suVj/J5Yr/QKdELA==
+X-Received: by 2002:adf:b181:0:b0:2be:59aa:fce5 with SMTP id q1-20020adfb181000000b002be59aafce5mr16633860wra.69.1674645021880;
+        Wed, 25 Jan 2023 03:10:21 -0800 (PST)
 Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id b5-20020a05600c150500b003dafb0c8dfbsm1760931wmg.14.2023.01.25.03.07.59
+        by smtp.gmail.com with ESMTPSA id u2-20020adfae42000000b002bfb8f829eesm1524135wrd.71.2023.01.25.03.10.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Jan 2023 03:08:01 -0800 (PST)
-Message-ID: <36c9c3ce-1ae0-6619-d74d-142ed34b2f3f@linaro.org>
-Date:   Wed, 25 Jan 2023 12:07:59 +0100
+        Wed, 25 Jan 2023 03:10:21 -0800 (PST)
+Message-ID: <50ec54ba-3468-3448-3fab-f28e97549ad2@linaro.org>
+Date:   Wed, 25 Jan 2023 12:10:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.0
-Subject: Re: [PATCH V1 3/8] dt-bindings: pinctrl: qcom: Document IPQ9574
- pinctrl driver
+Subject: Re: [PATCH 01/10] dt-bindings: pinctrl: qcom: add IPQ5332 pinctrl
 Content-Language: en-US
-To:     devi priya <quic_devipriy@quicinc.com>, agross@kernel.org,
-        andersson@kernel.org, konrad.dybcio@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, mturquette@baylibre.com,
-        sboyd@kernel.org, ulf.hansson@linaro.org, linus.walleij@linaro.org,
-        catalin.marinas@arm.com, will@kernel.org, p.zabel@pengutronix.de,
+To:     Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        mturquette@baylibre.com, sboyd@kernel.org, ulf.hansson@linaro.org,
+        linus.walleij@linaro.org, catalin.marinas@arm.com, will@kernel.org,
         shawnguo@kernel.org, arnd@arndb.de, marcel.ziswiler@toradex.com,
         dmitry.baryshkov@linaro.org, nfraprado@collabora.com,
-        broonie@kernel.org, tdas@codeaurora.org, bhupesh.sharma@linaro.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     quic_srichara@quicinc.com, quic_gokulsri@quicinc.com,
-        quic_sjaganat@quicinc.com, quic_kathirav@quicinc.com,
-        quic_arajkuma@quicinc.com, quic_anusha@quicinc.com,
-        quic_poovendh@quicinc.com
-References: <20230124141541.8290-1-quic_devipriy@quicinc.com>
- <20230124141541.8290-4-quic_devipriy@quicinc.com>
+        broonie@kernel.org, robimarko@gmail.com, quic_gurus@quicinc.com,
+        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20230125104520.89684-1-quic_kathirav@quicinc.com>
+ <20230125104520.89684-2-quic_kathirav@quicinc.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230124141541.8290-4-quic_devipriy@quicinc.com>
+In-Reply-To: <20230125104520.89684-2-quic_kathirav@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -89,51 +84,122 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 24/01/2023 15:15, devi priya wrote:
-> Document the pinctrl driver for IPQ9574
+On 25/01/2023 11:45, Kathiravan Thirumoorthy wrote:
+> From: Kathiravan T <quic_kathirav@quicinc.com>
 > 
-> Co-developed-by: Anusha Rao <quic_anusha@quicinc.com>
-> Signed-off-by: Anusha Rao <quic_anusha@quicinc.com>
-> Signed-off-by: devi priya <quic_devipriy@quicinc.com>
+> Add device tree bindings for IPQ5332 TLMM block.
+> 
+> Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
 > ---
->  .../bindings/pinctrl/qcom,ipq9574-tlmm.yaml   | 135 ++++++++++++++++++
->  1 file changed, 135 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/pinctrl/qcom,ipq9574-tlmm.yaml
+>  .../pinctrl/qcom,ipq5332-pinctrl.yaml         | 134 ++++++++++++++++++
+>  1 file changed, 134 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/pinctrl/qcom,ipq5332-pinctrl.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,ipq9574-tlmm.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,ipq9574-tlmm.yaml
+> diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,ipq5332-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,ipq5332-pinctrl.yaml
 > new file mode 100644
-> index 000000000000..d736f0fb7835
+> index 000000000000..d101ee04b8b7
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/pinctrl/qcom,ipq9574-tlmm.yaml
-> @@ -0,0 +1,135 @@
+> +++ b/Documentation/devicetree/bindings/pinctrl/qcom,ipq5332-pinctrl.yaml
+
+Name matching compatible, please.
+
+> @@ -0,0 +1,134 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/pinctrl/qcom,ipq9574-tlmm.yaml#
+> +$id: http://devicetree.org/schemas/pinctrl/qcom,ipq5332-pinctrl.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Qualcomm Technologies, Inc. IPQ9574 TLMM block
+> +title: Qualcomm IPQ5332 TLMM pin controller
 > +
 > +maintainers:
 > +  - Bjorn Andersson <andersson@kernel.org>
 > +  - Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > +
-> +description:
-> +  Top Level Mode Multiplexer pin controller in Qualcomm IPQ9574 SoC.
+> +description: |
+> +  Top Level Mode Multiplexer pin controller in Qualcomm IPQ5332 SoC.
+> +
+> +allOf:
+> +  - $ref: /schemas/pinctrl/qcom,tlmm-common.yaml#
 > +
 > +properties:
 > +  compatible:
-> +    const: qcom,ipq9574-tlmm
+> +    const: qcom,ipq5332-tlmm
 > +
 > +  reg:
 > +    maxItems: 1
 > +
 > +  interrupts: true
 
-Also - missing maxItems.
+missing maxItems
 
-I think you based your patches on some older version, so you might miss
-here changes we did recently.
+Rebase your patches on latest next and use the latest bindings and
+drivers as starting point.
+
+> +  interrupt-controller: true
+> +  "#interrupt-cells": true
+> +  gpio-controller: true
+> +  "#gpio-cells": true
+> +  gpio-ranges: true
+> +  wakeup-parent: true
+> +
+> +  gpio-reserved-ranges:
+> +    minItems: 1
+> +    maxItems: 27
+> +
+> +  gpio-line-names:
+> +    maxItems: 53
+
+You have 54 GPIOs.
+
+> +
+> +patternProperties:
+> +  "-state$":
+> +    oneOf:
+> +      - $ref: "#/$defs/qcom-ipq5332-tlmm-state"
+> +      - patternProperties:
+> +          "-pins$":
+> +            $ref: "#/$defs/qcom-ipq5332-tlmm-state"
+> +        additionalProperties: false
+> +
+> +$defs:
+> +  qcom-ipq5332-tlmm-state:
+> +    type: object
+> +    description:
+> +      Pinctrl node's client devices use subnodes for desired pin configuration.
+> +      Client device subnodes use below standard properties.
+> +    $ref: qcom,tlmm-common.yaml#/$defs/qcom-tlmm-state
+> +
+> +    properties:
+> +      pins:
+> +        description:
+> +          List of gpio pins affected by the properties specified in this
+> +          subnode.
+> +        items:
+> +          pattern: "^gpio([0-9]|[1-4][0-9]|5[0-3])$"
+> +        minItems: 1
+> +        maxItems: 36
+> +
+> +      function:
+> +        description:
+> +          Specify the alternative function to be configured for the specified
+> +          pins.
+> +
+> +        enum: [ PTA_0, PTA_2, PTA_1, atest_char, atest_char0, atest_char1,
+
+1. lowercase only
+
+2. order all these by name
+
+
+> +                atest_char2, atest_char3, atest_tic, audio_pri, audio_pri0,
+> +                audio_pri1, audio_sec, audio_sec0, audio_sec1, blsp0_i2c,
+> +                blsp0_spi, blsp0_uart0, blsp0_uart1, blsp1_i2c0, blsp1_i2c1,
+> +                blsp1_spi0, blsp1_spi1, blsp1_uart0, blsp1_uart1, blsp1_uart2,
+> +                blsp2_i2c0, blsp2_i2c1, blsp2_spi, blsp2_spi0, blsp2_spi1,
+> +                core_voltage, cri_trng0, cri_trng1, cri_trng2, cri_trng3,
+> +                cxc_clk, cxc_data, dbg_out, gcc_plltest, gcc_tlmm, gpio,
+> +                lock_det, mac0, mac1, mdc0, mdc1, mdio0, mdio1, pc, pcie0_clk,
 
 Best regards,
 Krzysztof
