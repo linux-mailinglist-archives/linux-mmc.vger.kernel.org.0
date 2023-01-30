@@ -2,38 +2,39 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66BA66806A7
-	for <lists+linux-mmc@lfdr.de>; Mon, 30 Jan 2023 08:43:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D0B86806AA
+	for <lists+linux-mmc@lfdr.de>; Mon, 30 Jan 2023 08:43:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232776AbjA3Hnw (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 30 Jan 2023 02:43:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51644 "EHLO
+        id S230365AbjA3Hny (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 30 Jan 2023 02:43:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbjA3Hnw (ORCPT
+        with ESMTP id S231324AbjA3Hnw (ORCPT
         <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 Jan 2023 02:43:52 -0500
-X-Greylist: delayed 336 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 29 Jan 2023 23:43:50 PST
 Received: from mail-m11875.qiye.163.com (mail-m11875.qiye.163.com [115.236.118.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659581630A
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A65C7166E9
         for <linux-mmc@vger.kernel.org>; Sun, 29 Jan 2023 23:43:50 -0800 (PST)
 Received: from localhost.localdomain (unknown [58.22.7.114])
-        by mail-m11875.qiye.163.com (Hmail) with ESMTPA id 82B8228022C;
-        Mon, 30 Jan 2023 15:38:07 +0800 (CST)
+        by mail-m11875.qiye.163.com (Hmail) with ESMTPA id 9C62F280222;
+        Mon, 30 Jan 2023 15:38:13 +0800 (CST)
 From:   Shawn Lin <shawn.lin@rock-chips.com>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
         linux-rockchip@lists.infradead.org,
         Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 0/3] Some features and fix for sdhci-of-dwcmshc
-Date:   Mon, 30 Jan 2023 15:38:02 +0800
-Message-Id: <1675064285-25425-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: [PATCH 1/3] mmc: sdhci-of-dwcmshc: Update DLL and pre-change delay for rockchip platform
+Date:   Mon, 30 Jan 2023 15:38:03 +0800
+Message-Id: <1675064285-25425-2-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1675064285-25425-1-git-send-email-shawn.lin@rock-chips.com>
+References: <1675064285-25425-1-git-send-email-shawn.lin@rock-chips.com>
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-        tZV1koWUFJSktLSjdXWS1ZQUlXWQ8JGhUIEh9ZQVlCSUlPVkkaT0JDQkpCTUlJT1UTARMWGhIXJB
-        QOD1lXWRgSC1lBWU5DVUlJVUxVSkpPWVdZFhoPEhUdFFlBWU9LSFVKSktISkxVSktLVUtZBg++
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MhA6Mww5Aj0UNjg5OBJJTSM6
-        CSgaFENVSlVKTUxOS01PSUNDSk5IVTMWGhIXVQgTGgwVVRcSFTsJFBgQVhgTEgsIVRgUFkVZV1kS
-        C1lBWU5DVUlJVUxVSkpPWVdZCAFZQUpITEw3Bg++
-X-HM-Tid: 0a86019ca1a62eb1kusn82b8228022c
+        tZV1koWUFJSktLSjdXWS1ZQUlXWQ8JGhUIEh9ZQVlDTk0ZVkwYGE4eGENCTx8YGlUTARMWGhIXJB
+        QOD1lXWRgSC1lBWU5DVUlJVUxVSkpPWVdZFhoPEhUdFFlBWU9LSFVKSktPSEhVSktLVUtZBg++
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MzI6Oio*SD0SOjgrAhMyTR0Q
+        SxFPCTJVSlVKTUxOS01PSUJPSkxKVTMWGhIXVQgTGgwVVRcSFTsJFBgQVhgTEgsIVRgUFkVZV1kS
+        C1lBWU5DVUlJVUxVSkpPWVdZCAFZQUhPSE03Bg++
+X-HM-Tid: 0a86019cb9802eb1kusn9c62f280222
 X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS
         autolearn=no autolearn_force=no version=3.4.6
@@ -43,21 +44,61 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This patchset has 3 patches. The first one is a signal improvement
-actually. Then we add runtime time support and hsq support which have
-been tested in vendor kernel for a long time.
+For Rockchip platform, DLL bypass bit and start bit need to be set if
+DLL is not locked. And adjust pre-change delay to 0x3 for better signal
+test result.
 
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+---
 
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Shawn Lin (3):
-  mmc: sdhci-of-dwcmshc: Update DLL and pre-change delay for rockchip
-    platform
-  mmc: sdhci-of-dwcmshc: Add runtime PM support
-  mmc: sdhci-of-dwcmshc: Add host software queue support
-
- drivers/mmc/host/sdhci-of-dwcmshc.c | 90 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 84 insertions(+), 6 deletions(-)
-
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index 4933867..46b1ce7 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -48,6 +48,7 @@
+ #define DWCMSHC_EMMC_DLL_RXCLK_SRCSEL	29
+ #define DWCMSHC_EMMC_DLL_START_POINT	16
+ #define DWCMSHC_EMMC_DLL_INC		8
++#define DWCMSHC_EMMC_DLL_BYPASS		BIT(24)
+ #define DWCMSHC_EMMC_DLL_DLYENA		BIT(27)
+ #define DLL_TXCLK_TAPNUM_DEFAULT	0x10
+ #define DLL_TXCLK_TAPNUM_90_DEGREES	0xA
+@@ -60,6 +61,7 @@
+ #define DLL_RXCLK_NO_INVERTER		1
+ #define DLL_RXCLK_INVERTER		0
+ #define DLL_CMDOUT_TAPNUM_90_DEGREES	0x8
++#define DLL_RXCLK_ORI_GATE		BIT(31)
+ #define DLL_CMDOUT_TAPNUM_FROM_SW	BIT(24)
+ #define DLL_CMDOUT_SRC_CLK_NEG		BIT(28)
+ #define DLL_CMDOUT_EN_SRC_CLK_NEG	BIT(29)
+@@ -234,9 +236,12 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 	sdhci_writel(host, extra, reg);
+ 
+ 	if (clock <= 52000000) {
+-		/* Disable DLL and reset both of sample and drive clock */
+-		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_CTRL);
+-		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_RXCLK);
++		/*
++		 * Disable DLL and reset both of sample and drive clock.
++		 * The bypass bit and start bit need to be set if DLL is not locked.
++		 */
++		sdhci_writel(host, DWCMSHC_EMMC_DLL_BYPASS | DWCMSHC_EMMC_DLL_START, DWCMSHC_EMMC_DLL_CTRL);
++		sdhci_writel(host, DLL_RXCLK_ORI_GATE, DWCMSHC_EMMC_DLL_RXCLK);
+ 		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_TXCLK);
+ 		sdhci_writel(host, 0, DECMSHC_EMMC_DLL_CMDOUT);
+ 		/*
+@@ -279,7 +284,7 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 	}
+ 
+ 	extra = 0x1 << 16 | /* tune clock stop en */
+-		0x2 << 17 | /* pre-change delay */
++		0x3 << 17 | /* pre-change delay */
+ 		0x3 << 19;  /* post-change delay */
+ 	sdhci_writel(host, extra, dwc_priv->vendor_specific_area1 + DWCMSHC_EMMC_ATCTRL);
+ 
 -- 
 2.7.4
 
