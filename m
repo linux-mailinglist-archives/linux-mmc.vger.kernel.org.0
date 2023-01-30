@@ -2,108 +2,116 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55A82680854
-	for <lists+linux-mmc@lfdr.de>; Mon, 30 Jan 2023 10:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF78680B9D
+	for <lists+linux-mmc@lfdr.de>; Mon, 30 Jan 2023 12:07:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbjA3JRH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 30 Jan 2023 04:17:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51678 "EHLO
+        id S236610AbjA3LHf (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 30 Jan 2023 06:07:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231455AbjA3JRG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 Jan 2023 04:17:06 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 761BF166D4
-        for <linux-mmc@vger.kernel.org>; Mon, 30 Jan 2023 01:17:04 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id ud5so29788593ejc.4
-        for <linux-mmc@vger.kernel.org>; Mon, 30 Jan 2023 01:17:04 -0800 (PST)
+        with ESMTP id S236582AbjA3LHE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 Jan 2023 06:07:04 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20C1434313
+        for <linux-mmc@vger.kernel.org>; Mon, 30 Jan 2023 03:06:29 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id h12so10652403wrv.10
+        for <linux-mmc@vger.kernel.org>; Mon, 30 Jan 2023 03:06:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fsyHauj9EOBike+C7FSiVRVwoEoNyRE7eOJ4tqUZH+c=;
-        b=CKXxvhOn54xPoOI0DshmAvKhi4MpVt94GFWWN9ceF6WZ5gdKH5Od7U7KwECDkaMlGn
-         pgOybDLuinmjLcY2DaMWDteqGFxYDJ51YgUU4ybHejVh5asfIt25kWJGxuvf0XBhOw2p
-         5IrGPGNDfjOw3B0kXzk2tHgkzFw/miCFYSROaUX0gx2CTU2fvYnaHHY/NVep+ey5+1uj
-         WpgRBdL44VkczZkTtLbcZedOOFJ5FTnTjBK9VW0KYh60ZwCU/r9NxosGWYNGX8b1SA4J
-         eNif+qh0L5wE/mBSHOtGuvHJK5vm2m5h9eamiRoMf8ldjdlVnKPKOY9jFhWnr/I/7RDh
-         VOxA==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:reply-to:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=yNDMPXDJxIWFepXsoEIg2J6UzCqMyzPQRKfo3ReKfmw=;
+        b=PL+/eKkvazCt3dk8l8KY94lK2apVCyduLPa131ikd12aEmLhpoT1gB/UqvSqrdewoC
+         n6eyYkahPsoh6CqFNCqh4YLAHEWFDUwI4FdlLLjcJScm8A5gOxT873HdnZpFMZVxuAug
+         gAqL8iyuBoc97QVazaAEi9NC2o81fDhrnKAu6OkFkd8bU0+qSV9GUrc4WyZI3aSvACLp
+         DkfRe/TUcKVM39UgeGI8RGScBFCwyRjZ90op7RgUY2PRzMozVYOAMqnrR+LddNLkDC8D
+         Q71BOdvfCJ53dsYkAI9qzBZcUnMPuwjiexcFTjxhJC6rVmzZW5qis7y/LUr1TM4R3vCQ
+         S1Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fsyHauj9EOBike+C7FSiVRVwoEoNyRE7eOJ4tqUZH+c=;
-        b=NAx+DgRGya/QQIIHoY5jcZ2gLxTvzDXlUiP06TKCxhMwAiM2BYnAP+VQeytkJ8pCf4
-         DPi4YKWk61vT3T4CzHjJ7PT6f9aT/YLy7QAoYK79XsWtuk1hMBZWFRrHqH+uKqhfVCPr
-         fLs43WJoAncNEQZytd9rHSB8upebv5Qk7Vl3zTxdeBIe2s63gBI0bBREe9IsBUUzRKIP
-         NNc5/8XADhIKyoV/wQ0B6QF+SQpT6z99OkD7bFJdJn2LzADgSVFl8ZIscZ6J/e49gllc
-         /OLOd5jw4jty+Z6eP8A6CWc/mRWsgtwsejUSCHqgXqWU13a6pnHrykuc1kdd8ZQslGVA
-         a30Q==
-X-Gm-Message-State: AFqh2kqDMey3CMWY9iqfKJspr0MoDejDLEOLR11f4+EXUXUKcasMdqOE
-        ujgcOB0BQfur/C6WUk0LixN+t8LUM2nzwLipSI0=
-X-Google-Smtp-Source: AMrXdXv9C9IOCymPc19lv6l0wNSrhPrXSBvuKVx1p6VED7Bfq86CfmyxZ6WzG+dQI1CYmX0z/561bUnpRAOzMn3OVaE=
-X-Received: by 2002:a17:906:c283:b0:835:57c9:6432 with SMTP id
- r3-20020a170906c28300b0083557c96432mr7376616ejz.254.1675070222928; Mon, 30
- Jan 2023 01:17:02 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:reply-to:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yNDMPXDJxIWFepXsoEIg2J6UzCqMyzPQRKfo3ReKfmw=;
+        b=Lwbjrzvjm5dGbWYjopJEsbDdjqT7hlF86gVto3yJ8ufBLOtfFKx5QaE3HYJbKOUwNQ
+         8oB0JoOZqE4sJvRlJxE2yNNcd2lq14iEJbqaFtzLUIdKKA3oXrBKd/p0YaZK9r/WItW8
+         bTyeFClMNwif7bmGSNveMOUKUNXAsl7sZCvSB5ftYRtoqwUT133mnNK2iYXriWc2zHPh
+         JSlzJlUaTtFFKUdSNRRWpaJrZy0OK15O0oV4lhCPSDs+w19mhKE5mmFKENWr/Z6DNugK
+         rXlasDuSk9HKChXLJ0KLFBtmHYF7o5fFPCxCVTceZoy4jScjs1YTCUzqA1YcCJi0kZ27
+         oCTw==
+X-Gm-Message-State: AO0yUKUFwBiDeOmLmHgQpmVPZLUits95y39NEVj4RYYXkrS6CwQ+7VUi
+        8HkQarPGmiG9LtDuchc4fCIH0Mezak4I4pe/vQE=
+X-Google-Smtp-Source: AK7set9LUEaXBRP2ZmoaxSwk+r+D6tWi7u/YOFTSzqbjX/zFUp6z8R3Fo1IdcrdXUSUB91bWbAL9bg==
+X-Received: by 2002:adf:f38f:0:b0:2bf:bf05:85ac with SMTP id m15-20020adff38f000000b002bfbf0585acmr15695242wro.23.1675076787638;
+        Mon, 30 Jan 2023 03:06:27 -0800 (PST)
+Received: from [192.168.7.111] (679773502.box.freepro.com. [212.114.21.58])
+        by smtp.gmail.com with ESMTPSA id t8-20020a5d6908000000b002bc7e5a1171sm11670124wru.116.2023.01.30.03.06.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Jan 2023 03:06:27 -0800 (PST)
+Message-ID: <7789e36f-f13a-9837-5432-c16754922fa3@linaro.org>
+Date:   Mon, 30 Jan 2023 12:06:26 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:7412:d08c:b0:8f:e183:fcc3 with HTTP; Mon, 30 Jan 2023
- 01:17:02 -0800 (PST)
-Reply-To: cristinacampel@outlook.com
-From:   "Mrs. Cristina Campbell" <cristiinacampbell@gmail.com>
-Date:   Mon, 30 Jan 2023 09:17:02 +0000
-Message-ID: <CAKd_V8Zar+VEfJRcDND5P1PQQkV7VmnApyuWNiKHcjyQG5qiJQ@mail.gmail.com>
-Subject: me puedes ayudar
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_FREEM,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:62b listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [cristiinacampbell[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  2.8 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  0.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH 2/2] mmc: meson-gx: support platform interrupt as card
+ detect interrupt
+Content-Language: en-US
+To:     Heiner Kallweit <hkallweit1@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+References: <dfb90ca4-1f62-e3ed-2ce4-a7b5f661e36d@gmail.com>
+ <9e08411b-20cb-874f-8915-6f8dc32e9fcf@gmail.com>
+From:   Neil Armstrong <neil.armstrong@linaro.org>
+Organization: Linaro Developer Services
+In-Reply-To: <9e08411b-20cb-874f-8915-6f8dc32e9fcf@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Querido amado,
+On 30/01/2023 00:10, Heiner Kallweit wrote:
+> Use a new mmc core feature and support specifying the card detect
+> gpio interrupt in device tree.
+> 
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+>   drivers/mmc/host/meson-gx-mmc.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+> index be1a972c2..c87bc31d0 100644
+> --- a/drivers/mmc/host/meson-gx-mmc.c
+> +++ b/drivers/mmc/host/meson-gx-mmc.c
+> @@ -1236,6 +1236,9 @@ static int meson_mmc_probe(struct platform_device *pdev)
+>   		goto free_host;
+>   	}
+>   
+> +	/* gpio card detect interrupt */
+> +	mmc->cd_irq = platform_get_irq_optional(pdev, 1);
 
-Soy la Sra. Cristina Campbell de Londres, Reino Unido. Hay algo serio
-de lo que debemos hablar. Si no est=C3=A1 demasiado ocupado, responda a mi
-correo personal que es (cristinacampel@outlook.com) para que pueda
-brindarle m=C3=A1s informaci=C3=B3n. este proyecto de caridad humanitaria e=
-n su
-pa=C3=ADs por valor de Seis Millones de D=C3=B3lares Estadounidenses
-$6,000,000.00 usd.
+Ok it's fine but beware GXBB/GXL/AXG doesn't support Rising + Falling GPIO IRQ,
+so this should only be used on G12A/B/SM1 and later.
 
-Atentamente.
-Sra. Cristina Campbell
-Correo electr=C3=B3nico; cristinacampel@outlook.com
+Neil
+
+> +
+>   	host->pinctrl = devm_pinctrl_get(&pdev->dev);
+>   	if (IS_ERR(host->pinctrl)) {
+>   		ret = PTR_ERR(host->pinctrl);
+
