@@ -2,156 +2,102 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 333AA6891E3
-	for <lists+linux-mmc@lfdr.de>; Fri,  3 Feb 2023 09:23:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CF48689227
+	for <lists+linux-mmc@lfdr.de>; Fri,  3 Feb 2023 09:27:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233035AbjBCIVb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Fri, 3 Feb 2023 03:21:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57812 "EHLO
+        id S232771AbjBCI0q convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Fri, 3 Feb 2023 03:26:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232749AbjBCIVK (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 Feb 2023 03:21:10 -0500
-Received: from ex01.ufhost.com (ex01.ufhost.com [61.152.239.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 184DB6DB2E;
-        Fri,  3 Feb 2023 00:19:43 -0800 (PST)
-Received: from EXMBX165.cuchost.com (unknown [175.102.18.54])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "EXMBX165", Issuer "EXMBX165" (not verified))
-        by ex01.ufhost.com (Postfix) with ESMTP id B102024E28F;
-        Fri,  3 Feb 2023 16:19:16 +0800 (CST)
-Received: from EXMBX168.cuchost.com (172.16.6.78) by EXMBX165.cuchost.com
- (172.16.6.75) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Fri, 3 Feb
- 2023 16:19:16 +0800
-Received: from williamqiu-virtual-machine.starfivetech.com (171.223.208.138)
- by EXMBX168.cuchost.com (172.16.6.78) with Microsoft SMTP Server (TLS) id
- 15.0.1497.42; Fri, 3 Feb 2023 16:19:15 +0800
-From:   William Qiu <william.qiu@starfivetech.com>
-To:     <linux-riscv@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        William Qiu <william.qiu@starfivetech.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 3/3] riscv: dts: starfive: Add mmc node
-Date:   Fri, 3 Feb 2023 16:19:13 +0800
-Message-ID: <20230203081913.81968-4-william.qiu@starfivetech.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230203081913.81968-1-william.qiu@starfivetech.com>
-References: <20230203081913.81968-1-william.qiu@starfivetech.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [171.223.208.138]
-X-ClientProxiedBy: EXCAS064.cuchost.com (172.16.6.24) To EXMBX168.cuchost.com
- (172.16.6.78)
-X-YovoleRuleAgent: yovoleflag
+        with ESMTP id S232435AbjBCI0W (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 3 Feb 2023 03:26:22 -0500
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17E395D08;
+        Fri,  3 Feb 2023 00:24:59 -0800 (PST)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1pNrNI-003Nx4-Ij; Fri, 03 Feb 2023 09:24:48 +0100
+Received: from p57bd9464.dip0.t-ipconnect.de ([87.189.148.100] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1pNrNI-0042Ei-Ac; Fri, 03 Feb 2023 09:24:48 +0100
+Message-ID: <afd056a95d21944db1dc0c9708f692dd1f7bb757.camel@physik.fu-berlin.de>
+Subject: Re: remove arch/sh
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-renesas-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-sh@vger.kernel.org
+Date:   Fri, 03 Feb 2023 09:24:46 +0100
+In-Reply-To: <20230203071423.GA24833@lst.de>
+References: <20230113062339.1909087-1-hch@lst.de>
+         <11e2e0a8-eabe-2d8c-d612-9cdd4bcc3648@physik.fu-berlin.de>
+         <20230116071306.GA15848@lst.de>
+         <40dc1bc1-d9cd-d9be-188e-5167ebae235c@physik.fu-berlin.de>
+         <20230203071423.GA24833@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.46.3 
+MIME-Version: 1.0
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.148.100
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-This adds the mmc node for the StarFive JH7110 SoC.
-Set mmco node to emmc and set mmc1 node to sd.
+Hello Christoph!
 
-Signed-off-by: William Qiu <william.qiu@starfivetech.com>
----
- .../jh7110-starfive-visionfive-2.dtsi         | 23 ++++++++++++
- arch/riscv/boot/dts/starfive/jh7110.dtsi      | 37 +++++++++++++++++++
- 2 files changed, 60 insertions(+)
+On Fri, 2023-02-03 at 08:14 +0100, Christoph Hellwig wrote:
+> On Mon, Jan 16, 2023 at 09:52:10AM +0100, John Paul Adrian Glaubitz wrote:
+> > We have had a discussion between multiple people invested in the SuperH port and
+> > I have decided to volunteer as a co-maintainer of the port to support Rich Felker
+> > when he isn't available.
+> 
+> So, this still isn't reflected in MAINTAINERS in linux-next.  When
+> do you plan to take over?
 
-diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-index c60280b89c73..e1a0248e907f 100644
---- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-@@ -42,6 +42,29 @@ &rtc_osc {
- 	clock-frequency = <32768>;
- };
- 
-+&mmc0 {
-+	max-frequency = <100000000>;
-+	bus-width = <8>;
-+	cap-mmc-highspeed;
-+	mmc-ddr-1_8v;
-+	mmc-hs200-1_8v;
-+	non-removable;
-+	cap-mmc-hw-reset;
-+	post-power-on-delay-ms = <200>;
-+	status = "okay";
-+};
-+
-+&mmc1 {
-+	max-frequency = <100000000>;
-+	bus-width = <4>;
-+	no-sdio;
-+	no-mmc;
-+	broken-cd;
-+	cap-sd-highspeed;
-+	post-power-on-delay-ms = <200>;
-+	status = "okay";
-+};
-+
- &gmac0_rmii_refin {
- 	clock-frequency = <50000000>;
- };
-diff --git a/arch/riscv/boot/dts/starfive/jh7110.dtsi b/arch/riscv/boot/dts/starfive/jh7110.dtsi
-index 64d260ea1f29..ae1a664e7af5 100644
---- a/arch/riscv/boot/dts/starfive/jh7110.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110.dtsi
-@@ -370,6 +370,11 @@ syscrg: clock-controller@13020000 {
- 			#reset-cells = <1>;
- 		};
- 
-+		sysreg: syscon@13030000 {
-+			compatible = "starfive,sysreg", "syscon";
-+			reg = <0x0 0x13030000 0x0 0x1000>;
-+		};
-+
- 		gpio: gpio@13040000 {
- 			compatible = "starfive,jh7110-sys-pinctrl";
- 			reg = <0x0 0x13040000 0x0 0x10000>;
-@@ -407,5 +412,37 @@ gpioa: gpio@17020000 {
- 			gpio-controller;
- 			#gpio-cells = <2>;
- 		};
-+
-+		mmc0: mmc@16010000 {
-+			compatible = "starfive,jh7110-mmc";
-+			reg = <0x0 0x16010000 0x0 0x10000>;
-+			clocks = <&syscrg JH7110_SYSCLK_SDIO0_AHB>,
-+				 <&syscrg JH7110_SYSCLK_SDIO0_SDCARD>;
-+			clock-names = "biu","ciu";
-+			resets = <&syscrg JH7110_SYSRST_SDIO0_AHB>;
-+			reset-names = "reset";
-+			interrupts = <74>;
-+			fifo-depth = <32>;
-+			fifo-watermark-aligned;
-+			data-addr = <0>;
-+			starfive,sysreg = <&sysreg 0x14 0x1a 0x7c000000>;
-+			status = "disabled";
-+		};
-+
-+		mmc1: mmc@16020000 {
-+			compatible = "starfive,jh7110-mmc";
-+			reg = <0x0 0x16020000 0x0 0x10000>;
-+			clocks = <&syscrg JH7110_SYSCLK_SDIO1_AHB>,
-+				 <&syscrg JH7110_SYSCLK_SDIO1_SDCARD>;
-+			clock-names = "biu","ciu";
-+			resets = <&syscrg JH7110_SYSRST_SDIO1_AHB>;
-+			reset-names = "reset";
-+			interrupts = <75>;
-+			fifo-depth = <32>;
-+			fifo-watermark-aligned;
-+			data-addr = <0>;
-+			starfive,sysreg = <&sysreg 0x9c 0x1 0x3e>;
-+			status = "disabled";
-+		};
- 	};
- };
+Since this is my very first time stepping up as a kernel maintainer, I was hoping
+to get some pointers on what to do to make this happen.
+
+So far, we have set up a new kernel tree and I have set up a local development and
+test environment for SH kernels using my SH7785LCR board as the target platform.
+
+Do I just need to send a patch asking to change the corresponding entry in the
+MAINTAINERS file?
+
+> What platforms will remain supported and what can we start dropping due to
+> being unused and unmaintained?
+
+This has not been sorted out yet.
+
+Adrian
+
 -- 
-2.34.1
-
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
