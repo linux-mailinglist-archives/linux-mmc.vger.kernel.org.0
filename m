@@ -2,75 +2,119 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A15D6ABC69
-	for <lists+linux-mmc@lfdr.de>; Mon,  6 Mar 2023 11:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDBD76ABD16
+	for <lists+linux-mmc@lfdr.de>; Mon,  6 Mar 2023 11:42:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231189AbjCFK1E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 6 Mar 2023 05:27:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
+        id S229668AbjCFKmB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 6 Mar 2023 05:42:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230487AbjCFK0e (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Mar 2023 05:26:34 -0500
-Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF84C26877
-        for <linux-mmc@vger.kernel.org>; Mon,  6 Mar 2023 02:26:06 -0800 (PST)
-Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-176e43eb199so693487fac.7
-        for <linux-mmc@vger.kernel.org>; Mon, 06 Mar 2023 02:26:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678098351;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vh7FN/ulAdnmY8O0LKz7bqpIFk4oOSQ9iCZ8VQ/AkNo=;
-        b=EDbhPO1WKzSJy97Cp1KR4Ue1wIcLFSscoH9L1E67CyPoJvstONJwP7RxKCqsDiuar/
-         4XZc6UhnyOFrEHlIQ3KmGU6oX8xWOyZpiVA4bD6F27cjopM5KQeiwoXnQq1r2hu/0hkW
-         LgiQ9FGonNq8AsMsEKBqZEvtwgOfW2lv3iUKapY2ocqE+LRWfsVifUNA3eNbIcULbvPT
-         nBBU0ns0xWwmvS7ETCAh5Z5lhdCiLVSRis+m63aq8CObwyUrMLAjGQpDeSf4OVAOQav5
-         5TuEH4NOUnTGCqcHGRIE0/tBavRRplzW4HaWY1DRs+pas+nyfL/37adPjYmqfexbl/Di
-         PS3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678098351;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vh7FN/ulAdnmY8O0LKz7bqpIFk4oOSQ9iCZ8VQ/AkNo=;
-        b=TxY9EzUyKrcKSsn9aDEn8HmummnDIamsGgoUhXoVc+syKYRa+7xZ2GhisLuw27kMZa
-         MktqkE7nOasgpeXSLFMtnhEbDHhefkIHAGfxUsp6NRu1dvWVE77qozAmL0qDSJnsooDQ
-         gzLCWf/E3lVEju4dLlf6f6vIsC+4z4hwk8X7CDWvfJJtvfOEG5sansQ9a/bQTARlHlp5
-         amCirgAh/h2DpSTDeo2ChqGrHZNO9rv0yFYouYPWF1IDYNqh21AMEZVylg9sog8P3Yl4
-         qDyqu5lbp9CIqiW+RUDO4gTFX3iAG6DOSs2YXgzBuBpDvwfb3nJPZqCtcytbu245n6sq
-         cz5A==
-X-Gm-Message-State: AO0yUKWrMxMlbHaZwx6Yg339Q60F3BTraXovATsINQNQnP4W7Dd5Yqye
-        wef/1VJUW2eoLUwgnl973a9h2jzAzynKmjW8gNqpCvlAhA8=
-X-Google-Smtp-Source: AK7set9YqazPiOkBuGm+YrFZOLe51O90+qKBrIr6WBjXtnVrmZ9RIOYyWRLBWcHI+/rsVoNhMQhwnCpcR6G8n2Z6mzE=
-X-Received: by 2002:a05:6102:e44:b0:402:999f:44d3 with SMTP id
- p4-20020a0561020e4400b00402999f44d3mr6975472vst.1.1678098330725; Mon, 06 Mar
- 2023 02:25:30 -0800 (PST)
+        with ESMTP id S229555AbjCFKmA (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Mar 2023 05:42:00 -0500
+Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [IPv6:2a01:e0c:1:1599::11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85ED522031;
+        Mon,  6 Mar 2023 02:41:59 -0800 (PST)
+Received: from [192.168.108.81] (unknown [213.36.7.13])
+        (Authenticated sender: marc.w.gonzalez@free.fr)
+        by smtp2-g21.free.fr (Postfix) with ESMTPSA id 10F4F200385;
+        Mon,  6 Mar 2023 11:41:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+        s=smtp-20201208; t=1678099318;
+        bh=YxoZwXxfPHJkwtwOK3O1ZHXxIHHrXn5BcsTKXsclbcU=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+        b=DGhEdtcemsd0XaJppOdYWQ2p8ksVJ1PKKr2tcQ3SLgLDiRQWgFNTty4NglLJwINog
+         iuPCHcAoR4fqdyJ0D95Myb3yTSYvl23NMdqTpJKdYb7hASWmmIGc8XfKk/y9zqNawn
+         xFP/NXN1rIwKb4lpGOe0HWVWAO3DXe+dyob6G11jZf7Cv1kfb/VbRak8NauAMiAvW+
+         JnMtN+gDZzf0UzdsuhWQU8mvgu92sGA3gp4xTbEbWunurEYGnT3Mfg0PAAo15RveCN
+         nddY+NwmjWU6QOMwiRty4nv0kn91lKCHGUM8HsZ349nvLY3A5kFQ5G0f04z+h/U5OQ
+         UrAUsA2NiMT2w==
+Message-ID: <6be2c348-b343-876a-a77f-a8297676de6a@free.fr>
+Date:   Mon, 6 Mar 2023 11:41:37 +0100
 MIME-Version: 1.0
-Received: by 2002:a59:ce6f:0:b0:3ae:930b:3e70 with HTTP; Mon, 6 Mar 2023
- 02:25:30 -0800 (PST)
-Reply-To: madis.scarl@terlera.it
-From:   "Ms Eve from U.N" <denisagotou@gmail.com>
-Date:   Mon, 6 Mar 2023 11:25:30 +0100
-Message-ID: <CAD6bNBi6bPCYboaF4-xBgmeUTFn6JMXqU6TNepQig=NRMqhdUg@mail.gmail.com>
-Subject: Re: Claim of Fund:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_SCAM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [RFC PATCH] brcmfmac: add 43751 SDIO ids and initialization
+Content-Language: en-US
+From:   Marc Gonzalez <marc.w.gonzalez@free.fr>
+To:     Neil Armstrong <neil.armstrong@linaro.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Alexander Prutskov <alep@cypress.com>,
+        Joseph chuang <jiac@cypress.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Angus Ainslie <angus@akkea.ca>
+Cc:     linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org
+References: <05977cbb-8a8f-0a67-b4bd-b265dbb83280@free.fr>
+ <895a3812-e490-cc40-0f8e-a88e166e8f24@linaro.org>
+ <c1a215cf-94be-871b-2a8a-3cc381588f83@free.fr>
+In-Reply-To: <c1a215cf-94be-871b-2a8a-3cc381588f83@free.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello Good Morning,
-This is to bring to your notice that all our efforts to contact you
-through this your email ID failed Please Kindly contact Barrister.
-Steven Mike { mbarrsteven@gmail.com } on his private email for the
-claim of your compensation entitlement
+On 06/03/2023 11:24, Marc Gonzalez wrote:
 
-Note: You have to pay for the delivery fee.
-Yours Sincerely
-Mrs EVE LEWIS
+> OF_NAME=wifi
+> OF_FULLNAME=/soc/sd@ffe03000/wifi@1
+> OF_COMPATIBLE_0=brcm,bcm4329-fmac
+> OF_COMPATIBLE_N=1
+> SDIO_CLASS=00
+> SDIO_ID=02D0:AAE7
+> SDIO_REVISION=0.0
+> MODALIAS=sdio:c00v02D0dAAE7
+> 
+> 0xaae7 = 43751
+> 
+> Isn't there some overlap between:
+> include/linux/mmc/sdio_ids.h and
+> drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h ?
+> 
+> Reference used: commit d2587c57ffd8dc
+> "brcmfmac: add 43752 SDIO ids and initialization"
+> 
+> Looking at all the occurrences of 43752 to insert a 43751,
+> could someone comment whether this looks reasonable?
+
+Obviously, the commit message would have to be rewritten
+for a real patch.
+
+> ---
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c     | 1 +
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c       | 2 ++
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c       | 4 ++++
+>  drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 1 +
+>  include/linux/mmc/sdio_ids.h                                  | 1 +
+>  5 files changed, 9 insertions(+)
+
+This code (vendor upstream?) is probably relevant:
+https://github.com/StreamUnlimited/broadcom-bcmdhd-4359/blob/master/include/bcmdevs.h
+
+#define BCM4362_CHIP_ID		0x4362          /* 4362 chipcommon chipid */
+#define BCM43751_CHIP_ID	0xAAE7          /* 43751 chipcommon chipid */
+#define BCM43752_CHIP_ID	0xAAE8          /* 43752 chipcommon chipid */
+
+
+#define BCM4362_CHIP(chipid)	((CHIPID(chipid) == BCM4362_CHIP_ID) || \
+				(CHIPID(chipid) == BCM43751_CHIP_ID) || \
+				(CHIPID(chipid) == BCM43752_CHIP_ID))
+
+#define BCM4362_CHIP_GRPID	BCM4362_CHIP_ID: \
+				case BCM43751_CHIP_ID: \
+				case BCM43752_CHIP_ID
+
+
