@@ -2,107 +2,121 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 923976B2605
-	for <lists+linux-mmc@lfdr.de>; Thu,  9 Mar 2023 15:00:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4996D6B2688
+	for <lists+linux-mmc@lfdr.de>; Thu,  9 Mar 2023 15:16:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229897AbjCIOAD (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 9 Mar 2023 09:00:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49774 "EHLO
+        id S230170AbjCIOQn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 9 Mar 2023 09:16:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231447AbjCIN7g (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 9 Mar 2023 08:59:36 -0500
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2189F1BACC
-        for <linux-mmc@vger.kernel.org>; Thu,  9 Mar 2023 05:56:45 -0800 (PST)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-536c02eea4dso36545237b3.4
-        for <linux-mmc@vger.kernel.org>; Thu, 09 Mar 2023 05:56:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678370204;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vhxj3g02U6JfJorCEqukLhEPbi5ScM6y20Fj/uWtxsc=;
-        b=M6OUagewNatTVBWogs7CL7Frl+ekF/MC2BZgxAEhzQWeyuSsXaRpkf4c99DXMGsgc6
-         GIkzhUNU2BURb1j3QuJVpX9peQPez+0A+Lwv3I+Pr4W55I9ScaDo7aFhChRp0sadmIiL
-         0lKL1TZ0CxVdMF8HoIQ/7ufJEuKA5Dra+MJuKUyHRmB9rs9CuHe4y70Qv5xVu1WwZK0B
-         1vXdXtOHzSOCFokSbLcL3GvOf4lTYuXwXKVhUa8ogJNH81T3PpCdFdiMh5PpBeOSTCOE
-         8RasSI/d7wlsztguwb8tqjCkoykqGh1gdjoQgiePJjOS2aABefBearXVltjCsf9a3xlk
-         bqLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678370204;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Vhxj3g02U6JfJorCEqukLhEPbi5ScM6y20Fj/uWtxsc=;
-        b=5t0VEF+hAOEOLMVZqlRiwAZOIddWMxzWZovr9n4Kyfdwu6SD5MDyplFLoGqsOZCzZV
-         Y0m6NObZgkxR/WEJp51MJ6Z/0GnTXF5KMO1X3JdxrREx2egiul0ofB1YgaR+K+uFm8i5
-         ttcapR8UhPlcoDhZDNM9qQCjEC3bPqsKwmIPM8iTWqqEoCgbu2pXsUv4LOctPe1HRezx
-         yS+aJGeNAfJNeUKnOZ/GOMvMI8O6yp3qkmkmoegRoySOWhakMK7+updmoFEihfMJAcSq
-         XJEjF1yCDnWKtdih24KdnrdTlUR+X9z/F/OV6TlszrW+L1AZfyyLvmZMes+KW5i3j7w0
-         xaZQ==
-X-Gm-Message-State: AO0yUKU4QzwN2ht0Y4514bFPdvW6/ilsCysj8BgBvvsY5qD31kYBej5k
-        OT2+54trBtHfqFXsjOR0fWgdGtS4qOX1M0MJtgWS+A==
-X-Google-Smtp-Source: AK7set8C8YjXMi5gSQYXdOX+ayCa5RjgmjqpOw5RNChqcaFChToV9jRVJLPT0IsYxq4ctbaJ0y/nV2OJRYi9K+NoTvc=
-X-Received: by 2002:a81:ad63:0:b0:52a:9f66:80c6 with SMTP id
- l35-20020a81ad63000000b0052a9f6680c6mr13521476ywk.9.1678370204353; Thu, 09
- Mar 2023 05:56:44 -0800 (PST)
+        with ESMTP id S231263AbjCIOOW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 9 Mar 2023 09:14:22 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859B993C4;
+        Thu,  9 Mar 2023 06:13:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678371193; x=1709907193;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=3A65IKB9d2IfLyHPo1ILLZ4ADkCpExI8AS30ua1GCVc=;
+  b=LFnIFa2oy9cRbTo4OzS9IWHzz+tM4YrnopE/dyvvJ7RfwB6nCdwSnwvg
+   Ph8ZbjETf1/WwJ6XxFSRvegTaJfdUwoNQmGL90M5h2RKidbiJyHcba9f8
+   a1oNsOflRNVCUJ/ZQIrkq7MjUd87+adaaPuD6DDzyK6zhpP+lH1b+zXpy
+   nXxXCuKN0gt+Kh5yH4UWbGn1JhDzd99VD2v8oLcO+MK0rLbSasprnYeRE
+   O4i7wJU0/8lMSaGAuX45N+qjNDq5lwQm5dzsYnQnDy22lr+u50oVBOxFT
+   8JGUNr/22YVOO1SJw5RXLeUehwUe9WsN5+szWFKKr0RVVXxSOCDnoWGW8
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10643"; a="364093939"
+X-IronPort-AV: E=Sophos;i="5.98,246,1673942400"; 
+   d="scan'208";a="364093939"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2023 06:13:07 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10643"; a="787575064"
+X-IronPort-AV: E=Sophos;i="5.98,246,1673942400"; 
+   d="scan'208";a="787575064"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.251.219.30])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2023 06:13:01 -0800
+Message-ID: <ef2f8faf-76cc-d221-8281-cc7b8cb68485@intel.com>
+Date:   Thu, 9 Mar 2023 16:12:55 +0200
 MIME-Version: 1.0
-References: <20230203-evk-board-support-v2-0-6ec7cdb10ccf@baylibre.com> <20230203-evk-board-support-v2-3-6ec7cdb10ccf@baylibre.com>
-In-Reply-To: <20230203-evk-board-support-v2-3-6ec7cdb10ccf@baylibre.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 9 Mar 2023 14:56:33 +0100
-Message-ID: <CACRpkdb+CQFOW8zjK2pGhRX=tBUcJAyVN=ohEt8eccndA2nYpA@mail.gmail.com>
-Subject: Re: [PATCH v2 03/18] dt-bindings: pinctrl: mediatek,mt8365-pinctrl:
- add drive strength property
-To:     Alexandre Mergnat <amergnat@baylibre.com>
-Cc:     Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        =?UTF-8?Q?Bernhard_Rosenkr=C3=A4nzer?= <bero@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Wenbin Mei <wenbin.mei@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mmc@vger.kernel.org, Alexandre Bailon <abailon@baylibre.com>,
-        devicetree@vger.kernel.org,
-        Amjad Ouled-Ameur <aouledameur@baylibre.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Fabien Parent <fparent@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.8.0
+Subject: Re: [PATCH v1 2/4] Revert "dt-bindings: mmc: Add bindings for Intel
+ Thunder Bay SoC"
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzk@kernel.org>, rashmi.a@intel.com,
+        ulf.hansson@linaro.org, michal.simek@xilinx.com,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kishon@ti.com, vkoul@kernel.org,
+        andriy.shevchenko@linux.intel.com, linux-phy@lists.infradead.org,
+        mgross@linux.intel.com
+Cc:     kris.pan@linux.intel.com, mahesh.r.vaidya@intel.com,
+        nandhini.srikandan@intel.com, vasavi.v.itha@intel.com,
+        kenchappa.demakkanavar@intel.com, furong.zhou@intel.com,
+        mallikarjunappa.sangannavar@intel.com
+References: <20230124054427.28808-1-rashmi.a@intel.com>
+ <20230124054427.28808-2-rashmi.a@intel.com>
+ <c850df25-57b8-3172-8e5c-c466dc8556cd@kernel.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <c850df25-57b8-3172-8e5c-c466dc8556cd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Mar 7, 2023 at 2:18 PM Alexandre Mergnat <amergnat@baylibre.com> wrote:
+On 24/01/23 13:31, Krzysztof Kozlowski wrote:
+> On 24/01/2023 06:44, rashmi.a@intel.com wrote:
+>> From: "A, Rashmi" <rashmi.a@intel.com>
+>>
+>> This reverts commit ab991c05c42853f0b6110022db9bf30fcc6323dd.
+> 
+> Please use scripts/get_maintainers.pl to get a list of necessary people
+> and lists to CC.  It might happen, that command when run on an older
+> kernel, gives you outdated entries.  Therefore please be sure you base
+> your patches on recent Linux kernel.
+> 
+>>
+>> Revert Thunder Bay specific code as the product got cancelled
+>> and there are no end customers.
+>>
+>> Signed-off-by: A, Rashmi <rashmi.a@intel.com>
+>> Reviewed-by: Hunter, Adrian <adrian.hunter@intel.com>wq
+> 
+> Stray characters.
+> 
+>> ---
+>>  .../devicetree/bindings/mmc/arasan,sdhci.yaml | 25 -------------------
+>>  1 file changed, 25 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml b/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml
+>> index 4053de758db6..0d5d21dd30bb 100644
+>> --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml
+>> +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml
+>> @@ -88,12 +88,6 @@ properties:
+>>          description:
+>>            For this device it is strongly suggested to include
+>>            arasan,soc-ctl-syscon.
+>> -      - items:
+>> -          - const: intel,thunderbay-sdhci-5.1   # Intel Thunder Bay eMMC PHY
+>> -          - const: arasan,sdhci-5.1
+> 
+> Instead should be made rather deprecated, unless you are sure there is
+> no single person in the world using the bindings (e.g. with BSD or
+> bootloader)?
 
-> This SoC is able to drive the following output current:
-> - 2 mA
-> - 4 mA
-> - 6 mA
-> - 8 mA
-> - 10 mA
-> - 12 mA
-> - 14 mA
-> - 16 mA
->
-> Then drive-strength property is set with enum to reflect its HW capability.
->
-> Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+I am sorry but this is not clear to me.  As I understand it,
+the hardware was never released, so the binding serves no
+purpose.  Should it be removed or "deprecated"?
 
-Is this something I can apply directly to the pinctrl tree once the DT
-maintainers have
-had a chance to look at it?
-
-Yours,
-Linus Walleij
