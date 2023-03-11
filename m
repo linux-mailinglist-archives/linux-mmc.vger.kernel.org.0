@@ -2,76 +2,66 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B03A76B5D98
-	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 16:58:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F37E46B5F46
+	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 18:41:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230339AbjCKP60 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 11 Mar 2023 10:58:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53260 "EHLO
+        id S229932AbjCKRlv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 11 Mar 2023 12:41:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbjCKP6Y (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 10:58:24 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E18F1EBC9
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 07:58:23 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id cy23so32352782edb.12
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 07:58:23 -0800 (PST)
+        with ESMTP id S229636AbjCKRlu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 12:41:50 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B4F1F5D3
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 09:41:26 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id m6so10689666lfq.5
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 09:41:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678550301;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GEY3ZLSWUW7XsIa9CCPgTwpcYQffLbl3wrMRUOgD69k=;
-        b=U7zIRT3w4Gv+arQEt90+L156snTB3qQ7nhF7QSJ2KRFlNYZ/PAOH8MeUnXLU924LKc
-         ZTASA0Ws0xccVJqD2659J6Tnnk7/lPGpxlotNfnAZSSn/peKEVWUPwYa7za8DIXpygYB
-         ew6sBga2mr/bVVHDlTGvInBQSSwSQFDDPKwpgh63nhs4v8MIi8LZl3lqnoxUVL12NB/E
-         jrac9V5e90uLJ5OXdVcFStCb3G9ovMYUYN4gNGnkRJ7+8rN/Kk9rWgw/s/z2YLBFowHO
-         CYT+GaBxCxWVC1QIRxAP1BqeJiDrsWuj1EHb8mXnVFfSdVDAflWNH9jRAOg2+VQF5Cdr
-         Zemw==
+        d=gmail.com; s=20210112; t=1678556435;
+        h=from:cc:to:in-reply-to:message-id:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gucexyEn/MXQiixU059a1/bhO0FmHxte+9JfrT4eP5U=;
+        b=j70WkXYg0Rh6B6miG7w3QX0exuvuHc7y6PXZwbZnTgG/Q5z/1PP4ywiFk40F81Ecvv
+         FM5mt5wXEHze+VsxWkyhk7EKY2ykblpnje8ddkOf/sQFMxEZwNtIwBir7UbMbnEsdE7e
+         xCQSZnQRQ2DwhRVdfvVqYi9wultKSkhgwjZByoIVxzQk0dc0FryBZ7wp/b1YF4fsPrch
+         XLTrTaaPvR67Ua+iW1vG5OmiLiCHDxIvpG+jQ7CbTYeW1FmW+p+r2uqcDgwRvpFkzbu1
+         1z+fDWFxxheSK8IAE6Xmfi1smH9pnJ0GDO5pzD/lyZPI4EEi1MvnaiK9vZIdhyO5DeSx
+         1h8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678550301;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GEY3ZLSWUW7XsIa9CCPgTwpcYQffLbl3wrMRUOgD69k=;
-        b=3R1IjBKZVWakdLvFNk569h9WqcaZZetndIZ0UGvUgMUm937hN7oV9Eoab4xQXzlouw
-         kZLTf/+SKZ3uWNOEmQp9Zfxsml2m+pNqUyES4fWeBSDanA5Ti1YZMsrsVYKMgj3KIdok
-         Qe2yYfGpqoHPGgG6IRUKa9re1BtREUSnlOPNfj3Rsl8JNIuLTTKrqnDFD4e+rGfhZdU/
-         7vKdDea/I+eQkIoEtseaYF1JC8zitj4cEL6mULeGmqVfD6BC0ygJ35Iy1XduM6oAhtJg
-         DQD5GCLdTPJxmxVSOc7oQyUBTBCms6aErPzPZfdxRvwSPui65wIreWFRmRLA3EoKjtwV
-         Nr1A==
-X-Gm-Message-State: AO0yUKXfGgUr9m9fzCO3A+8B8R+FMqr3VF4RkaZPar7yCv7+/cJxXgGX
-        NUMFA2Thh7v0dzzcmDrphrQjDjeMbfj8cwn8k0M=
-X-Google-Smtp-Source: AK7set/rTX6aOjV6jOMdTk7oGqNeQp6gP4Q+ddlQbe8TtUA4b1Cv3eKDysAuVFJnI87ZZwYWwojCAg==
-X-Received: by 2002:aa7:ce05:0:b0:4ac:bab1:feee with SMTP id d5-20020aa7ce05000000b004acbab1feeemr23294992edv.24.1678550301639;
-        Sat, 11 Mar 2023 07:58:21 -0800 (PST)
-Received: from ?IPV6:2a02:810d:15c0:828:6927:e94d:fc63:9d6e? ([2a02:810d:15c0:828:6927:e94d:fc63:9d6e])
-        by smtp.gmail.com with ESMTPSA id h14-20020a50c38e000000b004fa610895b5sm865948edf.7.2023.03.11.07.58.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Mar 2023 07:58:21 -0800 (PST)
-Message-ID: <4b6b7aee-bd20-208f-1743-ff76388feffd@linaro.org>
-Date:   Sat, 11 Mar 2023 16:58:20 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 1/2] devicetree: synopsys-dw-mshc-common: add
- "fifo-access-32bit" property
-Content-Language: en-US
-To:     Sergey Lisov <sleirsgoevy@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        d=1e100.net; s=20210112; t=1678556435;
+        h=from:cc:to:in-reply-to:message-id:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=gucexyEn/MXQiixU059a1/bhO0FmHxte+9JfrT4eP5U=;
+        b=blHJtjRqabU/I6yjKXIsknKnvltb/lXc1RcR0jgWPvMPzZSumtiPD0EkhxnSNykT/a
+         30dqf1CPFKUqmWnL5JnS2GkQ9WWrZnTiz48GW20Uw7Odff/7FX66paU4reVYdxEPTC8Y
+         ah65z/OmTcc6LcC99Zw+YyJJalrdhiEgTGNoFDTZZprYQSEFV59ezHYv1pA0+m+J9oCF
+         b0ztE2RxitBGEk1kHXj+ki6PTjsGfzBCA4inaVTUunwrpSzbWre7gha9adgBIn78Xmnf
+         Ji6aTVQMx/ghDauggL9iNUf1tmZETERnMk8DRg6zimPmzlY/RC2C31ljP7HW3Ca2c6w0
+         Zy7A==
+X-Gm-Message-State: AO0yUKWskkY8MdcA0xAxM6lCmzaY6lH/9kcsyyaX4UaAvSB+qAGnpRJY
+        aKnHWaA0M+nmXudcAtrJwIWjVbn9A62C4NCT+gU=
+X-Google-Smtp-Source: AK7set/3odt/jEcVTzzidsY1dgjrw8PL1aIfvGyiiY4i3X6gQtGpluDbkvGXVhfBVwApo4cP9jnbCw==
+X-Received: by 2002:ac2:4a90:0:b0:4db:2c52:349b with SMTP id l16-20020ac24a90000000b004db2c52349bmr8331772lfp.21.1678556435662;
+        Sat, 11 Mar 2023 09:40:35 -0800 (PST)
+Received: from letter.txt (46-138-144-249.dynamic.spd-mgts.ru. [46.138.144.249])
+        by smtp.gmail.com with ESMTPSA id m27-20020ac24adb000000b004b581ab4c77sm372637lfp.78.2023.03.11.09.40.35
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Mar 2023 09:40:35 -0800 (PST)
+Date:   Sat, 11 Mar 2023 09:40:35 -0800 (PST)
+Message-ID: <c13993bc-9d12-f20e-de27-fa0b8a58ed33-1-sleirsgoevy@gmail.com>
+In-Reply-To: <c13993bc-9d12-f20e-de27-fa0b8a58ed33@linaro.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jaehoon Chung <jh80.chung@samsung.com>
 Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <640c80ff.050a0220.2983.0b8d@mx.google.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <640c80ff.050a0220.2983.0b8d@mx.google.com>
+From:   Sergey Lisov <sleirsgoevy@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+X-Spam-Status: No, score=-0.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MISSING_SUBJECT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,13 +69,37 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 11/03/2023 13:54, Sergey Lisov wrote:
-> ---
->  .../devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml    | 6 ++++++
+> > ---
+> >  .../devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml    | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
+> > index 8dfad89c7..2bc5ac528 100644
+> > --- a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
+> > +++ b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
+> > @@ -57,6 +57,12 @@ properties:
+> >        force fifo watermark setting accordingly.
+> >      $ref: /schemas/types.yaml#/definitions/flag
+> >  
+> > +  fifo-access-32bit:
+> 
+> Missing type boolean.
 
-I received your patches twice, so I already responded to one thread. The
-comments apply also here.
+Thanks, will add the same $ref as for the entry above.
 
-Best regards,
-Krzysztof
+> > +    description:
+> > +      Specifies that this device requires accesses to its 64-bit registers
+> > +      to be done as pairs of 32-bit accesses, even on architectures where
+> > +      readq is available.
+> 
+> And why the device would require this? If it has 64-bit registers in the
+> first place, they can be accessed in 64-bit. Otherwise these are not
+> 64-bit registers, but just lower/upper 32-bit, right?
+> 
+> Also, why this cannot be implied from compatible? Why different boards
+> with same SoC should have different FIFO access?
 
+It probably can be implied, but I am not exactly sure on which boards it
+affects, so I decided to go for a new devicetree option. Anyway, the same
+argument applies to the "data-addr" property, which is already in the
+spec, so I supposed that adding such knobs is fine.
