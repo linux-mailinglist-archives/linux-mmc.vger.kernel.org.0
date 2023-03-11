@@ -2,66 +2,71 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F37E46B5F46
-	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 18:41:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD94F6B5F84
+	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 19:06:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229932AbjCKRlv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 11 Mar 2023 12:41:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50124 "EHLO
+        id S230313AbjCKSGg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 11 Mar 2023 13:06:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229636AbjCKRlu (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 12:41:50 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B4F1F5D3
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 09:41:26 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id m6so10689666lfq.5
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 09:41:26 -0800 (PST)
+        with ESMTP id S229806AbjCKSGf (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 13:06:35 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB26559E2
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 10:06:32 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id m6so10736832lfq.5
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 10:06:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678556435;
-        h=from:cc:to:in-reply-to:message-id:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gucexyEn/MXQiixU059a1/bhO0FmHxte+9JfrT4eP5U=;
-        b=j70WkXYg0Rh6B6miG7w3QX0exuvuHc7y6PXZwbZnTgG/Q5z/1PP4ywiFk40F81Ecvv
-         FM5mt5wXEHze+VsxWkyhk7EKY2ykblpnje8ddkOf/sQFMxEZwNtIwBir7UbMbnEsdE7e
-         xCQSZnQRQ2DwhRVdfvVqYi9wultKSkhgwjZByoIVxzQk0dc0FryBZ7wp/b1YF4fsPrch
-         XLTrTaaPvR67Ua+iW1vG5OmiLiCHDxIvpG+jQ7CbTYeW1FmW+p+r2uqcDgwRvpFkzbu1
-         1z+fDWFxxheSK8IAE6Xmfi1smH9pnJ0GDO5pzD/lyZPI4EEi1MvnaiK9vZIdhyO5DeSx
-         1h8g==
+        d=gmail.com; s=20210112; t=1678557991;
+        h=subject:cc:to:from:user-agent:mime-version:date:in-reply-to
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=0M0jtqvAdY5YLi17aN4+4DCugAJ4kvRlpg9cOQFT1qw=;
+        b=Rq/wBpJSHEj0UeMCW1YySuCCWqOCUNhkzN4don2ySzHQI+2wLpq5xHotGsCU5PDxbH
+         lPOUxMAR6EnYrY/XK1DSs1Ls1RaUCdc/s9ASOXpaeeX14QRN4GfQpnew53apmkHfW/SU
+         j2rLljaxV+UM6gOkWRBn5qxP/X4ivsGxBqRWdYWM8fJlNuDYh2K0zH5+t0tk8XcJTun1
+         y+KSkA8AHibO/3AovJ4ldpxp3K5x/uyP53sc013OmrgPWcrFZbszkBS+ZCwwLMOcJLxw
+         y2zam2zsVK6SWk+Mq49MrLhhYv0VX8+ho9vUj17nLbbm3dUcTn+Y4AM7cHAWctqlS91l
+         HB6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678556435;
-        h=from:cc:to:in-reply-to:message-id:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gucexyEn/MXQiixU059a1/bhO0FmHxte+9JfrT4eP5U=;
-        b=blHJtjRqabU/I6yjKXIsknKnvltb/lXc1RcR0jgWPvMPzZSumtiPD0EkhxnSNykT/a
-         30dqf1CPFKUqmWnL5JnS2GkQ9WWrZnTiz48GW20Uw7Odff/7FX66paU4reVYdxEPTC8Y
-         ah65z/OmTcc6LcC99Zw+YyJJalrdhiEgTGNoFDTZZprYQSEFV59ezHYv1pA0+m+J9oCF
-         b0ztE2RxitBGEk1kHXj+ki6PTjsGfzBCA4inaVTUunwrpSzbWre7gha9adgBIn78Xmnf
-         Ji6aTVQMx/ghDauggL9iNUf1tmZETERnMk8DRg6zimPmzlY/RC2C31ljP7HW3Ca2c6w0
-         Zy7A==
-X-Gm-Message-State: AO0yUKWskkY8MdcA0xAxM6lCmzaY6lH/9kcsyyaX4UaAvSB+qAGnpRJY
-        aKnHWaA0M+nmXudcAtrJwIWjVbn9A62C4NCT+gU=
-X-Google-Smtp-Source: AK7set/3odt/jEcVTzzidsY1dgjrw8PL1aIfvGyiiY4i3X6gQtGpluDbkvGXVhfBVwApo4cP9jnbCw==
-X-Received: by 2002:ac2:4a90:0:b0:4db:2c52:349b with SMTP id l16-20020ac24a90000000b004db2c52349bmr8331772lfp.21.1678556435662;
-        Sat, 11 Mar 2023 09:40:35 -0800 (PST)
-Received: from letter.txt (46-138-144-249.dynamic.spd-mgts.ru. [46.138.144.249])
-        by smtp.gmail.com with ESMTPSA id m27-20020ac24adb000000b004b581ab4c77sm372637lfp.78.2023.03.11.09.40.35
+        d=1e100.net; s=20210112; t=1678557991;
+        h=subject:cc:to:from:user-agent:mime-version:date:in-reply-to
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0M0jtqvAdY5YLi17aN4+4DCugAJ4kvRlpg9cOQFT1qw=;
+        b=uyzEJkL8TAFIYfk5omWapP5b3k+NLhgoDf4ULCxMDOlNS/zTtqu9W7Bl4zu1ktHOIk
+         UktUGvKyHV5GWN/PTmoTuXFK03OhK/VgSFEVzp0b0t4Yq/chjzGTDf4zc3CyLLgQrVBo
+         uwIsDDtlXlO13koa/skhBCduWhymzIVciM2ndsdSeHpUoc0kQ/52He5stYg5uQmW8JmT
+         1VMNSlgmo0+ON/Slv9anV+iMH3i04XA3OGkVOSA9lNvngO9chvTrxwDADl45uG014l5G
+         LK5kZ+G967mBu/wPKgYqc206fzFnkb8StvIFgEq1BrOHL4rCTVCtKMHnlw79hK+VQtLk
+         m/qg==
+X-Gm-Message-State: AO0yUKWjTwfwmkuUTljkUK/Cs3B36orrU9AgdT15MJMZT+Em/o27kWZ5
+        BqVXnZ2ObnndAo6XsvgRybwxiKkUPNSk2JgrdrI=
+X-Google-Smtp-Source: AK7set+uLnZf8IcSQjtMhXkORuIef9YhmqHrye+1DzwnUQpUGK2RPQU3Bzfw2OUvdcedHKJxTDgaLw==
+X-Received: by 2002:a19:5514:0:b0:4dd:a66c:6854 with SMTP id n20-20020a195514000000b004dda66c6854mr8513795lfe.25.1678557990977;
+        Sat, 11 Mar 2023 10:06:30 -0800 (PST)
+Received: from letter2.txt (46-138-144-249.dynamic.spd-mgts.ru. [46.138.144.249])
+        by smtp.gmail.com with ESMTPSA id g27-20020ac2539b000000b004d37d647637sm384267lfh.64.2023.03.11.10.06.30
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Mar 2023 09:40:35 -0800 (PST)
-Date:   Sat, 11 Mar 2023 09:40:35 -0800 (PST)
-Message-ID: <c13993bc-9d12-f20e-de27-fa0b8a58ed33-1-sleirsgoevy@gmail.com>
-In-Reply-To: <c13993bc-9d12-f20e-de27-fa0b8a58ed33@linaro.org>
+        Sat, 11 Mar 2023 10:06:30 -0800 (PST)
+Message-ID: <640cc326.c20a0220.2dc43.0e1a@mx.google.com>
+In-Reply-To: <4de11c0b-8e09-c3ef-4180-585662386859@linaro.org>
+Date:   Sat, 11 Mar 2023 18:57:18 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+From:   Sergey Lisov <sleirsgoevy@gmail.com>
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jaehoon Chung <jh80.chung@samsung.com>
 Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-From:   Sergey Lisov <sleirsgoevy@gmail.com>
+Subject: Re: [PATCH 1/2] devicetree: synopsys-dw-mshc-common: add "fifo-access-32bit" property
 Content-Type: text/plain; charset=UTF-8
-X-Spam-Status: No, score=-0.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MISSING_SUBJECT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-Spam-Status: No, score=0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_MUA_MOZILLA,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,37 +74,17 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-> > ---
-> >  .../devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml    | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
-> > index 8dfad89c7..2bc5ac528 100644
-> > --- a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
-> > +++ b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
-> > @@ -57,6 +57,12 @@ properties:
-> >        force fifo watermark setting accordingly.
-> >      $ref: /schemas/types.yaml#/definitions/flag
-> >  
-> > +  fifo-access-32bit:
-> 
-> Missing type boolean.
+> Why did you remove the subject? Please keep the mailing process matching
+> mailing lists. It messes with mailboxes, filters and reading process.
 
-Thanks, will add the same $ref as for the entry above.
+Sorry about this, I just wanted to get rid of those X-Something headers and
+accidentially deleted this one.
 
-> > +    description:
-> > +      Specifies that this device requires accesses to its 64-bit registers
-> > +      to be done as pairs of 32-bit accesses, even on architectures where
-> > +      readq is available.
+> Yeah, Rob acked it so I will let him to judge this. To me it looks like
+> unnecessary fragmentation - this looks like compatible specific, not
+> board. Anyway you need to resend to fix all the mailing mess.
 > 
-> And why the device would require this? If it has 64-bit registers in the
-> first place, they can be accessed in 64-bit. Otherwise these are not
-> 64-bit registers, but just lower/upper 32-bit, right?
-> 
-> Also, why this cannot be implied from compatible? Why different boards
-> with same SoC should have different FIFO access?
+> Best regards,
+> Krzysztof
 
-It probably can be implied, but I am not exactly sure on which boards it
-affects, so I decided to go for a new devicetree option. Anyway, the same
-argument applies to the "data-addr" property, which is already in the
-spec, so I supposed that adding such knobs is fine.
+Should I resend the whole patchset from scratch, as if nothing happened?
