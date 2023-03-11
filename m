@@ -2,65 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFF146B5FB3
-	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 19:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 003DA6B60BC
+	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 21:56:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229652AbjCKSW2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 11 Mar 2023 13:22:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36378 "EHLO
+        id S229777AbjCKU4q (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 11 Mar 2023 15:56:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229800AbjCKSWZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 13:22:25 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 534986904B
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 10:21:41 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id bp27so458678lfb.6
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 10:21:41 -0800 (PST)
+        with ESMTP id S229694AbjCKU4q (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 15:56:46 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7FC44C6F6;
+        Sat, 11 Mar 2023 12:56:44 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id fd5so274443edb.7;
+        Sat, 11 Mar 2023 12:56:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678558876;
-        h=cc:to:subject:date:from:message-id:from:to:cc:subject:date
+        d=googlemail.com; s=20210112; t=1678568203;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+fW/DwA4q8yKtERRs9xU/rZtvMzehwEtMWVT+wwuBm4=;
-        b=g1JGmGYdvB9HebBmdZAUW/LbhHVVgEwwjVms5PxY2tex39jpuj1NgJy5SApNueGoQI
-         HCwzU83VKixpwKUZidJ3EDCPV5RT6h1O8YF0O2lVWrNShmRDjBI8HqprPVHP6JhFtAFn
-         Yzy9UEb5a2tAXLKPrXlsxqYx5wcJ5qp8ZihjqB6vEmQEG2dFdluMpEhp1DcYSNJ+bo+C
-         A+jMSj3666Ta3RP2um9o8ryWc6Y2c4/tqI+6nW8llP6eaCsBfP6fvPv+5nlnhJntrRQz
-         P+04FfC+ojs3kIqaJb/WA2lQK5NA6P+k3Ot7CegRnei5vwKufCxgK9IA6kU1XhTlLvVW
-         N01Q==
+        bh=wG89qGDC53apMqtBOHTRtgFqgYqAhyr7mdrOysqyOUk=;
+        b=ZKfWGHw6RRcpr6YKONN9XeUHZ5IAiAD2mfB6TNmsxLwfetbah0ZXY5eTWMcljMaP27
+         8IV61+03NE4F+X5MHzGWo+j/mNpAPg07OGJSBhKEAdZ3rXI6Z0xH0EhQROvX3X/L1Myl
+         IwsnuHDdvzIIs25yvEvBhTkOxrmlOCh+6yDnexHlkSCBkQwyq9Psp8uqXBecjM7/2n8M
+         56OkJE9FmrtDA6xTYyJqlV52uDW9cqkJOClmmBp62w8fWKUccuOk7u+33f+sCsVQ0HyM
+         rsUnx0VtNY0pOio4j9i07+NmuuYgJnfUGpmAWDwMQPAu2g7OJA0hTDeV5ZJFynzq01Oz
+         jqNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678558876;
-        h=cc:to:subject:date:from:message-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20210112; t=1678568203;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+fW/DwA4q8yKtERRs9xU/rZtvMzehwEtMWVT+wwuBm4=;
-        b=Cx+AYQHTDS8FQuT+diax2WJGTTwhrkycF+aYTM0o424LvfI4QCRTaE7LRWk0nczQ8N
-         Jg9m38whp93FH2RWvlU7t5xXjydUiOlBeuCDNyRUrM4O/7fOax3LY8K1wyhCi+Hx4jbA
-         sBeSP4qSkphpMQARPxpluMo/Q4fVMUa0oNo/tSu0zeTwBu/2RAGq1flozVW4PDI4cEmu
-         6081LB2qBrBlp1vHZyyAih77eZnWqsmcmVRiEobmqZUTffZ0k9cURgetWquBnePMLoMH
-         s06daq1fJCJr42sFOUMq6rPqyTjO8EXW0UBKfeCZ5FSeM06dTPXvAtoK1lku094dh3j7
-         19Kw==
-X-Gm-Message-State: AO0yUKXtT6jjoCDUPWT3A4qA6SjrFCEUF9EjzWq5QwWFpHCKBuNpt75V
-        HglXvvdH7f7yJ1c1XHRVvE/dK74FIp6uXOQz+AM=
-X-Google-Smtp-Source: AK7set+HqqPm79lPZ0uRYMHOGw4avh3m7bwn5YUMNln5TNYwe3vfQ2vWFN48iBoSubVlB0HuQC8TbA==
-X-Received: by 2002:a19:f013:0:b0:4db:1b97:13 with SMTP id p19-20020a19f013000000b004db1b970013mr7628257lfc.54.1678558876165;
-        Sat, 11 Mar 2023 10:21:16 -0800 (PST)
-Received: from 0000-cover-letter.patch (46-138-144-249.dynamic.spd-mgts.ru. [46.138.144.249])
-        by smtp.gmail.com with ESMTPSA id v19-20020a197413000000b004dc12a7e03bsm381624lfe.222.2023.03.11.10.21.15
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Mar 2023 10:21:15 -0800 (PST)
-Message-Id: <1678558770.495747-0-sleirsgoevy@gmail.com>
-From:   Sergey Lisov <sleirsgoevy@gmail.com>
-Date:   Sat, 11 Mar 2023 21:15:38 +0300
-Subject: [PATCH v2 0/2] mmc: dw_mmc: fix DW MMC cores with 32-bit bus on 64-bit Linux systems
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>
-Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        bh=wG89qGDC53apMqtBOHTRtgFqgYqAhyr7mdrOysqyOUk=;
+        b=5y2tSvNU4H11Run4AdFe4OOun1dmMyQ4N/2L1pEmRck0KlUOZO3iAsULwwHEdF+wYP
+         Cg+o1XUcoHbhnIUrVgj0DsC3mXZmiAr/uNYOgF3w98lrpqX7DYwSMUsfagF9vXW39ebF
+         UiCh9uim5piSok/26ewZ1OAEWYv/S9L53TCj7GizjzCu2+WPF5Y5zN3g2BJ/PnYPof8g
+         dVawhIPxtegUsvQoPBwIpspLr8WKVCzp+asydg6ZMqouzLGF3D+VPubLbysQUfiWGRxG
+         UVWX+rbBoWxcJgJ7wIV+lgR1Sy9H59vuyL1BmziqQ8lgDiJQZt95zf2RRaJ3j9hh+MZs
+         o5Xg==
+X-Gm-Message-State: AO0yUKURr62jkHsqPAvTR7h28JSM8/LKicXToRJ6dYP0fHXE7mTTRb3K
+        Za+ii6zu0BBP+IQNUwkQ/HIpfnC2RGYIf6mDumk=
+X-Google-Smtp-Source: AK7set+fjGgwpMDd9lM1+8OU+R3Kaa85CmMo0pVrMx2+MYZcrTHwZ7KlV4WOukKoD1BbZY72PNg6s9uocAsnrptj7XE=
+X-Received: by 2002:a17:906:3002:b0:8dc:6674:5bac with SMTP id
+ 2-20020a170906300200b008dc66745bacmr15580598ejz.4.1678568203082; Sat, 11 Mar
+ 2023 12:56:43 -0800 (PST)
+MIME-Version: 1.0
+References: <20230310202922.2459680-1-martin.blumenstingl@googlemail.com> <174f91fc-7629-e380-4ca1-56eb39ea24ea@lwfinger.net>
+In-Reply-To: <174f91fc-7629-e380-4ca1-56eb39ea24ea@lwfinger.net>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Sat, 11 Mar 2023 21:56:32 +0100
+Message-ID: <CAFBinCAn7zD-sF+5B1OHztaijt6OHFZWHM-ayxYY0=z0zkaJCg@mail.gmail.com>
+Subject: Re: [PATCH v2 RFC 0/9] rtw88: Add SDIO support
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>,
+        Nitin Gupta <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,30 +75,43 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-DesignWare MMC cores have a configurable data bus width of either 16, 32,
-or 64 bytes. It is possible, and some vendors actually do it, to ship a
-DW MMC core configured for 32-bit data bus within a 64-bit SoC. In this
-case the kernel will attempt 64-bit (readq) accesses to certain 64-bit MMIO
-registers, while the core will expect pairs of 32-bit accesses.
+Hello Larry,
 
-It seems that currently the only register for which the kernel performs
-64-bit accesses is the FIFO. The symptom is that the DW MMC core never
-receives a read on the second half of the register, does not register the
-datum as being read, and thus not advancing its internal FIFO pointer,
-breaking further reads. It also seems that this FIFO is only used for small
-(less than 16 bytes) transfers, which probably means that only some SDIO
-cards are affected.
+On Sat, Mar 11, 2023 at 3:16=E2=80=AFAM Larry Finger <Larry.Finger@lwfinger=
+.net> wrote:
+[...]
+> I am not qualified to review the code, but I am integrating this version =
+into my
+> rtw88 repo at GitHub.com.
+>
+> It is essential that a successful build is possible after every patch is =
+applied
+> so that an arbitrary bisection will not fail to build. This patch series =
+fails
+> after #2 is committed. File mac.c needs symbol SDIO_LOCAL_OFFSET, which w=
+as
+> moved from mac.h to sdio.h. I resolved this be including sdio.h in mac.c.=
+ This
+> breaks #3, where you add the include to mac.c. It needs to happen one pat=
+ch earlier.
+Thank you for spotting and reporting this issue! You are right with
+this, I'll add the sdio.h include to mac.c with patch 2 to resolve
+this issue as you suggested.
 
-Sergey Lisov (2):
-  dt-bindings: synopsys-dw-mshc-common: add "fifo-access-32bit" property
-  mmc: dw_mmc: add an option to force 32-bit access to 64-bit FIFO
+> The other problem for my repo is that it cannot modify
+> include/linux/mmc/sdio_ids.h, thus I have to create a local sdio_ids.h to
+> contain the new definitions. Once your patches are in the kernel, I will =
+be able
+> to eliminate this work around.
+You can also modify the three SDIO driver files (rtw8821cs.c,
+rtw8822bs.c, rtw8822cs.c) and use the literal IDs there if you have to
+patch those files anyways.
 
- .../bindings/mmc/synopsys-dw-mshc-common.yaml |   7 +
- drivers/mmc/host/dw_mmc.c                     | 125 +++++++++++++++++-
- drivers/mmc/host/dw_mmc.h                     |   2 +
- 3 files changed, 132 insertions(+), 2 deletions(-)
-
--- 
-2.38.3
+> I do not have any rtw88 SDIO devices, thus I will not be able to test, bu=
+t I
+> will pass any information that I get from my users.
+That sounds great - thank you!
 
 
+Best regards,
+Martin
