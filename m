@@ -2,76 +2,67 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DE2E6B5F8F
-	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 19:08:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2DAF6B5FB7
+	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 19:22:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbjCKSIm (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 11 Mar 2023 13:08:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43072 "EHLO
+        id S229668AbjCKSWa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 11 Mar 2023 13:22:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjCKSIk (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 13:08:40 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52F532DE61
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 10:08:38 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id o12so33218476edb.9
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 10:08:38 -0800 (PST)
+        with ESMTP id S229643AbjCKSW2 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 13:22:28 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4A1161319
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 10:21:47 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id m6so10764794lfq.5
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 10:21:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678558117;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=px7FGPYfIZ94nlU1UqelVqsR2o/IJ1tQkvyb1RAfYos=;
-        b=JATAngTG2WAcY9tmjNNxLSb/WOmJ0TMUJtpLjWrgt9RK8LedCE5gxHAYo47KJq0yYp
-         Fxcn9cXJC0RUENvptu3z+Z1QSYyNWGUJq9rXYv8PBRliua2yS7yEc6B9dyYP/22gAYAX
-         86JWAzGxHM+VMCLqTULniJr6O15i0lnXc3qMz/mieTz3QEENmpvdArCPrCKCPHUDzEfY
-         DihVpUBQt/eTCe4BGrs79dtAT6HhK+tYhya4TQLzFcS3m42hi5zPKOWC88rRtQo+hRwL
-         3KiIV13GuJfuOhg9oFR8MtguMOzldRYL5lZ8TwMoU2+otOU/+XuE1JtA3gvQn9Wtx8GM
-         ACZg==
+        d=gmail.com; s=20210112; t=1678558900;
+        h=cc:to:subject:date:from:in-reply-to:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zgZZFa9GT3KgzmxYSLg5VRVJ2/WUIFA9QnWnNW5nD4w=;
+        b=mNtGjGWdDstEdiYUuvC/HXFG+z/PPk4RvfFsbGxt4IT/xfq93mn20/nH81OLJxf1RT
+         Yv36QxydbcaNpcuxk1VqiuJhGMpOMhx8OOYfc8sqpI1WtLtxHU7Dym6+lDtMBIJby6Ia
+         tFHa+b4tPUGHR5CaX/ptcNfvHUdCm/nAeH1gqNcrGkerig3VA4kFDPFprJIL92+3O2k+
+         viZUsN5KjmLD4U2iBinhzp6KrVqyAisr4j2iv5/B/kLkn4GEAGC4jeeXwFoKrZQ1AIAh
+         X9Lf3L87QHNoXyiNZYfgTSgcya+z6RPyEU4gY3DeG6G2kYrEjiEco0NbpmY+yxIIUP1b
+         uYEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678558117;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=px7FGPYfIZ94nlU1UqelVqsR2o/IJ1tQkvyb1RAfYos=;
-        b=S4gtycXJ9s+OYuczNpaVX8s1hTDV0b/R45sYpF3YXJ41Nf2SpQkIbQOGwkqKcl1SRL
-         pfs0acvHOq8khAAH34AXL1WMEudo7BNwuwKhYpyBaUulRbRxtZLAwV+1E2OqBTBJo+Fq
-         oS331lOuLipKR41XLiVCsvnNbe326OWrFIz24z9y0rBpXCeqtx2NT1hEIgq9ZiJ1itFi
-         4wgsySGWRnZ6d8eEZLCBPKXiyqCYZpD2wIOk16mP/c6KYAerk0rCtkrNDfhFFsoOh8HB
-         UotTry1n7RbQ+DDxsTqd6/93unvFavHRM87BUY10gLLTHThdSyIBrJzsESIb4Qf2PdKa
-         Q/AA==
-X-Gm-Message-State: AO0yUKXGddYhhy1U0uTmSpEInQDSMyeRCInBViTAJnlV70QE8boT9z+J
-        M60K22+89d/51mr9zc6mZph7wQ==
-X-Google-Smtp-Source: AK7set9OXOzqJIG07Dth/sljXDOnOfsuxMi1VLwWpjHdi47/1I5/6sZWv2qa3oiqUaRnZrduNtl/Dw==
-X-Received: by 2002:a17:906:d9c8:b0:8e1:cc38:6ab0 with SMTP id qk8-20020a170906d9c800b008e1cc386ab0mr25990433ejb.16.1678558116822;
-        Sat, 11 Mar 2023 10:08:36 -0800 (PST)
-Received: from ?IPV6:2a02:810d:15c0:828:6927:e94d:fc63:9d6e? ([2a02:810d:15c0:828:6927:e94d:fc63:9d6e])
-        by smtp.gmail.com with ESMTPSA id s13-20020a170906354d00b008caaae1f1e1sm1312972eja.110.2023.03.11.10.08.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Mar 2023 10:08:36 -0800 (PST)
-Message-ID: <f14e1e9d-5265-355f-943b-3b0ed96dca46@linaro.org>
-Date:   Sat, 11 Mar 2023 19:08:35 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 1/2] devicetree: synopsys-dw-mshc-common: add
+        d=1e100.net; s=20210112; t=1678558900;
+        h=cc:to:subject:date:from:in-reply-to:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zgZZFa9GT3KgzmxYSLg5VRVJ2/WUIFA9QnWnNW5nD4w=;
+        b=7H6krAou/GmUwvy161oHy07YpUWVrXYfdCoKV5Vd6Zw+GBRmDqpQ/pNmBI3n5cp35h
+         PI3fegxxJa8jSlotnVRPOm2fOUifowAaH9b/J4nwLqtgN8lwtie8Dj33+u7LT96OZdxx
+         sA7HfASitOqDzdybWS75Ybtut35MQKxohnUtIM4Ay3V3WNpNVz578hsfP5WfBXl/MXlj
+         qlsycXw8OQVwH/PO5LQ4Ki0qaq3Xo6jCZ/fLllseApHS3D5dSyOD7Kbr8h5gsAjdoTBX
+         eBMdvL9TqvpgRmfvye49scnz/9d/JXC11Pt7FNV066Cg7lJ+egZcKO4J37VZ/9UzE0bC
+         EUBg==
+X-Gm-Message-State: AO0yUKWgclseycECDR/Xslh5WllthfJnNW1AuFn2dbNPzhxdLHijRVWl
+        u7+0t5sCt44aVL4vJNhm8iM/a/ADV4bF/1iS55M=
+X-Google-Smtp-Source: AK7set/dsCM8nSmhcj4GaWC0Aejx2GNjuzxmx6GUbh5avv7VmGK2OknrAUvaAvnOc18BzQZRXdUE3g==
+X-Received: by 2002:a05:6512:20d:b0:4db:456a:9a1 with SMTP id a13-20020a056512020d00b004db456a09a1mr8313956lfo.66.1678558900240;
+        Sat, 11 Mar 2023 10:21:40 -0800 (PST)
+Received: from 0001-dt-bindings-synopsys-dw-mshc-common-add-fifo-access-.patch (46-138-144-249.dynamic.spd-mgts.ru. [46.138.144.249])
+        by smtp.gmail.com with ESMTPSA id r15-20020ac25a4f000000b004db50b52c08sm387004lfn.102.2023.03.11.10.21.39
+        for <linux-mmc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Mar 2023 10:21:40 -0800 (PST)
+Message-Id: <1678558770.495747-1-sleirsgoevy@gmail.com>
+In-Reply-To: <1678558770.495747-0-sleirsgoevy@gmail.com>
+From:   Sergey Lisov <sleirsgoevy@gmail.com>
+Date:   Sat, 11 Mar 2023 21:15:37 +0300
+Subject: [PATCH v2 1/2] dt-bindings: synopsys-dw-mshc-common: add
  "fifo-access-32bit" property
-Content-Language: en-US
-To:     Sergey Lisov <sleirsgoevy@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jaehoon Chung <jh80.chung@samsung.com>
 Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <640cc323.050a0220.8e83b.0e60@mx.google.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <640cc323.050a0220.8e83b.0e60@mx.google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,25 +70,32 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 11/03/2023 18:57, Sergey Lisov wrote:
->> Why did you remove the subject? Please keep the mailing process matching
->> mailing lists. It messes with mailboxes, filters and reading process.
-> 
-> Sorry about this, I just wanted to get rid of those X-Something headers and
-> accidentially deleted this one.
-> 
->> Yeah, Rob acked it so I will let him to judge this. To me it looks like
->> unnecessary fragmentation - this looks like compatible specific, not
->> board. Anyway you need to resend to fix all the mailing mess.
->>
->> Best regards,
->> Krzysztof
-> 
-> Should I resend the whole patchset from scratch, as if nothing happened?
+Some Samsung Exynos boards using the arm64 architecture have DW MMC
+controllers configured for a 32-bit data bus but a 64-bit FIFO. On these
+systems the 64-bit FIFO registers must be accessed in two 32-bit halves.
+---
+ .../devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml   | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-No, sorry, I was not specific. You need anyway v2 with all the fixes I
-pointed already. Lack of commit msg is a no-go.
+diff --git a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
+index 8dfad89c7..d025b38ca 100644
+--- a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
++++ b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
+@@ -57,6 +57,13 @@ properties:
+       force fifo watermark setting accordingly.
+     $ref: /schemas/types.yaml#/definitions/flag
+ 
++  fifo-access-32bit:
++    description:
++      Specifies that this device requires accesses to its 64-bit registers
++      to be done as pairs of 32-bit accesses, even on architectures where
++      readq is available.
++    $ref: /schemas/types.yaml#/definitions/flag
++
+   dmas:
+     maxItems: 1
+ 
+-- 
+2.38.3
 
-Best regards,
-Krzysztof
 
