@@ -2,96 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB2016B5ACA
-	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 12:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A53B6B5C36
+	for <lists+linux-mmc@lfdr.de>; Sat, 11 Mar 2023 14:24:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbjCKLMs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 11 Mar 2023 06:12:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42734 "EHLO
+        id S229672AbjCKNYX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 11 Mar 2023 08:24:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229672AbjCKLMr (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 06:12:47 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F4FD138473
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 03:12:42 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id ec29so30726676edb.6
-        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 03:12:42 -0800 (PST)
+        with ESMTP id S229810AbjCKNYW (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 11 Mar 2023 08:24:22 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB709CBFB
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 05:24:19 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id t14so8166541ljd.5
+        for <linux-mmc@vger.kernel.org>; Sat, 11 Mar 2023 05:24:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678533161;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OtoSadEYa8Ss/aLG2RB4W5+eHjvVyH51L/bxtSrvPMA=;
-        b=Nuwpg9/ECvGlnZViVbgeVL56DNY24+RGeMn76jRHFMkBgxNCWgtU1mkNx+kP2kSD2F
-         bsVkGDEyG/e/e4kFaB4ukrBLKSquN3fGXh5Sb7E64ED8miiw99LeYeRhBlZvg6QofQm9
-         qKhoiyPLDgP7E2YhPV4YJ3gRplSJViLvnEfFMZ2klmykaYqsbLi5a0MYk3o8MefX0ed3
-         mBFaa6dybsxiLvuMKcm4vQ5WXr45KQaK39WazXdxnEFDVFkNx4uuq5VhK7Zj8xQcm4KG
-         XUsw0SyosEFOdw2W817tmi8fvGCf9WC7SWlHz5QOAIKanfl6AJRCHp4pk+8k3n6t56yn
-         k0Bg==
+        d=gmail.com; s=20210112; t=1678541058;
+        h=cc:to:subject:date:from:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8s9gnIYUH4a7DISj2GFil2OdRXxeDO2P0HDbRjCc19c=;
+        b=e5miCUH9+j2RdGcKV56QfgK4Y8Fx4f7muc7Gy2p23T+E13twYC+EGfDZZI+jdR2mKn
+         Pt64eXV1TU9Pk0EXV3Bwh6cLdfEjd1LKYuTyUilLGAM2+uDpz/PiySXVOjp6dzuw82so
+         tes6SVWi3xyWMgCPFxhaAryY+9sxgoeYClzp1h/+vVheDEYXqOzcl7AAl0UWvzyii6Cb
+         gaW6aZejDN7k9tPZsS4uRMG71+jghbvc3t9lcgOw7Qwf6pE1fPczEWUpnbUey7JLC8dB
+         wRDfWzrbUyJ+4N4+84MwbQhT/UH8Mqd60hlix4mPSsvTSMGz/Zbu/6lETHioc+3Oop75
+         RpcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678533161;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OtoSadEYa8Ss/aLG2RB4W5+eHjvVyH51L/bxtSrvPMA=;
-        b=qLtduVY5lwfZ8aPBUusgZYS8SGtoMIWGS8+qPcOJmHJXwVsScaXPzCFqAheSSiG7nh
-         MEMAyHtmihBsUDLe8hJAayJkcrExuylli46sgY8VbtroWtSvFSYywcwV+JvnZ2Ig07dG
-         OzGGdh3NS8V7wSXNrBq+wOvbgWdZkIzS+ZdxQHB9himdmyFxyxEIYsdTsbm0+db5syoJ
-         rB6mrbQ8YVv1icAOM4ydaFB/TMx9LgOy9FMa60YwzFtIHbLpzVI0DyllZIogbmQtKHEi
-         D+OEnxyvI7fdLNKrIllepDeTDPZwuhVzg6dj7E7CkjoWwFPFvQF/zCfaskKmHHlYO2FS
-         xoVw==
-X-Gm-Message-State: AO0yUKXgsXgsSW4Qe0YyzosgFyPft2csS+LI1YEpdPJ46sHGsEvYN/Lw
-        uUs9j+vJ1KJaHuTibVGDnxHXbg==
-X-Google-Smtp-Source: AK7set8B/eLT6NjOMWrhe2BBeVH13qrTXez8NyanZsqG0kQ35nJOv6OOlb3cez7x9QZOJsYmos/qKQ==
-X-Received: by 2002:a05:6402:1854:b0:4ac:b614:dd00 with SMTP id v20-20020a056402185400b004acb614dd00mr23528925edy.30.1678533160796;
-        Sat, 11 Mar 2023 03:12:40 -0800 (PST)
-Received: from krzk-bin.. ([2a02:810d:15c0:828:fa97:2d7c:bdd7:e1b])
-        by smtp.gmail.com with ESMTPSA id a70-20020a509ecc000000b004c09f0ba24dsm1043803edf.48.2023.03.11.03.12.40
+        d=1e100.net; s=20210112; t=1678541058;
+        h=cc:to:subject:date:from:message-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8s9gnIYUH4a7DISj2GFil2OdRXxeDO2P0HDbRjCc19c=;
+        b=cuoGb3/oDHD9NVM/xfHl2W3TO0O7PD1DnCqPjuoT0PCdSYsLovjat93WfM6B+/b94z
+         kOAIrUMZSazJ1y9JTPqB/rL40bybWwGLqHVeRkboFEAmnt1P/P2jZQQeukNdX8zztqfV
+         Vrybf0w7U15V708G+KhINvnNPfTekoYTYFSdsnsvMP0aCvsXNhLc40FHSkpU249HEd4b
+         eDAH66c6sLJjxaUaY+OajJGQLdYCDc5rOhWUOM3y/7SgH27rnH6aPzC2+UkIknAzeTEl
+         gozW8RMhWFZiIlJNNTDbzxZUwlxC7cUILuH4Cx/nJxl41l5CZ2dnNOghZTPIooC8fTpB
+         Pdeg==
+X-Gm-Message-State: AO0yUKU/XYuWr5J5uNdsw5+YEdq8MtlkuG3nMDtTj9pRSsbFxPjVz+iD
+        O68RslwLuP0fF3WxRw2QkTSZuM3qFw1ZiykBEwQ=
+X-Google-Smtp-Source: AK7set8QohH10oEHA3taUXF2fj7DDkbGqFbR6iCxRlodGa1QGJXOTl0pjBt/2XCn5XakkNgv7orHww==
+X-Received: by 2002:a2e:5311:0:b0:295:945d:d483 with SMTP id h17-20020a2e5311000000b00295945dd483mr8076677ljb.44.1678541058002;
+        Sat, 11 Mar 2023 05:24:18 -0800 (PST)
+Received: from 0001-devicetree-synopsys-dw-mshc-common-add-fifo-access-3.patch (46-138-144-249.dynamic.spd-mgts.ru. [46.138.144.249])
+        by smtp.gmail.com with ESMTPSA id z6-20020a2e7e06000000b002946f95b359sm312840ljc.105.2023.03.11.05.24.17
+        for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Mar 2023 03:12:40 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH] mmc: sdhci: add static to !OF stub
-Date:   Sat, 11 Mar 2023 12:12:38 +0100
-Message-Id: <20230311111238.251000-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Sat, 11 Mar 2023 05:24:17 -0800 (PST)
+Message-ID: <640c8101.2e0a0220.aa0c5.0bd4@mx.google.com>
+From:   Sergey Lisov <sleirsgoevy@gmail.com>
+Date:   Sat, 11 Mar 2023 15:54:22 +0300
+Subject: [PATCH 1/2] devicetree: synopsys-dw-mshc-common: add
+ "fifo-access-32bit" property
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>
+Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The sdhci_get_compatibility() is not used outside of the unit:
-
-  drivers/mmc/host/sdhci-pltfm.c:76:6: error: no previous prototype for ‘sdhci_get_compatibility’ [-Werror=missing-prototypes]
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/mmc/host/sdhci-pltfm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml    | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-pltfm.c b/drivers/mmc/host/sdhci-pltfm.c
-index 328b132bbe57..245e56324dff 100644
---- a/drivers/mmc/host/sdhci-pltfm.c
-+++ b/drivers/mmc/host/sdhci-pltfm.c
-@@ -73,7 +73,7 @@ static void sdhci_get_compatibility(struct platform_device *pdev)
- 		host->quirks |= SDHCI_QUIRK_BROKEN_TIMEOUT_VAL;
- }
- #else
--void sdhci_get_compatibility(struct platform_device *pdev) {}
-+static void sdhci_get_compatibility(struct platform_device *pdev) {}
- #endif /* CONFIG_OF */
+diff --git a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
+index 8dfad89c7..2bc5ac528 100644
+--- a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
++++ b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc-common.yaml
+@@ -57,6 +57,12 @@ properties:
+       force fifo watermark setting accordingly.
+     $ref: /schemas/types.yaml#/definitions/flag
  
- void sdhci_get_property(struct platform_device *pdev)
++  fifo-access-32bit:
++    description:
++      Specifies that this device requires accesses to its 64-bit registers
++      to be done as pairs of 32-bit accesses, even on architectures where
++      readq is available.
++
+   dmas:
+     maxItems: 1
+ 
 -- 
-2.34.1
+2.38.3
+
 
