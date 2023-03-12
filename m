@@ -2,57 +2,56 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B56F06B69F2
-	for <lists+linux-mmc@lfdr.de>; Sun, 12 Mar 2023 19:14:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 182D86B6A1B
+	for <lists+linux-mmc@lfdr.de>; Sun, 12 Mar 2023 19:32:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232242AbjCLSOg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 12 Mar 2023 14:14:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35504 "EHLO
+        id S232017AbjCLSbq (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 12 Mar 2023 14:31:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232306AbjCLSOR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 12 Mar 2023 14:14:17 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1396061332
-        for <linux-mmc@vger.kernel.org>; Sun, 12 Mar 2023 11:06:56 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id bi9so12980624lfb.2
-        for <linux-mmc@vger.kernel.org>; Sun, 12 Mar 2023 11:06:56 -0700 (PDT)
+        with ESMTP id S231993AbjCLSba (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 12 Mar 2023 14:31:30 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D0673B3C3
+        for <linux-mmc@vger.kernel.org>; Sun, 12 Mar 2023 11:27:36 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id i9so348242wrp.3
+        for <linux-mmc@vger.kernel.org>; Sun, 12 Mar 2023 11:27:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678644283;
+        d=gmail.com; s=20210112; t=1678645559;
         h=cc:to:subject:date:from:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=THHnNubc2+UuqNjcDLN8j6le5gzsAvvJJbRATCHsptA=;
-        b=bQtiB/Tl1AOJIGiNiubvuPtlNrTJyykMFhqP4aT1ctaZJdtqGiIC3NyzYm3ID0yfLd
-         sLqK0o9p5RGpAuAXiYG4yuVz9V+yh2KwXpAyaPeC/iTrYD2NSaJlR6S8UbHvoH0S4kVr
-         zL3KDUngzJUhzdm8rOzaD6Qw3HuxDZUwDWBQyYySq3Ak5rfrNFLOYqMbN/0p8ZIksJr1
-         HNyi5flCg9LVGKzuvjYKFgM5PYZvnCniKQkkt3oEHc6TfO2Y5xPurLH6m3atwARzLfc+
-         3LRMcxEf7IFFBPN6ULCp9xy4IFrPp0ZZVdRvtTbv+jiTGGFEmXA57U36tN6fBLmQDs9T
-         rbtA==
+        bh=bdTNsWpg9ZM8ehZQeKtTu+6KMOIWutkVZQ0G5s6b6sY=;
+        b=qQ4knfObBpY3x3MuAG/35lWw0ENhfRadHBJvDnaPA0rK5CRD9vvoYJ+NhZyXUSETzd
+         veZ36ZdELbbTt0tsPo2vd6v5gWssHH1Gmx1kUMQaIHJMQGy4MYrChjyPG5GVhcpzGb9v
+         Tjj+1ujeTi09TaHzjw0dSbKyg88/SwTz43EzTvWTDrCn2Z0cTmQFop5QO6IBgn/9B9IB
+         6ocyN92cS9b2QT2A4lZkXHfclh1CY8JQR55g6xws4UTlSSKN/eoeyzHvDBZaZVRmG7Oo
+         bD5G5R1OV2/1ov1YVjBMUnU3Ov4wKSHbPNPEWtP306hO+3yqt0Ojas15a0Vjx2N+5eB+
+         M3xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678644283;
+        d=1e100.net; s=20210112; t=1678645559;
         h=cc:to:subject:date:from:message-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=THHnNubc2+UuqNjcDLN8j6le5gzsAvvJJbRATCHsptA=;
-        b=UdlOyRsfg0tyc4wdi9sv6key+rPHIZ75nDBGiIdPSq9c8IIvKK+7EYuXhmKdXtRzg7
-         WjbrD2xR+GICDO2fx2CrQtmnQaTcVL0G94GcyIexT7UKdyTbYuEJmC5w78151OcV8v//
-         DA6/f9bNlyeEFmcrRS1/XKaCVfOnX6o29sVZ7Fsn85KceHqSOe/5KwEkCSyQWW0wA8DX
-         Hcfe9bS7zQMikUJNCp+Tb/nZw7CcR+rzz0zRuasNoGRvkOEepAZTKYcG9/g2thsqIb6c
-         jfWSCeaxRXsdeVWsx+rylz+1gu9JI4zpHOoeOzNy4LAf0PN73QmG/6g4kSRuJfki2X48
-         1euw==
-X-Gm-Message-State: AO0yUKWSdf1QayHJiOdDUVH1ifsYSAWMXLN0R+ow3AAy5R1v+bq8QzBs
-        1ohdjB6AE0oSBsKWqrMV/ppZkhP2YeH03Pfy
-X-Google-Smtp-Source: AK7set/Ma1d8RfSn0bHL3xySPjmlzvKBegB2rPb4tCdg9ydTjl1Twj56N5LGs2IaYRjscIQK4VKanQ==
-X-Received: by 2002:a05:6512:239b:b0:4d8:86c1:4786 with SMTP id c27-20020a056512239b00b004d886c14786mr2434394lfv.27.1678644283054;
-        Sun, 12 Mar 2023 11:04:43 -0700 (PDT)
-Received: from 0001-dt-bindings-exynos-dw-mshc-common-add-exynos7885-var.patch (46-138-144-249.dynamic.spd-mgts.ru. [46.138.144.249])
-        by smtp.gmail.com with ESMTPSA id u14-20020ac2518e000000b004db250355b3sm712408lfi.138.2023.03.12.11.04.42
+        bh=bdTNsWpg9ZM8ehZQeKtTu+6KMOIWutkVZQ0G5s6b6sY=;
+        b=Hx3MpqOGXaIvYWqMyIBxiCUm//xWib+tjpwGQ8QhF+gi+6UTYqleQbFI0JERO5w15I
+         9qXd90IKBgD0tVBscQw7IsytIKRvfD6EjbDbJ5u1NYFGUo5DJNgVuTgI4+aBjDVB+XMO
+         Vjgt6ufIIJnfcSIYt3tYmnLW/2cY/TDFqJZoUb+7hF5Qfl9AqpIFSZ0WXE+35Li5aOUT
+         FnvaRz3NxfLanz9B06hFPGCL/1sDSqfrcll5AuWV0+nGpdS0EvVDLXTyf6fyqJbpPNGV
+         Bi2yHkpXeXige3ztexALHLArxz2ZNSEzJcrrEUzjaX6nFo9pqpG0fjaGCpRBcm/5aTvh
+         oj0w==
+X-Gm-Message-State: AO0yUKX0BTjI5lbMP0+YZB15OheBy14sbS3QCERaU5fMQ/CxjS6QmvOg
+        63N6xQRv/orB7IAgluutFrTjySppnhcTLMQC
+X-Google-Smtp-Source: AK7set+lf1Z3UX+lC0B2q/KNJC0zPTcySYS9tVeis5762sCnBRA+9cngwo/nWevxv/fzYvxoplpL3Q==
+X-Received: by 2002:a2e:b891:0:b0:292:8283:2c03 with SMTP id r17-20020a2eb891000000b0029282832c03mr12615806ljp.51.1678644623052;
+        Sun, 12 Mar 2023 11:10:23 -0700 (PDT)
+Received: from 0000-cover-letter.patch (46-138-144-249.dynamic.spd-mgts.ru. [46.138.144.249])
+        by smtp.gmail.com with ESMTPSA id c3-20020a2e9d83000000b0029352fc39fbsm700236ljj.63.2023.03.12.11.10.22
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Mar 2023 11:04:42 -0700 (PDT)
-Message-ID: <640e143a.c20a0220.39070.1ae1@mx.google.com>
+        Sun, 12 Mar 2023 11:10:22 -0700 (PDT)
+Message-Id: <1678644516.665314-0-sleirsgoevy@gmail.com>
 From:   Sergey Lisov <sleirsgoevy@gmail.com>
 Date:   Sun, 12 Mar 2023 20:58:50 +0300
-Subject: [PATCH v5 1/3] dt-bindings: exynos-dw-mshc-common: add exynos7885
- variants
+Subject: [PATCH v5 0/3] mmc: dw_mmc: fix DW MMC cores with 32-bit bus on 64-bit Linux systems
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -63,7 +62,7 @@ Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
         linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,31 +70,54 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Some Samsung Exynos boards using the arm64 architecture have DW MMC
-controllers configured for a 32-bit data bus but a 64-bit FIFO. On these
-systems the 64-bit FIFO registers must be accessed in two 32-bit halves.
+DesignWare MMC cores have a configurable data bus width of either 16, 32, or 64
+bytes. It is possible, and some vendors actually do it, to ship a DW MMC core
+configured for 32-bit data bus within a 64-bit SoC. In this case the kernel
+will attempt 64-bit (readq) accesses to certain 64-bit MMIO registers, while
+the core will expect pairs of 32-bit accesses.
 
-Add two new compatible strings, "samsung,exynos7885-dw-mshc" and
-"samsung,exynos7885-dw-mshc-smu" respectively, to denote exynos7885
-boards that need this quirk. But it's very possible that all
-"samsung,exynos7-dw-mshc" boards are actually affected.
----
- .../devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml         | 2 ++
- 1 file changed, 2 insertions(+)
+It seems that currently the only register for which the kernel performs 64-bit
+accesses is the FIFO. The symptom is that the DW MMC core never receives a read
+on the second half of the register, does not register the datum as being read,
+and thus not advancing its internal FIFO pointer, breaking further reads. It
+also seems that this FIFO is only used for small (less than 16 bytes)
+transfers, which probably means that only some SDIO cards are affected.
 
-diff --git a/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml b/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml
-index fdaa18481..3eebaed2c 100644
---- a/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml
-+++ b/Documentation/devicetree/bindings/mmc/samsung,exynos-dw-mshc.yaml
-@@ -22,6 +22,8 @@ properties:
-       - samsung,exynos5420-dw-mshc-smu
-       - samsung,exynos7-dw-mshc
-       - samsung,exynos7-dw-mshc-smu
-+      - samsung,exynos7885-dw-mshc
-+      - samsung,exynos7885-dw-mshc-smu
-       - axis,artpec8-dw-mshc
- 
-   reg:
+Changelog:
+
+v5:
+- rename "samsung,exynos78xx-dw-mshc" to "samsung,exynos7885-dw-mshc"
+- rename "samsung,exynos78xx-dw-mshc" to "samsung,exynos7885-dw-mshc"
+
+v4:
+- split dt-bindings and dts update into separate commits
+- add an explanation why it'ss necessary to change the compatible string
+
+v3:
+- removed "fifo-access-32bit" devicetree property
+- added "samsung,exynos78xx-dw-mshc" compatible string
+- added "samsung,exynos78xx-dw-mshc-smu" compatible string
+
+v2:
+- added commit messages
+
+v1:
+- added "fifo-access-32bit" devicetree property
+- added DW_MMC_QUIRK_FIFO64_32
+- added new dw_mci_{pull,push}_data* variants (...-data64_32)
+
+Sergey Lisov (3):
+  dt-bindings: exynos-dw-mshc-common: add exynos7885 variants
+  mmc: dw_mmc: add an option to force 32-bit access to 64-bit FIFO
+  arm64: dts: exynos: fix wrong mmc compatible in exynos7885.dtsi
+
+ .../bindings/mmc/samsung,exynos-dw-mshc.yaml  |   2 +
+ arch/arm64/boot/dts/exynos/exynos7885.dtsi    |   2 +-
+ drivers/mmc/host/dw_mmc-exynos.c              |  43 +++++-
+ drivers/mmc/host/dw_mmc.c                     | 122 +++++++++++++++++-
+ drivers/mmc/host/dw_mmc.h                     |   2 +
+ 5 files changed, 167 insertions(+), 4 deletions(-)
+
 -- 
 2.38.3
 
