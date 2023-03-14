@@ -2,51 +2,51 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91B956B946E
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Mar 2023 13:45:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECEB56B94A5
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Mar 2023 13:47:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231398AbjCNMpn (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Mar 2023 08:45:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55386 "EHLO
+        id S231281AbjCNMrk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Mar 2023 08:47:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231411AbjCNMpG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Mar 2023 08:45:06 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 491822D50;
-        Tue, 14 Mar 2023 05:44:14 -0700 (PDT)
+        with ESMTP id S231254AbjCNMqh (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Mar 2023 08:46:37 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C96C2A2C25;
+        Tue, 14 Mar 2023 05:45:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 09721B818FA;
-        Tue, 14 Mar 2023 12:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37F9C433A8;
-        Tue, 14 Mar 2023 12:43:26 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C155DB81905;
+        Tue, 14 Mar 2023 12:43:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D0BC433EF;
+        Tue, 14 Mar 2023 12:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678797807;
-        bh=fXGFdJhYV+PXpv7qzl8L1ATb9+K9VRxi83TYZva0h7c=;
+        s=k20201202; t=1678797827;
+        bh=itsdBSsZuZQchIHMp91AhtheSQCQbjR2HIoL5bDPqO8=;
         h=From:To:Cc:Subject:Date:From;
-        b=srZy/mxf+Qds6IQfVmVdyGPZtsSXpm3XpzEUNX750jfsFTgqUxt8QQuV7F6sd/PrQ
-         2rOxZL0wAJMsfla4EhSYxArN+HqmT6T2UlaI+3ckfkgP3jQLWwAZcK8wN0pNuw9Yj2
-         pZ6jp/hxbdGG8+1rWPPi5jHQWBll3MqzLQwZTH0+W6StFUmMrnUBShgzMIgYjNgTbV
-         CubSRmAN3t+0xA1Hq6DcetpNkuVGXdeD88JyWgCfuLiasY4mqarEZ+D7Ml/Y1iVrWt
-         o+1ERYxePodJIyjet5zUs2GDgSjstSW1x6IUjBUqp2yAMIqhwOl6LabMHPdRa9BJdG
-         9gj8b3IktJOcw==
+        b=jfY8aUGnDnzWQ+PmYJfMSZDAf1RKOJ/aBrlBSU1QQd2PqiVkOK84I/xppVpFa11yI
+         kvEcAVkLljsriZgGo2pj/DjeJUKRw5cHxeE3cT0+qADn2sbkvkdNUeE7Jps3LERwC7
+         qTWONZUXz+yfdgqE42LthV6ih2aav0QyszquVivasMkdPoJFtkFUJqSMtSf3YBzX6w
+         LdrxSrNBkhWDLtWnWLHCg0FJBrl20gN+tW2T+45NICXkq6f+OTMnwiATQZbysZu+nT
+         HQJfFKyYBU6TbMfr2TWOdTxhc8F5U08KYiGt2n4SN1MdXKYlGty9S/NlsQIEBmgwb8
+         qeEG7C2q60IwQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tobias Schramm <t.schramm@manjaro.org>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 01/13] mmc: atmel-mci: fix race between stop command and start of next command
-Date:   Tue, 14 Mar 2023 08:43:13 -0400
-Message-Id: <20230314124325.470931-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 01/10] mmc: atmel-mci: fix race between stop command and start of next command
+Date:   Tue, 14 Mar 2023 08:43:35 -0400
+Message-Id: <20230314124344.471127-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -84,10 +84,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 deletions(-)
 
 diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
-index bb9bbf1c927b6..dd18440a90c58 100644
+index 6f971a3e7e494..493ed8c824195 100644
 --- a/drivers/mmc/host/atmel-mci.c
 +++ b/drivers/mmc/host/atmel-mci.c
-@@ -1817,7 +1817,6 @@ static void atmci_tasklet_func(struct tasklet_struct *t)
+@@ -1818,7 +1818,6 @@ static void atmci_tasklet_func(struct tasklet_struct *t)
  				atmci_writel(host, ATMCI_IER, ATMCI_NOTBUSY);
  				state = STATE_WAITING_NOTBUSY;
  			} else if (host->mrq->stop) {
@@ -95,7 +95,7 @@ index bb9bbf1c927b6..dd18440a90c58 100644
  				atmci_send_stop_cmd(host, data);
  				state = STATE_SENDING_STOP;
  			} else {
-@@ -1850,8 +1849,6 @@ static void atmci_tasklet_func(struct tasklet_struct *t)
+@@ -1851,8 +1850,6 @@ static void atmci_tasklet_func(struct tasklet_struct *t)
  				 * command to send.
  				 */
  				if (host->mrq->stop) {
