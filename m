@@ -2,123 +2,108 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EF4A6B950B
-	for <lists+linux-mmc@lfdr.de>; Tue, 14 Mar 2023 13:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C990C6B95B0
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 Mar 2023 14:12:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231916AbjCNM7m (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 14 Mar 2023 08:59:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43592 "EHLO
+        id S231785AbjCNNMh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 14 Mar 2023 09:12:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231984AbjCNM7R (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Mar 2023 08:59:17 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CF5034323
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Mar 2023 05:55:07 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id t11so19889028lfr.1
-        for <linux-mmc@vger.kernel.org>; Tue, 14 Mar 2023 05:55:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678798401;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ivdd8o1+4h9Hx06ZifsrxjjOXj5S7345Nu84eEYwm+I=;
-        b=GeoZNYfTd7NsNMwuf9jj06xG6JgPgOxSh24Aqc4fHexf2EZFqwn1eX7rj8WouZwBs6
-         rsKFBuT5sLHy6DPmNrzfalBbgpfWWJLsCGDXY6uj+IZCxJPB43Szd7pOoBRv80bBqI1a
-         GnNvexmi/uc2nPhrWCsYGhRESRI2UjseEads8TJOLkIAJrbsuYKxx74cqYpsefxLzIeG
-         4KluVcgS0pAsvJQyzqqNEUJKqAxauIaUUpcp8zRWHZXJPgItnOdbQIzTyh9XC9KrgETi
-         sCNh60+RlGDLwxwc/A74NaunIWdxgRMXYbYXGVDOXLWIGpTuBIqwBCv5hAntQYu3Omc4
-         7lEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678798401;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ivdd8o1+4h9Hx06ZifsrxjjOXj5S7345Nu84eEYwm+I=;
-        b=RvM9ho/0XkvWCeP3fePKKxzFYA9L7WyRWQCUzjR0eBQgW6RwIcyOwZXYKrCcVt23B9
-         UwJ3bn3yFO9/wXx/jo+/WL2bRdE18HbL3G+N5clsr/VRr3vt+ikZjLB0P3urH1Me1tWZ
-         QmYe5n/3tSvwuhkQuXywUScDnp2P9SGR2aGa6mMQgrMo4T5cAvknFtJf9SLbONyz61A9
-         4p6ts+BjS/YNgr7vBEp3SHdyIAkqj9jPa1rJNZHjG1k6WMBk/92xa+be093m7crChZju
-         s8ykyByZvBt0HevV/DUORIpfLjgEfplbkLeM9UrgftcNS8aWYa/lz4wFqwqnm+g/I5yq
-         DDtQ==
-X-Gm-Message-State: AO0yUKXpYt+BAOCP7eJeqYHtFTvXhwK5MsztOEAAMieqiiry369zNrMF
-        vvwPrfkk+vFTNTBIwQnMxmTfFA==
-X-Google-Smtp-Source: AK7set+UcdT/m0UVY8fr52DNOQXx9OavRZSVrz2NLZY7LoiN/Wg81DC/eOMjnEm46lr41vpt6SuHhA==
-X-Received: by 2002:ac2:5930:0:b0:4e8:3dc1:70f1 with SMTP id v16-20020ac25930000000b004e83dc170f1mr646535lfi.0.1678798400861;
-        Tue, 14 Mar 2023 05:53:20 -0700 (PDT)
-Received: from [192.168.1.101] (abyj16.neoplus.adsl.tpnet.pl. [83.9.29.16])
-        by smtp.gmail.com with ESMTPSA id s9-20020a19ad49000000b004dda74eccafsm395374lfd.68.2023.03.14.05.53.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Mar 2023 05:53:20 -0700 (PDT)
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Date:   Tue, 14 Mar 2023 13:53:01 +0100
-Subject: [PATCH 6/6] dt-bindings: thermal: tsens: Add QCM2290
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230314-topic-2290_compats-v1-6-47e26c3c0365@linaro.org>
-References: <20230314-topic-2290_compats-v1-0-47e26c3c0365@linaro.org>
-In-Reply-To: <20230314-topic-2290_compats-v1-0-47e26c3c0365@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        with ESMTP id S231705AbjCNNMR (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 14 Mar 2023 09:12:17 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34227A02A7;
+        Tue, 14 Mar 2023 06:09:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E3064B818E2;
+        Tue, 14 Mar 2023 12:44:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB487C433EF;
+        Tue, 14 Mar 2023 12:44:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678797855;
+        bh=tBw9+bRQetQ6U/3eEzL4oQkjCyHAA6mvTeS2bMVuCe8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=n75S4Vvu5eh3zlt8AY7044FjUj2/XFgb/LXnZA0JOKMwG0CqPbrxr0HdYYDbF5SSy
+         dkPc/Pi+WO0Mk1ptNvzjv66YNLETARWwRr01L1wEtUkoVzXODQ/OBNcJyju0XoI3Tk
+         1xjnLkGZffHj7MTSA+1F+BI72HhoQA/zdqySahHoEkRCzpxTKwAo9cc4zIPkpUcMCA
+         j01bG2qPBsZMe7Zau/gK/Ume+IyGxvfujOudYpS/7PDqo12kiiUkYn2sSQdaC9e5Uy
+         3+YWK3SFcyr+ra0H+6L72fBNamcqN+X3qUPl+15Vj7bVBb9Mb5GtMhCN1fk8tbyhfI
+         s6WhAZJDKdAHQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Tobias Schramm <t.schramm@manjaro.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Wesley Cheng <quic_wcheng@quicinc.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-pm@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1678798384; l=820;
- i=konrad.dybcio@linaro.org; s=20230215; h=from:subject:message-id;
- bh=/HqJnDrZDWmElYHarn/65QzTOlddvNyANiSR36b9lRk=;
- b=C+BlB3/yPgi2Eyf6wAEQCQcRQeP1r4y32t0AWbyQN1ZLofGrXHb5mOPucjfJP3ZwpbOFf3MRhdp9
- Sg9b/4D6CmS0GoV1u4AB0svIXG9ZSU8F8r2af1tHF8xAqiaf8JWY
-X-Developer-Key: i=konrad.dybcio@linaro.org; a=ed25519;
- pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SORBS_HTTP,RCVD_IN_SORBS_SOCKS,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        Sasha Levin <sashal@kernel.org>, linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/7] mmc: atmel-mci: fix race between stop command and start of next command
+Date:   Tue, 14 Mar 2023 08:44:06 -0400
+Message-Id: <20230314124412.471364-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Add the TSENS v2.x controller found on QCM2290.
+From: Tobias Schramm <t.schramm@manjaro.org>
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+[ Upstream commit eca5bd666b0aa7dc0bca63292e4778968241134e ]
+
+This commit fixes a race between completion of stop command and start of a
+new command.
+Previously the command ready interrupt was enabled before stop command
+was written to the command register. This caused the command ready
+interrupt to fire immediately since the CMDRDY flag is asserted constantly
+while there is no command in progress.
+Consequently the command state machine will immediately advance to the
+next state when the tasklet function is executed again, no matter
+actual completion state of the stop command.
+Thus a new command can then be dispatched immediately, interrupting and
+corrupting the stop command on the CMD line.
+Fix that by dropping the command ready interrupt enable before calling
+atmci_send_stop_cmd. atmci_send_stop_cmd does already enable the
+command ready interrupt, no further writes to ATMCI_IER are necessary.
+
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+Link: https://lore.kernel.org/r/20221230194315.809903-2-t.schramm@manjaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/thermal/qcom-tsens.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/atmel-mci.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-index 926e9c51c93c..1a6ffbf11bcc 100644
---- a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-+++ b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-@@ -48,6 +48,7 @@ properties:
-               - qcom,msm8953-tsens
-               - qcom,msm8996-tsens
-               - qcom,msm8998-tsens
-+              - qcom,qcm2290-tsens
-               - qcom,sc7180-tsens
-               - qcom,sc7280-tsens
-               - qcom,sc8180x-tsens
-
+diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
+index 9c084f64f7dba..4d8f2778d8f9a 100644
+--- a/drivers/mmc/host/atmel-mci.c
++++ b/drivers/mmc/host/atmel-mci.c
+@@ -1812,7 +1812,6 @@ static void atmci_tasklet_func(unsigned long priv)
+ 				atmci_writel(host, ATMCI_IER, ATMCI_NOTBUSY);
+ 				state = STATE_WAITING_NOTBUSY;
+ 			} else if (host->mrq->stop) {
+-				atmci_writel(host, ATMCI_IER, ATMCI_CMDRDY);
+ 				atmci_send_stop_cmd(host, data);
+ 				state = STATE_SENDING_STOP;
+ 			} else {
+@@ -1845,8 +1844,6 @@ static void atmci_tasklet_func(unsigned long priv)
+ 				 * command to send.
+ 				 */
+ 				if (host->mrq->stop) {
+-					atmci_writel(host, ATMCI_IER,
+-					             ATMCI_CMDRDY);
+ 					atmci_send_stop_cmd(host, data);
+ 					state = STATE_SENDING_STOP;
+ 				} else {
 -- 
 2.39.2
 
