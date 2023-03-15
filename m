@@ -2,120 +2,62 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5267F6BAA80
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 Mar 2023 09:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 365CE6BAB9B
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 Mar 2023 10:07:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231772AbjCOILg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 Mar 2023 04:11:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58112 "EHLO
+        id S231991AbjCOJHQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 Mar 2023 05:07:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjCOILd (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Mar 2023 04:11:33 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E20042F7A3
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Mar 2023 01:11:22 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id p203so11092603ybb.13
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Mar 2023 01:11:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112; t=1678867882;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pvx2PL8LGDK3W8+E79pZBCoBzTKmBaY+LVdR8n5TD/g=;
-        b=MADLCMC7roVI8wwfAlxv6wEFm5zfJjNwB3x2CYtI/1xlOad5kMNBsm+9wMB1y2vb/o
-         426UTDd7tLaZlGxGEGQB3jyu+LNU4kQqXlnpSD+KWHAjH+q+iFRib6Q0dD4YXaiFRA9F
-         QJkGlLx0mO6VNDaY7KeG+RLoj94r8PqDhp5SHTCBLH5VUzQwtcN+F+pJcUSpGDj7Mpjh
-         1sPr3i+6R1l53pYS2+ib2V2t6wEj0Y9G72h6mYJtyVwBjDOXecFbWxOtIRf1FwKzNMzM
-         PgFzBGDqHoyXvW9VlzHbIo5zLl0wM5Z7Y8/oAoa/DrA2ApWE4tGM9BTkxkT72lfvtcPy
-         4LmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678867882;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Pvx2PL8LGDK3W8+E79pZBCoBzTKmBaY+LVdR8n5TD/g=;
-        b=35cwGRtrmpFwa41WX0X87hzeZpDTT1+5LD//UCTRt1d6X3hNgVKhRnAEPp54SjuuRM
-         OM9XgD3FEbOVC6uv9Bx8VOWGxf54l2KrCoZ00yTZc8zafuwbAkbfFc29dKqayFiGOvkM
-         DwhkJ2psi/mmAJCCLiDT1s5HAS38nYMmd921jayZMlLlrlDcALFkG39KEtrg1k3Z0GA/
-         fifRScqlWMbJX11+lwpWW5eLMGBPWceAj0/4h9S8KYTDXlQf+0fVS1vrQz0HRMLY1ljX
-         muP5Ndpfg8s/LZJgAOC6IVmlrbdsaCbZZXJ9hZCnhd7NgmLWdqCanxH1HjOfsJWbFc9b
-         ILXg==
-X-Gm-Message-State: AO0yUKVmZPRKWpZzuPi4ASUTCpy249qdv8a3lcnSiAM5fic5H09rMART
-        j3IQ1yincyIovGTjUA7AvZVIsh6oMlxy8P4XDMtpYQ==
-X-Google-Smtp-Source: AK7set9A2zYI6pMRgNbXuK7nABMIl97HViLafw5PcRY262FGkwm8Z05z1Fr8by8LQaDAAqC5HXIwCelI1ertWu8vEmg=
-X-Received: by 2002:a25:8d89:0:b0:b33:531b:3dd4 with SMTP id
- o9-20020a258d89000000b00b33531b3dd4mr8108839ybl.1.1678867882064; Wed, 15 Mar
- 2023 01:11:22 -0700 (PDT)
+        with ESMTP id S231948AbjCOJGu (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Mar 2023 05:06:50 -0400
+Received: from mail.corrib.pl (mail.corrib.pl [185.58.226.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF87F7C94D
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Mar 2023 02:06:14 -0700 (PDT)
+Received: by mail.corrib.pl (Postfix, from userid 1001)
+        id E67B3A3CA2; Wed, 15 Mar 2023 09:05:46 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corrib.pl; s=mail;
+        t=1678871149; bh=X6IEpSISwJiYlJ3uA866lskXve3r+4o2hf4z7VM6m5o=;
+        h=Date:From:To:Subject:From;
+        b=p81wUHafCNiQ0prPFKFSZpA6qxjTRNF/IPdMe5e9ElZKNsKGs4wvAi4e36DG88e2g
+         pSU45qo1yvRWiPTfR+jf+iVRliMmF77BJcCfkeJ+6GVpjQ8BNzccznmfQW21iLPpYa
+         d07XVGdn6cjInZvyuKr3Mp4eymgihOsfytlxJK2KtkX5EFy4ZowU7Q89jay8JJzt2J
+         aAvjzf2l6AAzqE6qKgctMAi/Ur96hOXHg9q0DRMTYpn4/UkSpUb8G9rnPNMeRhijXp
+         xKZM+/k3+4Qtrb7JRjokMzJ6Ou5ewupSJJPUJkgcb+vGH+ZsBS3wPUxxWR5jI/frGb
+         O8wLWTsfO129A==
+Received: by mail.corrib.pl for <linux-mmc@vger.kernel.org>; Wed, 15 Mar 2023 09:05:39 GMT
+Message-ID: <20230315074501-0.1.62.iwli.0.iheak08qdl@corrib.pl>
+Date:   Wed, 15 Mar 2023 09:05:39 GMT
+From:   =?UTF-8?Q? "Szczepan_Kie=C5=82basa" ?= 
+        <szczepan.kielbasa@corrib.pl>
+To:     <linux-mmc@vger.kernel.org>
+Subject: Faktoring
+X-Mailer: mail.corrib.pl
 MIME-Version: 1.0
-References: <20230203-evk-board-support-v2-0-6ec7cdb10ccf@baylibre.com>
- <20230203-evk-board-support-v2-3-6ec7cdb10ccf@baylibre.com>
- <3b7c6f28-57bd-33de-5531-8c4eae8cf6eb@linaro.org> <6e08d78f-ef4c-b228-f7d2-d63767ea87b8@collabora.com>
- <62ed2988-2347-9fd9-82f9-6dcc9ae75808@collabora.com>
-In-Reply-To: <62ed2988-2347-9fd9-82f9-6dcc9ae75808@collabora.com>
-From:   Alexandre Mergnat <amergnat@baylibre.com>
-Date:   Wed, 15 Mar 2023 09:11:11 +0100
-Message-ID: <CAFGrd9rZxwtxx5f8Gp35-5152EPGiyEdZjps1Mhn5bL6QfufnA@mail.gmail.com>
-Subject: Re: [PATCH v2 03/18] dt-bindings: pinctrl: mediatek,mt8365-pinctrl:
- add drive strength property
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?Q?Bernhard_Rosenkr=C3=A4nzer?= <bero@baylibre.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Wenbin Mei <wenbin.mei@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mmc@vger.kernel.org, Alexandre Bailon <abailon@baylibre.com>,
-        devicetree@vger.kernel.org,
-        Amjad Ouled-Ameur <aouledameur@baylibre.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Fabien Parent <fparent@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Le ven. 10 mars 2023 =C3=A0 10:49, AngeloGioacchino Del Regno
-<angelogioacchino.delregno@collabora.com> a =C3=A9crit :
->
-> Il 10/03/23 10:46, AngeloGioacchino Del Regno ha scritto:
-> >
-> > Anyway, Alexandre: can you please perform a cleanup to the MT8365 pinct=
-rl binding?
+Dzie=C5=84 dobry,
 
-Yes I can ! :D
-Should I do it directly in this patch series or (I prefer) in a new one ?
+rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
+ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
+wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
 
-> > The cleanup means you're setting mediatek,drive-strength-adv as depreca=
-ted and
-> > adding the right properties (...and possibly changing the devicetrees t=
-o use it).
-> >
-> > For more information, you can look at commit history for the (unfortuna=
-tely, named
-> > incorrectly) MT8195 pinctrl documentation: bindings/pinctrl/pinctrl-mt8=
-195.yaml
-> > where we performed the same cleanup that I'm asking you to do, except w=
-e didn't
-> > have to set any property as deprecated because there was *no devicetree=
- upstream*
-> > that was actually using that property (hence not an ABI breakage).
+Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
+stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
+z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
+ kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
+adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
+Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
 
-Thanks for the information, that helps.
 
-Regards,
-Alex
+Pozdrawiam
+Szczepan Kie=C5=82basa
