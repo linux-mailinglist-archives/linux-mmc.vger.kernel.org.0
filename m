@@ -2,62 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 365CE6BAB9B
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 Mar 2023 10:07:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17C146BAC96
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 Mar 2023 10:51:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231991AbjCOJHQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 15 Mar 2023 05:07:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50864 "EHLO
+        id S232126AbjCOJve (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 15 Mar 2023 05:51:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231948AbjCOJGu (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Mar 2023 05:06:50 -0400
-Received: from mail.corrib.pl (mail.corrib.pl [185.58.226.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF87F7C94D
-        for <linux-mmc@vger.kernel.org>; Wed, 15 Mar 2023 02:06:14 -0700 (PDT)
-Received: by mail.corrib.pl (Postfix, from userid 1001)
-        id E67B3A3CA2; Wed, 15 Mar 2023 09:05:46 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corrib.pl; s=mail;
-        t=1678871149; bh=X6IEpSISwJiYlJ3uA866lskXve3r+4o2hf4z7VM6m5o=;
-        h=Date:From:To:Subject:From;
-        b=p81wUHafCNiQ0prPFKFSZpA6qxjTRNF/IPdMe5e9ElZKNsKGs4wvAi4e36DG88e2g
-         pSU45qo1yvRWiPTfR+jf+iVRliMmF77BJcCfkeJ+6GVpjQ8BNzccznmfQW21iLPpYa
-         d07XVGdn6cjInZvyuKr3Mp4eymgihOsfytlxJK2KtkX5EFy4ZowU7Q89jay8JJzt2J
-         aAvjzf2l6AAzqE6qKgctMAi/Ur96hOXHg9q0DRMTYpn4/UkSpUb8G9rnPNMeRhijXp
-         xKZM+/k3+4Qtrb7JRjokMzJ6Ou5ewupSJJPUJkgcb+vGH+ZsBS3wPUxxWR5jI/frGb
-         O8wLWTsfO129A==
-Received: by mail.corrib.pl for <linux-mmc@vger.kernel.org>; Wed, 15 Mar 2023 09:05:39 GMT
-Message-ID: <20230315074501-0.1.62.iwli.0.iheak08qdl@corrib.pl>
-Date:   Wed, 15 Mar 2023 09:05:39 GMT
-From:   =?UTF-8?Q? "Szczepan_Kie=C5=82basa" ?= 
-        <szczepan.kielbasa@corrib.pl>
-To:     <linux-mmc@vger.kernel.org>
-Subject: Faktoring
-X-Mailer: mail.corrib.pl
+        with ESMTP id S231667AbjCOJur (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 15 Mar 2023 05:50:47 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FDD481CCB
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Mar 2023 02:49:50 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id y14so18795053ljq.4
+        for <linux-mmc@vger.kernel.org>; Wed, 15 Mar 2023 02:49:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678873788;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=i8+OBFMHUqSZ5z1YaHCvkK/kxvR+7HJ17A1AzYgKFRQ=;
+        b=uq9x0jumOYOVgQaT+BS8CFb2Zbt/rPcVSFl30E1PpihJxIT7JAqTr+6dmb/4GpwZQA
+         9Tbwy4xZ56wf/IpS5TyQEjDfJYniIp88ri+YVhGvd+PPS21831TlBFj/t+yYp9VknmQr
+         Lpl1XA5tzX7anr0szpik5JfuBbfbDleXfif4ksZ1tmbdpk1zjZa+c68HDNrTISupBs6z
+         FnaOsxe5UQl4wKAB88la1BKKeaem6VV+Xq3/0AcIfvBVY2JP1kYE0vBA4Uob584gtQD5
+         7+eGxjp6lk7BdakX7Orm27YWs0tA2J1tLzP4TwfJC/MkSZHhMUbhj6ENcrH9DAgGB+TU
+         kghg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678873788;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=i8+OBFMHUqSZ5z1YaHCvkK/kxvR+7HJ17A1AzYgKFRQ=;
+        b=11+gN07qY89YYUrnqR82ci4UAd3FXS78vraQNnZh/2hUJQRtU2WL43yl5i5FheOotY
+         7ba9+yTJ2HEVZu3FaMK5tS/KqcsIrRHzXuibyrpeCDWVT4PTYjl1kHlLrOrHnJfRzANA
+         Th1QfnTE7yrtUyhyFBFc7lbwFyXlOMPU+WvwfzQ4mzUqtdcJjDOVmTe0YDrx6POALqTp
+         hyAXEpnlOVih/t1LevdmzYCEAVFsOk6g1F/pld0QqtWHNSURa7ebNzWbA9x02Q6DvO3Q
+         6K6glgqjPE7mvXrO30kT7AkQVV9WYgaVmndoGs8pt9JB9bZLlPGpwL1S1Ytd67DrgzJK
+         EQ+g==
+X-Gm-Message-State: AO0yUKWlRtZUa85acAEfTMQnFGRo874d6QbaBU4u1Ae6jOTwhB6gipak
+        A1c4365nvJc5r3xlh+HKedPuEw==
+X-Google-Smtp-Source: AK7set9YBZAkod0KIa27E7sPHHRoFxRok5uIBVImIJbZw9bS1TMrn/bu1HL00PJTcECy00Pfxdj0dg==
+X-Received: by 2002:a2e:8e7a:0:b0:293:45dc:8b0f with SMTP id t26-20020a2e8e7a000000b0029345dc8b0fmr573112ljk.26.1678873788291;
+        Wed, 15 Mar 2023 02:49:48 -0700 (PDT)
+Received: from [192.168.1.101] (abyj16.neoplus.adsl.tpnet.pl. [83.9.29.16])
+        by smtp.gmail.com with ESMTPSA id a1-20020a2e9801000000b00293534d9760sm782175ljj.127.2023.03.15.02.49.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Mar 2023 02:49:47 -0700 (PDT)
+Message-ID: <933da956-27fa-f1ca-674f-af049d86e6fb@linaro.org>
+Date:   Wed, 15 Mar 2023 10:49:45 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH 0/6] QCM2290 compatibles
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Cc:     linux-arm-msm@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20230314-topic-2290_compats-v1-0-47e26c3c0365@linaro.org>
+ <33ae98be-480e-8951-88d8-7624a695fcc9@linaro.org>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <33ae98be-480e-8951-88d8-7624a695fcc9@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SORBS_HTTP,RCVD_IN_SORBS_SOCKS,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dzie=C5=84 dobry,
-
-rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
-ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
-wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
-
-Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
-stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
-z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
- kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
-adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
-Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
 
 
-Pozdrawiam
-Szczepan Kie=C5=82basa
+On 15.03.2023 08:47, Krzysztof Kozlowski wrote:
+> On 14/03/2023 13:52, Konrad Dybcio wrote:
+>> Document a couple of compatibles for IPs found on the QCM2290 that don't
+>> require any specific driver changes
+>>
+>> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> 
+> I assume this is what you talked about that DTS will follow a bit later?
+Yep, right after we resolve the RPM MSG RAM situation!
+
+Konrad
+> 
+> Best regards,
+> Krzysztof
+> 
