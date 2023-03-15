@@ -2,69 +2,68 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5216BD641
-	for <lists+linux-mmc@lfdr.de>; Thu, 16 Mar 2023 17:49:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C94A6BD745
+	for <lists+linux-mmc@lfdr.de>; Thu, 16 Mar 2023 18:40:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230250AbjCPQtK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 16 Mar 2023 12:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44710 "EHLO
+        id S230087AbjCPRj6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 16 Mar 2023 13:39:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbjCPQtJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Mar 2023 12:49:09 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBC61591EF;
-        Thu, 16 Mar 2023 09:49:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=kiy05oUdlDcyC41B3B5pZAsBeqMsbkcfvbNoSKteC+0=; b=LMeFYbDNrRFs3CNsdEoCiTxiVl
-        cmjRKoYtQoIWVKcWk4o55Kc2Fc2Y2IQpQOQ92EFe3JRuqA88k8uhSZkBdC/yVou+NOFLkhQBNKqfd
-        T4bTfJZEc4verfRjD/D7lCnjkXcgXQfPMMxpV9y4hVSYc97BUrFbNJgJCGcrMy7/JDJdOVj/Y02nX
-        HH3IQB2M31Y5z5nwgEydZN4ivPlrzZFj7LmMv8K/WVvLPGEwUh4XpgXS0f/EPxJZZrKjA6cXW9DTZ
-        i/s6383VqHEPV55cnbKh+lPaSsPOBzXm9uSXr0Keg6GH4Egly8gnaFgEn0fwoiKSji9DCWGfYxq61
-        GfzY2mJg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1pcqmp-00H3EX-0P;
-        Thu, 16 Mar 2023 16:49:07 +0000
-Date:   Thu, 16 Mar 2023 09:49:07 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org,
-        Wenchao Chen <wenchao.chen666@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Christian Lohle <cloehle@hyperstone.com>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bean Huo <beanhuo@micron.com>
-Subject: Re: [PATCH] mmc: core: Allow to avoid REQ_FUA if the eMMC supports
- an internal cache
-Message-ID: <ZBNIg8+rOdFKcsS8@infradead.org>
-References: <20230316164514.1615169-1-ulf.hansson@linaro.org>
+        with ESMTP id S230098AbjCPRju (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 16 Mar 2023 13:39:50 -0400
+X-Greylist: delayed 110364 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Mar 2023 10:39:20 PDT
+Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 0938D172F
+        for <linux-mmc@vger.kernel.org>; Thu, 16 Mar 2023 10:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
+         h=mime-version:content-type:content-transfer-encoding:date:from
+        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
+        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=sjktqnI2T+83Ioh0zrVlLvtn
+        ezhaKnUzlLRNquZHsC/D8qaIwRuY117UP6je4PGAoRD4hKYOYAMVkW0Xf8cujXBI
+        RTVxUUfAhqDC48eDbr9NIGtoz7dJK5W7CLjSXeUPw24OHpUNTK1Wu1YKCMUXUT1F
+        WKyd/5i3XVUWNPkRS+7oNj+9CkqrF2Mvg2SckumO6naQXWfZKFMiXSxPYWL7ai6r
+        0zsGKJFqHdXbq9L5qmiVQh+3nItPXQdVRDN2dXfKVi6tekgSW/z11i4KOljEY/57
+        PHPPgd1yEY2Mc4Kwb5UzAdamoXiwu3e01eXOcPOEpeivjoc2SFBnouT/00zzVw==
+Received: (qmail 65125 invoked from network); 15 Mar 2023 02:12:30 -0000
+Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
+  by localhost with SMTP; 15 Mar 2023 02:12:30 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230316164514.1615169-1-ulf.hansson@linaro.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 14 Mar 2023 19:12:29 -0700
+From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
+To:     undisclosed-recipients:;
+Subject: LOAN FUNDING OPPORTUNITY
+Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Message-ID: <67f0825d6ff4e61be5c3a1c15a264de8@sragenkab.go.id>
+X-Sender: jurnalsukowati@sragenkab.go.id
+User-Agent: Roundcube Webmail/0.8.1
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        SUBJ_ALL_CAPS,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, Mar 16, 2023 at 05:45:14PM +0100, Ulf Hansson wrote:
-> File systems typically uses REQ_FUA for writing their meta-data and other
-> important information. Ideally it should provide an increased protection
-> against data-corruption, during sudden power-failures. This said, file
-> systems have other ways to handle sudden power-failures too, like using
-> checksums to detect partly-written data, for example.
 
-Sorry, but this is completely wrong and dangerous, if not intentionally
-misleading bullshit.
 
-The only way to provide data integrity is to ensure data is written to
-the media and not a cache.  That can be done by a full blown cache
-flush, or with a FUA-like optimization.
+-- 
+Greetings,
+   I am contacting you based on the Investment/Loan opportunity for 
+companies in need of financing a project/business, We have developed a 
+new method of financing that doesn't take long to receive financing from 
+our clients.
+    If you are looking for funds to finance your project/Business or if 
+you are willing to work as our agent in your country to find clients in 
+need of financing and earn commissions, then get back to me for more 
+details.
+
+Regards,
+Ibrahim Tafa
+ABIENCE INVESTMENT GROUP FZE, United Arab Emirates
