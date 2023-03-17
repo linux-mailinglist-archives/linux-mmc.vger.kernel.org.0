@@ -2,70 +2,77 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3B9E6BE83E
-	for <lists+linux-mmc@lfdr.de>; Fri, 17 Mar 2023 12:35:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 466316BEADE
+	for <lists+linux-mmc@lfdr.de>; Fri, 17 Mar 2023 15:16:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229888AbjCQLeo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 17 Mar 2023 07:34:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51946 "EHLO
+        id S229806AbjCQOQk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 17 Mar 2023 10:16:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229658AbjCQLeo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 17 Mar 2023 07:34:44 -0400
-X-Greylist: delayed 345 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Mar 2023 04:34:07 PDT
-Received: from m239-7.eu.mailgun.net (m239-7.eu.mailgun.net [185.250.239.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B900443923
-        for <linux-mmc@vger.kernel.org>; Fri, 17 Mar 2023 04:34:06 -0700 (PDT)
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=hewittfamily.org.uk;
- q=dns/txt; s=s1; t=1679052803; x=1679060003; h=To: To: References:
- Message-Id: Content-Transfer-Encoding: Cc: Date: In-Reply-To: From: From:
- Subject: Subject: Mime-Version: Content-Type: Sender: Sender;
- bh=vzYD/MvgijTyNc01xjYglYr90mQ+xY3EBkTsGJwz2cE=;
- b=hx+v5oIcanYOjfvHOst5NAYS5WYe35dYv/Tcbwwi1Y7CMX2slI5sZ+WmIIktKb16sGWgxFfQktmlZM9nqxrFiLCf1jNW6SiHVRR0vMLaaTPlys51It+PFuCQnzxwDC1sdp/prDACsduNuzpM+yOP07KWLMssxo+kX6FrUIehX6LZZY5UjHuT5D0RYY4XtdJaJKPiw6SCdALVxO0WOlnNKMKdiHcQGFqUlYXkQKZsFMOgHxsO/trFieXR+bqdRbxJeFUHQt+yWVimgw59AKHMX75CtxmPP8NtdiwBcrIN3LKF1i+SNLVN1ySYWVj/fjYIqcv7FhJKEN9QLvTYDWYY4A==
-X-Mailgun-Sending-Ip: 185.250.239.7
-X-Mailgun-Sid: WyJiZmI5NCIsImxpbnV4LW1tY0B2Z2VyLmtlcm5lbC5vcmciLCJlMzcyMCJd
-Received: from mail.hewittfamily.org.uk (<unknown> [87.200.95.144]) by 65d6cd48f507 with
- SMTP id 64144ed37874da449016e2a3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 17 Mar 2023 11:28:19 GMT
-Sender: christian@hewittfamily.org.uk
-Received: from smtpclient.apple (unknown [167.99.200.149])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.hewittfamily.org.uk (Postfix) with ESMTPSA id 1875C7F670C;
-        Fri, 17 Mar 2023 15:28:13 +0400 (+04)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.2\))
-Subject: Re: [PATCH] mmc: meson-gx: increase power-up delay
-From:   Christian Hewitt <christian@hewittfamily.org.uk>
-In-Reply-To: <7ac7d5c5-912b-7598-0050-3b8c76ef6cab@free.fr>
-Date:   Fri, 17 Mar 2023 15:28:03 +0400
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Pierre-Hugues Husson <phh@phh.me>,
-        Rong Chen <rong.chen@amlogic.com>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        MMC <linux-mmc@vger.kernel.org>,
-        AML <linux-amlogic@lists.infradead.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B7A94112-2215-4E0E-81B4-8E367920EFB0@hewittfamily.org.uk>
-References: <11a8a0c8-a5b1-8f38-a139-97172ab7be68@free.fr>
- <0696106f-8d70-6410-999a-fcda6c5b39c2@gmail.com>
- <b6971cd6-80f2-522a-64fb-82b126500010@free.fr>
- <1jcz5axc8j.fsf@starbuckisacylon.baylibre.com>
- <CAPDyKFqYK2bEbkZ7A=t-VYwmgSYJUGxm2Ew5-7CFeO741fB-_w@mail.gmail.com>
- <7ac7d5c5-912b-7598-0050-3b8c76ef6cab@free.fr>
-To:     Marc Gonzalez <marc.w.gonzalez@free.fr>
-X-Mailer: Apple Mail (2.3696.120.41.1.2)
-X-Synology-Spam-Status: score=2.909, required 5, MV_CASE 0.5, __THREADED 0, TO_DN_ALL 0, FREEMAIL_TO 0, RCVD_COUNT_ZERO 0, FROM_EQ_ENVFROM 0, MIME_TRACE 0, __NOT_SPOOFED 0, __BODY_URI_ONLY 0, MID_RHS_MATCH_FROM 0, NO_RECEIVED -0.001, FROM_HAS_DN 0, FREEMAIL_ENVRCPT 0, TO_MATCH_ENVRCPT_ALL 0, TAGGED_RCPT 0, MIME_GOOD -0.1, RCPT_COUNT_TWELVE 0, __HDRS_LCASE_KNOWN 0, SUSPICIOUS_RECIPS 2.51
-X-Synology-Spam-Flag: no
-X-Synology-Virus-Status: no
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        with ESMTP id S229950AbjCQOQi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 17 Mar 2023 10:16:38 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0384261525;
+        Fri, 17 Mar 2023 07:16:36 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id h5so2795178ile.13;
+        Fri, 17 Mar 2023 07:16:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679062596;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7ckr4N9Sg6yKbc6efTCWtcAHsD7HxkVk0i05mjYu31s=;
+        b=WNJy2ZnBkM8Tkwd+KJi7m787VnBx0swkocx+gbV662DuU/V4GLdrU9OZnb8ykE9cia
+         P6oSqNRA7TabRBdENL0v0ncOdiUwVj9nL2v/paZBi227Z1J8qmzcmqfGSeUzSRwnU+5b
+         XNchW5m717XFXc/SzHNiWbfjC00B1BpdZ4N4CODgvMjLbCYzcxCbBhRfW4xbj+5Bmcf1
+         Ugv3LC8U//tpgnxEMRM0RoGCpQ4sEb2gsLcqLroCL8r1C5SOAY+pdjcxeyQn8Gc4kjkT
+         hSEGYJxWlqYJu+F7VSZ7BIFpic0+1HDJKTkf3xBF7aw3iZRE9Abfuh8sb8IxB6vrdw9b
+         sOYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679062596;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7ckr4N9Sg6yKbc6efTCWtcAHsD7HxkVk0i05mjYu31s=;
+        b=sM0MIcmYSRCgkpre+yJlvjdwGGgxOY6gc210BTVl3YoGnOOobEafS2ZfXQSG6ij6/O
+         j/xENgBi1Mm87q7eCzir4ecxCSS2faiJfrR46dB0zYWzqgwsE5y1g1h79NcdZ8ZRyz7+
+         v2/uJMbbNVm4rfXOldgEZxK9zJU3cG5N+278HeibDjiiqm/u9uDYYSkPw0LZu/HkYscW
+         4MwzyrfiY2vN5hXpe03IFYBGxuPpVLaJtCsMpFc3jiPL8JMq6qY+5K2k2IUV2IraVNeC
+         nesyQz1rkNJTLlnSe0uikMtuKQpWMKo/NdK4Han3hwX1sLiB5/R6xY/roHkZnknR2mPU
+         ukMw==
+X-Gm-Message-State: AO0yUKUByRrSwpmfeou/d/GbXhPPT7yxiLUdbSDBCBBU8ApF/0mSBh7J
+        Z8F1sQXeSf8Mr4eDzS2Bx6o=
+X-Google-Smtp-Source: AK7set9SLmJwK/CZFRPZV2uNhmXoOUlXDKKRGv8Vge8H2EEO6FUoFm4c2gVXXbQYUQGPsz8OALi7UA==
+X-Received: by 2002:a92:6a0c:0:b0:317:9c8b:c0a7 with SMTP id f12-20020a926a0c000000b003179c8bc0a7mr9056018ilc.11.1679062596257;
+        Fri, 17 Mar 2023 07:16:36 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id s29-20020a02b15d000000b004061ba59f18sm706712jah.120.2023.03.17.07.16.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Mar 2023 07:16:35 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Fri, 17 Mar 2023 07:16:33 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Tomer Maimon <tmaimon77@gmail.com>
+Cc:     ulf.hansson@linaro.org, avifishman70@gmail.com,
+        tali.perry1@gmail.com, joel@jms.id.au, venture@google.com,
+        yuenn@google.com, benjaminfair@google.com, adrian.hunter@intel.com,
+        skhan@linuxfoundation.org, davidgow@google.com,
+        pbrobinson@gmail.com, gsomlo@gmail.com, briannorris@chromium.org,
+        arnd@arndb.de, krakoczy@antmicro.com, andy.shevchenko@gmail.com,
+        openbmc@lists.ozlabs.org, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mmc: sdhci-npcm: Add NPCM SDHCI driver
+Message-ID: <f28c7c34-077c-4c7e-afd8-c4180718d403@roeck-us.net>
+References: <20221205085351.27566-1-tmaimon77@gmail.com>
+ <20221205085351.27566-3-tmaimon77@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221205085351.27566-3-tmaimon77@gmail.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,404 +80,159 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Mon, Dec 05, 2022 at 10:53:51AM +0200, Tomer Maimon wrote:
+> Add Nuvoton NPCM BMC sdhci-pltfm controller driver.
+> 
+> Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
 
+I still don't see this driver in the upstream kernel, or in linux-next.
 
-> On 16 Mar 2023, at 8:32 pm, Marc Gonzalez <marc.w.gonzalez@free.fr> =
-wrote:
->=20
-> On 16/03/2023 12:59, Ulf Hansson wrote:
->=20
->> If the problem is regulator specific, this would be the correct thing =
-to do.
->>=20
->> Although, if the problem is pwrseq specific, like that we need a =
-delay
->> after enabling the clock and asserting the GPIO enable pin for the
->> WiFi chip, then we have the "post-power-on-delay-ms" of the pwrseq
->> node to play with instead.
->=20
-> Heiner, Jerome, Uffe, Amlogic DT maintainers,
->=20
-> Perhaps tweaking the driver for every user is too intrusive.
->=20
-> Another solution would be to factorize all boards that implement
-> the reference design SDIO-based RF (WiFi + BT using brcm).
->=20
-> Then we can add post-power-on-delay-ms =3D 20 in sdio_pwrseq.
->=20
-> NB: there's vddio_ao1v8 vs vddao_1v8 in sei510.
-> Is my addition OK?
+Couple of comments:
 
-In LibreELEC we use a fairly minimal kernel defconfig; things are =
-booting fast
-compared to most desktop distro configs. I see occasional wireless =
-issues with
-cheap STB boards where SDIO speeds need to be reduced or UHS modes need =
-to be
-removed to keep things stable, but I don=E2=80=99t see SDIO probe issues =
-with any of
-the 30+ boards I do random testing with. The only SDIO drama in recent =
-times
-have been Heiner's IRQ changes (which are now resolved).
+- devm ordering does not really matter here. The devm resource
+  is the clock, it does not depend on local data, and it will be
+  released last, so that is ok.
+- sdhci_pltfm_unregister() calls clk_disable_unprepare(),
+  so there is no enabled clock floating around on driver removal.
+  Unfortunately, that also means that the more convenient
+  devm_clk_get_optional_enabled() can not be used.
 
-Are you using a real SEI510 board? ..I ask because we get lots of users =
-with
-random no-name Android boxes who try lots of dtb files until they come =
-across
-something that works; and there is a recurring trend where users have =
-been
-using SEI510 or SEI620 with poor results, and odd issues magically go =
-away
-once they are persuaded to use something else. So I have the impression =
-those
-specific device-trees aren=E2=80=99t well suited to typical reference =
-design clones.
+Real problem inline below.
 
-FWIW, I=E2=80=99ve also had thoughts about factoring aspects of WiFi =
-support into a
-few common dtsi files as there are increasing numbers of boxes/boards =
-that
-use Realtek or Qualcomm chips in circulation (due to post-covid chip =
-supply
-and pricing troubles). I would leave the sd_mmc_a node in the board =
-files
-since this is common (and in my experience works the same everywhere) =
-while
-moving the BT bits that need =E2=80=98compatible=E2=80=99 and GPIO =
-details and the SDIO ID
-poke and compatible (which isn=E2=80=99t really needed) to dtsi files. =
-My goal would
-be to make the copy/paste assembly of a new Android box dts even easier =
-than
-it already is.
+Guenter
 
-If you don=E2=80=99t have an SEI510 board I have a hunch you=E2=80=99d =
-be better off with
-another device-tree as the source/base for your board. If you=E2=80=99re =
-able to
-share the schematics (privately if preferred) I=E2=80=99d be interested =
-in seeing
-what other dtb's could be used; and perhaps getting you to boot a =
-LibreELEC
-test image on your board to see whether my codebase gives same or =
-different
-results?
-
-Christian
-
-> RFC prototype:
->=20
-> diff --git a/arch/arm64/boot/dts/amlogic/meson-g12a-radxa-zero.dts =
-b/arch/arm64/boot/dts/amlogic/meson-g12a-radxa-zero.dts
-> index e3bb6df42ff3e..42b5dcf358912 100644
-> --- a/arch/arm64/boot/dts/amlogic/meson-g12a-radxa-zero.dts
-> +++ b/arch/arm64/boot/dts/amlogic/meson-g12a-radxa-zero.dts
-> @@ -6,6 +6,7 @@
-> /dts-v1/;
->=20
-> #include "meson-g12a.dtsi"
-> +#include "meson-g12a-ref-design-brcm-rf.dtsi"
-> #include <dt-bindings/gpio/meson-g12a-gpio.h>
-> #include <dt-bindings/sound/meson-g12a-tohdmitx.h>
->=20
-> @@ -53,13 +54,6 @@ emmc_pwrseq: emmc-pwrseq {
-> 		reset-gpios =3D <&gpio BOOT_12 GPIO_ACTIVE_LOW>;
-> 	};
->=20
-> -	sdio_pwrseq: sdio-pwrseq {
-> -		compatible =3D "mmc-pwrseq-simple";
-> -		reset-gpios =3D <&gpio GPIOX_6 GPIO_ACTIVE_LOW>;
-> -		clocks =3D <&wifi32k>;
-> -		clock-names =3D "ext_clock";
-> -	};
-> -
-> 	ao_5v: regulator-ao_5v {
-> 		compatible =3D "regulator-fixed";
-> 		regulator-name =3D "AO_5V";
-> @@ -182,13 +176,6 @@ codec {
-> 			};
-> 		};
-> 	};
-> -
-> -	wifi32k: wifi32k {
-> -		compatible =3D "pwm-clock";
-> -		#clock-cells =3D <0>;
-> -		clock-frequency =3D <32768>;
-> -		pwms =3D <&pwm_ef 0 30518 0>; /* PWM_E at 32.768KHz */
-> -	};
-> };
->=20
-> &arb {
-> @@ -299,37 +286,6 @@ &saradc {
-> 	vref-supply =3D <&vddao_1v8>;
-> };
->=20
-> -/* SDIO */
-> -&sd_emmc_a {
-> -	status =3D "okay";
-> -	pinctrl-0 =3D <&sdio_pins>;
-> -	pinctrl-1 =3D <&sdio_clk_gate_pins>;
-> -	pinctrl-names =3D "default", "clk-gate";
-> -	#address-cells =3D <1>;
-> -	#size-cells =3D <0>;
-> -
-> -	bus-width =3D <4>;
-> -	cap-sd-highspeed;
-> -	sd-uhs-sdr50;
-> -	max-frequency =3D <100000000>;
-> -
-> -	non-removable;
-> -	disable-wp;
-> -
-> -	/* WiFi firmware requires power to be kept while in suspend */
-> -	keep-power-in-suspend;
-> -
-> -	mmc-pwrseq =3D <&sdio_pwrseq>;
-> -
-> -	vmmc-supply =3D <&vddao_3v3>;
-> -	vqmmc-supply =3D <&vddao_1v8>;
-> -
-> -	brcmf: wifi@1 {
-> -		reg =3D <1>;
-> -		compatible =3D "brcm,bcm4329-fmac";
-> -	};
-> -};
-> -
-> /* SD card */
-> &sd_emmc_b {
-> 	status =3D "okay";
-> diff --git =
-a/arch/arm64/boot/dts/amlogic/meson-g12a-ref-design-brcm-rf.dtsi =
-b/arch/arm64/boot/dts/amlogic/meson-g12a-ref-design-brcm-rf.dtsi
+> ---
+>  drivers/mmc/host/Kconfig      |  8 ++++
+>  drivers/mmc/host/Makefile     |  1 +
+>  drivers/mmc/host/sdhci-npcm.c | 84 +++++++++++++++++++++++++++++++++++
+>  3 files changed, 93 insertions(+)
+>  create mode 100644 drivers/mmc/host/sdhci-npcm.c
+> 
+> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> index fb1062a6394c..82ab6fc25dca 100644
+> --- a/drivers/mmc/host/Kconfig
+> +++ b/drivers/mmc/host/Kconfig
+> @@ -415,6 +415,14 @@ config MMC_SDHCI_MILBEAUT
+>  
+>  	  If unsure, say N.
+>  
+> +config MMC_SDHCI_NPCM
+> +	tristate "Secure Digital Host Controller Interface support for NPCM"
+> +	depends on ARCH_NPCM || COMPILE_TEST
+> +	depends on MMC_SDHCI_PLTFM
+> +	help
+> +	  This provides support for the SD/eMMC controller found in
+> +	  NPCM BMC family SoCs.
+> +
+>  config MMC_SDHCI_IPROC
+>  	tristate "SDHCI support for the BCM2835 & iProc SD/MMC Controller"
+>  	depends on ARCH_BCM2835 || ARCH_BCM_IPROC || ARCH_BRCMSTB || COMPILE_TEST
+> diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
+> index 4e4ceb32c4b4..a101f87a5f19 100644
+> --- a/drivers/mmc/host/Makefile
+> +++ b/drivers/mmc/host/Makefile
+> @@ -97,6 +97,7 @@ obj-$(CONFIG_MMC_SDHCI_MICROCHIP_PIC32)	+= sdhci-pic32.o
+>  obj-$(CONFIG_MMC_SDHCI_BRCMSTB)		+= sdhci-brcmstb.o
+>  obj-$(CONFIG_MMC_SDHCI_OMAP)		+= sdhci-omap.o
+>  obj-$(CONFIG_MMC_SDHCI_SPRD)		+= sdhci-sprd.o
+> +obj-$(CONFIG_MMC_SDHCI_NPCM)		+= sdhci-npcm.o
+>  obj-$(CONFIG_MMC_CQHCI)			+= cqhci.o
+>  cqhci-y					+= cqhci-core.o
+>  cqhci-$(CONFIG_MMC_CRYPTO)		+= cqhci-crypto.o
+> diff --git a/drivers/mmc/host/sdhci-npcm.c b/drivers/mmc/host/sdhci-npcm.c
 > new file mode 100644
-> index 0000000000000..e462324596964
+> index 000000000000..beace15b6c00
 > --- /dev/null
-> +++ b/arch/arm64/boot/dts/amlogic/meson-g12a-ref-design-brcm-rf.dtsi
-> @@ -0,0 +1,53 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +++ b/drivers/mmc/host/sdhci-npcm.c
+> @@ -0,0 +1,84 @@
+> +// SPDX-License-Identifier: GPL-2.0+
 > +/*
-> + * Copyright (c) 2018 Amlogic, Inc. All rights reserved.
+> + * NPCM SDHC MMC host controller driver.
+> + *
+> + * Copyright (c) 2020 Nuvoton Technology corporation.
 > + */
 > +
-> +#include <dt-bindings/gpio/meson-g12a-gpio.h>
+> +#include <linux/clk.h>
+> +#include <linux/err.h>
+> +#include <linux/io.h>
+> +#include <linux/mmc/host.h>
+> +#include <linux/mmc/mmc.h>
+> +#include <linux/module.h>
 > +
-> +/ {
-> +	sdio_pwrseq: sdio-pwrseq {
-> +		compatible =3D "mmc-pwrseq-simple";
-> +		reset-gpios =3D <&gpio GPIOX_6 GPIO_ACTIVE_LOW>;
-> +		clocks =3D <&wifi32k>;
-> +		clock-names =3D "ext_clock";
-> +	};
+> +#include "sdhci-pltfm.h"
 > +
-> +	wifi32k: wifi32k {
-> +		compatible =3D "pwm-clock";
-> +		#clock-cells =3D <0>;
-> +		clock-frequency =3D <32768>;
-> +		pwms =3D <&pwm_ef 0 30518 0>; /* PWM_E at 32.768KHz */
-> +	};
+> +static const struct sdhci_pltfm_data npcm_sdhci_pdata = {
+> +	.quirks  = SDHCI_QUIRK_DELAY_AFTER_POWER,
+> +	.quirks2 = SDHCI_QUIRK2_STOP_WITH_TC |
+> +		   SDHCI_QUIRK2_NO_1_8_V,
 > +};
 > +
-> +/* SDIO */
-> +&sd_emmc_a {
-> +	status =3D "okay";
-> +	pinctrl-0 =3D <&sdio_pins>;
-> +	pinctrl-1 =3D <&sdio_clk_gate_pins>;
-> +	pinctrl-names =3D "default", "clk-gate";
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
+> +static int npcm_sdhci_probe(struct platform_device *pdev)
+> +{
+> +	struct sdhci_pltfm_host *pltfm_host;
+> +	struct sdhci_host *host;
+> +	u32 caps;
+> +	int ret;
 > +
-> +	bus-width =3D <4>;
-> +	cap-sd-highspeed;
-> +	sd-uhs-sdr50;
-> +	max-frequency =3D <100000000>;
+> +	host = sdhci_pltfm_init(pdev, &npcm_sdhci_pdata, 0);
+> +	if (IS_ERR(host))
+> +		return PTR_ERR(host);
 > +
-> +	non-removable;
-> +	disable-wp;
+> +	pltfm_host = sdhci_priv(host);
 > +
-> +	/* WiFi firmware requires power to be kept while in suspend */
-> +	keep-power-in-suspend;
+> +	pltfm_host->clk = devm_clk_get_optional(&pdev->dev, NULL);
+> +	if (IS_ERR(pltfm_host->clk))
+> +		return PTR_ERR(pltfm_host->clk);
 > +
-> +	mmc-pwrseq =3D <&sdio_pwrseq>;
+> +	ret = clk_prepare_enable(pltfm_host->clk);
+> +	if (ret)
+> +		return ret;
 > +
-> +	vmmc-supply =3D <&vddao_3v3>;
-> +	vqmmc-supply =3D <&vddao_1v8>;
-> +
-> +	brcmf: wifi@1 {
-> +		reg =3D <1>;
-> +		compatible =3D "brcm,bcm4329-fmac";
-> +	};
-> +};
-> diff --git a/arch/arm64/boot/dts/amlogic/meson-g12a-sei510.dts =
-b/arch/arm64/boot/dts/amlogic/meson-g12a-sei510.dts
-> index 23b790c6469d3..e12aeb956b7d7 100644
-> --- a/arch/arm64/boot/dts/amlogic/meson-g12a-sei510.dts
-> +++ b/arch/arm64/boot/dts/amlogic/meson-g12a-sei510.dts
-> @@ -6,6 +6,7 @@
-> /dts-v1/;
->=20
-> #include "meson-g12a.dtsi"
-> +#include "meson-g12a-ref-design-brcm-rf.dtsi"
-> #include <dt-bindings/gpio/gpio.h>
-> #include <dt-bindings/input/input.h>
-> #include <dt-bindings/gpio/meson-g12a-gpio.h>
-> @@ -96,6 +97,15 @@ emmc_1v8: regulator-emmc_1v8 {
-> 		regulator-always-on;
-> 	};
->=20
-> +	vddao_1v8: regulator-vddao_1v8 {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "VDDAO_1V8";
-> +		regulator-min-microvolt =3D <1800000>;
-> +		regulator-max-microvolt =3D <1800000>;
-> +		vin-supply =3D <&vddao_3v3>;
-> +		regulator-always-on;
-> +	};
-> +
-> 	vddao_3v3: regulator-vddao_3v3 {
-> 		compatible =3D "regulator-fixed";
-> 		regulator-name =3D "VDDAO_3V3";
-> @@ -143,20 +153,6 @@ vddio_ao1v8: regulator-vddio_ao1v8 {
-> 		regulator-always-on;
-> 	};
->=20
-> -	sdio_pwrseq: sdio-pwrseq {
-> -		compatible =3D "mmc-pwrseq-simple";
-> -		reset-gpios =3D <&gpio GPIOX_6 GPIO_ACTIVE_LOW>;
-> -		clocks =3D <&wifi32k>;
-> -		clock-names =3D "ext_clock";
-> -	};
-> -
-> -	wifi32k: wifi32k {
-> -		compatible =3D "pwm-clock";
-> -		#clock-cells =3D <0>;
-> -		clock-frequency =3D <32768>;
-> -		pwms =3D <&pwm_ef 0 30518 0>; /* PWM_E at 32.768KHz */
-> -	};
-> -
-> 	sound {
-> 		compatible =3D "amlogic,axg-sound-card";
-> 		model =3D "SEI510";
-> @@ -375,37 +371,6 @@ &saradc {
-> 	vref-supply =3D <&vddio_ao1v8>;
-> };
->=20
-> -/* SDIO */
-> -&sd_emmc_a {
-> -	status =3D "okay";
-> -	pinctrl-0 =3D <&sdio_pins>;
-> -	pinctrl-1 =3D <&sdio_clk_gate_pins>;
-> -	pinctrl-names =3D "default", "clk-gate";
-> -	#address-cells =3D <1>;
-> -	#size-cells =3D <0>;
-> -
-> -	bus-width =3D <4>;
-> -	cap-sd-highspeed;
-> -	sd-uhs-sdr50;
-> -	max-frequency =3D <100000000>;
-> -
-> -	non-removable;
-> -	disable-wp;
-> -
-> -	/* WiFi firmware requires power to be kept while in suspend */
-> -	keep-power-in-suspend;
-> -
-> -	mmc-pwrseq =3D <&sdio_pwrseq>;
-> -
-> -	vmmc-supply =3D <&vddao_3v3>;
-> -	vqmmc-supply =3D <&vddio_ao1v8>;
-> -
-> -	brcmf: wifi@1 {
-> -		reg =3D <1>;
-> -		compatible =3D "brcm,bcm4329-fmac";
-> -	};
-> -};
-> -
-> /* SD card */
-> &sd_emmc_b {
-> 	status =3D "okay";
-> diff --git a/arch/arm64/boot/dts/amlogic/meson-g12a-x96-max.dts =
-b/arch/arm64/boot/dts/amlogic/meson-g12a-x96-max.dts
-> index b2bb94981838f..68a8876386115 100644
-> --- a/arch/arm64/boot/dts/amlogic/meson-g12a-x96-max.dts
-> +++ b/arch/arm64/boot/dts/amlogic/meson-g12a-x96-max.dts
-> @@ -6,6 +6,7 @@
-> /dts-v1/;
->=20
-> #include "meson-g12a.dtsi"
-> +#include "meson-g12a-ref-design-brcm-rf.dtsi"
-> #include <dt-bindings/gpio/gpio.h>
-> #include <dt-bindings/gpio/meson-g12a-gpio.h>
-> #include <dt-bindings/sound/meson-g12a-tohdmitx.h>
-> @@ -60,13 +61,6 @@ emmc_pwrseq: emmc-pwrseq {
-> 		reset-gpios =3D <&gpio BOOT_12 GPIO_ACTIVE_LOW>;
-> 	};
->=20
-> -	sdio_pwrseq: sdio-pwrseq {
-> -		compatible =3D "mmc-pwrseq-simple";
-> -		reset-gpios =3D <&gpio GPIOX_6 GPIO_ACTIVE_LOW>;
-> -		clocks =3D <&wifi32k>;
-> -		clock-names =3D "ext_clock";
-> -	};
-> -
-> 	flash_1v8: regulator-flash_1v8 {
-> 		compatible =3D "regulator-fixed";
-> 		regulator-name =3D "FLASH_1V8";
-> @@ -226,13 +220,6 @@ codec {
-> 			};
-> 		};
-> 	};
-> -
-> -	wifi32k: wifi32k {
-> -		compatible =3D "pwm-clock";
-> -		#clock-cells =3D <0>;
-> -		clock-frequency =3D <32768>;
-> -		pwms =3D <&pwm_ef 0 30518 0>; /* PWM_E at 32.768KHz */
-> -	};
-> };
->=20
-> &arb {
-> @@ -391,37 +378,6 @@ &usb {
-> 	dr_mode =3D "host";
-> };
->=20
-> -/* SDIO */
-> -&sd_emmc_a {
-> -	status =3D "okay";
-> -	pinctrl-0 =3D <&sdio_pins>;
-> -	pinctrl-1 =3D <&sdio_clk_gate_pins>;
-> -	pinctrl-names =3D "default", "clk-gate";
-> -	#address-cells =3D <1>;
-> -	#size-cells =3D <0>;
-> -
-> -	bus-width =3D <4>;
-> -	cap-sd-highspeed;
-> -	sd-uhs-sdr50;
-> -	max-frequency =3D <100000000>;
-> -
-> -	non-removable;
-> -	disable-wp;
-> -
-> -	/* WiFi firmware requires power to be kept while in suspend */
-> -	keep-power-in-suspend;
-> -
-> -	mmc-pwrseq =3D <&sdio_pwrseq>;
-> -
-> -	vmmc-supply =3D <&vddao_3v3>;
-> -	vqmmc-supply =3D <&vddao_1v8>;
-> -
-> -	brcmf: wifi@1 {
-> -		reg =3D <1>;
-> -		compatible =3D "brcm,bcm4329-fmac";
-> -	};
-> -};
-> -
-> /* SD card */
-> &sd_emmc_b {
-> 	status =3D "okay";
->=20
->=20
-> _______________________________________________
-> linux-amlogic mailing list
-> linux-amlogic@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-amlogic
 
+The two functions above should not return but goto the call
+to sdhci_pltfm_free() to avoid a memory leak on error.
+
+> +	caps = sdhci_readl(host, SDHCI_CAPABILITIES);
+> +	if (caps & SDHCI_CAN_DO_8BIT)
+> +		host->mmc->caps |= MMC_CAP_8_BIT_DATA;
+> +
+> +	ret = mmc_of_parse(host->mmc);
+> +	if (ret)
+> +		goto err_sdhci_add;
+> +
+> +	ret = sdhci_add_host(host);
+> +	if (ret)
+> +		goto err_sdhci_add;
+> +
+> +	return 0;
+> +
+> +err_sdhci_add:
+> +	clk_disable_unprepare(pltfm_host->clk);
+> +	sdhci_pltfm_free(pdev);
+> +	return ret;
+> +}
+> +
+> +static const struct of_device_id npcm_sdhci_of_match[] = {
+> +	{ .compatible = "nuvoton,npcm750-sdhci" },
+> +	{ .compatible = "nuvoton,npcm845-sdhci" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, npcm_sdhci_of_match);
+> +
+> +static struct platform_driver npcm_sdhci_driver = {
+> +	.driver = {
+> +		.name	= "npcm-sdhci",
+> +		.of_match_table = npcm_sdhci_of_match,
+> +		.pm	= &sdhci_pltfm_pmops,
+> +	},
+> +	.probe		= npcm_sdhci_probe,
+> +	.remove		= sdhci_pltfm_unregister,
+> +};
+> +module_platform_driver(npcm_sdhci_driver);
+> +
+> +MODULE_DESCRIPTION("NPCM Secure Digital Host Controller Interface driver");
+> +MODULE_AUTHOR("Tomer Maimon <tomer.maimon@nuvoton.com>");
+> +MODULE_LICENSE("GPL");
+> -- 
+> 2.33.0
+> 
