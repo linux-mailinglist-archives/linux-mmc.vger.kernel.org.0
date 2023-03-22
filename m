@@ -2,116 +2,81 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 698CA6C405A
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 Mar 2023 03:27:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 081236C45B6
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 Mar 2023 10:08:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229738AbjCVC1w (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 21 Mar 2023 22:27:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45012 "EHLO
+        id S230283AbjCVJIJ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 22 Mar 2023 05:08:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229684AbjCVC1v (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 21 Mar 2023 22:27:51 -0400
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EADBF166F8;
-        Tue, 21 Mar 2023 19:27:49 -0700 (PDT)
-Received: from unknown (HELO kinkan2-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 22 Mar 2023 11:27:48 +0900
-Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-        by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id B55332059034;
-        Wed, 22 Mar 2023 11:27:48 +0900 (JST)
-Received: from kinkan2.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Wed, 22 Mar 2023 11:27:48 +0900
-Received: from [10.212.157.147] (unknown [10.212.157.147])
-        by kinkan2.css.socionext.com (Postfix) with ESMTP id 12DF7B6343;
-        Wed, 22 Mar 2023 11:27:48 +0900 (JST)
-Message-ID: <57a8f73c-02ad-6f77-95f0-9c05e25e4146@socionext.com>
-Date:   Wed, 22 Mar 2023 11:27:48 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v2] dt-bindings: mmc: fujitsu: Add Socionext Synquacer
-To:     Rob Herring <robh@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230319173006.30455-1-robh@kernel.org>
-Content-Language: en-US
-From:   Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-In-Reply-To: <20230319173006.30455-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.0 required=5.0 tests=NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S230296AbjCVJIB (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 22 Mar 2023 05:08:01 -0400
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B31D85DEFC;
+        Wed, 22 Mar 2023 02:07:38 -0700 (PDT)
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4PhN0S4y60z8QrkZ;
+        Wed, 22 Mar 2023 17:07:36 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+        by mse-fl2.zte.com.cn with SMTP id 32M96wPo059116;
+        Wed, 22 Mar 2023 17:06:58 +0800 (+08)
+        (envelope-from ye.xingchen@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+        by mapi (Zmail) with MAPI id mid31;
+        Wed, 22 Mar 2023 17:07:01 +0800 (CST)
+Date:   Wed, 22 Mar 2023 17:07:01 +0800 (CST)
+X-Zmail-TransId: 2afa641ac535fffffffff6a-21bb6
+X-Mailer: Zmail v1.0
+Message-ID: <202303221707010277273@zte.com.cn>
+Mime-Version: 1.0
+From:   <ye.xingchen@zte.com.cn>
+To:     <ulf.hansson@linaro.org>
+Cc:     <paul@crapouillou.net>, <linux-mips@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIXSBtbWM6IGp6NDc0MDogVXNlIGRldl9lcnJfcHJvYmUoKQ==?=
+Content-Type: text/plain;
+        charset="UTF-8"
+X-MAIL: mse-fl2.zte.com.cn 32M96wPo059116
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.250.137.novalocal with ID 641AC558.001 by FangMail milter!
+X-FangMail-Envelope: 1679476056/4PhN0S4y60z8QrkZ/641AC558.001/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<ye.xingchen@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 641AC558.001/4PhN0S4y60z8QrkZ
+X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Rob,
+From: Ye Xingchen <ye.xingchen@zte.com.cn>
 
-On 2023/03/20 2:30, Rob Herring wrote:
-> Add support for Socionext Synquacer SDHCI. This binding has been in use
-> for
-> some time.
-> 
-> The interrupts were not documented. The driver only uses the first
-> interrupt, but the DT and example have 2 interrupts. The 2nd one is
-> unknown. "dma-coherent" was also not documented, but is used on Synquacer.
+Replace the open-code with dev_err_probe() to simplify the code.
 
-Surely "interrupts" is needed. The 2nd interrupt seems to come from
-the card, though, the driver isn't supported it.
-
-Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-
-Thank you,
-
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> v2:
->   - Rebase on conversion done by Kunihiko
-> ---
->   .../bindings/mmc/fujitsu,sdhci-fujitsu.yaml       | 15 ++++++++++++---
->   1 file changed, 12 insertions(+), 3 deletions(-)
-> 
-> diff --git
-> a/Documentation/devicetree/bindings/mmc/fujitsu,sdhci-fujitsu.yaml
-> b/Documentation/devicetree/bindings/mmc/fujitsu,sdhci-fujitsu.yaml
-> index 73d747e917f3..430b62899397 100644
-> --- a/Documentation/devicetree/bindings/mmc/fujitsu,sdhci-fujitsu.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/fujitsu,sdhci-fujitsu.yaml
-> @@ -14,9 +14,13 @@ allOf:
->   
->   properties:
->     compatible:
-> -    enum:
-> -      - fujitsu,mb86s70-sdhci-3.0
-> -      - socionext,f-sdh30-e51-mmc
-> +    oneOf:
-> +      - items:
-> +          - const: socionext,synquacer-sdhci
-> +          - const: fujitsu,mb86s70-sdhci-3.0
-> +      - enum:
-> +          - fujitsu,mb86s70-sdhci-3.0
-> +          - socionext,f-sdh30-e51-mmc
->   
->     reg:
->       maxItems: 1
-> @@ -29,6 +33,11 @@ properties:
->         - const: iface
->         - const: core
->   
-> +  dma-coherent: true
-> +
-> +  interrupts:
-> +    maxItems: 2
-> +
->     resets:
->       maxItems: 1
->   
-
-
+Signed-off-by: Ye Xingchen <ye.xingchen@zte.com.cn>
 ---
-Best Regards
-Kunihiko Hayashi
+ drivers/mmc/host/jz4740_mmc.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
+index 698450afa7bb..a6ad03b24add 100644
+--- a/drivers/mmc/host/jz4740_mmc.c
++++ b/drivers/mmc/host/jz4740_mmc.c
+@@ -232,10 +232,7 @@ static int jz4740_mmc_acquire_dma_channels(struct jz4740_mmc_host *host)
+ 	if (!IS_ERR(host->dma_tx))
+ 		return 0;
+
+-	if (PTR_ERR(host->dma_tx) != -ENODEV) {
+-		dev_err(dev, "Failed to get dma tx-rx channel\n");
+-		return PTR_ERR(host->dma_tx);
+-	}
++	return dev_err_probe(dev, PTR_ERR(host->dma_tx), "Failed to get dma tx-rx channel\n");
+
+ 	host->dma_tx = dma_request_chan(mmc_dev(host->mmc), "tx");
+ 	if (IS_ERR(host->dma_tx)) {
+-- 
+2.25.1
