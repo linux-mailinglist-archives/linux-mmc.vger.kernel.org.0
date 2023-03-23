@@ -2,56 +2,57 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3351A6C67DA
-	for <lists+linux-mmc@lfdr.de>; Thu, 23 Mar 2023 13:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1644B6C67DE
+	for <lists+linux-mmc@lfdr.de>; Thu, 23 Mar 2023 13:15:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231216AbjCWMOo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 23 Mar 2023 08:14:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50694 "EHLO
+        id S230072AbjCWMO6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 23 Mar 2023 08:14:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231245AbjCWMOQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Mar 2023 08:14:16 -0400
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A5F25B9C
-        for <linux-mmc@vger.kernel.org>; Thu, 23 Mar 2023 05:13:56 -0700 (PDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-544f7c176easo246845867b3.9
-        for <linux-mmc@vger.kernel.org>; Thu, 23 Mar 2023 05:13:56 -0700 (PDT)
+        with ESMTP id S231350AbjCWMOa (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 23 Mar 2023 08:14:30 -0400
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D5914228
+        for <linux-mmc@vger.kernel.org>; Thu, 23 Mar 2023 05:14:02 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-5456249756bso95639867b3.5
+        for <linux-mmc@vger.kernel.org>; Thu, 23 Mar 2023 05:14:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679573635;
+        d=linaro.org; s=google; t=1679573640;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=N7lgk6f+q2nEXeqkUqxHnazbXtEwKCKae3zY+1NYR88=;
-        b=dCCUMvk8tORlt404OScY7h/k1sjCR9SqoK+Pd9k+QQsZSPAFkp4p01ZaANHdc7xBxm
-         F7QNJxfsQgaqTz5Wj49ad+c3sBbKYw6RFYX2oz1eI8cIbFoeHDj4GhThLY2nxNzojico
-         sLoXWN/iHtiFFLgPtEhtqS8TcRLB9fguGM8/B5dQ1YWoMKRwECmPPR7aRzbJ7ScymT8B
-         lwMe/vybOwZHsNhKlsrRQlxlJBoX+RxTrFo3jIjo1vq3PgN/J/tb1QpCxnzszCgyrfbE
-         Hcg6mnnhFD/vZhOPFIC3rL9eq3hFJaDnroswNxlxLo7cdEdnNlHES2goA3V9wlQvLo2R
-         QBgQ==
+        bh=6r3XVRqIULYm4CGKu7hP4tgnIXEFH+P3K6MMzZmDA6Y=;
+        b=poaqupKGqOdpI+XuLb3+5WiJSKB91AHjkpbRvzeNSCauU7DKUnMk4sf/P3ZHQQmbAP
+         ARbOcThfNJU0Hn4clq72ZdyXd/r3F0ab6foRIfOKMiFqcMvuat9WQxOPr35VpEdjfkbA
+         cO4S/t4jJyo8Fk5AcTDpoQRJ1qCQ2NkmBTKLSaXCW1FJYpmY4YqRb7hSl6XTBmkF7hzH
+         XTr9UdEk0wlxjE86JvwxdevqOcThn8EJrgsozLsudhW107AE7NEo3w8eoQNNHQZjOo2O
+         MVi4Dda1p8sYdktausdj3pklzzceXec49Yr1kLB1f0hDmHCZCDiGZ6gtOjU35z4NSTGs
+         kpUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679573635;
+        d=1e100.net; s=20210112; t=1679573640;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=N7lgk6f+q2nEXeqkUqxHnazbXtEwKCKae3zY+1NYR88=;
-        b=v+cFdDtYe7z0Kp6ocn0G1yRl4oOWE+kBgC1QCshQGxj7cSccmxy1ucAOM7tEt/Bwg1
-         N+dwRTBa7q6TTB0svgniDSCdU4+gmRaa62UN5NQOkd05BNEjo0TseyNrjMQqMXS7hvvu
-         2bZSo4bNht7N69vLVv/ZbIUjTg+D+T2yaG0Cg3siI4fP1U4LchvGrDnjBFrwqgUFn6tY
-         FkqAwWuofaXE8dxNhGKe9Q/iEGmbT4qQrsXPB89Bc/Wd6ZHNax9g+7UabtzrXlyCMY1n
-         V6potYdUND3V256B1a9B1xFpOuUmHijepNP0BcKxCErjiIR0eGUVipYocrq75ze3Sawb
-         qLJw==
-X-Gm-Message-State: AAQBX9eHk2f7bU5DFkRbMS4Nfxzjy52SHEzM/3JBH1mmJg2+MtAPfE4/
-        vQMYlLOCOaaoOl6/rHI4xli7Tbbiom+qYfvQ7Jy7yQ==
-X-Google-Smtp-Source: AKy350ab9pO/mcEnaUl/HDWXZ+Fnty7B9nPqyTX1tQTW/yxspuOWNB+4UF7majPChSEe/kPlAwb+LVwCezJ7W94X0hs=
+        bh=6r3XVRqIULYm4CGKu7hP4tgnIXEFH+P3K6MMzZmDA6Y=;
+        b=vEd3BHwiMm83Z24kOE/z8XTbp9qHmx2lzvQCTbCK/ruDN4EyAe2PvyFYUeh1YWyQgs
+         DzaJx7UrMZ6Fw1FXNxMDiJJ7ihF5FVMu0p8Tofji6sxWSed2L8bYXGiZPcsbwUuNZx8G
+         b3hYanu6jUI46yZWD9LLwUj3GCAAP3sOh0QgosbfQHl5dS/vGjenMn5RN6WO89FCPrYq
+         H6hsp6UXmPWO114abGa2mIoWnI6hXQo1ZSlk4FoBRAB8jz2bL9jUuyH/GJyW/Ry8MeAu
+         DymgzIHYiugKH93Y2cwg3rPdaiYLB5Hj0hCDvofYRguLZFLWlxIKKzpZT7/dJBkerCwM
+         f9kA==
+X-Gm-Message-State: AAQBX9drsWFzSVtbe247QYEBWN3vRhkaIjArL2kvnNn0KSX3nJUtLmzn
+        7h2F2uhz7HWK0OWa+LhfDo/YTXw2MnobhVoUP/RFHw==
+X-Google-Smtp-Source: AKy350YrzARwXS8DQFIp2Yjci1l9v45eFynyY5At2IrDlpyb+0NB5f39rOS96b7EjLMpprOrk8d3M4mQdbcyMs8c8/o=
 X-Received: by 2002:a81:b3c3:0:b0:545:343b:ecba with SMTP id
- r186-20020a81b3c3000000b00545343becbamr1735106ywh.0.1679573635527; Thu, 23
- Mar 2023 05:13:55 -0700 (PDT)
+ r186-20020a81b3c3000000b00545343becbamr1735168ywh.0.1679573638541; Thu, 23
+ Mar 2023 05:13:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230316120549.21486-1-rashmi.a@intel.com> <20230316120549.21486-2-rashmi.a@intel.com>
-In-Reply-To: <20230316120549.21486-2-rashmi.a@intel.com>
+References: <20230316120549.21486-1-rashmi.a@intel.com> <20230316120549.21486-3-rashmi.a@intel.com>
+In-Reply-To: <20230316120549.21486-3-rashmi.a@intel.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 23 Mar 2023 13:13:19 +0100
-Message-ID: <CAPDyKFrte0nQYhZCD3FeMo7=z4PczhTi7C7Sp3=7fQ_QvcPbQg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] mmc: sdhci-of-arasan: Remove Intel Thunder Bay SOC support
+Date:   Thu, 23 Mar 2023 13:13:22 +0100
+Message-ID: <CAPDyKFqvEOSOYwTTTfMv2jboASgjiw0pX1+yG6Z2TAqSAimQuQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] dt-bindings: mmc: Remove bindings for Intel
+ Thunder Bay SoC"
 To:     rashmi.a@intel.com
 Cc:     michal.simek@xilinx.com, p.zabel@pengutronix.de,
         linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -91,77 +92,49 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci-of-arasan.c | 29 +----------------------------
->  1 file changed, 1 insertion(+), 28 deletions(-)
+>  .../devicetree/bindings/mmc/arasan,sdhci.yaml | 25 -------------------
+>  1 file changed, 25 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-> index 89c431a34c43..fbafc87266aa 100644
-> --- a/drivers/mmc/host/sdhci-of-arasan.c
-> +++ b/drivers/mmc/host/sdhci-of-arasan.c
-> @@ -193,13 +193,6 @@ static const struct sdhci_arasan_soc_ctl_map intel_lgm_sdxc_soc_ctl_map = {
->         .hiword_update = false,
->  };
+> diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml b/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml
+> index 8296c34cfa00..e8e8b48dc5e5 100644
+> --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml
+> @@ -88,12 +88,6 @@ properties:
+>          description:
+>            For this device it is strongly suggested to include
+>            arasan,soc-ctl-syscon.
+> -      - items:
+> -          - const: intel,thunderbay-sdhci-5.1   # Intel Thunder Bay eMMC PHY
+> -          - const: arasan,sdhci-5.1
+> -        description:
+> -          For this device it is strongly suggested to include
+> -          clock-output-names and '#clock-cells'.
 >
-> -static const struct sdhci_arasan_soc_ctl_map thunderbay_soc_ctl_map = {
-> -       .baseclkfreq = { .reg = 0x0, .width = 8, .shift = 14 },
-> -       .clockmultiplier = { .reg = 0x4, .width = 8, .shift = 14 },
-> -       .support64b = { .reg = 0x4, .width = 1, .shift = 24 },
-> -       .hiword_update = false,
-> -};
+>    reg:
+>      maxItems: 1
+> @@ -309,22 +303,3 @@ examples:
+>                     <&scmi_clk KEEM_BAY_PSS_SD0>;
+>            arasan,soc-ctl-syscon = <&sd0_phy_syscon>;
+>      };
 > -
->  static const struct sdhci_arasan_soc_ctl_map intel_keembay_soc_ctl_map = {
->         .baseclkfreq = { .reg = 0x0, .width = 8, .shift = 14 },
->         .clockmultiplier = { .reg = 0x4, .width = 8, .shift = 14 },
-> @@ -465,15 +458,6 @@ static const struct sdhci_pltfm_data sdhci_arasan_cqe_pdata = {
->                         SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
->  };
->
-> -static const struct sdhci_pltfm_data sdhci_arasan_thunderbay_pdata = {
-> -       .ops = &sdhci_arasan_cqe_ops,
-> -       .quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN | SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC,
-> -       .quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-> -               SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN |
-> -               SDHCI_QUIRK2_STOP_WITH_TC |
-> -               SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400,
-> -};
-> -
->  #ifdef CONFIG_PM_SLEEP
->  /**
->   * sdhci_arasan_suspend - Suspend method for the driver
-> @@ -1150,12 +1134,6 @@ static struct sdhci_arasan_of_data sdhci_arasan_generic_data = {
->         .clk_ops = &arasan_clk_ops,
->  };
->
-> -static const struct sdhci_arasan_of_data sdhci_arasan_thunderbay_data = {
-> -       .soc_ctl_map = &thunderbay_soc_ctl_map,
-> -       .pdata = &sdhci_arasan_thunderbay_pdata,
-> -       .clk_ops = &arasan_clk_ops,
-> -};
-> -
->  static const struct sdhci_pltfm_data sdhci_keembay_emmc_pdata = {
->         .ops = &sdhci_arasan_cqe_ops,
->         .quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
-> @@ -1289,10 +1267,6 @@ static const struct of_device_id sdhci_arasan_of_match[] = {
->                 .compatible = "intel,keembay-sdhci-5.1-sdio",
->                 .data = &intel_keembay_sdio_data,
->         },
-> -       {
-> -               .compatible = "intel,thunderbay-sdhci-5.1",
-> -               .data = &sdhci_arasan_thunderbay_data,
-> -       },
->         /* Generic compatible below here */
->         {
->                 .compatible = "arasan,sdhci-8.9a",
-> @@ -1716,8 +1690,7 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
->
->         if (of_device_is_compatible(np, "intel,keembay-sdhci-5.1-emmc") ||
->             of_device_is_compatible(np, "intel,keembay-sdhci-5.1-sd") ||
-> -           of_device_is_compatible(np, "intel,keembay-sdhci-5.1-sdio") ||
-> -           of_device_is_compatible(np, "intel,thunderbay-sdhci-5.1")) {
-> +           of_device_is_compatible(np, "intel,keembay-sdhci-5.1-sdio")) {
->                 sdhci_arasan_update_clockmultiplier(host, 0x0);
->                 sdhci_arasan_update_support64b(host, 0x0);
->
+> -  - |
+> -    #define EMMC_XIN_CLK
+> -    #define EMMC_AXI_CLK
+> -    #define TBH_PSS_EMMC_RST_N
+> -    mmc@80420000 {
+> -          compatible = "intel,thunderbay-sdhci-5.1", "arasan,sdhci-5.1";
+> -          interrupts = <GIC_SPI 714 IRQ_TYPE_LEVEL_HIGH>;
+> -          reg = <0x80420000 0x400>;
+> -          clocks = <&scmi_clk EMMC_XIN_CLK>,
+> -                   <&scmi_clk EMMC_AXI_CLK>;
+> -          clock-names = "clk_xin", "clk_ahb";
+> -          phys = <&emmc_phy>;
+> -          phy-names = "phy_arasan";
+> -          assigned-clocks = <&scmi_clk EMMC_XIN_CLK>;
+> -          clock-output-names = "emmc_cardclock";
+> -          resets = <&rst_pss1 TBH_PSS_EMMC_RST_N>;
+> -          #clock-cells = <0x0>;
+> -    };
 > --
 > 2.17.1
 >
