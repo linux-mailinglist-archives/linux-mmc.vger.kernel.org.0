@@ -2,53 +2,53 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 506226CA64D
-	for <lists+linux-mmc@lfdr.de>; Mon, 27 Mar 2023 15:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2CA36CA651
+	for <lists+linux-mmc@lfdr.de>; Mon, 27 Mar 2023 15:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232141AbjC0Nr7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 27 Mar 2023 09:47:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39492 "EHLO
+        id S232731AbjC0NsA (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 27 Mar 2023 09:48:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231359AbjC0Nr4 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Mar 2023 09:47:56 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43ED33C02
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Mar 2023 06:47:49 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id w9so36533962edc.3
-        for <linux-mmc@vger.kernel.org>; Mon, 27 Mar 2023 06:47:49 -0700 (PDT)
+        with ESMTP id S232654AbjC0Nr5 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 27 Mar 2023 09:47:57 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEBA14EE2
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Mar 2023 06:47:50 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id i5so36675065eda.0
+        for <linux-mmc@vger.kernel.org>; Mon, 27 Mar 2023 06:47:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679924867;
+        d=linaro.org; s=google; t=1679924869;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AvQae14K8HmSyxC8LyADsvwI9KRuBTXgHDMXuVFN2bU=;
-        b=MzulBE5SiYfdTZ61fqF+IaniovqFBPJ6tTUnxMHuwD6NuRjsUzQpZeEaajViKmA8TW
-         r27LxrU8JrYiJfsTyoeygzacaqQVJiNMTJj6sTyDhGMD47LHjJdfCuVIQ7+bU/QbE8/q
-         eoO0ulY+p3rFfNxiAzGL93DNnYmO89DxADfQfgle4BcEDbo5Q77pFOXn6zf52eC0AB0O
-         +2cHcT5oJak5BezmV8rfc7t+79Ez2+mCIQKe9aTHBz1VVdQqRJ3MUJ4GzpnT8k1nHyEQ
-         KPDQ+oaJhFM38RWliPWdxLd85948T/ZyGLtS/97PVrYprMDQ/vyokqZ0pd1tJTOyMEFW
-         AHHw==
+        bh=WvM3Xo7kWQeMts4fqfXfCBu6rrobV0+vnp4Z7+CdlkQ=;
+        b=B4naxOaDhWktG/khO/taOqV9o/7QvJdyksa6qhRytXzBrkIy6MSOfL8Oa+/v9a9Hz8
+         7KM+PUs0NosvFFWxIs0lEDcVuiZ+AwykkATXNzAW1PC1VKHjVAF/Cp2orXN3S/gky8tR
+         PRyjaAbME4oUHvt9New8vbw0g7GEOMBu52RTqbL12LeO++1wegpdENywpf8hn+L9YNSC
+         yu5/yoJTKGTCEo8SaQzH05RFM9gXF+PWxrHPFHh2Nx/awsy7BHzBwukzGeF0grC95IvW
+         SSb7crrTw8PDl3ExNpneU4Fc5Qrf50/z3thQ3667/cINWCFw6M8ljLXj30BNeMWk0Hf/
+         jyZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679924867;
+        d=1e100.net; s=20210112; t=1679924869;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AvQae14K8HmSyxC8LyADsvwI9KRuBTXgHDMXuVFN2bU=;
-        b=pM1idOGf3uyo5Tfp/8XUPbcQti3LCIGtjdeTmtIbFYHXFABAT7xU1oWFNvtWQFuVyp
-         +z8tBYpgW2omcylWO1b3CSDFMpnxaVLgrDOOlGw2cR/PPbAbz8ETIikqQeNrpgyAyGVE
-         WUV12NKdEOZfKG3FlskXu3B0yMJvsVKgt/1lwfswXn/8BF9SzTV85gcd5u1eyMv44Nmg
-         8QpnumQ7Qv8l8peQV8DbaBXnSj22MpkxzTpmMRr0oGKMaCUgGABEssiLLScwtRwCNUBe
-         bgBfnK5KmF1uLjj1K8bHYwB//7xsj6KNjb9eh3kdeFGMmk6ciGHB/zrwThx1HlYDIT5U
-         wsWA==
-X-Gm-Message-State: AAQBX9fCFzK58l09W8j5zDj9ZspWYqdw69r4gFkKMhetGg/ai+OsY/3d
-        DgY/saeoiVOE0a9pQsouWNV8vQ==
-X-Google-Smtp-Source: AKy350byAi10P6eCjlQna6nzLLxxVjsMRG0OdF1RQUXVJ0fvxylOQt4cceUc+Zrt+tn5U03ea21wfw==
-X-Received: by 2002:a17:906:448e:b0:933:3cd8:a16f with SMTP id y14-20020a170906448e00b009333cd8a16fmr13846020ejo.75.1679924867744;
-        Mon, 27 Mar 2023 06:47:47 -0700 (PDT)
+        bh=WvM3Xo7kWQeMts4fqfXfCBu6rrobV0+vnp4Z7+CdlkQ=;
+        b=BYWHC9mB50qEkah+DkwWNfTC4UfD5EOYLpte8bISeTbWFli+LCQ49ef9VWGiZjZ2S2
+         jI4RZM70ROW9TDAzMhwoZNsQMD1NPIDkiKYfDrvQ7lmAWI8LVYltqYoeO1zyrmHxmvxn
+         gxIYatmTABVvs/WoMb0bd0heTx/+qw/9PzOvAaHihu2wtVACh8H95S++ub7IRBaWVuhJ
+         jEdD78bEnTc1Xakprqi80oKk7ajAI27Rfhb4id2y10Snx+fHwaZuzb4FriJD0i6+uToF
+         xCzwhaF4kDJ0NYNdns065DSSMr6BA74xsRr9+6vosq8d+EB4a1p0AVJCcuphH1HSEssf
+         /ziQ==
+X-Gm-Message-State: AAQBX9e2tk9p2QUfMwxFVUS6Ha2lROowm8Zmk6MVzc0aEplhINprDDEC
+        SPIuQ5a3zXlKsOPC1Ra2KSlNKw==
+X-Google-Smtp-Source: AKy350ZpwGYP2PtxPrEZJIqCM1Ph8zc1++uh/cIq0hw9GToR37FTmvA5FdYGMLCu+1FMH8iGQTKULg==
+X-Received: by 2002:a17:906:caa:b0:8b1:3821:1406 with SMTP id k10-20020a1709060caa00b008b138211406mr13012331ejh.45.1679924869430;
+        Mon, 27 Mar 2023 06:47:49 -0700 (PDT)
 Received: from localhost.localdomain ([94.52.112.99])
-        by smtp.gmail.com with ESMTPSA id n7-20020a509347000000b005023ddb37eesm2394303eda.8.2023.03.27.06.47.46
+        by smtp.gmail.com with ESMTPSA id n7-20020a509347000000b005023ddb37eesm2394303eda.8.2023.03.27.06.47.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Mar 2023 06:47:47 -0700 (PDT)
+        Mon, 27 Mar 2023 06:47:48 -0700 (PDT)
 From:   Abel Vesa <abel.vesa@linaro.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -70,9 +70,9 @@ Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
         linux-scsi@vger.kernel.org
-Subject: [PATCH v4 2/7] dt-bindings: mmc: sdhci-msm: Add ICE phandle
-Date:   Mon, 27 Mar 2023 16:47:29 +0300
-Message-Id: <20230327134734.3256974-3-abel.vesa@linaro.org>
+Subject: [PATCH v4 3/7] dt-bindings: ufs: qcom: Add ICE phandle
+Date:   Mon, 27 Mar 2023 16:47:30 +0300
+Message-Id: <20230327134734.3256974-4-abel.vesa@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230327134734.3256974-1-abel.vesa@linaro.org>
 References: <20230327134734.3256974-1-abel.vesa@linaro.org>
@@ -94,7 +94,7 @@ Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 ---
 
 The v3 (RFC) is here:
-https://lore.kernel.org/all/20230313115202.3960700-3-abel.vesa@linaro.org/
+https://lore.kernel.org/all/20230313115202.3960700-4-abel.vesa@linaro.org/
 
 Changes since v3:
  * dropped the "and drop core clock" part from subject line
@@ -102,24 +102,24 @@ Changes since v3:
 Changes since v2:
  * dropped all changes except the qcom,ice property
 
- Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 4 ++++
+ Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-index 64df6919abaf..0ad14d5b722e 100644
---- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-+++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-@@ -120,6 +120,10 @@ properties:
-     $ref: /schemas/types.yaml#/definitions/uint32
-     description: platform specific settings for DLL_CONFIG reg.
+diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+index c5a06c048389..7384300c421d 100644
+--- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
++++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+@@ -70,6 +70,10 @@ properties:
+   power-domains:
+     maxItems: 1
  
 +  qcom,ice:
 +    $ref: /schemas/types.yaml#/definitions/phandle
 +    description: phandle to the Inline Crypto Engine node
 +
-   iommus:
+   reg:
      minItems: 1
-     maxItems: 8
+     maxItems: 2
 -- 
 2.34.1
 
