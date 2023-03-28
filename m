@@ -2,61 +2,76 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 436AA6CB886
-	for <lists+linux-mmc@lfdr.de>; Tue, 28 Mar 2023 09:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF8996CC1CE
+	for <lists+linux-mmc@lfdr.de>; Tue, 28 Mar 2023 16:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232374AbjC1Hrk (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 28 Mar 2023 03:47:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33090 "EHLO
+        id S232909AbjC1OOi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 28 Mar 2023 10:14:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232324AbjC1Hre (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 Mar 2023 03:47:34 -0400
-Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8657C3C28
-        for <linux-mmc@vger.kernel.org>; Tue, 28 Mar 2023 00:47:33 -0700 (PDT)
-Received: by mail.lokoho.com (Postfix, from userid 1001)
-        id 523EA84397; Tue, 28 Mar 2023 08:46:01 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
-        t=1679989565; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
-        h=Date:From:To:Subject:From;
-        b=FJhg42KE6LFv1xw7tgqJ9xfWnxySujKq6KpBsblJIc7TSKpg0Oro6uZ5INkC1MJde
-         yLMc1dniE3pe2kxyQioXchuzqXXyb5ZOTHXqAuHN0x/VGcr7c/BcrfVobt4wQyiX4B
-         4bebRVBYumXlji8x4Lj9EdykeObpNyi/QKlwX33bMb8G2rgSn3psnp5st1iVjiKMmM
-         XgWEPoVbRohoolKjelbNpIE6hfw3mm7RLdxJVA42r8sB9HgH9i4ZEWoy7zBXsV7klX
-         xlXpT/dEy0bPEY/9lbt7Zd+jNUG3eK5xSK8YCBinR5+S5bTxZAMaD+H8SPoQo4UGOT
-         uUZuootW3Bzaw==
-Received: by mail.lokoho.com for <linux-mmc@vger.kernel.org>; Tue, 28 Mar 2023 07:45:59 GMT
-Message-ID: <20230328074501-0.1.4x.1n0ax.0.xipm8aglgv@lokoho.com>
-Date:   Tue, 28 Mar 2023 07:45:59 GMT
-From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
-To:     <linux-mmc@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.lokoho.com
+        with ESMTP id S232916AbjC1OOg (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 28 Mar 2023 10:14:36 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD5183F6
+        for <linux-mmc@vger.kernel.org>; Tue, 28 Mar 2023 07:14:14 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id s20so12724780ljp.1
+        for <linux-mmc@vger.kernel.org>; Tue, 28 Mar 2023 07:14:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680012853;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mb4LYTz6ltLsND5GCzIBKn5H+VpjQGr9vlRB0NuV50c=;
+        b=pCc81/lsXn1xrmyeQVw7IGEXamYtSQf7TCG/HepPsA9U+GiMcyFZG+W3/HoeqqH4oU
+         k/m/jYkRWKf+oTHA7ZFzcrUf9zySoSX4SLxXj1eWZoRyIXJzTSU+P4lgkn/Vl/lpzuiq
+         x9sR5VJ4cIeIpImrHNdDSfYI2xTV1aP1WZHCfglCyc093h9wX53mM/2vMy6Sy0GoFlRE
+         IwJBgAUbLzsg0LIix9Zd99StcLlmxsa5TGFA4ZmArnPCevMWvLWfab12KEYfC2Pss7Qi
+         yNnsHmeX6RY22OKLg79tZweR39uy95ycoZAhrQyF5M8EIwurUlINIV93IJBQd/Hkoe67
+         EdSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680012853;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mb4LYTz6ltLsND5GCzIBKn5H+VpjQGr9vlRB0NuV50c=;
+        b=q1uFRmzzVLFqOH7b5U+wSdhi91MCx2YR6/kFqx2IIhSfOA4t5n2KADn6IC+ppIctig
+         D+YNpi4cPdkYuM5JGBTVTCOLgsdcbFQ+kUkd+YT6v9+GMsqOMCObHy2uqzBCvHZnMqqZ
+         +dkbiPTPdDHkGogojhLY8l0MXd+yZ6gIa9DzQmhJwhDBQup6NCXTD0RzKNu4UMt6LEUi
+         wHKemxaY5PPVM/wOj5L43JQMAviNjLTX315CjmoIcobfwKxcfgCKk/ZnMyDVOHIi4rgw
+         IAFYo282L3Iv2DVSI4CboEEH5xvalbQGw3xK+Oye8r4F+AK0/Y8bKANad2M7duZ6unJg
+         P+Cw==
+X-Gm-Message-State: AAQBX9dihR3BEqx5RbkzMJ5D/yIwBJEiEKzyO79zfUCu8DwnN37WRasm
+        LF7SiKTmTDeQfNh3wyhRkL57fxWy8dN+dRn3kq4=
+X-Google-Smtp-Source: AKy350aLi4y5oeLUIIiiG/MEIMo7nSP7/nmuaHETV+Xn4hsoVUbLQysTMlJ7iBJBdAiPNgrejgGkqarGVsB0N/dnZ4Y=
+X-Received: by 2002:a2e:8702:0:b0:295:acc0:3017 with SMTP id
+ m2-20020a2e8702000000b00295acc03017mr4690403lji.4.1680012853033; Tue, 28 Mar
+ 2023 07:14:13 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 2002:a2e:8e84:0:b0:290:4f29:1dd5 with HTTP; Tue, 28 Mar 2023
+ 07:14:12 -0700 (PDT)
+Reply-To: lilywilliam989@gmail.com
+From:   Lily William <osasgoodness8@gmail.com>
+Date:   Tue, 28 Mar 2023 06:14:12 -0800
+Message-ID: <CANczi2zWDR1ScFZY00wNqcbjxYdmxmWQKj2GnyvGNLxu4ng9cw@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hi Dear,
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+My name is Lily William, I am from the United States of America
+presently living in the UK, Its my pleasure to contact you for new and
+special friendship I will be glad to see your reply for us to know
+each other better.
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
-
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
-
-
-Pozdrawiam
-Adam Charachuta
+Yours
+Lily
