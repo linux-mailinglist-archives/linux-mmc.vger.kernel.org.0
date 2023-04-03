@@ -2,41 +2,79 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A791F6D4FB3
-	for <lists+linux-mmc@lfdr.de>; Mon,  3 Apr 2023 19:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F3D06D51DE
+	for <lists+linux-mmc@lfdr.de>; Mon,  3 Apr 2023 22:05:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232597AbjDCR47 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 3 Apr 2023 13:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45560 "EHLO
+        id S232876AbjDCUFo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 3 Apr 2023 16:05:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232648AbjDCR4z (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 3 Apr 2023 13:56:55 -0400
-X-Greylist: delayed 308 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 03 Apr 2023 10:56:39 PDT
-Received: from arashi.greysector.net (arashi.greysector.net [51.68.141.79])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7746610CA
-        for <linux-mmc@vger.kernel.org>; Mon,  3 Apr 2023 10:56:39 -0700 (PDT)
-Received: from sakura.greysector.net (unknown [212.180.189.198])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by arashi.greysector.net (Postfix) with ESMTPSA id 8AD43981
-        for <linux-mmc@vger.kernel.org>; Mon,  3 Apr 2023 19:51:28 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 arashi.greysector.net 8AD43981
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=greysector.net;
-        s=default; t=1680544288;
-        bh=p8qEDwQ4hknjJPlBetlApfsDPdLN7P79cbMN94i+olU=;
-        h=Date:From:To:Subject:From;
-        b=ATxIC6iUPw2b6vjAV138fPux3+eW1UYSRD+/r6OV+jHvCBjQRzU55dfHcQZLOS33R
-         /yYSbzpntPwIdQ+32z2RwpQg8ZyuLG3NiStrewXG0jQVHmUhkpjxA3nWGGPAmuN31c
-         6Yb/mOQmBFMnGMY8XlL1y4iKV0ZMZd8NHhsUzdbg=
-Date:   Mon, 3 Apr 2023 19:51:27 +0200
-From:   Dominik 'Rathann' Mierzejewski <dominik@greysector.net>
-To:     linux-mmc@vger.kernel.org
-Subject: mmc-utils: ioctl connection timed out with SD cards
-Message-ID: <ZCsSHxDv+158emk5@sakura.greysector.net>
+        with ESMTP id S229945AbjDCUFk (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 3 Apr 2023 16:05:40 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7C011728
+        for <linux-mmc@vger.kernel.org>; Mon,  3 Apr 2023 13:05:37 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id e18so30577391wra.9
+        for <linux-mmc@vger.kernel.org>; Mon, 03 Apr 2023 13:05:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680552336;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ypjGSD9MoiyC/BSmZV4rpdSicxantTDyraV9ZwR3Wko=;
+        b=HUKwUP5VZRNpodrnPPM3ifw1bAJa/1Pwl19tZY0gZTDQdqvslDjrKagBUWgrt8/NY1
+         iJ2tN7m+ZqpRE+cPJMdWcNCThCpokwmT7wlwclKRVO8wDwCdc/pV4pkMjvEhq5no8djC
+         kPGn53hin1pRv+iB8fzqU95rfylIHRDYJ0C5vDUFdDcMnNXlFDzMODxFRuRHDnhIfDgD
+         CXJ6y6TnYjCZVy6iOCDFQph/FZRUWWpdmfYk6xaMyt1+X7y038/HXHZtZNOQxDMfQztv
+         7Znx05mTUxZUmAcoNI+qMtJA3exG/ecL3Ah/qeCHRICM69kcalZ0fIqnlwgmhR9/jGmJ
+         RS1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680552336;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ypjGSD9MoiyC/BSmZV4rpdSicxantTDyraV9ZwR3Wko=;
+        b=69xguIKiWgoFHDqwpmXsSlIw/XWana2j9066g0Bg53+SFPh/IYUVLDbEr6Y5GSDpy7
+         9m/Pi0PHpk/tbHx/lSwJGiAhJzkprPjM9G8fyqo2dAnWbEkLPuuTCT1Kx68/zQZtdXGG
+         4orssbJqD/RkLs1SmDESUJSskKjY3dqzCGvEs36ybIlDdptFMMzXjjRKo24yvpp2mmCi
+         egExWuyEWvkWIn8ysbsQmy616ysXHbCQBf5c/WYtPM2RcO2MtRTR8+QzMCcKfI/tgjoF
+         3Rcu312gUn/mwLZ0vUADO2viLG5vnaz5hAvvdppdUpxI4xfN2RiuwpO83JUFvPZ5bo/T
+         zM8Q==
+X-Gm-Message-State: AAQBX9dtneb2tF0RO6oWEKrUHgT33ccLy3LSjfAd0I/lefENOIfXMCmc
+        jIRSXaCPimNmF64tQLcVpO+EqA==
+X-Google-Smtp-Source: AKy350Ykoxehj3xlHAZUYS0YuJeY0lOEIiHNddtOkaPl+8pQTa1wGWFgeMQoaWYcLwn59zlnlqdkXg==
+X-Received: by 2002:adf:dbcf:0:b0:2ce:da65:1e1d with SMTP id e15-20020adfdbcf000000b002ceda651e1dmr14024101wrj.24.1680552336280;
+        Mon, 03 Apr 2023 13:05:36 -0700 (PDT)
+Received: from localhost.localdomain ([94.52.112.99])
+        by smtp.gmail.com with ESMTPSA id iv19-20020a05600c549300b003ef69873cf1sm20798037wmb.40.2023.04.03.13.05.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Apr 2023 13:05:35 -0700 (PDT)
+From:   Abel Vesa <abel.vesa@linaro.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Biggers <ebiggers@kernel.org>
+Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-scsi@vger.kernel.org
+Subject: [PATCH v5 0/6] Add dedicated Qcom ICE driver
+Date:   Mon,  3 Apr 2023 23:05:24 +0300
+Message-Id: <20230403200530.2103099-1-abel.vesa@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
         DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
@@ -46,31 +84,53 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hello,
-is the mmc tool from mmc-utils supposed to work with SD cards?
-I tried mmc status get /dev/mmcblkN with three different SD cards
-on two different machines (Pinebook Pro and a Sony laptop) and I get
-the same error on both:
-# mmc status get /dev/mmcblk0
-ioctl: Connection timed out
-Could not read response to SEND_STATUS from /dev/mmcblk0
+As both SDCC and UFS drivers use the ICE with duplicated implementation,
+while none of the currently supported platforms make use concomitantly
+of the same ICE IP block instance, the new SM8550 allows both UFS and
+SDCC to do so. In order to support such scenario, there is a need for
+a unified implementation and a devicetree node to be shared between
+both types of storage devices. So lets drop the duplicate implementation
+of the ICE from both SDCC and UFS and make it a dedicated (soc) driver.
+Also, switch all UFS and SDCC devicetree nodes to use the new ICE
+approach.
 
-dmesg on the Sony machine shows:
-[ 1291.196547] mmc0: new SD card at address aaaa
-[ 1291.196834] mmcblk0: mmc0:aaaa SD01G 969 MiB 
-[ 1291.200263]  mmcblk0: p1 p2 p3
-[ 1306.273160] rtsx_pci_sdmmc rtsx_pci_sdmmc.0: __mmc_blk_ioctl_cmd: cmd error -110
-[ 1306.276978]  mmcblk0: p1 p2 p3
+The v4 is here:
+https://lore.kernel.org/all/20230327134734.3256974-1-abel.vesa@linaro.org/
 
-I'm able to get status of the internal eMMC device on Pinebook Pro
-with no errors. extcsd read works fine, too.
+Changes since v4:
+ * dropped the SDHCI dt-bindings patch as it will be added along
+   with the first use of qcom,ice property from an SDHCI DT node
 
-I'm running Fedora 38 with kernel 6.2.9 on both machines if that helps.
+See each individual patch for changelogs.
 
-Regards,
-Dominik
+Abel Vesa (6):
+  dt-bindings: crypto: Add Qualcomm Inline Crypto Engine
+  dt-bindings: ufs: qcom: Add ICE phandle
+  soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver
+  scsi: ufs: ufs-qcom: Switch to the new ICE API
+  mmc: sdhci-msm: Switch to the new ICE API
+  arm64: dts: qcom: sm8550: Add the Inline Crypto Engine node
+
+ .../crypto/qcom,inline-crypto-engine.yaml     |  42 ++
+ .../devicetree/bindings/ufs/qcom,ufs.yaml     |  19 +
+ arch/arm64/boot/dts/qcom/sm8550.dtsi          |  10 +
+ drivers/mmc/host/Kconfig                      |   2 +-
+ drivers/mmc/host/sdhci-msm.c                  | 220 +++--------
+ drivers/soc/qcom/Kconfig                      |   4 +
+ drivers/soc/qcom/Makefile                     |   1 +
+ drivers/soc/qcom/ice.c                        | 365 ++++++++++++++++++
+ drivers/ufs/host/Kconfig                      |   2 +-
+ drivers/ufs/host/Makefile                     |   4 +-
+ drivers/ufs/host/ufs-qcom-ice.c               | 244 ------------
+ drivers/ufs/host/ufs-qcom.c                   |  97 ++++-
+ drivers/ufs/host/ufs-qcom.h                   |  32 +-
+ include/soc/qcom/ice.h                        |  37 ++
+ 14 files changed, 626 insertions(+), 453 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/crypto/qcom,inline-crypto-engine.yaml
+ create mode 100644 drivers/soc/qcom/ice.c
+ delete mode 100644 drivers/ufs/host/ufs-qcom-ice.c
+ create mode 100644 include/soc/qcom/ice.h
+
 -- 
-Fedora   https://getfedora.org  |  RPM Fusion  http://rpmfusion.org
-There should be a science of discontent. People need hard times and
-oppression to develop psychic muscles.
-        -- from "Collected Sayings of Muad'Dib" by the Princess Irulan
+2.34.1
+
