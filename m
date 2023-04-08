@@ -2,61 +2,60 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 100116DBD8D
-	for <lists+linux-mmc@lfdr.de>; Sun,  9 Apr 2023 00:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 577B56DBD8A
+	for <lists+linux-mmc@lfdr.de>; Sun,  9 Apr 2023 00:01:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbjDHWAr (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 8 Apr 2023 18:00:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48704 "EHLO
+        id S229517AbjDHWAp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 8 Apr 2023 18:00:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbjDHWAo (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 8 Apr 2023 18:00:44 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB4872A2
+        with ESMTP id S229503AbjDHWAn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 8 Apr 2023 18:00:43 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E8C7D8C
         for <linux-mmc@vger.kernel.org>; Sat,  8 Apr 2023 15:00:42 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id e11so2231950lfc.10
+Received: by mail-lf1-x12b.google.com with SMTP id z8so4101057lfb.12
         for <linux-mmc@vger.kernel.org>; Sat, 08 Apr 2023 15:00:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680991240;
+        d=linaro.org; s=google; t=1680991242;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=68Rc2WXbmYgQ43B8wxGeYxLEsTfSBnBHmmvyKE+wjgE=;
-        b=Jng6vM67VkLbQpEqx8soGTvigQAOITwa4rDGWidfa2GHkOXL86H3Vq1tRTtiU6vA4G
-         P5WvV6/xJ1NRw98f2cY+/GZgPFodUaspwGjMFtctx17JbDn9My2G88RztkuimPoDcboV
-         swYRndtqyjuBLAmHXEFVVZep5N/aUo1QZuBZ6mCy5sB7BIbDLJwEcNLBgAVuFQyodkBN
-         ev/bm768A0Dve3wQab2svqiatzbiAdl3INZQOkHU1MXLzERHwNFy4FNAH8hV1/d3JFMc
-         9VynWj09z6ZLRgbvCkgUNwJSrO7+sOpiktCRhJMQxrJfp8qbWzVNTNJgQozoKWvn54tF
-         8nRg==
+        bh=ulSk45VVtkQg/VdJQPl9abn/cnbMSUxtNO73oyBUdnI=;
+        b=xNtWRgV51u81o5Ru5snbvFHi2CMdQ/qYrwzEfDnwHb9oacILRfg7jP1XbwIDMLHPsD
+         hHEE3aI1uFJqAUzSwReO4uEqZzGvN1AK3xv4heIlTVuaQMIYi6VDesg/oI0g6kWnbKKN
+         rK+s2FheyK2Kc0mX6AAXhPv1k3JoL52oiJQD5fKQU8IcuQC0hgMMpgsOIWp0wCyNpsof
+         7eBb18o8rLx2rhHyGeipGcCyX8WbUiY/CvS8yf0eA+KWCiV9HfqBSj1xjg8B8/4+xGxr
+         mL1RpnMnTWqVdmZJdJMZEbCmwgunkW6P8KswOfIkuoD8wV3WScx+G9BfI5C/5aJqmrA9
+         xuOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680991240;
+        d=1e100.net; s=20210112; t=1680991242;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=68Rc2WXbmYgQ43B8wxGeYxLEsTfSBnBHmmvyKE+wjgE=;
-        b=tY0+msS6LPnFw/0CuQ7JxPhS1sgKKbrniZ7/F1+FNpVvuRW362z7Wj2fSRTnKDIMNb
-         MAzFAfYbouNs7pZCcLC3x88n7LpyPRU+OlqYS1sJODpiQi0ZoEnezPxZk3xCoJv+FE2A
-         6AJYUhyDd1t3jiSrX0DUGL6w/ZiZUWfRChHGGAyCmtxUNKVapMkCApacY/GbBN3H1Yb5
-         faLfxDNytrg6aRa+MRIKnnBVGIyqAPRGmUzySB8rmdSLRtJ3XKikJ64AUkFGnjDu+KHz
-         j+RxqP4msNMuvqYcM2AOUKG12gkSUSmDGESiR9Z7I2V6GCVSgTS+VU++8IsfKrAWqibH
-         nY7Q==
-X-Gm-Message-State: AAQBX9eFNwth37BaEBnKAZ3IPZnVcT/dPMbf6exnBG5+7znoChPAMlYz
-        OGpmumtuCdyEzxTa1Tt/mwD5mgqOvkq3d2AGv2g=
-X-Google-Smtp-Source: AKy350YlfCdenr9RWRKwBxE0XtY7Fl0xZTzRe9Mb8WEbRjfGWi9vUwzBUMckkJButIQ1kGSAgitciQ==
-X-Received: by 2002:ac2:47ec:0:b0:4e0:a426:6ddc with SMTP id b12-20020ac247ec000000b004e0a4266ddcmr1890164lfp.0.1680991240796;
-        Sat, 08 Apr 2023 15:00:40 -0700 (PDT)
+        bh=ulSk45VVtkQg/VdJQPl9abn/cnbMSUxtNO73oyBUdnI=;
+        b=HMr9t56zObYOzu7DUgJ1aRQmESHu0ZJLwTxgRyKgtPMxvBVzpQV1nMO1rW6F4fhMd4
+         bZ47zCSLl5cy41E6dSUKJzKuLAjU7OUgbjk8QUChGwXOjvAFkX0o8KL/LPIrE0O9mrdJ
+         0FuiHqwrdPo7+koF6QMGWc1w5a/PRGNTjD0NATOEiowUpJjwjdSZ5CKlqt7CW7jRx4/D
+         kopGh4sHlcrN/gJlSTq3Z12Hde/Z+2AO6rzMM48//HU/O9DVT98aib9+GCIJfTBGEamI
+         G1jAYwl2IBKDTOJw11HMGtqRlUIkMwumIt1drGPQBHduwGM3Ot1+d00kcv1VDWNDQ5Jj
+         viXw==
+X-Gm-Message-State: AAQBX9c3QDSmzJ+UHWV0O/Ij6hugnZAfCPV3BrGd7VmNNNfFo+JXXAJ4
+        Fdc9cXQTJREPxtZBlsOT0SKkm3z4br9cnwVq+Mw=
+X-Google-Smtp-Source: AKy350al+1pRL1fKihF3snfzUxn/XCgYEiLlufMjMilEnI+leSgyi3G5zSBnXdRXnw3k8tn4QYQWZA==
+X-Received: by 2002:a05:6512:985:b0:4eb:1e73:d30a with SMTP id w5-20020a056512098500b004eb1e73d30amr594315lft.45.1680991241832;
+        Sat, 08 Apr 2023 15:00:41 -0700 (PDT)
 Received: from [192.168.1.2] (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
-        by smtp.gmail.com with ESMTPSA id v9-20020a056512048900b004e9cad1cd7csm1328904lfq.229.2023.04.08.15.00.39
+        by smtp.gmail.com with ESMTPSA id v9-20020a056512048900b004e9cad1cd7csm1328904lfq.229.2023.04.08.15.00.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Apr 2023 15:00:40 -0700 (PDT)
+        Sat, 08 Apr 2023 15:00:41 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 09 Apr 2023 00:00:28 +0200
-Subject: [PATCH v2 07/12] mmc: mmci: Use state machine state as exit
- condition
+Date:   Sun, 09 Apr 2023 00:00:29 +0200
+Subject: [PATCH v2 08/12] mmc: mmci: Use a switch statement machine
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230405-pl180-busydetect-fix-v2-7-eeb10323b546@linaro.org>
+Message-Id: <20230405-pl180-busydetect-fix-v2-8-eeb10323b546@linaro.org>
 References: <20230405-pl180-busydetect-fix-v2-0-eeb10323b546@linaro.org>
 In-Reply-To: <20230405-pl180-busydetect-fix-v2-0-eeb10323b546@linaro.org>
 To:     Yann Gautier <yann.gautier@foss.st.com>,
@@ -77,109 +76,128 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Return true if and only if we reached the state
-MMCI_BUSY_DONE in the ux500 ->busy_complete() callback.
+As is custom, use a big switch statement to transition
+between the edges of the state machine inside
+the ux500 ->busy_complete callback.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
 ChangeLog v1->v2:
 - No changes
 ---
- drivers/mmc/host/mmci.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/mmc/host/mmci.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 590703075bbc..2689c6bb62d6 100644
+index 2689c6bb62d6..76d885d7e49f 100644
 --- a/drivers/mmc/host/mmci.c
 +++ b/drivers/mmc/host/mmci.c
-@@ -673,7 +673,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
- 		       ~host->variant->busy_detect_mask, base + MMCIMASK0);
- 		host->busy_state = MMCI_BUSY_DONE;
- 		host->busy_status = 0;
--		return true;
-+		goto out_ret_state;
+@@ -676,6 +676,12 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+ 		goto out_ret_state;
  	}
  
++	/*
++	 * The state transitions are encoded in a state machine crossing
++	 * the edges in this switch statement.
++	 */
++	switch (host->busy_state) {
++
  	/*
-@@ -704,7 +704,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
- 				/* Keep accumulating status bits */
- 				host->busy_status |= status & (MCI_CMDSENT | MCI_CMDRESPEND);
- 				host->busy_state = MMCI_BUSY_WAITING_FOR_IRQS;
--				return false;
-+				goto out_ret_state;
- 			}
- 			retries--;
- 		}
-@@ -713,8 +713,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+ 	 * Before unmasking for the busy end IRQ, confirm that the
+ 	 * command was sent successfully. To keep track of having a
+@@ -686,7 +692,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+ 	 * it starts signaling busy on DAT0, hence re-read the
+ 	 * MMCISTATUS register here, to allow the busy bit to be set.
+ 	 */
+-	if (host->busy_state == MMCI_BUSY_IDLE) {
++	case MMCI_BUSY_IDLE:
+ 		/*
+ 		 * Save the first status register read to be sure to catch
+ 		 * all bits that may be lost will retrying. If the command
+@@ -713,8 +719,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
  		writel(readl(base + MMCIMASK0) &
  		       ~host->variant->busy_detect_mask, base + MMCIMASK0);
  		host->busy_state = MMCI_BUSY_DONE;
--		host->busy_status = 0;
--		return true;
-+		goto out_ret_state;
- 	}
+-		goto out_ret_state;
+-	}
++		break;
  
  	/*
-@@ -733,7 +732,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+ 	 * If there is a command in-progress that has been successfully
+@@ -727,12 +732,11 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+ 	 * both the start and the end interrupts needs to be cleared,
+ 	 * one after the other. So, clear the busy start IRQ here.
+ 	 */
+-	if (host->busy_state == MMCI_BUSY_WAITING_FOR_IRQS) {
++	case MMCI_BUSY_WAITING_FOR_IRQS:
+ 		if (status & host->variant->busy_detect_flag) {
  			host->busy_status |= status & (MCI_CMDSENT | MCI_CMDRESPEND);
  			writel(host->variant->busy_detect_mask, base + MMCICLEAR);
  			host->busy_state = MMCI_BUSY_START_IRQ;
--			return false;
-+			goto out_ret_state;
+-			goto out_ret_state;
  		} else {
  			dev_dbg(mmc_dev(host->mmc),
  				"lost busy status when waiting for busy start IRQ\n");
-@@ -742,7 +741,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+@@ -741,16 +745,14 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
  			       ~host->variant->busy_detect_mask, base + MMCIMASK0);
  			host->busy_state = MMCI_BUSY_DONE;
  			host->busy_status = 0;
--			return true;
-+			goto out_ret_state;
+-			goto out_ret_state;
  		}
- 	}
+-	}
++		break;
  
-@@ -751,7 +750,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+-	if (host->busy_state == MMCI_BUSY_START_IRQ) {
++	case MMCI_BUSY_START_IRQ:
+ 		if (status & host->variant->busy_detect_flag) {
  			host->busy_status |= status & (MCI_CMDSENT | MCI_CMDRESPEND);
  			writel(host->variant->busy_detect_mask, base + MMCICLEAR);
  			host->busy_state = MMCI_BUSY_END_IRQ;
--			return false;
-+			goto out_ret_state;
+-			goto out_ret_state;
  		} else {
  			dev_dbg(mmc_dev(host->mmc),
  				"lost busy status when waiting for busy end IRQ\n");
-@@ -760,7 +759,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+@@ -759,9 +761,8 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
  			       ~host->variant->busy_detect_mask, base + MMCIMASK0);
  			host->busy_state = MMCI_BUSY_DONE;
  			host->busy_status = 0;
--			return true;
-+			goto out_ret_state;
+-			goto out_ret_state;
  		}
- 	}
+-	}
++		break;
  
-@@ -774,7 +773,7 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+ 	/*
+ 	 * If there is a command in-progress that has been successfully
+@@ -769,11 +770,10 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+ 	 * the busy end IRQ. Clear and mask the IRQ, then continue to
+ 	 * process the command.
+ 	 */
+-	if (host->busy_state == MMCI_BUSY_END_IRQ) {
++	case MMCI_BUSY_END_IRQ:
  		if (status & host->variant->busy_detect_flag) {
  			/* We should just get two IRQs for busy detect */
  			dev_err(mmc_dev(host->mmc), "spurious busy detect IRQ\n");
--			return false;
-+			goto out_ret_state;
+-			goto out_ret_state;
  		}
  
  		writel(host->variant->busy_detect_mask, base + MMCICLEAR);
-@@ -783,9 +782,13 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+@@ -782,9 +782,15 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
  
  		host->busy_state = MMCI_BUSY_DONE;
  		host->busy_status = 0;
-+	} else {
-+		dev_dbg(mmc_dev(host->mmc), "fell through on state %d\n",
-+			host->busy_state);
+-	} else {
++		break;
++
++	case MMCI_BUSY_DONE:
++		break;
++
++	default:
+ 		dev_dbg(mmc_dev(host->mmc), "fell through on state %d\n",
+ 			host->busy_state);
++		break;
  	}
  
--	return true;
-+out_ret_state:
-+	return (host->busy_state == MMCI_BUSY_DONE);
- }
- 
- /*
+ out_ret_state:
 
 -- 
 2.39.2
