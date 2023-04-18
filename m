@@ -2,103 +2,72 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6B46E5167
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Apr 2023 22:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21EB66E58D2
+	for <lists+linux-mmc@lfdr.de>; Tue, 18 Apr 2023 07:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229738AbjDQUI4 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 17 Apr 2023 16:08:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41382 "EHLO
+        id S230026AbjDRF6K (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 18 Apr 2023 01:58:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbjDQUIy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 17 Apr 2023 16:08:54 -0400
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA1F4F0;
-        Mon, 17 Apr 2023 13:08:48 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id A8BF464551BD;
-        Mon, 17 Apr 2023 22:08:45 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Fn7_KB46yy_T; Mon, 17 Apr 2023 22:08:45 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id E6C5D622623F;
-        Mon, 17 Apr 2023 22:08:44 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 7Wwa0OVZlxRQ; Mon, 17 Apr 2023 22:08:44 +0200 (CEST)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-        by lithops.sigma-star.at (Postfix) with ESMTP id B0A1064551BD;
-        Mon, 17 Apr 2023 22:08:44 +0200 (CEST)
-Date:   Mon, 17 Apr 2023 22:08:44 +0200 (CEST)
-From:   Richard Weinberger <richard@nod.at>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        wsa+renesas@sang-engineering.com, ulf.hansson@linaro.org
-Message-ID: <1674847756.113858.1681762124503.JavaMail.zimbra@nod.at>
-Subject: Poor write performance to boot area using rcar-gen3-sdhi
+        with ESMTP id S229635AbjDRF6J (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 18 Apr 2023 01:58:09 -0400
+Received: from mail.peterfykh.hu (mail.peterfykh.hu [84.206.67.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E52D2125;
+        Mon, 17 Apr 2023 22:58:07 -0700 (PDT)
+Received: from mail.peterfykh.hu (localhost [127.0.0.1])
+        by mail.peterfykh.hu (Postfix) with ESMTP id 8F18311E6;
+        Tue, 18 Apr 2023 02:14:12 +0200 (CEST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF97 (Linux)/8.8.12_GA_3809)
-Thread-Index: jiFrfBZIr7HKS7MkHilHFl02Bun/Qw==
-Thread-Topic: Poor write performance to boot area using rcar-gen3-sdhi
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Tue, 18 Apr 2023 08:14:12 +0800
+From:   MK <sebeszet@peterfykh.hu>
+To:     undisclosed-recipients:;
+Subject: Hej solsken
+Reply-To: marion.K08@bahnhof.se
+Mail-Reply-To: marion.K08@bahnhof.se
+Message-ID: <9d3cb3085bfa7ac93ebcac2888523668@peterfykh.hu>
+X-Sender: sebeszet@peterfykh.hu
+User-Agent: Roundcube Webmail/1.2.3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peterfykh.hu; s=mail; t=1681776871; bh=rjWk/3zdLXe64niL8uU1nP5CiZEC9jbtDaiK6Toynio=; h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Subject:Reply-To:Message-ID; b=CsGsfmipRMwDSqg9eEniq+bsdGMKjeqWuxzouC/n5iYKj176rQGUZcRJ3UCLckV1dlm2xoerG/TU335l054HaV3FYE3+P/G6+NRX4/VaHO0CWPtUsfEDksPwaHT35fRTwh3LfI00mB9zK8IQ2qFmDo+sPP25yV61/NSwWmEwTAU=
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi!
+Hej min kära,
 
-Writing to the boot area of an eMMC takes significant
-longer than writing to the user area on v6.1 (Tested also on v5.4).
-The following trace shows write of 4k using "dd if=4k.dat of=/dev/mmcblk1boot1 bs=512 oflag=sync".
-As you can see from the timings, the whole operation took almost 80ms
-where most of the time was consumed by the MMC_WRITE_MULTIPLE_BLOCK command.
+Jag är ledsen att jag stör dig och inkräktar på din integritet. Jag är 
+singel, ensam och i behov av en omtänksam, kärleksfull och romantisk 
+följeslagare.
+
+Jag är en hemlig beundrare och skulle vilja utforska möjligheten att 
+lära mig mer om varandra. Jag vet att det är konstigt att kontakta dig 
+på det här sättet och jag hoppas att du kan förlåta mig. Jag är en blyg 
+person och det är det enda sättet jag vet att jag kan få din 
+uppmärksamhet. Jag vill bara veta vad du tycker och min avsikt är inte 
+att förolämpa dig.
+Jag hoppas att vi kan vara vänner om det är vad du vill, även om jag 
+vill vara mer än bara en vän. Jag vet att du har några frågor att ställa 
+och jag hoppas att jag kan tillfredsställa en del av din nyfikenhet med 
+några svar.
+
+Jag tror på talesättet att "för världen är du bara en person, men för 
+någon speciell är du världen". Allt jag vill ha är kärlek, romantisk 
+omsorg och uppmärksamhet från en speciell följeslagare som jag hoppas 
+skulle vara du.
+
+Jag hoppas att detta meddelande kommer att bli början på en långsiktig 
+kommunikation mellan oss, skicka bara ett svar på detta meddelande, det 
+kommer att göra mig glad.
 
 
-     kworker/1:1H-34      [001] .....  5113.734166: mmc_request_start: mmc1: start struct mmc_request[0000000005d331e4]: cmd_opcode=18 cmd_arg=0x0 cmd_flags=0xb5 cmd_retries=0 stop_opcode=12 stop_arg=0x0 stop_flags=0x95 stop_retries=0 sbc_opcode=23 sbc_arg=0x8 sbc_flags=0x15 sbc_retires=0 blocks=8 block_size=512 blk_addr=0 data_flags=0x200 tag=26 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=1 retune_period=0
-     kworker/0:1-25      [000] .....  5113.735860: mmc_request_done: mmc1: end struct mmc_request[0000000005d331e4]: cmd_opcode=18 cmd_err=0 cmd_resp=0x900 0x900 0x900 0x900 cmd_retries=0 stop_opcode=12 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=23 sbc_err=0 sbc_resp=0x900 0x900 0x900 0x900 sbc_retries=0 bytes_xfered=4096 data_err=0 tag=26 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=1 retune_period=0
-    kworker/1:1H-34      [001] .....  5113.735996: mmc_request_start: mmc1: start struct mmc_request[00000000174773b9]: cmd_opcode=25 cmd_arg=0x0 cmd_flags=0xb5 cmd_retries=0 stop_opcode=12 stop_arg=0x0 stop_flags=0x49d stop_retries=0 sbc_opcode=23 sbc_arg=0x8 sbc_flags=0x15 sbc_retires=0 blocks=8 block_size=512 blk_addr=0 data_flags=0x100 tag=27 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=1 retune_period=0
-     kworker/0:1-25      [000] .....  5113.814376: mmc_request_done: mmc1: end struct mmc_request[00000000174773b9]: cmd_opcode=25 cmd_err=0 cmd_resp=0x900 0x900 0x900 0x900 cmd_retries=0 stop_opcode=12 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=23 sbc_err=0 sbc_resp=0x900 0x900 0x900 0x900 sbc_retries=0 bytes_xfered=4096 data_err=0 tag=27 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=1 retune_period=0
-    kworker/0:1H-144     [000] .....  5113.814391: mmc_request_start: mmc1: start struct mmc_request[00000000101675e9]: cmd_opcode=13 cmd_arg=0x10000 cmd_flags=0x195 cmd_retries=3 stop_opcode=0 stop_arg=0x0 stop_flags=0x0 stop_retries=0 sbc_opcode=0 sbc_arg=0x0 sbc_flags=0x0 sbc_retires=0 blocks=0 block_size=0 blk_addr=0 data_flags=0x0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-     kworker/0:1-25      [000] .....  5113.814408: mmc_request_done: mmc1: end struct mmc_request[00000000101675e9]: cmd_opcode=13 cmd_err=0 cmd_resp=0x900 0x900 0x900 0x900 cmd_retries=3 stop_opcode=0 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=0 sbc_err=0 sbc_resp=0x0 0x0 0x0 0x0 sbc_retries=0 bytes_xfered=0 data_err=0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-    kworker/1:1H-34      [001] .....  5113.814477: mmc_request_start: mmc1: start struct mmc_request[0000000008526179]: cmd_opcode=6 cmd_arg=0x3200101 cmd_flags=0x95 cmd_retries=3 stop_opcode=0 stop_arg=0x0 stop_flags=0x0 stop_retries=0 sbc_opcode=0 sbc_arg=0x0 sbc_flags=0x0 sbc_retires=0 blocks=0 block_size=0 blk_addr=0 data_flags=0x0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-     kworker/0:1-25      [000] .....  5113.814497: mmc_request_done: mmc1: end struct mmc_request[0000000008526179]: cmd_opcode=6 cmd_err=0 cmd_resp=0x800 0x900 0x900 0x800 cmd_retries=3 stop_opcode=0 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=0 sbc_err=0 sbc_resp=0x0 0x0 0x0 0x0 sbc_retries=0 bytes_xfered=0 data_err=0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-    kworker/1:1H-34      [001] .....  5113.814511: mmc_request_start: mmc1: start struct mmc_request[0000000061873c4a]: cmd_opcode=13 cmd_arg=0x10000 cmd_flags=0x195 cmd_retries=3 stop_opcode=0 stop_arg=0x0 stop_flags=0x0 stop_retries=0 sbc_opcode=0 sbc_arg=0x0 sbc_flags=0x0 sbc_retires=0 blocks=0 block_size=0 blk_addr=0 data_flags=0x0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-     kworker/0:1-25      [000] .....  5113.814529: mmc_request_done: mmc1: end struct mmc_request[0000000061873c4a]: cmd_opcode=13 cmd_err=0 cmd_resp=0x900 0x900 0x800 0x900 cmd_retries=3 stop_opcode=0 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=0 sbc_err=0 sbc_resp=0x0 0x0 0x0 0x0 sbc_retries=0 bytes_xfered=0 data_err=0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0O
+Puss och kram,
 
-
-On the other hand, writing to the user area using "dd if=4k.dat of=/dev/mmcblk1p13 bs=512 oflag=sync" is fast:
-
-
-    kworker/1:1H-34      [001] .....  5163.989096: mmc_request_start: mmc1: start struct mmc_request[000000003c3d18f8]: cmd_opcode=6 cmd_arg=0x3b30801 cmd_flags=0x49d cmd_retries=3 stop_opcode=0 stop_arg=0x0 stop_flags=0x0 stop_retries=0 sbc_opcode=0 sbc_arg=0x0 sbc_flags=0x0 sbc_retires=0 blocks=0 block_size=0 blk_addr=0 data_flags=0x0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-     kworker/0:1-25      [000] .....  5163.991009: mmc_request_done: mmc1: end struct mmc_request[000000003c3d18f8]: cmd_opcode=6 cmd_err=0 cmd_resp=0x800 0x900 0x900 0x800 cmd_retries=3 stop_opcode=0 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=0 sbc_err=0 sbc_resp=0x0 0x0 0x0 0x0 sbc_retries=0 bytes_xfered=0 data_err=0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-    kworker/1:1H-34      [001] .....  5163.991027: mmc_request_start: mmc1: start struct mmc_request[00000000a1a3cac1]: cmd_opcode=13 cmd_arg=0x10000 cmd_flags=0x195 cmd_retries=3 stop_opcode=0 stop_arg=0x0 stop_flags=0x0 stop_retries=0 sbc_opcode=0 sbc_arg=0x0 sbc_flags=0x0 sbc_retires=0 blocks=0 block_size=0 blk_addr=0 data_flags=0x0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-     kworker/0:1-25      [000] .....  5163.991056: mmc_request_done: mmc1: end struct mmc_request[00000000a1a3cac1]: cmd_opcode=13 cmd_err=0 cmd_resp=0x900 0x900 0x800 0x900 cmd_retries=3 stop_opcode=0 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=0 sbc_err=0 sbc_resp=0x0 0x0 0x0 0x0 sbc_retries=0 bytes_xfered=0 data_err=0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-    kworker/1:1H-34      [001] .....  5163.991081: mmc_request_start: mmc1: start struct mmc_request[00000000f096e251]: cmd_opcode=18 cmd_arg=0x4ea000 cmd_flags=0xb5 cmd_retries=0 stop_opcode=12 stop_arg=0x0 stop_flags=0x95 stop_retries=0 sbc_opcode=23 sbc_arg=0x8 sbc_flags=0x15 sbc_retires=0 blocks=8 block_size=512 blk_addr=5152768 data_flags=0x200 tag=6 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=1 retune_period=0
-     kworker/0:1-25      [000] .....  5163.991705: mmc_request_done: mmc1: end struct mmc_request[00000000f096e251]: cmd_opcode=18 cmd_err=0 cmd_resp=0x900 0x900 0x900 0x900 cmd_retries=0 stop_opcode=12 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=23 sbc_err=0 sbc_resp=0x900 0x900 0x900 0x900 sbc_retries=0 bytes_xfered=4096 data_err=0 tag=6 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=1 retune_period=0
-    kworker/1:1H-34      [001] .....  5163.991838: mmc_request_start: mmc1: start struct mmc_request[00000000ec4997fb]: cmd_opcode=25 cmd_arg=0x4ea000 cmd_flags=0xb5 cmd_retries=0 stop_opcode=12 stop_arg=0x0 stop_flags=0x49d stop_retries=0 sbc_opcode=23 sbc_arg=0x8 sbc_flags=0x15 sbc_retires=0 blocks=8 block_size=512 blk_addr=5152768 data_flags=0x100 tag=7 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=1 retune_period=0
-     kworker/0:1-25      [000] .....  5163.992203: mmc_request_done: mmc1: end struct mmc_request[00000000ec4997fb]: cmd_opcode=25 cmd_err=0 cmd_resp=0x900 0x900 0x900 0x900 cmd_retries=0 stop_opcode=12 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=23 sbc_err=0 sbc_resp=0x900 0x900 0x900 0x900 sbc_retries=0 bytes_xfered=4096 data_err=0 tag=7 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=1 retune_period=0
-    kworker/0:1H-144     [000] .....  5163.992215: mmc_request_start: mmc1: start struct mmc_request[00000000101675e9]: cmd_opcode=13 cmd_arg=0x10000 cmd_flags=0x195 cmd_retries=3 stop_opcode=0 stop_arg=0x0 stop_flags=0x0 stop_retries=0 sbc_opcode=0 sbc_arg=0x0 sbc_flags=0x0 sbc_retires=0 blocks=0 block_size=0 blk_addr=0 data_flags=0x0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-     kworker/0:1-25      [000] .....  5163.992231: mmc_request_done: mmc1: end struct mmc_request[00000000101675e9]: cmd_opcode=13 cmd_err=0 cmd_resp=0x900 0x900 0x900 0x900 cmd_retries=3 stop_opcode=0 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=0 sbc_err=0 sbc_resp=0x0 0x0 0x0 0x0 sbc_retries=0 bytes_xfered=0 data_err=0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-    kworker/1:1H-34      [001] .....  5163.992291: mmc_request_start: mmc1: start struct mmc_request[0000000008526179]: cmd_opcode=6 cmd_arg=0x3200101 cmd_flags=0x95 cmd_retries=3 stop_opcode=0 stop_arg=0x0 stop_flags=0x0 stop_retries=0 sbc_opcode=0 sbc_arg=0x0 sbc_flags=0x0 sbc_retires=0 blocks=0 block_size=0 blk_addr=0 data_flags=0x0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-     kworker/0:1-25      [000] .....  5163.992310: mmc_request_done: mmc1: end struct mmc_request[0000000008526179]: cmd_opcode=6 cmd_err=0 cmd_resp=0x800 0x900 0x900 0x800 cmd_retries=3 stop_opcode=0 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=0 sbc_err=0 sbc_resp=0x0 0x0 0x0 0x0 sbc_retries=0 bytes_xfered=0 data_err=0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-    kworker/1:1H-34      [001] .....  5163.992790: mmc_request_start: mmc1: start struct mmc_request[0000000061873c4a]: cmd_opcode=13 cmd_arg=0x10000 cmd_flags=0x195 cmd_retries=3 stop_opcode=0 stop_arg=0x0 stop_flags=0x0 stop_retries=0 sbc_opcode=0 sbc_arg=0x0 sbc_flags=0x0 sbc_retires=0 blocks=0 block_size=0 blk_addr=0 data_flags=0x0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-     kworker/0:1-25      [000] .....  5163.992808: mmc_request_done: mmc1: end struct mmc_request[0000000061873c4a]: cmd_opcode=13 cmd_err=0 cmd_resp=0x900 0x900 0x800 0x900 cmd_retries=3 stop_opcode=0 stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=0 sbc_err=0 sbc_resp=0x0 0x0 0x0 0x0 sbc_retries=0 bytes_xfered=0 data_err=0 tag=0 can_retune=1 doing_retune=0 retune_now=0 need_retune=0 hold_retune=2 retune_period=0
-
-The whole operation took only about 3ms.
-
-Is this expected?
-
-Off the head I don't really see why writing to the boot area should be slower.
-BTW: Using u-boot the write is blazing fast, so the eMMC itself should be fine.
-At driver level there shouldn't be much difference between writing to boot and user
-area except from MMC_SWITCH.
-
-Thanks,
-//richard
+Marion.
