@@ -2,72 +2,74 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21EB66E58D2
-	for <lists+linux-mmc@lfdr.de>; Tue, 18 Apr 2023 07:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 681986E58EC
+	for <lists+linux-mmc@lfdr.de>; Tue, 18 Apr 2023 07:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230026AbjDRF6K (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 18 Apr 2023 01:58:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42648 "EHLO
+        id S230265AbjDRF7j (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 18 Apr 2023 01:59:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjDRF6J (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 18 Apr 2023 01:58:09 -0400
-Received: from mail.peterfykh.hu (mail.peterfykh.hu [84.206.67.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E52D2125;
-        Mon, 17 Apr 2023 22:58:07 -0700 (PDT)
-Received: from mail.peterfykh.hu (localhost [127.0.0.1])
-        by mail.peterfykh.hu (Postfix) with ESMTP id 8F18311E6;
-        Tue, 18 Apr 2023 02:14:12 +0200 (CEST)
+        with ESMTP id S230399AbjDRF7f (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 18 Apr 2023 01:59:35 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0B8059CC
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Apr 2023 22:59:32 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id xd13so36321995ejb.4
+        for <linux-mmc@vger.kernel.org>; Mon, 17 Apr 2023 22:59:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681797571; x=1684389571;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
+        b=h2u+IvYIbnFxxtQG/ZtOJXOGODtmHZE6DE2kphmV5deUhBtI5SSl5ZpPS81I4DoyvM
+         cL/QsMoq/nZ79QoTUVBpjigDCpbkhNV4ihdOYSWAZCOke9dA/QR1VB/koOlQ9LVEDYMX
+         XtbtlwSc8k7WA+c3R6xpugIUkMv4IcvxiBX5jugHOkE6bIQRd6XIP4bPoYTYUOtLJ8cY
+         jqOSy7VahCSY+50nHqKMLAvtMY0jgSKZG9RLZ0VM4rlX3dlYAIwPmpAZEs5sdE1jKPzt
+         sUSa+Yt3rvdogEL685HX9OzzgKvbxUuLxSFiR0ubii95w3DTWRmDDneYGKBqJn2l6obd
+         7Bag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681797571; x=1684389571;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
+        b=IPVvb+vjSPPp7LRH2yNmmOm69Tfi0gqaV0wNp88CS89a4EBDqmoq/Jn/rgNNB/bItv
+         BpF3hsVKG3QydeuTA7u6t/7yp60ZKXOhQzSBsxj5EjMDZNfI9Va8St9MOmkfMLXmI55G
+         jnFKaI/d2GyY4aLHx4WbRonjL/viMIrkdQK2zTVxIN3LjPXgSNLn8zf1ntWjUvHQZGWm
+         PqhK/KU0PpHZiGlHgJBva1styCYJEB+Vn2rkBOmSwwmc0umi3thtlX27T2vut4RhKt1z
+         RXhV0gl9mMV3JgzOCDejWa3Mo96WAwmjNvMD6+Ud8xoPad40bh2odytOKP1HaQy51K+b
+         AwFg==
+X-Gm-Message-State: AAQBX9dmrUZzbxijAa1mM8hZPtYkcy1QAnoEIoz4snD9V5A5GDS8Go5f
+        N8BNdDasmsoDHkxHP2hBE17JqSfwhPooVxzaEk5IEGShT79qrmnl
+X-Google-Smtp-Source: AKy350YRsUSKQ0+i58Lzun7WtY7IrRwSkm+DWIi2JdfS71rVYYWUT2OQ/a/Q5PRWIBazn3AQLm2dWBYGVxBajLvvRoE=
+X-Received: by 2002:a05:6512:96b:b0:4e8:4b7a:6b73 with SMTP id
+ v11-20020a056512096b00b004e84b7a6b73mr2935594lft.4.1681797550844; Mon, 17 Apr
+ 2023 22:59:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Tue, 18 Apr 2023 08:14:12 +0800
-From:   MK <sebeszet@peterfykh.hu>
+Received: by 2002:ab2:2681:0:b0:1b6:840f:9075 with HTTP; Mon, 17 Apr 2023
+ 22:59:10 -0700 (PDT)
+Reply-To: mariamkouame.info@myself.com
+From:   Mariam Kouame <mariamkouame1992@gmail.com>
+Date:   Mon, 17 Apr 2023 22:59:10 -0700
+Message-ID: <CADUz=agNY633M0qMXMnAP3Ms7-3rKuWtAZGCOQZKeYpCdBxT_w@mail.gmail.com>
+Subject: from mariam kouame
 To:     undisclosed-recipients:;
-Subject: Hej solsken
-Reply-To: marion.K08@bahnhof.se
-Mail-Reply-To: marion.K08@bahnhof.se
-Message-ID: <9d3cb3085bfa7ac93ebcac2888523668@peterfykh.hu>
-X-Sender: sebeszet@peterfykh.hu
-User-Agent: Roundcube Webmail/1.2.3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peterfykh.hu; s=mail; t=1681776871; bh=rjWk/3zdLXe64niL8uU1nP5CiZEC9jbtDaiK6Toynio=; h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Subject:Reply-To:Message-ID; b=CsGsfmipRMwDSqg9eEniq+bsdGMKjeqWuxzouC/n5iYKj176rQGUZcRJ3UCLckV1dlm2xoerG/TU335l054HaV3FYE3+P/G6+NRX4/VaHO0CWPtUsfEDksPwaHT35fRTwh3LfI00mB9zK8IQ2qFmDo+sPP25yV61/NSwWmEwTAU=
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hej min kära,
+Dear,
 
-Jag är ledsen att jag stör dig och inkräktar på din integritet. Jag är 
-singel, ensam och i behov av en omtänksam, kärleksfull och romantisk 
-följeslagare.
+Please grant me permission to share a very crucial discussion with
+you. I am looking forward to hearing from you at your earliest
+convenience.
 
-Jag är en hemlig beundrare och skulle vilja utforska möjligheten att 
-lära mig mer om varandra. Jag vet att det är konstigt att kontakta dig 
-på det här sättet och jag hoppas att du kan förlåta mig. Jag är en blyg 
-person och det är det enda sättet jag vet att jag kan få din 
-uppmärksamhet. Jag vill bara veta vad du tycker och min avsikt är inte 
-att förolämpa dig.
-Jag hoppas att vi kan vara vänner om det är vad du vill, även om jag 
-vill vara mer än bara en vän. Jag vet att du har några frågor att ställa 
-och jag hoppas att jag kan tillfredsställa en del av din nyfikenhet med 
-några svar.
-
-Jag tror på talesättet att "för världen är du bara en person, men för 
-någon speciell är du världen". Allt jag vill ha är kärlek, romantisk 
-omsorg och uppmärksamhet från en speciell följeslagare som jag hoppas 
-skulle vara du.
-
-Jag hoppas att detta meddelande kommer att bli början på en långsiktig 
-kommunikation mellan oss, skicka bara ett svar på detta meddelande, det 
-kommer att göra mig glad.
-
-
-Puss och kram,
-
-Marion.
+Mrs. Mariam Kouame
