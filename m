@@ -2,47 +2,47 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59AF46F2DCB
-	for <lists+linux-mmc@lfdr.de>; Mon,  1 May 2023 05:17:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ECB66F2E0C
+	for <lists+linux-mmc@lfdr.de>; Mon,  1 May 2023 05:19:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233137AbjEADRB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 30 Apr 2023 23:17:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43882 "EHLO
+        id S233513AbjEADS6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 30 Apr 2023 23:18:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233816AbjEADQS (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 30 Apr 2023 23:16:18 -0400
+        with ESMTP id S234008AbjEADQe (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 30 Apr 2023 23:16:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0937061B1;
-        Sun, 30 Apr 2023 20:06:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6BF530F6;
+        Sun, 30 Apr 2023 20:07:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D29B9617C0;
-        Mon,  1 May 2023 03:06:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DFE5C4339B;
-        Mon,  1 May 2023 03:06:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF71E6179E;
+        Mon,  1 May 2023 03:06:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74020C433D2;
+        Mon,  1 May 2023 03:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682910377;
-        bh=OtBYrX14mxTpbm1B0QpoHXJUjd80vi3tq+CGMksfjIo=;
+        s=k20201202; t=1682910399;
+        bh=yUUjQCm+4BWsPnPN5W6pkR7kBM0L4yJmWT9O7NxQqgM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uirppBh9VPq+Y3L3AOGwCB6d9lOemdbmDhxRrm21zAqCds/Uy4O3xcgeCkVnVFoQ2
-         C/odYoWgKze0Fs6zMdIcfhQ6gSY6FhN2lnM/kVD6Po/sDbwNc4YTvv7qYRrL39Ov3+
-         BSeWmgNgF+i4/JdxBxbGDpuyRBb4/3KQeVqlOfMan6QMpusPrDXDr94mjD+u9IG1TJ
-         Hl38IZS3Qrc8+PuHy6PQY+msuVvbCuZHADqe2zzpX/dJrwRzTIjzYhTv8IENxRQtOR
-         5S8vfbsQ+j7jkK5HdvUDlbiXoSm4o9rK3krA8ml7nsAxk+WzYrx//CSOezT5WNnwib
-         5R7lbPLYB1tdw==
+        b=N9dNdCl6kmOrRNXC6L4sVuwftM0hmt7t6A3uG4e6X4r2CrU7G/LjMjDfhZqEnU7S3
+         cdZXOQlevEc3VUif4sSLOwuPfEVPUpaY8zzi65Cmk+rQ3tjOWivG+ZfIHdA3u/DE18
+         UwI0Gx19PehlHacHIsXUBSRZ6hYjk8WFakbkcruTz2arh5YcOgxMqapz9+JEW2Xvc1
+         U9HhIZ6OhgFpEHhGWJ8ihNnHBUcX1s+kdrfTaS5ItkHkI/JpckoSGTdXy+CXoY2LzV
+         z5UaYfH15k2f8HnsOQDHHsy5TK0vXIyjGwEWfy/t9t/3/8eTsfy6pNgzt62giU1087
+         J+A40RfB9/mlg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Zheng Wang <zyytlz.wz@163.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>, maximlevitsky@gmail.com,
         oakad@yahoo.com, linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 3/9] memstick: r592: Fix UAF bug in r592_remove due to race condition
-Date:   Sun, 30 Apr 2023 23:06:03 -0400
-Message-Id: <20230501030611.3255082-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 3/9] memstick: r592: Fix UAF bug in r592_remove due to race condition
+Date:   Sun, 30 Apr 2023 23:06:25 -0400
+Message-Id: <20230501030633.3255202-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230501030611.3255082-1-sashal@kernel.org>
-References: <20230501030611.3255082-1-sashal@kernel.org>
+In-Reply-To: <20230501030633.3255202-1-sashal@kernel.org>
+References: <20230501030633.3255202-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -90,10 +90,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/memstick/host/r592.c b/drivers/memstick/host/r592.c
-index eaa2a94d18be4..dd06c18495eb6 100644
+index 4728a42d54b88..edb1b5588b7a0 100644
 --- a/drivers/memstick/host/r592.c
 +++ b/drivers/memstick/host/r592.c
-@@ -828,7 +828,7 @@ static void r592_remove(struct pci_dev *pdev)
+@@ -831,7 +831,7 @@ static void r592_remove(struct pci_dev *pdev)
  	/* Stop the processing thread.
  	That ensures that we won't take any more requests */
  	kthread_stop(dev->io_thread);
