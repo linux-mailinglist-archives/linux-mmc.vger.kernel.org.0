@@ -2,120 +2,74 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA9D270952B
-	for <lists+linux-mmc@lfdr.de>; Fri, 19 May 2023 12:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB666709632
+	for <lists+linux-mmc@lfdr.de>; Fri, 19 May 2023 13:18:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231491AbjESKho (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 19 May 2023 06:37:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56890 "EHLO
+        id S231834AbjESLSM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 19 May 2023 07:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbjESKhm (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 May 2023 06:37:42 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AED61702;
-        Fri, 19 May 2023 03:37:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684492633; x=1716028633;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=BDE6vPICxTgLAPRrdZrc0xG8msLQShbdcPsC90DqwtQ=;
-  b=VdemtA+HejULlmje+B3l5mPkoFBHqEVFxM/7TVwjnEQU0WpT/M0Xbkqy
-   4i82ao6r4a52PvulqADZhSDFfMzwnKlY6caK0hWtw5E6ShbwrDMRaYk7a
-   ZGNVjp/If0iuwJ54eDaxhLmXoeoaufYbBcoci1c/QFrsWVTt/8p3wqZcz
-   U7tjD/QkkiBFwiTLnCf2WjxCJpDAnS5PIGB175NjIgqt5FbKPGyUjqBDw
-   3VfmeizBVnzm/P5xGk5DdyYfY96i++0J3qWG428McrxyvTAwBwotzfnf3
-   1vEC36ofo+CwuQvD46Mvc9tlaWmAnM4NgHloqFu27nKj0KmeJHXQJ93HE
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="438691463"
-X-IronPort-AV: E=Sophos;i="6.00,176,1681196400"; 
-   d="scan'208";a="438691463"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2023 03:37:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="949069650"
-X-IronPort-AV: E=Sophos;i="6.00,176,1681196400"; 
-   d="scan'208";a="949069650"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.249.38.109])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2023 03:37:09 -0700
-Message-ID: <deb7bfca-0a5c-a9c9-06bd-c4290f2116f4@intel.com>
-Date:   Fri, 19 May 2023 13:37:05 +0300
+        with ESMTP id S231861AbjESLSI (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 19 May 2023 07:18:08 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53ECD10FF
+        for <linux-mmc@vger.kernel.org>; Fri, 19 May 2023 04:18:04 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-510ea8d0bb5so2332678a12.0
+        for <linux-mmc@vger.kernel.org>; Fri, 19 May 2023 04:18:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684495083; x=1687087083;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YmxaI1amCfTksu6ynk2557PwK0HJxrBQmYIx/Pz5hBs=;
+        b=Wt/WzQmS095ww6zzUgoSSAlrCDxwL2gSoVBMsVxHRKn23YcliDiJyBLjqweTRoToj1
+         ufUOgV4j5pHE/9SR+dsRPr9gpju7XpaMYkUmYe1T6vrhoZIvsQDtFJjwfPWr0ZA8MwEK
+         A8xkN8RoXHrnV8mxXNMusUB3EToMcUvt2JPOXJbMgVYPwdz45S3ERx+Nyqo+cmGrrOa8
+         vd+RSV3BkQDybrevFx7U7UuvnFt+9sOfqdHCxo6t6nUsXpAQmNebiCtg7JMDFdLkqxgM
+         8PXBgbynXWRxC6QXqoh8bbtvc/aqA5Z2+Ycz9m8q7U5s8LdUBFb9kcl7MTOhQK2ZKsRi
+         q6Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684495083; x=1687087083;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YmxaI1amCfTksu6ynk2557PwK0HJxrBQmYIx/Pz5hBs=;
+        b=AXPoBZg+pHwZLHfNOwgPg6lUhT2w28YyS8r3YsGNBYz4NcQtQm4EDMc0rJBWRkN3Ba
+         NDAV2+2r/l2VTe3bKsCoUBtkujYfm1vjy+6V1JMMwL7OtBb2l7yV6i+ahOBL1zMzFgFW
+         sbBXqCUpDnO4eg5Vtoni57GD4E1wGw/xORRcZ2Yms0i/KrH49xz5G8E9tpFZ7UI8QgMT
+         6dje9t7y78HhctihC82qzJbUEE+o0If//zbBd9Y2nB1mzij5EXK/h24x1jixMW0hIAPJ
+         jPHvPjkjJQYK5gkaz4wZgv24j1I+t/kxfrGEt26bWCrFNaI3Sq/J2sEp/BXm5zSZGfoe
+         1beg==
+X-Gm-Message-State: AC+VfDwmXuFt6q0DK28VudONW1lfxKUcHCr4jISZPU1eoXDeDbphMtge
+        B2rWsKxV9X1kYJ8StbtcIZLkgHgfKlqC9OlLE7M=
+X-Google-Smtp-Source: ACHHUZ4u0RD9o3Kl8FtNeecPkKIUUkqQP5EKCQy8Odb3BCVRQ/plvct7PNXp53hldLkfZ7jyXh0W2roGP4wdAWIFYf4=
+X-Received: by 2002:a17:906:af64:b0:966:5730:c3fe with SMTP id
+ os4-20020a170906af6400b009665730c3femr1223003ejb.52.1684495082502; Fri, 19
+ May 2023 04:18:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 1/4] mmc: sdhci-esdhc-imx: remove unused enum cd_types
-To:     haibo.chen@nxp.com, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
-        s.hauer@pengutronix.de
-Cc:     linux-imx@nxp.com, kernel@pengutronix.de, festevam@gmail.com,
-        cniedermaier@dh-electronics.com, devicetree@vger.kernel.org,
-        kernel@dh-electronics.com
-References: <20230506074037.522961-1-haibo.chen@nxp.com>
- <20230506074037.522961-2-haibo.chen@nxp.com>
-Content-Language: en-US
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20230506074037.522961-2-haibo.chen@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a17:907:7dab:b0:94f:7d03:8e8b with HTTP; Fri, 19 May 2023
+ 04:18:02 -0700 (PDT)
+Reply-To: ninacoulibaly03@myself.com
+From:   nina coulibaly <ninacoulibaly199@gmail.com>
+Date:   Fri, 19 May 2023 04:18:02 -0700
+Message-ID: <CAM7Z2JAs+q6RsD5Hw352ZDFruUVR5ngjAamir+4ZCakNdZyceg@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 6/05/23 10:40, haibo.chen@nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> enum cd_types is no more used, so remove it here.
+Dear,
 
-FWIW it doesn't look like max_bus_width is being used either?
+Please grant me permission to share a very crucial discussion with
+you. I am looking forward to hearing from you at your earliest
+convenience.
 
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-
-Nevertheless:
-
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 9 ---------
->  1 file changed, 9 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index eebf94604a7f..c7db742f729c 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -207,25 +207,16 @@ enum wp_types {
->  	ESDHC_WP_GPIO,		/* external gpio pin for WP */
->  };
->  
-> -enum cd_types {
-> -	ESDHC_CD_NONE,		/* no CD, neither controller nor gpio */
-> -	ESDHC_CD_CONTROLLER,	/* mmc controller internal CD */
-> -	ESDHC_CD_GPIO,		/* external gpio pin for CD */
-> -	ESDHC_CD_PERMANENT,	/* no CD, card permanently wired to host */
-> -};
-> -
->  /*
->   * struct esdhc_platform_data - platform data for esdhc on i.MX
->   *
->   * ESDHC_WP(CD)_CONTROLLER type is not available on i.MX25/35.
->   *
->   * @wp_type:	type of write_protect method (see wp_types enum above)
-> - * @cd_type:	type of card_detect method (see cd_types enum above)
->   */
->  
->  struct esdhc_platform_data {
->  	enum wp_types wp_type;
-> -	enum cd_types cd_type;
->  	int max_bus_width;
->  	unsigned int delay_line;
->  	unsigned int tuning_step;       /* The delay cell steps in tuning procedure */
-
+Mrs. Nina Coulibal
