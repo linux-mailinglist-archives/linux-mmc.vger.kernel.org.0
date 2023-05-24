@@ -2,66 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FCC170F763
-	for <lists+linux-mmc@lfdr.de>; Wed, 24 May 2023 15:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E0A70F76A
+	for <lists+linux-mmc@lfdr.de>; Wed, 24 May 2023 15:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235248AbjEXNLj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 24 May 2023 09:11:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49292 "EHLO
+        id S235410AbjEXNL7 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 24 May 2023 09:11:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235170AbjEXNLY (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 24 May 2023 09:11:24 -0400
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9081B3
-        for <linux-mmc@vger.kernel.org>; Wed, 24 May 2023 06:11:22 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-55db055b412so88488577b3.0
-        for <linux-mmc@vger.kernel.org>; Wed, 24 May 2023 06:11:22 -0700 (PDT)
+        with ESMTP id S235164AbjEXNLf (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 24 May 2023 09:11:35 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCB22C1
+        for <linux-mmc@vger.kernel.org>; Wed, 24 May 2023 06:11:25 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-561da492bcbso13167687b3.3
+        for <linux-mmc@vger.kernel.org>; Wed, 24 May 2023 06:11:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684933882; x=1687525882;
+        d=linaro.org; s=google; t=1684933885; x=1687525885;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=oso4v1E0bkWDfuZFGRWc8pQY1FBubFJsVEaGbMpS84k=;
-        b=Apaj5KDsXHrYKpPqQC4wT+FQzOj8DqWhEJZX9xCxaPJsp2jqKzPsDXRXg8F7SFc0g2
-         LJ8kgR+31Wig8EpUQA38/eY6S2skw/bt6HFl6O1U2zauerZFWECwx/byD4KS9v/J/tj1
-         +0Vbcmd6oAnsVQtqzT5zTfoLiMLO5Y1ihXZuRmUl1R57aCUBtuWiHOqf84g6zWIJa5Ax
-         rcSjKLFL/PI2iktW5Ws8dbE55HWnIvvXtYPdpI86pli3OiQaBOpGi1zue9rWPUQ6urzV
-         rJehoLTPlOTNvJUfCsYVgxxm5+uTLx8WctKuoYZebj3UXmDs6TywBX37LTf4HVSTVAew
-         Aeag==
+        bh=8YMChv0Kbwi+1uRdxv5SOqopG6OU3NDn7YchG3hX0Iw=;
+        b=FzhfdVCfaEF8SeFwWuGcxH53uaFvlyDENmSU3rCkUWDk0E0q3sFBoCrO7Tdr46T3r4
+         Vyjr7hIn2/iQaJZ/65nivMCr8UpwPV/A1tBlrI4EGVPm3yni77wjoHJH9E4yfmoPgS4v
+         gaOAUYjzUnzM2AQZrdtrHAatCfewAiN5c00Jru3Smpl4RIBRuwmT9CNa3wQA891lqDC1
+         ZVAiD8hq/eV6blv1yT/lBY8oCwZ1g9me6RH8R3R5vgSgOLct8/rZq19C9GfHFJaqUNET
+         Gr1jwoCG6svyPkrBYWFh5VJRypt3KC7ukY5ySxmBTcKNA1JYAERPQWVJi2G5q9bPujxb
+         rfQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684933882; x=1687525882;
+        d=1e100.net; s=20221208; t=1684933885; x=1687525885;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oso4v1E0bkWDfuZFGRWc8pQY1FBubFJsVEaGbMpS84k=;
-        b=NfcfYmvX60eGqi/SNHe1W7T7Tyd6jaT6JQH+cpCnyq9nkSCqfsZE1emP2UhuG9Dv3U
-         jDjqD6w3dY/LSYZbfaS+Q4wFUfr7EQ4Nh78/wdS3jllAgjr82HTwLrEs2T8NqgZwGdlG
-         so+6OOXXTEph65LVWmk9RC2+rk50ezSTxD0kAhVNXpAfLdCoJjq7FZFFF3SnIf79Y/zc
-         12RR23E/lg1YrTSgci3tJefPwCZ0iVuPv2DD2CK30Xh/I4UDG9CYlcxLUI8kXitBWCpt
-         W5QEluReetSuwt33ATQSqxsiAYffoELjYwArzDy8RPGgYE1to/+8jFiPW61V4cDPiJJW
-         uq8Q==
-X-Gm-Message-State: AC+VfDxSZFtfwRSVdNGsEUj2FR3nmpWef3BoLNQX5yURXVA/2HY1ul6n
-        0WpD+18v/fZcjQ5V/2OVRTBWTrk2+Hy4qJf8jjaHrw==
-X-Google-Smtp-Source: ACHHUZ6bcKDs7Amsm5cCpd2ysnRqkResVkUy0BUfWRZFtHYtlv9QgDcmI01yi3hpqYLAG1pkAX3zEoSaS0pxpIYQtvA=
-X-Received: by 2002:a0d:cb55:0:b0:54c:1716:b20 with SMTP id
- n82-20020a0dcb55000000b0054c17160b20mr18232628ywd.17.1684933881824; Wed, 24
- May 2023 06:11:21 -0700 (PDT)
+        bh=8YMChv0Kbwi+1uRdxv5SOqopG6OU3NDn7YchG3hX0Iw=;
+        b=b+ZYV47vSGQRJWfCjTPMA4E9oS1hTQ/t4KuGl4gJhmAIedbUFMWBuNtsAivXkcQ9S7
+         oXGre46fhfS2/EqDOrTlh7gBNp6vNie3H8djNmdTmYKYhZWcXS2StyNaZfhu3QkLdpdJ
+         TfgOFTxyOhuXe0F6gaskX/jiT7/osA5KBimfH40SRaMY9id0HS8kCV7TGhAPGqLRMqqF
+         O+HjQQ4PH0A3LBqleysw4Sy3qg38ZHWKeFW4AU/5JXKSsJSl6gMVzcqPZuspw6uuPNDQ
+         0MLvdelZs20JFucPyRQmqS/4VbFnuy8mnW4fb0H3r0UHjqNmbd0C4HSsXMTA1Uu14kdS
+         vz+A==
+X-Gm-Message-State: AC+VfDyNikN1mbcV1PQe4wV3ZcoqPPTDrrDbpHlYsX9V0R1+xBn+75MS
+        gbGza7kXefgCXPkRhAHTrYfFvdhINr4xP8efIMfFMIZ1ECxTYk1+
+X-Google-Smtp-Source: ACHHUZ5jC4QdtoAG2YFQReK8EIv0ceZyovFAuJzf8NehJc1JaI9nZSehPe/mk/8GQTmaDHWY9QXTNtT6G3XHe5ugM+I=
+X-Received: by 2002:a81:71d7:0:b0:55d:a4fb:864a with SMTP id
+ m206-20020a8171d7000000b0055da4fb864amr18918048ywc.14.1684933885028; Wed, 24
+ May 2023 06:11:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230510064434.1.I935404c5396e6bf952e99bb7ffb744c6f7fd430b@changeid>
-In-Reply-To: <20230510064434.1.I935404c5396e6bf952e99bb7ffb744c6f7fd430b@changeid>
+References: <048cd6972c50c33c2e8f81d5228fed928519918b.1683987673.git.deren.wu@mediatek.com>
+In-Reply-To: <048cd6972c50c33c2e8f81d5228fed928519918b.1683987673.git.deren.wu@mediatek.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 24 May 2023 15:10:46 +0200
-Message-ID: <CAPDyKFoWoJLf8utGxv3RytkvVypaC0Qdo6OZUyfupfo822SA3g@mail.gmail.com>
-Subject: Re: [PATCH] mmc: mediatek: Avoid ugly error message when SDIO wakeup
- IRQ isn't used
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Yong Mao <yong.mao@mediatek.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org
+Date:   Wed, 24 May 2023 15:10:49 +0200
+Message-ID: <CAPDyKFoTkEp53hxw3rC1H2n+Z6Jm9DkSND8=PSd-3oFehWEeOQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: vub300: fix invalid response handling
+To:     Deren Wu <deren.wu@mediatek.com>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -73,43 +66,71 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 10 May 2023 at 15:46, Douglas Anderson <dianders@chromium.org> wrote:
+On Sat, 13 May 2023 at 16:49, Deren Wu <deren.wu@mediatek.com> wrote:
 >
-> When I boot a kukui-kodama board, I see an ugly warning in my kernel
-> log:
->   mtk-msdc 11240000.mmc: error -ENXIO: IRQ sdio_wakeup not found
+> We may get an empty response with zero length at the beginning of
+> the driver start and get following UBSAN error. Since there is no
+> content(SDRT_NONE) for the response, just return and skip the response
+> handling to avoid this problem.
 >
-> It's pretty normal not to have an "sdio_wakeup" IRQ defined. In fact,
-> no device trees in mainline seem to have it. Let's use the
-> platform_get_irq_byname_optional() to avoid the error message.
+> Test pass : SDIO wifi throughput test with this patch
 >
-> Fixes: 527f36f5efa4 ("mmc: mediatek: add support for SDIO eint wakup IRQ")
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> [  126.980684] UBSAN: array-index-out-of-bounds in drivers/mmc/host/vub300.c:1719:12
+> [  126.980709] index -1 is out of range for type 'u32 [4]'
+> [  126.980729] CPU: 4 PID: 9 Comm: kworker/u16:0 Tainted: G            E      6.3.0-rc4-mtk-local-202304272142 #1
+> [  126.980754] Hardware name: Intel(R) Client Systems NUC8i7BEH/NUC8BEB, BIOS BECFL357.86A.0081.2020.0504.1834 05/04/2020
+> [  126.980770] Workqueue: kvub300c vub300_cmndwork_thread [vub300]
+> [  126.980833] Call Trace:
+> [  126.980845]  <TASK>
+> [  126.980860]  dump_stack_lvl+0x48/0x70
+> [  126.980895]  dump_stack+0x10/0x20
+> [  126.980916]  ubsan_epilogue+0x9/0x40
+> [  126.980944]  __ubsan_handle_out_of_bounds+0x70/0x90
+> [  126.980979]  vub300_cmndwork_thread+0x58e7/0x5e10 [vub300]
+> [  126.981018]  ? _raw_spin_unlock+0x18/0x40
+> [  126.981042]  ? finish_task_switch+0x175/0x6f0
+> [  126.981070]  ? __switch_to+0x42e/0xda0
+> [  126.981089]  ? __switch_to_asm+0x3a/0x80
+> [  126.981129]  ? __pfx_vub300_cmndwork_thread+0x10/0x10 [vub300]
+> [  126.981174]  ? __kasan_check_read+0x11/0x20
+> [  126.981204]  process_one_work+0x7ee/0x13d0
+> [  126.981246]  worker_thread+0x53c/0x1240
+> [  126.981291]  kthread+0x2b8/0x370
+> [  126.981312]  ? __pfx_worker_thread+0x10/0x10
+> [  126.981336]  ? __pfx_kthread+0x10/0x10
+> [  126.981359]  ret_from_fork+0x29/0x50
+> [  126.981400]  </TASK>
+>
+> Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 
-Applied for next, thanks!
+Applied for fixes and by adding a stable tag, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
+> v2: add Fixes tag
+>     update commit description
+> ---
+>  drivers/mmc/host/vub300.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >
->  drivers/mmc/host/mtk-sd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-> index edade0e54a0c..8ce864169986 100644
-> --- a/drivers/mmc/host/mtk-sd.c
-> +++ b/drivers/mmc/host/mtk-sd.c
-> @@ -2707,7 +2707,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
->
->         /* Support for SDIO eint irq ? */
->         if ((mmc->pm_caps & MMC_PM_WAKE_SDIO_IRQ) && (mmc->pm_caps & MMC_PM_KEEP_POWER)) {
-> -               host->eint_irq = platform_get_irq_byname(pdev, "sdio_wakeup");
-> +               host->eint_irq = platform_get_irq_byname_optional(pdev, "sdio_wakeup");
->                 if (host->eint_irq > 0) {
->                         host->pins_eint = pinctrl_lookup_state(host->pinctrl, "state_eint");
->                         if (IS_ERR(host->pins_eint)) {
+> diff --git a/drivers/mmc/host/vub300.c b/drivers/mmc/host/vub300.c
+> index e4c4bfac3763..9ec593d52f0f 100644
+> --- a/drivers/mmc/host/vub300.c
+> +++ b/drivers/mmc/host/vub300.c
+> @@ -1713,6 +1713,9 @@ static void construct_request_response(struct vub300_mmc_host *vub300,
+>         int bytes = 3 & less_cmd;
+>         int words = less_cmd >> 2;
+>         u8 *r = vub300->resp.response.command_response;
+> +
+> +       if (!resp_len)
+> +               return;
+>         if (bytes == 3) {
+>                 cmd->resp[words] = (r[1 + (words << 2)] << 24)
+>                         | (r[2 + (words << 2)] << 16)
 > --
-> 2.40.1.521.gf1e218fcd8-goog
+> 2.18.0
 >
