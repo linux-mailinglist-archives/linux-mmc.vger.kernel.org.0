@@ -2,163 +2,192 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF3FB7216B0
-	for <lists+linux-mmc@lfdr.de>; Sun,  4 Jun 2023 14:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FD51721842
+	for <lists+linux-mmc@lfdr.de>; Sun,  4 Jun 2023 17:44:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231821AbjFDMNa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 4 Jun 2023 08:13:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43642 "EHLO
+        id S230403AbjFDPoy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 4 Jun 2023 11:44:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231282AbjFDMN1 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 4 Jun 2023 08:13:27 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3547DB;
-        Sun,  4 Jun 2023 05:13:25 -0700 (PDT)
-Received: from stefanw-SCHENKER ([37.4.248.58]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MLhwM-1po7By0Ya0-00HjUJ; Sun, 04 Jun 2023 14:12:50 +0200
-From:   Stefan Wahren <stefan.wahren@i2se.com>
-To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        Stefan Wahren <stefan.wahren@i2se.com>
-Subject: [PATCH 10/10] dt-bindings: timer: convert bcm2835-system-timer bindings to YAML
-Date:   Sun,  4 Jun 2023 14:12:23 +0200
-Message-Id: <20230604121223.9625-11-stefan.wahren@i2se.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230604121223.9625-1-stefan.wahren@i2se.com>
-References: <20230604121223.9625-1-stefan.wahren@i2se.com>
+        with ESMTP id S231751AbjFDPow (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 4 Jun 2023 11:44:52 -0400
+Received: from smtp.smtpout.orange.fr (smtp-19.smtpout.orange.fr [80.12.242.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1517ADB
+        for <linux-mmc@vger.kernel.org>; Sun,  4 Jun 2023 08:44:49 -0700 (PDT)
+Received: from [192.168.1.18] ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id 5puJqUJl3xbtx5puJqV5WT; Sun, 04 Jun 2023 17:44:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1685893488;
+        bh=4MVPujWGEC2Hbr//Xyamq+0YVn6N8CNGZocur4O5qgA=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=WgnLOsZnQ0uUapvPl9OVnQvD2I/zNbKmRWJ1GXclXg7Alpp8751PpITUE4RtsSJiL
+         InZLFVeCEtJkJbUNxjf1E+WS6aLhATHITZHgD3PAp4frjWOlMqrEO53s6Eef8MUuNC
+         wD+Bjg7O6kI76uiHo5rRAy/4pj8zQfBmwVcCK1Css5Sg5Xd5f7Edq4/Ub1k35j7J6T
+         ph8kLyzqzPL+yOukLEJr/PjtMLLpuxjz4JvgWAbivPVrkyET0WPlot4QKe/4B2W/VN
+         Gmxhe28+9GYJ3BjflsZZdPm/Kr5ZWPcMapN6YNjDGe5+VCHdwdITzd9IJT/wPBl5Qp
+         KmTbuW2T35xIQ==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 04 Jun 2023 17:44:48 +0200
+X-ME-IP: 86.243.2.178
+Message-ID: <ac6ef7f2-0d7a-ba43-4b63-0a23d899230f@wanadoo.fr>
+Date:   Sun, 4 Jun 2023 17:44:39 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 1/4] Input: ads7846 - Convert to use software nodes
+Content-Language: fr
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Helge Deller <deller@gmx.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-mmc@vger.kernel.org
+References: <20230430-nokia770-regression-v4-0-9b6dc5536b17@linaro.org>
+ <20230430-nokia770-regression-v4-1-9b6dc5536b17@linaro.org>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20230430-nokia770-regression-v4-1-9b6dc5536b17@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:oMr1lTfefQ7XSyP/6XiPy6FpM+TVqfrRR0B16B0MUjm0fmnsWJ9
- tXpqm4A8tBbCHLxJpHHVJam+o9XaRneH/yvew6r3hok0Oln6lu/xjV0oeAZYuwvBmg6Q3Og
- Yw9s7SjyFl5sAsxTyW4l2GJOER0A/jGMj13s2Bk2a7BkPNysFRc5ADTze+J+SR6UijgLaUJ
- CjXVFOYus+JCSVK6Zickg==
-UI-OutboundReport: notjunk:1;M01:P0:3fgNAr6VTfc=;0X5GpLSO88Vwv0T2LGOU/vv/rFC
- apzcUSG1Umg593oEieEHm1Cspgd9S2BGndtOWJ8jTS0udRb9zbiQCt93rT/oSFv2ZB8hWhoP1
- ligzgL35FqamqGJ14zITAFDkWmcUycEEVrnArVkPhuBES+WFA+tgETzWWor6Ty1yyIoqAmKgD
- 5EW1UqzI4FPaDy5jo0tCkyYdq+aCymSDTTQQl48XNCYAHyXfCRs75CFUTvo4cGD0QqvI8OoZS
- ZzBff+wrS2TknYHK6tzbvW4GJ0Uh7fV0Nq+qe1UjzXgzsIPyivRw5E6rBaxLEyp7Evmkc0sIA
- NyCVuy1qyb7KaUNe2mZos5GryPirvuceUjgPCItg6wddGxjLu7M94nLFeieq4kJ/1Ee27dLRA
- GvHKCS6bZhyynA0E8ncn8SY0ob+jl6eMIezQmRmOhygA/z9RHHVbH983iFygs2PYs9AGUwZ+P
- 5M7SojbIWflmDMzpdySxIhBNDJPdPQDRDX4+s1iLY7AXbsGYqYL6/MVMBx96g5aWqOBgmxpOV
- dPf0qedK+gt2kotQCeZovS0651yTOYDdnTdiJDTuSahcz623FkV0jxemZMmiWqP7jEw90k7kC
- dkmjYL52sgz0rvWJs4PtAoNQpdYPK+E/Ky46ya+CTTQk+4+ngH41L0pkfQa+1deo+4LZ1A1ZZ
- pJ0nrEH15l2gen6cxgH0vco6jBe1pJEBRCSNEl+GPA==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Convert the DT binding document for bcm2835-system-timer from .txt
-to YAML.
+Le 08/05/2023 à 23:20, Linus Walleij a écrit :
+> The Nokia 770 is using GPIOs from the global numberspace on the
+> CBUS node to pass down to the LCD controller. This regresses when we
+> let the OMAP GPIO driver use dynamic GPIO base.
+> 
+> The Nokia 770 now has dynamic allocation of IRQ numbers, so this
+> needs to be fixed for it to work.
+> 
+> As this is the only user of LCD MIPID we can easily augment the
+> driver to use a GPIO descriptor instead and resolve the issue.
+> 
+> The platform data .shutdown() callback wasn't even used in the
+> code, but we encode a shutdown asserting RESET in the remove()
+> callback for completeness sake.
+> 
+> The CBUS also has the ADS7846 touchscreen attached.
+> 
+> Populate the devices on the Nokia 770 CBUS I2C using software
+> nodes instead of platform data quirks. This includes the LCD
+> and the ADS7846 touchscreen so the conversion just brings the LCD
+> along with it as software nodes is an all-or-nothing design
+> pattern.
+> 
+> The ADS7846 has some limited support for using GPIO descriptors,
+> let's convert it over completely to using device properties and then
+> fix all remaining boardfile users to provide all platform data using
+> software nodes.
+> 
+> Dump the of includes and of_match_ptr() in the ADS7846 driver as part
+> of the job.
+> 
+> Since we have to move ADS7846 over to obtaining the GPIOs it is
+> using exclusively from descriptors, we provide descriptor tables
+> for the two remaining in-kernel boardfiles using ADS7846:
+> 
+> - PXA Spitz
+> - MIPS Alchemy DB1000 development board
+> 
+> It was too hard for me to include software node conversion of
+> these two remaining users at this time: the spitz is using a
+> hscync callback in the platform data that would require further
+> GPIO descriptor conversion of the Spitz, and moving the hsync
+> callback down into the driver: it will just become too big of
+> a job, but it can be done separately.
+> 
+> The MIPS Alchemy DB1000 is simply something I cannot test, so take
+> the easier approach of just providing some GPIO descriptors in
+> this case as I don't want the patch to grow too intrusive.
+> 
+> As we see that several device trees have incorrect polarity flags
+> and just expect to bypass the gpiolib polarity handling, fix up
+> all device trees too, in a separate patch.
+> 
+> Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Fixes: 92bf78b33b0b ("gpio: omap: use dynamic allocation of base")
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
 
-Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
----
- .../timer/brcm,bcm2835-system-timer.txt       | 22 ----------
- .../timer/brcm,bcm2835-system-timer.yaml      | 44 +++++++++++++++++++
- 2 files changed, 44 insertions(+), 22 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/timer/brcm,bcm2835-system-timer.txt
- create mode 100644 Documentation/devicetree/bindings/timer/brcm,bcm2835-system-timer.yaml
+[...]
 
-diff --git a/Documentation/devicetree/bindings/timer/brcm,bcm2835-system-timer.txt b/Documentation/devicetree/bindings/timer/brcm,bcm2835-system-timer.txt
-deleted file mode 100644
-index 844bd5fbd04c..000000000000
---- a/Documentation/devicetree/bindings/timer/brcm,bcm2835-system-timer.txt
-+++ /dev/null
-@@ -1,22 +0,0 @@
--BCM2835 System Timer
--
--The System Timer peripheral provides four 32-bit timer channels and a
--single 64-bit free running counter. Each channel has an output compare
--register, which is compared against the 32 least significant bits of the
--free running counter values, and generates an interrupt.
--
--Required properties:
--
--- compatible : should be "brcm,bcm2835-system-timer"
--- reg : Specifies base physical address and size of the registers.
--- interrupts : A list of 4 interrupt sinks; one per timer channel.
--- clock-frequency : The frequency of the clock that drives the counter, in Hz.
--
--Example:
--
--timer {
--	compatible = "brcm,bcm2835-system-timer";
--	reg = <0x7e003000 0x1000>;
--	interrupts = <1 0>, <1 1>, <1 2>, <1 3>;
--	clock-frequency = <1000000>;
--};
-diff --git a/Documentation/devicetree/bindings/timer/brcm,bcm2835-system-timer.yaml b/Documentation/devicetree/bindings/timer/brcm,bcm2835-system-timer.yaml
-new file mode 100644
-index 000000000000..555fca4897e7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/timer/brcm,bcm2835-system-timer.yaml
-@@ -0,0 +1,44 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/timer/brcm,bcm2835-system-timer.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: BCM2835 System Timer
-+
-+maintainers:
-+  - Stefan Wahren <stefan.wahren@i2se.com>
-+
-+description:
-+  The System Timer peripheral provides four 32-bit timer channels and a
-+  single 64-bit free running counter. Each channel has an output compare
-+  register, which is compared against the 32 least significant bits of the
-+  free running counter values, and generates an interrupt.
-+
-+properties:
-+  compatible:
-+    const: brcm,bcm2835-system-timer
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 4
-+
-+  clock-frequency: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    timer@7e003000 {
-+      compatible = "brcm,bcm2835-system-timer";
-+      reg = <0x7e003000 0x1000>;
-+      interrupts = <1 0>, <1 1>, <1 2>, <1 3>;
-+      clock-frequency = <1000000>;
-+    };
--- 
-2.34.1
+> diff --git a/drivers/video/fbdev/omap/lcd_mipid.c b/drivers/video/fbdev/omap/lcd_mipid.c
+> index 03cff39d392d..e4a7f0b824ff 100644
+> --- a/drivers/video/fbdev/omap/lcd_mipid.c
+> +++ b/drivers/video/fbdev/omap/lcd_mipid.c
+> @@ -7,6 +7,7 @@
+>    */
+>   #include <linux/device.h>
+>   #include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+>   #include <linux/slab.h>
+>   #include <linux/workqueue.h>
+>   #include <linux/spi/spi.h>
+> @@ -41,6 +42,7 @@ struct mipid_device {
+>   						   when we can issue the
+>   						   next sleep in/out command */
+>   	unsigned long	hw_guard_wait;		/* max guard time in jiffies */
+> +	struct gpio_desc	*reset;
+>   
+>   	struct omapfb_device	*fbdev;
+>   	struct spi_device	*spi;
+> @@ -556,6 +558,12 @@ static int mipid_spi_probe(struct spi_device *spi)
+>   		return -ENOMEM;
+>   	}
+>   
+> +	/* This will de-assert RESET if active */
+> +	md->reset = gpiod_get(&spi->dev, "reset", GPIOD_OUT_LOW);
+> +	if (IS_ERR(md->reset))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(md->reset),
+> +				     "no reset GPIO line\n");
+> +
+>   	spi->mode = SPI_MODE_0;
+>   	md->spi = spi;
+>   	dev_set_drvdata(&spi->dev, md);
+> @@ -574,6 +582,8 @@ static void mipid_spi_remove(struct spi_device *spi)
+>   {
+>   	struct mipid_device *md = dev_get_drvdata(&spi->dev);
+>   
+> +	/* Asserts RESET */
+> +	gpiod_set_value(md->reset, 1);
 
+Hi,
+
+should this also be done in the probe if mipid_detect() fails?
+
+If yes, please also look at [1], that I've just sent, which introduces 
+an error handling path in the probe.
+
+CJ
+
+[1]: 
+https://lore.kernel.org/all/8b82e34724755b69f34f15dddb288cd373080390.1620505229.git.christophe.jaillet@wanadoo.fr/
+
+>   	mipid_disable(&md->panel);
+>   	kfree(md);
+>   }
+
+[...]
