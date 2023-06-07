@@ -2,165 +2,173 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92FCA726DAC
-	for <lists+linux-mmc@lfdr.de>; Wed,  7 Jun 2023 22:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6A2E727250
+	for <lists+linux-mmc@lfdr.de>; Thu,  8 Jun 2023 00:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234645AbjFGUok (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 7 Jun 2023 16:44:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45050 "EHLO
+        id S229958AbjFGWzh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 7 Jun 2023 18:55:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234655AbjFGUof (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 7 Jun 2023 16:44:35 -0400
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A51311FF0
-        for <linux-mmc@vger.kernel.org>; Wed,  7 Jun 2023 13:44:17 -0700 (PDT)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id AE0D885D4E;
-        Wed,  7 Jun 2023 22:43:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1686170620;
-        bh=et/O1Q7n3B6o0Josn7Q/8nFOfo94H7iA/4ihvH+RRgA=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=0SjwAbvhjBHLtB2HTXR1N1eixxGJAan3i/PE89PZ9bs31Cz3jGTlcjxGYJ3u2rplz
-         dj8BkJuAcnFtRoSYqKUHzzb6JUE2lMdd3zrWejCOLdXW2zkxqgQvBN3lWpWNl3cGw8
-         AVBDkrn1S5xZJQi0KXUZKdvMhy0giqyKM0tMwpeg2tVfTLqwoUMy+ZZpKj/2IerD+E
-         rTEBppGA/rZ7JOLk6LOOd0Cb31XbJf57RzyUFsve3UrG5bmbn47quB8a8uoLeXhPoZ
-         C+tC/3+DsNe2xxK1nObGlBLTnOekDQYuB8w0T9NPnlar9Rh+jDkIzg0MfBlGWxZa6y
-         NYcCg7OaDukNw==
-Message-ID: <b494062c-7e9e-24ba-ef0a-13faf0fe7706@denx.de>
-Date:   Wed, 7 Jun 2023 22:43:38 +0200
+        with ESMTP id S233162AbjFGWz0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 7 Jun 2023 18:55:26 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1BE3268F
+        for <linux-mmc@vger.kernel.org>; Wed,  7 Jun 2023 15:55:13 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-977c88c9021so499066b.3
+        for <linux-mmc@vger.kernel.org>; Wed, 07 Jun 2023 15:55:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686178513; x=1688770513;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=h4j71OFNDV5FfvldtjCh/L+Qg71oYHcBnHuDB5srtk996zsBHlbD8SaqVv65TPPNSR
+         D55ZWk68qXdEmt+kIdXRugiaujZb/weZnFCTHcuZcbiNqcbtWT0X7OlskYnP/y/1JDzr
+         WbOZ68AcZfM/aHW4up57fkOGafclaBar/hLOCFBtTjAlCxKYQtVTvq0W4SECGmO4CUql
+         dig397pPxdZX0OTvC2J8JrOzuSqogeJM29duG5G1BgaFsW6donzZWRU1Jz4x6qDKSWR9
+         w6/41Hy1gwVz7zf6M5uQKiqeQS7jHj9sppdk3jRa//N+UQ6Qg+lxAaHE7mp4Zy+a5Adc
+         Kv2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686178513; x=1688770513;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=OUq9VhEhgUr44FoydZc929L3egdiQHUUgyVqenSwfjTpFeroBwN6SVFI9dQ7ScDr0J
+         aPtDRXlsDtF6pbEcgYYXMKnekaCdlsUvE353+lQmIwFRS3ps2rln6LPEOcppnGDQGFQA
+         WTNEuYmx7f7ySOOCqWBCfxthnJEToBWeFJ7Gispfp7C9TBy63/WtZlkOvpfeNevMhteO
+         wPhmZ5UrSNSKQCo4wZNPCDqmeWwXYzlAi1orcV8RdAFNSQ66Fz4fEKLqgqWgK/MVHDwa
+         t4HqFwWcN0HkoWGmEo9cyH84zo0NsKiE/80FPJW1dq+S6VtEuyz9tOQnuTKD/uU9TEFg
+         Qcsw==
+X-Gm-Message-State: AC+VfDwX6IBPMKXOI1LzdpSUOYsv62IQOpDEf9KsJoxQd+ooQNC2+szK
+        gqB6QiCdPA9UICo3GnMFiaLHbbB7ZB384vOEthLN/BF3fFkp6Q==
+X-Google-Smtp-Source: ACHHUZ5q9v5E8VuN7LGrTh1boUYVANIIUnJnBwlK4YNL8XVT+z7GalrAexguq0b795Op+2qoCUEoHnMN8sFXq0M0ebg=
+X-Received: by 2002:a17:907:8a15:b0:96f:d154:54f7 with SMTP id
+ sc21-20020a1709078a1500b0096fd15454f7mr7113590ejc.42.1686178492570; Wed, 07
+ Jun 2023 15:54:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] [RFC] Revert "mmc: core: Fixup support for
- writeback-cache for eMMC and SD"
-Content-Language: en-US
-To:     Adrian Hunter <adrian.hunter@intel.com>, linux-mmc@vger.kernel.org
-Cc:     =?UTF-8?Q?Christian_L=c3=b6hle?= <CLoehle@hyperstone.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Michael Wu <michael@allwinnertech.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Seunghui Lee <sh043.lee@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-References: <20230531002740.1235620-1-marex@denx.de>
- <ecad717c-77b5-c78a-795b-2c3019b7452a@intel.com>
- <a69823e8-4e87-9eaa-1cb8-7d1457df1492@denx.de>
- <f41e1546-f6d3-7f4d-7662-3b7eca291178@intel.com>
- <29a5f24d-2b8c-8387-8c11-601af8e13940@denx.de>
- <4c8d84ae-c8d0-fa12-81c6-a47382684d73@intel.com>
- <3bd65a30-756d-e7ee-ce77-e5ebfe6b6e30@denx.de>
- <75ab27e9-9203-f59b-c720-99bfa992bb9b@intel.com>
-From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <75ab27e9-9203-f59b-c720-99bfa992bb9b@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
+ 15:54:52 -0700 (PDT)
+Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
+From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
+        <successikolo@gmail.com>
+Date:   Wed, 7 Jun 2023 15:54:52 -0700
+Message-ID: <CADFNGJ8vkgORi1jPvvhP+FQnPCNqs4cr588+_a-ywDXpqf+qKA@mail.gmail.com>
+Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:631 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [successikolo[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 FILL_THIS_FORM Fill in a form with personal information
+        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
+        *  0.0 MONEY_FORM Lots of money if you fill out a form
+        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
+        *      money
+        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
+        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 6/4/23 18:30, Adrian Hunter wrote:
+UNITED NATION DEPUTY SECRETARY-GENERAL.
 
-[...]
+This is to official inform you that we have been having meetings for
+the past three (3) weeks which ended two days ago with MR. JIM YONG
+KIM the world bank president and other seven continent presidents on
+the congress we treated on solution to scam victim problems.
 
->>>>> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
->>>>> index 72b664ed90cf..9c3123867a99 100644
->>>>> --- a/drivers/mmc/core/sd.c
->>>>> +++ b/drivers/mmc/core/sd.c
->>>>> @@ -1313,6 +1313,8 @@ static int sd_flush_cache(struct mmc_host *host)
->>>>>     {
->>>>>         struct mmc_card *card = host->card;
->>>>>         u8 *reg_buf, fno, page;
->>>>> +    unsigned long timeout;
->>>>> +    bool expired;
->>>>>         u16 offset;
->>>>>         int err;
->>>>>     @@ -1338,11 +1340,15 @@ static int sd_flush_cache(struct mmc_host *host)
->>>>>             goto out;
->>>>>         }
->>>>>     +    timeout = jiffies + msecs_to_jiffies(SD_WRITE_EXTR_SINGLE_TIMEOUT_MS) + 1;
->>>>> +again:
->>>>>         err = mmc_poll_for_busy(card, SD_WRITE_EXTR_SINGLE_TIMEOUT_MS, false,
->>>>>                     MMC_BUSY_EXTR_SINGLE);
->>>>>         if (err)
->>>>>             goto out;
->>>>>     +    expired = time_after(jiffies, timeout);
->>>>> +
->>>>>         /*
->>>>>          * Read the Flush Cache bit. The card shall reset it, to confirm that
->>>>>          * it's has completed the flushing of the cache.
->>>>> @@ -1354,8 +1360,12 @@ static int sd_flush_cache(struct mmc_host *host)
->>>>>             goto out;
->>>>>         }
->>>>>     -    if (reg_buf[0] & BIT(0))
->>>>> -        err = -ETIMEDOUT;
->>>>> +    if (reg_buf[0] & BIT(0)) {
->>>>
->>>> I am getting here, multiple times, with expired=0 .
->>>
->>> So either the host controller's busy detection does not work, or the
->>> card is not indicating busy by pulling down DAT0.
->>>
->>> Can you try to figure out which it is?
->>
->> The byte 261 bit 0 is never cleared, I had this looping for an hour and the 'Flush Cache' bit just never got cleared. The SD spec 6.00 and 9.00 both indicate the bit should be cleared by the card once cache flush is completed.
->>
->> I tried three different controllers now -- STM32MP15xx ARM MMCI, i.MX6Q uSDHC, laptop rtsx_pci_sdmmc , they all fail.
->>
->> I tried to find another card which also has cache, I cannot find any other card, all the rest report no cache. The kingston card SSR (see the 2ff in 6th field, the last f bit 2 is cache supported indication, SSR bit 330):
->>
->> 00000000:08000000:04009000:011b391e:00080000:0002ff00:03000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:
->>
->> So either this card is weird, or the cards with cache are so rare that nobody noticed the problem yet.
-> 
-> The patch set cover letter says it was tested with 64GB Sandisk Extreme PRO UHS-I A2 card
-> 
-> 	https://lore.kernel.org/linux-mmc/20210506145829.198823-1-ulf.hansson@linaro.org/
+ Note: we have decided to contact you following the reports we
+received from anti-fraud international monitoring group your
+name/email has been submitted to us therefore the united nations have
+agreed to compensate you with the sum of (USD$ 1.5 Million) this
+compensation is also including international business that failed you
+in the past due to government problems etc.
 
-I got that one now, tested it, the cache bit is being cleared correctly. 
-I also tested a few more cards and dumped their SSR too:
+ We have arranged your payment through our ATM Master Card and
+deposited it in DHL Office to deliver it to you which is the latest
+instruction from the World Bank president MR. JIM YONG KIM, For your
+information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
+he
+only money you will send to DHL office south Korea is
+($500). for security keeping fee, U.N coordinator already paid for
+others charges fees for delivery except the security keeping fee, the
+director of DHL refused to collect the security keeping fee from U.N
+coordinator, the Director of DHL office said that they don=E2=80=99t know
+exactly time you will contact them to reconfirm your details to avoid
+counting demur-rage that is why they refused collecting the ($500) .
+for security keeping fee.
 
-Kingston Canvas Go! Plus:
-80000000:08000000:04009000:011b391e:00080000:0002ff00:03000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:
-Flush never finishes
+ Therefore be advice to contact DHL Office agent south Korea. Rev:John
+Lee Tae-seok
+who is in position to deliver your ATM
+Master Card to your location address, contact DHL Office immediately
+with the bellow email & phone number as listed below.
 
-Sandisk Extreme PRO A2 64GiB:
-80000000:08000000:04009000:0f05391e:00080000:0002fc00:03000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:
-mmc0: flushing cache took 5 ms, 1 iterations, error 0
+ Contact name: John Lee Tae-seok
 
-Goodram IRDM V30 A2 64GiB:
-80000000:08000000:0400a001:00fd3a1e:00080000:00023c00:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:
-mmc0: flushing cache took 5 ms, 1 iterations, error 0
+ Email:( dhlgeneralheadquartersrepublic@gmail.com )
 
-Samsung Pro Plus 512GiB V30 A2 (ext reg general info is all zeroes, 
-cache not enabled):
-80000000:08000000:04009000:0811391e:00080000:0002fc00:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:
+ Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
 
-> I ordered a Kingston Canvas Go Plus card as you described but it won't arrive for a week.
+ read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
 
-I'm really interested in what you would find with that one.
+ Make sure you reconfirmed DHL Office your details ASAP as stated
+below to avoid wrong delivery.
 
-Maybe the card I have here is defective, although I would expect not 
-just the cache functionality to fail in such a case.
+ Your full name..........
 
-Is there anyone at kingston we could ask about the cache specifics on 
-that card ?
+ Home address:.........
 
-> Currently I am thinking we could do a cache flush after enabling the cache, just
-> to see if it works.  If not, then disable the cache.
-> 
-> It would also be interesting to read back the extended register to see if the
-> enable bit has actually been set.
+ Your country...........
 
-Both offset 260 and 261 read back as 0x01 during the endless flush.
+ Your city..............
+
+ Telephone......
+
+ Occupation:.......
+
+ Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
+
+ Let us know as soon as possible you receive your ATM MasterCard
+for proper verification.
+
+ Regards,
+
+ Mrs Vivian kakadu.
+
+ DEPUTY SECRETARY-GENERAL (U.N)
