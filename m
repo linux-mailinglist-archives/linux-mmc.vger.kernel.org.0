@@ -2,158 +2,200 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 671097251CA
-	for <lists+linux-mmc@lfdr.de>; Wed,  7 Jun 2023 03:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FE8D7253D9
+	for <lists+linux-mmc@lfdr.de>; Wed,  7 Jun 2023 08:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240593AbjFGBwH (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 6 Jun 2023 21:52:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39446 "EHLO
+        id S234168AbjFGGGs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 7 Jun 2023 02:06:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240640AbjFGBvx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 6 Jun 2023 21:51:53 -0400
-Received: from m126.mail.126.com (m126.mail.126.com [220.181.12.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 703FA19AB;
-        Tue,  6 Jun 2023 18:50:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=rL1HLDDH3DxRNYdCLi
-        8SStgCPzr3ccNzmCjay25S1pI=; b=JhSJATmsxmhweNciXU4nx0M4bWnxbGMAPj
-        hnc3z+n2qnVCThplNvPr1AsL13BZ7yrgJm1bOMaFNJsE5M6CwLH2EN1CjHbXkRal
-        Uocr0fQJF7aKyXP4xtjXvnJ5OkzZekpuDFNNC4nvdTQkg4Nl8pwaIrQ3P86p+Ns0
-        9stvxSbqI=
-Received: from wh-chevronli-w10.bayhubtech.com (unknown [58.48.115.170])
-        by zwqz-smtp-mta-g1-1 (Coremail) with SMTP id _____wDnPj374X9k3iQtAw--.54119S3;
-        Wed, 07 Jun 2023 09:48:44 +0800 (CST)
-From:   Chevron Li <chevron_li@126.com>
-To:     adrian.hunter@intel.com, ulf.hansson@linaro.org,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     shaper.liu@bayhubtech.com, xiaoguang.yu@bayhubtech.com,
-        shirley.her@bayhubtech.com, chevron.li@bayhubtech.com
-Subject: [PATCH V1 2/2] mmc: sdhci-pci-o2micro: add Bayhub new chip GG8 support
-Date:   Wed,  7 Jun 2023 09:48:12 +0800
-Message-Id: <20230607014812.30104-2-chevron_li@126.com>
-X-Mailer: git-send-email 2.18.0.windows.1
-In-Reply-To: <20230607014812.30104-1-chevron_li@126.com>
-References: <20230607014812.30104-1-chevron_li@126.com>
-X-CM-TRANSID: _____wDnPj374X9k3iQtAw--.54119S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGw47Jw4fJF1kCryUtw1rXrb_yoW5tFyfpF
-        4Fvas8Gr4rKFW3Z39xGw4vvr1S9r1vvrWqkF43Jw4Fvw1jkF4rWr97CFy5XryUXrZaqw1f
-        Xa1vqFyUGFyUAwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UCjgcUUUUU=
-X-Originating-IP: [58.48.115.170]
-X-CM-SenderInfo: hfkh42xrqbzxa6rslhhfrp/1tbiFwCHAVpEGcH9fQAAsX
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229603AbjFGGGq (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 7 Jun 2023 02:06:46 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D540919BC;
+        Tue,  6 Jun 2023 23:06:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686118005; x=1717654005;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=F2dblgq0/jqWKrEBIBiR9lrvjHI50eHV+ew7tXhlMBI=;
+  b=aOG1JEdEp5UxDYxvXWWUu6sUiG0kN6b7KAvhTOG6BxkLKON0CmUnjY8T
+   n2MiD72+uaQnyge+BEWM8K14djfLpkJUYnF1juSLNLKRIu1nftT85Dkiw
+   hpqrgAOatRMlKr95AyzvMVPUEAzJ43YOQBLBIJXg5HEMOOV1tniR2xCgL
+   ycKDsdbLbFzcVk/2bbNBIxE1W7bp5brbe7ysGsDW3Uiawmga4kzdYyjiQ
+   SzvpoQGtqUiza6IO0aMpw9tuWF6uwvbl3m3KmZROY920eMniztOhgZuhM
+   pQf69SZtQFgb0j2pGG4fFxLT/5jEf+odxXlTNmj5jcDZqWc8/UT40XPeR
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="346506618"
+X-IronPort-AV: E=Sophos;i="6.00,223,1681196400"; 
+   d="scan'208";a="346506618"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 23:06:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="956073288"
+X-IronPort-AV: E=Sophos;i="6.00,223,1681196400"; 
+   d="scan'208";a="956073288"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.47.234])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 23:06:41 -0700
+Message-ID: <60054ec8-43d4-059c-0128-68815340c631@intel.com>
+Date:   Wed, 7 Jun 2023 09:06:36 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.12.0
+Subject: Re: [PATCH v5 1/1] mmc: mtk-sd: reduce CIT for better performance
+Content-Language: en-US
+To:     Wenbin Mei <wenbin.mei@mediatek.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        Asutosh Das <asutoshd@codeaurora.org>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        kernel test robot <lkp@intel.com>
+References: <20230606113249.28057-1-wenbin.mei@mediatek.com>
+ <20230606113249.28057-2-wenbin.mei@mediatek.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20230606113249.28057-2-wenbin.mei@mediatek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Chevron Li <chevron.li@bayhubtech.com>
+On 6/06/23 14:32, Wenbin Mei wrote:
+> CQHCI_SSC1 indicates to CQE the polling period to use when using periodic
+> SEND_QUEUE_STATUS(CMD13) polling.
+> Since MSDC CQE uses msdc_hclk as ITCFVAL, so driver should use hclk
+> frequency to get the actual time.
+> The default value 0x1000 that corresponds to 150us for MediaTek SoCs, let's
+> decrease it to 0x40 that corresponds to 2.35us, which can improve the
+> performance of some eMMC devices.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Wenbin Mei <wenbin.mei@mediatek.com>
 
-Add Bayhub new chip GG8 support for SD express card.
-This patch depends on patch 1/2.
+For cqhci:
 
-Signed-off-by: Chevron Li <chevron.li@bayhubtech.com>
----
-Change in V1:
-1.Implement the SD express card callback routine.
-2.Add SD express card support for Bayhub GG8 chip.
----
- drivers/mmc/host/sdhci-pci-o2micro.c | 61 +++++++++++++++++++++++++++-
- 1 file changed, 60 insertions(+), 1 deletion(-)
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-diff --git a/drivers/mmc/host/sdhci-pci-o2micro.c b/drivers/mmc/host/sdhci-pci-o2micro.c
-index 8243a63b3c81..b2d8ddbb4095 100644
---- a/drivers/mmc/host/sdhci-pci-o2micro.c
-+++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-@@ -21,6 +21,7 @@
-  * O2Micro device registers
-  */
- 
-+#define O2_SD_PCIE_SWITCH	0x54
- #define O2_SD_MISC_REG5		0x64
- #define O2_SD_LD0_CTRL		0x68
- #define O2_SD_DEV_CTRL		0x88
-@@ -631,6 +632,63 @@ static void sdhci_pci_o2_set_clock(struct sdhci_host *host, unsigned int clock)
- 	sdhci_o2_enable_clk(host, clk);
- }
- 
-+static u8 sdhci_o2_sd_express_clkq_assert(struct sdhci_host *host)
-+{
-+	return sdhci_readb(host, O2_SD_EXP_INT_REG);
-+}
-+
-+static int sdhci_pci_o2_init_sd_express(struct mmc_host *mmc, struct mmc_ios *ios)
-+{
-+	struct sdhci_host *host = mmc_priv(mmc);
-+	struct sdhci_pci_slot *slot = sdhci_priv(host);
-+	struct sdhci_pci_chip *chip = slot->chip;
-+	u8 scratch8 = 0;
-+	u16 scratch16 = 0;
-+	bool ret = false;
-+
-+	/* Disable clock */
-+	sdhci_writeb(host, 0, SDHCI_CLOCK_CONTROL);
-+
-+	/* Set VDD2 voltage*/
-+	scratch8 = sdhci_readb(host, SDHCI_POWER_CONTROL);
-+	scratch8 &= 0x0F;
-+	if ((host->mmc->ios.timing == MMC_TIMING_SD_EXP_1_2V) &&
-+		(host->mmc->caps2 & MMC_CAP2_SD_EXP_1_2V)) {
-+		scratch8 |= BIT(4) | BIT(7);
-+	} else
-+		scratch8 |= BIT(4) | BIT(5) | BIT(7);
-+	sdhci_writeb(host, scratch8, SDHCI_POWER_CONTROL);
-+
-+	/* UnLock WP */
-+	pci_read_config_byte(chip->pdev, O2_SD_LOCK_WP, &scratch8);
-+	scratch8 &= 0x7f;
-+	pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch8);
-+
-+	ret = readx_poll_timeout(sdhci_o2_sd_express_clkq_assert, host,
-+		scratch8, !(scratch8 & BIT(0)), 1, 30000) == 0 ? 0 : 1;
-+
-+	if (!ret) {
-+		/* switch to PCIe mode */
-+		scratch16 = sdhci_readw(host, O2_SD_PCIE_SWITCH);
-+		scratch16 |= BIT(8);
-+		sdhci_writew(host, scratch16, O2_SD_PCIE_SWITCH);
-+	} else {
-+		/* keep mode as USHI */
-+		pci_read_config_word(chip->pdev,
-+						O2_SD_PARA_SET_REG1, &scratch16);
-+		scratch16 &= ~BIT(11);
-+		pci_write_config_word(chip->pdev,
-+						O2_SD_PARA_SET_REG1, scratch16);
-+	}
-+	/* Lock WP */
-+	pci_read_config_byte(chip->pdev,
-+					O2_SD_LOCK_WP, &scratch8);
-+	scratch8 |= 0x80;
-+	pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch8);
-+
-+	return ret;
-+}
-+
- static int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
- {
- 	struct sdhci_pci_chip *chip;
-@@ -703,10 +761,11 @@ static int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
- 	case PCI_DEVICE_ID_O2_GG8_9861:
- 	case PCI_DEVICE_ID_O2_GG8_9862:
- 	case PCI_DEVICE_ID_O2_GG8_9863:
--		host->mmc->caps2 |= MMC_CAP2_NO_SDIO;
-+		host->mmc->caps2 |= MMC_CAP2_NO_SDIO | MMC_CAP2_SD_EXP | MMC_CAP2_SD_EXP_1_2V;
- 		host->mmc->caps |= MMC_CAP_HW_RESET;
- 		host->quirks2 |= SDHCI_QUIRK2_PRESET_VALUE_BROKEN;
- 		slot->host->mmc_host_ops.get_cd = sdhci_o2_get_cd;
-+		host->mmc_host_ops.init_sd_express = sdhci_pci_o2_init_sd_express;
- 		break;
- 	default:
- 		break;
--- 
-2.25.1
+> ---
+> the previous patche link:
+> v4: https://patchwork.kernel.org/project/linux-mediatek/patch/20230605121442.23622-1-wenbin.mei@mediatek.com/
+> v3: https://patchwork.kernel.org/project/linux-mediatek/patch/20230605060107.22044-1-wenbin.mei@mediatek.com/
+> v2: https://patchwork.kernel.org/project/linux-mediatek/patch/20230510015851.11830-1-wenbin.mei@mediatek.com/
+> v1: https://patchwork.kernel.org/project/linux-mediatek/patch/20230419063048.10516-1-wenbin.mei@mediatek.com/
+> ---
+>  drivers/mmc/host/cqhci.h  |  2 ++
+>  drivers/mmc/host/mtk-sd.c | 47 +++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 49 insertions(+)
+> 
+> diff --git a/drivers/mmc/host/cqhci.h b/drivers/mmc/host/cqhci.h
+> index ba9387ed90eb..e35c655edefc 100644
+> --- a/drivers/mmc/host/cqhci.h
+> +++ b/drivers/mmc/host/cqhci.h
+> @@ -23,6 +23,8 @@
+>  /* capabilities */
+>  #define CQHCI_CAP			0x04
+>  #define CQHCI_CAP_CS			0x10000000 /* Crypto Support */
+> +#define CQHCI_CAP_ITCFMUL		GENMASK(15, 12)
+> +#define CQHCI_ITCFMUL(x)		FIELD_GET(CQHCI_CAP_ITCFMUL, (x))
+>  
+>  /* configuration */
+>  #define CQHCI_CFG			0x08
+> diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+> index 8ce864169986..b582f19f82f2 100644
+> --- a/drivers/mmc/host/mtk-sd.c
+> +++ b/drivers/mmc/host/mtk-sd.c
+> @@ -473,6 +473,7 @@ struct msdc_host {
+>  	struct msdc_tune_para def_tune_para; /* default tune setting */
+>  	struct msdc_tune_para saved_tune_para; /* tune result of CMD21/CMD19 */
+>  	struct cqhci_host *cq_host;
+> +	u32 cq_ssc1_time;
+>  };
+>  
+>  static const struct mtk_mmc_compatible mt2701_compat = {
+> @@ -2450,9 +2451,50 @@ static void msdc_hs400_enhanced_strobe(struct mmc_host *mmc,
+>  	}
+>  }
+>  
+> +static void msdc_cqe_cit_cal(struct msdc_host *host, u64 timer_ns)
+> +{
+> +	struct mmc_host *mmc = mmc_from_priv(host);
+> +	struct cqhci_host *cq_host = mmc->cqe_private;
+> +	u8 itcfmul;
+> +	unsigned long hclk_freq;
+> +	u64 value;
+> +
+> +	/*
+> +	 * On MediaTek SoCs the MSDC controller's CQE uses msdc_hclk as ITCFVAL
+> +	 * so we multiply/divide the HCLK frequency by ITCFMUL to calculate the
+> +	 * Send Status Command Idle Timer (CIT) value.
+> +	 */
+> +	hclk_freq = clk_get_rate(host->h_clk);
+> +	itcfmul = CQHCI_ITCFMUL(cqhci_readl(cq_host, CQHCI_CAP));
+> +	switch (itcfmul) {
+> +	case 0x0:
+> +		do_div(hclk_freq, 1000);
+> +		break;
+> +	case 0x1:
+> +		do_div(hclk_freq, 100);
+> +		break;
+> +	case 0x2:
+> +		do_div(hclk_freq, 10);
+> +		break;
+> +	case 0x3:
+> +		break;
+> +	case 0x4:
+> +		hclk_freq = hclk_freq * 10;
+> +		break;
+> +	default:
+> +		host->cq_ssc1_time = 0x40;
+> +		return;
+> +	}
+> +
+> +	value = hclk_freq * timer_ns;
+> +	do_div(value, 1000000000);
+> +	host->cq_ssc1_time = value;
+> +}
+> +
+>  static void msdc_cqe_enable(struct mmc_host *mmc)
+>  {
+>  	struct msdc_host *host = mmc_priv(mmc);
+> +	struct cqhci_host *cq_host = mmc->cqe_private;
+>  
+>  	/* enable cmdq irq */
+>  	writel(MSDC_INT_CMDQ, host->base + MSDC_INTEN);
+> @@ -2462,6 +2504,9 @@ static void msdc_cqe_enable(struct mmc_host *mmc)
+>  	msdc_set_busy_timeout(host, 20 * 1000000000ULL, 0);
+>  	/* default read data timeout 1s */
+>  	msdc_set_timeout(host, 1000000000ULL, 0);
+> +
+> +	/* Set the send status command idle timer */
+> +	cqhci_writel(cq_host, host->cq_ssc1_time, CQHCI_SSC1);
+>  }
+>  
+>  static void msdc_cqe_disable(struct mmc_host *mmc, bool recovery)
+> @@ -2803,6 +2848,8 @@ static int msdc_drv_probe(struct platform_device *pdev)
+>  		/* cqhci 16bit length */
+>  		/* 0 size, means 65536 so we don't have to -1 here */
+>  		mmc->max_seg_size = 64 * 1024;
+> +		/* Reduce CIT to 0x40 that corresponds to 2.35us */
+> +		msdc_cqe_cit_cal(host, 2350);
+>  	}
+>  
+>  	ret = devm_request_irq(&pdev->dev, host->irq, msdc_irq,
 
