@@ -2,196 +2,503 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE08672C80E
-	for <lists+linux-mmc@lfdr.de>; Mon, 12 Jun 2023 16:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C551B72C81C
+	for <lists+linux-mmc@lfdr.de>; Mon, 12 Jun 2023 16:22:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237499AbjFLOUz (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 12 Jun 2023 10:20:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60920 "EHLO
+        id S238215AbjFLOWW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 12 Jun 2023 10:22:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239256AbjFLOUR (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Jun 2023 10:20:17 -0400
-Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D26254EC3
-        for <linux-mmc@vger.kernel.org>; Mon, 12 Jun 2023 07:17:56 -0700 (PDT)
-Received: by mail-ot1-x331.google.com with SMTP id 46e09a7af769-6b16cbe4fb6so2930030a34.1
-        for <linux-mmc@vger.kernel.org>; Mon, 12 Jun 2023 07:17:56 -0700 (PDT)
+        with ESMTP id S238024AbjFLOWH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Jun 2023 10:22:07 -0400
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 131282952
+        for <linux-mmc@vger.kernel.org>; Mon, 12 Jun 2023 07:19:38 -0700 (PDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-56d07c7cf03so19831927b3.1
+        for <linux-mmc@vger.kernel.org>; Mon, 12 Jun 2023 07:19:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686579407; x=1689171407;
+        d=linaro.org; s=google; t=1686579412; x=1689171412;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3KEZk+7J6jH+5aotS2FyIOrhqYERHH/vUHWmZ4rNxhg=;
-        b=bZn+CTs4P4E4qcCwjLB17/HmQbPIV+EwRKaOn23NbrEuaKywaKECFGxeDgst7oqsry
-         8E98zn+lshy2NuH5ncrt0TPX773Fh3BUnKyZOJXTrb+aI0PfHvf5qUCxUFJbVl/XslS3
-         +gsKNRFIbTVDnRADz5urtCDpqGMxa28zNgdKG1Vxj70c2LJ2QFJEBwG8LMn7suVLP8iw
-         LefKkfedKJhJ1lcUFm17eU5OqV/HvYn0aTLy/+6upZJjMMvC+fq6eZd6oul8eY67Zpam
-         5zmZR76yLa/RmoORuZOeTP+DANNTQeXifYt5BiW1xK381d+qJbG6Ejvl6fUWnQ1ivCzC
-         QIug==
+        bh=hX0dcqVCTAohNpIOdz9wfXXAKChOVi6O+vfG9huLBZ0=;
+        b=fOWJfhO6FkCzKYhR10xhZaEZwgJyt5MeKw//e6KBk/dmw9+7j/55L/lnzQaF8gLoVM
+         koBGqs/KI1zUzHhMEyE/Z7NUMHV/c+IERrsmy3PO8ZBB6ti8AF4BuockI3/i492eocK8
+         3I9JwAbcohuFB4vBlIzzzhcCKYQ5yKUvb33DyoGVqqcswYNzFrHfTbrEspCCjMP0SQek
+         F7UnpFaafjMpzNP5X0UrW6KqB7nJLuolpjldsEvOGq/pH6dKw9DeqB3y0nU63L9Fh22L
+         JcFYhAFo59wqOpceIQpSDxQp0ixX7mnDXve7/FYNfZA31kFmeFryF5jX9HXk7J0hnhRH
+         Gsaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686579407; x=1689171407;
+        d=1e100.net; s=20221208; t=1686579412; x=1689171412;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3KEZk+7J6jH+5aotS2FyIOrhqYERHH/vUHWmZ4rNxhg=;
-        b=G9auPzG5tBPC/JFRhfKJVpekL3KSdoo6QmqEMzt98FnWNMkwbFC/dpiywmN4+P+khS
-         uJmS+1b4Jp1Tya7hBmebndIKcoHnqVcyZJD4zNgK8tzDqKuD9aDa6ZqnBBh4ejZL2d4s
-         OmCa5GCNMhAwanBVpOtoVkuxI5kJfuE6IIWOND4gJ378j0gzoXPVYSRd6BR4kbHW+aAm
-         /VjJkHxDf50YxhY/Nv0liU9UhcdEsEE9BDrMzgfKOgOukp1jTaXEdobTHCjLKF/fAq7C
-         Mdy8FObVz1/qOi+fTH7BFP3on1hNNK/m9lvS5f+d4j99T9KR2HsBrSJJNrsqvM/Xw7wv
-         Temg==
-X-Gm-Message-State: AC+VfDwefZ+skFVnmT8R001dBpSY2RKAUwhzloposAVkOWVWX5awJ90U
-        f6bMIJmKFtt5J7rIY3ZTIXq5fmTHCrcEmr5YIlNQaw==
-X-Google-Smtp-Source: ACHHUZ57+N2fxPaYk1KsjJ78p5skxj4sQPHQWMVRz384v60dInqhXhnP1Xd2BZXxN8RcGnafD1Ct7EAMdvyTUPuUwhE=
-X-Received: by 2002:a05:6359:679d:b0:123:4e5e:d65 with SMTP id
- sq29-20020a056359679d00b001234e5e0d65mr4491115rwb.10.1686579406844; Mon, 12
- Jun 2023 07:16:46 -0700 (PDT)
+        bh=hX0dcqVCTAohNpIOdz9wfXXAKChOVi6O+vfG9huLBZ0=;
+        b=d4YJolNvkXGpElAWnbSLKM5b7kj23imxCSNi9C0jSLpYuNJXdFrrXIBLVc096zCxVD
+         CUT9Nw9imK6dNTkLnsfkD818CHkUbQ+Z4AOQ4T3zdSG3S9chzw/eUCUCatb+67hO8udL
+         aFnWFZMlSta8YQlUZDLApQTk+2bJBwj9OcXzQZX0FpRs1+OU8q90zKp6JwGPs33tYQfS
+         W3bWJnS1d3CCih5QLcd5dIDkk8geXN8xrAtxW2MmIXH7iuMNwq/s5mVec52H0Udo6pm/
+         Kkngaj00HY5FKaxkdu2d+wjPrwYsmZWs10gF3eGILGT+enhhvTNtgkM2L5CsiAozOxVT
+         qU1Q==
+X-Gm-Message-State: AC+VfDxUnVss7q1tihI2uZhDmwpcpLs3J6a0yoMBspWtQTcPk7/MFml2
+        ovShojXR2hQoGEoBiGqiGQ2Qc5QDbvmmzXBM8Q2v3g==
+X-Google-Smtp-Source: ACHHUZ4Uccf+Zr1ETxNk/hfF6OldcR61PPT1Konr1kQaDGL/Th1VVsFCQzrWBhO3/XBS0VxHd+tYN1EOa7JaH+jB+vk=
+X-Received: by 2002:a25:8d09:0:b0:ba8:296c:e59c with SMTP id
+ n9-20020a258d09000000b00ba8296ce59cmr8243538ybl.53.1686579410449; Mon, 12 Jun
+ 2023 07:16:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230604121223.9625-1-stefan.wahren@i2se.com> <20230604121223.9625-9-stefan.wahren@i2se.com>
-In-Reply-To: <20230604121223.9625-9-stefan.wahren@i2se.com>
+References: <20230408214041.533749-1-abel.vesa@linaro.org> <20230408214041.533749-4-abel.vesa@linaro.org>
+ <ZHbtTmEAnzZWbHnJ@linaro.org>
+In-Reply-To: <ZHbtTmEAnzZWbHnJ@linaro.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 12 Jun 2023 16:16:10 +0200
-Message-ID: <CAPDyKFpfcWifMwWHrFzKg+o8hD860x+eB5hT5ZUKyO6uc75Sug@mail.gmail.com>
-Subject: Re: [PATCH 08/10] dt-bindings: mmc: convert bcm2835-sdhost bindings
- to YAML
-To:     Stefan Wahren <stefan.wahren@i2se.com>
-Cc:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+Date:   Mon, 12 Jun 2023 16:16:14 +0200
+Message-ID: <CAPDyKFr27G_aqgvCZdtJxcXypndPMcwhyVSifX1h4cYvBufZYA@mail.gmail.com>
+Subject: Re: [PATCH v7 3/3] mmc: sdhci-msm: Switch to the new ICE API
+To:     Abel Vesa <abel.vesa@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Biggers <ebiggers@kernel.org>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-scsi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Sun, 4 Jun 2023 at 14:13, Stefan Wahren <stefan.wahren@i2se.com> wrote:
+On Wed, 31 May 2023 at 08:46, Abel Vesa <abel.vesa@linaro.org> wrote:
 >
-> Convert the DT binding document for bcm2835-sdhost from .txt to YAML.
+> On 23-04-09 00:40:41, Abel Vesa wrote:
+> > Now that there is a new dedicated ICE driver, drop the sdhci-msm ICE
+> > implementation and use the new ICE api provided by the Qualcomm soc
+> > driver ice. The platforms that already have ICE support will use the
+> > API as library since there will not be a devicetree node, but instead
+> > they have reg range. In this case, the of_qcom_ice_get will return an
+> > ICE instance created for the consumer's device. But if there are
+> > platforms that do not have ice reg in the consumer devicetree node
+> > and instead provide a dedicated ICE devicetree node, theof_qcom_ice_get
+> > will look up the device based on qcom,ice property and will get the ICE
+> > instance registered by the probe function of the ice driver.
+> >
+> > The ICE clock is now handle by the new driver. This is done by enabling
+> > it on the creation of the ICE instance and then enabling/disabling it on
+> > SDCC runtime resume/suspend.
+> >
+> > Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> > ---
 >
-> Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+> Hi Ulf,
+>
+> I think you can now apply this one again.
+>
+> The renaming of the ice module is part of -next now and it is:
+> 47820d3263a4 ("soc: qcom: Rename ice to qcom_ice to avoid module name conflict")
 
-Applied for next, thanks!
+Having the commit in next doesn't really help when applying to my mmc
+tree. It will still be broken.
+
+However, I found that the patch is now part of v6.4-rc6, which means I
+can base my tree on that and then apply it. So, applied for next,
+thanks!
 
 Kind regards
 Uffe
 
 
-> ---
->  .../bindings/mmc/brcm,bcm2835-sdhost.txt      | 23 --------
->  .../bindings/mmc/brcm,bcm2835-sdhost.yaml     | 54 +++++++++++++++++++
->  2 files changed, 54 insertions(+), 23 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/mmc/brcm,bcm2835-sdhost.txt
->  create mode 100644 Documentation/devicetree/bindings/mmc/brcm,bcm2835-sdhost.yaml
 >
-> diff --git a/Documentation/devicetree/bindings/mmc/brcm,bcm2835-sdhost.txt b/Documentation/devicetree/bindings/mmc/brcm,bcm2835-sdhost.txt
-> deleted file mode 100644
-> index d876580ae3b8..000000000000
-> --- a/Documentation/devicetree/bindings/mmc/brcm,bcm2835-sdhost.txt
-> +++ /dev/null
-> @@ -1,23 +0,0 @@
-> -Broadcom BCM2835 SDHOST controller
-> -
-> -This file documents differences between the core properties described
-> -by mmc.txt and the properties that represent the BCM2835 controller.
-> -
-> -Required properties:
-> -- compatible: Should be "brcm,bcm2835-sdhost".
-> -- clocks: The clock feeding the SDHOST controller.
-> -
-> -Optional properties:
-> -- dmas: DMA channel for read and write.
-> -          See Documentation/devicetree/bindings/dma/dma.txt for details
-> -
-> -Example:
-> -
-> -sdhost: mmc@7e202000 {
-> -       compatible = "brcm,bcm2835-sdhost";
-> -       reg = <0x7e202000 0x100>;
-> -       interrupts = <2 24>;
-> -       clocks = <&clocks BCM2835_CLOCK_VPU>;
-> -       dmas = <&dma 13>;
-> -       dma-names = "rx-tx";
-> -};
-> diff --git a/Documentation/devicetree/bindings/mmc/brcm,bcm2835-sdhost.yaml b/Documentation/devicetree/bindings/mmc/brcm,bcm2835-sdhost.yaml
-> new file mode 100644
-> index 000000000000..3a5a44800675
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mmc/brcm,bcm2835-sdhost.yaml
-> @@ -0,0 +1,54 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mmc/brcm,bcm2835-sdhost.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Broadcom BCM2835 SDHOST controller
-> +
-> +maintainers:
-> +  - Stefan Wahren <stefan.wahren@i2se.com>
-> +
-> +allOf:
-> +  - $ref: mmc-controller.yaml
-> +
-> +properties:
-> +  compatible:
-> +    const: brcm,bcm2835-sdhost
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  dmas:
-> +    maxItems: 1
-> +
-> +  dma-names:
-> +    const: rx-tx
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/bcm2835.h>
-> +
-> +    sdhost: mmc@7e202000 {
-> +      compatible = "brcm,bcm2835-sdhost";
-> +      reg = <0x7e202000 0x100>;
-> +      interrupts = <2 24>;
-> +      clocks = <&clocks BCM2835_CLOCK_VPU>;
-> +      dmas = <&dma 13>;
-> +      dma-names = "rx-tx";
-> +      bus-width = <4>;
-> +    };
-> --
-> 2.34.1
+> Thanks,
+> Abel
 >
+> >
+> > The v6 is here:
+> > https://lore.kernel.org/all/20230407105029.2274111-6-abel.vesa@linaro.org/
+> >
+> > Changes since v6:
+> >  * none
+> >
+> > Changes since v5:
+> >  * Reworded the commit message to add information about what happens
+> >    with the ICE clock and who handles it.
+> >  * Added temp ice variable to avoid setting the host ice to any value
+> >    until a valid one is provided.
+> >  * Dropped the qcom_scm.h include as it is not used anymore now that we
+> >    moved that to the new ICE driver
+> >
+> > Changes since v4:
+> >  * none
+> >
+> > Changes since v3:
+> >  * added back the checks for and the setting of MMC_CAP2_CRYPTO
+> >  * added enable/resume/suspend implementation for !CONFIG_MMC_CRYPTO
+> >  * dropped cfg->crypto_cap_idx argument from qcom_ice_program_key
+> >
+> > Changes since v2:
+> >  * added the suspend API call for ICE
+> >  * kept old wrappers over ICE API in
+> >
+> > Changes since v1:
+> >  * Added a check for supported algorithm and key size
+> >    and passed the ICE defined values for algorithm and key size
+> >  * Added call to evict function
+> >
+> >  drivers/mmc/host/Kconfig     |   2 +-
+> >  drivers/mmc/host/sdhci-msm.c | 223 ++++++++---------------------------
+> >  2 files changed, 48 insertions(+), 177 deletions(-)
+> >
+> > diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> > index 4745fe217ade..09f837df5435 100644
+> > --- a/drivers/mmc/host/Kconfig
+> > +++ b/drivers/mmc/host/Kconfig
+> > @@ -549,7 +549,7 @@ config MMC_SDHCI_MSM
+> >       depends on MMC_SDHCI_PLTFM
+> >       select MMC_SDHCI_IO_ACCESSORS
+> >       select MMC_CQHCI
+> > -     select QCOM_SCM if MMC_CRYPTO
+> > +     select QCOM_INLINE_CRYPTO_ENGINE if MMC_CRYPTO
+> >       help
+> >         This selects the Secure Digital Host Controller Interface (SDHCI)
+> >         support present in Qualcomm SOCs. The controller supports
+> > diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+> > index 8ac81d57a3df..98171bf5748c 100644
+> > --- a/drivers/mmc/host/sdhci-msm.c
+> > +++ b/drivers/mmc/host/sdhci-msm.c
+> > @@ -13,12 +13,13 @@
+> >  #include <linux/pm_opp.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/iopoll.h>
+> > -#include <linux/firmware/qcom/qcom_scm.h>
+> >  #include <linux/regulator/consumer.h>
+> >  #include <linux/interconnect.h>
+> >  #include <linux/pinctrl/consumer.h>
+> >  #include <linux/reset.h>
+> >
+> > +#include <soc/qcom/ice.h>
+> > +
+> >  #include "sdhci-cqhci.h"
+> >  #include "sdhci-pltfm.h"
+> >  #include "cqhci.h"
+> > @@ -258,12 +259,14 @@ struct sdhci_msm_variant_info {
+> >  struct sdhci_msm_host {
+> >       struct platform_device *pdev;
+> >       void __iomem *core_mem; /* MSM SDCC mapped address */
+> > -     void __iomem *ice_mem;  /* MSM ICE mapped address (if available) */
+> >       int pwr_irq;            /* power irq */
+> >       struct clk *bus_clk;    /* SDHC bus voter clock */
+> >       struct clk *xo_clk;     /* TCXO clk needed for FLL feature of cm_dll*/
+> > -     /* core, iface, cal, sleep, and ice clocks */
+> > -     struct clk_bulk_data bulk_clks[5];
+> > +     /* core, iface, cal and sleep clocks */
+> > +     struct clk_bulk_data bulk_clks[4];
+> > +#ifdef CONFIG_MMC_CRYPTO
+> > +     struct qcom_ice *ice;
+> > +#endif
+> >       unsigned long clk_rate;
+> >       struct mmc_host *mmc;
+> >       bool use_14lpp_dll_reset;
+> > @@ -1804,164 +1807,51 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
+> >
+> >  #ifdef CONFIG_MMC_CRYPTO
+> >
+> > -#define AES_256_XTS_KEY_SIZE                 64
+> > -
+> > -/* QCOM ICE registers */
+> > -
+> > -#define QCOM_ICE_REG_VERSION                 0x0008
+> > -
+> > -#define QCOM_ICE_REG_FUSE_SETTING            0x0010
+> > -#define QCOM_ICE_FUSE_SETTING_MASK           0x1
+> > -#define QCOM_ICE_FORCE_HW_KEY0_SETTING_MASK  0x2
+> > -#define QCOM_ICE_FORCE_HW_KEY1_SETTING_MASK  0x4
+> > -
+> > -#define QCOM_ICE_REG_BIST_STATUS             0x0070
+> > -#define QCOM_ICE_BIST_STATUS_MASK            0xF0000000
+> > -
+> > -#define QCOM_ICE_REG_ADVANCED_CONTROL                0x1000
+> > -
+> > -#define sdhci_msm_ice_writel(host, val, reg) \
+> > -     writel((val), (host)->ice_mem + (reg))
+> > -#define sdhci_msm_ice_readl(host, reg)       \
+> > -     readl((host)->ice_mem + (reg))
+> > -
+> > -static bool sdhci_msm_ice_supported(struct sdhci_msm_host *msm_host)
+> > -{
+> > -     struct device *dev = mmc_dev(msm_host->mmc);
+> > -     u32 regval = sdhci_msm_ice_readl(msm_host, QCOM_ICE_REG_VERSION);
+> > -     int major = regval >> 24;
+> > -     int minor = (regval >> 16) & 0xFF;
+> > -     int step = regval & 0xFFFF;
+> > -
+> > -     /* For now this driver only supports ICE version 3. */
+> > -     if (major != 3) {
+> > -             dev_warn(dev, "Unsupported ICE version: v%d.%d.%d\n",
+> > -                      major, minor, step);
+> > -             return false;
+> > -     }
+> > -
+> > -     dev_info(dev, "Found QC Inline Crypto Engine (ICE) v%d.%d.%d\n",
+> > -              major, minor, step);
+> > -
+> > -     /* If fuses are blown, ICE might not work in the standard way. */
+> > -     regval = sdhci_msm_ice_readl(msm_host, QCOM_ICE_REG_FUSE_SETTING);
+> > -     if (regval & (QCOM_ICE_FUSE_SETTING_MASK |
+> > -                   QCOM_ICE_FORCE_HW_KEY0_SETTING_MASK |
+> > -                   QCOM_ICE_FORCE_HW_KEY1_SETTING_MASK)) {
+> > -             dev_warn(dev, "Fuses are blown; ICE is unusable!\n");
+> > -             return false;
+> > -     }
+> > -     return true;
+> > -}
+> > -
+> > -static inline struct clk *sdhci_msm_ice_get_clk(struct device *dev)
+> > -{
+> > -     return devm_clk_get(dev, "ice");
+> > -}
+> > -
+> >  static int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
+> >                             struct cqhci_host *cq_host)
+> >  {
+> >       struct mmc_host *mmc = msm_host->mmc;
+> >       struct device *dev = mmc_dev(mmc);
+> > -     struct resource *res;
+> > +     struct qcom_ice *ice;
+> >
+> >       if (!(cqhci_readl(cq_host, CQHCI_CAP) & CQHCI_CAP_CS))
+> >               return 0;
+> >
+> > -     res = platform_get_resource_byname(msm_host->pdev, IORESOURCE_MEM,
+> > -                                        "ice");
+> > -     if (!res) {
+> > -             dev_warn(dev, "ICE registers not found\n");
+> > -             goto disable;
+> > -     }
+> > -
+> > -     if (!qcom_scm_ice_available()) {
+> > -             dev_warn(dev, "ICE SCM interface not found\n");
+> > -             goto disable;
+> > +     ice = of_qcom_ice_get(dev);
+> > +     if (ice == ERR_PTR(-EOPNOTSUPP)) {
+> > +             dev_warn(dev, "Disabling inline encryption support\n");
+> > +             ice = NULL;
+> >       }
+> >
+> > -     msm_host->ice_mem = devm_ioremap_resource(dev, res);
+> > -     if (IS_ERR(msm_host->ice_mem))
+> > -             return PTR_ERR(msm_host->ice_mem);
+> > -
+> > -     if (!sdhci_msm_ice_supported(msm_host))
+> > -             goto disable;
+> > +     if (IS_ERR_OR_NULL(ice))
+> > +             return PTR_ERR_OR_ZERO(ice);
+> >
+> > +     msm_host->ice = ice;
+> >       mmc->caps2 |= MMC_CAP2_CRYPTO;
+> > -     return 0;
+> >
+> > -disable:
+> > -     dev_warn(dev, "Disabling inline encryption support\n");
+> >       return 0;
+> >  }
+> >
+> > -static void sdhci_msm_ice_low_power_mode_enable(struct sdhci_msm_host *msm_host)
+> > -{
+> > -     u32 regval;
+> > -
+> > -     regval = sdhci_msm_ice_readl(msm_host, QCOM_ICE_REG_ADVANCED_CONTROL);
+> > -     /*
+> > -      * Enable low power mode sequence
+> > -      * [0]-0, [1]-0, [2]-0, [3]-E, [4]-0, [5]-0, [6]-0, [7]-0
+> > -      */
+> > -     regval |= 0x7000;
+> > -     sdhci_msm_ice_writel(msm_host, regval, QCOM_ICE_REG_ADVANCED_CONTROL);
+> > -}
+> > -
+> > -static void sdhci_msm_ice_optimization_enable(struct sdhci_msm_host *msm_host)
+> > +static void sdhci_msm_ice_enable(struct sdhci_msm_host *msm_host)
+> >  {
+> > -     u32 regval;
+> > -
+> > -     /* ICE Optimizations Enable Sequence */
+> > -     regval = sdhci_msm_ice_readl(msm_host, QCOM_ICE_REG_ADVANCED_CONTROL);
+> > -     regval |= 0xD807100;
+> > -     /* ICE HPG requires delay before writing */
+> > -     udelay(5);
+> > -     sdhci_msm_ice_writel(msm_host, regval, QCOM_ICE_REG_ADVANCED_CONTROL);
+> > -     udelay(5);
+> > +     if (msm_host->mmc->caps2 & MMC_CAP2_CRYPTO)
+> > +             qcom_ice_enable(msm_host->ice);
+> >  }
+> >
+> > -/*
+> > - * Wait until the ICE BIST (built-in self-test) has completed.
+> > - *
+> > - * This may be necessary before ICE can be used.
+> > - *
+> > - * Note that we don't really care whether the BIST passed or failed; we really
+> > - * just want to make sure that it isn't still running.  This is because (a) the
+> > - * BIST is a FIPS compliance thing that never fails in practice, (b) ICE is
+> > - * documented to reject crypto requests if the BIST fails, so we needn't do it
+> > - * in software too, and (c) properly testing storage encryption requires testing
+> > - * the full storage stack anyway, and not relying on hardware-level self-tests.
+> > - */
+> > -static int sdhci_msm_ice_wait_bist_status(struct sdhci_msm_host *msm_host)
+> > +static __maybe_unused int sdhci_msm_ice_resume(struct sdhci_msm_host *msm_host)
+> >  {
+> > -     u32 regval;
+> > -     int err;
+> > +     if (msm_host->mmc->caps2 & MMC_CAP2_CRYPTO)
+> > +             return qcom_ice_resume(msm_host->ice);
+> >
+> > -     err = readl_poll_timeout(msm_host->ice_mem + QCOM_ICE_REG_BIST_STATUS,
+> > -                              regval, !(regval & QCOM_ICE_BIST_STATUS_MASK),
+> > -                              50, 5000);
+> > -     if (err)
+> > -             dev_err(mmc_dev(msm_host->mmc),
+> > -                     "Timed out waiting for ICE self-test to complete\n");
+> > -     return err;
+> > +     return 0;
+> >  }
+> >
+> > -static void sdhci_msm_ice_enable(struct sdhci_msm_host *msm_host)
+> > +static __maybe_unused int sdhci_msm_ice_suspend(struct sdhci_msm_host *msm_host)
+> >  {
+> > -     if (!(msm_host->mmc->caps2 & MMC_CAP2_CRYPTO))
+> > -             return;
+> > -     sdhci_msm_ice_low_power_mode_enable(msm_host);
+> > -     sdhci_msm_ice_optimization_enable(msm_host);
+> > -     sdhci_msm_ice_wait_bist_status(msm_host);
+> > -}
+> > +     if (msm_host->mmc->caps2 & MMC_CAP2_CRYPTO)
+> > +             return qcom_ice_suspend(msm_host->ice);
+> >
+> > -static int __maybe_unused sdhci_msm_ice_resume(struct sdhci_msm_host *msm_host)
+> > -{
+> > -     if (!(msm_host->mmc->caps2 & MMC_CAP2_CRYPTO))
+> > -             return 0;
+> > -     return sdhci_msm_ice_wait_bist_status(msm_host);
+> > +     return 0;
+> >  }
+> >
+> >  /*
+> > @@ -1972,48 +1862,28 @@ static int sdhci_msm_program_key(struct cqhci_host *cq_host,
+> >                                const union cqhci_crypto_cfg_entry *cfg,
+> >                                int slot)
+> >  {
+> > -     struct device *dev = mmc_dev(cq_host->mmc);
+> > +     struct sdhci_host *host = mmc_priv(cq_host->mmc);
+> > +     struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> > +     struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
+> >       union cqhci_crypto_cap_entry cap;
+> > -     union {
+> > -             u8 bytes[AES_256_XTS_KEY_SIZE];
+> > -             u32 words[AES_256_XTS_KEY_SIZE / sizeof(u32)];
+> > -     } key;
+> > -     int i;
+> > -     int err;
+> > -
+> > -     if (!(cfg->config_enable & CQHCI_CRYPTO_CONFIGURATION_ENABLE))
+> > -             return qcom_scm_ice_invalidate_key(slot);
+> >
+> >       /* Only AES-256-XTS has been tested so far. */
+> >       cap = cq_host->crypto_cap_array[cfg->crypto_cap_idx];
+> >       if (cap.algorithm_id != CQHCI_CRYPTO_ALG_AES_XTS ||
+> > -         cap.key_size != CQHCI_CRYPTO_KEY_SIZE_256) {
+> > -             dev_err_ratelimited(dev,
+> > -                                 "Unhandled crypto capability; algorithm_id=%d, key_size=%d\n",
+> > -                                 cap.algorithm_id, cap.key_size);
+> > +             cap.key_size != CQHCI_CRYPTO_KEY_SIZE_256)
+> >               return -EINVAL;
+> > -     }
+> >
+> > -     memcpy(key.bytes, cfg->crypto_key, AES_256_XTS_KEY_SIZE);
+> > -
+> > -     /*
+> > -      * The SCM call byte-swaps the 32-bit words of the key.  So we have to
+> > -      * do the same, in order for the final key be correct.
+> > -      */
+> > -     for (i = 0; i < ARRAY_SIZE(key.words); i++)
+> > -             __cpu_to_be32s(&key.words[i]);
+> > -
+> > -     err = qcom_scm_ice_set_key(slot, key.bytes, AES_256_XTS_KEY_SIZE,
+> > -                                QCOM_SCM_ICE_CIPHER_AES_256_XTS,
+> > -                                cfg->data_unit_size);
+> > -     memzero_explicit(&key, sizeof(key));
+> > -     return err;
+> > +     if (cfg->config_enable & CQHCI_CRYPTO_CONFIGURATION_ENABLE)
+> > +             return qcom_ice_program_key(msm_host->ice,
+> > +                                         QCOM_ICE_CRYPTO_ALG_AES_XTS,
+> > +                                         QCOM_ICE_CRYPTO_KEY_SIZE_256,
+> > +                                         cfg->crypto_key,
+> > +                                         cfg->data_unit_size, slot);
+> > +     else
+> > +             return qcom_ice_evict_key(msm_host->ice, slot);
+> >  }
+> > +
+> >  #else /* CONFIG_MMC_CRYPTO */
+> > -static inline struct clk *sdhci_msm_ice_get_clk(struct device *dev)
+> > -{
+> > -     return NULL;
+> > -}
+> >
+> >  static inline int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
+> >                                    struct cqhci_host *cq_host)
+> > @@ -2025,11 +1895,17 @@ static inline void sdhci_msm_ice_enable(struct sdhci_msm_host *msm_host)
+> >  {
+> >  }
+> >
+> > -static inline int __maybe_unused
+> > +static inline __maybe_unused int
+> >  sdhci_msm_ice_resume(struct sdhci_msm_host *msm_host)
+> >  {
+> >       return 0;
+> >  }
+> > +
+> > +static inline __maybe_unused int
+> > +sdhci_msm_ice_suspend(struct sdhci_msm_host *msm_host)
+> > +{
+> > +     return 0;
+> > +}
+> >  #endif /* !CONFIG_MMC_CRYPTO */
+> >
+> >  /*****************************************************************************\
+> > @@ -2630,11 +2506,6 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+> >               clk = NULL;
+> >       msm_host->bulk_clks[3].clk = clk;
+> >
+> > -     clk = sdhci_msm_ice_get_clk(&pdev->dev);
+> > -     if (IS_ERR(clk))
+> > -             clk = NULL;
+> > -     msm_host->bulk_clks[4].clk = clk;
+> > -
+> >       ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
+> >                                     msm_host->bulk_clks);
+> >       if (ret)
+> > @@ -2827,7 +2698,7 @@ static __maybe_unused int sdhci_msm_runtime_suspend(struct device *dev)
+> >       clk_bulk_disable_unprepare(ARRAY_SIZE(msm_host->bulk_clks),
+> >                                  msm_host->bulk_clks);
+> >
+> > -     return 0;
+> > +     return sdhci_msm_ice_suspend(msm_host);
+> >  }
+> >
+> >  static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
+> > --
+> > 2.34.1
+> >
