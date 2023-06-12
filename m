@@ -2,59 +2,65 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB35472C813
-	for <lists+linux-mmc@lfdr.de>; Mon, 12 Jun 2023 16:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2138472C8B5
+	for <lists+linux-mmc@lfdr.de>; Mon, 12 Jun 2023 16:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237635AbjFLOU6 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 12 Jun 2023 10:20:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60836 "EHLO
+        id S232538AbjFLOhj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 12 Jun 2023 10:37:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239631AbjFLOUf (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Jun 2023 10:20:35 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB0F1BF4
-        for <linux-mmc@vger.kernel.org>; Mon, 12 Jun 2023 07:18:09 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-bcc50a23645so814424276.2
-        for <linux-mmc@vger.kernel.org>; Mon, 12 Jun 2023 07:18:09 -0700 (PDT)
+        with ESMTP id S232370AbjFLOhi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 12 Jun 2023 10:37:38 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FF2E93
+        for <linux-mmc@vger.kernel.org>; Mon, 12 Jun 2023 07:37:37 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4f63ea7bfb6so4930551e87.3
+        for <linux-mmc@vger.kernel.org>; Mon, 12 Jun 2023 07:37:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686579424; x=1689171424;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=thz1rU6TqUqhP4hqV/tPAC8YgYdbM3d8oNqdBfG0TWQ=;
-        b=FGx93jm5DHcCzgbJrMTqyqyHC9ByolTmytgHxNDUmpvCli+E2RzMDi44n3dxKLCUFq
-         4C1l/+nIZufZsQSrTKb5oUbQeytNLgjpXH2zXlTJPch+CBQwpX5n/kn9mlsbqjGefAnK
-         4qvf9as7rESZKXHEKNZ/0tSc8Oqq5BNGK38aHMNNXn2K/hISubGTH3Vh7O7I1Q+k9GkO
-         Cs5ixA+audCWEfpQf1hF/6pJlXe7vkakxSpMlTm6UoOL5hdGo5oJSh/+zOEinEoB+ECw
-         e1WL+QIMgqWoiQeI6VYxYgKrYG5xS0z3yPFuWgqWPRIZTXgGc1xJnZA7QSZ11SiH4Ix+
-         OyXg==
+        d=linaro.org; s=google; t=1686580655; x=1689172655;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C6VYNnggALQS+aWwxSlOdeJ3Ss1vnAASO8xpvHWuOR4=;
+        b=iq3CtyQ0v2x65MJKNjmwyusAnmWdc3YdPzJhb4TJEl50Ji4zTcp1XAigCth96DUNEW
+         Mf98VWYjW78HjpSWotOQBkgr79EC8J3uizfhypyRh2uN6lghP9xUgSuaosWnFuc3GKBT
+         LRhPfQsiO1yYKC/EXGPa885rZYPl8rEUilfdJK3Uf9jK4vwSvINMuQ/0D9l194nw9cZf
+         9Zz4J1uPSAhXNinrbXddJG71ycOVg81+mcACGWGA4gKz6CudHSuJuiY9j80PhBH6buYl
+         yXOSgB1sxI2PGVwJHezl/y64sP5jvYkhq3f1CZzyBkK+/7iOCWGXqbYZijTcyCIj+TpK
+         KYNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686579424; x=1689171424;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1686580655; x=1689172655;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=thz1rU6TqUqhP4hqV/tPAC8YgYdbM3d8oNqdBfG0TWQ=;
-        b=TE7gZuodq4TO1Yu5KwZ5Tm9IbS6//R6LPHNwE/0B/3BnTunqy/UnGFDbXJ4QgVsakh
-         o0Bt/sAY4A5gi0fsk0VNAHX2x9ehI7t55MUv0Nrz3/EnMI/Hn3vlSU8tlNCnN0lab1mn
-         CphzLilBsAsFZTTA6dOje2n964DGr4ij9xh4aTheQ5kY6L3Za1oQ02h58Q1P6zthcliv
-         tPUDnYfo8c5Tfk3oqVb7xcf6O8jxPqK1jzLyAHRj8fnERhvAMeIfIn2JMTjbgYPx29vY
-         aUS3ydpWniiXRv3O7cOMub+5kUR+sFIOOb1nHH1aYF85w6K4KizzPKTuuHG/+/unT+Rf
-         2e0A==
-X-Gm-Message-State: AC+VfDxW27WLDEkGJGbUZ7axo7YXhi5lmFHGIbbbgzo8J/c/67ueQ+nw
-        lyZvgC3yNu83zRoyyXIxKbqrg6PCMJMBBuItISjR1MNXW3Z1TeBe
-X-Google-Smtp-Source: ACHHUZ68HLDX2HorpUfXt3blRkWbGvexBKPyOy7XyHFyo1/vgq9/OZpwRZTCSuXG4Fu+Jo4tLUVDouLpmzkDB5rLyK8=
-X-Received: by 2002:a25:69c8:0:b0:bc8:833d:c41e with SMTP id
- e191-20020a2569c8000000b00bc8833dc41emr4142099ybc.6.1686579424216; Mon, 12
- Jun 2023 07:17:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230609083425.765-1-avri.altman@wdc.com>
-In-Reply-To: <20230609083425.765-1-avri.altman@wdc.com>
+        bh=C6VYNnggALQS+aWwxSlOdeJ3Ss1vnAASO8xpvHWuOR4=;
+        b=TPcBhMKE6oCUCVT0WbLFoDRJ3FBn933fPNkwYYurq92Q6qba0kKoEaafYK5BcTmhhl
+         HCW/9oXPNSCSkhNqMQdMg4msQmP0TTqurf35b0q4C/s9zGlcw4az4U64OL7Cz0JGgior
+         96n2eKp0ePh3uDqZ5ZeXwtFmIll+rQnIoX6NZV8mOn1gruNAjOTn5NebvG19I0HncdCn
+         6ZOSIvrMovWH02cSc2dDokuZRMoFiUVG3Pn2HqAR53HrToD5qH8AU1GiiaJuMsweU0NN
+         Gw12zH3XyeQkMk0rRw/ZSPBYpQ7/yqRzGBHt5QlH8MK21/xb/YZR0011k8lGPyjmRhSO
+         92mA==
+X-Gm-Message-State: AC+VfDx+MM/JpBoqTkrtPx6nnxHQyMrFZaHIHtHQSG1zdU8nu+c8A17/
+        5dJSt4XBhhON4Tni3RK1iCCMcDcUQOSKVn+4dds=
+X-Google-Smtp-Source: ACHHUZ5jBcipLE/CZfT0xT0vHUGzu3gcFssZk0gdU78Acur4exUlhXP8LW724H1A93PiVTgcKP33Qw==
+X-Received: by 2002:a19:7409:0:b0:4f6:29cf:c0d6 with SMTP id v9-20020a197409000000b004f629cfc0d6mr4296732lfe.9.1686580655357;
+        Mon, 12 Jun 2023 07:37:35 -0700 (PDT)
+Received: from uffe-tuxpro14.. (h-94-254-63-18.NA.cust.bahnhof.se. [94.254.63.18])
+        by smtp.gmail.com with ESMTPSA id w23-20020ac254b7000000b004f60be0c687sm1473282lfk.122.2023.06.12.07.37.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jun 2023 07:37:34 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 12 Jun 2023 16:16:28 +0200
-Message-ID: <CAPDyKFpHNYmre7Y6Ut0MqpJAAngZZx9Ra6ofzsjrNzbdwZ_itA@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc-utils: Assert MMC_IOC_MULTI_CMD in compile time
-To:     Avri Altman <avri.altman@wdc.com>
-Cc:     linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Marek Vasut <marex@denx.de>,
+        Yann Gautier <yann.gautier@foss.st.com>,
+        Dennis Zhou <dennis@kernel.org>
+Subject: [PATCH] mmc: mmci: Set PROBE_PREFER_ASYNCHRONOUS
+Date:   Mon, 12 Jun 2023 16:37:30 +0200
+Message-Id: <20230612143730.210390-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -65,84 +71,27 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 9 Jun 2023 at 10:34, Avri Altman <avri.altman@wdc.com> wrote:
->
-> v1 -> v2: Address Ulf's suggestions
+All mmc host driver should have enabled the asynchronous probe option, but
+it seems like we missed to set it for mmci, so let's do that now.
 
-Next time, please put this as patch version information, below the "---".
+Fixes: 21b2cec61c04 ("mmc: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in v4.4")
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+---
+ drivers/mmc/host/mmci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
->
-> Notify of mult-ioctl violation during preprocessing instead of bailing
-> out in runtime.  Would not even allow bogus copies of mmc-utils binaries
-> wondering about out there.
->
-> Signed-off-by: Avri Altman <avri.altman@wdc.com>
+diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+index f2b2e8b0574e..97a77eefb11a 100644
+--- a/drivers/mmc/host/mmci.c
++++ b/drivers/mmc/host/mmci.c
+@@ -2455,6 +2455,7 @@ static struct amba_driver mmci_driver = {
+ 	.drv		= {
+ 		.name	= DRIVER_NAME,
+ 		.pm	= &mmci_dev_pm_ops,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 	},
+ 	.probe		= mmci_probe,
+ 	.remove		= mmci_remove,
+-- 
+2.34.1
 
-Applied to git.kernel.org/pub/scm/utils/mmc/mmc-utils.git master, thanks!
-
-Kind regards
-Uffe
-
-
-> ---
->  mmc_cmds.c | 16 ++++------------
->  1 file changed, 4 insertions(+), 12 deletions(-)
->
-> diff --git a/mmc_cmds.c b/mmc_cmds.c
-> index df66986..26bdc38 100644
-> --- a/mmc_cmds.c
-> +++ b/mmc_cmds.c
-> @@ -34,6 +34,10 @@
->  #include "mmc_cmds.h"
->  #include "3rdparty/hmac_sha/hmac_sha2.h"
->
-> +#ifndef MMC_IOC_MULTI_CMD
-> +#error "mmc-utils needs MMC_IOC_MULTI_CMD support (added in kernel v4.4)"
-> +#endif
-> +
->  #ifndef offsetof
->  #define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
->  #endif
-> @@ -2112,11 +2116,6 @@ static int do_rpmb_op(int fd,
->                                           struct rpmb_frame *frame_out,
->                                           unsigned int out_cnt)
->  {
-> -#ifndef MMC_IOC_MULTI_CMD
-> -       fprintf(stderr, "mmc-utils has been compiled without MMC_IOC_MULTI_CMD"
-> -               " support, needed by RPMB operation.\n");
-> -       exit(1);
-> -#else
->         int err;
->         u_int16_t rpmb_type;
->         struct mmc_ioc_multi_cmd *mioc;
-> @@ -2196,7 +2195,6 @@ static int do_rpmb_op(int fd,
->  out:
->         free(mioc);
->         return err;
-> -#endif /* !MMC_IOC_MULTI_CMD */
->  }
->
->  int do_rpmb_write_key(int nargs, char **argv)
-> @@ -2804,11 +2802,6 @@ out:
->
->  int do_ffu(int nargs, char **argv)
->  {
-> -#ifndef MMC_IOC_MULTI_CMD
-> -       fprintf(stderr, "mmc-utils has been compiled without MMC_IOC_MULTI_CMD"
-> -                       " support, needed by FFU.\n");
-> -       exit(1);
-> -#else
->         int dev_fd, img_fd;
->         int sect_done = 0, retry = 3, ret = -EINVAL;
->         unsigned int sect_size;
-> @@ -3034,7 +3027,6 @@ out:
->         close(img_fd);
->         close(dev_fd);
->         return ret;
-> -#endif
->  }
->
->  int do_general_cmd_read(int nargs, char **argv)
-> --
-> 2.40.0
->
