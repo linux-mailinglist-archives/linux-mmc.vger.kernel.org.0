@@ -2,28 +2,28 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F874734391
-	for <lists+linux-mmc@lfdr.de>; Sat, 17 Jun 2023 22:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9720734394
+	for <lists+linux-mmc@lfdr.de>; Sat, 17 Jun 2023 22:37:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346474AbjFQUgx (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 17 Jun 2023 16:36:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41822 "EHLO
+        id S1346508AbjFQUg5 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 17 Jun 2023 16:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346482AbjFQUgv (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 17 Jun 2023 16:36:51 -0400
+        with ESMTP id S1346491AbjFQUgw (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 17 Jun 2023 16:36:52 -0400
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C672E72
-        for <linux-mmc@vger.kernel.org>; Sat, 17 Jun 2023 13:36:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C85EB172C;
+        Sat, 17 Jun 2023 13:36:51 -0700 (PDT)
 Received: from localhost.localdomain (178.176.79.248) by msexch01.omp.ru
  (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 17 Jun
- 2023 23:36:47 +0300
+ 2023 23:36:48 +0300
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
-CC:     Nicolas Pitre <nico@fluxnic.net>
-Subject: [PATCH v3 04/12] mmc: mvsdio: fix deferred probing
-Date:   Sat, 17 Jun 2023 23:36:14 +0300
-Message-ID: <20230617203622.6812-5-s.shtylyov@omp.ru>
+CC:     Aaro Koskinen <aaro.koskinen@iki.fi>, <linux-omap@vger.kernel.org>
+Subject: [PATCH v3 05/12] mmc: omap: fix deferred probing
+Date:   Sat, 17 Jun 2023 23:36:15 +0300
+Message-ID: <20230617203622.6812-6-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20230617203622.6812-1-s.shtylyov@omp.ru>
 References: <20230617203622.6812-1-s.shtylyov@omp.ru>
@@ -79,22 +79,25 @@ error codes upstream.
 Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
 Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 ---
- drivers/mmc/host/mvsdio.c | 2 +-
+Changes in version 2:
+- updated the fix due to the surrounding code change.
+
+ drivers/mmc/host/omap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/mvsdio.c b/drivers/mmc/host/mvsdio.c
-index 629efbe639c4..b4f6a0a2fcb5 100644
---- a/drivers/mmc/host/mvsdio.c
-+++ b/drivers/mmc/host/mvsdio.c
-@@ -704,7 +704,7 @@ static int mvsd_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
+index ce78edfb402b..86454f1182bb 100644
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -1343,7 +1343,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
+ 
  	irq = platform_get_irq(pdev, 0);
  	if (irq < 0)
 -		return -ENXIO;
 +		return irq;
  
- 	mmc = mmc_alloc_host(sizeof(struct mvsd_host), &pdev->dev);
- 	if (!mmc) {
+ 	host->virt_base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(host->virt_base))
 -- 
 2.26.3
 
