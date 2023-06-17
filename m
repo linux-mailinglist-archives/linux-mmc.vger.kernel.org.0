@@ -2,76 +2,107 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8473F734252
-	for <lists+linux-mmc@lfdr.de>; Sat, 17 Jun 2023 18:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EA4D7342F2
+	for <lists+linux-mmc@lfdr.de>; Sat, 17 Jun 2023 20:14:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231504AbjFQQzK (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 17 Jun 2023 12:55:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50382 "EHLO
+        id S230339AbjFQSOi (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sat, 17 Jun 2023 14:14:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230469AbjFQQzJ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 17 Jun 2023 12:55:09 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 260BE19AD
-        for <linux-mmc@vger.kernel.org>; Sat, 17 Jun 2023 09:55:07 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-518b69d5b5dso2731545a12.1
-        for <linux-mmc@vger.kernel.org>; Sat, 17 Jun 2023 09:55:07 -0700 (PDT)
+        with ESMTP id S229745AbjFQSOh (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sat, 17 Jun 2023 14:14:37 -0400
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A8AB9;
+        Sat, 17 Jun 2023 11:14:36 -0700 (PDT)
+Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-62ff4f06b3cso18418426d6.1;
+        Sat, 17 Jun 2023 11:14:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687020905; x=1689612905;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YgsQjPYSA4x9EUAST26pLIMgzwk5/fmUNEDBBVE+P4A=;
-        b=B7G7BepedhNo6t13ST6j2exw0x1ZwmPLVEEL3yxeHecRh038gzTrDkWWrtQmqVS3YY
-         /TF2soaIOjayutNM5vRnbbrURmOkTvG32YHkiqOWlSlrgOt0PPfJfcsthvrEP0taYCRD
-         gQlq1vPdNotdIXCMXJjmnfl2ndziy0omZ3xjLY/A8lmvOJCTX6mNudyTMnmGPXYlsNGa
-         SFUlVFLDM9TDGIDCuURZ749AA75BYPM1yqy/zFBZM/bEBkNs/TzoywCUI9GBsl+7knrf
-         ALRzVNGxJiZwybeZpbktw/E5jAWOAcdBl/UdW1eAcnu2hyYNRyekxtuBwVr/9vK1lvC8
-         gWdw==
+        d=gmail.com; s=20221208; t=1687025676; x=1689617676;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ITEoI0GfprmKSy6yT2L8mv5Xf8y2ioJT/R5QvHkoK9A=;
+        b=XsPvwiWJEUN4qNlVOl9D6l+1K8/8xi9KCAWhuK2fTLOJGrnSNxEx7FptZgfvIQnrS4
+         Ka8DA11VnjAahPPCwK08+hlD2ua2xAQU+5CjM2G+rSm1amQdUGPQR0USD5qbtT79L4sf
+         9aBaPwHWjcVdogfrv3XtyUxdVqUATRtqsY3eK3w9F9wHnBVj+gaNKzH3kdsWzjZyxfrz
+         lsKKhYXQnJJColKa60tJi+CI5IrnKi81TEF79FixdhiLR8Um5Di9eZqa1ovoZHzzct3P
+         7V7/FLcw4QmLQUgZypgqcJDSzHcTruYtVAEKRid+Fht3VGlCDvUYJNOf5ShLK/YfUBy9
+         xKkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687020905; x=1689612905;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YgsQjPYSA4x9EUAST26pLIMgzwk5/fmUNEDBBVE+P4A=;
-        b=DWyr5b+p/vM+2B3As5xh53aAfX+LPGt4Husfig/+SZ9c7BnvkC+ih8ypw8vxv0fJOT
-         VxnAYXLqUtlUF3+hSaL+ebescENZ+Y8GAZNDUZsAy4j9V2Fl/uCvFjHlx8um3a+W6AkI
-         eI6ZabTliNaUBDyYvymH0kbT90FlBmyzHFXXikFmgkR7BkkAqtfWQLlEigtqbpWtDL1o
-         lAQdUYGcxyWt+Spf8CEJlIXycPGb+hCfUcZnMwul6wsFxLpWFqU/XqQPYyKZtvN9JIxK
-         uoOtfq7O4Au0c5IG3E4S9PSOSgIYSfpXZZYK2O1JXqv7/DtUZh0u8ls8BaG/bKnNXFVn
-         ixog==
-X-Gm-Message-State: AC+VfDwFyHMMWoNRcC5i+g7+vhOQ5b2lhtiwCaYwHwgwgEDiGBoL4ach
-        pS+GqVa8yNgf5Qy191FThBFHFYQ4eohtTnA+ipo=
-X-Google-Smtp-Source: ACHHUZ4vEX+inrtqwHd+bRSNE4Vl63pRotTdLXX6y1F+F4HxtrUIYCthBlskJGvNksHnytK6olEOfYgR6VPBeamEGlI=
-X-Received: by 2002:a17:906:da8b:b0:982:26c5:6525 with SMTP id
- xh11-20020a170906da8b00b0098226c56525mr5401200ejb.60.1687020904881; Sat, 17
- Jun 2023 09:55:04 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687025676; x=1689617676;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ITEoI0GfprmKSy6yT2L8mv5Xf8y2ioJT/R5QvHkoK9A=;
+        b=EbHALx4s8yYJ9IH6GcfttaZyWSahnMjQW8fg5BVsFeLm9M7S1xOhyIgR9UClYJ+OTI
+         y6Va7Kd7+Q+Hqbrer14d8vNfMT0ZqPKA0Um1mExbUayWgdKwggeQlczqTTbw94Iqtf15
+         sGYQ9QPdjiV9kNdQaLFKfYti4XrL/MgOZkmHsi9IQuMKsMljBijt7WZikBQImeQwfPSE
+         AZPjXhe8ZMoRQeU/ieLNSaBa0gmCBHG8/Kw3QVr4+TuNwjlBrGtm0KkojtzCwhuXp4Eh
+         s6/BYD5iRwmGXpegcBNcoIlREKF18OxXS3EPlgJPZKqmpn6Wgwa27C4CKHhXeXLyjrwZ
+         07Pg==
+X-Gm-Message-State: AC+VfDwAhanmSOW1R/pv4Y0Q8sMITrMYNKz1KMBz4p2C1pzjZJnSW8jz
+        sJKvQIgQiA5A0vlHb2djGVdVQadAAvw=
+X-Google-Smtp-Source: ACHHUZ6PkiWxEYa7Ywq5Sp44xTa7+d+48UQf+qZWsIwV2axAsSY0vKmk3QyWBEt9RR6wi/L56ZrSNw==
+X-Received: by 2002:a05:6214:d4f:b0:62d:e09c:fd73 with SMTP id 15-20020a0562140d4f00b0062de09cfd73mr7785730qvr.59.1687025675976;
+        Sat, 17 Jun 2023 11:14:35 -0700 (PDT)
+Received: from errol.ini.cmu.edu ([72.95.245.133])
+        by smtp.gmail.com with ESMTPSA id i18-20020a0cf112000000b0062df126ca11sm5414346qvl.21.2023.06.17.11.14.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Jun 2023 11:14:35 -0700 (PDT)
+Date:   Sat, 17 Jun 2023 14:14:33 -0400
+From:   "Gabriel L. Somlo" <gsomlo@gmail.com>
+To:     Jisheng Zhang <jszhang@kernel.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Karol Gugala <kgugala@antmicro.com>,
+        Mateusz Holenko <mholenko@antmicro.com>,
+        Joel Stanley <joel@jms.id.au>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mmc: litex_mmc: set PROBE_PREFER_ASYNCHRONOUS
+Message-ID: <ZI34CQzkDBKpv48n@errol.ini.cmu.edu>
+References: <20230617085319.2139-1-jszhang@kernel.org>
 MIME-Version: 1.0
-Sender: princeeminentunuebholo@gmail.com
-Received: by 2002:a50:718d:0:b0:21d:e168:6561 with HTTP; Sat, 17 Jun 2023
- 09:55:04 -0700 (PDT)
-From:   Dr Lisa Williams <lw4666555@gmail.com>
-Date:   Sat, 17 Jun 2023 09:55:04 -0700
-X-Google-Sender-Auth: EL0NkoyJdlUROZ0VFp0rOFL_6dY
-Message-ID: <CAK0EZHQuR_Fh7-p5pqVzqbQd=4OLJtJJthAQUxoV08CqbXwgzw@mail.gmail.com>
-Subject: Hi,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230617085319.2139-1-jszhang@kernel.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi,
+On Sat, Jun 17, 2023 at 04:53:19PM +0800, Jisheng Zhang wrote:
+> mmc host drivers should have enabled the asynchronous probe option, but
+> it seems like we didn't set it for litex_mmc when introducing litex mmc
+> support, so let's set it now.
+> 
+> Tested with linux-on-litex-vexriscv on sipeed tang nano 20K fpga.
+> 
+> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+> ---
 
-My name is Dr. Lisa Williams, from the United States, currently living
-in the United Kingdom.
+Acked-by: Gabriel Somlo <gsomlo@gmail.com>
 
-I hope you consider my friend request. I will share some of my photos
-and more details about me when I get your reply.
+Thanks!
 
-With love
-Lisa
+>  drivers/mmc/host/litex_mmc.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/mmc/host/litex_mmc.c b/drivers/mmc/host/litex_mmc.c
+> index 39c6707fdfdb..9af6b0902efe 100644
+> --- a/drivers/mmc/host/litex_mmc.c
+> +++ b/drivers/mmc/host/litex_mmc.c
+> @@ -649,6 +649,7 @@ static struct platform_driver litex_mmc_driver = {
+>  	.driver = {
+>  		.name = "litex-mmc",
+>  		.of_match_table = litex_match,
+> +		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+>  	},
+>  };
+>  module_platform_driver(litex_mmc_driver);
+> -- 
+> 2.40.1
+> 
