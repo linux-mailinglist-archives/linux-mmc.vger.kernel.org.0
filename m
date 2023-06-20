@@ -2,154 +2,121 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 667BB7368F1
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jun 2023 12:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 917A97368F6
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jun 2023 12:15:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230449AbjFTKO0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 20 Jun 2023 06:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44270 "EHLO
+        id S231735AbjFTKPB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 20 Jun 2023 06:15:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231739AbjFTKOZ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 20 Jun 2023 06:14:25 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 450B7A3
-        for <linux-mmc@vger.kernel.org>; Tue, 20 Jun 2023 03:14:24 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-bcd0226607bso8270984276.1
-        for <linux-mmc@vger.kernel.org>; Tue, 20 Jun 2023 03:14:24 -0700 (PDT)
+        with ESMTP id S231873AbjFTKOi (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 20 Jun 2023 06:14:38 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56C0E71
+        for <linux-mmc@vger.kernel.org>; Tue, 20 Jun 2023 03:14:35 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-be3e2d172cbso3361793276.3
+        for <linux-mmc@vger.kernel.org>; Tue, 20 Jun 2023 03:14:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687256063; x=1689848063;
+        d=linaro.org; s=google; t=1687256075; x=1689848075;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=cmMYox2vIOHcAya1yfArnEkv6hZhFde8bBx6JYLJt/w=;
-        b=RMqM5TjjJq+lwE60Jp8oaqL3hFQksfqsOMdVagxGZhN0TZauO6GrHHm/9Uhw1g7CUM
-         +Ez84DoN4umhLM6Kd1vGlUyzj/QHEt378t7sOMm15hWaze90RmsaAzNaVy40us8YgkfQ
-         qqHjRVv3d22KT449N31k+5RnXWl8beONGk/HDYAAhxe8vnrukBn/XSu0FNYwQl0B46mM
-         YTEZoEzs2cQw/RAd2rn2x5Hu5Crnlq/5xTXPFksfsgiqSaJCuqXBblT+umjrnyXLhgID
-         268K1KnyYf79fE7ke1r2ZCIAhA9eOhGwNPIc9LnMtr/eZ6JF2YP5sooSFtSAGAEXg9EL
-         gqKQ==
+        bh=NJJmgVmTa9f7iC7uetyObrO68r9W6Xg4F51QYpcRfPM=;
+        b=KnoTmyXWN5md3fERuYS0Dm1jkxj7MOSAMZonVdYOgYkrdxFKHgtTDDuTuK8KUTyj9F
+         ez9ntj+NgYS95fgZWQPJruaiSIYe6DmuXCqTZQamUic/P9E35BVDJiSd5vsyEyaM16Bf
+         wR7r7uhN3GgiQOopbgClgUByAhApfqvyZiHfIyx+REd7jzadhjy2+7y5PDGqudOU1rso
+         HZPvU8QWJkIZAib7qlTYb56ZiOVD/k7bfSdUgw3xVD682z9SxYylNhf2o0v/tn0e3OAH
+         TL9ffDVzjAWeQR5L6BktCyIelKExgehj76tEmDiT/DeraQ/v0MKdX9v8kXJhXq7XI5GI
+         I/fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687256063; x=1689848063;
+        d=1e100.net; s=20221208; t=1687256075; x=1689848075;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cmMYox2vIOHcAya1yfArnEkv6hZhFde8bBx6JYLJt/w=;
-        b=HpwJDCwkaU7ZMHV5KHXU8O/T75hGGE+ZFsifDvIYf9IleQAlM9n2Uxc1X9LsSC/tDT
-         0bjNaSIT2FhCcno7q4MXasrJzr2cq9JnUho+1y1NRDISQ6azA+auQbtRpsFbmDtkF5cx
-         s84M9/dcR8CMVXpbicxvY47V/AMP/4fhHeQVshadJan38XINmdmtXlFvqzAvNwBJUb+b
-         mfQNc/U01112dY0Y1tvm1KI+Uimj6HtYQnvJm+kaLHYiOpBU0f30lYAKgnvN+eApKHft
-         2JtNvWeWI23GUjVT7NzKb9dEdHsZ7aHV7/IgK3DZM/p2TtDBEa9bWOJGGSL1Uonk+UEl
-         QYSQ==
-X-Gm-Message-State: AC+VfDzaCzIXwrHZQBCLWb3D/8xDrQYeUjjnvxPzVC99kspVkveOOYwx
-        0VOBdYWukbsikuy29OnGAiu/y8wQvmyFaasXrjECyw==
-X-Google-Smtp-Source: ACHHUZ7R1vmGwa+/KwmRz9xEHYwaMbUOB4SSovI5F8z7gLh4bp20XdVYyLH7P2IT0WYQuZYSkKDvL1Ffeo1ZRelZEpo=
-X-Received: by 2002:a25:ab2a:0:b0:bc5:b1f7:7953 with SMTP id
- u39-20020a25ab2a000000b00bc5b1f77953mr9118972ybi.0.1687256063492; Tue, 20 Jun
- 2023 03:14:23 -0700 (PDT)
+        bh=NJJmgVmTa9f7iC7uetyObrO68r9W6Xg4F51QYpcRfPM=;
+        b=OKbA/oXFAvLXr6HqGiJFTMZPF3CH9YLsUYtRCNWqSrPP2KKrlQIkeEB6t6jMik6R6+
+         vdLaa97elFKSWz+e83zpt3nK0RsZ5p+JIvW3XRRB7lqo97uAurc+pZVmZmGq3BiCX0nu
+         1bk9yfRKgIxSwh/ez1HtatnijJXLhVoMTn08g5/0E2qtlae/45b3SH9j5ks2Zb8PflgE
+         3g4ypxXVHNXfb09xZ6kJbAXkCSmwZagMgJiRdftA+2HCqb8ppfehsfgUQstPsFk9af5j
+         pwK1LCXzR0gW3HFqIRvKsMX+AjyJzAaG9JW8Snkx/E8pjU3tRjUGC3JMiIGNMF1FrdMH
+         oWPQ==
+X-Gm-Message-State: AC+VfDw6JBLReOuwyCaATgZOXcXyR+apdOZn8ca2AY4Vtna5XJg7QUVN
+        b+Wf3kj/DrHrl07+FaX1iOaHC0sBE07K6trywVawTA==
+X-Google-Smtp-Source: ACHHUZ6iVAXtSlfEagdTRkw6Q+YSAN1J8b9rGKXips/cn5kKkmDKHU27IPuCLZFV6BZvBtFEqfel4P+d3RXAqP/kWDA=
+X-Received: by 2002:a25:d310:0:b0:bc8:f082:2301 with SMTP id
+ e16-20020a25d310000000b00bc8f0822301mr2837948ybf.6.1687256075120; Tue, 20 Jun
+ 2023 03:14:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230620013956.111275-1-marex@denx.de>
-In-Reply-To: <20230620013956.111275-1-marex@denx.de>
+References: <20230619115120.64474-1-yann.gautier@foss.st.com>
+In-Reply-To: <20230619115120.64474-1-yann.gautier@foss.st.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 20 Jun 2023 12:13:47 +0200
-Message-ID: <CAPDyKFrBAjK4ps3dqeSOqHwubq++_eeFciEKYk-Aq3xrZgMQog@mail.gmail.com>
-Subject: Re: [PATCH] mmc: Add MMC_QUIRK_BROKEN_SD_CACHE for Kingston Canvas Go
- Plus from 11/2019
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Brian Norris <briannorris@chromium.org>,
-        ChanWoo Lee <cw9316.lee@samsung.com>,
-        Liang He <windhl@126.com>,
-        Seunghui Lee <sh043.lee@samsung.com>,
-        Xander Li <xander_li@kingston.com.tw>,
-        Zhen Lei <thunder.leizhen@huawei.com>
+Date:   Tue, 20 Jun 2023 12:13:59 +0200
+Message-ID: <CAPDyKFrYfZHovci0ekTi3WWUrQDWv60MACEe0A_Sd0RmOdW=oQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] Update MMCI driver for STM32MP25
+To:     Yann Gautier <yann.gautier@foss.st.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        Conor Dooley <conor+dt@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Christophe Kerello <christophe.kerello@foss.st.com>,
+        linux-kernel@vger.kernel.org, Marek Vasut <marex@denx.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        Xiang wangx <wangxiang@cdjrlc.com>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 20 Jun 2023 at 03:40, Marek Vasut <marex@denx.de> wrote:
+On Mon, 19 Jun 2023 at 13:51, Yann Gautier <yann.gautier@foss.st.com> wrote:
 >
-> This microSD card never clears Flush Cache bit after cache flush has
-> been started in sd_flush_cache(). This leads e.g. to failure to mount
-> file system. Add a quirk which disables the SD cache for this specific
-> card from specific manufacturing date of 11/2019, since on newer dated
-> cards from 05/2023 the cache flush works correctly.
+> STM32MP25 is a new SoC from STMicroelectronics. The machine was
+> pushed by Alexandre [1] in his tree.
+> On this new SoC, the SDMMC peripheral, using PL18x/MMCI driver
+> has been updated to v3.
+> The driver has been updated to manage this new version, and the new
+> features it supports:
+> * FIFO size increased from 64B to 1kB
+> * IDMA size alignment/mask updated
+> * New block gap hardware flow control
+> * Delay block updated and dependent on SoC
 >
-> Fixes: 08ebf903af57 ("mmc: core: Fixup support for writeback-cache for eMMC and SD")
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Adrian Hunter <adrian.hunter@intel.com>
-> Cc: Avri Altman <avri.altman@wdc.com>
-> Cc: Brian Norris <briannorris@chromium.org>
-> Cc: ChanWoo Lee <cw9316.lee@samsung.com>
-> Cc: Liang He <windhl@126.com>
-> Cc: Seunghui Lee <sh043.lee@samsung.com>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Xander Li <xander_li@kingston.com.tw>
-> Cc: Zhen Lei <thunder.leizhen@huawei.com>
-> Cc: linux-mmc@vger.kernel.org
-
-[...]
-
-> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-> index 72b664ed90cf6..99ff6e754017a 100644
-> --- a/drivers/mmc/core/sd.c
-> +++ b/drivers/mmc/core/sd.c
-> @@ -1170,7 +1170,7 @@ static int sd_parse_ext_reg_perf(struct mmc_card *card, u8 fno, u8 page,
->                 card->ext_perf.feature_support |= SD_EXT_PERF_HOST_MAINT;
+> This series was pushed on top of next branch in Ulf's mmc tree, as it
+> requires feedback clock update patch [2].
 >
->         /* Cache support at bit 0. */
-> -       if (reg_buf[4] & BIT(0))
-> +       if ((reg_buf[4] & BIT(0)) && !mmc_card_broken_sd_cache(card))
->                 card->ext_perf.feature_support |= SD_EXT_PERF_CACHE;
-
-If the bit in card->ext_perf.feature_support doesn't get set,
-according to the above, the cache will never be used.
-
-In other words, there is no need for any of the additional
-bail-out-points below, so please drop them.
-
+> [1] https://lore.kernel.org/lkml/59f4a900-34ee-d991-c350-265d38e7c862@foss.st.com/T/
+> [2] https://lore.kernel.org/r/20230613150148.429828-1-yann.gautier@foss.st.com
 >
->         /* Command queue support indicated via queue depth bits (0 to 4). */
-> @@ -1306,6 +1306,8 @@ static int sd_read_ext_regs(struct mmc_card *card)
+> Changes in v2:
+> - update dt-bindings file (remove bootloader reference and use enum)
 >
->  static bool sd_cache_enabled(struct mmc_host *host)
->  {
-> +       if (mmc_card_broken_sd_cache(host->card))
-> +               return 0;
->         return host->card->ext_perf.feature_enabled & SD_EXT_PERF_CACHE;
->  }
+> Yann Gautier (6):
+>   dt-bindings: mmc: mmci: Add st,stm32mp25-sdmmc2 compatible
+>   mmc: mmci: add stm32_idmabsize_align parameter
+>   mmc: mmci: Add support for sdmmc variant revision v3.0
+>   mmc: mmci: stm32: manage block gap hardware flow control
+>   mmc: mmci: stm32: prepare other delay block support
+>   mmc: mmci: stm32: add delay block support for STM32MP25
 >
-> @@ -1366,6 +1368,9 @@ static int sd_enable_cache(struct mmc_card *card)
->         u8 *reg_buf;
->         int err;
->
-> +       if (mmc_card_broken_sd_cache(card))
-> +               return 0;
-> +
->         card->ext_perf.feature_enabled &= ~SD_EXT_PERF_CACHE;
->
->         reg_buf = kzalloc(512, GFP_KERNEL);
-> diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-> index c726ea7812552..daa2f40d9ce65 100644
-> --- a/include/linux/mmc/card.h
-> +++ b/include/linux/mmc/card.h
-> @@ -294,6 +294,7 @@ struct mmc_card {
->  #define MMC_QUIRK_TRIM_BROKEN  (1<<12)         /* Skip trim */
->  #define MMC_QUIRK_BROKEN_HPI   (1<<13)         /* Disable broken HPI support */
->  #define MMC_QUIRK_BROKEN_SD_DISCARD    (1<<14) /* Disable broken SD discard support */
-> +#define MMC_QUIRK_BROKEN_SD_CACHE      (1<<15) /* Disable broken SD cache support */
->
->         bool                    reenable_cmdq;  /* Re-enable Command Queue */
+>  .../devicetree/bindings/mmc/arm,pl18x.yaml    |   7 +-
+>  drivers/mmc/host/mmci.c                       |  35 ++++
+>  drivers/mmc/host/mmci.h                       |   8 +-
+>  drivers/mmc/host/mmci_stm32_sdmmc.c           | 149 ++++++++++++++++--
+>  4 files changed, 179 insertions(+), 20 deletions(-)
 >
 
-Other than the minor thing above, this looks good to me!
+Applied for next, thanks!
 
 Kind regards
 Uffe
