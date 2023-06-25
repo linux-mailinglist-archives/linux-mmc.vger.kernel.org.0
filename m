@@ -2,65 +2,58 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C6D673D026
-	for <lists+linux-mmc@lfdr.de>; Sun, 25 Jun 2023 12:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F31E573D33A
+	for <lists+linux-mmc@lfdr.de>; Sun, 25 Jun 2023 21:18:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231438AbjFYKjX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 25 Jun 2023 06:39:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57638 "EHLO
+        id S229509AbjFYTS0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 25 Jun 2023 15:18:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231484AbjFYKjW (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 25 Jun 2023 06:39:22 -0400
-Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C5A1E44
-        for <linux-mmc@vger.kernel.org>; Sun, 25 Jun 2023 03:39:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1687689560; x=1719225560;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cbPr9is1lhDIdyfCo15q74NmPvMaF3gMv7Z2OgyuoBM=;
-  b=AEd7rREx4bZbt4RSv+KbPnjZI/1sx9T7LNc7G+PPYZF74QjQ6Tq3a+uk
-   PhGtrwynCNmuvvdncZLi9pG75jhY7GSzi6ML53+voi/XLE9BDE9C0WsLz
-   p+yXxmGR1cmKAgi2Ww6y2YQ24qhftIAynUv7Og0KwCp9E5GuiLXMVcprY
-   1mugggQYJJSOVTsmeDT4AKmPxCHXZenNFA/zIQe1zu8+H5nQPMoIyxThD
-   aTMzp6jktG+t6x0pKJu8t/W9M1FcvJDCI4ZV81mIEYUjRSuT61+LoP6+z
-   Af2vJCvJ7LUEdKZzUUHKNNgHW3LXwtcGSrUJ4tDLE02wQnwn0pyS5ds/2
-   A==;
-X-IronPort-AV: E=Sophos;i="6.01,157,1684771200"; 
-   d="scan'208";a="236798746"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 25 Jun 2023 18:39:20 +0800
-IronPort-SDR: bfYaOFTSLknvINKL6fQY9EtNQAkh7F6YeNpuY0FVwJBzYR+cO/O3h968X3Nn+oKpmqW8r1dggX
- j30A2aLIZzBVsaj9k6MoVW+yaIvzbhk67Hq4rX7rU2bvP5plBkPa0IecCCFH6Cnxt2XJb0prrt
- UFSNXiXvUqWT0Kb4TBrU7BOswImezoMth2v//mD/Zh1CxSAYB+M2vToRTeynZVqOza8Di2l0Ro
- R+aV1KILVaP2mz8bOV/8u3ahBNjmbWEUGQeC9fL2tyUA0sTAIaEwkSpJ/l5EhVXXVnfQwEo8MH
- 72o=
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Jun 2023 02:53:42 -0700
-IronPort-SDR: 4vfUHZhQl5+TdbTEg87IteUtrC9PHYOrAI6oCEM8Aglvr9PnPX8eSC+5nr+jf3mcWC/ErPKksB
- WMB3BBBhXOrq6uaDUuVrRSLvM900feRoZMmM3sULoZXheXYFzxcRGCYGFzY818q4NH2T20WVGi
- Ztu8IrxL1T4NtbMsK7GBw6y17A3RzuLaAGNdaBfyeO/z/Tv/+8l1RDmZzNwW3OeiSnRe9kAd//
- llPAJQNIuc4nw+vh+RxpaloePeaeeyCOuGerRBQGIUuuVnnBBhQYb4kwmEHoAQ3CBv+6b7SkY+
- Tv4=
-WDCIronportException: Internal
-Received: from bxygm33.ad.shared ([10.45.31.229])
-  by uls-op-cesaip01.wdc.com with ESMTP; 25 Jun 2023 03:39:20 -0700
-From:   Avri Altman <avri.altman@wdc.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-Cc:     Avri Altman <avri.altman@wdc.com>,
-        Lund Austin <Austin.Lund@garmin.com>
-Subject: [PATCH 6/6] mmc-utils: ffu: Add optional chunk-size argument
-Date:   Sun, 25 Jun 2023 13:38:14 +0300
-Message-Id: <20230625103814.105-7-avri.altman@wdc.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230625103814.105-1-avri.altman@wdc.com>
-References: <20230625103814.105-1-avri.altman@wdc.com>
+        with ESMTP id S229448AbjFYTS0 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 25 Jun 2023 15:18:26 -0400
+Received: from mxout2.routing.net (mxout2.routing.net [IPv6:2a03:2900:1:a::b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB3F81B3
+        for <linux-mmc@vger.kernel.org>; Sun, 25 Jun 2023 12:18:17 -0700 (PDT)
+Received: from mxbox3.masterlogin.de (unknown [192.168.10.78])
+        by mxout2.routing.net (Postfix) with ESMTP id C8EB6615E2;
+        Sun, 25 Jun 2023 19:11:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+        s=20200217; t=1687720318;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=95R2PdMvXWYk6kmQoK82DSLDIGUfDs+//q4F16BXYtM=;
+        b=dRNGu2MARH/swPgMCibgu5UMnKgzQB2hcMe3QNYJAjX1OGwbItma/hXxL9SmSqRN7GWRDf
+        iBa7F7cKJfXjVUttwbrYjSu27gBjztCngFje4E3W98caC2LYrB0lAUSLDkCryWHskntdM/
+        +06TjSARQoPzqBTP0GTsBFCXM44CBC4=
+Received: from frank-G5.. (fttx-pool-217.61.151.158.bambit.de [217.61.151.158])
+        by mxbox3.masterlogin.de (Postfix) with ESMTPSA id D7DCC3603F2;
+        Sun, 25 Jun 2023 19:11:56 +0000 (UTC)
+From:   Frank Wunderlich <linux@fw-web.de>
+To:     linux-mediatek@lists.infradead.org
+Cc:     Frank Wunderlich <frank-w@public-files.de>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Wenbin Mei <wenbin.mei@mediatek.com>,
+        Sam Shih <sam.shih@mediatek.com>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v1 0/2] Fix emmc hs400 mode on mt7986
+Date:   Sun, 25 Jun 2023 21:11:49 +0200
+Message-Id: <20230625191151.7808-1-linux@fw-web.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Mail-ID: 1459b5f2-88f7-4804-8036-8a7bda31a940
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,79 +61,24 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Normally one would like to perform ffu using the largest possible chunk.
-However, since the ffu-timeout is vendor specific, there are times in
-which smaller chunks would lead to a more robust ffu process.  Allow
-this via an additional optional argument.
+From: Frank Wunderlich <frank-w@public-files.de>
 
-Tested-by: Lund Austin <Austin.Lund@garmin.com>
-Signed-off-by: Avri Altman <avri.altman@wdc.com>
----
- mmc.c      |  6 ++++--
- mmc_cmds.c | 18 ++++++++++++------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+Eric boots linux directly from ATF without using uboot. In this corner
+case clocks for emmc hs400 mode are not correctly setup.
 
-diff --git a/mmc.c b/mmc.c
-index 795b4e3..bc8f74e 100644
---- a/mmc.c
-+++ b/mmc.c
-@@ -228,8 +228,10 @@ static struct Command commands[] = {
- 	  NULL
- 	},
- 	{ do_ffu, -2,
--	  "ffu", "<image name> <device>\n"
--		"Run Field Firmware Update with <image name> on <device>.\n",
-+	  "ffu", "<image name> <device> [chunk-bytes]\n"
-+		"Run Field Firmware Update with <image name> on <device>.\n"
-+		"[chunk-bytes] is optional and defaults to its max - 512k. "
-+		"should be in decimal bytes and sector aligned.\n",
- 	  NULL
- 	},
- 	{ do_erase, -4,
-diff --git a/mmc_cmds.c b/mmc_cmds.c
-index a1adbde..10d063d 100644
---- a/mmc_cmds.c
-+++ b/mmc_cmds.c
-@@ -2834,11 +2834,9 @@ int do_ffu(int nargs, char **argv)
- 	off_t fw_size, bytes_left, off;
- 	char *device;
- 	struct mmc_ioc_multi_cmd *multi_cmd = NULL;
-+	unsigned int default_chunk = MMC_IOC_MAX_BYTES;
- 
--	if (nargs != 3) {
--		fprintf(stderr, "Usage: ffu <image name> </path/to/mmcblkX> \n");
--		exit(1);
--	}
-+	assert (nargs == 3 || nargs == 4);
- 
- 	device = argv[2];
- 	dev_fd = open(device, O_RDWR);
-@@ -2898,6 +2896,14 @@ int do_ffu(int nargs, char **argv)
- 		goto out;
- 	}
- 
-+	if (nargs == 4) {
-+		default_chunk = strtol(argv[3], NULL, 10);
-+		if (default_chunk > MMC_IOC_MAX_BYTES || default_chunk % 512) {
-+			fprintf(stderr, "Invalid chunk size");
-+			goto out;
-+		}
-+	}
-+
- 	/* prepare multi_cmd for FFU based on cmd to be used */
- 
- 	multi_cmd->num_of_cmds = 4;
-@@ -2922,8 +2928,8 @@ do_retry:
- 	bytes_left = fw_size;
- 	off = 0;
- 	while (bytes_left) {
--		unsigned int chunk_size = bytes_left < MMC_IOC_MAX_BYTES ?
--					  bytes_left : MMC_IOC_MAX_BYTES;
-+		unsigned int chunk_size = bytes_left < default_chunk ?
-+					  bytes_left : default_chunk;
- 
- 		/* prepare multi_cmd for FFU based on cmd to be used */
- 		set_ffu_single_cmd(multi_cmd, ext_csd, chunk_size, buf, off);
+Fix this by adding assigned-clocks and assigned.clock-parents to mmc node.
+
+Eric Woudstra (1):
+  arm64: dts: mt7986: fix emmc hs400 mode without uboot initialization
+
+Frank Wunderlich (1):
+  dt-bindings: mmc: mtk-sd: update assigned-clocks/clock-parents for
+    mt7986
+
+ Documentation/devicetree/bindings/mmc/mtk-sd.yaml | 4 ++++
+ arch/arm64/boot/dts/mediatek/mt7986a.dtsi         | 4 ++++
+ 2 files changed, 8 insertions(+)
+
 -- 
-2.40.1
+2.34.1
 
