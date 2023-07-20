@@ -2,132 +2,176 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 084E675A91B
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jul 2023 10:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F1F275A9FD
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jul 2023 10:57:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231432AbjGTIY1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 20 Jul 2023 04:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59664 "EHLO
+        id S230367AbjGTI5j (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 20 Jul 2023 04:57:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbjGTIY0 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Jul 2023 04:24:26 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F01D826AD;
-        Thu, 20 Jul 2023 01:24:20 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 8E7A422A1E;
-        Thu, 20 Jul 2023 08:24:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1689841459; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=l/lqrPJHJ301EskkP7uYoZhLyn+KpT4pekkb8H3GJ54=;
-        b=HyrYogHBg4I7GNRpb0GpoEK+9TsC0eSYQo+9/zjkEx+NQuOdLP8OKgeSWK3z7fbYjbQ+lS
-        XlPoSj4+TNI4A3k+8Wd+M5icKNLZBWOeG13615fZpMSUR1PyOGn9D3D0PnWSjXjCRmIZA0
-        2vCJpO9l+iEyJRpGg8+rY5hcmzdbVkM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1689841459;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=l/lqrPJHJ301EskkP7uYoZhLyn+KpT4pekkb8H3GJ54=;
-        b=u7X9c28VCrMvNoTHJcbjY2dK/qJNm+Wmy73OTkIynCG2bZ5i1lKdJh1by+2369iENgNJqx
-        LmbwrRzLf6Hiv1AQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 36E83133DD;
-        Thu, 20 Jul 2023 08:24:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id LtfiDDPvuGSIIwAAMHmgww
-        (envelope-from <hare@suse.de>); Thu, 20 Jul 2023 08:24:19 +0000
-Message-ID: <0592e021-237d-6d41-7faf-e5b93aefbeea@suse.de>
-Date:   Thu, 20 Jul 2023 10:24:18 +0200
+        with ESMTP id S230046AbjGTIio (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 20 Jul 2023 04:38:44 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE43F269D;
+        Thu, 20 Jul 2023 01:38:43 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-6355e774d0aso4742086d6.1;
+        Thu, 20 Jul 2023 01:38:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689842323; x=1690447123;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=98zoTQ5d78kRlUlSdOrNN6oeSCbtSit7Vz7DB8FGSlg=;
+        b=dbEqJ0dkZvIEDMAnoLM4eaPEPNk40OoPGiKL5dBvoqWgEDZifa+YNuzIV6Pex7WsSJ
+         jDwOH/420m52SQuCPD8eda+8fwtWXqnTw+Ia9C6dSgvpxvh0I2sCmGtC/OLrWnKYlXpC
+         S1Qd4DYZkyNPec9X6WtVBav6ESp3QRiOUSYPFWlqx6l1gdhI9KkxfsS1+a26MQz+Ju0p
+         tr212L8CuY4a9VKrceCAeK2vVQwjnTv80m7HlCeAdJE4pDKp/TBBMYI75KvSDaPxQyBg
+         NDW7H57CL+X+H6qX+j/IeZ6EB36+KvVDq4rRIb4yW8/4xGZLf5xO9dDTXXYF+1YmizM8
+         9lSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689842323; x=1690447123;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=98zoTQ5d78kRlUlSdOrNN6oeSCbtSit7Vz7DB8FGSlg=;
+        b=Zo+3QhxhjfIhfu+AqxmzdA7A8OMewPogIkA94UAe/rd8DmFlox0CRFylIB4DiqQiZe
+         KsEXkxQJ3e+5pOZVDmF5l46b6zw+NIK8SaxUO9QUMDta0TiWeWQ4Rw9nvYTWCetR35oc
+         k3Jvi4V3CWVrzDqDXLOYLkmPCNnJPXexo/BDaSjBsOb+ARyFnFDmRO8i1y51DQBfHxNd
+         3EXfzWAIJ98XxDTQ4tMPA07wsGb51EfS21849jWdyxyjV7wW1Fv0pz5+lWCDIgmW0wDe
+         0PNRdLL8M7iB07kFws2pekIpdZYVAFmxs2WgenVgbY4SKkBZ7/ih6X7+5OUz0rRfWVIB
+         WIWQ==
+X-Gm-Message-State: ABy/qLZsfBf4Cut5HvvY2DZAOl9ektmKYiglEGt6AREOG3cN4eCMQIce
+        CLJv1vrz/GNfsj4gT8jCYmENLPlgiq0ImpN4Joo=
+X-Google-Smtp-Source: APBJJlHq1SeqRhLXIpHON4RyHUs6qSukliilePjXfmKvZPx7KDuQwShLuCWSEUEaG6G6FNMM9sTuJ+cisl/9i4TpIFQ=
+X-Received: by 2002:a0c:d641:0:b0:637:3ca5:cc55 with SMTP id
+ e1-20020a0cd641000000b006373ca5cc55mr6802304qvj.41.1689842322750; Thu, 20 Jul
+ 2023 01:38:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [RFC PATCH 3/6] block: add new genhd flag GENHD_FL_NO_NVMEM
-To:     Daniel Golle <daniel@makrotopia.org>, Jens Axboe <axboe@kernel.dk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Dave Chinner <dchinner@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        =?UTF-8?Q?Thomas_Wei=c3=9fschuh?= <linux@weissschuh.net>,
-        Jan Kara <jack@suse.cz>, Damien Le Moal <dlemoal@kernel.org>,
-        Ming Lei <ming.lei@redhat.com>, Min Li <min15.li@samsung.com>,
-        Christian Loehle <CLoehle@hyperstone.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Yeqi Fu <asuk4.q@gmail.com>, Avri Altman <avri.altman@wdc.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ye Bin <yebin10@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org
-References: <cover.1689802933.git.daniel@makrotopia.org>
- <96510d925cb0ca1a3a132f8f8affd4bbdafd8fc9.1689802933.git.daniel@makrotopia.org>
-Content-Language: en-US
-From:   Hannes Reinecke <hare@suse.de>
-In-Reply-To: <96510d925cb0ca1a3a132f8f8affd4bbdafd8fc9.1689802933.git.daniel@makrotopia.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230718011504.10947-1-wenchao.chen@unisoc.com>
+ <b4ef97ba-440a-2641-0811-bb05e630ccb1@intel.com> <CA+Da2qxOhK7Uc8_ONVgkR=3pTnTo7KgcJi-yS3Cv730+J0pAxA@mail.gmail.com>
+ <ff06bd46-bf43-d2dc-751f-47f41ccc1821@intel.com>
+In-Reply-To: <ff06bd46-bf43-d2dc-751f-47f41ccc1821@intel.com>
+From:   Wenchao Chen <wenchao.chen666@gmail.com>
+Date:   Thu, 20 Jul 2023 16:38:31 +0800
+Message-ID: <CA+Da2qx+mQ1N-7OnQh0ed6_diXgTadKMzJ+9rkqVZv0rhXYTFQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: core: Remove FW revision from CID check
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Wenchao Chen <wenchao.chen@unisoc.com>, ulf.hansson@linaro.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        zhenxiong.lai@unisoc.com, chunyan.zhang@unisoc.com,
+        yuelin.tang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 7/20/23 00:03, Daniel Golle wrote:
-> Add new flag to destinguish block devices which should not act as an
-> NVMEM provider, such as for example an emulated block device on top of
-> an MTD partition which already acts as an NVMEM provider itself.
-> 
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> ---
->   include/linux/blkdev.h | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-> index 2f5371b8482c0..e853d1815be15 100644
-> --- a/include/linux/blkdev.h
-> +++ b/include/linux/blkdev.h
-> @@ -80,11 +80,14 @@ struct partition_meta_info {
->    * ``GENHD_FL_NO_PART``: partition support is disabled.  The kernel will not
->    * scan for partitions from add_disk, and users can't add partitions manually.
->    *
-> + * ``GENHD_FL_NO_NVMEM``: NVMEM emulation is disabled.  The kernel will not
-> + * emulate an NVMEM device on top of this disk.
->    */
->   enum {
->   	GENHD_FL_REMOVABLE			= 1 << 0,
->   	GENHD_FL_HIDDEN				= 1 << 1,
->   	GENHD_FL_NO_PART			= 1 << 2,
-> +	GENHD_FL_NO_NVMEM			= 1 << 3,
->   };
->   
->   enum {
-Please reverse this flag. Most of the devices will not have an NVMEM 
-partition, and we shouldn't require each and every driver to tag their 
-devices.
-So please use GENHD_FL_NVMEM and only set this flag on devices which 
-really have an NVMEM partition.
+On Thu, Jul 20, 2023 at 2:45=E2=80=AFPM Adrian Hunter <adrian.hunter@intel.=
+com> wrote:
+>
+> On 19/07/23 05:46, Wenchao Chen wrote:
+> > On Tue, Jul 18, 2023 at 2:13=E2=80=AFPM Adrian Hunter <adrian.hunter@in=
+tel.com> wrote:
+> >>
+> >> On 18/07/23 04:15, Wenchao Chen wrote:
+> >>> When the card is reset, mmc_card_init() will check if this
+> >>> card is the previous card by comparing the CID.
+> >>>
+> >>> If the firmware is upgraded, the product version may change,
+> >>> so we remove the product version from the CID check.
+> >>
+> >> What is the use-case for this?  I would have thought it is safer
+> >> not to assume anything about the card after the firmware has been
+> >> upgraded.
+> >>
+> > Hi adrian
+> >     Understood, but we have case:
+> >     1.Before the firmware upgrade
+> >         [T5745@C0] mmc0 oldcard raw->cid[2]: 32691160, raw->cid[3]: d92=
+41800
+> >         PRV=3D69
+> >     2.After the firmware upgrade
+> >         [T5745@C0] mmc0 cid[2]: 32011160 cid[3]: d9241800
+> >         PRV=3D01
+> >     If the PRV is not excluded in the CID check, then the mmc
+> > initialization will fail after the mmc reset.
+> >     In addition, CRC is excluded because some controllers support
+> > SDHCI_QUIRK2_RSP_136_HAS_CRC.
+>
+> I do not know what others are doing in this regard, nor what
+> circumstances are leading to the re-initialization.
+>
+There is a way: reboot the machine, but we don't want to do that.
 
-Cheers,
+When the firmware is upgraded, we need to complete the firmware
+update by reset card, and the card will be initialized by mmc_init_card
+after mmc reset.
 
-Hannes
+> Presumably a clean re-initialization could be done by
+> unbinding and rebinding the host controller.
+>
+Could you tell me how to do that?
+Thanks.
 
+> >
+> >>>
+> >>> Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
+> >>> ---
+> >>>  drivers/mmc/core/mmc.c | 18 +++++++++++++++++-
+> >>>  1 file changed, 17 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+> >>> index 89cd48fcec79..32a73378d5c3 100644
+> >>> --- a/drivers/mmc/core/mmc.c
+> >>> +++ b/drivers/mmc/core/mmc.c
+> >>> @@ -32,6 +32,9 @@
+> >>>  #define MIN_CACHE_EN_TIMEOUT_MS 1600
+> >>>  #define CACHE_FLUSH_TIMEOUT_MS 30000 /* 30s */
+> >>>
+> >>> +#define MMC_CID_PRV_MASK GENMASK(23, 16)
+> >>> +#define MMC_CID_CRC_MASK GENMASK(7, 0)
+> >>> +
+> >>>  static const unsigned int tran_exp[] =3D {
+> >>>       10000,          100000,         1000000,        10000000,
+> >>>       0,              0,              0,              0
+> >>> @@ -126,6 +129,19 @@ static int mmc_decode_cid(struct mmc_card *card)
+> >>>       return 0;
+> >>>  }
+> >>>
+> >>> +static int mmc_check_cid(u32 *cid, u32 *raw_cid)
+> >>> +{
+> >>> +     /*
+> >>> +      * When comparing CID, we need to remove the product
+> >>> +      * version (Field PRV, offset 55:48) and CRC. Because
+> >>> +      * the product version will change when the firmware
+> >>> +      * is upgraded. Also, the new CRC is different.
+> >>> +      */
+> >>> +     return cid[0] !=3D raw_cid[0] || cid[1] !=3D raw_cid[1] ||
+> >>> +             (cid[2] & ~MMC_CID_PRV_MASK) !=3D (raw_cid[2] & ~MMC_CI=
+D_PRV_MASK) ||
+> >>> +             (cid[3] & ~MMC_CID_CRC_MASK) !=3D (raw_cid[3] & ~MMC_CI=
+D_CRC_MASK);
+> >>> +}
+> >>> +
+> >>>  static void mmc_set_erase_size(struct mmc_card *card)
+> >>>  {
+> >>>       if (card->ext_csd.erase_group_def & 1)
+> >>> @@ -1640,7 +1656,7 @@ static int mmc_init_card(struct mmc_host *host,=
+ u32 ocr,
+> >>>               goto err;
+> >>>
+> >>>       if (oldcard) {
+> >>> -             if (memcmp(cid, oldcard->raw_cid, sizeof(cid)) !=3D 0) =
+{
+> >>> +             if (mmc_check_cid(cid, oldcard->raw_cid)) {
+> >>>                       pr_debug("%s: Perhaps the card was replaced\n",
+> >>>                               mmc_hostname(host));
+> >>>                       err =3D -ENOENT;
+> >>
+>
