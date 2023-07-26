@@ -2,217 +2,177 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64B547624DD
-	for <lists+linux-mmc@lfdr.de>; Tue, 25 Jul 2023 23:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1AFC7629B0
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Jul 2023 06:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229929AbjGYVwP (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 25 Jul 2023 17:52:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43012 "EHLO
+        id S231354AbjGZEBa (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 26 Jul 2023 00:01:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjGYVwP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 25 Jul 2023 17:52:15 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F831FEB;
-        Tue, 25 Jul 2023 14:52:12 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3a1d9b64837so4174240b6e.0;
-        Tue, 25 Jul 2023 14:52:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690321931; x=1690926731;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w2G/e8y/tvnNGTMmNmnaD68PLNtHT6GiMZvoHdRg+aU=;
-        b=R3puFFKq+ZSGzNHmxPCpnTeYSaLCatWyIWrrZry4+8MTe4ZYoHOqQyVLOJkTIO6LdI
-         XaZlYEeLZHO5anL2SR2yyCgHJFsLbOnlsLOfAevIYDaKTrV3FP9DSGTEk5umBkS6Q2dO
-         +oI4fzhIMqls8oEpa2uNjE7O3BuVthvGynrKXA6FpaRE3528ZMBIrmT8HzY2K9bzVHBT
-         wsJmUYGsKcB0Mv3agSU3IhgvbUbt+lS4vYybGAHs4dk0slYivmLKTp8T+FuhMpSadz5g
-         kNAWtZkrOSD1djGuw4pc+DumKUy0XZZoyGEvFkgvlVfE7JXlLLixSwTFiGx3FTnuQCoA
-         6Tbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690321931; x=1690926731;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w2G/e8y/tvnNGTMmNmnaD68PLNtHT6GiMZvoHdRg+aU=;
-        b=BdZkmo38UcSC8khF8Oxa+EcqizzKVhJfzIKQ+YuDswRYVxy5h5JS/rqByerLYCKjkw
-         K47HASx0zixu6q9o4tvor86Hn0YKNc2/tCrPLtnjhgvu/4GUDbstkrGcxkvhPEYSCulz
-         pGNm6J/QmIR+Pzdq6SDMshG2HpTEhp0Sn4I308ziN19SdqYne/c+0IYuUcrbsfCs92kp
-         OEwCLejod+D7tt5DA0fNy7umeNLwj8dRTdPuiG2uNuDr7+hPlf+nOlCvopRLppGJNnFu
-         BG1O036M36Kg5DI83v5AMM8eN7Xhrrgiyp/bYbzFdEqSARAU610Hhv1vnNZ/EUdPE7w4
-         VTgg==
-X-Gm-Message-State: ABy/qLZPo1xO0eMx3Fox9TCi4h+KyDO+TPtYfw45sntaTzEdF00Tb0tK
-        +LC7r6vX5tcmOlb/ox3NR6g=
-X-Google-Smtp-Source: APBJJlG54o8WY98CP+xjRTeR1S+q2Ldy/fPlKKU1BXd7oYHQ/qegEG4jGeoIlI/AUnc8VPS3G6mssQ==
-X-Received: by 2002:a05:6808:e87:b0:3a4:225d:82c0 with SMTP id k7-20020a0568080e8700b003a4225d82c0mr179900oil.31.1690321931094;
-        Tue, 25 Jul 2023 14:52:11 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:400::5:18d])
-        by smtp.gmail.com with ESMTPSA id 29-20020a17090a005d00b002612150d958sm57830pjb.16.2023.07.25.14.52.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jul 2023 14:52:10 -0700 (PDT)
-Sender: Tejun Heo <htejun@gmail.com>
-Date:   Tue, 25 Jul 2023 11:52:09 -1000
-From:   Tejun Heo <tj@kernel.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Lai Jiangshan <jiangshanlai@gmail.com>,
-        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-team@meta.com, Linux PM list <linux-pm@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        linux-rtc@vger.kernel.org,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Subject: [PATCH wq/for-6.5-fixes] workqueue: Drop the special locking rule
- for worker->flags and worker_pool->flags
-Message-ID: <ZMBECezjAixaMccA@slm.duckdns.org>
-References: <ZF6WsSVGX3O1d0pL@slm.duckdns.org>
- <CAMuHMdVCQmh6V182q4g---jvsWiTOP2hBPZKvma6oUN6535LEg@mail.gmail.com>
- <CAMuHMdW1kxZ1RHKTRVRqDNAbj1Df2=v0fPn5KYK3kfX_kiXR6A@mail.gmail.com>
- <ZK3MBfPS-3-tJgjO@slm.duckdns.org>
- <ZK30CR196rs-OWLq@slm.duckdns.org>
- <CAMuHMdUCXPi+aS-7bR3qRetKF9T3W9jk_HKjvaXmfHv5SEeuFg@mail.gmail.com>
- <ZLXIvXBvhsnL-ik_@slm.duckdns.org>
- <CAMuHMdU8CGhsU-1PZNdWH1xjbWcWSg2s2RFAegXi+vs=d-0t8Q@mail.gmail.com>
- <ZLcLnoAoJmQ9WTuM@slm.duckdns.org>
- <CAMuHMdUo=17kYsNEYr=qyVceRpJ4D3jMFrMOiqaH--OOhJOM4w@mail.gmail.com>
+        with ESMTP id S229621AbjGZEBH (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 26 Jul 2023 00:01:07 -0400
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2131.outbound.protection.outlook.com [40.107.215.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BA8269E;
+        Tue, 25 Jul 2023 21:01:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MlcwkgcHGDI2TqPpiisMMeT0ZLIkpVHKVH/4Xxv+37Zu78HxGuRNmNL6qMCt0nL/68J2yC8uX9GfikSgVN/JwoXAudlQoSwEFJbKGfrig23w7BYl5ucAGwQWZty/IKPBwYHcMujVN/i685qEEy3bOuXnRaRR1MFVfTkmb04502tIJLaEf3Zq38VFnA3tsYK2We3EkvcBHcjaGtXksXXDBgEYLtUuC4MxvsDvFHam+LhGS4JO29Dqipu33MZgs7nTDB+HRWsTj7+SohFtX2224IRXf77tl5k9W3P+VbIdB47vmDeXdJuboVzGS3HC08gycLdoh08dHoXdzBVfQYEUhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3BDV2gitE9ZgnfS93zzj6+ruXHPsGkYOE2qo/yJJ5Ek=;
+ b=h1cw918Yd1ry+EpvVr6WMXIxnqPwS8zYYGGNzt6U02ZzKEW5n3sVD3BUQvHh3rzqZ1GCJ8oAGJjgKApsqESYSVQ9QeqWedTzgG3NOz1QTSv1ZZAtJYtrLNLX2ODBesVzJpMRdNMMu3YwYVZVGn2sib7SeHWmsiEFBdKxGN/FBc4VA9es+TlimHZZRrT2qefNJJyDV8WqqXZxOlY/aHeqgzzz8mBQSBX2tYcyNXx0OaZ8J8MEt8bpMtuuSRiLv6W1KUnH7Iy/xdBMNx3bt02edPjeI7W2aK8500b19f5S0DoUAFbj7aJsYLEwhoT+SjcZHHqshoQWoQ2Au78WLX1O5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3BDV2gitE9ZgnfS93zzj6+ruXHPsGkYOE2qo/yJJ5Ek=;
+ b=qroh9Iixb1OsbPnjY51PEiFN7WWzI3lOuDikVcUJQKG2CZ4w1E1QD8HCPoOo3dKjHJ2SfEV5b4cyanRr/L8/gnBRZAV5YD0Yydxe2IoilVNq6RioCiLENmgR2PTmzPwzXEIsZ22dGPT2Wyq/Fxw6VKXCfM3GaPWUzRQZjVNesFP5Cf1UoFeiCRk8WibEuoXVMCzwzUpk51xRXa9rE5rjT7/XWp4/ysziIrt3cDIEZwYBo7MmzHU3GJQk5XYshlTLzBmO2p2M+8THSTi8tvMubb6Nc8XlGAtw7ZybnKS8NJ+1vswRmwfzAs41zJQTsk9NSFmYyJn9l/t6DOj4MSJooQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SEZPR06MB5269.apcprd06.prod.outlook.com (2603:1096:101:78::6)
+ by KL1PR0601MB5463.apcprd06.prod.outlook.com (2603:1096:820:c3::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.25; Wed, 26 Jul
+ 2023 04:00:58 +0000
+Received: from SEZPR06MB5269.apcprd06.prod.outlook.com
+ ([fe80::732f:ea1d:45a1:1e0b]) by SEZPR06MB5269.apcprd06.prod.outlook.com
+ ([fe80::732f:ea1d:45a1:1e0b%3]) with mapi id 15.20.6631.026; Wed, 26 Jul 2023
+ 04:00:58 +0000
+From:   Yangtao Li <frank.li@vivo.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>, Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>
+Cc:     Yangtao Li <frank.li@vivo.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 01/61] mmc: sunxi: Convert to platform remove callback returning void
+Date:   Wed, 26 Jul 2023 11:59:41 +0800
+Message-Id: <20230726040041.26267-1-frank.li@vivo.com>
+X-Mailer: git-send-email 2.39.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2PR02CA0093.apcprd02.prod.outlook.com
+ (2603:1096:4:90::33) To SEZPR06MB5269.apcprd06.prod.outlook.com
+ (2603:1096:101:78::6)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdUo=17kYsNEYr=qyVceRpJ4D3jMFrMOiqaH--OOhJOM4w@mail.gmail.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEZPR06MB5269:EE_|KL1PR0601MB5463:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5ba3f6ce-3a51-4f19-c4d2-08db8d8cea96
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ALd4vzLpCTgLlrooFKH2HPnGprtEEBSQjEVvatApTIprT1rAymjZrQqeGl4uFjMmQOYbPekNZAbJKTQEPbvVDZ4V8NGwBWhW73Wlq27tMxw2/BccxAq/MkxSER41S9ZV5HxSfUrkMA2DU/P9j/pEpkAIVEcLegclUjNfikwXF6rBy6RpQEL3365hK8akXEokVZJYkFpxN6PJevsEO5v9W+eLKBgK4zuXG4NpmRqChopxJ//zq+Lw5dMuftiPKoSntDgxsOE3ly6aNtFbQKzxa8atdztsaYytaWyeYnqS3ARpJOf8FSkv03cVBqhWPQbPg5/9L8wARNVul57YlJd6VeXGnWCMwmXDgYpnwH7kh0OQQAyhP0yHHQpilRpiNuDWPntnjDGHzdKDM4EQudVjHGELd7JOYUlNflzrwD9yT90QA9wrOmNM/HUm7zYIL/xAqFBaIto/scZyNDkTjMngqZNnXtwaigy47LiNGkw8dTzFvTNRcBaEV6WolHuOAj0IlHmrUtZKE2IQ39ZUicB1m3IgU9hi6/Jd03FQlWd3Bg/rfno0PM3rlvqnC6oDAb66iEn+GQvaj6cIXl5lJbDzvU8VaH8qrPCKIW6IDo7GKRkR8z5tz4z+jwi5d4fMO3xg
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5269.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(39860400002)(346002)(366004)(376002)(136003)(451199021)(110136005)(54906003)(38350700002)(6512007)(38100700002)(52116002)(6486002)(6666004)(478600001)(41300700001)(5660300002)(2616005)(8936002)(8676002)(66556008)(4326008)(66476007)(66946007)(316002)(186003)(83380400001)(6506007)(26005)(1076003)(86362001)(2906002)(36756003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UVp5dUF3VmhMWExsU2t2S3dZbVY3WTBRdS9RNkFjZDdhVUJMdXFYNTlFaHd5?=
+ =?utf-8?B?eW5jbW1WUm9kaXh2b2pVYUhWUVBWZXhXaDU5aUYvNHhmbFRVWTBSR29la2dO?=
+ =?utf-8?B?SnRTbmxQTTZ3TzZBRk1Qb3pnUGUwMk9naHlOVzFhWE04bzVPWitTOVhRZXox?=
+ =?utf-8?B?em1DdDErclcrMDhPelM0ZlFXZGhRVDc0Y1ZGcm0wRHhrMGFQaG40UlBYTnA0?=
+ =?utf-8?B?bENocGpUOXF5eFR0aCtXZTVRc251NTdQdlV0UU05Nm1YdFhvVnZBTHJ1UXNs?=
+ =?utf-8?B?L0hlSU5DK1h2WS9HUHF4Y3dtRFZVRjJIa2VGQm9nQzV0K3hxcnFac25CSWNw?=
+ =?utf-8?B?blNmeUd3d2Yvano2MDNFMnNyOVlYMmhkL0w3bU9SSnpRUzV1d1g3TVJwTFBr?=
+ =?utf-8?B?Q0xjNlpmYWcwb2JSVFlFb2V4MnVnenJjUlpOa2oyWlpSb01EWWdtaHhsVUhq?=
+ =?utf-8?B?VERTYUI5MXhwRDBNenM3bVVRdHRVYXNpc3poQm9YRjMrRWtudVpHYThacDlD?=
+ =?utf-8?B?Sm5EWHlCTlhweGJ6MUhlRmlvaXlyWGtNY084eDZ1ZE1ycDBBbThQL2p5NVNz?=
+ =?utf-8?B?MzExekcvS1VEVFU4VkhzQS9qTXhNUzloQVVXSm0vUVlKb2VIeTh5Zm1mL3lB?=
+ =?utf-8?B?MXgrMHRXZnprTEUwVFZjbFp3eFdjMW1xZU9KYVVsT2FjM0dhamJFQ21Wbzc3?=
+ =?utf-8?B?M0gwanN2SkJ4OE9aVWZtSWYwaFM2N3YrNS9ySG8xM2UwdzZHQksrRS9NQjl6?=
+ =?utf-8?B?blNGWUFOZ0NJUkVkeVM3MThDYnEvclNic3RTM3RIa3dGOUo3WmZYQWFlS1FN?=
+ =?utf-8?B?T0VyRXY4SXNWMkpQMmNicFU4eHZlN0lJMjdNc0Y3ekNJalIzMzd4YUlSNEtO?=
+ =?utf-8?B?N2MwdUtxWnUxSENiYUtqRnpUR0Y2SHVYRTV6bmpDMDNGaWZNUGNTSzQxM1ZS?=
+ =?utf-8?B?cFBpVUJ1L3lNbE84S0NmZmhsL2ttdW83UlFha3RXTlNSY3YvZWNsZ3JaR3hu?=
+ =?utf-8?B?RE0rQytUS0FobmhjWTkrdi8zRzFVS01RU1BRVWFDVkZMazJmSUtzVC9UaU4r?=
+ =?utf-8?B?L0U2UG5TQ3IxYUZ2NWJIVklFVHgyN090WTQ3WHRpUDQ5Y1ZORzNpRWVDdHo4?=
+ =?utf-8?B?cDQ0aHVydFBxNGEwY2RUVVJyYWtaWlkzdDdiOG1hTW5lSU8xVEpKa1F5eUNl?=
+ =?utf-8?B?VXZDd2tVNTc2aE9jOFQ4eCs0ZTQ2S3Y5L3RMb01MYlcwNGk1UFcxWTZ1Z1RX?=
+ =?utf-8?B?ellLdnRNcENJRjRQZGVxaUlQWnhvdHRHTkxmaVZKa0RmTUNJYlA3QnI1bzdK?=
+ =?utf-8?B?Nkd1YmFpSmFjU2lKQi9JZVJWclFDYkVpMkp5Yk9GQkNTQ294aHF1SjUwZy9W?=
+ =?utf-8?B?WG1ZRHJYWlJJOCt1ZFZCc0pHYkgvYWl2Z3M5SjE4ZklBaERMUEh3T2ZPa0Ev?=
+ =?utf-8?B?M0kweXJNTDZZbVRZYUE1TjZSTU1YTVBqaDMrcjZiS0xYaFdVZHhjUU5WS0NI?=
+ =?utf-8?B?MGk0czdWRyttTk9XWGtuRXhFVzNpcXlCQk9wdnM1K212N2Z1WmlTWVNNUkFM?=
+ =?utf-8?B?M0JJREsxR21Gb3JNMjh4T1E1K0RQTHJRY1BsSUdXZm9lNEM5RnQ4bmNFeW1H?=
+ =?utf-8?B?SjRvTVh3bGdJem9kSG1rbTd6eXc0cVYyQ0UrYjU3MDRZekNDb1ZEd1d3SnNU?=
+ =?utf-8?B?VEhKRkIxRU5ac2ZNL1BsdDdjdzM0QlVPQ3RURTFoSGJ4YmRkb3FyWnJKaGp6?=
+ =?utf-8?B?SExnTXFQdWZORzloOW5aNWEvYnJQWjQ1dXJ5aDZtcXVlbFdkRXROOWxNVzM4?=
+ =?utf-8?B?aGR6azQxZVc2M1hZdFVNNmNrZnRwZWIzTnNFSFZXVytLUC94N0tNVEdKcVI2?=
+ =?utf-8?B?NkFycFgrVFdDQ3FXQ1FSRXlrUFBoaURUd1NaS04rSjZGdzlSNkpHU3RSOE1p?=
+ =?utf-8?B?QlBoN0dHSTgwelhNZjZyVVo1cVpZbjRIc1VsNXFGOTlDdzBsUElPZTFZaGxU?=
+ =?utf-8?B?RWo0YnBLRytLWWNpVFh0KytCSTRNY0tjQUcyczVndWU4TFplN2FQYzk5K3ov?=
+ =?utf-8?B?MWRMUTdKSGo4ekMweUZHMURCSDYxbVVoUDVUd3Q3Sko0SmVQSU5ZSUt1KzZC?=
+ =?utf-8?Q?iLZ9a5tto/BI/RS+TjIw4cF3W?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ba3f6ce-3a51-4f19-c4d2-08db8d8cea96
+X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5269.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2023 04:00:57.6171
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pGQOb7S5oFvM1sOBl45W4LjCrpWFQ2mGtpHKFHiuBXOzqbHiHyKoppRWEnudIkdVv0WL7XwWpujNuIdz7uu7rA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR0601MB5463
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From aa6fde93f3a49e42c0fe0490d7f3711bac0d162e Mon Sep 17 00:00:00 2001
-From: Tejun Heo <tj@kernel.org>
-Date: Mon, 17 Jul 2023 12:50:02 -1000
-Subject: [PATCH] workqueue: Scale up wq_cpu_intensive_thresh_us if BogoMIPS is
- below 4000
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-wq_cpu_intensive_thresh_us is used to detect CPU-hogging per-cpu work items.
-Once detected, they're excluded from concurrency management to prevent them
-from blocking other per-cpu work items. If CONFIG_WQ_CPU_INTENSIVE_REPORT is
-enabled, repeat offenders are also reported so that the code can be updated.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-The default threshold is 10ms which is long enough to do fair bit of work on
-modern CPUs while short enough to be usually not noticeable. This
-unfortunately leads to a lot of, arguable spurious, detections on very slow
-CPUs. Using the same threshold across CPUs whose performance levels may be
-apart by multiple levels of magnitude doesn't make whole lot of sense.
-
-This patch scales up wq_cpu_intensive_thresh_us upto 1 second when BogoMIPS
-is below 4000. This is obviously very inaccurate but it doesn't have to be
-accurate to be useful. The mechanism is still useful when the threshold is
-fully scaled up and the benefits of reports are usually shared with everyone
-regardless of who's reporting, so as long as there are sufficient number of
-fast machines reporting, we don't lose much.
-
-Some (or is it all?) ARM CPUs systemtically report significantly lower
-BogoMIPS. While this doesn't break anything, given how widespread ARM CPUs
-are, it's at least a missed opportunity and it probably would be a good idea
-to teach workqueue about it.
-
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reported-and-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 ---
-Hello,
+ drivers/mmc/host/sunxi-mmc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Geert, applied this to wq/for-6.5-fixes. The local variable `mips` is
-renamed to `bogo` to avoid collision.
-
-Thanks for testing!
-
- kernel/workqueue.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index 02a8f402eeb5..800b4208dba9 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -52,6 +52,7 @@
- #include <linux/sched/debug.h>
- #include <linux/nmi.h>
- #include <linux/kvm_para.h>
-+#include <linux/delay.h>
- 
- #include "workqueue_internal.h"
- 
-@@ -338,8 +339,10 @@ static cpumask_var_t *wq_numa_possible_cpumask;
-  * Per-cpu work items which run for longer than the following threshold are
-  * automatically considered CPU intensive and excluded from concurrency
-  * management to prevent them from noticeably delaying other per-cpu work items.
-+ * ULONG_MAX indicates that the user hasn't overridden it with a boot parameter.
-+ * The actual value is initialized in wq_cpu_intensive_thresh_init().
-  */
--static unsigned long wq_cpu_intensive_thresh_us = 10000;
-+static unsigned long wq_cpu_intensive_thresh_us = ULONG_MAX;
- module_param_named(cpu_intensive_thresh_us, wq_cpu_intensive_thresh_us, ulong, 0644);
- 
- static bool wq_disable_numa;
-@@ -6513,6 +6516,42 @@ void __init workqueue_init_early(void)
- 	       !system_freezable_power_efficient_wq);
+diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+index 69dcb8805e05..d3bd0ac99ec4 100644
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -1486,7 +1486,7 @@ static int sunxi_mmc_probe(struct platform_device *pdev)
+ 	return ret;
  }
  
-+static void __init wq_cpu_intensive_thresh_init(void)
-+{
-+	unsigned long thresh;
-+	unsigned long bogo;
-+
-+	/* if the user set it to a specific value, keep it */
-+	if (wq_cpu_intensive_thresh_us != ULONG_MAX)
-+		return;
-+
-+	/*
-+	 * The default of 10ms is derived from the fact that most modern (as of
-+	 * 2023) processors can do a lot in 10ms and that it's just below what
-+	 * most consider human-perceivable. However, the kernel also runs on a
-+	 * lot slower CPUs including microcontrollers where the threshold is way
-+	 * too low.
-+	 *
-+	 * Let's scale up the threshold upto 1 second if BogoMips is below 4000.
-+	 * This is by no means accurate but it doesn't have to be. The mechanism
-+	 * is still useful even when the threshold is fully scaled up. Also, as
-+	 * the reports would usually be applicable to everyone, some machines
-+	 * operating on longer thresholds won't significantly diminish their
-+	 * usefulness.
-+	 */
-+	thresh = 10 * USEC_PER_MSEC;
-+
-+	/* see init/calibrate.c for lpj -> BogoMIPS calculation */
-+	bogo = max_t(unsigned long, loops_per_jiffy / 500000 * HZ, 1);
-+	if (bogo < 4000)
-+		thresh = min_t(unsigned long, thresh * 4000 / bogo, USEC_PER_SEC);
-+
-+	pr_debug("wq_cpu_intensive_thresh: lpj=%lu BogoMIPS=%lu thresh_us=%lu\n",
-+		 loops_per_jiffy, bogo, thresh);
-+
-+	wq_cpu_intensive_thresh_us = thresh;
-+}
-+
- /**
-  * workqueue_init - bring workqueue subsystem fully online
-  *
-@@ -6528,6 +6567,8 @@ void __init workqueue_init(void)
- 	struct worker_pool *pool;
- 	int cpu, bkt;
+-static int sunxi_mmc_remove(struct platform_device *pdev)
++static void sunxi_mmc_remove(struct platform_device *pdev)
+ {
+ 	struct mmc_host	*mmc = platform_get_drvdata(pdev);
+ 	struct sunxi_mmc_host *host = mmc_priv(mmc);
+@@ -1499,8 +1499,6 @@ static int sunxi_mmc_remove(struct platform_device *pdev)
+ 	}
+ 	dma_free_coherent(&pdev->dev, PAGE_SIZE, host->sg_cpu, host->sg_dma);
+ 	mmc_free_host(mmc);
+-
+-	return 0;
+ }
  
-+	wq_cpu_intensive_thresh_init();
-+
- 	/*
- 	 * It'd be simpler to initialize NUMA in workqueue_init_early() but
- 	 * CPU to node mapping may not be available that early on some
+ #ifdef CONFIG_PM
+@@ -1556,7 +1554,7 @@ static struct platform_driver sunxi_mmc_driver = {
+ 		.pm = &sunxi_mmc_pm_ops,
+ 	},
+ 	.probe		= sunxi_mmc_probe,
+-	.remove		= sunxi_mmc_remove,
++	.remove_new	= sunxi_mmc_remove,
+ };
+ module_platform_driver(sunxi_mmc_driver);
+ 
 -- 
-2.41.0
+2.39.0
 
