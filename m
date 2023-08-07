@@ -2,48 +2,81 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90FED7724AA
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Aug 2023 14:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF9B77267D
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Aug 2023 15:49:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233660AbjHGMsM (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 7 Aug 2023 08:48:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47034 "EHLO
+        id S234436AbjHGNt0 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 7 Aug 2023 09:49:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233841AbjHGMsI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Aug 2023 08:48:08 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A51172D
-        for <linux-mmc@vger.kernel.org>; Mon,  7 Aug 2023 05:47:49 -0700 (PDT)
-Received: from dggpemm500012.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RKGKS4YSNzfbnl;
-        Mon,  7 Aug 2023 20:46:36 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500012.china.huawei.com (7.185.36.89) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 7 Aug 2023 20:47:45 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 20:47:45 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-mmc@vger.kernel.org>
-CC:     <pierre@ossman.eu>, <ulf.hansson@linaro.org>,
-        <yangyingliang@huawei.com>
-Subject: [PATCH -next 2/2] mmc: wbsd: remove unnecessary dev_set_drvdata()
-Date:   Mon, 7 Aug 2023 20:44:43 +0800
-Message-ID: <20230807124443.3431366-2-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230807124443.3431366-1-yangyingliang@huawei.com>
-References: <20230807124443.3431366-1-yangyingliang@huawei.com>
+        with ESMTP id S234447AbjHGNtV (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 7 Aug 2023 09:49:21 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2878C1BE3
+        for <linux-mmc@vger.kernel.org>; Mon,  7 Aug 2023 06:49:09 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-d4364cf8be3so3519477276.1
+        for <linux-mmc@vger.kernel.org>; Mon, 07 Aug 2023 06:49:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691416148; x=1692020948;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=LrwjN5Q8LetwblRISR8oyofHz7AZ81IID5+NzR+/8cA=;
+        b=V7Jh7Nsn3GJVY+ygsTFOkvGh4bLV8N8/Ew/DUfO2RWeke7HQyKDyjJX+JH09EUP2rA
+         Jju6Z82uwl1JMOag6O15FNgv0xHCpxqyF6scOiN5H6wvWBVLBpQAZYVxgKhm29sonjSH
+         TUYPL4ckDcXINMIpHVuFl+V+kpgsZjqnuZdEpGzTr8XStLu6S+g4JDUmGdlgBXaAUM9n
+         bjPmpPjvVEQJr0K3eRuPaaXg4zdZFd/S2DaXMRrvLdjIBJLBqdqpOTfsnkgnGeK64FJR
+         NxGiN3P3Vg/fHgZLkbbIvyLeA/NV8B11XiV/mObIGlymdQt9CJQqeELnuL5Kv2Sayvt0
+         dJqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691416148; x=1692020948;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LrwjN5Q8LetwblRISR8oyofHz7AZ81IID5+NzR+/8cA=;
+        b=HRAwGB9Pr9acMwWFfFl1tjeuhqG75w8+ijAAuKWvBReWFq8SFcAJhrxgq6GipwdInG
+         wdLQ2ZY05xEbwASi5xlN+AZ3/k4OvSZqziROAwcHSUAwtzyyXXomEmtHwI3a9e573yL5
+         Fl87obiU+zaoyLkoJ7w5sXRc/+bagkz3YHg6I6YCHJahaGok9LVziJxoMlRQYzEsqGfV
+         1G7Wolu4OBldyNX2+cELB/ykwDBW/19P06z3GH23Cfx6VaELyz6QoMXrgUUf75OcHJPr
+         UT1YoNgBja2ETY6oX5YOGY2qU2NOkWE6oxdvjV/9h5PS/UApc4HO2M2XZl/MzXMPI66D
+         57lQ==
+X-Gm-Message-State: AOJu0YzXhuMM5wBVEvsHomuQnzufuZM9ZyqPLxHwmPKQFfSVk5cVaciI
+        ccNSo9tnxMJWgYo2weiWF5YT1KUD5moQ55MuicMVdQ==
+X-Google-Smtp-Source: AGHT+IFlfGibypvOnYH7G4eRsSzX2n2Sgj1wUF/VjFKrm12jEANuab024sswGKNkLGhC7dNM+6Cl6fZVefMCQC5Ucn4=
+X-Received: by 2002:a25:b316:0:b0:cea:b62d:620f with SMTP id
+ l22-20020a25b316000000b00ceab62d620fmr9376359ybj.45.1691416147971; Mon, 07
+ Aug 2023 06:49:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+References: <cover.1689802933.git.daniel@makrotopia.org> <1ce5f56df546cec25ef741f381286f1d7c33d000.1689802933.git.daniel@makrotopia.org>
+In-Reply-To: <1ce5f56df546cec25ef741f381286f1d7c33d000.1689802933.git.daniel@makrotopia.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 7 Aug 2023 15:48:31 +0200
+Message-ID: <CAPDyKFqhZtCHVmCNnm_Qm7X+=GtJY8uNJOWOgZXuTTVEw0msNA@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/6] mmc: block: set fwnode of disk devices
+To:     Daniel Golle <daniel@makrotopia.org>
+Cc:     Jens Axboe <axboe@kernel.dk>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Dave Chinner <dchinner@redhat.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Jan Kara <jack@suse.cz>, Damien Le Moal <dlemoal@kernel.org>,
+        Ming Lei <ming.lei@redhat.com>, Min Li <min15.li@samsung.com>,
+        Christian Loehle <CLoehle@hyperstone.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Hannes Reinecke <hare@suse.de>,
+        Jack Wang <jinpu.wang@ionos.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Yeqi Fu <asuk4.q@gmail.com>, Avri Altman <avri.altman@wdc.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ye Bin <yebin10@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,28 +84,52 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Remove unnecessary dev_set_drvdata() in ->remove(), and
-in error path in ->probe(), the driver_data will be set
-to NULL in device_unbind_cleanup() in driver core code.
+On Thu, 20 Jul 2023 at 00:02, Daniel Golle <daniel@makrotopia.org> wrote:
+>
+> Set fwnode of disk devices to 'block', 'boot0' and 'boot1' subnodes of
+> the mmc-card. This is done in preparation for having the eMMC act as
+> NVMEM provider.
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/mmc/host/wbsd.c | 2 --
- 1 file changed, 2 deletions(-)
+Sorry, but I don't quite understand what you are trying to do here.
+Maybe you should re-order the patches in the series so it becomes
+clear why this is needed?
 
-diff --git a/drivers/mmc/host/wbsd.c b/drivers/mmc/host/wbsd.c
-index bf2a92fba0ed..0589d169e8fb 100644
---- a/drivers/mmc/host/wbsd.c
-+++ b/drivers/mmc/host/wbsd.c
-@@ -1264,8 +1264,6 @@ static void wbsd_free_mmc(struct device *dev)
- 	del_timer_sync(&host->ignore_timer);
- 
- 	mmc_free_host(mmc);
--
--	dev_set_drvdata(dev, NULL);
- }
- 
- /*
--- 
-2.25.1
+Moreover, I don't see any DT docs being updated as a part of the
+series, which looks like it is needed too. That would also help to
+understand what you are proposing, I think.
 
+>
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+> ---
+>  drivers/mmc/core/block.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+> index f701efb1fa785..fc1a9f31bd253 100644
+> --- a/drivers/mmc/core/block.c
+> +++ b/drivers/mmc/core/block.c
+> @@ -2413,6 +2413,8 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
+>                                               int area_type,
+>                                               unsigned int part_type)
+>  {
+> +       struct fwnode_handle *fwnode;
+> +       struct device *ddev;
+>         struct mmc_blk_data *md;
+>         int devidx, ret;
+>         char cap_str[10];
+> @@ -2509,6 +2511,12 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
+>
+>         blk_queue_write_cache(md->queue.queue, cache_enabled, fua_enabled);
+>
+> +       ddev = disk_to_dev(md->disk);
+> +       fwnode = device_get_named_child_node(subname ? md->parent->parent :
+> +                                                      md->parent,
+> +                                            subname ? subname : "block");
+> +       ddev->fwnode = fwnode;
+> +
+>         string_get_size((u64)size, 512, STRING_UNITS_2,
+>                         cap_str, sizeof(cap_str));
+>         pr_info("%s: %s %s %s%s\n",
+
+Kind regards
+Uffe
