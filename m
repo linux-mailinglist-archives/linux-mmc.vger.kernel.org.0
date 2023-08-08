@@ -2,64 +2,59 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C13B7742FA
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 19:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9D30774187
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 19:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233894AbjHHRyB (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Aug 2023 13:54:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44988 "EHLO
+        id S234465AbjHHRXL (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Aug 2023 13:23:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbjHHRxh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 13:53:37 -0400
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49498B5EBF
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 09:23:55 -0700 (PDT)
-Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-6bd04558784so814099a34.3
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Aug 2023 09:23:55 -0700 (PDT)
+        with ESMTP id S234476AbjHHRWm (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 13:22:42 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 988ED7D79D
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 09:09:26 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b8b2b60731so36657465ad.2
+        for <linux-mmc@vger.kernel.org>; Tue, 08 Aug 2023 09:09:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691511826; x=1692116626;
+        d=linaro.org; s=google; t=1691510931; x=1692115731;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=s++4blSxMjulxr4WqQlajWQp+reqB47xPJw4qPYyIJs=;
-        b=IUQAhvD4RKUXNSV9XcGbGQHJ8hHdkytLCSLvIQ2dcXA142AV4RNVcQXpz8GJjHh7T9
-         K6UNaryGbM9RuC2PzG+yDYsD6YvcdFfod2KHrmK6NviSBnhQKp37lNb107z7T+z6CcFg
-         3t6sRk9Apcu4QZEU/NTXVBo6pv/hvMqhjCVxdX4Fpu+46aM8s6QGLbzeoQ0T4BHuEd+Y
-         3ndIG1irNC/FyhtiVpeWmgDVp5GohlF4xcYHzVBbFBOGgVBXLEK5V2jt1fhIrDA07hic
-         5+hCfszuSPc9YD+Oe3X/XTJXgBah3LWTxlhtFb9q9W+MwWBJ0KUNh7t8B/2kYMiExq/P
-         eSjg==
+        bh=oNRskDWNtzJ9riu+LqE4hawWFxgvxlfhvEU+bBPnE3U=;
+        b=g2CN5QS8wmfRlotD5QGqa0uJtBTokHzppBApN0hjlnEVWfy6puYMkeNpzplEXODqev
+         tYSYrft4GadSUIBsFPPBv2zN5anlVFsUyjiTLD9cR32QOwV3d9PsqIf8CA+OLg1z1ZOG
+         +o/DO8hQmM+bWhjZNzIz0sCfeU85YlP1BVcrDsYuom7t1EMWQyNlg8HB89XyqyL+u6H3
+         caEDXpge09T7Mpo6d+hytnQJSlV0ITtVAAjTPgsKfhAccfbx79S+dBVsSo7HHOMMcx/4
+         c27XcRMtx6rEbk48xUmWpZONltnCt+J0qEmwi3Ahj6QcbQnp52QgxT6ZKvqqa1T9B90k
+         AAoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691511826; x=1692116626;
+        d=1e100.net; s=20221208; t=1691510931; x=1692115731;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=s++4blSxMjulxr4WqQlajWQp+reqB47xPJw4qPYyIJs=;
-        b=ZmLfT7n/l4thMqH1Hywfr2rftQRplJdTyfdjWTmEpSNwcP2ggIcyy/APnqk8blfeiG
-         lLIf8l/hePREbyvhi1K5Uq8RSGEmAX895r9T3uH7heQnjiUFGCo0lhsLdzZZP3BExGTf
-         uFTIHIx1qIiia3Me7A7r5DW2Kn4uLEe251HtAruteD9pms51ROuWo/esApjV4cHfHbZC
-         nZM0DSFd+Qx5CaRfDl564wlqGl0aC2QNpuVV2p26pfRy/g3VFBBB9rIhuYlPYpr2deE6
-         RNY5pDtszl9YwMqrHLqkoT8fWOytA8XwoBRRHoinLoicjwR5/O/BkCaRlZOnfJrTBB7U
-         Ztaw==
-X-Gm-Message-State: AOJu0Yzd2B1nVAvesRPz86/UOiQZxeN7XM+3AVE4BakRB1E7SUKp+kYQ
-        EzF9rmd9G/AWr2J0g73EsQPgDIC88K7/5Pau4exVBtbHBmGSSBkc
-X-Google-Smtp-Source: AGHT+IGGcAj42nyoezAnxw/gRQ5a8aT9hrh74ET1epNHdpkHqryPud6eA2qTIgp9XEhLBjrOsYxl27ezpR/VAqMtR6k=
-X-Received: by 2002:a25:6943:0:b0:ce8:42b6:46f9 with SMTP id
- e64-20020a256943000000b00ce842b646f9mr15212913ybc.45.1691491995143; Tue, 08
- Aug 2023 03:53:15 -0700 (PDT)
+        bh=oNRskDWNtzJ9riu+LqE4hawWFxgvxlfhvEU+bBPnE3U=;
+        b=MWvyPgFq11QIYM/ey5ZN9icpatMEnAEXNPoBAvQz2eldledLj4pasaVA0PWDbxP8hI
+         1LiiheUIwu5dGva9o5HJtGIUzf85uDaEkbrzff7f3SuQs9y4ILMQ3d3kZkpPA3iARBkI
+         BNN30SPYzQbKQsevtjBbujPoACuw4UqMYCvy0c3bLMUNR9qQSLwRfo/JuD+BNlei7GQG
+         RFMLGJXm0W4NcgZ0p0co+qO+5FEQCLPGb0ZIZJCr09ZnlFosERtbt1C8mzKVxPdNUfSe
+         2GyQ9zbYSMgSEYo66gMchGpbWurr0itpD53FTo1O6rqEJaX22VGA1nmoQJyV5aobeN9B
+         Qzrg==
+X-Gm-Message-State: AOJu0YxQ5E+FhbKfQX8zFtEEyTEkag3vb5msQGQ8eJ31fYLzdp1qns3a
+        vhmGoSItzI1q+qqthhl5465oBkhAKtw01GkMQIMXlmLG1m5ghFS7
+X-Google-Smtp-Source: AGHT+IHU9fAptYlrSkOa3qBmLHq+GizuSj9Jk3kVA843SDvn6b5XNWmECJby4tbZhE+kZPR+LHE2ALxJabDwRCLkLRw=
+X-Received: by 2002:a81:920f:0:b0:581:8d25:ff85 with SMTP id
+ j15-20020a81920f000000b005818d25ff85mr11361358ywg.3.1691491998598; Tue, 08
+ Aug 2023 03:53:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230802023023.1318134-1-yunlong.xing@unisoc.com>
-In-Reply-To: <20230802023023.1318134-1-yunlong.xing@unisoc.com>
+References: <20230802094028.976612-1-lizetao1@huawei.com>
+In-Reply-To: <20230802094028.976612-1-lizetao1@huawei.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 8 Aug 2023 12:52:39 +0200
-Message-ID: <CAPDyKFr1ts4yE3it=+fFsvQaSPTa=R01yobaNVhHfRh4nRicow@mail.gmail.com>
-Subject: Re: [PATCH V2] mmc: block: Fix in_flight[issue_type] value error
-To:     Yunlong Xing <yunlong.xing@unisoc.com>
-Cc:     adrian.hunter@intel.com, CLoehle@hyperstone.com,
-        brauner@kernel.org, hare@suse.de, asuk4.q@gmail.com,
-        avri.altman@wdc.com, beanhuo@micron.com, linus.walleij@linaro.org,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, hongyu.jin@unisoc.com,
-        zhiguo.niu@unisoc.com, yunlong.xing23@gmail.com,
-        yibin.ding@unisoc.com, dongliang.cui@unisoc.com
+Date:   Tue, 8 Aug 2023 12:52:42 +0200
+Message-ID: <CAPDyKFrWX+=uCCPVYOx-AbthMyRvCLjpgnfY7+0EGH8Ts63ogw@mail.gmail.com>
+Subject: Re: [PATCH -next] mmc: sdhci-st: Use devm_platform_ioremap_resource_byname()
+To:     Li Zetao <lizetao1@huawei.com>
+Cc:     patrice.chotard@foss.st.com, adrian.hunter@intel.com,
+        linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -71,85 +66,47 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Wed, 2 Aug 2023 at 04:33, Yunlong Xing <yunlong.xing@unisoc.com> wrote:
+On Wed, 2 Aug 2023 at 11:41, Li Zetao <lizetao1@huawei.com> wrote:
 >
-> From: Yibin Ding <yibin.ding@unisoc.com>
+> Convert platform_get_resource_byname() + devm_ioremap_resource() to a
+> single call to devm_platform_ioremap_resource_byname(), as this is
+> exactly what this function does.
 >
-> For a completed request, after the mmc_blk_mq_complete_rq(mq, req)
-> function is executed, the bitmap_tags corresponding to the
-> request will be cleared, that is, the request will be regarded as
-> idle. If the request is acquired by a different type of process at
-> this time, the issue_type of the request may change. It further
-> caused the value of mq->in_flight[issue_type] to be abnormal,
-> and a large number of requests could not be sent.
->
-> p1:                                           p2:
-> mmc_blk_mq_complete_rq
->   blk_mq_free_request
->                                               blk_mq_get_request
->                                                 blk_mq_rq_ctx_init
-> mmc_blk_mq_dec_in_flight
->   mmc_issue_type(mq, req)
->
-> This strategy can ensure the consistency of issue_type
-> before and after executing mmc_blk_mq_complete_rq.
->
-> Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
-> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Li Zetao <lizetao1@huawei.com>
 
-Applied for fixes, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
-> changes of v2: Sort local declarations in descending order of
-> line length
-> ---
->  drivers/mmc/core/block.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  drivers/mmc/host/sdhci-st.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 >
-> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-> index f701efb1fa78..b6f4be25b31b 100644
-> --- a/drivers/mmc/core/block.c
-> +++ b/drivers/mmc/core/block.c
-> @@ -2097,14 +2097,14 @@ static void mmc_blk_mq_poll_completion(struct mmc_queue *mq,
->         mmc_blk_urgent_bkops(mq, mqrq);
->  }
+> diff --git a/drivers/mmc/host/sdhci-st.c b/drivers/mmc/host/sdhci-st.c
+> index 6415916fbd91..97f350953c4b 100644
+> --- a/drivers/mmc/host/sdhci-st.c
+> +++ b/drivers/mmc/host/sdhci-st.c
+> @@ -348,7 +348,6 @@ static int sdhci_st_probe(struct platform_device *pdev)
+>         struct clk *clk, *icnclk;
+>         int ret = 0;
+>         u16 host_version;
+> -       struct resource *res;
+>         struct reset_control *rstc;
 >
-> -static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
-> +static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, enum mmc_issue_type issue_type)
->  {
->         unsigned long flags;
->         bool put_card;
->
->         spin_lock_irqsave(&mq->lock, flags);
->
-> -       mq->in_flight[mmc_issue_type(mq, req)] -= 1;
-> +       mq->in_flight[issue_type] -= 1;
->
->         put_card = (mmc_tot_in_flight(mq) == 0);
->
-> @@ -2117,6 +2117,7 @@ static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
->  static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req,
->                                 bool can_sleep)
->  {
-> +       enum mmc_issue_type issue_type = mmc_issue_type(mq, req);
->         struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
->         struct mmc_request *mrq = &mqrq->brq.mrq;
->         struct mmc_host *host = mq->card->host;
-> @@ -2136,7 +2137,7 @@ static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req,
->                         blk_mq_complete_request(req);
+>         clk =  devm_clk_get(&pdev->dev, "mmc");
+> @@ -397,9 +396,7 @@ static int sdhci_st_probe(struct platform_device *pdev)
 >         }
 >
-> -       mmc_blk_mq_dec_in_flight(mq, req);
-> +       mmc_blk_mq_dec_in_flight(mq, issue_type);
->  }
+>         /* Configure the FlashSS Top registers for setting eMMC TX/RX delay */
+> -       res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+> -                                          "top-mmc-delay");
+> -       pdata->top_ioaddr = devm_ioremap_resource(&pdev->dev, res);
+> +       pdata->top_ioaddr = devm_platform_ioremap_resource_byname(pdev, "top-mmc-delay");
+>         if (IS_ERR(pdata->top_ioaddr))
+>                 pdata->top_ioaddr = NULL;
 >
->  void mmc_blk_mq_recovery(struct mmc_queue *mq)
 > --
-> 2.25.1
+> 2.34.1
 >
