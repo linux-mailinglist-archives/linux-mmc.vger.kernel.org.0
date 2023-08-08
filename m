@@ -2,63 +2,62 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 638D4774263
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 19:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1053773FCA
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 18:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230146AbjHHRnu (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Aug 2023 13:43:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53046 "EHLO
+        id S233664AbjHHQxT (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Aug 2023 12:53:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjHHRn2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 13:43:28 -0400
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 172F024ABD
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 09:19:19 -0700 (PDT)
-Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-3a426e70575so3326897b6e.0
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Aug 2023 09:19:19 -0700 (PDT)
+        with ESMTP id S233827AbjHHQwY (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 12:52:24 -0400
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2BA05B9A
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 08:58:17 -0700 (PDT)
+Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-63d30554eefso35058646d6.3
+        for <linux-mmc@vger.kernel.org>; Tue, 08 Aug 2023 08:58:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691511522; x=1692116322;
+        d=linaro.org; s=google; t=1691510291; x=1692115091;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jvQJ94JUmNmfWnFUJ3zsqGbPSkM92W/OFcGzXCWoFs4=;
-        b=KspSbLSlU8zXclS/nJCPIqFEcucHG5nNNSh1h/T8/wzKvUCfsgur/vRDvR5m9X5sYS
-         n2QwV0YlEs+VrLi9HxfCg7C9YTxgNWxrDTzf/aIlHpWXMPs5wY1NQY5HQsD4gbTUww6z
-         wtnT/FU0HeU1bKCjAnKzHhzGWImncnjsivAVTJGqGDQG8Tng2OYZxMGTUY85kyfFs0UM
-         yB9bJgffSMsQjwU2W5M0FJphR5oxgd+/kXfIERlkW2A1XTPLjeklzcI9GzLb4CevZ7U+
-         GN1Cw+s+DD+rk34M88+3Zo26E1GxNomDHUtec9Mzs1eG3JhBsouHy8gn6HldsOJkfZhw
-         8/gQ==
+        bh=0ubqfsmYb7V02nf1U7/39ZUb74vPvlvUEXZk/eI/cgk=;
+        b=O8A78HFnJB/CTxySNMT/AtdNsZgdLD1N3iArR3eUjsT5kwrT/8q8F9B+SG7wDq4zBO
+         5KBWZSRjnU/34HYlKc1LQNC620p6r47W6pcZXO2iczRuvjjBLR1Cc/0kIUDw5GqlgNos
+         KScsRQjCnj3T01dPpEcz0fTco0nNIoM7+Glmanq7APlb6fi5/sY83D9nVzfcXTNDJuAg
+         bnbEjVw5WV1SStACk+iV341i5bkIRnkgl3I6EWbO67X9xQnq0dHJB9GBR5YS7j+oOPEY
+         C6HigeeCe/k6cmkE0SHplyqOlCDfKR0FFQHmgXxLvZx/TgEohDmxokq3uDs02FFCIYBZ
+         LXbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691511522; x=1692116322;
+        d=1e100.net; s=20221208; t=1691510291; x=1692115091;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jvQJ94JUmNmfWnFUJ3zsqGbPSkM92W/OFcGzXCWoFs4=;
-        b=UBOnu1FieFwQedegT/ErYorL7MNtLgR70dhvYIeMNcyoezHyS5jUnxk6Z5Lko5Juzs
-         /FACEOZwrbxseYwqABdLFvj/hehdSjJeI9gsyqZlsZfJLmqRpT8VYRtq3d3zlNP5ykYJ
-         /O0bDxXWsYMdDW30NNgV7fwea81w4synIRPqKA/vqHwKqiHB1R/sa8aYnyW1gyDljO9K
-         aWOMQDZ3WLMIfGHjoVndZOA36bpDTeIuYQgyxZN1MPxZjwwwjHjYp/BhMXMctwdC4bEV
-         tKiPrI8tjJ7ky8hwIyWBBxkthOoi9ZG+Vs9vMKs4erOEEnk/T9sx4vwATM40jbibXST8
-         DA/w==
-X-Gm-Message-State: AOJu0YyHyxE2BiO3pLlU5kqljAwzjBN5vWCXRuU3MfDOXq100Z0qn0eJ
-        IpE7HoHK19BO0rYhcv0iMttMrU1PPwm7XOGPeEej8m+hMFrYHgRu
-X-Google-Smtp-Source: AGHT+IGcfGDHJOh3NFEhcurjPG+eORblU9sLlaVH023b0D+QUvpipgKZ7PJt4cDghdwhXu6F9+XQMTX5S+Eh8t4p7z0=
-X-Received: by 2002:a25:690f:0:b0:d0e:9914:f5e1 with SMTP id
- e15-20020a25690f000000b00d0e9914f5e1mr9990126ybc.15.1691490316183; Tue, 08
- Aug 2023 03:25:16 -0700 (PDT)
+        bh=0ubqfsmYb7V02nf1U7/39ZUb74vPvlvUEXZk/eI/cgk=;
+        b=Q5I6uprNTxGtgMwnuuIk0zDjJf+CNIz6p3c+UeEou7b6txU8WwyNGsEL5gYeYXByfT
+         2BZ9W2RiykUHJDBs5TUqaZ+7TnpGpwkCyNuVX6qEm7kgdK07sf8YQ7jEOjkLxxc5QNJw
+         3PwucFTurfxP8PeGABWJvb0H0qOHZ4wG0j0NxdydYmuOSshNp7sgE2fmCA3OylNH3FjJ
+         FpYcdc8uhbutAfP+XMxRi2X1Hnpy90HTx6yvAqhpnAopoi+O0rg3lng4J8ZtE1OcfKDM
+         zZtAq3mvqnMExQWuC4jLXFiRP3AlwsTmb88Q3lBdT4DsdO3SS7eOkzTIgv7rQQhv1lur
+         bIsQ==
+X-Gm-Message-State: AOJu0YyL6I9h9VViq1YWP0ecuBPAtp0QhlS0XVlOtLxetA0MMECQpfZ2
+        RiGCNu74NKspJFfPT6DzFsV+nqOH8SOSldf/bDWGoeBIpr4nxAHgDL4=
+X-Google-Smtp-Source: AGHT+IHSHduNAZhtuWl0717SI9PBFnzbesbPZPWpUKYUXoQcp0TJmbb1ePGniPOczgezUXb2rRF/CgEe7L4IP+lhQpc=
+X-Received: by 2002:a25:b87:0:b0:d4a:4b59:367e with SMTP id
+ 129-20020a250b87000000b00d4a4b59367emr8892048ybl.38.1691490522681; Tue, 08
+ Aug 2023 03:28:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230721101349.12387-1-victorshihgli@gmail.com> <20230721101349.12387-4-victorshihgli@gmail.com>
-In-Reply-To: <20230721101349.12387-4-victorshihgli@gmail.com>
+References: <20230721101349.12387-1-victorshihgli@gmail.com> <20230721101349.12387-5-victorshihgli@gmail.com>
+In-Reply-To: <20230721101349.12387-5-victorshihgli@gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 8 Aug 2023 12:24:40 +0200
-Message-ID: <CAPDyKFqFbp-rbRBZ7eYtR1HXJfYuhiCLbFM8bSv1a-9gtZd6vg@mail.gmail.com>
-Subject: Re: [PATCH V9 03/23] mmc: core: Announce successful insertion of an
- SD UHS-II card
+Date:   Tue, 8 Aug 2023 12:28:06 +0200
+Message-ID: <CAPDyKFrmwct=b6angucfrKOXneZXe+_2KQ4f--OQEoKD=fc5hg@mail.gmail.com>
+Subject: Re: [PATCH V9 04/23] mmc: core: Extend support for mmc regulators
+ with a vqmmc2
 To:     Victor Shih <victorshihgli@gmail.com>
 Cc:     adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org, benchuanggli@gmail.com,
         HL.Liu@genesyslogic.com.tw, Greg.tu@genesyslogic.com.tw,
-        takahiro.akashi@linaro.org, dlunev@chromium.org,
-        Victor Shih <victor.shih@genesyslogic.com.tw>
+        takahiro.akashi@linaro.org, dlunev@chromium.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -72,73 +71,30 @@ X-Mailing-List: linux-mmc@vger.kernel.org
 
 On Fri, 21 Jul 2023 at 12:14, Victor Shih <victorshihgli@gmail.com> wrote:
 >
-> From: Victor Shih <victor.shih@genesyslogic.com.tw>
-
-Authorship?
-
+> From: Ulf Hansson <ulf.hansson@linaro.org>
+>
+> Updates in V4:
+>  - Moved the voltage defines into this patch.
 >
 > Update in previous version:
 
-Please, drop the above.
+Please drop the version information from the commit message.
 
-> To inform the users about SD UHS-II cards, let's extend the print at card
-> insertion with a "UHS-II" substring. Within this change, it seems
-> reasonable to convert from using "ultra high speed" into "UHS-I speed", for
-> the UHS-I type, as it should makes it more clear.
+> To allow an additional external regulator to be controlled by an mmc host
+> driver, let's add support for a vqmmc2 regulator to the mmc core.
 >
-> Note that, the new print for UHS-II cards doesn't include the actual
-> selected speed mode. Instead, this is going to be added from subsequent
-> change.
+> For an SD UHS-II interface the vqmmc2 regulator may correspond to the so
+> called vdd2 supply, as described by the SD spec. Initially, only 1.8V is
+> needed, hence limit the new helper function, mmc_regulator_set_vqmmc2() to
+> this too.
+>
+> Note that, to allow for flexibility mmc host drivers need to manage the
+> enable/disable of the vqmmc2 regulator themselves, while the regulator is
+> looked up through the common mmc_regulator_get_supply().
 >
 > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-> ---
->
-> Updates in V7:
->  - Drop MMC_TIMING_SD_UHS2 in favor of MMC_TIMING_UHS2_SPEED_A in
->    mmc_card_uhs2 function.
->
-> Updates in V4:
->  - Make mmc_card_uhs2() take struct mmc_host* as in-param.
->
-> ---
->
->  drivers/mmc/core/bus.c  | 4 +++-
->  drivers/mmc/core/host.h | 7 +++++++
->  2 files changed, 10 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c
-> index cf32cf135781..d9a3b3d38d8b 100644
-> --- a/drivers/mmc/core/bus.c
-> +++ b/drivers/mmc/core/bus.c
-> @@ -341,7 +341,9 @@ int mmc_add_card(struct mmc_card *card)
->         if (mmc_card_hs(card))
->                 speed_mode = "high speed ";
->         else if (mmc_card_uhs(card))
-> -               speed_mode = "ultra high speed ";
-> +               speed_mode = "UHS-I speed ";
-> +       else if (mmc_card_uhs2(card->host))
-> +               speed_mode = "UHS-II speed ";
->         else if (mmc_card_ddr52(card))
->                 speed_mode = "high speed DDR ";
->         else if (mmc_card_hs200(card))
-> diff --git a/drivers/mmc/core/host.h b/drivers/mmc/core/host.h
-> index 48c4952512a5..9f6e5e31dfea 100644
-> --- a/drivers/mmc/core/host.h
-> +++ b/drivers/mmc/core/host.h
-> @@ -89,5 +89,12 @@ static inline bool mmc_card_sd_express(struct mmc_host *host)
->                 host->ios.timing == MMC_TIMING_SD_EXP_1_2V;
->  }
->
-> +static inline bool mmc_card_uhs2(struct mmc_host *host)
-> +{
-> +       return host->ios.timing == MMC_TIMING_UHS2_SPEED_A ||
-> +              host->ios.timing == MMC_TIMING_UHS2_SPEED_A_HD ||
-> +              host->ios.timing == MMC_TIMING_UHS2_SPEED_B ||
-> +              host->ios.timing == MMC_TIMING_UHS2_SPEED_B_HD;
-> +}
->  #endif
->
+
+[...]
 
 Kind regards
 Uffe
