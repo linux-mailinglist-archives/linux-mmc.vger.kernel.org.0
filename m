@@ -2,186 +2,152 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1076774475
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 20:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00E92774647
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 20:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233026AbjHHSTp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Aug 2023 14:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47156 "EHLO
+        id S233827AbjHHSyl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Aug 2023 14:54:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235488AbjHHSTQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 14:19:16 -0400
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF782098B
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 10:27:23 -0700 (PDT)
-Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6bd045336c6so927085a34.2
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Aug 2023 10:27:23 -0700 (PDT)
+        with ESMTP id S234118AbjHHSyX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 14:54:23 -0400
+Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA0C619F
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 10:12:19 -0700 (PDT)
+Received: by mail-ua1-x92d.google.com with SMTP id a1e0cc1a2514c-79a0b4c6314so30600241.1
+        for <linux-mmc@vger.kernel.org>; Tue, 08 Aug 2023 10:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691515642; x=1692120442;
+        d=linaro.org; s=google; t=1691514739; x=1692119539;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1aaFBO37dpPCuMBG1yWUb85dTTA1EjCFwxXfWyjK7Qw=;
-        b=lVVEVrrMEQUltcQptCqUpH71VwX+00XmuTdulJOUHzmLj2Irs5PkJWEvfdxOmmtMa0
-         ZqXCLba6TZMiP/L/m4B8UKlB/MTCTFlRgoEYRlV6900qVQ3sd0VD6aoUYx9EQQSglWMV
-         /XK7Bs0U9wmVYJ4gPei8Ia1VAHdOPtBGRpsvewrhuZmHT/1dKBrsyW1V0iy5Yht2lp9Z
-         tnvudhR+hl8BxzJ3thUhCVNUBpH/TOfIjZxSVMtZbJ5lRr9Gyw3WCsfUoBRylMpP647n
-         Bd2NQi1/bsKsgFKfPuMh2M6tgfd0sYm7LsNNrAqRaAJ9KaEkBUd3GP+t7x5b8UzSd9h3
-         rpAg==
+        bh=czs5FLmho01QLwa901GjqRSik4ONk7iijh3u8NKJArY=;
+        b=Tszi8OX4rRdsp4A6asHMeLj9vjUu/Flr7SlbxG76hqYPRmysticJkt6cBmcWxn6Dko
+         XxNXyppFtjorr4A0tW2kN7lp5bYWDs6UY8taainmgL6VKDlVpPsn+AOxY+iUqc2PIRLD
+         OOq0z3mZMq+nQ+bwJrUOELCD7B1LB3K+habq9QqE8zexo1OdILV/IqrSzLN1Oy/0LJEb
+         DQyRBpmJJs8TFMoflPm3SOqFfLLbV/r1doJ1dFMCshtOdh0sSCiz6WJN2LQ3idsYNERq
+         hHlpcjjOprRgfiFXlUptQYOO0jTYjNuVadMMTHSniIlDdz+ktUxse+1aaZlHI4MZHZ3p
+         dcLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691515642; x=1692120442;
+        d=1e100.net; s=20221208; t=1691514739; x=1692119539;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1aaFBO37dpPCuMBG1yWUb85dTTA1EjCFwxXfWyjK7Qw=;
-        b=UU2KJitq4dtb3uYNcljc5s+lMVt6+TPyjr28MwygtEswLUb9/BUxMBX4zI8uoo/EZ4
-         DTvgAL0TlblBrdG8vgsMSXVF/qqzDrkCYCYmHWoiWAc/5999T40Gtu9VZduvXdHY2zlu
-         mxTKdu/WD4+aAlxFM4feODia7EsmRrUMv5Qnybef55guxSB4H2tp9JcXXuOXE3nBhxIa
-         zlyMRfNnL7WSsm3pA2bfmZb1HT0ZAiECLxg2gtVQofrGHYykk9AJ8FWUtSpiI2fgy9ph
-         tAx/Lwzsf1fyGSsKjV9lxMPxupewhz4kAqd9aygHTw5QvabxhNPlvpd+mTW71vVLAZex
-         g64A==
-X-Gm-Message-State: AOJu0YwImp7KxZ6AnRzq1dvLbvuYsdOgusGMQQaKJaDWCdzCizmHNgbQ
-        Hv+snN9xgRCBlESclByu8srPPhrFwVv+HRlDs9Y0lZBAG0TJ39xLM2k=
-X-Google-Smtp-Source: AGHT+IFJj9e2EUCkSwSgqtF2y3ZesBe+F0eiTcoGfYJG3GoyMXdp+CIP9EhdafPQbyNW+qk99mZLa2MicI2Cz2nNz/g=
-X-Received: by 2002:a25:4ec6:0:b0:d35:9a48:51b0 with SMTP id
- c189-20020a254ec6000000b00d359a4851b0mr7568564ybb.7.1691485293733; Tue, 08
- Aug 2023 02:01:33 -0700 (PDT)
+        bh=czs5FLmho01QLwa901GjqRSik4ONk7iijh3u8NKJArY=;
+        b=Nvxqdbkwf7HE6S623PjSEaM/x9JfX30qoBjYMmSoKtfIMdzv2T0vOvD5kFrv4xcjkp
+         ODOSiHSbcuydlIXddRo3UdXmGvdAxi2ynHyc8z9YMsYQ82infuOMGbVdA2iXwDXwEX89
+         ifBfvwdLaPdsUlHAwpRs0x+yRWr3cbhfr9HRrN5vuskJaI2PnNaHINIccwzhyVREDlEX
+         vvxpQPeVThV+tNT4OaVPpSiz0Z5PlYsMIwYwYWbNFTV0dZ4Ynm4mIRBulLf3b7uK94s8
+         PsklkxNgZptHrQySyjnPY6QfNvN6TLq2fe2ND5P52yr2iVqzELV0/3CGBLBNAezE/xun
+         KKqA==
+X-Gm-Message-State: AOJu0YyW38ubRszL0rNOmt+C0cvRpebv/+7FWraL2k+LtvGxig7Db4tB
+        ZwQke6f1yt3AdnTixnFvrv/xn7IiIDO7SkDY7BV9/0Qz1sH1ONdw8HE=
+X-Google-Smtp-Source: AGHT+IHmsYhhTMQA8QWVnEJgqgdgilOlaBxIemkx0xK04YjnhMHfG6KL7pFK7r+wL4NOpFmKd9ZI1l5xuVudgAueyCI=
+X-Received: by 2002:a25:e0cd:0:b0:d4d:fea4:fb5b with SMTP id
+ x196-20020a25e0cd000000b00d4dfea4fb5bmr7659878ybg.31.1691486896076; Tue, 08
+ Aug 2023 02:28:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230801052321.1328225-1-harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20230801052321.1328225-1-harshit.m.mogalapalli@oracle.com>
+References: <20230803054544.22007-1-wenchao.chen@unisoc.com>
+In-Reply-To: <20230803054544.22007-1-wenchao.chen@unisoc.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 8 Aug 2023 11:00:57 +0200
-Message-ID: <CAPDyKFr9inG4dgAUYhrQOEND1Fu1CDajEPoO3W=dBRRXB=kceQ@mail.gmail.com>
-Subject: Re: [PATCH next] mmc: sunplus: Fix error handling in spmmc_drv_probe()
-To:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc:     Tony Huang <tonyhuang.sunplus@gmail.com>,
-        Li-hao Kuo <lhjeff911@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dan.carpenter@linaro.org,
-        kernel-janitors@vger.kernel.org, error27@gmail.com
+Date:   Tue, 8 Aug 2023 11:27:40 +0200
+Message-ID: <CAPDyKFrb_nH7w8Wjz3oxJ6Vj30W4-U=k2ST8O7aib_kSHBjsFw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: queue: replace immediate with hsq->depth
+To:     Wenchao Chen <wenchao.chen@unisoc.com>
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        wenchao.chen666@gmail.com, zhenxiong.lai@unisoc.com,
+        chunyan.zhang@unisoc.com, yuelin.tang@unisoc.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 1 Aug 2023 at 07:23, Harshit Mogalapalli
-<harshit.m.mogalapalli@oracle.com> wrote:
+On Thu, 3 Aug 2023 at 07:46, Wenchao Chen <wenchao.chen@unisoc.com> wrote:
 >
-> There are few issues in spmmc_drv_probe():
->
-> 1. When mmc allocation fails, goto is a no-op.
-> 2. When mmc allocation succeeds, the error paths should use goto instead
->    of direct return.
+> Hsq is similar to cqe, using hsq->depth to represent
+> the maximum processing capacity of hsq. We can adjust
+> hsq->depth according to the actual situation.
 
-Rather than adding a bunch of new "gotos", how about converting into
-using devm_mmc_alloc_host()?
+Sorry, but I don't quite follow here.
 
-> 3. platform_get_irq() doesn't return zero, so '<' is sufficient.
->
-> Fix the above issues by adding goto instead of direct return, also
-> remove NULL check in 'probe_free_host' as we changed the goto to return
-> when mmc_alloc_host() fails.
->
-> Fixes: 4e268fed8b18 ("mmc: Add mmc driver for Sunplus SP7021")
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/all/a3829ed3-d827-4b9d-827e-9cc24a3ec3bc@moroto.mountain/
-> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-
-Other than the above, this looks good to me!
+Are you planning to update the host->hsq_depth dynamically from somewhere?
 
 Kind regards
 Uffe
 
+>
+> Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
 > ---
-> This is based on static analysis with Smatch. Only compile tested.
-> ---
->  drivers/mmc/host/sunplus-mmc.c | 41 ++++++++++++++++++++--------------
->  1 file changed, 24 insertions(+), 17 deletions(-)
+>  drivers/mmc/core/queue.c   | 6 +-----
+>  drivers/mmc/host/mmc_hsq.c | 1 +
+>  drivers/mmc/host/mmc_hsq.h | 7 +++++++
+>  include/linux/mmc/host.h   | 1 +
+>  4 files changed, 10 insertions(+), 5 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sunplus-mmc.c b/drivers/mmc/host/sunplus-mmc.c
-> index a55a87f64d2a..21cd49be08c0 100644
-> --- a/drivers/mmc/host/sunplus-mmc.c
-> +++ b/drivers/mmc/host/sunplus-mmc.c
-> @@ -864,10 +864,8 @@ static int spmmc_drv_probe(struct platform_device *pdev)
->         int ret = 0;
+> diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
+> index b396e3900717..a0a2412f62a7 100644
+> --- a/drivers/mmc/core/queue.c
+> +++ b/drivers/mmc/core/queue.c
+> @@ -260,11 +260,7 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+>                 }
+>                 break;
+>         case MMC_ISSUE_ASYNC:
+> -               /*
+> -                * For MMC host software queue, we only allow 2 requests in
+> -                * flight to avoid a long latency.
+> -                */
+> -               if (host->hsq_enabled && mq->in_flight[issue_type] > 2) {
+> +               if (host->hsq_enabled && mq->in_flight[issue_type] > host->hsq_depth) {
+>                         spin_unlock_irq(&mq->lock);
+>                         return BLK_STS_RESOURCE;
+>                 }
+> diff --git a/drivers/mmc/host/mmc_hsq.c b/drivers/mmc/host/mmc_hsq.c
+> index 424dc7b07858..7b3952721c17 100644
+> --- a/drivers/mmc/host/mmc_hsq.c
+> +++ b/drivers/mmc/host/mmc_hsq.c
+> @@ -337,6 +337,7 @@ int mmc_hsq_init(struct mmc_hsq *hsq, struct mmc_host *mmc)
+>         hsq->mmc = mmc;
+>         hsq->mmc->cqe_private = hsq;
+>         mmc->cqe_ops = &mmc_hsq_ops;
+> +       mmc->hsq_depth = HSQ_MAX_DEPTH;
 >
->         mmc = mmc_alloc_host(sizeof(*host), &pdev->dev);
-> -       if (!mmc) {
-> -               ret = -ENOMEM;
-> -               goto probe_free_host;
-> -       }
-> +       if (!mmc)
-> +               return -ENOMEM;
+>         for (i = 0; i < HSQ_NUM_SLOTS; i++)
+>                 hsq->tag_slot[i] = HSQ_INVALID_TAG;
+> diff --git a/drivers/mmc/host/mmc_hsq.h b/drivers/mmc/host/mmc_hsq.h
+> index 1808024fc6c5..795f6b9421d7 100644
+> --- a/drivers/mmc/host/mmc_hsq.h
+> +++ b/drivers/mmc/host/mmc_hsq.h
+> @@ -5,6 +5,13 @@
+>  #define HSQ_NUM_SLOTS  64
+>  #define HSQ_INVALID_TAG        HSQ_NUM_SLOTS
 >
->         host = mmc_priv(mmc);
->         host->mmc = mmc;
-> @@ -875,30 +873,40 @@ static int spmmc_drv_probe(struct platform_device *pdev)
->         host->dma_int_threshold = 1024;
+> +/*
+> + * For MMC host software queue, we usually allow 2 requests in
+> + * flight to avoid a long latency. But we can adjust hsq->depth
+> + * according to the actual situation.
+> + */
+> +#define HSQ_MAX_DEPTH  2
+> +
+>  struct hsq_slot {
+>         struct mmc_request *mrq;
+>  };
+> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> index 461d1543893b..1fd8b1dd8698 100644
+> --- a/include/linux/mmc/host.h
+> +++ b/include/linux/mmc/host.h
+> @@ -520,6 +520,7 @@ struct mmc_host {
 >
->         host->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
-> -       if (IS_ERR(host->base))
-> -               return PTR_ERR(host->base);
-> +       if (IS_ERR(host->base)) {
-> +               ret = PTR_ERR(host->base);
-> +               goto probe_free_host;
-> +       }
+>         /* Host Software Queue support */
+>         bool                    hsq_enabled;
+> +       int                     hsq_depth;
 >
->         host->clk = devm_clk_get(&pdev->dev, NULL);
-> -       if (IS_ERR(host->clk))
-> -               return dev_err_probe(&pdev->dev, PTR_ERR(host->clk), "clk get fail\n");
-> +       if (IS_ERR(host->clk)) {
-> +               ret = dev_err_probe(&pdev->dev, PTR_ERR(host->clk), "clk get fail\n");
-> +               goto probe_free_host;
-> +       }
->
->         host->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
-> -       if (IS_ERR(host->rstc))
-> -               return dev_err_probe(&pdev->dev, PTR_ERR(host->rstc), "rst get fail\n");
-> +       if (IS_ERR(host->rstc)) {
-> +               ret = dev_err_probe(&pdev->dev, PTR_ERR(host->rstc), "rst get fail\n");
-> +               goto probe_free_host;
-> +       }
->
->         host->irq = platform_get_irq(pdev, 0);
-> -       if (host->irq <= 0)
-> -               return host->irq;
-> +       if (host->irq < 0) {
-> +               ret = host->irq;
-> +               goto probe_free_host;
-> +       }
->
->         ret = devm_request_threaded_irq(&pdev->dev, host->irq,
->                                         spmmc_irq, spmmc_func_finish_req, IRQF_SHARED,
->                         NULL, host);
->         if (ret)
-> -               return ret;
-> +               goto probe_free_host;
->
->         ret = clk_prepare_enable(host->clk);
-> -       if (ret)
-> -               return dev_err_probe(&pdev->dev, ret, "failed to enable clk\n");
-> +       if (ret) {
-> +               ret = dev_err_probe(&pdev->dev, ret, "failed to enable clk\n");
-> +               goto probe_free_host;
-> +       }
->
->         ret = mmc_of_parse(mmc);
->         if (ret)
-> @@ -940,8 +948,7 @@ static int spmmc_drv_probe(struct platform_device *pdev)
->         clk_disable_unprepare(host->clk);
->
->  probe_free_host:
-> -       if (mmc)
-> -               mmc_free_host(mmc);
-> +       mmc_free_host(mmc);
->
->         return ret;
->  }
+>         u32                     err_stats[MMC_ERR_MAX];
+>         unsigned long           private[] ____cacheline_aligned;
 > --
-> 2.39.3
+> 2.17.1
 >
