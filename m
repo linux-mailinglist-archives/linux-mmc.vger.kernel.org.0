@@ -2,225 +2,138 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF8C774A92
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 22:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14041774BBC
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 22:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234363AbjHHUbl (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Aug 2023 16:31:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58684 "EHLO
+        id S232091AbjHHUys (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Aug 2023 16:54:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234476AbjHHUbV (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 16:31:21 -0400
-Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA84544F58
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 09:46:07 -0700 (PDT)
-Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-56ced49d51aso22301eaf.1
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Aug 2023 09:46:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691513163; x=1692117963;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=kb4epZ0hVQjvrS5RqNy38MOhVst2cqtQlkC7YBmZyjc=;
-        b=ApJ2WAUD4XAwk5NFWf0n9JN43OKCDDCCvBvAkSpvprb3HsaG9kn/5nMO61QSU/jOXm
-         vgXDJrHZdMzGBL6NFZ7eJoL3k5MNo7IlGNbt5iYyvcTE0ezoeNVQ+lvUUy5EHoRGiatK
-         F+1b878qHcRbFkuiQkIVkg2mrPRSYWCnfPgvXuim/6yyxKZDVDfp2j6kHnVrECOtEJb5
-         vinZ4RTet6FJ16M2yaZkcTDsOfwPAUrBtvZ8rOHtoncoRuI0GyO5hV/9QqkQrHtvp3a1
-         ZOtN78hZgK9WlNtTgwCC5lPvzHawwQvf47ltirvjb1FMUmGdotGz6ae/N0hdM3eVxkL9
-         pD0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691513163; x=1692117963;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kb4epZ0hVQjvrS5RqNy38MOhVst2cqtQlkC7YBmZyjc=;
-        b=ao/FJz4c0ty0/UnbZf6VQJn9LZ2lHVD5SJFKiUMY14Gaq0s3MrkSzeVAQl3qBkirXt
-         IVuzmcsWJK9nib9UcfgE2msXCb2rJZFrvngoA1C5BmqO3mYTbJwCPK8zyPRJ9dJk/2+2
-         BKXU2R3phRT7txXf4LLLkmZkukfpvUdkUAzSIt6VXbDEIJ81LyAzOHPfPfq39MbYSsZ6
-         tb9U15LumLA5ZWElREu0GH7LS2xr2ee/bPrSRk0QHTfRfu9RsJ+2ITokBa/49rl9iUGU
-         Gb+iV+v0PUDLpx6qCXRzPkO71mbeUG8tyL34xVgcKfh89Ab6gE7DSyVzqP55mA428LoO
-         NgfQ==
-X-Gm-Message-State: AOJu0Yx89IfH4rqK4+G+gZJ1c2iATjptYbJFMTNt9oB6pk/bUvcPryty
-        l8Dcs5/1ALzz//VCngTw9sQoEuLp4kSc2H1NRPoItoj8oUxvSumK
-X-Google-Smtp-Source: AGHT+IF66ZIg71BsvfIXpCtaWYgCcZU8SNpF3fi8QtXBlp/Ozl2bOkN0RcX0VeXVj4YAJiEXbN2H1G1ZyCw5KxmnN8o=
-X-Received: by 2002:a25:aa21:0:b0:d15:3761:3513 with SMTP id
- s30-20020a25aa21000000b00d1537613513mr9704045ybi.19.1691486159218; Tue, 08
- Aug 2023 02:15:59 -0700 (PDT)
+        with ESMTP id S231887AbjHHUyc (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 16:54:32 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F9A61B324
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 10:10:48 -0700 (PDT)
+Received: from dggpemm100013.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RKsZt32w4z1hwH2;
+        Tue,  8 Aug 2023 20:15:18 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm100013.china.huawei.com (7.185.36.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 8 Aug 2023 20:18:07 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 8 Aug
+ 2023 20:18:07 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-mmc@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <yangyingliang@huawei.com>
+Subject: [PATCH -next v2] mmc: remove unnecessary set_drvdata() function
+Date:   Tue, 8 Aug 2023 20:15:13 +0800
+Message-ID: <20230808121513.553143-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230801173544.1929519-1-hch@lst.de> <20230801173544.1929519-3-hch@lst.de>
-In-Reply-To: <20230801173544.1929519-3-hch@lst.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 8 Aug 2023 11:15:23 +0200
-Message-ID: <CAPDyKForXd2GFVmXXM8hsnAYSQcKhp84t1aOunppUY+MFe0qag@mail.gmail.com>
-Subject: Re: [PATCH 2/5] mmc: au1xmmc: force non-modular build and remove
- symbol_get usage
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Yangbo Lu <yangbo.lu@nxp.com>,
-        Joshua Kinard <kumba@gentoo.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, 1 Aug 2023 at 19:36, Christoph Hellwig <hch@lst.de> wrote:
->
-> au1xmmc is split somewhat awkwardly into the main mmc subsystem driver,
-> and callbacks in platform_data that sit under arch/mips/ and are
-> always built in.  The latter than call mmc_detect_change through
-> symbol_get.  Remove the use of symbol_get by requiring the driver
-> to be built in.  In the future the interrupt handlers for card
-> insert/eject detection should probably be moved into the main driver,
-> and which point it can be built modular again.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+The driver data will be cleared in device_unbind_cleanup() in driver
+core code. So the set_drvdata(..., NULL) called in remove and error
+path in probe can be removed.
 
-If not too late, feel free to add:
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+v1 -> v2:
+  Squash into one patch.
+---
+ drivers/mmc/core/block.c       | 1 -
+ drivers/mmc/host/moxart-mmc.c  | 2 --
+ drivers/mmc/host/sunplus-mmc.c | 1 -
+ drivers/mmc/host/via-sdmmc.c   | 2 --
+ drivers/mmc/host/wbsd.c        | 2 --
+ 5 files changed, 8 deletions(-)
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index f701efb1fa78..2d734b325287 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -3025,7 +3025,6 @@ static void mmc_blk_remove(struct mmc_card *card)
+ 		pm_runtime_disable(&card->dev);
+ 	pm_runtime_put_noidle(&card->dev);
+ 	mmc_blk_remove_req(md);
+-	dev_set_drvdata(&card->dev, NULL);
+ 	destroy_workqueue(card->complete_wq);
+ }
+ 
+diff --git a/drivers/mmc/host/moxart-mmc.c b/drivers/mmc/host/moxart-mmc.c
+index d0d6ffcf78d4..43c2a95bc29a 100644
+--- a/drivers/mmc/host/moxart-mmc.c
++++ b/drivers/mmc/host/moxart-mmc.c
+@@ -692,8 +692,6 @@ static int moxart_remove(struct platform_device *pdev)
+ 	struct mmc_host *mmc = dev_get_drvdata(&pdev->dev);
+ 	struct moxart_host *host = mmc_priv(mmc);
+ 
+-	dev_set_drvdata(&pdev->dev, NULL);
+-
+ 	if (!IS_ERR_OR_NULL(host->dma_chan_tx))
+ 		dma_release_channel(host->dma_chan_tx);
+ 	if (!IS_ERR_OR_NULL(host->dma_chan_rx))
+diff --git a/drivers/mmc/host/sunplus-mmc.c b/drivers/mmc/host/sunplus-mmc.c
+index a55a87f64d2a..e9f33976c94e 100644
+--- a/drivers/mmc/host/sunplus-mmc.c
++++ b/drivers/mmc/host/sunplus-mmc.c
+@@ -955,7 +955,6 @@ static int spmmc_drv_remove(struct platform_device *dev)
+ 	clk_disable_unprepare(host->clk);
+ 	pm_runtime_put_noidle(&dev->dev);
+ 	pm_runtime_disable(&dev->dev);
+-	platform_set_drvdata(dev, NULL);
+ 	mmc_free_host(host->mmc);
+ 
+ 	return 0;
+diff --git a/drivers/mmc/host/via-sdmmc.c b/drivers/mmc/host/via-sdmmc.c
+index a2b0d9461665..ba6044b16e07 100644
+--- a/drivers/mmc/host/via-sdmmc.c
++++ b/drivers/mmc/host/via-sdmmc.c
+@@ -1160,7 +1160,6 @@ static int via_sd_probe(struct pci_dev *pcidev,
+ unmap:
+ 	iounmap(sdhost->mmiobase);
+ free_mmc_host:
+-	dev_set_drvdata(&pcidev->dev, NULL);
+ 	mmc_free_host(mmc);
+ release:
+ 	pci_release_regions(pcidev);
+@@ -1212,7 +1211,6 @@ static void via_sd_remove(struct pci_dev *pcidev)
+ 	writeb(gatt, sdhost->pcictrl_mmiobase + VIA_CRDR_PCICLKGATT);
+ 
+ 	iounmap(sdhost->mmiobase);
+-	dev_set_drvdata(&pcidev->dev, NULL);
+ 	mmc_free_host(sdhost->mmc);
+ 	pci_release_regions(pcidev);
+ 	pci_disable_device(pcidev);
+diff --git a/drivers/mmc/host/wbsd.c b/drivers/mmc/host/wbsd.c
+index bf2a92fba0ed..0589d169e8fb 100644
+--- a/drivers/mmc/host/wbsd.c
++++ b/drivers/mmc/host/wbsd.c
+@@ -1264,8 +1264,6 @@ static void wbsd_free_mmc(struct device *dev)
+ 	del_timer_sync(&host->ignore_timer);
+ 
+ 	mmc_free_host(mmc);
+-
+-	dev_set_drvdata(dev, NULL);
+ }
+ 
+ /*
+-- 
+2.25.1
 
-Kind regards
-Uffe
-
-> ---
->  arch/mips/alchemy/devboards/db1000.c |  8 +-------
->  arch/mips/alchemy/devboards/db1200.c | 19 ++-----------------
->  arch/mips/alchemy/devboards/db1300.c | 10 +---------
->  drivers/mmc/host/Kconfig             |  4 ++--
->  4 files changed, 6 insertions(+), 35 deletions(-)
->
-> diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
-> index 79d66faa84828d..012da042d0a4f7 100644
-> --- a/arch/mips/alchemy/devboards/db1000.c
-> +++ b/arch/mips/alchemy/devboards/db1000.c
-> @@ -14,7 +14,6 @@
->  #include <linux/interrupt.h>
->  #include <linux/leds.h>
->  #include <linux/mmc/host.h>
-> -#include <linux/module.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm.h>
->  #include <linux/spi/spi.h>
-> @@ -167,12 +166,7 @@ static struct platform_device db1x00_audio_dev = {
->
->  static irqreturn_t db1100_mmc_cd(int irq, void *ptr)
->  {
-> -       void (*mmc_cd)(struct mmc_host *, unsigned long);
-> -       /* link against CONFIG_MMC=m */
-> -       mmc_cd = symbol_get(mmc_detect_change);
-> -       mmc_cd(ptr, msecs_to_jiffies(500));
-> -       symbol_put(mmc_detect_change);
-> -
-> +       mmc_detect_change(ptr, msecs_to_jiffies(500));
->         return IRQ_HANDLED;
->  }
->
-> diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-> index 1864eb935ca57f..76080c71a2a7b6 100644
-> --- a/arch/mips/alchemy/devboards/db1200.c
-> +++ b/arch/mips/alchemy/devboards/db1200.c
-> @@ -10,7 +10,6 @@
->  #include <linux/gpio.h>
->  #include <linux/i2c.h>
->  #include <linux/init.h>
-> -#include <linux/module.h>
->  #include <linux/interrupt.h>
->  #include <linux/io.h>
->  #include <linux/leds.h>
-> @@ -340,14 +339,7 @@ static irqreturn_t db1200_mmc_cd(int irq, void *ptr)
->
->  static irqreturn_t db1200_mmc_cdfn(int irq, void *ptr)
->  {
-> -       void (*mmc_cd)(struct mmc_host *, unsigned long);
-> -
-> -       /* link against CONFIG_MMC=m */
-> -       mmc_cd = symbol_get(mmc_detect_change);
-> -       if (mmc_cd) {
-> -               mmc_cd(ptr, msecs_to_jiffies(200));
-> -               symbol_put(mmc_detect_change);
-> -       }
-> +       mmc_detect_change(ptr, msecs_to_jiffies(200));
->
->         msleep(100);    /* debounce */
->         if (irq == DB1200_SD0_INSERT_INT)
-> @@ -431,14 +423,7 @@ static irqreturn_t pb1200_mmc1_cd(int irq, void *ptr)
->
->  static irqreturn_t pb1200_mmc1_cdfn(int irq, void *ptr)
->  {
-> -       void (*mmc_cd)(struct mmc_host *, unsigned long);
-> -
-> -       /* link against CONFIG_MMC=m */
-> -       mmc_cd = symbol_get(mmc_detect_change);
-> -       if (mmc_cd) {
-> -               mmc_cd(ptr, msecs_to_jiffies(200));
-> -               symbol_put(mmc_detect_change);
-> -       }
-> +       mmc_detect_change(ptr, msecs_to_jiffies(200));
->
->         msleep(100);    /* debounce */
->         if (irq == PB1200_SD1_INSERT_INT)
-> diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
-> index e70e529ddd914d..ff61901329c626 100644
-> --- a/arch/mips/alchemy/devboards/db1300.c
-> +++ b/arch/mips/alchemy/devboards/db1300.c
-> @@ -17,7 +17,6 @@
->  #include <linux/interrupt.h>
->  #include <linux/ata_platform.h>
->  #include <linux/mmc/host.h>
-> -#include <linux/module.h>
->  #include <linux/mtd/mtd.h>
->  #include <linux/mtd/platnand.h>
->  #include <linux/platform_device.h>
-> @@ -459,14 +458,7 @@ static irqreturn_t db1300_mmc_cd(int irq, void *ptr)
->
->  static irqreturn_t db1300_mmc_cdfn(int irq, void *ptr)
->  {
-> -       void (*mmc_cd)(struct mmc_host *, unsigned long);
-> -
-> -       /* link against CONFIG_MMC=m.  We can only be called once MMC core has
-> -        * initialized the controller, so symbol_get() should always succeed.
-> -        */
-> -       mmc_cd = symbol_get(mmc_detect_change);
-> -       mmc_cd(ptr, msecs_to_jiffies(200));
-> -       symbol_put(mmc_detect_change);
-> +       mmc_detect_change(ptr, msecs_to_jiffies(200));
->
->         msleep(100);    /* debounce */
->         if (irq == DB1300_SD1_INSERT_INT)
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 159a3e9490aed8..f7afd179dd10bf 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -526,11 +526,11 @@ config MMC_ALCOR
->           of Alcor Micro PCI-E card reader
->
->  config MMC_AU1X
-> -       tristate "Alchemy AU1XX0 MMC Card Interface support"
-> +       bool "Alchemy AU1XX0 MMC Card Interface support"
->         depends on MIPS_ALCHEMY
->         help
->           This selects the AMD Alchemy(R) Multimedia card interface.
-> -         If you have a Alchemy platform with a MMC slot, say Y or M here.
-> +         If you have a Alchemy platform with a MMC slot, say Y here.
->
->           If unsure, say N.
->
-> --
-> 2.39.2
->
