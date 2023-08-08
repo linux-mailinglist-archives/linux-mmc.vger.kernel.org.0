@@ -2,67 +2,66 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6392773CF8
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 18:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1076774475
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Aug 2023 20:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjHHQMS (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 8 Aug 2023 12:12:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40254 "EHLO
+        id S233026AbjHHSTp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 8 Aug 2023 14:19:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231766AbjHHQKP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 12:10:15 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1F757AB8
-        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 08:46:39 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1bc63ef9959so24933615ad.2
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Aug 2023 08:46:39 -0700 (PDT)
+        with ESMTP id S235488AbjHHSTQ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 8 Aug 2023 14:19:16 -0400
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF782098B
+        for <linux-mmc@vger.kernel.org>; Tue,  8 Aug 2023 10:27:23 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6bd045336c6so927085a34.2
+        for <linux-mmc@vger.kernel.org>; Tue, 08 Aug 2023 10:27:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691509598; x=1692114398;
+        d=linaro.org; s=google; t=1691515642; x=1692120442;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VGTcjaNgQeCn9VPexlocoRK+VXPMuKSU5jYkurM+34o=;
-        b=Jf03gy0BxUQeLmT3FMVV1+dmdBJrSE7UoWMvCJX9rpRuAdR/C8S33kU8mWsoKU36SE
-         knTLaCMWwQWr6DKjlqWzuWg20XhJKxpWVYMjS9rg6ZAjaMZMmNGOCQKYXXD8FpvEcXhF
-         NJg1VVQ/Uxv4TCw8N3WhveZzqKAzRnd7mVfTNAXXqcKQEB5CQ/zTi87xDTs70J2pMfXl
-         lvVnyo4KYwtfGXx6jhTRRPQa59EHe3KoKtJJZaJsUcvH8TVB1LwAmLEPwriIIVqTqtTS
-         /Anv07bi/oCZwdPYQan/FRXDYM6TTIyhI2DUKgebYFxuYeHPfvAmZ6OubFLvD11f2SYi
-         c5Kw==
+        bh=1aaFBO37dpPCuMBG1yWUb85dTTA1EjCFwxXfWyjK7Qw=;
+        b=lVVEVrrMEQUltcQptCqUpH71VwX+00XmuTdulJOUHzmLj2Irs5PkJWEvfdxOmmtMa0
+         ZqXCLba6TZMiP/L/m4B8UKlB/MTCTFlRgoEYRlV6900qVQ3sd0VD6aoUYx9EQQSglWMV
+         /XK7Bs0U9wmVYJ4gPei8Ia1VAHdOPtBGRpsvewrhuZmHT/1dKBrsyW1V0iy5Yht2lp9Z
+         tnvudhR+hl8BxzJ3thUhCVNUBpH/TOfIjZxSVMtZbJ5lRr9Gyw3WCsfUoBRylMpP647n
+         Bd2NQi1/bsKsgFKfPuMh2M6tgfd0sYm7LsNNrAqRaAJ9KaEkBUd3GP+t7x5b8UzSd9h3
+         rpAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691509598; x=1692114398;
+        d=1e100.net; s=20221208; t=1691515642; x=1692120442;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VGTcjaNgQeCn9VPexlocoRK+VXPMuKSU5jYkurM+34o=;
-        b=KnctChjtvhUWBLJ0k6N3iVTm9HHADCHYLbeE8s/EmEfD9XL2kP5PyqSnVssNBSsLN2
-         IG86AeB9PDy9Yxeo/i0ICLYqrppPjT+hb2+VDEW1x9lfDs8TtGNYB3yabfKyp5TzmcoU
-         XFJYUdb3gfBNkmVK/x9i2qSb6ay+3ccsDL4F6ix76s+Fb6UNssA6AOzQfoZ6I98ywath
-         mo6yJm8Qqewd2cKSj7uuZZs3oy45f06Ev10/CRwwImU13GGcbFZ+uYxoJ7Qn/8eN3xXp
-         tWWLfoM+rxwY2mrQLB5CPqAnpS/Lf3eEzt0Lghh/+JecPioJM8hn7VXfsWTJHN7hOsAV
-         7wmA==
-X-Gm-Message-State: AOJu0Yx92WBLgiyvS0vhvoESY5SdOeqUHfqH/Xqf9oAJbvrEri29PI/s
-        kJCa1QnMzQ83lJQVQiEKY0bl/vDVyEFCs6zrqtiAEb8Mryn8C8/eexo=
-X-Google-Smtp-Source: AGHT+IGgI3ekSRcP/gEkmhv4tIppC5Z34hrN/37U/8yADt4ORB/JnQim1/yRu/2+2QA92n6LMekN+28s2hYwn5+JOnI=
-X-Received: by 2002:a25:ce41:0:b0:d4b:2775:b0d6 with SMTP id
- x62-20020a25ce41000000b00d4b2775b0d6mr6954452ybe.4.1691502510333; Tue, 08 Aug
- 2023 06:48:30 -0700 (PDT)
+        bh=1aaFBO37dpPCuMBG1yWUb85dTTA1EjCFwxXfWyjK7Qw=;
+        b=UU2KJitq4dtb3uYNcljc5s+lMVt6+TPyjr28MwygtEswLUb9/BUxMBX4zI8uoo/EZ4
+         DTvgAL0TlblBrdG8vgsMSXVF/qqzDrkCYCYmHWoiWAc/5999T40Gtu9VZduvXdHY2zlu
+         mxTKdu/WD4+aAlxFM4feODia7EsmRrUMv5Qnybef55guxSB4H2tp9JcXXuOXE3nBhxIa
+         zlyMRfNnL7WSsm3pA2bfmZb1HT0ZAiECLxg2gtVQofrGHYykk9AJ8FWUtSpiI2fgy9ph
+         tAx/Lwzsf1fyGSsKjV9lxMPxupewhz4kAqd9aygHTw5QvabxhNPlvpd+mTW71vVLAZex
+         g64A==
+X-Gm-Message-State: AOJu0YwImp7KxZ6AnRzq1dvLbvuYsdOgusGMQQaKJaDWCdzCizmHNgbQ
+        Hv+snN9xgRCBlESclByu8srPPhrFwVv+HRlDs9Y0lZBAG0TJ39xLM2k=
+X-Google-Smtp-Source: AGHT+IFJj9e2EUCkSwSgqtF2y3ZesBe+F0eiTcoGfYJG3GoyMXdp+CIP9EhdafPQbyNW+qk99mZLa2MicI2Cz2nNz/g=
+X-Received: by 2002:a25:4ec6:0:b0:d35:9a48:51b0 with SMTP id
+ c189-20020a254ec6000000b00d359a4851b0mr7568564ybb.7.1691485293733; Tue, 08
+ Aug 2023 02:01:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230721101349.12387-1-victorshihgli@gmail.com> <20230721101349.12387-7-victorshihgli@gmail.com>
-In-Reply-To: <20230721101349.12387-7-victorshihgli@gmail.com>
+References: <20230801052321.1328225-1-harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20230801052321.1328225-1-harshit.m.mogalapalli@oracle.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 8 Aug 2023 15:47:54 +0200
-Message-ID: <CAPDyKFoCXyHs4ujrQY3iphQG7GwkKLgAxEPPF6gAxoV7u2oxFQ@mail.gmail.com>
-Subject: Re: [PATCH V9 06/23] mmc: core: Support UHS-II card control and access
-To:     Victor Shih <victorshihgli@gmail.com>
-Cc:     adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, benchuanggli@gmail.com,
-        HL.Liu@genesyslogic.com.tw, Greg.tu@genesyslogic.com.tw,
-        takahiro.akashi@linaro.org, dlunev@chromium.org,
-        Jason Lai <jason.lai@genesyslogic.com.tw>,
-        Victor Shih <victor.shih@genesyslogic.com.tw>
+Date:   Tue, 8 Aug 2023 11:00:57 +0200
+Message-ID: <CAPDyKFr9inG4dgAUYhrQOEND1Fu1CDajEPoO3W=dBRRXB=kceQ@mail.gmail.com>
+Subject: Re: [PATCH next] mmc: sunplus: Fix error handling in spmmc_drv_probe()
+To:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc:     Tony Huang <tonyhuang.sunplus@gmail.com>,
+        Li-hao Kuo <lhjeff911@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dan.carpenter@linaro.org,
+        kernel-janitors@vger.kernel.org, error27@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,142 +69,119 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 21 Jul 2023 at 12:14, Victor Shih <victorshihgli@gmail.com> wrote:
+On Tue, 1 Aug 2023 at 07:23, Harshit Mogalapalli
+<harshit.m.mogalapalli@oracle.com> wrote:
 >
-> From: Victor Shih <victor.shih@genesyslogic.com.tw>
+> There are few issues in spmmc_drv_probe():
 >
-> Embed UHS-II access/control functionality into the MMC request
-> processing flow.
+> 1. When mmc allocation fails, goto is a no-op.
+> 2. When mmc allocation succeeds, the error paths should use goto instead
+>    of direct return.
 
-This deserves to be extended a bit. There is quite some code being
-added in the $subject patch.
+Rather than adding a bunch of new "gotos", how about converting into
+using devm_mmc_alloc_host()?
 
+> 3. platform_get_irq() doesn't return zero, so '<' is sufficient.
 >
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: Jason Lai <jason.lai@genesyslogic.com.tw>
-> Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-> ---
+> Fix the above issues by adding goto instead of direct return, also
+> remove NULL check in 'probe_free_host' as we changed the goto to return
+> when mmc_alloc_host() fails.
 >
-> Updates in V8:
->  - Add MMC_UHS2_SUPPORT to be cleared in sd_uhs2_detect().
->  - Modify return value in sd_uhs2_attach().
->
-> Updates in V7:
->  - Add mmc_uhs2_card_prepare_cmd helper function in sd_ops.h.
->  - Drop uhs2_state in favor of ios->timing.
->  - Remove unnecessary functions.
->
-> ---
->
->  drivers/mmc/core/block.c   |   18 +-
->  drivers/mmc/core/core.c    |    8 +
->  drivers/mmc/core/mmc_ops.c |   25 +-
->  drivers/mmc/core/mmc_ops.h |    1 +
->  drivers/mmc/core/sd.c      |   13 +-
->  drivers/mmc/core/sd.h      |    4 +
->  drivers/mmc/core/sd_ops.c  |   11 +
->  drivers/mmc/core/sd_ops.h  |   18 +
->  drivers/mmc/core/sd_uhs2.c | 1137 +++++++++++++++++++++++++++++++++++-
->  9 files changed, 1176 insertions(+), 59 deletions(-)
->
-> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-> index f701efb1fa78..6617ae9fc840 100644
-> --- a/drivers/mmc/core/block.c
-> +++ b/drivers/mmc/core/block.c
-> @@ -918,15 +918,9 @@ static int mmc_sd_num_wr_blocks(struct mmc_card *card, u32 *written_blocks)
->
->         struct scatterlist sg;
->
-> -       cmd.opcode = MMC_APP_CMD;
-> -       cmd.arg = card->rca << 16;
-> -       cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_AC;
-> -
-> -       err = mmc_wait_for_cmd(card->host, &cmd, 0);
-> -       if (err)
-> -               return err;
-> -       if (!mmc_host_is_spi(card->host) && !(cmd.resp[0] & R1_APP_CMD))
-> -               return -EIO;
-> +       err = mmc_app_cmd(card->host, card);
-> +               if (err)
-> +                       return err;
->
->         memset(&cmd, 0, sizeof(struct mmc_command));
+> Fixes: 4e268fed8b18 ("mmc: Add mmc driver for Sunplus SP7021")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/all/a3829ed3-d827-4b9d-827e-9cc24a3ec3bc@moroto.mountain/
+> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-The entire chunk of change above deserves its own separate
-cleanup-patch. If you want to send it separately I can apply
-immediately - or if you decide to make it part of the series then it
-should precede the $subject patch.
-
-Note that, after the cleanup above, the call to memset() can be dropped too.
-
->
-> @@ -1612,6 +1606,9 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
-
-I commented on the changes in mmc_blk_rw_rq_prep() already in version
-6 [1] - but it seems like you haven't addressed my comments yet.
-
-I have therefore copied the similar comment again, see below.
-
->         struct request *req = mmc_queue_req_to_req(mqrq);
->         struct mmc_blk_data *md = mq->blkdata;
->         bool do_rel_wr, do_data_tag;
-> +       bool do_multi;
-> +
-> +       do_multi = (card->host->flags & MMC_UHS2_SD_TRAN) ? true : false;
->
->         mmc_blk_data_prep(mq, mqrq, recovery_mode, &do_rel_wr, &do_data_tag);
->
-> @@ -1622,7 +1619,7 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
->                 brq->cmd.arg <<= 9;
->         brq->cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_ADTC;
->
-> -       if (brq->data.blocks > 1 || do_rel_wr) {
-> +       if (brq->data.blocks > 1 || do_rel_wr || do_multi) {
-
-This looks wrong to me. UHS2 can use single block read/writes too. Right?
-
->                 /* SPI multiblock writes terminate using a special
->                  * token, not a STOP_TRANSMISSION request.
->                  */
-> @@ -1635,6 +1632,7 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
->                 brq->mrq.stop = NULL;
->                 readcmd = MMC_READ_SINGLE_BLOCK;
->                 writecmd = MMC_WRITE_BLOCK;
-> +               brq->cmd.uhs2_tmode0_flag = 1;
->         }
-
-As "do_multi" is always set for UHS2, setting this flag here seems to
-be wrong/redundant.
-
-Anyway, if I understand correctly, the flag is intended to be used to
-inform the host driver whether the so-called 2L_HD_mode (half-duplex
-or full-duplex) should be used for the I/O request or not. Did I
-understand this correctly?
-
-To fix the above behaviour, I suggest we try to move the entire
-control of the flag into mmc_uhs2_prepare_cmd(). It seems like we need
-the flag to be set for multi block read/writes (CMD18 and CMD25), but
-only if the host and card supports the 2L_HD_mode too, right?
-
-According to my earlier suggestions, we should also be able to check
-the 2L_HD_mode via the bits we have set in the ios->timing, no?
-
-Moreover, by making mmc_uhs2_prepare_cmd() responsible for setting the
-flag, we can move the definition of the flag into the struct
-uhs2_command instead. While at it, I suggest we also rename the flag
-into "tmode_half_duplex", to better describe its purpose. Note that,
-this also means the interpretation of the flag becomes inverted.
-
->         brq->cmd.opcode = rq_data_dir(req) == READ ? readcmd : writecmd;
->
-
-Until we have agreed on how to move forward with the above, I am
-temporarily pausing further review.
-
-[...]
+Other than the above, this looks good to me!
 
 Kind regards
 Uffe
 
-[1]
-https://lore.kernel.org/linux-mmc/CAPDyKFoV3Ch-xzXxiT2RnDeLvsO454Pwq1vQL_bdNLptM+amAg@mail.gmail.com/
+> ---
+> This is based on static analysis with Smatch. Only compile tested.
+> ---
+>  drivers/mmc/host/sunplus-mmc.c | 41 ++++++++++++++++++++--------------
+>  1 file changed, 24 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sunplus-mmc.c b/drivers/mmc/host/sunplus-mmc.c
+> index a55a87f64d2a..21cd49be08c0 100644
+> --- a/drivers/mmc/host/sunplus-mmc.c
+> +++ b/drivers/mmc/host/sunplus-mmc.c
+> @@ -864,10 +864,8 @@ static int spmmc_drv_probe(struct platform_device *pdev)
+>         int ret = 0;
+>
+>         mmc = mmc_alloc_host(sizeof(*host), &pdev->dev);
+> -       if (!mmc) {
+> -               ret = -ENOMEM;
+> -               goto probe_free_host;
+> -       }
+> +       if (!mmc)
+> +               return -ENOMEM;
+>
+>         host = mmc_priv(mmc);
+>         host->mmc = mmc;
+> @@ -875,30 +873,40 @@ static int spmmc_drv_probe(struct platform_device *pdev)
+>         host->dma_int_threshold = 1024;
+>
+>         host->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+> -       if (IS_ERR(host->base))
+> -               return PTR_ERR(host->base);
+> +       if (IS_ERR(host->base)) {
+> +               ret = PTR_ERR(host->base);
+> +               goto probe_free_host;
+> +       }
+>
+>         host->clk = devm_clk_get(&pdev->dev, NULL);
+> -       if (IS_ERR(host->clk))
+> -               return dev_err_probe(&pdev->dev, PTR_ERR(host->clk), "clk get fail\n");
+> +       if (IS_ERR(host->clk)) {
+> +               ret = dev_err_probe(&pdev->dev, PTR_ERR(host->clk), "clk get fail\n");
+> +               goto probe_free_host;
+> +       }
+>
+>         host->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+> -       if (IS_ERR(host->rstc))
+> -               return dev_err_probe(&pdev->dev, PTR_ERR(host->rstc), "rst get fail\n");
+> +       if (IS_ERR(host->rstc)) {
+> +               ret = dev_err_probe(&pdev->dev, PTR_ERR(host->rstc), "rst get fail\n");
+> +               goto probe_free_host;
+> +       }
+>
+>         host->irq = platform_get_irq(pdev, 0);
+> -       if (host->irq <= 0)
+> -               return host->irq;
+> +       if (host->irq < 0) {
+> +               ret = host->irq;
+> +               goto probe_free_host;
+> +       }
+>
+>         ret = devm_request_threaded_irq(&pdev->dev, host->irq,
+>                                         spmmc_irq, spmmc_func_finish_req, IRQF_SHARED,
+>                         NULL, host);
+>         if (ret)
+> -               return ret;
+> +               goto probe_free_host;
+>
+>         ret = clk_prepare_enable(host->clk);
+> -       if (ret)
+> -               return dev_err_probe(&pdev->dev, ret, "failed to enable clk\n");
+> +       if (ret) {
+> +               ret = dev_err_probe(&pdev->dev, ret, "failed to enable clk\n");
+> +               goto probe_free_host;
+> +       }
+>
+>         ret = mmc_of_parse(mmc);
+>         if (ret)
+> @@ -940,8 +948,7 @@ static int spmmc_drv_probe(struct platform_device *pdev)
+>         clk_disable_unprepare(host->clk);
+>
+>  probe_free_host:
+> -       if (mmc)
+> -               mmc_free_host(mmc);
+> +       mmc_free_host(mmc);
+>
+>         return ret;
+>  }
+> --
+> 2.39.3
+>
