@@ -2,24 +2,24 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E8897767B3
-	for <lists+linux-mmc@lfdr.de>; Wed,  9 Aug 2023 20:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 714997767CF
+	for <lists+linux-mmc@lfdr.de>; Wed,  9 Aug 2023 21:01:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231682AbjHIS4E (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 9 Aug 2023 14:56:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42526 "EHLO
+        id S230177AbjHITBE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 9 Aug 2023 15:01:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231743AbjHIS4D (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Aug 2023 14:56:03 -0400
+        with ESMTP id S229653AbjHITBD (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 9 Aug 2023 15:01:03 -0400
 Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C691FE64;
-        Wed,  9 Aug 2023 11:56:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF427E7A;
+        Wed,  9 Aug 2023 12:01:02 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id D8369FB02;
-        Wed,  9 Aug 2023 20:50:34 +0200 (CEST)
+        by honk.sigxcpu.org (Postfix) with ESMTP id 0E890FB03;
+        Wed,  9 Aug 2023 20:50:37 +0200 (CEST)
 Received: from honk.sigxcpu.org ([127.0.0.1])
         by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id yXY2gYn5K0BH; Wed,  9 Aug 2023 20:50:30 +0200 (CEST)
+        with ESMTP id SXqsJqQ7ACYl; Wed,  9 Aug 2023 20:50:31 +0200 (CEST)
 From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -47,9 +47,9 @@ To:     Ulf Hansson <ulf.hansson@linaro.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org,
         David Heidelberg <david@ixit.cz>
-Subject: [PATCH v1 2/5] dt-bindings: mmc: Fix reference to pwr-seq-simple
-Date:   Wed,  9 Aug 2023 20:50:11 +0200
-Message-Id: <d7a0be6a2688a9829077cc21ca4a5bf9528f9eb1.1691606520.git.agx@sigxcpu.org>
+Subject: [PATCH v1 3/5] arm64: dts: imx8mq-librem5-devkit: Mark buck2 as always on
+Date:   Wed,  9 Aug 2023 20:50:12 +0200
+Message-Id: <206b50ea5e3afe598783b29264c4b995b43229f2.1691606520.git.agx@sigxcpu.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <cover.1691606520.git.agx@sigxcpu.org>
 References: <cover.1691606520.git.agx@sigxcpu.org>
@@ -65,26 +65,27 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-It's a YAML file nowadays.
+Otherwise the A53 cores are shut down which doesn't end well.
 
+Reported-by: David Heidelberg <david@ixit.cz>
+Tested-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: Guido Günther <agx@sigxcpu.org>
 ---
- Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-index 86c73fd825fd..58ae298cd2fc 100644
---- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-+++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-@@ -269,7 +269,7 @@ properties:
-   post-power-on-delay-ms:
-     description:
-       It was invented for MMC pwrseq-simple which could be referred to
--      mmc-pwrseq-simple.txt. But now it\'s reused as a tunable delay
-+      mmc-pwrseq-simple.yaml. But now it\'s reused as a tunable delay
-       waiting for I/O signalling and card power supply to be stable,
-       regardless of whether pwrseq-simple is used. Default to 10ms if
-       no available.
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
+index b3549eae6278..be9ef5c271df 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
+@@ -324,6 +324,7 @@ buck2_reg: BUCK2 {
+ 				regulator-ramp-delay = <1250>;
+ 				rohm,dvs-run-voltage = <1000000>;
+ 				rohm,dvs-idle-voltage = <900000>;
++				regulator-always-on;
+ 			};
+ 
+ 			buck3_reg: BUCK3 {
 -- 
 2.40.1
 
