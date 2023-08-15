@@ -2,147 +2,161 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A74EA77CBCB
-	for <lists+linux-mmc@lfdr.de>; Tue, 15 Aug 2023 13:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C59E277CBE3
+	for <lists+linux-mmc@lfdr.de>; Tue, 15 Aug 2023 13:42:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235855AbjHOLdQ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 15 Aug 2023 07:33:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59430 "EHLO
+        id S234433AbjHOLl3 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 15 Aug 2023 07:41:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236702AbjHOLcs (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 15 Aug 2023 07:32:48 -0400
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D561F10E3
-        for <linux-mmc@vger.kernel.org>; Tue, 15 Aug 2023 04:32:46 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-583d702129cso58119437b3.3
-        for <linux-mmc@vger.kernel.org>; Tue, 15 Aug 2023 04:32:46 -0700 (PDT)
+        with ESMTP id S236851AbjHOLlX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 15 Aug 2023 07:41:23 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D76010E0
+        for <linux-mmc@vger.kernel.org>; Tue, 15 Aug 2023 04:41:19 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d3d729a08e4so5139906276.3
+        for <linux-mmc@vger.kernel.org>; Tue, 15 Aug 2023 04:41:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692099166; x=1692703966;
+        d=linaro.org; s=google; t=1692099678; x=1692704478;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z0cIlhyjWne1murlHvTIDv20f0nQNybjsStT8wYuMbs=;
-        b=KK53EMS9OFUuzcG6+Y9jWCR9UJjdavAseGfBF7l9MTIsU0CtgHyY74O5WDPu6uDVyd
-         /3flAUEvsDmfBZsCIl2KD+tOhCuWVLJcp49luN1tyrfPd5hIl/6wvaakgcp+ZRrGC5oj
-         4udoYkc3clEbtXpW6s91SWOotVQp3z6ezoxk3TV+KW4Eo3Ywr120hGvcr3tj2jaXdhQP
-         h31YzroHZBT0mdj6/Jz/iKwk5HJZG9V6upvk2q35ZtJ8qERLLc6YfHi3AdqnR+lVzoY9
-         18t3sNb8m/T2TZ7szDAE8qKJYEezJqwKNdtW4HF3Ogx3QBol2PHlLSAh4gqsZJ3E356o
-         CsZQ==
+        bh=DEvbIYBzqlpIbOwD2jshBnebopDU4klP4ZBGtz/pQuE=;
+        b=X3k0VgdImwLs8QKcRHdbHT9eFroEIF0IMV1dfxc0uH1u0PBhjdHCp+ls0y6y2S2bJJ
+         hWcNx8HqHT2V0Lu/e2pAehvNA2lm5459HhyifUnn8vbN4jW2xLwhXdL2UTv1GQBO8+m5
+         LjB8kUmSGmUnf24UpULRfjNFRTYDXqNHTQ0NK5tn6OQTUXd0d8alJ4DUcxO2NSUgj7t/
+         UhE59MHNvpnzgOzdNmbY7fIfSGkypRS57G9323c0lJx6t8tIXJQ6Aui5wGe+XtpnqXRy
+         fiPCC7LV2Wr6LMso0py3geqZkAmfvqoZ7+62y4YqcxSuahWa3KtXuXR4nIQma/iC7sG2
+         8vzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692099166; x=1692703966;
+        d=1e100.net; s=20221208; t=1692099678; x=1692704478;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=z0cIlhyjWne1murlHvTIDv20f0nQNybjsStT8wYuMbs=;
-        b=T1FbCIGuiyQfbSYPTV/rp+EfK3bkqEuNRAxprywuH7yvtLyu2PloGb7zPMm3yS14CE
-         VE/55UPH4ISkBFl6wcluiAY7HHpTLDn6kOJQ7ggF4zhjuGh1KgZtEX+h6GNxOj6sC3Gx
-         n+DaFR761HZwBcxOvLJtOLD77XWrc6SBqGOU1cUbyhHFA4SoytTHQn2vOWMv/256DFqb
-         X1Ygt3naadZt4UDrIqR/4UspE5vuTEanbqCGiV37//JMhGrkYyT8RWx+KwQdveZwGCfn
-         Sjxi51bdV24YKFy6g76UgfeowogoMSq+ni2THI9Ksx/iD2eoNlzt5OeuZnH6wh07/mbq
-         +Yqg==
-X-Gm-Message-State: AOJu0YwBEDnvkKABkLjd6cyLaOT907p12ewZVkbwdRp+Hvm9V/bkZjEF
-        HZuVc4ni4htAm6IrOa3Q+k/JYqhQmVrMuD4DkfrnVw==
-X-Google-Smtp-Source: AGHT+IF+Uq4L1vZ2KYOj/7hnmB0axq1IhUvwed2+zIGTzDRSd6D0RQexOAD/BAlRCgknTqGst3bcTKnrGouhUHLTuVM=
-X-Received: by 2002:a25:209:0:b0:d4b:4a1f:6e13 with SMTP id
- 9-20020a250209000000b00d4b4a1f6e13mr12714722ybc.33.1692099165951; Tue, 15 Aug
- 2023 04:32:45 -0700 (PDT)
+        bh=DEvbIYBzqlpIbOwD2jshBnebopDU4klP4ZBGtz/pQuE=;
+        b=dE4+JnVxmxPBXuZvUEwwTpdIh9J92aZ4b4sH0Q0TbkLko57QIel+uTgmbpSoA8WhJZ
+         /Qmzu9c7XEND5rxv9RiSbncO5QaM/beS7dgcs84QSr3ZCLxxYYYDu6mY2jbmZv+uSxa8
+         UZQnCoTEET0cpz8WA417+9SyOqKUjqwjuUSkM38KMLsh1wkDjSpJjxf/be0iS3rRLXHT
+         R87v1RKJq4q1fGplKAL4ZgD2RuWzNHBVj76ksSbK696QUjSx8mNk8dQM4PnBwBLJUQMB
+         04bJMnZEHfD5xFLNRyjOM8ie0obsGJtINHe5s32NLRMPVyM48soLXR6hCyucFAmE1aDM
+         LgWQ==
+X-Gm-Message-State: AOJu0YyOPEH9Q7DrWbX6j1B6Hh66nuVdQAX4hdLdNQI1nC4iPxP5lLLZ
+        dIM4ZKy5GfeVXu3EDBGgY7mWXEbljNmsuj2GYaOuVw==
+X-Google-Smtp-Source: AGHT+IGqqVEBuRmiao39L6hulgTQo9WV9b/yGcuLKO6d2VRjQFykkOwgZpNtoMOiF8U9pOBkiPjPEieITDA1co8zhmI=
+X-Received: by 2002:a25:23d6:0:b0:d05:1eb8:2c43 with SMTP id
+ j205-20020a2523d6000000b00d051eb82c43mr11982408ybj.30.1692099678580; Tue, 15
+ Aug 2023 04:41:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230727070051.17778-1-frank.li@vivo.com> <20230727070051.17778-62-frank.li@vivo.com>
- <90febfa5-b520-05f5-53ca-af0e1f3fc7c4@intel.com> <643e844b-2640-e2c8-d8a7-1cd91d453ccc@intel.com>
-In-Reply-To: <643e844b-2640-e2c8-d8a7-1cd91d453ccc@intel.com>
+References: <20230727070051.17778-1-frank.li@vivo.com> <CAPDyKFr5smUN5VHCo-O_iFB=qzHFg5Gn9d6wm3bw+5UEy9n=Ww@mail.gmail.com>
+In-Reply-To: <CAPDyKFr5smUN5VHCo-O_iFB=qzHFg5Gn9d6wm3bw+5UEy9n=Ww@mail.gmail.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 15 Aug 2023 13:32:09 +0200
-Message-ID: <CAPDyKFpjPhgrn8E7WEmJeLeUVSb2es9bZRBV6WDVvMk6UR+QUA@mail.gmail.com>
-Subject: Re: [PATCH v3 62/62] mmc: f-sdh30: fix order of function calls in sdhci_f_sdh30_remove
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Yangtao Li <frank.li@vivo.com>
-Cc:     Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+Date:   Tue, 15 Aug 2023 13:40:42 +0200
+Message-ID: <CAPDyKFpv_KzH0KcQVUsysBpWohdwEz=+JXN6QTuw0_+jxh94SQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/62] mmc: sunxi: Convert to platform remove callback
+ returning void
+To:     Yangtao Li <frank.li@vivo.com>
+Cc:     Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
         =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
         linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 3 Aug 2023 at 07:46, Adrian Hunter <adrian.hunter@intel.com> wrote:
+On Mon, 7 Aug 2023 at 17:26, Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> On 27/07/23 16:55, Adrian Hunter wrote:
-> > On 27/07/23 10:00, Yangtao Li wrote:
-> >> The order of function calls in sdhci_f_sdh30_remove is wrong,
-> >> let's call sdhci_pltfm_unregister first.
-> >>
-> >> Cc: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> >> Fixes: 5def5c1c15bf ("mmc: sdhci-f-sdh30: Replace with sdhci_pltfm")
-> >> Signed-off-by: Yangtao Li <frank.li@vivo.com>
-> >> ---
-> >>  drivers/mmc/host/sdhci_f_sdh30.c | 4 ++--
-> >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/drivers/mmc/host/sdhci_f_sdh30.c b/drivers/mmc/host/sdhci=
-_f_sdh30.c
-> >> index 840084ee72e6..964fa18a61a4 100644
-> >> --- a/drivers/mmc/host/sdhci_f_sdh30.c
-> >> +++ b/drivers/mmc/host/sdhci_f_sdh30.c
-> >> @@ -211,11 +211,11 @@ static void sdhci_f_sdh30_remove(struct platform=
-_device *pdev)
-> >>      struct sdhci_host *host =3D platform_get_drvdata(pdev);
-> >>      struct f_sdhost_priv *priv =3D sdhci_f_sdhost_priv(host);
-> >>
-> >> +    sdhci_pltfm_unregister(pdev);
+> On Thu, 27 Jul 2023 at 09:01, Yangtao Li <frank.li@vivo.com> wrote:
 > >
-> > That also frees priv
+> > The .remove() callback for a platform driver returns an int which makes
+> > many driver authors wrongly assume it's possible to do error handling b=
+y
+> > returning an error code. However the value returned is (mostly) ignored
+> > and this typically results in resource leaks. To improve here there is =
+a
+> > quest to make the remove callback return void. In the first step of thi=
+s
+> > quest all drivers are converted to .remove_new() which already returns
+> > void.
 > >
-> >> +
-> >>      reset_control_assert(priv->rst);
-> >>      clk_disable_unprepare(priv->clk);
-> >>      clk_disable_unprepare(priv->clk_iface);
-> >> -
-> >> -    sdhci_pltfm_unregister(pdev);
-> >>  }
-> >>
-> >>  #ifdef CONFIG_OF
+> > Trivially convert this driver from always returning zero in the remove
+> > callback to the void returning variant.
 > >
+> > Cc: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> > Signed-off-by: Yangtao Li <frank.li@vivo.com>
+> > Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 >
-> So it needs to end up looking something like below, right?
+> Normally I would prefer one patch per host driver, but in this series
+> the changes are so trivial that it just becomes more difficult for me
+> to manage.
 >
-> diff --git a/drivers/mmc/host/sdhci_f_sdh30.c b/drivers/mmc/host/sdhci_f_=
-sdh30.c
-> index 840084ee72e6..47ae853f51aa 100644
-> --- a/drivers/mmc/host/sdhci_f_sdh30.c
-> +++ b/drivers/mmc/host/sdhci_f_sdh30.c
-> @@ -210,12 +210,15 @@ static void sdhci_f_sdh30_remove(struct platform_de=
-vice *pdev)
->  {
->         struct sdhci_host *host =3D platform_get_drvdata(pdev);
->         struct f_sdhost_priv *priv =3D sdhci_f_sdhost_priv(host);
-> -
-> -       reset_control_assert(priv->rst);
-> -       clk_disable_unprepare(priv->clk);
-> -       clk_disable_unprepare(priv->clk_iface);
-> +       struct clk *clk_iface =3D priv->clk_iface;
-> +       struct reset_control *rst =3D priv->rst;
-> +       struct clk *clk =3D priv->clk;
->
->         sdhci_pltfm_unregister(pdev);
-> +
-> +       reset_control_assert(rst);
-> +       clk_disable_unprepare(clk);
-> +       clk_disable_unprepare(clk_iface);
->  }
+> Please squash all changes that convert from using ->remove() to
+> .remove_new() into one single patch for the mmc host drivers. Note
+> that, I discovered there are some additional cleanups being part of
+> the series, those deserve to be submitted indepently of this.
 
-I have amended the patch according to the above. Added Adrian's ack,
-rebased it on top of the fixes branch, added a stable tag and applied
-it for fixes.
-
-Thanks to both of you!
+Okay, so I decided to pick the series anyway. Applied for next (except
+for patch 62 which went to fixes), thanks!
 
 Kind regards
 Uffe
+
+
+
+>
+> Kind regards
+> Uffe
+>
+> > ---
+> >  drivers/mmc/host/sunxi-mmc.c | 6 ++----
+> >  1 file changed, 2 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.=
+c
+> > index 69dcb8805e05..d3bd0ac99ec4 100644
+> > --- a/drivers/mmc/host/sunxi-mmc.c
+> > +++ b/drivers/mmc/host/sunxi-mmc.c
+> > @@ -1486,7 +1486,7 @@ static int sunxi_mmc_probe(struct platform_device=
+ *pdev)
+> >         return ret;
+> >  }
+> >
+> > -static int sunxi_mmc_remove(struct platform_device *pdev)
+> > +static void sunxi_mmc_remove(struct platform_device *pdev)
+> >  {
+> >         struct mmc_host *mmc =3D platform_get_drvdata(pdev);
+> >         struct sunxi_mmc_host *host =3D mmc_priv(mmc);
+> > @@ -1499,8 +1499,6 @@ static int sunxi_mmc_remove(struct platform_devic=
+e *pdev)
+> >         }
+> >         dma_free_coherent(&pdev->dev, PAGE_SIZE, host->sg_cpu, host->sg=
+_dma);
+> >         mmc_free_host(mmc);
+> > -
+> > -       return 0;
+> >  }
+> >
+> >  #ifdef CONFIG_PM
+> > @@ -1556,7 +1554,7 @@ static struct platform_driver sunxi_mmc_driver =
+=3D {
+> >                 .pm =3D &sunxi_mmc_pm_ops,
+> >         },
+> >         .probe          =3D sunxi_mmc_probe,
+> > -       .remove         =3D sunxi_mmc_remove,
+> > +       .remove_new     =3D sunxi_mmc_remove,
+> >  };
+> >  module_platform_driver(sunxi_mmc_driver);
+> >
+> > --
+> > 2.39.0
+> >
