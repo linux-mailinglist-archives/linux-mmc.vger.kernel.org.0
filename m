@@ -2,193 +2,122 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F4567807B7
-	for <lists+linux-mmc@lfdr.de>; Fri, 18 Aug 2023 11:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A8DA780842
+	for <lists+linux-mmc@lfdr.de>; Fri, 18 Aug 2023 11:30:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358866AbjHRJBv (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 18 Aug 2023 05:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45524 "EHLO
+        id S1359073AbjHRJ31 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 18 Aug 2023 05:29:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358918AbjHRJBj (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Aug 2023 05:01:39 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F10DE4208
-        for <linux-mmc@vger.kernel.org>; Fri, 18 Aug 2023 02:01:09 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-58cd9d9dbf5so10010057b3.0
-        for <linux-mmc@vger.kernel.org>; Fri, 18 Aug 2023 02:01:09 -0700 (PDT)
+        with ESMTP id S1359086AbjHRJ3V (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 18 Aug 2023 05:29:21 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C78ED30E6
+        for <linux-mmc@vger.kernel.org>; Fri, 18 Aug 2023 02:29:19 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b9c0391749so11251191fa.0
+        for <linux-mmc@vger.kernel.org>; Fri, 18 Aug 2023 02:29:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692349269; x=1692954069;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RIMtbwO8KD2IoehzK5xo4XD4MDFkwlTkyaP30vazrWk=;
-        b=NDfj2KfLreW7RME+Ag6gxRjuiq9PNGwZfPQPeviCqL2NUfJkae/2HCgd3m/jtS0apu
-         leZvRg9JZkjD9Mw9U7OSxzUe2P5M7ffzeFKuw8SG2p1bCOti8I71pn04HrOAD4fEn/97
-         +WmSaIskdk9+zBYWNy5bTAZ9/4hOe9v1YHHVSrTQ2J4j2rxudlGWszAs4SR5VVNVEEn5
-         s012F44gHb1tDv/6FXRo19cZhIa2AUbkeG+b3L+ZrVi7bOKTUyVpT+KYmEpdSanJAPT3
-         COGQTXzvMHlGBYGKkVunlc0XCyo6xgwNU/4KOukvANvoXSMxKaT+etjXoPRaCSsQVqhN
-         NxrQ==
+        d=linaro.org; s=google; t=1692350958; x=1692955758;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pe6dUrFf2OfRIze9u6TiWKYUZqpOSPeSgcea4E9pAH8=;
+        b=HcV4CGUqJf+tkyUDdlqSRPJ//Tt6+qta265+7O+KsSD4apqVlf/G3swEE3+9K/5lpa
+         q33ilqddz9zpfy/7CJyHqPx1xAWaxYoigj+hqynMgLzzb3XW9dP6FFct1EFIOMdjjZgO
+         EsP+gUkvbQ5Fs2lDBw7dg8C/dRmatpSs4zf9xBWxHWBZevhgUf4JH7cFX9sfISpYRJao
+         NbVTdttNyLfqAWRJzSW7eD1KLGku4f5eM6FtO9mftV7NlsyXuJa23i1jqixOzEI3eHE8
+         4f0aPm92MvmZaWZj+FvrQh4g+Aa8KzHYDxHDLeatnDeZSiZjU30ZUuvwp0OmnoEq5C+C
+         vorQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692349269; x=1692954069;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1692350958; x=1692955758;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RIMtbwO8KD2IoehzK5xo4XD4MDFkwlTkyaP30vazrWk=;
-        b=RS+muWK0vC3kdOwri3ghyFqb1KTMk3cjefNaJikpBCnUuK0m8DvABYy4phYJm+a81O
-         IxTdzxVq3YLwv3iJffTNODsesOhUmLaXtI5ZKWfTjpo0GEW0ase1pGVfdfKDcRM8Ju/2
-         Lo9ykMcVyxm7OBOVlc5S28FZV3wqb8KbMbSRYxKB0E0Alcf1+maVc2AVZP0mXAdXRSTY
-         U3rTtzmkcN462ChjKNQSEoGgMjsURMB/JBvWlXlMGZqzTqiqoKtkH1jjh0o0LXSFd1sG
-         HhvTdDM2idfuGn+fYaFxCHXdyWAnIWrlCUMnD1LtBsi4ShGiM0GwLy6IhFnhRdLtC0Zr
-         CVHQ==
-X-Gm-Message-State: AOJu0YwOPn3SumFtTF87CdHVunH0KoCqq5FGtDZKE6JzEdcXRs2jR+b+
-        xWcmBQ96TK3czwFnyKjXpQPS7MYrRqqegATMhGVtZA==
-X-Google-Smtp-Source: AGHT+IEWzDCK5yYkY70jff+msXhncrz8POQ3xpL2mas+Bp/FNL0VSiTT9JywxXmqjpwqUVsHlBPOJ1oXEhXsuZnoE8Q=
-X-Received: by 2002:a0d:eb0e:0:b0:58c:adf9:eb03 with SMTP id
- u14-20020a0deb0e000000b0058cadf9eb03mr2530783ywe.6.1692349268872; Fri, 18 Aug
- 2023 02:01:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <79137159a833c164ea8ea3f05d8d6d9537db2f42.1683747334.git.limings@nvidia.com>
- <20230817162159.242087-1-limings@nvidia.com>
-In-Reply-To: <20230817162159.242087-1-limings@nvidia.com>
+        bh=pe6dUrFf2OfRIze9u6TiWKYUZqpOSPeSgcea4E9pAH8=;
+        b=hQEsdKr6yOlZ95C1v2c94fj/bzkaWSNkhBda39mx5+4dXqSjxgT5k1aYO1l0jHsj9W
+         uH3SrRdvnafuD9WkO+DxicJ7AeQ2uGCGrtm6uzS8Al+RQo5oAh0spvN5Y4/iRYv73NtE
+         ntZKEXE5nignE6EvGPbZi6Nil4+shFBHKAmzuLFitZfFz++uzbFpXjKWzsc12zB1Zy0+
+         YcbwpSGFhNz3bwejwP1xZDHD5rf2/duMqUBcf/iHK1D1nc3rFZQ7GyRI2p9Y9YXpudk6
+         8T8DBF1B/K3OZ0t1FY+81Mo4cmTfkfxxyvLG4pOHMXHPInv+KMYvGraYF7tYlEYr6sli
+         GwDg==
+X-Gm-Message-State: AOJu0YwLvQe6oYgGCxLPy2/KTlCxf+YpKi3XL4W1jB2S8HlgKlBj2bFC
+        FVLTRq51lBJ+NDlK4BKbL3P2nw==
+X-Google-Smtp-Source: AGHT+IGovJeuyXXZM0SAAt+XnpR6ZkzwKHmLu3sqae8E8VhNrzYrIWkUAVTMWyFKYbISCtCzDHpAHA==
+X-Received: by 2002:a2e:9d55:0:b0:2b6:e96c:5414 with SMTP id y21-20020a2e9d55000000b002b6e96c5414mr1215354ljj.52.1692350958052;
+        Fri, 18 Aug 2023 02:29:18 -0700 (PDT)
+Received: from uffe-tuxpro14.. (h-94-254-63-18.NA.cust.bahnhof.se. [94.254.63.18])
+        by smtp.gmail.com with ESMTPSA id p17-20020a2e9ad1000000b002bbacc6c523sm333546ljj.49.2023.08.18.02.29.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Aug 2023 02:29:17 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 18 Aug 2023 11:00:32 +0200
-Message-ID: <CAPDyKFpezrjPk6Y+TS1A1E2tK4WbjdpTjPwPxLaAUD9fcaQonQ@mail.gmail.com>
-Subject: Re: [PATCH v9] mmc: sdhci-of-dwcmshc: Add runtime PM operations
-To:     Liming Sun <limings@nvidia.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        David Thompson <davthompson@nvidia.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+To:     Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC fixes for v6.5-rc7
+Date:   Fri, 18 Aug 2023 11:29:16 +0200
+Message-Id: <20230818092916.38330-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Thu, 17 Aug 2023 at 18:22, Liming Sun <limings@nvidia.com> wrote:
->
-> This commit implements the runtime PM operations to disable eMMC
-> card clock when idle.
->
-> Reviewed-by: David Thompson <davthompson@nvidia.com>
-> Signed-off-by: Liming Sun <limings@nvidia.com>
-> ---
-> v8->v9:
->     - Address Adrian's comment to do the pm_runtime_put() in
->       dwcmshc_resume() instead; Error path changes not included yet.
-> v7->v8:
->     - Address Ulf's comment (option-1);
->     - Updates for Adrian's comment to remove the force_suspend/resume
->       in dwcmshc_resume()/dwcmshc_suspend(); Add comments for
->       dwcmshc_resume()/dwcmshc_suspend();
-> v6->v7:
->     - Address Ulf's comment;
-> v5->v6:
->     - Address Adrian's more comments and add coordination between
->       runtime PM and system PM;
-> v4->v5:
->     - Address Adrian's comment to move the pm_enable to the end to
->       avoid race;
-> v3->v4:
->     - Fix compiling reported by 'kernel test robot';
-> v2->v3:
->     - Revise the commit message;
-> v1->v2:
->     Updates for comments from Ulf:
->     - Make the runtime PM logic generic for sdhci-of-dwcmshc;
-> v1: Initial version.
-> ---
->  drivers/mmc/host/sdhci-of-dwcmshc.c | 76 +++++++++++++++++++++++++++--
->  1 file changed, 72 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
-> index e68cd87998c8..3b40f55ce2a4 100644
-> --- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-> +++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-> @@ -15,6 +15,7 @@
->  #include <linux/module.h>
->  #include <linux/of.h>
->  #include <linux/of_device.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/reset.h>
->  #include <linux/sizes.h>
->
-> @@ -548,9 +549,13 @@ static int dwcmshc_probe(struct platform_device *pdev)
->
->         host->mmc->caps |= MMC_CAP_WAIT_WHILE_BUSY;
->
-> +       pm_runtime_get_noresume(dev);
-> +       pm_runtime_set_active(dev);
-> +       pm_runtime_enable(dev);
-> +
->         err = sdhci_setup_host(host);
->         if (err)
-> -               goto err_clk;
-> +               goto err_rpm;
->
->         if (rk_priv)
->                 dwcmshc_rk35xx_postinit(host, priv);
-> @@ -559,10 +564,15 @@ static int dwcmshc_probe(struct platform_device *pdev)
->         if (err)
->                 goto err_setup_host;
->
-> +       pm_runtime_put(dev);
-> +
->         return 0;
->
->  err_setup_host:
->         sdhci_cleanup_host(host);
-> +err_rpm:
-> +       pm_runtime_disable(dev);
-> +       pm_runtime_put_noidle(dev);
->  err_clk:
->         clk_disable_unprepare(pltfm_host->clk);
->         clk_disable_unprepare(priv->bus_clk);
-> @@ -602,9 +612,13 @@ static int dwcmshc_suspend(struct device *dev)
->         struct rk35xx_priv *rk_priv = priv->priv;
->         int ret;
->
-> +       pm_runtime_get_sync(dev);
-> +
->         ret = sdhci_suspend_host(host);
-> -       if (ret)
-> +       if (ret) {
-> +               pm_runtime_put(dev);
->                 return ret;
-> +       }
->
->         clk_disable_unprepare(pltfm_host->clk);
->         if (!IS_ERR(priv->bus_clk))
-> @@ -642,11 +656,65 @@ static int dwcmshc_resume(struct device *dev)
->                         return ret;
->         }
->
-> -       return sdhci_resume_host(host);
-> +       ret = sdhci_resume_host(host);
-> +       if (ret)
-> +               return ret;
-> +
-> +       pm_runtime_put(dev);
+Hi Linus,
 
-To simplify the error path, I would suggest that you move the call to
-pm_runtime_put() to dwcmshc_suspend(). In fact what you need is just a
-call to pm_runtime_put_noidle(), somewhere after the call to
-pm_runtime_get_sync().
+Here's a PR with a couple of MMC fixes intended for v6.5-rc7. Details about the
+highlights are as usual found in the signed tag.
 
-This is because runtime suspend is prevented by the PM core as it
-bumps the usage count with a pm_runtime_get_noresume() in the
-device_prepare() phase.
-
-> +
-> +       return 0;
->  }
->  #endif
-
-[...]
+Please pull this in!
 
 Kind regards
-Uffe
+Ulf Hansson
+
+
+The following changes since commit 5def5c1c15bf22934ee227af85c1716762f3829f:
+
+  mmc: sdhci-f-sdh30: Replace with sdhci_pltfm (2023-07-14 11:28:55 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v6.5-rc1-2
+
+for you to fetch changes up to 58abdd80b93b09023ca03007b608685c41e3a289:
+
+  mmc: f-sdh30: fix order of function calls in sdhci_f_sdh30_remove (2023-08-15 13:24:29 +0200)
+
+----------------------------------------------------------------
+MMC core:
+ - Fix in_flight[issue_type] value error to properly manage requests
+
+MMC host:
+ - wbsd: Fix double free in the probe error path
+ - sunplus: Fix error path in probe
+ - sdhci_f_sdh30: Fix order of function calls in sdhci_f_sdh30_remove
+
+----------------------------------------------------------------
+Harshit Mogalapalli (1):
+      mmc: sunplus: Fix error handling in spmmc_drv_probe()
+
+Wei Chen (1):
+      mmc: sunplus: fix return value check of mmc_add_host()
+
+Yang Yingliang (1):
+      mmc: wbsd: fix double mmc_free_host() in wbsd_init()
+
+Yangtao Li (1):
+      mmc: f-sdh30: fix order of function calls in sdhci_f_sdh30_remove
+
+Yibin Ding (1):
+      mmc: block: Fix in_flight[issue_type] value error
+
+ drivers/mmc/core/block.c         |  7 ++++---
+ drivers/mmc/host/sdhci_f_sdh30.c | 11 +++++++----
+ drivers/mmc/host/sunplus-mmc.c   | 26 +++++++++++++-------------
+ drivers/mmc/host/wbsd.c          |  2 --
+ 4 files changed, 24 insertions(+), 22 deletions(-)
