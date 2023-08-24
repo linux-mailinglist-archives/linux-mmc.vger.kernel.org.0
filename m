@@ -2,104 +2,94 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B9A786998
-	for <lists+linux-mmc@lfdr.de>; Thu, 24 Aug 2023 10:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ABC1786A2A
+	for <lists+linux-mmc@lfdr.de>; Thu, 24 Aug 2023 10:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231185AbjHXIIW (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 24 Aug 2023 04:08:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48436 "EHLO
+        id S234213AbjHXIeZ (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Thu, 24 Aug 2023 04:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229892AbjHXIHx (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Aug 2023 04:07:53 -0400
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF911BCD;
-        Thu, 24 Aug 2023 01:07:18 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A58C56000A;
-        Thu, 24 Aug 2023 08:06:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1692864415;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5iy90UPBEpYr9Ks6Pdn0quIrhraOkWjQhbq0wpTYDBM=;
-        b=XizArq1AmE8u1PlEKB4g8NjhXu0zjN5QFi79zW24HbCXBErrvogWggSj9arbq+KhrFKB+O
-        uNFRNoDum6eiw6b1FusyrSJGtFu52oxgQ2aZxvU94bbYQ6VeF6C6+aaiIjsvth2eXnzCxv
-        fG9eW8n1Z7MjHVpGZKNTWsEMTPK6e/12/dzQCGsxQ9uVm1S5ddD2cTGo7DkevkDqa3KU8H
-        w1ZbBKh6080wCbuer4WK7KK05Jg/bzrwy8FVePWax3FVuMu3JvmQ+yeRvZQEooNr0+hv60
-        bNmbWEfq0tXu55UOuMr9+VZp+jY7MAOxARwAMNEhCJ6ymjR+mtZvO+UxG0Uu9Q==
-Date:   Thu, 24 Aug 2023 10:06:48 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Mike Leach <mike.leach@linaro.org>,
-        James Clark <james.clark@arm.com>,
-        Leo Yan <leo.yan@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Corey Minyard <minyard@acm.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Richard Weinberger <richard@nod.at>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        M ark Brown <broonie@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-iio@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        alsa-devel@alsa-project.org, linux-scsi@vger.kernel.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Drop remaining unneeded quotes
-Message-ID: <20230824100648.5b6e8b70@xps-13>
-In-Reply-To: <20230823183749.2609013-1-robh@kernel.org>
-References: <20230823183749.2609013-1-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S240553AbjHXIeK (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 24 Aug 2023 04:34:10 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACE3E172D
+        for <linux-mmc@vger.kernel.org>; Thu, 24 Aug 2023 01:34:08 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-d72cf9156easo5857523276.0
+        for <linux-mmc@vger.kernel.org>; Thu, 24 Aug 2023 01:34:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692866048; x=1693470848;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xx1JCcPjCZYdIsabGARYPpE09xWgY39/BIHBUOtvlRM=;
+        b=yVZ0C6CryfeJ4SCnXKGUOcALhdyv1slpp7Ji0mGhkwM/usN3pjhkbw5Qcn5OCR0/Zc
+         lGxRql8lTAOUaN3ONlHHbhf9IIWbdAd+nvegIwda0c7P6jkG0y3OOaZ6T12Gta+n1BS2
+         XC1oTUwsZF9Idw+EcxIiRk902F4Ix4t8aTWIuNNTmliRVf/louFFkAP7o3RawwEtJYB0
+         uGF64e1sIK9/Gtl7RdI+6Sq4J+35kqOvfRerfLjcOdN2oGg5vZX7h8pcV0BzggJQOkT7
+         j86kPWrB5+x8UgcTBVozyU9CgIicOMtg10Uh6EhSSxek/EwfSRt6iseGWJ57i960GeiD
+         B9yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692866048; x=1693470848;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xx1JCcPjCZYdIsabGARYPpE09xWgY39/BIHBUOtvlRM=;
+        b=ZZA1YYMFda5kDS3iWt6V0XbdhQ1hYfc5VplOgn3jMWyK7JL6mJ+NYvqjce/ZRPPNt2
+         IQl1Hc7vKd8JMe5OkqaUuWC0KSqJuc5btFPrLTde0hp/rxh0bHX5JKyrg3RAWul212Qg
+         chDU0jqs2zOlqHqLOjZIgGCncSuV4dsbO8BgbBE69sN2A8RA0nCkYZh5CqQNDnCrdo8S
+         PfuffIodXj9W8K8sab3JD4vsPwa1wXccpz85ezJ/IxSHWxNZGhuqKUnD98k/8pO/lZJ+
+         ti1z0xz9177dFi0CZhns8xnDhOgV7nBJOhfqJa1Tpi5Fulojf9o4Jj3sXT7SfMVqRyW7
+         tPug==
+X-Gm-Message-State: AOJu0YwvINlTL5YIl7er1pV5oQLyUTQYW+Av55p3etRe46NjXpxbRO30
+        9A9FcTEAKe9FpCC9fvA27023wPvVxPE3GSscfgVGWjE9rLw0YZTdXBg=
+X-Google-Smtp-Source: AGHT+IEcJo7laVcyul2RySXcC4CyDoAj9lDi1bP6HOIeX0rCNYWlI+yADeeg7TSYUDFTmKqvliuX3LiW9/B3JDL/M5U=
+X-Received: by 2002:a25:8689:0:b0:d0e:2e5c:2f80 with SMTP id
+ z9-20020a258689000000b00d0e2e5c2f80mr15306360ybk.64.1692866047844; Thu, 24
+ Aug 2023 01:34:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20230823104010.79107-1-balamanikandan.gunasundar@microchip.com>
+ <20230823104010.79107-4-balamanikandan.gunasundar@microchip.com>
+ <CACRpkda2gJkj6_25rnLUHNaLC3_kcSbCF+y6RRvbnUsju-iJYg@mail.gmail.com> <63156971-6f3d-4023-90d9-98adc000a32e@microchip.com>
+In-Reply-To: <63156971-6f3d-4023-90d9-98adc000a32e@microchip.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 24 Aug 2023 10:33:56 +0200
+Message-ID: <CACRpkdY83_nQx8tWRV9SJyD=-SvY+30FiSXkrb5vKkd+QfuPaA@mail.gmail.com>
+Subject: Re: [PATCH v5 3/3] mmc: atmel-mci: Move card detect gpio polarity
+ quirk to gpiolib
+To:     Balamanikandan.Gunasundar@microchip.com
+Cc:     dmitry.torokhov@gmail.com, ulf.hansson@linaro.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Ludovic.Desroches@microchip.com, Nicolas.Ferre@microchip.com,
+        alexandre.belloni@bootlin.com, Hari.PrasathGE@microchip.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Rob,
+On Thu, Aug 24, 2023 at 8:39=E2=80=AFAM <Balamanikandan.Gunasundar@microchi=
+p.com> wrote:
 
-robh@kernel.org wrote on Wed, 23 Aug 2023 13:28:47 -0500:
+> >> +#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
+> >> +       if (of_device_is_compatible(np->parent, "atmel,hsmci") &&
+>
+> The only difference above is "np->parent" while the existing code uses
+> "np". This is because the compatible string is defined in the parent
+> node here while the others have it in the same node.
 
-> Cleanup bindings dropping the last remaining unneeded quotes. With this,
-> the check for this can be enabled in yamllint.
->=20
-> Signed-off-by: Rob Herring <robh@kernel.org>
+Aha. What about this right before the for-loop
+then:
 
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com> # for mtd
+/* The Atmel MSMCI has the property in a child node of the device */
+if (IS_ENABLED(CONFIG_MMC_ATMELMCI) &&
+of_device_is_compatible(np->parent, "atmel,hsmci"))
+  np =3D parent->np;
 
-Thanks,
-Miqu=C3=A8l
+Yours,
+Linus Walleij
