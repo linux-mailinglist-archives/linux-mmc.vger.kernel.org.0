@@ -2,252 +2,169 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB14788418
-	for <lists+linux-mmc@lfdr.de>; Fri, 25 Aug 2023 11:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02437788433
+	for <lists+linux-mmc@lfdr.de>; Fri, 25 Aug 2023 12:01:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238558AbjHYJxj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 25 Aug 2023 05:53:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42376 "EHLO
+        id S238782AbjHYKAj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 25 Aug 2023 06:00:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231562AbjHYJxG (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Aug 2023 05:53:06 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A6F1FD3;
-        Fri, 25 Aug 2023 02:53:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1692957184; x=1724493184;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YKZUSQzPFmSYx0wJi3AFiDcRtmVYp/GIYvSRj+pVVfU=;
-  b=cyOMZ9MxesMlSvaWNAvxWgQMyxQIQ2tPbFTTM14STxMotHCGwAxGSNMz
-   aNrAnSvqqNxjjnWC7ONwDJ2vJq1zfAnTfQoljH3/tuvuXkuK8P4xSK6sP
-   acg/vtnqpfSCd6Y4pyibZE6x8ojMCUBS1uVPtuWyEVHIzzWo5GmbadiOw
-   gqwQBbKaC25hNPLZD/gyOX46y0OxYuR7fZy/Vjanlcaro0vC4/iS78RLM
-   9jY+T8hBIj6G2C+a/qXs9cINk/YnrlUfJK43wUhWP6IqF60Z8dAqHTrOO
-   Hszyco2nO3F/NqcO5dGYEMRF7BRqTbhGz4Yc0YkHs/zEXUpdwsOtnrdto
-   w==;
-X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="1291911"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 25 Aug 2023 02:53:03 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Fri, 25 Aug 2023 02:52:45 -0700
-Received: from che-lt-i64410lx.microchip.com (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.21 via Frontend Transport; Fri, 25 Aug 2023 02:52:40 -0700
-From:   Balamanikandan Gunasundar 
-        <balamanikandan.gunasundar@microchip.com>
-To:     <linus.walleij@linaro.org>, <dmitry.torokhov@gmail.com>,
-        <ulf.hansson@linaro.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <ludovic.desroches@microchip.com>, <nicolas.ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>
-CC:     <hari.prasathge@microchip.com>,
-        <balamanikandan.gunasundar@microchip.com>
-Subject: [PATCH v6 3/3] mmc: atmel-mci: Move card detect gpio polarity quirk to gpiolib
-Date:   Fri, 25 Aug 2023 15:21:57 +0530
-Message-ID: <20230825095157.76073-4-balamanikandan.gunasundar@microchip.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230825095157.76073-1-balamanikandan.gunasundar@microchip.com>
-References: <20230825095157.76073-1-balamanikandan.gunasundar@microchip.com>
+        with ESMTP id S241806AbjHYKAY (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 25 Aug 2023 06:00:24 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DBA2106
+        for <linux-mmc@vger.kernel.org>; Fri, 25 Aug 2023 03:00:19 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-58fae4a5285so9177047b3.0
+        for <linux-mmc@vger.kernel.org>; Fri, 25 Aug 2023 03:00:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692957619; x=1693562419;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5UIQb/eeOE/85eBFbBN6HeTQWfUWEUKgLruaLwRSxTc=;
+        b=TLWxRfXRDkr/vfHiMPaLwGEMzLb6ieehakvbzXnIqGNf3V6g0Ih9N7CRZlPg9WxEV5
+         stDyFl50W4eo3GAGk0dIVfZYo9IeSpvxi7mgXLXWzlOTDS3GG7VABQdp/xKDkLlZ64eB
+         uIPjAceyynwXOl9+NPZh0LYaIwrku9sLAgM3NLeM2ZVk8vdkNbXIH2ApcdDpZogloYrw
+         HAJ8I1h7MlgpZT2lByDmAYqtWR8evg6e8WQF3VXXvHrLc0sd5EmcKlMUJqpgyj7snMZW
+         /6BdDoi/ZfR/mAf9oM0zhxCjuauE1+vIoA9rsIrId1uvv/q7eNgicu6Y0HDVGuoazs3c
+         ICeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692957619; x=1693562419;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5UIQb/eeOE/85eBFbBN6HeTQWfUWEUKgLruaLwRSxTc=;
+        b=PEogl4lJSgrN238faTYMZJgw6iVFKaH2tS9UVHFlbls68ay5jTuFYD0W9804QnasLF
+         3LQXpnqBnbgp8Ggd+GXbYeguimWDo2zexMxQIHE9qeKyhRU4LS/1Tf351A80srt9MtZ1
+         A9h6Nvz1hYMI21mHTTwDPPYkQfpdec1F7SjzQvP7jfXV+LpaQ6+q9CHAM6uoiyNn9i5O
+         wtgtkbey9E8hK2Krurnv/6jTPdSOFv/yNK+MStH4SdYeyrTzmwRoZBzqao5LAQtvt4cx
+         sAFlnEs3JrRBNApSRb/gpOlKmkWvBTyxhzK0p9/ZfU2rBUMU3ylipbzbcv2nopzEqpLE
+         qmyA==
+X-Gm-Message-State: AOJu0Yyo3dg0LVe6FrXJ6heLxdZmMt8H2326bmKaNtqewoP0+NPvUCLb
+        BKe4ewxfPutEHiYcQkk5DRLRd7WQ2o3jWG4wCnCpQQ==
+X-Google-Smtp-Source: AGHT+IHWdBDNnJaCqx17itCTuTbzGUmGoy3wuFxLEPG7iF9R+hGAewU83apq7KbH5xTJJzHsrrUYc5Uf99bhG0tinps=
+X-Received: by 2002:a25:7352:0:b0:d0e:8b3b:1e12 with SMTP id
+ o79-20020a257352000000b00d0e8b3b1e12mr18053604ybc.38.1692957618790; Fri, 25
+ Aug 2023 03:00:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230825091743.15613-1-wenchao.chen@unisoc.com> <20230825091743.15613-2-wenchao.chen@unisoc.com>
+In-Reply-To: <20230825091743.15613-2-wenchao.chen@unisoc.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 25 Aug 2023 11:59:42 +0200
+Message-ID: <CAPDyKFqj3f3sjfNsYEs8cuyqwirMN_vnKVnFWTBghifpEukOTA@mail.gmail.com>
+Subject: Re: [PATCH V3 1/2] mmc: core: Add host specific tuning support for SD
+ HS mode
+To:     Wenchao Chen <wenchao.chen@unisoc.com>
+Cc:     orsonzhai@gmail.com, baolin.wang@linux.alibaba.com,
+        zhang.lyra@gmail.com, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, wenchao.chen666@gmail.com,
+        zhenxiong.lai@unisoc.com, yuelin.tang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-The polarity of the card detection gpio is handled by the "cd-inverted"
-property in the device tree. Move this inversion logic to gpiolib to avoid
-reading the gpio raw value.
+On Fri, 25 Aug 2023 at 11:18, Wenchao Chen <wenchao.chen@unisoc.com> wrote:
+>
+> Added .prepare_hs_tuning and .execute_hs_tuning host callbacks to
+> support host-specific tuning for SD high speed mode. Howerver, these
+> callbacks are optional, host specific - and that there is nothing
+> in the SD spec that mentions this.
+>
+> Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
+> ---
+>  drivers/mmc/core/sd.c     | 14 ++++++++++++++
+>  drivers/mmc/core/sd_ops.c |  1 +
+>  include/linux/mmc/host.h  |  8 ++++++++
+>  3 files changed, 23 insertions(+)
+>
+> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+> index 246ce027ae0a..c3e554344c99 100644
+> --- a/drivers/mmc/core/sd.c
+> +++ b/drivers/mmc/core/sd.c
+> @@ -1518,6 +1518,13 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
+>                  */
+>                 mmc_set_clock(host, mmc_sd_get_max_clock(card));
+>
+> +               if (host->ios.timing == MMC_TIMING_SD_HS &&
+> +                       host->ops->prepare_sd_hs_tuning) {
+> +                       err = host->ops->prepare_sd_hs_tuning(host, card);
+> +                       if (err)
+> +                               goto free_card;
+> +               }
+> +
+>                 /*
+>                  * Switch to wider bus (if supported).
+>                  */
+> @@ -1529,6 +1536,13 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
+>
+>                         mmc_set_bus_width(host, MMC_BUS_WIDTH_4);
+>                 }
+> +
+> +               if (host->ios.timing == MMC_TIMING_SD_HS &&
+> +                       host->ops->execute_sd_hs_tuning) {
+> +                       err = host->ops->execute_sd_hs_tuning(host, card);
+> +                       if (err)
+> +                               goto free_card;
+> +               }
+>         }
+>  cont:
+>         if (!oldcard) {
+> diff --git a/drivers/mmc/core/sd_ops.c b/drivers/mmc/core/sd_ops.c
+> index ef8d1dce5af1..a59cd592f06e 100644
+> --- a/drivers/mmc/core/sd_ops.c
+> +++ b/drivers/mmc/core/sd_ops.c
+> @@ -323,6 +323,7 @@ int mmc_sd_switch(struct mmc_card *card, int mode, int group,
+>         return mmc_send_adtc_data(card, card->host, SD_SWITCH, cmd_args, resp,
+>                                   64);
+>  }
+> +EXPORT_SYMBOL_GPL(mmc_sd_switch);
+>
+>  int mmc_app_sd_status(struct mmc_card *card, void *ssr)
+>  {
+> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> index 461d1543893b..62a6847a3b6f 100644
+> --- a/include/linux/mmc/host.h
+> +++ b/include/linux/mmc/host.h
+> @@ -184,6 +184,12 @@ struct mmc_host_ops {
+>         /* Execute HS400 tuning depending host driver */
+>         int     (*execute_hs400_tuning)(struct mmc_host *host, struct mmc_card *card);
+>
+> +       /* Optional callback to prepare for SD high-speed tuning */
+> +       int     (*prepare_sd_hs_tuning)(struct mmc_host *host, struct mmc_card *card);
+> +
+> +       /* Optional callback to execute SD high-speed tuning */
+> +       int     (*execute_sd_hs_tuning)(struct mmc_host *host, struct mmc_card *card);
+> +
+>         /* Prepare switch to DDR during the HS400 init sequence */
+>         int     (*hs400_prepare_ddr)(struct mmc_host *host);
+>
+> @@ -665,6 +671,8 @@ static inline void mmc_debugfs_err_stats_inc(struct mmc_host *host,
+>         host->err_stats[stat] += 1;
+>  }
+>
+> +int mmc_sd_switch(struct mmc_card *card, int mode, int group, u8 value, u8 *resp);
 
-Signed-off-by: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
-Suggested-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/gpio/gpiolib-of.c    | 20 ++++++++++++++++++--
- drivers/mmc/host/atmel-mci.c | 33 +++++++++++++++------------------
- 2 files changed, 33 insertions(+), 20 deletions(-)
+We need to drop the corresponding declaration in drivers/mmc/core/sd_ops.h.
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index 1436cdb5fa26..9694eb5afa21 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -209,6 +209,8 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
- 					     const char *propname,
- 					     enum of_gpio_flags *flags)
- {
-+	const struct device_node *np_compat = np;
-+	const struct device_node *np_propname = np;
- 	static const struct {
- 		const char *compatible;
- 		const char *gpio_propname;
-@@ -252,15 +254,29 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
- #if IS_ENABLED(CONFIG_REGULATOR_GPIO)
- 		{ "regulator-gpio",    "enable-gpio",  "enable-active-high" },
- 		{ "regulator-gpio",    "enable-gpios", "enable-active-high" },
-+#endif
-+#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
-+		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
- #endif
- 	};
- 	unsigned int i;
- 	bool active_high;
- 
-+#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
-+	/*
-+	 * The Atmel HSMCI has compatible property in the parent node and
-+	 * gpio property in a child node
-+	 */
-+	if (of_device_is_compatible(np->parent, "atmel,hsmci")) {
-+		np_compat = np->parent;
-+		np_propname = np;
-+	}
-+#endif
-+
- 	for (i = 0; i < ARRAY_SIZE(gpios); i++) {
--		if (of_device_is_compatible(np, gpios[i].compatible) &&
-+		if (of_device_is_compatible(np_compat, gpios[i].compatible) &&
- 		    !strcmp(propname, gpios[i].gpio_propname)) {
--			active_high = of_property_read_bool(np,
-+			active_high = of_property_read_bool(np_propname,
- 						gpios[i].polarity_propname);
- 			of_gpio_quirk_polarity(np, active_high, flags);
- 			break;
-diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
-index 6f815818dd22..535783c43105 100644
---- a/drivers/mmc/host/atmel-mci.c
-+++ b/drivers/mmc/host/atmel-mci.c
-@@ -206,7 +206,6 @@ enum atmci_pdc_buf {
-  * @bus_width: Number of data lines wired up the slot
-  * @detect_pin: GPIO pin wired to the card detect switch
-  * @wp_pin: GPIO pin wired to the write protect sensor
-- * @detect_is_active_high: The state of the detect pin when it is active
-  * @non_removable: The slot is not removable, only detect once
-  *
-  * If a given slot is not present on the board, @bus_width should be
-@@ -222,7 +221,6 @@ struct mci_slot_pdata {
- 	unsigned int		bus_width;
- 	struct gpio_desc        *detect_pin;
- 	struct gpio_desc	*wp_pin;
--	bool			detect_is_active_high;
- 	bool			non_removable;
- };
- 
-@@ -405,7 +403,6 @@ struct atmel_mci {
-  *	available.
-  * @wp_pin: GPIO pin used for card write protect sending, or negative
-  *	if not available.
-- * @detect_is_active_high: The state of the detect pin when it is active.
-  * @detect_timer: Timer used for debouncing @detect_pin interrupts.
-  */
- struct atmel_mci_slot {
-@@ -426,7 +423,6 @@ struct atmel_mci_slot {
- 
- 	struct gpio_desc        *detect_pin;
- 	struct gpio_desc	*wp_pin;
--	bool			detect_is_active_high;
- 
- 	struct timer_list	detect_timer;
- };
-@@ -644,6 +640,7 @@ atmci_of_init(struct platform_device *pdev)
- 	struct device_node *cnp;
- 	struct mci_platform_data *pdata;
- 	u32 slot_id;
-+	int err;
- 
- 	if (!np) {
- 		dev_err(&pdev->dev, "device node not found\n");
-@@ -675,11 +672,12 @@ atmci_of_init(struct platform_device *pdev)
- 		pdata->slot[slot_id].detect_pin =
- 			devm_fwnode_gpiod_get(&pdev->dev, of_fwnode_handle(cnp),
- 					      "cd", GPIOD_IN, "cd-gpios");
--		if (IS_ERR(pdata->slot[slot_id].detect_pin))
-+		err = PTR_ERR_OR_ZERO(pdata->slot[slot_id].detect_pin);
-+		if (err) {
-+			if (err != -ENOENT)
-+				return ERR_PTR(err);
- 			pdata->slot[slot_id].detect_pin = NULL;
--
--		pdata->slot[slot_id].detect_is_active_high =
--			of_property_read_bool(cnp, "cd-inverted");
-+		}
- 
- 		pdata->slot[slot_id].non_removable =
- 			of_property_read_bool(cnp, "non-removable");
-@@ -687,8 +685,12 @@ atmci_of_init(struct platform_device *pdev)
- 		pdata->slot[slot_id].wp_pin =
- 			devm_fwnode_gpiod_get(&pdev->dev, of_fwnode_handle(cnp),
- 					      "wp", GPIOD_IN, "wp-gpios");
--		if (IS_ERR(pdata->slot[slot_id].wp_pin))
-+		err = PTR_ERR_OR_ZERO(pdata->slot[slot_id].wp_pin);
-+		if (err) {
-+			if (err != -ENOENT)
-+				return ERR_PTR(err);
- 			pdata->slot[slot_id].wp_pin = NULL;
-+		}
- 	}
- 
- 	return pdata;
-@@ -1566,8 +1568,7 @@ static int atmci_get_cd(struct mmc_host *mmc)
- 	struct atmel_mci_slot	*slot = mmc_priv(mmc);
- 
- 	if (slot->detect_pin) {
--		present = !(gpiod_get_raw_value(slot->detect_pin) ^
--			    slot->detect_is_active_high);
-+		present = gpiod_get_value_cansleep(slot->detect_pin);
- 		dev_dbg(&mmc->class_dev, "card is %spresent\n",
- 				present ? "" : "not ");
- 	}
-@@ -1680,8 +1681,7 @@ static void atmci_detect_change(struct timer_list *t)
- 		return;
- 
- 	enable_irq(gpiod_to_irq(slot->detect_pin));
--	present = !(gpiod_get_raw_value(slot->detect_pin) ^
--		    slot->detect_is_active_high);
-+	present = gpiod_get_value_cansleep(slot->detect_pin);
- 	present_old = test_bit(ATMCI_CARD_PRESENT, &slot->flags);
- 
- 	dev_vdbg(&slot->mmc->class_dev, "detect change: %d (was %d)\n",
-@@ -2272,7 +2272,6 @@ static int atmci_init_slot(struct atmel_mci *host,
- 	slot->host = host;
- 	slot->detect_pin = slot_data->detect_pin;
- 	slot->wp_pin = slot_data->wp_pin;
--	slot->detect_is_active_high = slot_data->detect_is_active_high;
- 	slot->sdc_reg = sdc_reg;
- 	slot->sdio_irq = sdio_irq;
- 
-@@ -2280,7 +2279,7 @@ static int atmci_init_slot(struct atmel_mci *host,
- 	        "slot[%u]: bus_width=%u, detect_pin=%d, "
- 		"detect_is_active_high=%s, wp_pin=%d\n",
- 		id, slot_data->bus_width, desc_to_gpio(slot_data->detect_pin),
--		slot_data->detect_is_active_high ? "true" : "false",
-+		!gpiod_is_active_low(slot_data->detect_pin) ? "true" : "false",
- 		desc_to_gpio(slot_data->wp_pin));
- 
- 	mmc->ops = &atmci_ops;
-@@ -2318,10 +2317,8 @@ static int atmci_init_slot(struct atmel_mci *host,
- 	/* Assume card is present initially */
- 	set_bit(ATMCI_CARD_PRESENT, &slot->flags);
- 	if (slot->detect_pin) {
--		if (gpiod_get_raw_value(slot->detect_pin) ^
--		    slot->detect_is_active_high) {
-+		if (!gpiod_get_value_cansleep(slot->detect_pin))
- 			clear_bit(ATMCI_CARD_PRESENT, &slot->flags);
--		}
- 	} else {
- 		dev_dbg(&mmc->class_dev, "no detect pin available\n");
- 	}
--- 
-2.25.1
+> +int mmc_send_status(struct mmc_card *card, u32 *status);
 
+We need to drop the corresponding declaration in drivers/mmc/core/mmc_ops.h
+
+>  int mmc_send_tuning(struct mmc_host *host, u32 opcode, int *cmd_error);
+>  int mmc_send_abort_tuning(struct mmc_host *host, u32 opcode);
+>  int mmc_get_ext_csd(struct mmc_card *card, u8 **new_ext_csd);
+> --
+> 2.17.1
+>
+
+Other than the small thing above, this looks good to me!
+
+Although, no need to resend, I will amend the patch when applying.
+
+Kind regards
+Uffe
