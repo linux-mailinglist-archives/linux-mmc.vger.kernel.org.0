@@ -2,126 +2,319 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9393D78D800
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Aug 2023 20:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A0978D80A
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Aug 2023 20:29:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229998AbjH3S3M (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Aug 2023 14:29:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45684 "EHLO
+        id S230255AbjH3S3S (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Aug 2023 14:29:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242981AbjH3KAQ (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Aug 2023 06:00:16 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAC1B1BE
-        for <linux-mmc@vger.kernel.org>; Wed, 30 Aug 2023 03:00:11 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-500cefc3644so138969e87.3
-        for <linux-mmc@vger.kernel.org>; Wed, 30 Aug 2023 03:00:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693389610; x=1693994410; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3xTYLzShSJrMNa33kOQFBwQyF7CcLinjfIsI73sj6mA=;
-        b=NhZVFfnZrY4lUb7uBX51m41Wvv2oL8ZuKoDEcP347ewa3qI6U3GfIJLNtwr1jVDnFF
-         E8lUHrzatV/ve4JM0dKcLqAecCAs5+WAqyHS2B7NvhP9SiFZ7NcAlhvLKCwR3dPK4peX
-         TqkxTDhY4a4C8qfmbfhvHnmBjmEqsTbwHicf/TKHh4gVQcBvV8us5V4Japo+tMnEembw
-         VA2Pqny78q90kCaoC5xTx1Ia3W3ZfN2VAUcINRg1t3c60ailf1WO6eH0c2MyAYRThFIG
-         U6juh+WNxwBT+Cdt4v521GRG9jB3fiVvoiT6YQchcO1Hd+1hD/KtZ0b1oEY6xPboByFA
-         7HPw==
+        with ESMTP id S243241AbjH3K2c (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Aug 2023 06:28:32 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA50C0
+        for <linux-mmc@vger.kernel.org>; Wed, 30 Aug 2023 03:28:27 -0700 (PDT)
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 4C10C3FAD3
+        for <linux-mmc@vger.kernel.org>; Wed, 30 Aug 2023 10:28:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1693391306;
+        bh=0x71Jiks4crbLYMF8B7w24UzcWpOCQauPfqR/sxZV0g=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=O2moxJlEmlGdpqFC9Dg3y88GoKiJJYZgseQfhsQs+bR34UCx2sqB4Uv+bV3KurGXG
+         5EED7y/QJbsEF15ym09VC4HxPDsfeLygZU/9tgqqKqf3JGauaUlNDR6+DAmI0elmcB
+         ZCVAgHTT4B1sfY00vdwuJUj2k6ZCqTDteUZjAGHMWlxxjWwCyA2/9+qjkA8f6HqMQl
+         qKsSxfMrK33V8j5aA1idlgGz3DFyqYMRve/TOyYsu6pFhJ8cQ4TcDWr/8rJbIOv3Ot
+         O9agkUZYpGCeklJ62RaKeA3QvWLLZBXTYc49vPVnF8EmizNvcghQy8DadTY8aw3GiG
+         UcPjomT+lRCag==
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-64a0166deb5so66844266d6.3
+        for <linux-mmc@vger.kernel.org>; Wed, 30 Aug 2023 03:28:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693389610; x=1693994410;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3xTYLzShSJrMNa33kOQFBwQyF7CcLinjfIsI73sj6mA=;
-        b=CM4xRZYHAtJJci4SVF/+yxRFaHMivj7wLCwdfRen+ViBGqGFyweZayyfmPpRo5PQaL
-         pS4TBE4aufl6SIQPlpdiArFq+NQoQenUV9qokBc8N+rAMRAtZZpm7yPDAVt6kHHdEWts
-         W6VgXDBvT48lady/GQsbPAiyXb2I8ZklXyDEfOQ5XjLiZj6HOveOzQiBPkfNco+KGTXe
-         bDth+o0vcIdPQu903GddNMTl3nFRhZoq/w3Usro5kxxuKk7ckgwzxYlNQjjQGqTHtjyI
-         djCDtJ7orVxI4Jo8xqprUquvQV9LJ724lHAoNhj1lTS0qQaWMy/gzlc5+WCADtXFqcY8
-         fCGw==
-X-Gm-Message-State: AOJu0Ywj+fXjkP8kggiFgilah1s1qb7W7xcjtK57AdEwFzy7a9mkCbl6
-        IgraeL0aFzZf6jRsL54yGh1gig==
-X-Google-Smtp-Source: AGHT+IHCaFP31zkAGHF02AmzezLz996huf1FhuxFlQEm+QFgPfp9jCQOyRrIpXdq64Q6sPBPvdP6GQ==
-X-Received: by 2002:a05:6512:2088:b0:500:7881:7b2f with SMTP id t8-20020a056512208800b0050078817b2fmr1125481lfr.54.1693389609676;
-        Wed, 30 Aug 2023 03:00:09 -0700 (PDT)
-Received: from [192.168.86.24] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id dk24-20020a170906f0d800b0099ddc81903asm7030466ejb.221.2023.08.30.03.00.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Aug 2023 03:00:08 -0700 (PDT)
-Message-ID: <2230571a-114c-0d03-d02a-fa08c2a8d483@linaro.org>
-Date:   Wed, 30 Aug 2023 11:00:07 +0100
+        d=1e100.net; s=20221208; t=1693391305; x=1693996105;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0x71Jiks4crbLYMF8B7w24UzcWpOCQauPfqR/sxZV0g=;
+        b=NTCC+f/sCy9RyjMIaaShmk6mrfptVAOx17G+rx+5RNspLKGf0TNsF9OxzAfakIiucH
+         Lis5Ra5YwVrFnYIN5u6N7Ifb0PgPyu0AxvWR8xG13eBZeNO0iBU+35eGZnJPPYdlj6Am
+         bfns4PzUGAUkWbkzV+vHdrI3saiDCLT3A08obUh8viKQJsEYVLyiAXGRJTNR5Gn9E+VP
+         u0+7hK1v0jm3GPnWLR25JCwIL772JX5Yl4PXSEV+HSp/QlD0SKGrzPRI+IX0k8mcohyF
+         uyOIxSDHPQup6RTFOKLi3co2sWXdi/SXoSv10q0g4cfmrl62HjoiaH6799LrweoosB4L
+         OH3Q==
+X-Gm-Message-State: AOJu0Yyu48Af5tYSXeFfm+EoNBrZDN7JdwW6DW73Zr4Oo0YRcaeE5nmz
+        aagJz7FRS+2iP4FNm3AQu+QD3XVpbK587kKlSWRcYqFRaMyPRIGeguEYs0AJi8aZxbpVtPJyOpH
+        eR0IMQF6uqIuqM2ma4hoKt/pFgRq5nEZyX+s5GAmufnHQWsmRiuqlTg==
+X-Received: by 2002:ac8:4e89:0:b0:403:e958:b456 with SMTP id 9-20020ac84e89000000b00403e958b456mr2057146qtp.19.1693391305194;
+        Wed, 30 Aug 2023 03:28:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUywKtZ9QBvF7SXkZ/+FtfBV0akTc4+5p56GkjMS3vEHZ1SMFeY9wEQ5cijc1CJI92RxPk+2KWSd+Z7E9kvN8=
+X-Received: by 2002:ac8:4e89:0:b0:403:e958:b456 with SMTP id
+ 9-20020ac84e89000000b00403e958b456mr2057124qtp.19.1693391304908; Wed, 30 Aug
+ 2023 03:28:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 00/10] Hardware wrapped key support for qcom ice and
- ufs
-Content-Language: en-US
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Gaurav Kashyap <quic_gaurkash@quicinc.com>,
-        linux-scsi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, omprsing@qti.qualcomm.com,
-        quic_psodagud@quicinc.com, avmenon@quicinc.com,
-        abel.vesa@linaro.org, quic_spuppala@quicinc.com
-References: <20230719170423.220033-1-quic_gaurkash@quicinc.com>
- <f4b5512b-9922-1511-fc22-f14d25e2426a@linaro.org>
- <20230825210727.GA1366@sol.localdomain>
- <f63ce281-1434-f86f-3f4e-e1958a684bbd@linaro.org>
- <20230829181223.GA2066264@google.com>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <20230829181223.GA2066264@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20230830031846.127957-1-william.qiu@starfivetech.com> <20230830031846.127957-3-william.qiu@starfivetech.com>
+In-Reply-To: <20230830031846.127957-3-william.qiu@starfivetech.com>
+From:   Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Date:   Wed, 30 Aug 2023 12:28:08 +0200
+Message-ID: <CAJM55Z9CL8DN+uEhRoR7ZUuwtVudTUzA1+Q4Hn_rukCfT+SXeQ@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] mmc: starfive: Change tuning implementation
+To:     William Qiu <william.qiu@starfivetech.com>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-mmc@vger.kernel.org,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Hi Eric,
+On Wed, 30 Aug 2023 at 05:21, William Qiu <william.qiu@starfivetech.com> wrote:
+>
+> Before, we used syscon to achieve tuning, but the actual measurement
+> showed little effect, so the tuning implementation was modified here,
+> and it was realized by reading and writing the UHS_REG_EXT register.
+>
+> Signed-off-by: William Qiu <william.qiu@starfivetech.com>
+> ---
+>  drivers/mmc/host/dw_mmc-starfive.c | 131 ++++++++---------------------
+>  1 file changed, 37 insertions(+), 94 deletions(-)
+>
+> diff --git a/drivers/mmc/host/dw_mmc-starfive.c b/drivers/mmc/host/dw_mmc-starfive.c
+> index fd05a648a8bb..593c995e49f5 100644
+> --- a/drivers/mmc/host/dw_mmc-starfive.c
+> +++ b/drivers/mmc/host/dw_mmc-starfive.c
+> @@ -20,14 +20,6 @@
+>  #define ALL_INT_CLR            0x1ffff
+>  #define MAX_DELAY_CHAIN                32
+>
+> -struct starfive_priv {
+> -       struct device *dev;
+> -       struct regmap *reg_syscon;
+> -       u32 syscon_offset;
+> -       u32 syscon_shift;
+> -       u32 syscon_mask;
+> -};
+> -
+>  static void dw_mci_starfive_set_ios(struct dw_mci *host, struct mmc_ios *ios)
+>  {
+>         int ret;
+> @@ -44,117 +36,68 @@ static void dw_mci_starfive_set_ios(struct dw_mci *host, struct mmc_ios *ios)
+>         }
+>  }
+>
+> +static void dw_mci_starfive_hs_set_bits(struct dw_mci *host, u32 smpl_phase)
 
-On 29/08/2023 19:12, Eric Biggers wrote:
-> 
->>> They're also being documented by Qualcomm.  So, as this patchset does, they can
->>> be used by Linux in the implementation of new ioctls which provide a vendor
->>> independent interface to HW-wrapped key generation, import, and conversion.
->>>
->>> I think the new approach is the only one that is viable outside the Android
->>> context.  As such, I don't think anyone has any plan to upstream support for
->>> HW-wrapped keys for older Qualcomm SoCs that lack the new interface.
->> AFAIU, There are other downstream Qualcomm LE platforms that use wrapped key
->> support with the older interface.
->> What happens to them whey then upgrade the kernel?
->>
->> Does TA interface still continue to work with the changes that went into
->> common drivers (ufs/sd)?
-> This is a strange line of questioning for upstream review, as this feature does
-> not exist upstream.  This is the first time it will be supported by upstream
-> Linux, ever.  Adding support for this feature does not break anything.
-These are not unusual questions, what am trying to understand here is 
-below questions for better context, big picture and review/test. At the 
-end of the day we all want to get these features available in upstream.
+"set bits" is very generic. Maybe dw_mci_starfive_set_sample_phase()
+or something more descriptive.
 
-1. How backward compatibility of this wrapped key support. I guess the 
-answer is NO.
+> +{
+> +       /* change driver phase and sample phase */
+> +       u32 mask = 0x1f;
+> +       u32 reg_value;
+> +
+> +       reg_value = mci_readl(host, UHS_REG_EXT);
+> +
+> +       /* In UHS_REG_EXT, only 5 bits valid in DRV_PHASE and SMPL_PHASE */
+> +       reg_value &= ~(mask << 16);
+> +       reg_value |= (smpl_phase << 16);
+> +       mci_writel(host, UHS_REG_EXT, reg_value);
+> +
+> +       /* We should delay 1ms wait for timing setting finished. */
+> +       mdelay(1);
+> +}
 
-2. secondly reasons behind this change. Am still not really convinced 
-with the current technical reasoning to shift from TA based approach to 
-this. But I guess this is all done to dump the closed source userspace 
-thingy. Am hoping that this can be made available to other older SoCs at 
-some point in time.
+This implementation could use some cleanup. Eg. why do we need the
+mask variable?
+How about something like this:
 
-3. We are adding these apis/callbacks in common code without doing any 
-compatible or SoC checks. Is this going to be a issue if someone tries 
-fscrypt?
+#define STARFIVE_SMPL_PHASE     GENMASK(20, 16)
 
---srini
+u32 reg_value = mci_read(host, UHS_REG_EXT);
+reg_value &= ~STARFIVE_SMPL_PHASE;
+reg_value |= FIELD_PREP(STARFIVE_SMPL_PHASE, smpl_phase);
+mci_writel(host, UHS_REG_EXT, reg_value);
+...
 
-> 
-> Downstream users who implemented a less well designed version of this feature
-> can continue to use their existing code.
+>  static int dw_mci_starfive_execute_tuning(struct dw_mci_slot *slot,
+>                                              u32 opcode)
+>  {
+>         static const int grade  = MAX_DELAY_CHAIN;
+>         struct dw_mci *host = slot->host;
+> -       struct starfive_priv *priv = host->priv;
+> -       int rise_point = -1, fall_point = -1;
+> -       int err, prev_err = 0;
+> +       int err = -1;
+
+This variable is always set later so doesn't need initialization and
+is better called 'ret' as it's the return value of the function, and
+not necessarily an error.
+
+> +       int smpl_phase, smpl_raise = -1, smpl_fall = -1;
+>         int i;
+> -       bool found = 0;
+> -       u32 regval;
+> -
+> -       /*
+> -        * Use grade as the max delay chain, and use the rise_point and
+> -        * fall_point to ensure the best sampling point of a data input
+> -        * signals.
+> -        */
+> +
+>         for (i = 0; i < grade; i++) {
+> -               regval = i << priv->syscon_shift;
+> -               err = regmap_update_bits(priv->reg_syscon, priv->syscon_offset,
+> -                                               priv->syscon_mask, regval);
+> -               if (err)
+> -                       return err;
+> +               smpl_phase = i;
+
+This can now be written
+
+for (sampl_phase = 0; sampl_phase < grade; sampl_phase++)
+
+> +               dw_mci_starfive_hs_set_bits(host, smpl_phase);
+>                 mci_writel(host, RINTSTS, ALL_INT_CLR);
+>
+>                 err = mmc_send_tuning(slot->mmc, opcode, NULL);
+> -               if (!err)
+> -                       found = 1;
+> -
+> -               if (i > 0) {
+> -                       if (err && !prev_err)
+> -                               fall_point = i - 1;
+> -                       if (!err && prev_err)
+> -                               rise_point = i;
+> -               }
+>
+> -               if (rise_point != -1 && fall_point != -1)
+> -                       goto tuning_out;
+> -
+> -               prev_err = err;
+> -               err = 0;
+> -       }
+> -
+> -tuning_out:
+> -       if (found) {
+> -               if (rise_point == -1)
+> -                       rise_point = 0;
+> -               if (fall_point == -1)
+> -                       fall_point = grade - 1;
+> -               if (fall_point < rise_point) {
+> -                       if ((rise_point + fall_point) >
+> -                           (grade - 1))
+> -                               i = fall_point / 2;
+> -                       else
+> -                               i = (rise_point + grade - 1) / 2;
+> -               } else {
+> -                       i = (rise_point + fall_point) / 2;
+> +               if (!err && smpl_raise < 0) {
+> +                       smpl_raise = i;
+> +               } else if (err && smpl_raise >= 0) {
+> +                       smpl_fall = i - 1;
+> +                       break;
+>                 }
+> +       }
+>
+> -               regval = i << priv->syscon_shift;
+> -               err = regmap_update_bits(priv->reg_syscon, priv->syscon_offset,
+> -                                               priv->syscon_mask, regval);
+> -               if (err)
+> -                       return err;
+> -               mci_writel(host, RINTSTS, ALL_INT_CLR);
+> +       if (i >= grade && smpl_raise >= 0)
+> +               smpl_fall = grade - 1;
+>
+> -               dev_info(host->dev, "Found valid delay chain! use it [delay=%d]\n", i);
+> -       } else {
+> +       if (smpl_raise < 0) {
+>                 dev_err(host->dev, "No valid delay chain! use default\n");
+> +               dw_mci_starfive_hs_set_bits(host, 0);
+>                 err = -EINVAL;
+> +       } else {
+> +               smpl_phase = (smpl_raise + smpl_fall) / 2;
+> +               dw_mci_starfive_hs_set_bits(host, smpl_phase);
+> +               dev_dbg(host->dev, "Found valid delay chain! use it [delay=%d]\n", smpl_phase);
+> +               err = 0;
+>         }
+
+Maybe something like:
+
+  if (smpl_raise < 0) {
+    smpl_phase = 0;
+    dev_err(host->dev, "No valid delay chain, using default\n");
+    ret = -EINVAL;
+    goto out;
+  }
+
+  smpl_phase = (smpl_raise + smpl_fall) / 2;
+  dev_dbg(...);
+  ret = 0;
+
+out:
+  dw_mci_starfive_hs_set_bits(host, smpl_phase);
+  mci_writel(host, RINTSTS, ALL_INT_CLR);
+  return ret;
+>  }
+>
+> -static int dw_mci_starfive_parse_dt(struct dw_mci *host)
+> -{
+> -       struct of_phandle_args args;
+> -       struct starfive_priv *priv;
+> -       int ret;
+> -
+> -       priv = devm_kzalloc(host->dev, sizeof(*priv), GFP_KERNEL);
+> -       if (!priv)
+> -               return -ENOMEM;
+> -
+> -       ret = of_parse_phandle_with_fixed_args(host->dev->of_node,
+> -                                               "starfive,sysreg", 3, 0, &args);
+> -       if (ret) {
+> -               dev_err(host->dev, "Failed to parse starfive,sysreg\n");
+> -               return -EINVAL;
+> -       }
+> -
+> -       priv->reg_syscon = syscon_node_to_regmap(args.np);
+> -       of_node_put(args.np);
+> -       if (IS_ERR(priv->reg_syscon))
+> -               return PTR_ERR(priv->reg_syscon);
+> -
+> -       priv->syscon_offset = args.args[0];
+> -       priv->syscon_shift  = args.args[1];
+> -       priv->syscon_mask   = args.args[2];
+> -
+> -       host->priv = priv;
+> -
+> -       return 0;
+> -}
+> -
+>  static const struct dw_mci_drv_data starfive_data = {
+>         .common_caps            = MMC_CAP_CMD23,
+>         .set_ios                = dw_mci_starfive_set_ios,
+> -       .parse_dt               = dw_mci_starfive_parse_dt,
+>         .execute_tuning         = dw_mci_starfive_execute_tuning,
+>  };
+>
+> --
+> 2.34.1
+>
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
