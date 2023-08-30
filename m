@@ -2,129 +2,116 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87DF078D806
-	for <lists+linux-mmc@lfdr.de>; Wed, 30 Aug 2023 20:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5C6E78E0DB
+	for <lists+linux-mmc@lfdr.de>; Wed, 30 Aug 2023 22:43:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbjH3S3P (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Wed, 30 Aug 2023 14:29:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39850 "EHLO
+        id S240182AbjH3Ung (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Wed, 30 Aug 2023 16:43:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343736AbjH3QoI (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Aug 2023 12:44:08 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6D431A4
-        for <linux-mmc@vger.kernel.org>; Wed, 30 Aug 2023 09:44:04 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-9a2185bd83cso764473466b.0
-        for <linux-mmc@vger.kernel.org>; Wed, 30 Aug 2023 09:44:04 -0700 (PDT)
+        with ESMTP id S240173AbjH3UnX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Wed, 30 Aug 2023 16:43:23 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 693763A9C
+        for <linux-mmc@vger.kernel.org>; Wed, 30 Aug 2023 13:29:27 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-26fc9e49859so111102a91.0
+        for <linux-mmc@vger.kernel.org>; Wed, 30 Aug 2023 13:29:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693413843; x=1694018643; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mJJlek7R83oK8d/2pVvV6qgerAYb4e+pH9LJHZNOAZM=;
-        b=D9KzcvWHxGTCcuSHpVJU3DTCfH/So/HRBvz8ql4UyMhXFvkxcBAbFaDerquf25aaTQ
-         bWmZSx9Ounbv/EBI1f2SIEOBj3ykLJRGkz0YKY/Rf4W7du3jt7hqN0MQP/r0fTu7XP8a
-         0eLne5If7BrstuWwej6YXBYm8SFvQzC0BmncZAn+LaPrdX8sjIZ/JaVS1EzFgEx3Jhf7
-         lLYTlxXRoKk8o+hE32qUwDMp5koxynXUrBer6MlEEKt1yGMpxpRLfItkOkURzokOuePu
-         KPMNz8o5DklmXvehkTcqWoySOqlZCH8Nzuho1/NAwfWEkbqhtyHCZUO5pY56+4FuIlfr
-         w2GQ==
+        d=chromium.org; s=google; t=1693427277; x=1694032077; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6TmLk0fQBF61eW6D8ZlImNTOGih/aAgkyRTy6ROPKDY=;
+        b=FQggWjyYeGIQv1Du4kp6n5qybxIkzpKMNVpKooum+YvitKfxcO9KetjPSe5kWWTpP1
+         hAEYYPop5P/0Dgic3nkLeCrWjAzQ6+lre3pzf35ahzGvKU0ZgObfOGgg5bGH5K8CQgug
+         4NmfcMp/M6jJ7WPHlck7Sw6qYiOFXs+CsPfwM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693413843; x=1694018643;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mJJlek7R83oK8d/2pVvV6qgerAYb4e+pH9LJHZNOAZM=;
-        b=iks330rURyZ4SPUyNU4E31q/5jZ9ImEwGQjA986RSHpQFWp684E1VftdgFk6I/dz0h
-         kFTjgMqx3+z0VYLoqkOGQR+zuXJbJm3Y6aJP62IRF25fH8kT6Tk2h8Z4izstUCi5ypBE
-         z3RxudzTiv57oq6Dj+1TUbwxK0nW8LBqQ5Dn2svpfxaX2UWVjA8n5JAD5Qda1mFBptTQ
-         XZ/sWk7UbD0D4DaYbs6msC4HwC7u5dMSCjmUf+IxcplKbClecxKV2POoAgbS+UkioKsZ
-         3/toDFYUJmiAnCJr07aqyBr+m8aBc/EEZaTgYVOqfwstO5sZULskIEoFt8FvUB1cR/r9
-         N0ww==
-X-Gm-Message-State: AOJu0Ywl2gmas6NXVFddlojrjHi5x5c3lk5hkYu39RVMJpQ7uc4CxzWU
-        Ri9RZ2yMyqwQPsvzCsSF8PJHPQ==
-X-Google-Smtp-Source: AGHT+IEh9vHrZXzLULcxeCJyYvXSmxHauWdNpvw1Ksk5IA4QZMsBUUukL43s/mHCdq4zsxlM5OGixQ==
-X-Received: by 2002:a17:906:109a:b0:99c:75f7:19c1 with SMTP id u26-20020a170906109a00b0099c75f719c1mr2218651eju.39.1693413843373;
-        Wed, 30 Aug 2023 09:44:03 -0700 (PDT)
-Received: from [192.168.86.24] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id rn14-20020a170906d92e00b00992afee724bsm7358857ejb.76.2023.08.30.09.44.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Aug 2023 09:44:02 -0700 (PDT)
-Message-ID: <18db547c-45b3-4d2a-cd98-d1d1a01270d3@linaro.org>
-Date:   Wed, 30 Aug 2023 17:44:01 +0100
+        d=1e100.net; s=20221208; t=1693427277; x=1694032077;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6TmLk0fQBF61eW6D8ZlImNTOGih/aAgkyRTy6ROPKDY=;
+        b=WA6HMXMEHrfCGKdloO6L5idjmtizOJJBo4OECwIFbXWipb+VQkoGCUFR/3L8wXZYPR
+         dSeoefbq2cYbriAbPdSyTsxMsrP5EPX0XVuH5o6QhEtGbl4J4rNzJ9ELM18QhrggvXFz
+         YSNIXtaKekQH3HJDecbyQ97Bwwg41k1C9c24HXj9t+kywtwvhLyhSIUkRJQFyVns6hp4
+         3zqJO9gjt19HbrkuHX4Jl2NObYfHPMwo6bJu0CDUIy9MwE9CAOmUp3NRDGC6T1aTP34v
+         8Wqn8d/s79xpK+xWmOGRJaATh7MMBNc7mV3TBRQ4YJQiqa+E/D8b5+BRdROnKzz93rys
+         42hA==
+X-Gm-Message-State: AOJu0YxXmd06mwFqEwwNEif3rBmtqb/fJ23NbRLi3fLucB/mFgO4JuyC
+        4aAlfRK4wSQitVK8MrrsVKWVAoEQqyVtPwcxsKn+Z9pZj1ReO8c/29A=
+X-Google-Smtp-Source: AGHT+IEjRi05Wg22Qjjn/hflcI7CQBa5XMdC0mt0jO+fQBSO3iMmADiYtjmP70bxRwmPUSH03EeDMSyRdegww4AwyXw=
+X-Received: by 2002:a4a:3416:0:b0:566:ec2f:36d0 with SMTP id
+ b22-20020a4a3416000000b00566ec2f36d0mr3163656ooa.2.1693426449335; Wed, 30 Aug
+ 2023 13:14:09 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 00/10] Hardware wrapped key support for qcom ice and
- ufs
-Content-Language: en-US
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Gaurav Kashyap <quic_gaurkash@quicinc.com>,
-        linux-scsi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, omprsing@qti.qualcomm.com,
-        quic_psodagud@quicinc.com, avmenon@quicinc.com,
-        abel.vesa@linaro.org, quic_spuppala@quicinc.com
-References: <20230719170423.220033-1-quic_gaurkash@quicinc.com>
- <f4b5512b-9922-1511-fc22-f14d25e2426a@linaro.org>
- <20230825210727.GA1366@sol.localdomain>
- <f63ce281-1434-f86f-3f4e-e1958a684bbd@linaro.org>
- <20230829181223.GA2066264@google.com>
- <2230571a-114c-0d03-d02a-fa08c2a8d483@linaro.org>
- <20230830161215.GA893@sol.localdomain>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <20230830161215.GA893@sol.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+References: <391c4270-637a-2afb-210d-6b6dfef01efa@intel.com>
+ <20230828100313.3051403-1-benchuanggli@gmail.com> <CAG-rBig+koxDf3TuC-0p=tcBY_2WM1sPCvRDtjRmR7AnikrN-A@mail.gmail.com>
+ <CACT4zj-BaX4tHji8B8gS5jiKkd-2BcwfzHM4fS-OUn0f8DSxcw@mail.gmail.com>
+ <CAG-rBihBkTeZR6yMSF+5zg-h1U1pxGuN-nv=Y7DXLvxV435hDw@mail.gmail.com> <CACT4zj_84eCYOq56zdqaydaEGqyqBrXDrsTkDRyCntvVF78-0A@mail.gmail.com>
+In-Reply-To: <CACT4zj_84eCYOq56zdqaydaEGqyqBrXDrsTkDRyCntvVF78-0A@mail.gmail.com>
+From:   Sven van Ashbrook <svenva@chromium.org>
+Date:   Wed, 30 Aug 2023 16:13:58 -0400
+Message-ID: <CAG-rBigLPfJ6u5LQZ4FwMMm_h3b5fQiRYFkwNjFHm4cDCN1VRw@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
+ SoCs can suspend
+To:     Ben Chuang <benchuanggli@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        skardach@google.com, adrian.hunter@intel.com,
+        SeanHY.chen@genesyslogic.com.tw, ben.chuang@genesyslogic.com.tw,
+        greg.tu@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
+        jasonlai.genesyslogic@gmail.com, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, reniuschengl@gmail.com,
+        stable@vger.kernel.org, ulf.hansson@linaro.org,
+        victor.shih@genesyslogic.com.tw, victorshihgli@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+On Tue, Aug 29, 2023 at 10:27=E2=80=AFPM Ben Chuang <benchuanggli@gmail.com=
+> wrote:
+>
+> >
+> > - if /sys/devices/.../power/control is "on", then:
+> >   <snip>
+> >
+> In this cas, after gl9763e_resume(), it is LPM disabled.
+> Is there no chance for gl9763e to enter L1.x again when the system is idl=
+e?
+>
 
+AFAIK the only way to disable runtime_pm is to write:
+  $ echo on > /sys/devices/.../power/control
+where
+  $ echo auto > /sys/devices/.../power/control
+      means: runtime_pm is actively managing the device, device can be "act=
+ive"
+      or "suspended".
+  $ echo on > /sys/devices/.../power/control
+      means: runtime_pm is not managing the device, device is "active" only=
+.
 
-On 30/08/2023 17:12, Eric Biggers wrote:
-> On Wed, Aug 30, 2023 at 11:00:07AM +0100, Srinivas Kandagatla wrote:
->>
->> 3. We are adding these apis/callbacks in common code without doing any
->> compatible or SoC checks. Is this going to be a issue if someone tries
->> fscrypt?
-> 
-> ufs-qcom only declares support for wrapped keys if it's supported.  See patch 5
-> of this series:
-> 
-> +	if (qcom_ice_hwkm_supported(host->ice))
-> +		hba->quirks |= UFSHCD_QUIRK_USES_WRAPPED_CRYPTO_KEYS;
-> 
-> That in turn uses:
-> 
-> +bool qcom_ice_hwkm_supported(struct qcom_ice *ice)
-> +{
-> +	return (ice->hwkm_version > 0);
-> +}
-> +EXPORT_SYMBOL_GPL(qcom_ice_hwkm_supported);
-> 
-> Which in turn comes from the ICE version being >= 3.2.  It does seem a bit
-> suspicious; it probably should check for both the ICE version and the
-> availability of QCOM_SCM_ES_GENERATE_ICE_KEY, QCOM_SCM_ES_PREPARE_ICE_KEY, and
-> QCOM_SCM_ES_IMPORT_ICE_KEY.  Regardless, it sounds like you want it to be
-> determined by something set in the device tree instead?  I don't think it's been
-> demonstrated that that's necessary.  If we can detect the hardware capabilities
-> dynamically, we should do that, right?
+In the "auto" case, we know what should happen: LPM negotiation is enabled =
+when
+idle, disabled when active.
 
-I don't mind either way.
+What should be the LPM negotiation state in the "on" case? We have to
+make a choice:
+a) LPM negotiation disabled: normal performance, high power consumption, OR
+b) LPM negotiation  enabled: low    performance, low  power consumption
 
-It would be perfect if we can dynamically query the TZ version to 
-determine these capabilities.
+If userspace disables our device's runtime_pm by writing "on", it expects t=
+he
+device to be always-on. It should then expect a higher power consumption.
+It should then also expect a performance that is not-worse than the "auto" =
+case.
 
+So my suggestion would be to use (a), which is what this patch does.
 
-If not we are left with some way to derive that information either via 
-DT or other means.
-
---srini
-> 
-> - Eric
+Appreciate your thoughts.
