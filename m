@@ -2,121 +2,70 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D460B791A3D
-	for <lists+linux-mmc@lfdr.de>; Mon,  4 Sep 2023 17:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21B047926DB
+	for <lists+linux-mmc@lfdr.de>; Tue,  5 Sep 2023 18:33:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243497AbjIDPFX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 4 Sep 2023 11:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55606 "EHLO
+        id S232925AbjIEQUs (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 5 Sep 2023 12:20:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236448AbjIDPFT (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 4 Sep 2023 11:05:19 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B1AE1B7;
-        Mon,  4 Sep 2023 08:05:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id D7025CE0EE7;
-        Mon,  4 Sep 2023 15:05:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A43C433C7;
-        Mon,  4 Sep 2023 15:05:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693839909;
-        bh=ljgv0MpAqVctGjtWZkElSITFiR5RbtuGf5naRqQkjmM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nAV2mP/F3umwbP/x9qYaYUwoCW4umGg9SjIkHMlYrX3gj1pusAzsFssWINlJbwWrl
-         +16uJGWL7QhZzx1rQADqchCCyimOAUnlTrwv/60stjJncUQCtWtgGBTcgGpcYjxPAX
-         m8/5kaXOWk/dVC9V2uxhMpN/wb/TF0Bvr/tLM6zo9trsbYnBWqObit/yKIIg9X2Cpj
-         AyfpZ2XAmtMtgmE4jhGGU2Y8MR5SxCd36KJFvcs9NXecwm8ru9GLqWo6YQDi9bwrhn
-         l1Z7YyCRlJLj3uL8B21bpAC9/kZtMSG5PvO2Mjjb35os2yk9q/w9ELLo/coCeLMlfz
-         4o5BEbobV8CJA==
-Date:   Mon, 4 Sep 2023 22:53:11 +0800
-From:   Jisheng Zhang <jszhang@kernel.org>
-To:     Drew Fustini <dfustini@baylibre.com>
-Cc:     Jiexun Wang <wangjiexun@tinylab.org>, adrian.hunter@intel.com,
-        aou@eecs.berkeley.edu, conor+dt@kernel.org, conor@kernel.org,
-        devicetree@vger.kernel.org, guoren@kernel.org,
-        jkridner@beagleboard.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, palmer@dabbelt.com,
-        paul.walmsley@sifive.com, robertcnelson@beagleboard.org,
-        robh+dt@kernel.org, ulf.hansson@linaro.org, wefu@redhat.com
-Subject: Re: [PATCH RFC v2 0/4] RISC-V: Add basic eMMC support for BeagleV
- Ahead
-Message-ID: <ZPXvV/1dbUf7g+0a@xhacker>
-References: <ZOy3v+YgZgU1NrWx@xhacker>
- <20230829015647.115757-1-wangjiexun@tinylab.org>
- <ZO4MmdNRqrye/x2b@x1>
+        with ESMTP id S1354084AbjIEJfX (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 5 Sep 2023 05:35:23 -0400
+X-Greylist: delayed 4331 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 02:35:20 PDT
+Received: from mail.equinoxrise.pl (mail.equinoxrise.pl [217.61.112.157])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0289D1A7
+        for <linux-mmc@vger.kernel.org>; Tue,  5 Sep 2023 02:35:19 -0700 (PDT)
+Received: by mail.equinoxrise.pl (Postfix, from userid 1002)
+        id E41B38378D; Mon,  4 Sep 2023 09:41:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=equinoxrise.pl;
+        s=mail; t=1693813355;
+        bh=v6OgBfK5dN7P5dQ0wCu59rOfZaiqziJeLNblJ8dOcGI=;
+        h=Date:From:To:Subject:From;
+        b=gAFBBiZEJXZLYgy52eQb5dT0Nsi2SHWKPBUcpfJ8fsMBau3ExPNwOR5XIPSGQb2Lf
+         QcFh8fMICt9mcX2fsbaczbMfjbWcQRPlmUq4SYNE9xLx83kXFuJccJUhY5uVigvrIc
+         PW8blY1UFiEWMJF3k5tnGW4T3IznSt5c8Uaom1u/O2ZNRBXqNV9cWzgcpvC3em979r
+         5Nduab1QNSrOU8o8Ynp3xLSw0Nfxb0RcQAKzqs2sCAXCKZIJfvNii00Sz3QMsInhcr
+         VU/7ofd8apz958VamsDxHDODawpA1+t9i1kA1/ZPppX5+r0rbZd2WgR124LPOPKv9n
+         28Mt9FbI4Kfkw==
+Received: by mail.equinoxrise.pl for <linux-mmc@vger.kernel.org>; Mon,  4 Sep 2023 07:40:34 GMT
+Message-ID: <20230904084500-0.1.7.qxw.0.l6tals34nr@equinoxrise.pl>
+Date:   Mon,  4 Sep 2023 07:40:34 GMT
+From:   "Mateusz Talaga" <mateusz.talaga@equinoxrise.pl>
+To:     <linux-mmc@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.equinoxrise.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZO4MmdNRqrye/x2b@x1>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Tue, Aug 29, 2023 at 08:19:53AM -0700, Drew Fustini wrote:
-> On Tue, Aug 29, 2023 at 09:56:47AM +0800, Jiexun Wang wrote:
-> > Date: Mon, 28 Aug 2023 23:05:35 +0800, Jisheng Zhang wrote:
-> > >On Mon, Aug 28, 2023 at 12:40:16PM +0800, Jiexun Wang wrote:
-> > >> Hello,
-> > >> I tested the patch on my LicheePi 4A board.
-> > >> It can successfully boot with eMMC, but when I use the eMMC more frequently - for instance:
-> > >> 
-> > >> $ while true; do /bin/dd if=/dev/zero of=bigfile bs=1024000 count=1024; done &
-> > >> 
-> > >> I encounter the following error:
-> > >> 
-> > >> sbi_trap_error: hart1: illegal instruction handler failed (error -2)
-> > >
-> > >> sbi_trap_error: hart1: mcause=0x0000000000000002 mtval=0x0000000060e2de4f
-> > >> sbi_trap_error: hart1: mepc=0x000000000001897c mstatus=0x0000000a00001820
-> > >> sbi_trap_error: hart1: ra=0x00000000000170f8 sp=0x000000000004adc8
-> > >> sbi_trap_error: hart1: gp=0xffffffff8136ea90 tp=0xffffffd900228000
-> > >> sbi_trap_error: hart1: s0=0x0000000000000000 s1=0x000000000004ae08
-> > >> sbi_trap_error: hart1: a0=0x000000003f9aa9bc a1=0x0000000000000004
-> > >> sbi_trap_error: hart1: a2=0x0000000000000000 a3=0x0000000000000000
-> > >> sbi_trap_error: hart1: a4=0x0000000000042248 a5=0x00000000000170e5
-> > >> sbi_trap_error: hart1: a6=0x0000000000000000 a7=0x0000000054494d45
-> > >> sbi_trap_error: hart1: s2=0x000000000004aee8 s3=0x0000000000000000
-> > >> sbi_trap_error: hart1: s4=0x000000000004ae08 s5=0x0000000000000000
-> > >> sbi_trap_error: hart1: s6=0xffffffff813aa240 s7=0x0000000000000080
-> > >> sbi_trap_error: hart1: s8=0xffffffff80a1b5f0 s9=0x0000000000000000
-> > >> sbi_trap_error: hart1: s10=0xffffffd9fef5d380 s11=0xffffffff81290a80
-> > >> sbi_trap_error: hart1: t0=0x0000000a00000820 t1=0x0000000000000000
-> > >> sbi_trap_error: hart1: t2=0xffffffff80c00318 t3=0x0000000000000001
-> > >> sbi_trap_error: hart1: t4=0x0000000000000330 t5=0x0000000000000001
-> > >> sbi_trap_error: hart1: t6=0x0000000000040000
-> > >> 
-> > >> My kernel version is v6.5-rc3.
-> > >> My OpenSBI version is 1.3.
-> > >> I tried to use other versions of OpenSBI, yet the problem persists. 
-> > >> Is there a possibility of any underlying bug? Your insights into this would be greatly appreciated.
-> > >
-> > >
-> > >Can you plz try below opensbi?
-> > 
-> > I tried the OpenSBI you provided and the issue didn't recur.
-> > I conducted stress test about 30 minutes and the system appears to be functioning very well.
-> > Thank you so much for helping me resolve this problem.
-> 
-> That's great!
-> 
-> Jisheng - are these the commits that fix the error?
-> 
-> d98da90a19b5 ("lib: sbi_illegal_insn: Fix FENCE.TSO emulation infinite trap loop")
-> 39d1e698c975 ("lib: sbi_illegal_insn: Add emulation for fence.tso")
-> 
+Dzie=C5=84 dobry!
 
-These two commits have been in upstream OpenSBI, so there
-must be something to be patched/fixed in the upstream OpenSBI, but I have not
-yet bisected the upstream OpenSBI to find the root cause.
-This issue is on my TODO list.
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
+
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
+
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
+
+
+Pozdrawiam
+Mateusz Talaga
