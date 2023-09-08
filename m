@@ -2,72 +2,71 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C2DC79852C
-	for <lists+linux-mmc@lfdr.de>; Fri,  8 Sep 2023 11:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A43A798541
+	for <lists+linux-mmc@lfdr.de>; Fri,  8 Sep 2023 11:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231450AbjIHJ4Z (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 8 Sep 2023 05:56:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37766 "EHLO
+        id S229526AbjIHJ56 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 8 Sep 2023 05:57:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242829AbjIHJzy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 8 Sep 2023 05:55:54 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCDE1FF0;
-        Fri,  8 Sep 2023 02:55:06 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-573ccec985dso1398728a12.2;
-        Fri, 08 Sep 2023 02:55:06 -0700 (PDT)
+        with ESMTP id S232284AbjIHJ56 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 8 Sep 2023 05:57:58 -0400
+Received: from mail-vk1-xa32.google.com (mail-vk1-xa32.google.com [IPv6:2607:f8b0:4864:20::a32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6662F1FF2;
+        Fri,  8 Sep 2023 02:57:14 -0700 (PDT)
+Received: by mail-vk1-xa32.google.com with SMTP id 71dfb90a1353d-48d0dbf4ec5so654572e0c.2;
+        Fri, 08 Sep 2023 02:57:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694166884; x=1694771684; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1694166980; x=1694771780; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j3ImsKeVTdhxdpT+a4GoerWT4GQatv0MF5s5u1wyjzE=;
-        b=YI4es/q/+XY0QMdTr8I4OR3XnOdrVSPqKk381ESeHVstCCQB9mj93CZw6PRs3qpySS
-         1yG433P7Df7JuvqSW7SKlVkW6IbJqfhfMjBrpEtfEbAmCbf00PDZrY0LBGY7nuSBwrpW
-         jT8JkGXrkKMJErF9a4dNkpnyHfd0XyrnaWSI09V2/qpxH+6sn1pol6bk5BD4XHceT3DN
-         g0XO7Ine59S4u74QOPadIkk92ZpTgXDW7kzXlTxe0aAMWDieSoEXV0VO34oN/i9XC+Dq
-         XlWNA4M077Ejsf1hS3OtdMW0TFoDcY4qCdCPhydX/Ri7rNAFAad1gnNBujqqFbEqR0hO
-         t8+A==
+        bh=J4NF0w3XAPrGaxJ5Sc/Fqz9qFVjNQRJyWxChIpfwlaU=;
+        b=ASPfybU935UHYWMWyp+C4rIayDrvGiBwEypd8yVgG9ZtyUnc6iofJuorGBEUauazyB
+         lgFe4hW7jBsZA5KlsJ9bHkWysHNPeAmPjx193/UY+CyLafCrkKYD0O8Vhj5E2ZiWNggq
+         4FSgY8I4DbKMpzN2XIAn0btnymfvoDVF9OV87oiWSPJ5u4Ic+vsWxIX+zGChiW457UKl
+         tFmvvNjVS362m49A7LdU9uZqDDx+TJgzmAC5netys4Ev0562trllIxd+QUfwnxHtm7wr
+         QyuVHPXT3n0ks193oTMJ4974Gakc1NMslcCR9mtRg1QclAYvw/Uxa03ehV5V0taJSthp
+         Nz4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694166884; x=1694771684;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1694166980; x=1694771780;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=j3ImsKeVTdhxdpT+a4GoerWT4GQatv0MF5s5u1wyjzE=;
-        b=mymHSNKUBAuNyv4IV7jXgRV1vyIZvglxi4g1Ea7WXgOkj5ldPZ6L2qUPWqDcbHKe9T
-         16HbZ/GJ3hRhhqg4UbqzEshmGHfiI+u0g0mQ2PFBnhvKSZX788l+Rb8/6dU4dKjls9vV
-         FHk7tMh578V2SLAJqn94YXAQrLaB4ablpVbXNiu0GsPO9Xjy+GGsP9GceNzs3cSk5xRl
-         TsgsXWuZrXa+/3H4I0L6PnpOEWmVy5tW4iglIaxxpOJ9V89UgaYnj9lV5FuVA+Kr1eQ5
-         +oE/DzwHYmkwdlviJuV4DQbIHyIo1azbAMC9Wsf2S7MLaTOA5SdHbFMYJE51BiS0Q+ei
-         zOmQ==
-X-Gm-Message-State: AOJu0YxMQtup7Ag3NtI/kasH4M0z4haJmATquIvtWaD/b4geRV2cRb9a
-        0SUiUUxznxSe3wL1oSOebk8ecSEth3A=
-X-Google-Smtp-Source: AGHT+IE7PyS+gi9dJBmaRVmRk8VXgxfuv96Nf5fIauy+ohqqcL6Ouj3PojoYhFmLye3x1IHB1ntAyg==
-X-Received: by 2002:a05:6a20:3d03:b0:140:3aa:e2ce with SMTP id y3-20020a056a203d0300b0014003aae2cemr2506860pzi.42.1694166883695;
-        Fri, 08 Sep 2023 02:54:43 -0700 (PDT)
-Received: from localhost.localdomain (2001-b400-e3a1-00a4-a20b-46bc-ccec-3e79.emome-ip6.hinet.net. [2001:b400:e3a1:a4:a20b:46bc:ccec:3e79])
-        by smtp.gmail.com with ESMTPSA id c9-20020a170902d48900b001b892aac5c9sm1172178plg.298.2023.09.08.02.54.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Sep 2023 02:54:43 -0700 (PDT)
+        bh=J4NF0w3XAPrGaxJ5Sc/Fqz9qFVjNQRJyWxChIpfwlaU=;
+        b=W+yfFCr6FFq/K/RTYEOsxKIpSTTF3Ap0O2XFv5kkZnh3a6rqeRFrZVcWi+DjSWBDO2
+         8+6T+HpGHY3KePof/flSfwGqWNeH+t9BHkYX0dJRB0D0c9Jd2RGwNHw4lpB0ttZgiWbm
+         AWX8l6FdYQNeZAyzGepazbgXYgMpIXqTSkqhuEb/N33MzetE4VWTW7m8GPdjascu/qDT
+         //ksKI0ugIJpaFidT81sWmIhG8lHjh9GfulNZXLORISlAh/micoeuePCgbWVm1KLgDEj
+         JPf+6QMBfn8L527FlnN0+D54POIPBWvdjB8r6QA71xBhF6/KJ5LwK2uFpjWK3quK1K5p
+         Kc0w==
+X-Gm-Message-State: AOJu0YxGzLhOt3gSL4QNj5qA0j6C2p3Gkic4wHrg8Re5C6p/Xrp2xatw
+        6FWyGc/GV/IEIVp71dkY9qA2LW7tw0tsIgqnpbs=
+X-Google-Smtp-Source: AGHT+IECe5sCdTamj/Jc8VZhQjUnqS0+/Ej8Wj6PwDHXtDwVWhYnMqTnPhujsbCs11TVyLKn5xUvzRZZOnXY7XVzLC8=
+X-Received: by 2002:a67:f9d9:0:b0:44d:4aa1:9d44 with SMTP id
+ c25-20020a67f9d9000000b0044d4aa19d44mr1776201vsq.8.1694166980526; Fri, 08 Sep
+ 2023 02:56:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230818100217.12725-1-victorshihgli@gmail.com>
+ <20230818100217.12725-21-victorshihgli@gmail.com> <e8ed5409-5a00-9478-5b91-85d54b7fb2bb@intel.com>
+In-Reply-To: <e8ed5409-5a00-9478-5b91-85d54b7fb2bb@intel.com>
 From:   Victor Shih <victorshihgli@gmail.com>
-To:     ulf.hansson@linaro.org, adrian.hunter@intel.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        benchuanggli@gmail.com, HL.Liu@genesyslogic.com.tw,
-        Greg.tu@genesyslogic.com.tw, takahiro.akashi@linaro.org,
-        dlunev@chromium.org, Victor Shih <victorshihgli@gmail.com>,
+Date:   Fri, 8 Sep 2023 17:56:08 +0800
+Message-ID: <CAK00qKAuPLL_8ja0u0OYhiXSjNW347Y1U_r0Ty9j4JdvqDqf4A@mail.gmail.com>
+Subject: Re: [PATCH V10 20/23] mmc: sdhci-uhs2: add add_host() and others to
+ set up the driver
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, benchuanggli@gmail.com,
+        HL.Liu@genesyslogic.com.tw, Greg.tu@genesyslogic.com.tw,
+        takahiro.akashi@linaro.org, dlunev@chromium.org,
         Ben Chuang <ben.chuang@genesyslogic.com.tw>,
         Victor Shih <victor.shih@genesyslogic.com.tw>
-Subject: [PATCH V11 23/23] mmc: sdhci-pci-gli: enable UHS-II mode for GL9755
-Date:   Fri,  8 Sep 2023 17:53:30 +0800
-Message-Id: <20230908095330.12075-24-victorshihgli@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230908095330.12075-1-victorshihgli@gmail.com>
-References: <20230908095330.12075-1-victorshihgli@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,323 +74,265 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+On Thu, Aug 31, 2023 at 4:35=E2=80=AFPM Adrian Hunter <adrian.hunter@intel.=
+com> wrote:
+>
+> On 18/08/23 13:02, Victor Shih wrote:
+> > From: Victor Shih <victor.shih@genesyslogic.com.tw>
+> >
+> > This is a UHS-II version of sdhci's add_host/remove_host operation.
+> > Any sdhci drivers which are capable of handling UHS-II cards must
+> > call those functions instead of the corresponding sdhci's.
+> >
+> > Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+> > Signed-off-by: AKASHI Takahiro <takahiro.akashi@linaro.org>
+> > Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+> > ---
+> >
+> > Updates in V10:
+> >  - Move some definitions of PatchV9[05/23] to PatchV10[20/23].
+> >
+> > Updates in V8:
+> >  - Change return type to void for __sdhci_uhs2_add_host_v4().
+> >  - Remove unused variables in __sdhci_uhs2_add_host_v4().
+> >
+> > Updates in V7:
+> >  - __sdhci_add_host() to instead of __sdhci_uhs2_add_host()
+> >    in sdhci_uhs2_add_host().
+> >  - Cancel export state of some functions.
+> >
+> > Updates in V6:
+> >  - Add complete_work_fn/thread_irq_fn variables in struct sdhci_host.
+> >  - Use complete_work_fn/thread_irq_fn variables in
+> >    sdhci_alloc_host() and sdhci_uhs2_add_host().
+> >  - Use sdhci_uhs2_mode() to simplify code in __sdhci_uhs2_remove_host()=
+.
+> >
+> > ---
+> >
+> >  drivers/mmc/host/sdhci-uhs2.c | 102 ++++++++++++++++++++++++++++++++++
+> >  drivers/mmc/host/sdhci-uhs2.h |   2 +
+> >  drivers/mmc/host/sdhci.c      |   7 ++-
+> >  drivers/mmc/host/sdhci.h      |   3 +
+> >  include/linux/mmc/host.h      |   1 +
+> >  5 files changed, 113 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/mmc/host/sdhci-uhs2.c b/drivers/mmc/host/sdhci-uhs=
+2.c
+> > index 8d1be670af49..80eafacc8b9f 100644
+> > --- a/drivers/mmc/host/sdhci-uhs2.c
+> > +++ b/drivers/mmc/host/sdhci-uhs2.c
+> > @@ -16,6 +16,7 @@
+> >  #include <linux/bitfield.h>
+> >  #include <linux/mmc/mmc.h>
+> >  #include <linux/mmc/host.h>
+> > +#include <linux/regulator/consumer.h>
+> >
+> >  #include "sdhci.h"
+> >  #include "sdhci-uhs2.h"
+> > @@ -997,6 +998,107 @@ static irqreturn_t sdhci_uhs2_thread_irq(int irq,=
+ void *dev_id)
+> >       return IRQ_HANDLED;
+> >  }
+> >
+> > +/*********************************************************************=
+********\
+> > + *
+> > + * Device allocation/registration                                     =
+       *
+> > + *                                                                    =
+       *
+> > +\*********************************************************************=
+********/
+> > +
+> > +static void __sdhci_uhs2_add_host_v4(struct sdhci_host *host, u32 caps=
+1)
+> > +{
+> > +     struct mmc_host *mmc;
+> > +     u32 max_current_caps2;
+> > +
+> > +     mmc =3D host->mmc;
+> > +
+> > +     /* Support UHS2 */
+> > +     if (caps1 & SDHCI_SUPPORT_UHS2)
+> > +             mmc->caps2 |=3D MMC_CAP2_SD_UHS2;
+> > +
+> > +     max_current_caps2 =3D sdhci_readl(host, SDHCI_MAX_CURRENT_1);
+> > +
+> > +     if ((caps1 & SDHCI_CAN_VDD2_180) &&
+> > +         !max_current_caps2 &&
+> > +         !IS_ERR(mmc->supply.vmmc2)) {
+> > +             /* UHS2 - VDD2 */
+> > +             int curr =3D regulator_get_current_limit(mmc->supply.vmmc=
+2);
+> > +
+> > +             if (curr > 0) {
+> > +                     /* convert to SDHCI_MAX_CURRENT format */
+> > +                     curr =3D curr / 1000;  /* convert to mA */
+> > +                     curr =3D curr / SDHCI_MAX_CURRENT_MULTIPLIER;
+> > +                     curr =3D min_t(u32, curr, SDHCI_MAX_CURRENT_LIMIT=
+);
+> > +                     max_current_caps2 =3D curr;
+> > +             }
+> > +     }
+> > +
+> > +     if (caps1 & SDHCI_CAN_VDD2_180)
+> > +             mmc->ocr_avail_uhs2 |=3D MMC_VDD_165_195;
+> > +     else
+> > +             mmc->caps2 &=3D ~MMC_CAP2_SD_UHS2;
+> > +}
+> > +
+> > +static int sdhci_uhs2_host_ops_init(struct sdhci_host *host);
+> > +
+> > +static void __sdhci_uhs2_remove_host(struct sdhci_host *host, int dead=
+)
+> > +{
+> > +     if (!sdhci_uhs2_mode(host))
+> > +             return;
+> > +
+> > +     if (!dead)
+> > +             sdhci_uhs2_reset(host, SDHCI_UHS2_SW_RESET_FULL);
+> > +}
+> > +
+> > +int sdhci_uhs2_add_host(struct sdhci_host *host)
+> > +{
+> > +     struct mmc_host *mmc =3D host->mmc;
+> > +     int ret;
+> > +
+> > +     ret =3D sdhci_setup_host(host);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     if (host->version >=3D SDHCI_SPEC_400)
+> > +             __sdhci_uhs2_add_host_v4(host, host->caps1);
+> > +
+> > +     if ((mmc->caps2 & MMC_CAP2_SD_UHS2) && !host->v4_mode)
+> > +             /* host doesn't want to enable UHS2 support */
+> > +             mmc->caps2 &=3D ~MMC_CAP2_SD_UHS2;
+> > +
+> > +     /* overwrite ops */
+> > +     if (mmc->caps2 & MMC_CAP2_SD_UHS2)
+> > +             sdhci_uhs2_host_ops_init(host);
+> > +
+> > +     host->complete_work_fn =3D sdhci_uhs2_complete_work;
+> > +     host->thread_irq_fn    =3D sdhci_uhs2_thread_irq;
+> > +
+> > +     /* LED support not implemented for UHS2 */
+> > +     host->quirks |=3D SDHCI_QUIRK_NO_LED;
+> > +
+> > +     ret =3D __sdhci_add_host(host);
+> > +     if (ret)
+> > +             goto cleanup;
+> > +
+> > +     return 0;
+> > +
+> > +cleanup:
+> > +     if (host->version >=3D SDHCI_SPEC_400)
+> > +             __sdhci_uhs2_remove_host(host, 0);
+> > +
+> > +     sdhci_cleanup_host(host);
+> > +
+> > +     return ret;
+> > +}
+> > +EXPORT_SYMBOL_GPL(sdhci_uhs2_add_host);
+> > +
+> > +void sdhci_uhs2_remove_host(struct sdhci_host *host, int dead)
+> > +{
+> > +     __sdhci_uhs2_remove_host(host, dead);
+> > +
+> > +     sdhci_remove_host(host, dead);
+> > +}
+> > +EXPORT_SYMBOL_GPL(sdhci_uhs2_remove_host);
+> > +
+> >  void sdhci_uhs2_request(struct mmc_host *mmc, struct mmc_request *mrq)
+> >  {
+> >       struct sdhci_host *host =3D mmc_priv(mmc);
+> > diff --git a/drivers/mmc/host/sdhci-uhs2.h b/drivers/mmc/host/sdhci-uhs=
+2.h
+> > index 3aa2cb4b39d6..bd5aae054c6f 100644
+> > --- a/drivers/mmc/host/sdhci-uhs2.h
+> > +++ b/drivers/mmc/host/sdhci-uhs2.h
+> > @@ -186,5 +186,7 @@ void sdhci_uhs2_clear_set_irqs(struct sdhci_host *h=
+ost, u32 clear, u32 set);
+> >  void sdhci_uhs2_request(struct mmc_host *mmc, struct mmc_request *mrq)=
+;
+> >  int sdhci_uhs2_request_atomic(struct mmc_host *mmc, struct mmc_request=
+ *mrq);
+> >  u32 sdhci_uhs2_irq(struct sdhci_host *host, u32 intmask);
+> > +int sdhci_uhs2_add_host(struct sdhci_host *host);
+> > +void sdhci_uhs2_remove_host(struct sdhci_host *host, int dead);
+> >
+> >  #endif /* __SDHCI_UHS2_H */
+> > diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> > index 318d4830732f..b3de7e30ba54 100644
+> > --- a/drivers/mmc/host/sdhci.c
+> > +++ b/drivers/mmc/host/sdhci.c
+> > @@ -4104,6 +4104,9 @@ struct sdhci_host *sdhci_alloc_host(struct device=
+ *dev,
+> >
+> >       host->max_timeout_count =3D 0xE;
+> >
+> > +     host->complete_work_fn =3D sdhci_complete_work;
+> > +     host->thread_irq_fn    =3D sdhci_thread_irq;
+> > +
+> >       return host;
+> >  }
+> >
+> > @@ -4853,7 +4856,7 @@ int __sdhci_add_host(struct sdhci_host *host)
+> >       if (!host->complete_wq)
+> >               return -ENOMEM;
+> >
+> > -     INIT_WORK(&host->complete_work, sdhci_complete_work);
+> > +     INIT_WORK(&host->complete_work, host->complete_work_fn);
+> >
+> >       timer_setup(&host->timer, sdhci_timeout_timer, 0);
+> >       timer_setup(&host->data_timer, sdhci_timeout_data_timer, 0);
+> > @@ -4862,7 +4865,7 @@ int __sdhci_add_host(struct sdhci_host *host)
+> >
+> >       sdhci_init(host, 0);
+> >
+> > -     ret =3D request_threaded_irq(host->irq, sdhci_irq, sdhci_thread_i=
+rq,
+> > +     ret =3D request_threaded_irq(host->irq, sdhci_irq, host->thread_i=
+rq_fn,
+> >                                  IRQF_SHARED, mmc_hostname(mmc), host);
+> >       if (ret) {
+> >               pr_err("%s: Failed to request IRQ %d: %d\n",
+> > diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
+> > index 6bbb9f073f29..5235f2da6568 100644
+> > --- a/drivers/mmc/host/sdhci.h
+> > +++ b/drivers/mmc/host/sdhci.h
+> > @@ -626,6 +626,9 @@ struct sdhci_host {
+> >       struct timer_list timer;        /* Timer for timeouts */
+> >       struct timer_list data_timer;   /* Timer for data timeouts */
+> >
+> > +     void            (*complete_work_fn)(struct work_struct *work);
+> > +     irqreturn_t     (*thread_irq_fn)(int irq, void *dev_id);
+> > +
+> >  #if IS_ENABLED(CONFIG_MMC_SDHCI_EXTERNAL_DMA)
+> >       struct dma_chan *rx_chan;
+> >       struct dma_chan *tx_chan;
+> > diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> > index 1eba64228725..918d4998c1de 100644
+> > --- a/include/linux/mmc/host.h
+> > +++ b/include/linux/mmc/host.h
+> > @@ -379,6 +379,7 @@ struct mmc_host {
+> >       u32                     ocr_avail_sdio; /* SDIO-specific OCR */
+> >       u32                     ocr_avail_sd;   /* SD-specific OCR */
+> >       u32                     ocr_avail_mmc;  /* MMC-specific OCR */
+> > +     u32                     ocr_avail_uhs2; /* UHS2-specific OCR */
+>
+> ocr_avail_uhs2 gets set but doesn't seem to be used
+>
 
-Changes are:
- * Disable GL9755 overcurrent interrupt when power on/off on UHS-II.
- * Enable the internal clock when do reset on UHS-II mode.
- * Increase timeout value before detecting UHS-II interface.
- * Add vendor settings fro UHS-II mode.
+Hi, Adrian
 
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Signed-off-by: AKASHI Takahiro <takahiro.akashi@linaro.org>
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
----
+I will drop the ocr_avail_uhs2 in the next version.
 
-Updates in V9:
- - Rename gl9755_pre_detect_init() to sdhci_gli_pre_detect_init().
- - Rename gl9755_uhs2_reset_sd_tran() to sdhci_gli_uhs2_reset_sd_tran().
+Thanks, Victor Shih
 
-Updates in V8:
- - Use sdhci_get_vdd_value() to simplify code in gl9755_set_power().
- - Use read_poll_timeout_atomic() to simplify code in
-   sdhci_wait_clock_stable().
- - Use read_poll_timeout_atomic() to simplify code in sdhci_gl9755_reset().
-
-Updates in V7:
- - Drop using gl9755_post_attach_sd().
-
----
-
- drivers/mmc/host/sdhci-pci-gli.c | 233 ++++++++++++++++++++++++++++++-
- 1 file changed, 232 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index ae8c307b7aa7..e30e755a9974 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -18,6 +18,7 @@
- #include "sdhci-cqhci.h"
- #include "sdhci-pci.h"
- #include "cqhci.h"
-+#include "sdhci-uhs2.h"
- 
- /*  Genesys Logic extra registers */
- #define SDHCI_GLI_9750_WT         0x800
-@@ -139,9 +140,36 @@
- 
- #define PCI_GLI_9755_PLLSSC        0x68
- #define   PCI_GLI_9755_PLLSSC_PPM    GENMASK(15, 0)
-+#define   PCI_GLI_9755_PLLSSC_RTL             BIT(24)
-+#define   GLI_9755_PLLSSC_RTL_VALUE           0x1
-+#define   PCI_GLI_9755_PLLSSC_TRANS_PASS      BIT(27)
-+#define   GLI_9755_PLLSSC_TRANS_PASS_VALUE    0x1
-+#define   PCI_GLI_9755_PLLSSC_RECV            GENMASK(29, 28)
-+#define   GLI_9755_PLLSSC_RECV_VALUE          0x3
-+#define   PCI_GLI_9755_PLLSSC_TRAN            GENMASK(31, 30)
-+#define   GLI_9755_PLLSSC_TRAN_VALUE          0x3
-+
-+#define PCI_GLI_9755_UHS2_PLL            0x6C
-+#define   PCI_GLI_9755_UHS2_PLL_SSC        GENMASK(9, 8)
-+#define   GLI_9755_UHS2_PLL_SSC_VALUE      0x0
-+#define   PCI_GLI_9755_UHS2_PLL_DELAY      BIT(18)
-+#define   GLI_9755_UHS2_PLL_DELAY_VALUE    0x1
-+#define   PCI_GLI_9755_UHS2_PLL_PDRST      BIT(27)
-+#define   GLI_9755_UHS2_PLL_PDRST_VALUE    0x1
- 
- #define PCI_GLI_9755_SerDes  0x70
-+#define   PCI_GLI_9755_UHS2_SERDES_INTR       GENMASK(2, 0)
-+#define   GLI_9755_UHS2_SERDES_INTR_VALUE     0x3
-+#define   PCI_GLI_9755_UHS2_SERDES_ZC1        BIT(3)
-+#define   GLI_9755_UHS2_SERDES_ZC1_VALUE      0x0
-+#define   PCI_GLI_9755_UHS2_SERDES_ZC2        GENMASK(7, 4)
-+#define   GLI_9755_UHS2_SERDES_ZC2_DEFAULT    0xB
-+#define   GLI_9755_UHS2_SERDES_ZC2_SANDISK    0x0
- #define PCI_GLI_9755_SCP_DIS   BIT(19)
-+#define   PCI_GLI_9755_UHS2_SERDES_TRAN       GENMASK(27, 24)
-+#define   GLI_9755_UHS2_SERDES_TRAN_VALUE     0xC
-+#define   PCI_GLI_9755_UHS2_SERDES_RECV       GENMASK(31, 28)
-+#define   GLI_9755_UHS2_SERDES_RECV_VALUE     0xF
- 
- #define PCI_GLI_9755_MISC	    0x78
- #define   PCI_GLI_9755_MISC_SSC_OFF    BIT(26)
-@@ -759,6 +787,201 @@ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
- 	gl9755_wt_off(pdev);
- }
- 
-+static void gl9755_vendor_init(struct sdhci_host *host)
-+{
-+	struct sdhci_pci_slot *slot = sdhci_priv(host);
-+	struct pci_dev *pdev = slot->chip->pdev;
-+	u32 serdes;
-+	u32 pllssc;
-+	u32 uhs2_pll;
-+
-+	gl9755_wt_on(pdev);
-+
-+	pci_read_config_dword(pdev, PCI_GLI_9755_SerDes, &serdes);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_TRAN;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_TRAN,
-+			     GLI_9755_UHS2_SERDES_TRAN_VALUE);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_RECV;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_RECV,
-+			     GLI_9755_UHS2_SERDES_RECV_VALUE);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_INTR;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_INTR,
-+			     GLI_9755_UHS2_SERDES_INTR_VALUE);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_ZC1;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_ZC1,
-+			     GLI_9755_UHS2_SERDES_ZC1_VALUE);
-+	serdes &= ~PCI_GLI_9755_UHS2_SERDES_ZC2;
-+	serdes |= FIELD_PREP(PCI_GLI_9755_UHS2_SERDES_ZC2,
-+			     GLI_9755_UHS2_SERDES_ZC2_DEFAULT);
-+	pci_write_config_dword(pdev, PCI_GLI_9755_SerDes, serdes);
-+
-+	pci_read_config_dword(pdev, PCI_GLI_9755_UHS2_PLL, &uhs2_pll);
-+	uhs2_pll &= ~PCI_GLI_9755_UHS2_PLL_SSC;
-+	uhs2_pll |= FIELD_PREP(PCI_GLI_9755_UHS2_PLL_SSC,
-+			  GLI_9755_UHS2_PLL_SSC_VALUE);
-+	uhs2_pll &= ~PCI_GLI_9755_UHS2_PLL_DELAY;
-+	uhs2_pll |= FIELD_PREP(PCI_GLI_9755_UHS2_PLL_DELAY,
-+			  GLI_9755_UHS2_PLL_DELAY_VALUE);
-+	uhs2_pll &= ~PCI_GLI_9755_UHS2_PLL_PDRST;
-+	uhs2_pll |= FIELD_PREP(PCI_GLI_9755_UHS2_PLL_PDRST,
-+			  GLI_9755_UHS2_PLL_PDRST_VALUE);
-+	pci_write_config_dword(pdev, PCI_GLI_9755_UHS2_PLL, uhs2_pll);
-+
-+	pci_read_config_dword(pdev, PCI_GLI_9755_PLLSSC, &pllssc);
-+	pllssc &= ~PCI_GLI_9755_PLLSSC_RTL;
-+	pllssc |= FIELD_PREP(PCI_GLI_9755_PLLSSC_RTL,
-+			  GLI_9755_PLLSSC_RTL_VALUE);
-+	pllssc &= ~PCI_GLI_9755_PLLSSC_TRANS_PASS;
-+	pllssc |= FIELD_PREP(PCI_GLI_9755_PLLSSC_TRANS_PASS,
-+			  GLI_9755_PLLSSC_TRANS_PASS_VALUE);
-+	pllssc &= ~PCI_GLI_9755_PLLSSC_RECV;
-+	pllssc |= FIELD_PREP(PCI_GLI_9755_PLLSSC_RECV,
-+			  GLI_9755_PLLSSC_RECV_VALUE);
-+	pllssc &= ~PCI_GLI_9755_PLLSSC_TRAN;
-+	pllssc |= FIELD_PREP(PCI_GLI_9755_PLLSSC_TRAN,
-+			  GLI_9755_PLLSSC_TRAN_VALUE);
-+	pci_write_config_dword(pdev, PCI_GLI_9755_PLLSSC, pllssc);
-+
-+	gl9755_wt_off(pdev);
-+}
-+
-+static void sdhci_gli_pre_detect_init(struct sdhci_host *host)
-+{
-+	/* Need more time on UHS2 detect flow */
-+	sdhci_writeb(host, 0xA7, SDHCI_UHS2_TIMER_CTRL);
-+}
-+
-+static void gl9755_overcurrent_event_enable(struct sdhci_host *host,
-+					    bool enable)
-+{
-+	u32 mask;
-+
-+	mask = sdhci_readl(host, SDHCI_SIGNAL_ENABLE);
-+	if (enable)
-+		mask |= SDHCI_INT_BUS_POWER;
-+	else
-+		mask &= ~SDHCI_INT_BUS_POWER;
-+
-+	sdhci_writel(host, mask, SDHCI_SIGNAL_ENABLE);
-+
-+	mask = sdhci_readl(host, SDHCI_INT_ENABLE);
-+	if (enable)
-+		mask |= SDHCI_INT_BUS_POWER;
-+	else
-+		mask &= ~SDHCI_INT_BUS_POWER;
-+
-+	sdhci_writel(host, mask, SDHCI_INT_ENABLE);
-+}
-+
-+static void gl9755_set_power(struct sdhci_host *host, unsigned char mode,
-+			     unsigned short vdd)
-+{
-+	u8 pwr = 0;
-+
-+	if (mode != MMC_POWER_OFF) {
-+		pwr = sdhci_get_vdd_value(vdd);
-+		if (!pwr)
-+			WARN(1, "%s: Invalid vdd %#x\n", mmc_hostname(host->mmc), vdd);
-+		pwr |= SDHCI_VDD2_POWER_180;
-+	}
-+
-+	if (host->pwr == pwr)
-+		return;
-+
-+	host->pwr = pwr;
-+
-+	if (pwr == 0) {
-+		gl9755_overcurrent_event_enable(host, false);
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+	} else {
-+		gl9755_overcurrent_event_enable(host, false);
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+
-+		pwr |= (SDHCI_POWER_ON | SDHCI_VDD2_POWER_ON);
-+
-+		sdhci_writeb(host, pwr & 0xf, SDHCI_POWER_CONTROL);
-+		/* wait stable */
-+		mdelay(5);
-+		sdhci_writeb(host, pwr, SDHCI_POWER_CONTROL);
-+		/* wait stable */
-+		mdelay(5);
-+		gl9755_overcurrent_event_enable(host, true);
-+	}
-+}
-+
-+static bool sdhci_wait_clock_stable(struct sdhci_host *host)
-+{
-+	u16 clk = 0;
-+
-+	if (read_poll_timeout_atomic(sdhci_readw, clk, (clk & SDHCI_CLOCK_INT_STABLE),
-+				     10, 20000, false, host, SDHCI_CLOCK_CONTROL)) {
-+		pr_err("%s: Internal clock never stabilised.\n", mmc_hostname(host->mmc));
-+		sdhci_dumpregs(host);
-+		return false;
-+	}
-+	return true;
-+}
-+
-+static void sdhci_gli_uhs2_reset_sd_tran(struct sdhci_host *host)
-+{
-+	/* do this on UHS2 mode */
-+	if (host->mmc->flags & MMC_UHS2_SD_TRAN) {
-+		sdhci_uhs2_reset(host, SDHCI_UHS2_SW_RESET_SD);
-+		sdhci_writel(host, host->ier, SDHCI_INT_ENABLE);
-+		sdhci_writel(host, host->ier, SDHCI_SIGNAL_ENABLE);
-+		sdhci_uhs2_clear_set_irqs(host,
-+					  SDHCI_INT_ALL_MASK,
-+					  SDHCI_UHS2_INT_ERROR_MASK);
-+	}
-+}
-+
-+static void sdhci_gl9755_reset(struct sdhci_host *host, u8 mask)
-+{
-+	u16 clk_ctrl;
-+	u16 ctrl2;
-+	u8 rst;
-+
-+	/* need internal clock */
-+	if (mask & SDHCI_RESET_ALL) {
-+		ctrl2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-+		clk_ctrl = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+
-+		if ((ctrl2 & SDHCI_CTRL_V4_MODE) &&
-+		    (ctrl2 & SDHCI_CTRL_UHS2_ENABLE)) {
-+			sdhci_writew(host,
-+				     SDHCI_CLOCK_INT_EN,
-+				     SDHCI_CLOCK_CONTROL);
-+		} else {
-+			sdhci_writew(host,
-+				     SDHCI_CLOCK_INT_EN,
-+				     SDHCI_CLOCK_CONTROL);
-+			sdhci_wait_clock_stable(host);
-+			sdhci_writew(host,
-+				     SDHCI_CTRL_V4_MODE,
-+				     SDHCI_HOST_CONTROL2);
-+		}
-+	}
-+
-+	sdhci_writeb(host, mask, SDHCI_SOFTWARE_RESET);
-+
-+	/* reset sd-tran on UHS2 mode if need to reset cmd/data */
-+	if ((mask & SDHCI_RESET_CMD) | (mask & SDHCI_RESET_DATA))
-+		sdhci_gli_uhs2_reset_sd_tran(host);
-+
-+	if (mask & SDHCI_RESET_ALL)
-+		host->clock = 0;
-+
-+	/* hw clears the bit when it's done */
-+	if (read_poll_timeout_atomic(sdhci_readb, rst, !(rst & mask),
-+				     10, 100000, false, host, SDHCI_SOFTWARE_RESET)) {
-+		pr_err("%s: Reset 0x%x never completed.\n", mmc_hostname(host->mmc), (int)mask);
-+		sdhci_dumpregs(host);
-+		/* manual clear */
-+		sdhci_writeb(host, 0, SDHCI_SOFTWARE_RESET);
-+		return;
-+	}
-+}
-+
- static inline void gl9767_vhs_read(struct pci_dev *pdev)
- {
- 	u32 vhs_enable;
-@@ -1054,6 +1277,7 @@ static int gli_probe_slot_gl9750(struct sdhci_pci_slot *slot)
- 	gli_pcie_enable_msi(slot);
- 	slot->host->mmc->caps2 |= MMC_CAP2_NO_SDIO;
- 	sdhci_enable_v4_mode(host);
-+	gl9755_vendor_init(host);
- 
- 	return 0;
- }
-@@ -1472,17 +1696,24 @@ static const struct sdhci_ops sdhci_gl9755_ops = {
- 	.read_w			= sdhci_gli_readw,
- 	.read_b			= sdhci_gli_readb,
- 	.set_clock		= sdhci_gl9755_set_clock,
-+	.set_power		= gl9755_set_power,
- 	.enable_dma		= sdhci_pci_enable_dma,
- 	.set_bus_width		= sdhci_set_bus_width,
--	.reset			= sdhci_reset,
-+	.reset			= sdhci_gl9755_reset,
- 	.set_uhs_signaling	= sdhci_set_uhs_signaling,
- 	.voltage_switch		= sdhci_gli_voltage_switch,
-+	.dump_uhs2_regs		= sdhci_uhs2_dump_regs,
-+	.set_timeout		= sdhci_uhs2_set_timeout,
-+	.irq			= sdhci_uhs2_irq,
-+	.uhs2_pre_detect_init   = sdhci_gli_pre_detect_init,
- };
- 
- const struct sdhci_pci_fixes sdhci_gl9755 = {
- 	.quirks		= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC,
- 	.quirks2	= SDHCI_QUIRK2_BROKEN_DDR50,
- 	.probe_slot	= gli_probe_slot_gl9755,
-+	.add_host	= sdhci_pci_uhs2_add_host,
-+	.remove_host	= sdhci_pci_uhs2_remove_host,
- 	.ops            = &sdhci_gl9755_ops,
- #ifdef CONFIG_PM_SLEEP
- 	.resume         = sdhci_pci_gli_resume,
--- 
-2.25.1
-
+> >       struct wakeup_source    *ws;            /* Enable consume of ueve=
+nts */
+> >       u32                     max_current_330;
+> >       u32                     max_current_300;
+>
