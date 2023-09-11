@@ -2,79 +2,69 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B36A79B74C
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Sep 2023 02:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2843079BE31
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Sep 2023 02:17:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345418AbjIKVUX (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Mon, 11 Sep 2023 17:20:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56782 "EHLO
+        id S1345386AbjIKVUG (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 11 Sep 2023 17:20:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242585AbjIKPww (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Sep 2023 11:52:52 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55D9193
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Sep 2023 08:52:46 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-31fa666000dso1189858f8f.2
-        for <linux-mmc@vger.kernel.org>; Mon, 11 Sep 2023 08:52:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694447564; x=1695052364; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vprVq4/fIAbFZ3+Z+xgdIo0JUeYirqwRwX7pZL6u4fA=;
-        b=wDJKy9L0I+SKSWtQy/K81xgMjKmEduFNKp1rwtMKZXJQAzxW7EIKTn59XXyHSrDMBM
-         RqfQbYv/bmjicySq+c8g9bmWlgNeXZ5AOdg1UYk/dnE0QryEJo2odUoXS4j3DzeDYjaH
-         EslS7rDMuQ1tF2fxZO6q3r9L6gvVlpUfQchjMuxPQYYv+tJiFXqdGmrylrNe9DUGr/Up
-         DBh+g97ojzWEVObNDsqsniWR8SmpZl6wn7MzxAkVzo3ln4/KM8Vfhpt49KrOyvMfJhV7
-         lBUrMV2dsGqmD1SjH0L0/Sibgx6HPYw126NUkdXLJ2Gbvf/yW3WvZxzPDZYKqRWASIgC
-         SIJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694447564; x=1695052364;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vprVq4/fIAbFZ3+Z+xgdIo0JUeYirqwRwX7pZL6u4fA=;
-        b=GBnG3WhXzrlotX2K4EeJh64553nG9dnCFzdwMNVParHAen10pAwN+9rinXlgUSSxYR
-         tRRl+A+7y584Jf99J4GlBzp3ZhbiF6MUBE60TPxLOwM+dUjiWxY+a5zP9ErePaXiWoxl
-         C2icz7MQX+Ry+UBaxkiQwR7gnYmrCqA1jGXSnvzGRU5i0DyDrLPw0MN7aR47SnDrh29o
-         pSfpV0hCf6poMraYImEzkfe8I5WlNtmqYX6EwOIFzRWWiXNrBvciC55BZ63EC9G9Bjng
-         CFFP94XRofMUStx1wWbFk6AuE/i184ZkhEuJHPJkWz0EFnHnlmNIomx0ALW1V5ao02AF
-         J+oQ==
-X-Gm-Message-State: AOJu0YySOc0uWDFA3xIBCHALfQIwsR31kbkwLMOYkOXke1auqKhoiABP
-        bRuaWFygLA5VmfKLmUp5YBUmO33N4U4sWq2ik+O6yg==
-X-Google-Smtp-Source: AGHT+IGUlTJ1BW2ei9S+2zEfUFxpzm/NdK01VQBtmj64Biovz3gEfjbEA6RA919h5wHqlMsvf0BgDg==
-X-Received: by 2002:a5d:55cf:0:b0:313:ef24:6fe6 with SMTP id i15-20020a5d55cf000000b00313ef246fe6mr8680107wrw.1.1694447564646;
-        Mon, 11 Sep 2023 08:52:44 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.214.188])
-        by smtp.gmail.com with ESMTPSA id c6-20020adfed86000000b0031de43fe9bfsm10474792wro.0.2023.09.11.08.52.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Sep 2023 08:52:44 -0700 (PDT)
-Message-ID: <8b1fdd46-8ebd-f992-68df-389683ef5368@linaro.org>
-Date:   Mon, 11 Sep 2023 17:52:42 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH] MAINTAINERS: mmc: take over as maintainer of MCI & SDHCI
- MICROCHIP DRIVERS
-Content-Language: en-US
-To:     Aubin Constans <aubin.constans@microchip.com>,
+        with ESMTP id S242741AbjIKQOd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 11 Sep 2023 12:14:33 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5C3CC3;
+        Mon, 11 Sep 2023 09:14:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939CCC433C7;
+        Mon, 11 Sep 2023 16:14:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694448868;
+        bh=lE4TUKpHsfE3kl2liyLgZhjxv/jCQAFAHS5mAxa9Jio=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gRRONGH1gay49bPcuwG9oModMIeyhqPitP5tKtepnu+JNihIfre6G4mq3muSRgAT5
+         ztXNlEp6cTei0aSI4yyAANEbo5UDSEhxjtAUXYsskp86tJNViykzrlNlnkJhNs9Tvb
+         FBIr/xw68CKFK/7o/XJt5LS0V9FRx9oS1FQJZPzENlJCONJrCv/suxFzJtfdF3ET2B
+         wIt10bC626FlyUqagfq9y8bvo3A7RJ2v5CofcN2UfnD33gd09vF+C9V8kGxSGCCucu
+         AcI8vumcVeNXNZzynqBNRyStwUGhuLs7OM1EJYu+QrqiIExSI1Vz/R1TWlEl51P5rR
+         evZ1N4yKQ3hJA==
+Date:   Mon, 11 Sep 2023 17:14:22 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Cc:     William Qiu <william.qiu@starfivetech.com>,
+        Jessica Clarke <jrtc27@jrtc27.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-mmc@vger.kernel.org, Emil Renner Berthing <kernel@esmil.dk>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Eugen Hristev <eugen.hristev@collabora.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Hari Prasath Gujulan Elango <hari.prasathge@microchip.com>,
-        linux-arm-kernel@lists.infradead.org
-References: <20230911153246.137148-1-aubin.constans@microchip.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230911153246.137148-1-aubin.constans@microchip.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>
+Subject: Re: [PATCH v1 1/3] dt-bindings: mmc: Drop unused properties
+Message-ID: <20230911-implosive-shrill-506d18d9bde2@spud>
+References: <20230830031846.127957-2-william.qiu@starfivetech.com>
+ <20230830-commence-trickery-40eaa193cb15@wendy>
+ <b375b88c-0d9c-30a9-21f6-283083cf3880@linaro.org>
+ <20230830-procedure-frostbite-56c751f7c276@wendy>
+ <efab6f52-4d7f-ea3c-0fc3-4e3ad03c14c7@starfivetech.com>
+ <20230901-remold-sublease-a1ddb1fc6348@spud>
+ <9EF26965-10E5-4BCA-AC5E-93C5AA55A0DF@jrtc27.com>
+ <20230901-affected-wanting-ab517791a870@spud>
+ <dd63bb4f-a59b-0323-08fb-03f8cc048b6e@starfivetech.com>
+ <CAJM55Z8XowmB-Hfzr+hBtWu+SGL2v7jya6Nx5_rATf8=5qA4Fg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="oTmTZUPS0C6vLYk7"
+Content-Disposition: inline
+In-Reply-To: <CAJM55Z8XowmB-Hfzr+hBtWu+SGL2v7jya6Nx5_rATf8=5qA4Fg@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,20 +72,115 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 11/09/2023 17:32, Aubin Constans wrote:
-> On the one hand Eugen has taken responsibilities outside Microchip,
 
-That's not a reason to drop Eugen or change his status to a reviewer...
-Unless of course this is what Eugen wants?
-Normally you should just update the email address, although if it is
-still not updated, then indeed change might be needed here.
+--oTmTZUPS0C6vLYk7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> on the other hand I have some experience with the Microchip SDMMC
-> SDHCI controller.
-> Change Eugen as reviewer and take over maintainership of the SDHCI
-> MICROCHIP DRIVER.
+On Fri, Sep 08, 2023 at 03:32:36PM +0200, Emil Renner Berthing wrote:
+> On Fri, 8 Sept 2023 at 12:03, William Qiu <william.qiu@starfivetech.com> =
+wrote:
+> > On 2023/9/2 1:43, Conor Dooley wrote:
+> > > On Fri, Sep 01, 2023 at 06:20:38PM +0100, Jessica Clarke wrote:
+> > >> On 1 Sep 2023, at 16:42, Conor Dooley <conor@kernel.org> wrote:
+> > >> >
+> > >> > On Fri, Sep 01, 2023 at 10:33:13AM +0800, William Qiu wrote:
+> > >> >>
+> > >> >>
+> > >> >> On 2023/8/30 16:34, Conor Dooley wrote:
+> > >> >>> On Wed, Aug 30, 2023 at 09:29:20AM +0200, Krzysztof Kozlowski wr=
+ote:
+> > >> >>>> On 30/08/2023 08:50, Conor Dooley wrote:
+> > >> >>>>> On Wed, Aug 30, 2023 at 11:18:44AM +0800, William Qiu wrote:
+> > >> >>>>>> Due to the change of tuning implementation, it's no longer ne=
+cessary to
+> > >> >>>>>> use the "starfive,sysreg" property in dts, so drop the releva=
+nt
+> > >> >>>>>> description in dt-bindings here.
+> > >> >>>>>
+> > >> >>>>> How does changing your software implantation invalidate a desc=
+ription of
+> > >> >>>>> the hardware?
+> > >> >>>>>
+> > >> >>>>
+> > >> >>>> Which is kind of proof that this syscon was just to substitute
+> > >> >>>> incomplete hardware description (e.g. missing clocks and phys).=
+ We
+> > >> >>>> should have rejected it. Just like we should reject them in the=
+ future.
+> > >> >>>
+> > >> >>> :s I dunno what to do with this... I'm inclined to say not to re=
+move it
+> > >> >>> from the binding or dts at all & only change the software.
+> > >> >>>
+> > >> >>>> There are just few cases where syscon is reasonable. All others=
+ is just
+> > >> >>>> laziness. It's not only starfivetech, of course. Several other
+> > >> >>>> contributors do the same.
+> > >> >>>
+> > >> >>> I'm not sure if laziness is fair, lack of understanding is usual=
+ly more
+> > >> >>> likely.
+> > >> >>
+> > >> >> For this, I tend to keep it in binding, but remove it from requir=
+ed. Because
+> > >> >> we only modify the tuning implementation, it doesn't mean that th=
+is property
+> > >> >> need to be removed, it's just no longer be the required one.
+> > >> >
+> > >> > Please only remove it from required if the current driver doesn't =
+break
+> > >> > if the regmap is removed.
+> > >>
+> > >> Either way please make sure the documentation clearly states =E2=80=
+=9Cnever use
+> > >> this, if you=E2=80=99re using it you=E2=80=99re doing it wrong, this=
+ only exists
+> > >> because it was wrongly used in the past=E2=80=9D. Otherwise people w=
+riting
+> > >> drivers for other OSes will probably use it too thinking they need t=
+o.
+> > >
+> > > Maybe we should just delete it if the impact is going to be negligibl=
+e,
+> > > sounds like you're not using it in FreeBSD, which was part of what I =
+was
+> > > worried about. Guess it depends on what Emil & the distro heads think.
+> > Hi Conor,
+> >
+> > After discussing it with our colleagues, we decided that deleting it wa=
+s the best
+> > course of action. Since there will no longer be a related implementatio=
+n of
+> > "starfive,sysreg" in future drivers, even if the dt-binding is describe=
+d, it will
+> > be "never use", so I think it should be deleted.
+> >
+> > What do you think?
+>=20
+> The device tree should be a description of the hardware and there
+> really is a 'u0_sdio_data_strobe_phase_ctrl' field in the sysreg
+> registers[1] on the JH7110 that seems to do _something_ related to the
+> sdio interface. So I don't think the fact that the Linux driver no
+> longer uses it is a good reason to remove it, but if there are some
+> other pragmatic reasons to do so then I'm fine with it. Removing it
+> from the list of required properties should be fine though.
 
+SGTM. Can you update the patch to do that please William?
 
-Best regards,
-Krzysztof
+Thanks,
+Conor.
 
+--oTmTZUPS0C6vLYk7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZP883gAKCRB4tDGHoIJi
+0iUbAQCcScPVjZ1Kbsf7RH2A+sX+vGqYaNxM2OgYs4g0lowZegEA8ZTFom4Gt2p3
+Ov4GOL7DPFANOjsSHPDE7w4pEWoR2Aw=
+=xCY5
+-----END PGP SIGNATURE-----
+
+--oTmTZUPS0C6vLYk7--
