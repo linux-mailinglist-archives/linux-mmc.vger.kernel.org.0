@@ -2,110 +2,95 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1796979C979
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Sep 2023 10:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A2D879CAAE
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Sep 2023 10:55:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232139AbjILIOQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-mmc@lfdr.de>); Tue, 12 Sep 2023 04:14:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45154 "EHLO
+        id S232941AbjILIz1 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 12 Sep 2023 04:55:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232193AbjILIOP (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Sep 2023 04:14:15 -0400
-Received: from fd01.gateway.ufhost.com (fd01.gateway.ufhost.com [61.152.239.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21E1410C8;
-        Tue, 12 Sep 2023 01:14:10 -0700 (PDT)
-Received: from EXMBX165.cuchost.com (unknown [175.102.18.54])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "EXMBX165", Issuer "EXMBX165" (not verified))
-        by fd01.gateway.ufhost.com (Postfix) with ESMTP id 3AADF80CF;
-        Tue, 12 Sep 2023 16:14:08 +0800 (CST)
-Received: from EXMBX168.cuchost.com (172.16.6.78) by EXMBX165.cuchost.com
- (172.16.6.75) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Tue, 12 Sep
- 2023 16:14:08 +0800
-Received: from williamqiu-virtual-machine.starfivetech.com (171.223.208.138)
- by EXMBX168.cuchost.com (172.16.6.78) with Microsoft SMTP Server (TLS) id
- 15.0.1497.42; Tue, 12 Sep 2023 16:14:07 +0800
-From:   William Qiu <william.qiu@starfivetech.com>
-To:     <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-riscv@lists.infradead.org>, <linux-mmc@vger.kernel.org>
-CC:     Emil Renner Berthing <kernel@esmil.dk>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        "Palmer Dabbelt" <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        William Qiu <william.qiu@starfivetech.com>
-Subject: [PATCH v2 3/3] riscv: dts: starfive: Drop unused properties and limit frquency
-Date:   Tue, 12 Sep 2023 16:14:02 +0800
-Message-ID: <20230912081402.51477-7-william.qiu@starfivetech.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230912081402.51477-1-william.qiu@starfivetech.com>
-References: <20230912081402.51477-1-william.qiu@starfivetech.com>
+        with ESMTP id S233014AbjILIzZ (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 12 Sep 2023 04:55:25 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F38A10C8
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Sep 2023 01:55:21 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d7e9d849bdfso4649371276.3
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Sep 2023 01:55:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694508921; x=1695113721; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5cpNRcFT9dpKDqYIUxrODvQWj8t0YOkYRZZPM52uQ0k=;
+        b=e4vPvNjo8Yg1JafwyMjaSddkk4B9L0SSXbjWOy3mLdqW0fjGQPyVn+WXJS9YquNBZ7
+         FUaWRD/99pHA3Z2OUxVelTITZTe3dWDuiKf+YMTBVMwO2CmrFV7Uzunl05H3K02qScTn
+         JHBKZq1qWh63SeQZ2anyiIEFO82hyB+PIIvY7SEPq0gCHCocGqRvJFAB1son/hP3Xb2v
+         PCsNByLiGYeAOOPQNcR1bm2txL+cCXG+13lf9PfXGrn+jcn1TmYoBOzDguvQ4t/js/Qu
+         OCVYrr7Mr47HSEOPT7PAQLgGov/wUC+xBU2kwkh6KMhtPV/g2DXYh6dDVno6kxrRh/oQ
+         fdpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694508921; x=1695113721;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5cpNRcFT9dpKDqYIUxrODvQWj8t0YOkYRZZPM52uQ0k=;
+        b=ftjanFrNp4zKpQOcbIE3Y4ZIyD+1sqPQX7zrQtk/NGmSmViuXGq7VmZ0/6ox+hHuNM
+         exFrwEdLurxmyXQ0NR5FYr0u9e0bAeUS2+oZd1HrgqtivejN+7YNnnFNECapEkB8Z5hL
+         0F9I8De4uaGOOp7QBK17bs0XpcDIDndP9uvl/twynRSbLgF6WL2C++aM+1oVzsP8jsVA
+         sNfgnBeoWWzuHOf2/VwT0Eg3eV94z+jNZee7sRot4wpVbWVjbQppOYza8hxVdz6LepUR
+         9G5TJObpd9DFJHRWxnklCZjE6dndQ8L/qWvo3ZERTx2lHljIx24QRZPhxQ/2owK7w/7C
+         oVOw==
+X-Gm-Message-State: AOJu0YwqigRlKP7X+QfGgJRPARUtsRhBLfkEvuPpfUp6eFaQD598R1Rz
+        /vtz6ftgO9+g1v5das8dldTBQzKQlLvLHZRlbeyRliL8dd0V3IqW
+X-Google-Smtp-Source: AGHT+IEGS3TFambdJO6EdNSaKvuN7uKr3gK0rinQYZQudCv8F8e445q/O/vPsuhqGcFuGeBnFL3BaIyBwDUyNvoDYZc=
+X-Received: by 2002:a5b:8:0:b0:d78:341d:e475 with SMTP id a8-20020a5b0008000000b00d78341de475mr10595508ybp.44.1694508920728;
+ Tue, 12 Sep 2023 01:55:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [171.223.208.138]
-X-ClientProxiedBy: EXCAS066.cuchost.com (172.16.6.26) To EXMBX168.cuchost.com
- (172.16.6.78)
-X-YovoleRuleAgent: yovoleflag
-Content-Transfer-Encoding: 8BIT
+References: <20230912045157.177966-1-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20230912045157.177966-1-claudiu.beznea.uj@bp.renesas.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 12 Sep 2023 10:55:08 +0200
+Message-ID: <CACRpkdYL46wY_4dm2w45kdPqOJ8zU9X=SSAXv_K=9wfBZFqyDQ@mail.gmail.com>
+Subject: Re: [PATCH 00/37] Add new Renesas RZ/G3S SoC and RZ/G3S SMARC EVK
+To:     Claudiu <claudiu.beznea@tuxon.dev>
+Cc:     geert+renesas@glider.be, mturquette@baylibre.com, sboyd@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, ulf.hansson@linaro.org,
+        gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        magnus.damm@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+        prabhakar.mahadev-lad.rj@bp.renesas.com,
+        biju.das.jz@bp.renesas.com, quic_bjorande@quicinc.com,
+        arnd@arndb.de, konrad.dybcio@linaro.org, neil.armstrong@linaro.org,
+        nfraprado@collabora.com, rafal@milecki.pl,
+        wsa+renesas@sang-engineering.com,
+        linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Drop unused properties and limit cclk_in to 50M, thus cancelling the
-internal frequency and adopting the by-pass mode.
+On Tue, Sep 12, 2023 at 6:52=E2=80=AFAM Claudiu <claudiu.beznea@tuxon.dev> =
+wrote:
 
-Signed-off-by: William Qiu <william.qiu@starfivetech.com>
----
- .../riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi | 4 ++++
- arch/riscv/boot/dts/starfive/jh7110.dtsi                      | 2 --
- 2 files changed, 4 insertions(+), 2 deletions(-)
+> This patch series adds initial support for The Renesas RZ/G3S (R9A08G045{=
+S33})
+> SoC. The RZ/G3S device is a general-purpose microprocessor with a
+> single-core Arm=C2=AE Cortex=C2=AE-A55 (1.1GHz) and a dual-core Arm=C2=AE=
+ Cortex=C2=AE-M33 (250MHz),
+> perfect for an IOT gateway controller.
 
-diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-index d79f94432b27..d1f2ec308bca 100644
---- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-@@ -205,6 +205,8 @@ &i2c6 {
- 
- &mmc0 {
- 	max-frequency = <100000000>;
-+	assigned-clocks = <&syscrg JH7110_SYSCLK_SDIO0_SDCARD>;
-+	assigned-clock-rates = <50000000>;
- 	bus-width = <8>;
- 	cap-mmc-highspeed;
- 	mmc-ddr-1_8v;
-@@ -221,6 +223,8 @@ &mmc0 {
- 
- &mmc1 {
- 	max-frequency = <100000000>;
-+	assigned-clocks = <&syscrg JH7110_SYSCLK_SDIO1_SDCARD>;
-+	assigned-clock-rates = <50000000>;
- 	bus-width = <4>;
- 	no-sdio;
- 	no-mmc;
-diff --git a/arch/riscv/boot/dts/starfive/jh7110.dtsi b/arch/riscv/boot/dts/starfive/jh7110.dtsi
-index e85464c328d0..7b8e841aeef8 100644
---- a/arch/riscv/boot/dts/starfive/jh7110.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110.dtsi
-@@ -870,7 +870,6 @@ mmc0: mmc@16010000 {
- 			fifo-depth = <32>;
- 			fifo-watermark-aligned;
- 			data-addr = <0>;
--			starfive,sysreg = <&sys_syscon 0x14 0x1a 0x7c000000>;
- 			status = "disabled";
- 		};
- 
-@@ -886,7 +885,6 @@ mmc1: mmc@16020000 {
- 			fifo-depth = <32>;
- 			fifo-watermark-aligned;
- 			data-addr = <0>;
--			starfive,sysreg = <&sys_syscon 0x9c 0x1 0x3e>;
- 			status = "disabled";
- 		};
- 
--- 
-2.34.1
+I saw some of the patches are fixes. I expect that you and Geert
+figure these out so I can get a separate pull request for those
+ASAP. (Unless they are nonurgent.)
 
+For new code try to use <linux/cleanup.h>.
+Or if you prefer take a sweep and introduce scoped guards
+everywhere (for spinlocks, mutexes..).
+
+Yours,
+Linus Walleij
