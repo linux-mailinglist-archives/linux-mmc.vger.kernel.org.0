@@ -2,115 +2,113 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 190D57A04D5
-	for <lists+linux-mmc@lfdr.de>; Thu, 14 Sep 2023 15:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05B847A04E4
+	for <lists+linux-mmc@lfdr.de>; Thu, 14 Sep 2023 15:04:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238651AbjINNDj (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 14 Sep 2023 09:03:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41940 "EHLO
+        id S238652AbjINNE7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Thu, 14 Sep 2023 09:04:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238585AbjINNDh (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Sep 2023 09:03:37 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66E801FDF
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Sep 2023 06:03:33 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d77ad095f13so965066276.2
-        for <linux-mmc@vger.kernel.org>; Thu, 14 Sep 2023 06:03:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694696612; x=1695301412; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=OGBNv/WCy7mlfSU/rquHrfUjucCsufeS4fxpOpJpRLo=;
-        b=Fm5n8fCEQoCvtP/ZiYEwftfaaRFRcsT1NGihjTABbR0yJareDaZkWKN6WwdbBFHDld
-         mY/zwWAf7Lu/Cfa+q6+zFjinzDKHNpEvzjG2Bqc+qdBBLIOxABJiFShj+ZB3VC+wjqkY
-         njFAeq7MYc4AmDaRz3s+SPx9kV5+Y7mU+WjvcCwVA5iZSe+66l+NSegMK5lfRktFcc/9
-         KbmQnX4aMD25AWv1NtwOq6S8v4+F6bb7Zfcdis3FH8x46+mQdvYLZbUn59wVRc4xsM8l
-         YMVYyWJkTbN+1pFJAZq3+CMZ0IJYcdPM+TkQv88QR1Evh01uz+YWoB32Fp+rc7x4eMt9
-         DkJA==
+        with ESMTP id S238629AbjINNE6 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 14 Sep 2023 09:04:58 -0400
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCF041FDD;
+        Thu, 14 Sep 2023 06:04:54 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-d81b42a3108so150176276.1;
+        Thu, 14 Sep 2023 06:04:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694696612; x=1695301412;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OGBNv/WCy7mlfSU/rquHrfUjucCsufeS4fxpOpJpRLo=;
-        b=OdBCrUsCF7vX1hhC4cADNFvvXWYE9VrprIgb/X/uKjm1qPjwkMteVLTlEHLuU4lrvg
-         mCBxk6rb7ecDOZOhgCPrL74UtgnX2mXSlzJRtYE3iGoZsYtIwGgJisTxCFmfXwD4HFYF
-         P/7//eR5UHdGu5Zjw6zOywWvFwZz46lKBZSpOzRlwBGSov83swzwJXpZZyta8TnDICrO
-         YKMeixhspgdh2mvsX4/7DBIDRryvpsWbTgNmH8gYgXymrX4e7lQ+MNcllTYxyIs2m7Li
-         yahlVfyjARpLZ5CBOjzpqzchRt6zYhetDZ3pp0HeRhdR5jBIfB6VcfskhSrH1CqbWo9l
-         m5mg==
-X-Gm-Message-State: AOJu0Yw3CKo2WJ5aUG2X8cr9X7o5PG/p4XTRREgtSS85Btyi1RV5+ixh
-        27vO/QR3tLpcg9Y/5skLwQPU6hhiax9A5coGkyQ7zA==
-X-Google-Smtp-Source: AGHT+IHPMzUI/ot3DCoZ/iT1g4muQjpo9ZWKdRV8KZQpwQK3nU4X4TeTU3Js/qM/a3ER6+dKUgmedezyGL+8aAKDGC4=
-X-Received: by 2002:a25:1545:0:b0:d81:6116:ac2d with SMTP id
- 66-20020a251545000000b00d816116ac2dmr4087422ybv.59.1694696612626; Thu, 14 Sep
- 2023 06:03:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694696693; x=1695301493;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MKZM3IUDKJvPoIca4YBGFuMY+PB7MhRe0/Yx688KnKo=;
+        b=KhmfUy2QRV2s7ju8uNn65nSvainfdisVM9ZkyTKnsvpNTYZVl0roMj+fzb4LLrZ96z
+         mtWahyDsPmpsJIbgNazemNz4lbrYIuThgEugf99IKN8A0JBPmdLcdaC0oY24TeJgdoJZ
+         2SpK2uHIq1kkewJalBIfG92KENq0jhcIDlPnm+UYOM2YY1+gr9ekhHRbhykhDgRPiqBC
+         doJFhOctQ1nS2w0764rsDeQFLe53bommwAE3we+LYMP0SMjimSOPaGL10wUdLyUuNQdq
+         2do/SF/xMzyC9kksn/CvpK51wf0xS123etic57z7EVZXP84g7sPS54lnxOyuUy1GeYu8
+         Sfug==
+X-Gm-Message-State: AOJu0YzBjlC5L8iLTPklkd3q8pY+tKFPw9nUKqKv5LgQfGgL32t2s6Iz
+        yURX2gG3umsaXJnByvihCdAkNCyco8DWxA==
+X-Google-Smtp-Source: AGHT+IEt+gT+n3aIcPy92qL7mJOuB5BABqv+BivtLt7q9aZJYpGW1boxq0BymCIM3FRg2/tQztNVBw==
+X-Received: by 2002:a05:6902:1149:b0:d78:3492:3333 with SMTP id p9-20020a056902114900b00d7834923333mr6188948ybu.7.1694696693314;
+        Thu, 14 Sep 2023 06:04:53 -0700 (PDT)
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com. [209.85.128.170])
+        by smtp.gmail.com with ESMTPSA id y126-20020a253284000000b00d7bb3c4893fsm321844yby.8.2023.09.14.06.04.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Sep 2023 06:04:52 -0700 (PDT)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-59be6bcf408so10777267b3.2;
+        Thu, 14 Sep 2023 06:04:52 -0700 (PDT)
+X-Received: by 2002:a25:d28b:0:b0:d81:b499:2e85 with SMTP id
+ j133-20020a25d28b000000b00d81b4992e85mr365829ybg.47.1694696691965; Thu, 14
+ Sep 2023 06:04:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230901122701.318082-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20230901122701.318082-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Sep 2023 15:02:56 +0200
-Message-ID: <CAPDyKFrmQs76oDbDrza=CKsp0VLHj8xTn9smUwvpXFbKaCZpAA@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: host: Kconfig: Make MMC_SDHI_INTERNAL_DMAC config
- option dependant on ARCH_RENESAS
-To:     Prabhakar <prabhakar.csengg@gmail.com>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-mmc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20230912045157.177966-1-claudiu.beznea.uj@bp.renesas.com> <20230912045157.177966-11-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20230912045157.177966-11-claudiu.beznea.uj@bp.renesas.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 14 Sep 2023 15:04:39 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV+54heFxPGmN53OMmP0cu4+3-t0ARZWH0c+qgZA_G73g@mail.gmail.com>
+Message-ID: <CAMuHMdV+54heFxPGmN53OMmP0cu4+3-t0ARZWH0c+qgZA_G73g@mail.gmail.com>
+Subject: Re: [PATCH 10/37] clk: renesas: rzg2l: use core->name for clock name
+To:     Claudiu <claudiu.beznea@tuxon.dev>
+Cc:     mturquette@baylibre.com, sboyd@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        ulf.hansson@linaro.org, linus.walleij@linaro.org,
+        gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        magnus.damm@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+        prabhakar.mahadev-lad.rj@bp.renesas.com,
+        biju.das.jz@bp.renesas.com, quic_bjorande@quicinc.com,
+        arnd@arndb.de, konrad.dybcio@linaro.org, neil.armstrong@linaro.org,
+        nfraprado@collabora.com, rafal@milecki.pl,
+        wsa+renesas@sang-engineering.com,
+        linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 1 Sept 2023 at 14:27, Prabhakar <prabhakar.csengg@gmail.com> wrote:
->
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->
-> MMC_SDHI_INTERNAL_DMAC config option has dependency on ARM64 and
-> R7S9210/R8A77470 this dependency will keep growing for future SoCs for
-> varying architectures. So to simplify this configuration make
-> MMC_SDHI_INTERNAL_DMAC solely depend on ARCH_RENESAS, as all Renesas
-> SoCs inherently depend on the ARCH_RENESAS config option.
->
-> This allows selecting MMC_SDHI_INTERNAL_DMAC config option for RZ/Five SoC
-> which is based on RISC-V architecture.
->
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Hi Claudiu,
 
-Applied for next, thanks!
+On Tue, Sep 12, 2023 at 6:52 AM Claudiu <claudiu.beznea@tuxon.dev> wrote:
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>
+> core->name already contains the clock name thus, there is no
+> need to check the GET_SHIFT(core->conf) to decide on it.
+>
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-Kind regards
-Uffe
+Thanks for your patch!
 
+> --- a/drivers/clk/renesas/rzg2l-cpg.c
+> +++ b/drivers/clk/renesas/rzg2l-cpg.c
+> @@ -266,7 +266,7 @@ rzg2l_cpg_sd_mux_clk_register(const struct cpg_core_clk *core,
+>         clk_hw_data->priv = priv;
+>         clk_hw_data->conf = core->conf;
+>
+> -       init.name = GET_SHIFT(core->conf) ? "sd1" : "sd0";
+> +       init.name = core->name;
 
-> ---
-> v1-v2
-> * Add dependency on ARCH_RENESAS instead of RISCV
->
-> v1:
-> https://lore.kernel.org/linux-renesas-soc/20230901113703.314667-1-prabhakar.mahadev-lad.rj@bp.renesas.com/
-> ---
->  drivers/mmc/host/Kconfig | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 554e67103c1a..2e8476db2381 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -677,9 +677,9 @@ config MMC_SDHI_SYS_DMAC
->
->  config MMC_SDHI_INTERNAL_DMAC
->         tristate "DMA for SDHI SD/SDIO controllers using on-chip bus mastering"
-> -       depends on ARM64 || ARCH_R7S9210 || ARCH_R8A77470 || COMPILE_TEST
-> +       depends on ARCH_RENESAS || COMPILE_TEST
->         depends on MMC_SDHI
-> -       default MMC_SDHI if (ARM64 || ARCH_R7S9210 || ARCH_R8A77470)
-> +       default MMC_SDHI if ARCH_RENESAS
->         help
->           This provides DMA support for SDHI SD/SDIO controllers
->           using on-chip bus mastering. This supports the controllers
-> --
-> 2.34.1
->
+Note that this does change the case of the names (e.g. "SD0" => "sd0").
+I guess no one cares...
+
+>         init.ops = &rzg2l_cpg_sd_clk_mux_ops;
+>         init.flags = 0;
+>         init.num_parents = core->num_parents;
+
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
