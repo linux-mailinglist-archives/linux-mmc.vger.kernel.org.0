@@ -2,182 +2,559 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B5617AA2E9
-	for <lists+linux-mmc@lfdr.de>; Thu, 21 Sep 2023 23:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E09B7AA555
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Sep 2023 00:56:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232071AbjIUVmp (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 21 Sep 2023 17:42:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34960 "EHLO
+        id S230357AbjIUW4H convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-mmc@lfdr.de>); Thu, 21 Sep 2023 18:56:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231136AbjIUVm2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 Sep 2023 17:42:28 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30504914C5;
-        Thu, 21 Sep 2023 13:34:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695328474; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=to4FZCbRwcRzKdeJ1mP8+pdwViPslNBh4WGE3bEoyQfGnczi5p/d4ohFefO6ZSHdg9
-    2MbAatpQsd49E7SQ+nk1KOMvmzjzh08GKtIjhoIq0p+7bBeGPLl+g+XsEEEPIv0Mpmzw
-    huiPcQ1VqOsa8Ajlwqp/PrqB81PRUjrPYJBGx5KBPsC4n+N5m93IL+jOWuMpSeZ7l9E2
-    bw1ArQlhDo0wnUVeFO8eeNdYM5QdXP4FZS3A9kdb2nIFpS/NhkJ5+MnkFoKE1Zjwka+a
-    LkEEBD7DV/zsNKBs5PwZHIedYT6kdDY5es2D6o6wJnZndPaGYTBJbyT8hqXGl2hNpB+j
-    +5+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695328474;
-    s=strato-dkim-0002; d=strato.com;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=J0nR2muyYS1TkYpyAE/l8A0M3UYTbFjIRjyGUoG0Wew=;
-    b=dOGRxkRI7cEXdJB5HtUFr+pTmpauXNueEvA8wt7yxNOIb8SpNBtrlTmPM/sMJDlIUE
-    HLelAZw0GAbbSNrpYay5IOh8NphGtc9gU9GB3MKduq/H4co0A9e1hyroMHpheb2HXJON
-    MBUWb9xXKRK7XVvBBw/ldmPJ+1KqI139HvTsOlUCz20vu8mApY0BMyTO3DvCgSu96iav
-    ZvPftbV62FNO4KnOSRTfaDz+n5qXb2pudazJl+0nOzsempNUOeBU04mu81Pdpnzwsxpf
-    biO7xvcRGAhPbrZkuDqwXZnXZKSzq3hR//IxcZ8QTKbC+jI+HvIeo5Pu3+Kfe0Q0gGtK
-    3qjA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695328474;
-    s=strato-dkim-0002; d=iokpp.de;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=J0nR2muyYS1TkYpyAE/l8A0M3UYTbFjIRjyGUoG0Wew=;
-    b=GQXutuR22et10f3Y0bPE1jAp4H80TyriH1z33R3Y2Yf3iaiXXXIzYb4UxsNU175sZO
-    l2aauA3uPhVgACd/dnEdDqwbzE15HGJ42mvRG0TsgM3lTGo1T8Sm2Q3LIHlb8+X5cFm0
-    rDB3zMlqA7cDpeZnQuuCCVggS+Axbt1wu4BsnyMcUN58c9eGM8R+GB8fVBfhzNohiMqe
-    smeP23XVOtnnyyzddzEFDYvwhsAF7EM9dYIGCN7iQQykMmXdMLHHhSaJhxgcVHE6LegF
-    SF8L7PJWV4a1bkr2HDPWqnnWp+tQOs0ElmVBMbIg20HJ76+BG9anwMOBhQuKh+aPIJsg
-    l/QA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695328474;
-    s=strato-dkim-0003; d=iokpp.de;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=J0nR2muyYS1TkYpyAE/l8A0M3UYTbFjIRjyGUoG0Wew=;
-    b=Ff1M6q5Rvjxe0XTBaoXIwqjqpuTjfhpfwXz26maVc/GiKwk8PawigSd833I2LR1aco
-    sQyTSvTUR52r3+/SoiBQ==
-X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSedrgBzPc9DUyubU4DD1QLj68UeUr1+U1BzWso7brrTixenVtuORDAoORyBxZr4Riojd"
-Received: from blinux.speedport.ip
-    by smtp.strato.de (RZmta 49.8.2 AUTH)
-    with ESMTPSA id V04024z8LKYYYNv
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 21 Sep 2023 22:34:34 +0200 (CEST)
-From:   Bean Huo <beanhuo@iokpp.de>
-To:     ulf.hansson@linaro.org, adrian.hunter@intel.com,
-        beanhuo@micron.com, jakub.kwapisz@toradex.com,
-        rafael.beims@toradex.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH v3] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron eMMC Q2J54A
-Date:   Thu, 21 Sep 2023 22:34:26 +0200
-Message-Id: <20230921203426.638262-1-beanhuo@iokpp.de>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S231406AbjIUWzs (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Thu, 21 Sep 2023 18:55:48 -0400
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A91FA4A32D;
+        Thu, 21 Sep 2023 10:14:24 -0700 (PDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-68fcb4dc8a9so1111729b3a.2;
+        Thu, 21 Sep 2023 10:14:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695316381; x=1695921181;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UAHKG7R+6lgDEExNMzQpuzImNL/hQIVkiU8H9tQe9qs=;
+        b=qn1ShQ654vea/JyspgXm4BKzvAq1BI2+RQRKH9d3X0FIb2IiFf78005+9QVVMR6DlV
+         ZKKfkDmQCaVjdinLXXlQ3CPGr38xNL2WqGA+f7tWjjaoxnfuLWfx0o1y2S9zJzZiQ3al
+         h0BwA1r5Yv6BWpALyu5fRMtQHjBc03w6taidVd+sblAVBuUZe+KLhg/vj3DZIkSc9w8P
+         C9bgEbQVCSvoMRCI2pMHjYYaM+rVnfrFMzK7yNOPQP1vPU/MXer2l/5dDZ1dUPdyHGZF
+         r+LxrKQISxijzkRWLZjufc7I2GGlMPvTKxa86vGr/bE88Pwbcw7y0OQCW3lX7sQcneLL
+         IAuw==
+X-Gm-Message-State: AOJu0YxrDsTmr0Ae1sXNZ/bqQ6LRvLvcW87XWDrJEXGudQejZCDJbQDL
+        vCyzPvEjTtkzVasgHhAZxMbTS/9Q0S5R664I
+X-Google-Smtp-Source: AGHT+IE+DSffpVBY2fAYdjK9RqpHWFHeAABPgDSQcgdEstjFSu4XhYPWPAjjeOKcf3AXtNokRlDirA==
+X-Received: by 2002:a25:850e:0:b0:d0a:a1fa:b8e4 with SMTP id w14-20020a25850e000000b00d0aa1fab8e4mr5651126ybk.38.1695301687803;
+        Thu, 21 Sep 2023 06:08:07 -0700 (PDT)
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com. [209.85.128.173])
+        by smtp.gmail.com with ESMTPSA id z17-20020a258691000000b00d7e3e42d0c4sm308412ybk.53.2023.09.21.06.08.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Sep 2023 06:08:07 -0700 (PDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-59ed7094255so11814607b3.3;
+        Thu, 21 Sep 2023 06:08:07 -0700 (PDT)
+X-Received: by 2002:a81:c213:0:b0:58f:bda3:8dd with SMTP id
+ z19-20020a81c213000000b0058fbda308ddmr5534159ywc.32.1695301687169; Thu, 21
+ Sep 2023 06:08:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20230912045157.177966-1-claudiu.beznea.uj@bp.renesas.com> <20230912045157.177966-28-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20230912045157.177966-28-claudiu.beznea.uj@bp.renesas.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 21 Sep 2023 15:07:53 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWfa_vre2Y0nOwST4FZ5D8NZj7cOmhrvk+MaMTjNYM+uA@mail.gmail.com>
+Message-ID: <CAMuHMdWfa_vre2Y0nOwST4FZ5D8NZj7cOmhrvk+MaMTjNYM+uA@mail.gmail.com>
+Subject: Re: [PATCH 27/37] pinctrl: renesas: rzg2l: add support for different
+ ds values on different groups
+To:     Claudiu <claudiu.beznea@tuxon.dev>
+Cc:     mturquette@baylibre.com, sboyd@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        ulf.hansson@linaro.org, linus.walleij@linaro.org,
+        gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        magnus.damm@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+        prabhakar.mahadev-lad.rj@bp.renesas.com,
+        biju.das.jz@bp.renesas.com, quic_bjorande@quicinc.com,
+        arnd@arndb.de, konrad.dybcio@linaro.org, neil.armstrong@linaro.org,
+        nfraprado@collabora.com, rafal@milecki.pl,
+        wsa+renesas@sang-engineering.com,
+        linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-From: Bean Huo <beanhuo@micron.com>
+Hi Claudiu,
 
-Micron MTFC4GACAJCN eMMC supports cache but requires that flush cache
-operation be allowed only after a write has occurred. Otherwise, the
-cache flush command or subsequent commands will time out.
+Thanks for your patch!
 
-Signed-off-by: Bean Huo <beanhuo@micron.com>
-Co-developed-by: Rafael Beims <rafael.beims@toradex.com>
-Cc: stable@vger.kernel.org
----
-Changelog:
+On Tue, Sep 12, 2023 at 6:53 AM Claudiu <claudiu.beznea@tuxon.dev> wrote:
+>
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>
+> RZ/G3S supports different drive strenght values for different power sources
 
-v2--v3:
-    1. Set card->written_flag in mmc_blk_mq_issue_rq().
-v1--v2:
-    1. Add Rafael's test-tag, and Co-developed-by.
-    2. Check host->card whether NULL or not in __mmc_start_request() before asserting host->card->->quirks
----
- drivers/mmc/core/block.c  | 4 ++++
- drivers/mmc/core/mmc.c    | 5 +++++
- drivers/mmc/core/quirks.h | 7 ++++---
- include/linux/mmc/card.h  | 2 ++
- 4 files changed, 15 insertions(+), 3 deletions(-)
+strength
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 3a8f27c3e310..14d0dc7942de 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -2387,6 +2387,10 @@ enum mmc_issued mmc_blk_mq_issue_rq(struct mmc_queue *mq, struct request *req)
- 				ret = mmc_blk_cqe_issue_rw_rq(mq, req);
- 			else
- 				ret = mmc_blk_mq_issue_rw_rq(mq, req);
-+
-+			if (host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH &&
-+			    !host->card->written_flag && !ret)
-+				host->card->written_flag = true;
- 			break;
- 		default:
- 			WARN_ON_ONCE(1);
-diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-index 89cd48fcec79..a2edd065fa1b 100644
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
- 	if (!oldcard)
- 		host->card = card;
- 
-+	card->written_flag = false;
-+
- 	return 0;
- 
- free_card:
-@@ -2081,6 +2083,9 @@ static int _mmc_flush_cache(struct mmc_host *host)
- {
- 	int err = 0;
- 
-+	if (host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH && !host->card->written_flag)
-+		return err;
-+
- 	if (_mmc_cache_enabled(host)) {
- 		err = mmc_switch(host->card, EXT_CSD_CMD_SET_NORMAL,
- 				 EXT_CSD_FLUSH_CACHE, 1,
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index 32b64b564fb1..5e68c8b4cdca 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -110,11 +110,12 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
- 		  MMC_QUIRK_TRIM_BROKEN),
- 
- 	/*
--	 * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
--	 * support being used to offload WRITE_ZEROES.
-+	 * Micron MTFC4GACAJCN-1M supports TRIM but does not appear to suppor
-+	 * WRITE_ZEROES offloading. It also supports caching, but the cache can
-+	 * only be flushed after a write has occurred.
- 	 */
- 	MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
--		  MMC_QUIRK_TRIM_BROKEN),
-+		  MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
- 
- 	/*
- 	 * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index daa2f40d9ce6..7b12eebc5586 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -295,7 +295,9 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_HPI	(1<<13)		/* Disable broken HPI support */
- #define MMC_QUIRK_BROKEN_SD_DISCARD	(1<<14)	/* Disable broken SD discard support */
- #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
-+#define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
- 
-+	bool			written_flag;	/* Indicates eMMC has been written since power on */
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
- 
- 	unsigned int		erase_size;	/* erase size in sectors */
--- 
-2.34.1
+> and pin groups (A, B, C). On each group there could be up to 4 drive
+> strength values per power source. Available power sources are 1v8, 2v5,
+> 3v3. Drive strength values are fine tuned than what was previously
+> available on the driver thus the necessity of having micro-amp support.
+> As drive strength and power source values are linked togheter the
 
+together
+
+> hardware setup for these was moved at the end of
+> rzg2l_pinctrl_pinconf_set() to ensure proper validation of the new
+> values.
+>
+> The drive strength values are expected to be initialized though SoC
+> specific hardware configuration data structure.
+>
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+
+> --- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+> +++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+
+> @@ -133,27 +135,40 @@ struct rzg2l_register_offsets {
+>         u16 sd_ch;
+>  };
+>
+> +/* Value to be passed on drive strength arrays as invalid value. */
+> +#define RZG2L_INVALID_IOLH_VAL (0xffff)
+
+I think you can do without this (see below).
+
+> +
+>  /**
+>   * enum rzg2l_iolh_index - starting indexes in IOLH specific arrays
+> + * @RZG2L_IOLH_IDX_1V8: starting index for 1V8 power source
+> + * @RZG2L_IOLH_IDX_2V5: starting index for 2V5 power source
+>   * @RZG2L_IOLH_IDX_3V3: starting index for 3V3 power source
+>   * @RZG2L_IOLH_IDX_MAX: maximum index
+>   */
+>  enum rzg2l_iolh_index {
+> -       RZG2L_IOLH_IDX_3V3 = 0,
+> -       RZG2L_IOLH_IDX_MAX = 4,
+> +       RZG2L_IOLH_IDX_1V8 = 0,
+> +       RZG2L_IOLH_IDX_2V5 = 4,
+> +       RZG2L_IOLH_IDX_3V3 = 8,
+> +       RZG2L_IOLH_IDX_MAX = 12,
+>  };
+>
+>  /**
+>   * struct rzg2l_hwcfg - hardware configuration data structure
+>   * @regs: hardware specific register offsets
+>   * @iolh_groupa_ua: IOLH group A micro amps specific values
+> + * @iolh_groupb_ua: IOLH group B micro amps specific values
+> + * @iolh_groupc_ua: IOLH group C micro amps specific values
+
+uA
+
+>   * @iolh_groupb_oi: IOLH group B output impedance specific values
+> + * @drive_strength_ua: driver strenght in ua is supported (otherwise mA is supported)
+
+drive strength in uA
+
+>   * @func_base: base number for port function (see register PFC)
+>   */
+>  struct rzg2l_hwcfg {
+>         const struct rzg2l_register_offsets regs;
+>         u16 iolh_groupa_ua[RZG2L_IOLH_IDX_MAX];
+> +       u16 iolh_groupb_ua[RZG2L_IOLH_IDX_MAX];
+> +       u16 iolh_groupc_ua[RZG2L_IOLH_IDX_MAX];
+>         u16 iolh_groupb_oi[RZG2L_IOLH_IDX_MAX];
+> +       bool drive_strength_ua;
+>         u8 func_base;
+>  };
+>
+
+> @@ -555,6 +584,164 @@ static void rzg2l_rmw_pin_config(struct rzg2l_pinctrl *pctrl, u32 offset,
+>         spin_unlock_irqrestore(&pctrl->lock, flags);
+>  }
+>
+> +static int rzg2l_get_power_source(struct rzg2l_pinctrl *pctrl, u32 pin, u32 caps)
+> +{
+> +       const struct rzg2l_hwcfg *hwcfg = pctrl->data->hwcfg;
+> +       const struct rzg2l_register_offsets *regs = &hwcfg->regs;
+> +       unsigned long flags;
+> +       void __iomem *addr;
+> +       u32 pwr_reg;
+> +       u16 ps;
+> +
+> +       if (caps & PIN_CFG_IO_VMC_SD0)
+> +               pwr_reg = SD_CH(regs->sd_ch, 0);
+> +       else if (caps & PIN_CFG_IO_VMC_SD1)
+> +               pwr_reg = SD_CH(regs->sd_ch, 1);
+> +       else if (caps & PIN_CFG_IO_VMC_QSPI)
+> +               pwr_reg = QSPI;
+> +       else if (!(caps & PIN_CFG_SOFT_PS))
+> +               return -EINVAL;
+> +
+> +       spin_lock_irqsave(&pctrl->lock, flags);
+
+No need to take this spinlock
+(it was just moved, and wasn't needed before).
+
+> +       if (caps & PIN_CFG_SOFT_PS) {
+> +               ps = pctrl->settings[pin].power_source;
+> +       } else {
+> +               addr = pctrl->base + pwr_reg;
+> +               ps = (readl(addr) & PVDD_MASK) ? 1800 : 3300;
+> +       }
+> +       spin_unlock_irqrestore(&pctrl->lock, flags);
+
+I think the above can be simplified using a new caps_to_pwr_reg()
+helper:
+
+    if (caps & PIN_CFG_SOFT_PS)
+                return pctrl->settings[pin].power_source;
+
+    addr = pctrl->base + caps_to_pwr_reg(caps);
+    if (addr == (u32)-1)
+            return -EINVAL;
+
+    return (readl(addr) & PVDD_MASK) ? 1800 : 3300;
+
+BTW, if it wasn't for the initialization of settings[pin].power_source
+in rzg2l_pinctrl_register() using rzg2l_get_power_source() too, you
+could always return the cached value.
+
+> +
+> +       return ps;
+> +}
+> +
+> +static int rzg2l_set_power_source(struct rzg2l_pinctrl *pctrl, u32 pin, u32 caps, u32 ps)
+> +{
+> +       const struct rzg2l_hwcfg *hwcfg = pctrl->data->hwcfg;
+> +       const struct rzg2l_register_offsets *regs = &hwcfg->regs;
+> +       unsigned long flags;
+> +       void __iomem *addr;
+> +       u32 pwr_reg;
+> +
+> +       if (caps & PIN_CFG_IO_VMC_SD0)
+> +               pwr_reg = SD_CH(regs->sd_ch, 0);
+> +       else if (caps & PIN_CFG_IO_VMC_SD1)
+> +               pwr_reg = SD_CH(regs->sd_ch, 1);
+> +       else if (caps & PIN_CFG_IO_VMC_QSPI)
+> +               pwr_reg = QSPI;
+> +       else if (!(caps & PIN_CFG_SOFT_PS))
+> +               return -EINVAL;
+> +
+> +       addr = pctrl->base + pwr_reg;
+> +       spin_lock_irqsave(&pctrl->lock, flags);
+> +       if (!(caps & PIN_CFG_SOFT_PS))
+> +               writel((ps == 1800) ? PVDD_1800 : PVDD_3300, addr);
+> +       pctrl->settings[pin].power_source = ps;
+> +       spin_unlock_irqrestore(&pctrl->lock, flags);
+
+No need to take this spinlock
+(it was just moved, and wasn't needed before).
+
+> +
+> +       return 0;
+
+This function can be simplified in a similar way.
+
+> +}
+
+> +static u16 rzg2l_iolh_ua_to_val(const struct rzg2l_hwcfg *hwcfg, u32 caps,
+> +                               enum rzg2l_iolh_index ps_index, u16 ua)
+> +{
+> +       const u16 *array = NULL;
+> +       u16 i;
+> +
+> +       if (caps & PIN_CFG_IOLH_A)
+> +               array = &hwcfg->iolh_groupa_ua[ps_index];
+> +
+> +       if (caps & PIN_CFG_IOLH_B)
+> +               array = &hwcfg->iolh_groupb_ua[ps_index];
+> +
+> +       if (caps & PIN_CFG_IOLH_C)
+> +               array = &hwcfg->iolh_groupc_ua[ps_index];
+> +
+> +       if (!array)
+> +               return RZG2L_INVALID_IOLH_VAL;
+
+Just make the function return int, and return -EINVAL.
+
+> +
+> +       for (i = 0; i < 4; i++) {
+> +               if (array[i] == ua)
+> +                       return i;
+> +       }
+> +
+> +       return RZG2L_INVALID_IOLH_VAL;
+> +}
+> +
+> +static bool rzg2l_ds_supported(struct rzg2l_pinctrl *pctrl, u32 caps,
+
+rzg2l_ds_is_supported(), for consistency with rzg2l_ps_is_supported()
+
+> +                              enum rzg2l_iolh_index iolh_idx,
+> +                              u16 ds)
+> +{
+> +       const struct rzg2l_hwcfg *hwcfg = pctrl->data->hwcfg;
+> +       const u16 *array = NULL;
+> +       u16 i;
+> +
+> +       if (caps & PIN_CFG_IOLH_A)
+> +               array = hwcfg->iolh_groupa_ua;
+> +
+> +       if (caps & PIN_CFG_IOLH_B)
+> +               array = hwcfg->iolh_groupb_ua;
+> +
+> +       if (caps & PIN_CFG_IOLH_C)
+> +               array = hwcfg->iolh_groupc_ua;
+> +
+> +       /* Should not happen. */
+> +       if (!array)
+> +               return false;
+> +
+> +       if (array[iolh_idx] == RZG2L_INVALID_IOLH_VAL)
+
+If zero uA is considered an invalid value, this can be simplified to
+
+    if (!array[iolh_idx])
+
+> +               return false;
+> +
+> +       for (i = 0; i < 4; i++) {
+> +               if (array[iolh_idx + i] == ds)
+> +                       return true;
+> +       }
+> +
+> +       return false;
+> +}
+> +
+>  static int rzg2l_pinctrl_pinconf_get(struct pinctrl_dev *pctldev,
+>                                      unsigned int _pin,
+>                                      unsigned long *config)
+
+> @@ -594,40 +779,50 @@ static int rzg2l_pinctrl_pinconf_get(struct pinctrl_dev *pctldev,
+>                         return -EINVAL;
+>                 break;
+>
+> -       case PIN_CONFIG_POWER_SOURCE: {
+> -               u32 pwr_reg = 0x0;
+> -
+> -               if (cfg & PIN_CFG_IO_VMC_SD0)
+> -                       pwr_reg = SD_CH(regs->sd_ch, 0);
+> -               else if (cfg & PIN_CFG_IO_VMC_SD1)
+> -                       pwr_reg = SD_CH(regs->sd_ch, 1);
+> -               else if (cfg & PIN_CFG_IO_VMC_QSPI)
+> -                       pwr_reg = QSPI;
+> -               else
+> -                       return -EINVAL;
+> -
+> -               spin_lock_irqsave(&pctrl->lock, flags);
+> -               addr = pctrl->base + pwr_reg;
+> -               arg = (readl(addr) & PVDD_MASK) ? 1800 : 3300;
+> -               spin_unlock_irqrestore(&pctrl->lock, flags);
+> +       case PIN_CONFIG_POWER_SOURCE:
+> +               ret = rzg2l_get_power_source(pctrl, _pin, cfg);
+> +               if (ret < 0)
+> +                       return ret;
+> +               arg = ret;
+>                 break;
+> -       }
+>
+>         case PIN_CONFIG_DRIVE_STRENGTH: {
+>                 unsigned int index;
+>
+> -               if (!(cfg & PIN_CFG_IOLH_A))
+> +               if (!(cfg & PIN_CFG_IOLH_A) || hwcfg->drive_strength_ua)
+>                         return -EINVAL;
+>
+>                 index = rzg2l_read_pin_config(pctrl, IOLH(off), bit, IOLH_MASK);
+> +               /*
+> +                * Drive strenght mA is supported only by group A and only
+> +                * for 3V3 port source.
+> +                */
+>                 arg = hwcfg->iolh_groupa_ua[index + RZG2L_IOLH_IDX_3V3] / 1000;
+>                 break;
+>         }
+>
+> +       case PIN_CONFIG_DRIVE_STRENGTH_UA: {
+> +               enum rzg2l_iolh_index iolh_idx;
+> +               u8 val;
+> +
+> +               if (!(cfg & (PIN_CFG_IOLH_A | PIN_CFG_IOLH_B | PIN_CFG_IOLH_C)) ||
+> +                   !hwcfg->drive_strength_ua)
+> +                       return -EINVAL;
+> +
+> +               ret = rzg2l_get_power_source(pctrl, _pin, cfg);
+> +               if (ret < 0)
+> +                       return ret;
+> +               iolh_idx = rzg2l_ps_to_iolh_idx(ret);
+> +               val = rzg2l_read_pin_config(pctrl, IOLH(off), bit, IOLH_MASK);
+> +               arg = rzg2l_iolh_val_to_ua(hwcfg, cfg, iolh_idx + val);
+> +               break;
+> +       }
+> +
+>         case PIN_CONFIG_OUTPUT_IMPEDANCE_OHMS: {
+>                 unsigned int index;
+>
+> -               if (!(cfg & PIN_CFG_IOLH_B))
+> +               if (!(cfg & PIN_CFG_IOLH_B) ||
+> +                   hwcfg->iolh_groupb_oi[0] == RZG2L_INVALID_IOLH_VAL)
+
+    !hwcfg->iolh_groupb_oi[0]
+
+>                         return -EINVAL;
+>
+>                 index = rzg2l_read_pin_config(pctrl, IOLH(off), bit, IOLH_MASK);
+
+> @@ -730,11 +904,20 @@ static int rzg2l_pinctrl_pinconf_set(struct pinctrl_dev *pctldev,
+>                         break;
+>                 }
+>
+> +               case PIN_CONFIG_DRIVE_STRENGTH_UA:
+> +                       if (!(cfg & (PIN_CFG_IOLH_A | PIN_CFG_IOLH_B | PIN_CFG_IOLH_C)) ||
+> +                           !hwcfg->drive_strength_ua)
+> +                               return -EINVAL;
+> +
+> +                       settings.drive_strength_ua = pinconf_to_config_argument(_configs[i]);
+> +                       break;
+> +
+>                 case PIN_CONFIG_OUTPUT_IMPEDANCE_OHMS: {
+>                         unsigned int arg = pinconf_to_config_argument(_configs[i]);
+>                         unsigned int index;
+>
+> -                       if (!(cfg & PIN_CFG_IOLH_B))
+> +                       if (!(cfg & PIN_CFG_IOLH_B) ||
+> +                           hwcfg->iolh_groupb_oi[0] == RZG2L_INVALID_IOLH_VAL)
+
+!iolh_groupb_oi[0]
+
+>                                 return -EINVAL;
+>
+>                         for (index = 0; index < ARRAY_SIZE(hwcfg->iolh_groupb_oi); index++) {
+> @@ -753,6 +936,47 @@ static int rzg2l_pinctrl_pinconf_set(struct pinctrl_dev *pctldev,
+>                 }
+>         }
+>
+> +       /* Apply drive strength and power source. */
+> +       if (memcmp(&settings, &pctrl->settings[_pin], sizeof(settings))) {
+
+I'd rather invert the logic and return early here, so you can decrease
+indentation below...
+
+> +               enum rzg2l_iolh_index iolh_idx;
+> +               unsigned long flags;
+> +               int ret;
+> +               u16 val;
+> +
+> +               if (settings.power_source == pctrl->settings[_pin].power_source)
+> +                       goto apply_drive_strength;
+
+... and invert the logic here to avoid the goto:
+
+    if (settings.power_source != pctrl->settings[_pin].power_source)) {
+            ...
+> +
+> +               ret = rzg2l_ps_is_supported(settings.power_source);
+> +               if (!ret)
+> +                       return -EINVAL;
+> +
+> +               /* Apply power source. */
+> +               ret = rzg2l_set_power_source(pctrl, _pin, cfg, settings.power_source);
+> +               if (ret)
+> +                       return ret;
+> +
+
+    }
+
+> +apply_drive_strength:
+> +               if (settings.drive_strength_ua == pctrl->settings[_pin].drive_strength_ua)
+> +                       return 0;
+
+Same here:
+
+    if (settings.drive_strength_ua != pctrl->settings[_pin].drive_strength_ua) {
+            ...
+
+> +
+> +               iolh_idx = rzg2l_ps_to_iolh_idx(settings.power_source);
+> +               ret = rzg2l_ds_supported(pctrl, cfg, iolh_idx,
+> +                                        settings.drive_strength_ua);
+> +               if (!ret)
+> +                       return -EINVAL;
+> +
+> +               /* Get register value for this PS/DS tuple. */
+> +               val = rzg2l_iolh_ua_to_val(hwcfg, cfg, iolh_idx, settings.drive_strength_ua);
+> +               if (val == RZG2L_INVALID_IOLH_VAL)
+> +                       return -EINVAL;
+
+Make val int, and return val if it is a negative error code.
+
+> +
+> +               /* Apply drive strength. */
+> +               rzg2l_rmw_pin_config(pctrl, IOLH(off), bit, IOLH_MASK, val);
+> +               spin_lock_irqsave(&pctrl->lock, flags);
+> +               pctrl->settings[_pin].drive_strength_ua = settings.drive_strength_ua;
+> +               spin_unlock_irqrestore(&pctrl->lock, flags);
+
+No need to take the spinlock.
+
+> +       }
+> +
+
+And after that, you'll realize the memcmp() can just be dropped ;-)
+
+>         return 0;
+>  }
+>
+> @@ -1459,6 +1683,7 @@ static int rzg2l_gpio_register(struct rzg2l_pinctrl *pctrl)
+>
+>  static int rzg2l_pinctrl_register(struct rzg2l_pinctrl *pctrl)
+>  {
+> +       const struct rzg2l_hwcfg *hwcfg = pctrl->data->hwcfg;
+>         struct pinctrl_pin_desc *pins;
+>         unsigned int i, j;
+>         u32 *pin_data;
+> @@ -1501,6 +1726,22 @@ static int rzg2l_pinctrl_register(struct rzg2l_pinctrl *pctrl)
+>                 pins[index].drv_data = &pin_data[index];
+>         }
+>
+> +       pctrl->settings = devm_kzalloc(pctrl->dev, sizeof(*pctrl->settings) * pctrl->desc.npins,
+> +                                      GFP_KERNEL);
+
+devm_kcalloc()
+
+> +       if (!pctrl->settings)
+> +               return -ENOMEM;
+> +
+> +       for (i = 0; hwcfg->drive_strength_ua && i < pctrl->desc.npins; i++) {
+> +               if (pin_data[i] & PIN_CFG_SOFT_PS) {
+> +                       pctrl->settings[i].power_source = 3300;
+> +               } else {
+> +                       ret = rzg2l_get_power_source(pctrl, i, pin_data[i]);
+> +                       if (ret < 0)
+> +                               continue;
+> +                       pctrl->settings[i].power_source = ret;
+> +               }
+> +       }
+> +
+>         ret = devm_pinctrl_register_and_init(pctrl->dev, &pctrl->desc, pctrl,
+>                                              &pctrl->pctl);
+>         if (ret) {
+> @@ -1574,6 +1815,8 @@ static const struct rzg2l_hwcfg rzg2l_hwcfg = {
+>                 .sd_ch = 0x3000,
+>         },
+>         .iolh_groupa_ua = {
+> +               /* 1v8, 2v5 power source */
+> +               [RZG2L_IOLH_IDX_1V8 ... RZG2L_IOLH_IDX_3V3 - 1] = RZG2L_INVALID_IOLH_VAL,
+
+If zero uA is considered an invalid value, the initialization above can
+be dropped.
+
+>                 /* 3v3 power source */
+>                 [RZG2L_IOLH_IDX_3V3] = 2000, 4000, 8000, 12000,
+>         },
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
