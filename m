@@ -2,144 +2,149 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95E667B9F5F
-	for <lists+linux-mmc@lfdr.de>; Thu,  5 Oct 2023 16:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AD787BB110
+	for <lists+linux-mmc@lfdr.de>; Fri,  6 Oct 2023 07:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233786AbjJEOWe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 5 Oct 2023 10:22:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55736 "EHLO
+        id S230017AbjJFFAh (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 6 Oct 2023 01:00:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233778AbjJEOUc (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 5 Oct 2023 10:20:32 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A38424EAF
-        for <linux-mmc@vger.kernel.org>; Thu,  5 Oct 2023 04:39:06 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-d81b42a3108so973868276.1
-        for <linux-mmc@vger.kernel.org>; Thu, 05 Oct 2023 04:39:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696505945; x=1697110745; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=naZTOLgodXSRWT4LwUJ1kL94FBBp5L5BUMYnXCMGCqU=;
-        b=x7U/RhmkBZjrf1zvnD1trRt2eOLLMC18PzHYFzNSviiAgvLXEQGmPP1qD+C2ykUgJH
-         np6dOOLQwC1QkdksHQC2+jkK4ISG80C2XBmLDrIeQn4LUb+NtNxbwyWqpLcUWCSYtukj
-         S84slw9NdCr4beYAmZTANWYrLqWP5rC6FAGVxhdCtFUK//jTUEv6FZpjvzJZQwlIV2S+
-         1IMUcrItX1gnh8vue22FvlzzXY2fkF5nTCHTXgXGOZyVmYppO5yN8whUOVrUNWnSe0wO
-         CT4jBBYzjxwVcRxN7v9ILGlMSKZBPxzy+wHaKgeXGn926IXZLbUhKAdLcK6uog21dC2W
-         9Icg==
+        with ESMTP id S229876AbjJFFAg (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 6 Oct 2023 01:00:36 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82D0CB6
+        for <linux-mmc@vger.kernel.org>; Thu,  5 Oct 2023 22:00:31 -0700 (PDT)
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 36B2B3F32D
+        for <linux-mmc@vger.kernel.org>; Fri,  6 Oct 2023 05:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1696568429;
+        bh=3kBkO+xPsvpv6WlXJ5HZzURknDu1eKx2EKHLI5RN7RU=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=W013DWQF0Ykme0/KQ4S2QHDhBKsMh/OjeN2cljvWLx9exoRoINkYpDLv/CKVCaCva
+         G1RnMcEdr9J05EXKb/9rzNJDXVga5ZNKULK7RETyQrhOFqR3DsvXKqAoMHYhc0itps
+         w6SaO3f5tBd0LHqQyzs3c/ID5hhKnVvoGNIUVzUqGuMEgewO7XDOg1LeonqUSu+Tt9
+         PGBT2b0I8w0KBuSeg8cmZCRYLBV4WNLWa7K9+ek2n5j628oZbceCc0MGH8EgB3nAhn
+         KIgXKcw61LQUwBDZJP4iA4Ypnj2ntqmO5n2+SkIPl2W5FJgHDEQouYdjpeNLDMRcmF
+         coDrxem0ZwroA==
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-57b63eba015so2142040eaf.3
+        for <linux-mmc@vger.kernel.org>; Thu, 05 Oct 2023 22:00:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696505945; x=1697110745;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=naZTOLgodXSRWT4LwUJ1kL94FBBp5L5BUMYnXCMGCqU=;
-        b=r/zMZo6AePLks2uF8vW59axpngVbHL3h1hBeHhIC6ql4/VGC1doRyg9qFoCSZ3aBxd
-         qvMNzwe4Iysr/0GyMl7pbWu8bBxRxLpAooYnKYzFLd1wkAfj+SP8fxi8eVI3WMWqZfgI
-         GO3ifAlKEPju4Ku+eZdOzA86W7eu03VgVceI2iws0nNF8EWm/lkN4Ago5P5kPRkolskv
-         maULcKIPFqCB5xoGaCLjIqnNEtWSW3v8fCDsMLAPQ4uhmTPzirUOMoHs192OecxxiOuW
-         AZeP5l4TWynWSol358pZyz2d4wjWSOe2eO2bIAGJSmfqMCPMPLRK0oJYtInSq6EVaFHk
-         9tcg==
-X-Gm-Message-State: AOJu0YySU6wnOp7Hj6x1aQ47SiPJ6n3HR5ppn0e70BogMmgrBpZv4u+l
-        X+gVVng8M+eOL62ziGeJ9iCyGyyMykLxKbZSfioaTg==
-X-Google-Smtp-Source: AGHT+IExB3S3qMjm2rkhevtVVDJ/UHiNEYen1x7GrpFYvWusu8nA3zn+4WyE6zXOAlDMLW0ENeclKXjd/dARivISx7E=
-X-Received: by 2002:a25:aac8:0:b0:d85:b07d:e2f8 with SMTP id
- t66-20020a25aac8000000b00d85b07de2f8mr4797738ybi.15.1696505945569; Thu, 05
- Oct 2023 04:39:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696568428; x=1697173228;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3kBkO+xPsvpv6WlXJ5HZzURknDu1eKx2EKHLI5RN7RU=;
+        b=GMVr06uZBs8nV3iFpbRwdoWHtYcp6P2jbpwIiF1bXkuSpHUbug/KuUJ9NUoml5JcC0
+         7HzFrUZ3RfJgT5ATIIKnbfEmzp7VjYleblgamyMHwlvVjTZF3rlWTzb+yDeWrq6OSApu
+         o+aubm9BKL/8zUtvUXJBj6kHpVnugi6uVyQz5TbisgKwi7RER23bjyDJzuhNyjMwQFEt
+         CqLMkjmBhws6TLMMVkQG41aWW4Ii8Tsb6DJ/y2GJ52XcYmkUssYQ8VG6HufQMLWnW2iT
+         lbvRmjpZIcqHRIRDZny88EpGW129iqzu34iSpj5h7IM2a6mhCz7v3YGprmCpQYGKGGMO
+         ZJ3A==
+X-Gm-Message-State: AOJu0YxAauzu5JGj25NtXqhsICvN2xs0zcybRopTpjAOSakvJ4G+QZcp
+        f/b8A64N01fDO3aAny0vy3R2wPE2Yjgd/ToaM5BG3qfIi+HHM9oowTeNlwhmWelgKsAXnOAT+kv
+        xuLaxKQ93rJPg7NgBKvZR3sG4NnwYKtjcXfsdppTuJNAtT7MQiLymgw==
+X-Received: by 2002:a05:6358:4298:b0:143:8af4:229e with SMTP id s24-20020a056358429800b001438af4229emr8083955rwc.9.1696568428084;
+        Thu, 05 Oct 2023 22:00:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFmuTznHxAWL216Xcmib0mpX2Hgmlr/og7zwlow+YPDDioBVPVh4YbkFELNe1Z/fYS8QzTzO+/k029euoUb2UY=
+X-Received: by 2002:a05:6358:4298:b0:143:8af4:229e with SMTP id
+ s24-20020a056358429800b001438af4229emr8083937rwc.9.1696568427688; Thu, 05 Oct
+ 2023 22:00:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230915094351.11120-1-victorshihgli@gmail.com> <20230915094351.11120-21-victorshihgli@gmail.com>
-In-Reply-To: <20230915094351.11120-21-victorshihgli@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 5 Oct 2023 13:38:29 +0200
-Message-ID: <CAPDyKFr4C8woRLzzz9FnhDvL0n8RObHNWCTP3WYxvraVYWYWXA@mail.gmail.com>
-Subject: Re: [PATCH V12 20/23] mmc: sdhci-uhs2: add add_host() and others to
- set up the driver
-To:     Victor Shih <victorshihgli@gmail.com>
-Cc:     adrian.hunter@intel.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, benchuanggli@gmail.com,
-        HL.Liu@genesyslogic.com.tw, Greg.tu@genesyslogic.com.tw,
-        takahiro.akashi@linaro.org, dlunev@chromium.org,
-        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-        Victor Shih <victor.shih@genesyslogic.com.tw>
+References: <2ce258f371234b1f8a1a470d5488d00e@realtek.com> <CAPDyKFoCHtN9jK3A9YkoQC+e_3XNKJNp7-w1WkNMFBp6n-PH=g@mail.gmail.com>
+ <CAPDyKFp6cFnpWRA=iGZFr94UdjFbjtMbcTJORfFKQ-izdtX8bQ@mail.gmail.com>
+In-Reply-To: <CAPDyKFp6cFnpWRA=iGZFr94UdjFbjtMbcTJORfFKQ-izdtX8bQ@mail.gmail.com>
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Fri, 6 Oct 2023 13:00:15 +0800
+Message-ID: <CAAd53p5+ngpAB+J_Hshug61bCCCoec=LveeAUSrtAd_UP6gSoQ@mail.gmail.com>
+Subject: Re: [PATCH] misc: rtsx: Fix an error access Page fault
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Ricky WU <ricky_wu@realtek.com>, "arnd@arndb.de" <arnd@arndb.de>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On Fri, 15 Sept 2023 at 11:44, Victor Shih <victorshihgli@gmail.com> wrote:
+Ricky,
+
+On Tue, Sep 26, 2023 at 11:04=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.or=
+g> wrote:
 >
-> From: Victor Shih <victor.shih@genesyslogic.com.tw>
+> On Thu, 14 Sept 2023 at 16:47, Ulf Hansson <ulf.hansson@linaro.org> wrote=
+:
+> >
+> > On Wed, 6 Sept 2023 at 10:03, Ricky WU <ricky_wu@realtek.com> wrote:
+> > >
+> > > an error occurs on insert SD7.0 card.
+> > > The pci slot of rtsx_pci will Link Down when the SD7.0 card inserted,
+> > > but the rtsx_pci not exit from runtime_idle at that time,
+> > > then do the power_saving function to access the wrong resource
+> > >
+> > > Fixes: 597568e8df04 ("misc: rtsx: Rework runtime power management flo=
+w")
+> > > Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> > > Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+> >
+> > Applied for fixes, thanks!
 >
-> This is a UHS-II version of sdhci's add_host/remove_host operation.
-> Any sdhci drivers which are capable of handling UHS-II cards must
-> call those functions instead of the corresponding sdhci's.
+> This was not ready to be applied, my bad! Fortunately, I haven't
+> submitted a pull-request with this yet, so I am simply dropping the
+> patch for now, to make sure we find the proper solution.
+
+Can you please see if the following change helps:
+
+diff --git a/drivers/pci/hotplug/pciehp_pci.c b/drivers/pci/hotplug/pciehp_=
+pci.c
+index ad12515a4a121..89480e31c2266 100644
+--- a/drivers/pci/hotplug/pciehp_pci.c
++++ b/drivers/pci/hotplug/pciehp_pci.c
+@@ -18,9 +18,18 @@
+ #include <linux/kernel.h>
+ #include <linux/types.h>
+ #include <linux/pci.h>
++#include <linux/pm_runtime.h>
+ #include "../pci.h"
+ #include "pciehp.h"
+
++int pciehp_pm_runtime_barrier(struct pci_dev *pdev, void *unused)
++{
++       pm_runtime_barrier(&pdev->dev);
++       pci_dev_set_disconnected(pdev, NULL);
++
++       return 0;
++}
++
+ /**
+  * pciehp_configure_device() - enumerate PCI devices below a hotplug bridg=
+e
+  * @ctrl: PCIe hotplug controller
+@@ -98,7 +107,7 @@ void pciehp_unconfigure_device(struct controller
+*ctrl, bool presence)
+                 __func__, pci_domain_nr(parent), parent->number);
+
+        if (!presence)
+-               pci_walk_bus(parent, pci_dev_set_disconnected, NULL);
++               pci_walk_bus(parent, pciehp_pm_runtime_barrier, NULL);
+
+        pci_lock_rescan_remove();
+
+
 >
-> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> Signed-off-by: AKASHI Takahiro <takahiro.akashi@linaro.org>
-> Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-
-[...]
-
-Just a few nitpicks, see below.
-
-> +static void __sdhci_uhs2_add_host_v4(struct sdhci_host *host, u32 caps1)
-> +{
-> +       struct mmc_host *mmc;
-> +       u32 max_current_caps2;
-> +
-> +       mmc = host->mmc;
-> +
-> +       /* Support UHS2 */
-> +       if (caps1 & SDHCI_SUPPORT_UHS2)
-> +               mmc->caps2 |= MMC_CAP2_SD_UHS2;
-> +
-> +       max_current_caps2 = sdhci_readl(host, SDHCI_MAX_CURRENT_1);
-> +
-> +       if ((caps1 & SDHCI_CAN_VDD2_180) &&
-> +           !max_current_caps2 &&
-> +           !IS_ERR(mmc->supply.vmmc2)) {
-> +               /* UHS2 - VDD2 */
-> +               int curr = regulator_get_current_limit(mmc->supply.vmmc2);
-
-As I also stated in another reply, please use vqmmc2 instead, which we
-added in patch4.
-
-> +
-> +               if (curr > 0) {
-> +                       /* convert to SDHCI_MAX_CURRENT format */
-> +                       curr = curr / 1000;  /* convert to mA */
-> +                       curr = curr / SDHCI_MAX_CURRENT_MULTIPLIER;
-> +                       curr = min_t(u32, curr, SDHCI_MAX_CURRENT_LIMIT);
-> +                       max_current_caps2 = curr;
-> +               }
-> +       }
-> +
-> +       if (!(caps1 & SDHCI_CAN_VDD2_180))
-> +               mmc->caps2 &= ~MMC_CAP2_SD_UHS2;
-> +}
-> +
-> +static int sdhci_uhs2_host_ops_init(struct sdhci_host *host);
-
-Please try to re-order the code so this declaration isn't needed.
-
-> +
-> +static void __sdhci_uhs2_remove_host(struct sdhci_host *host, int dead)
-> +{
-> +       if (!sdhci_uhs2_mode(host))
-> +               return;
-> +
-> +       if (!dead)
-> +               sdhci_uhs2_reset(host, SDHCI_UHS2_SW_RESET_FULL);
-> +}
-> +
-
-[...]
-
-Kind regards
-Uffe
+> [...]
+>
+> Kind regards
+> Uffe
