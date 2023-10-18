@@ -2,18 +2,18 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 486317CD2B3
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Oct 2023 05:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF5C17CD276
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Oct 2023 04:57:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbjJRDew (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Tue, 17 Oct 2023 23:34:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51352 "EHLO
+        id S229488AbjJRC5w (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Tue, 17 Oct 2023 22:57:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjJRDev (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Oct 2023 23:34:51 -0400
+        with ESMTP id S229492AbjJRC5u (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Tue, 17 Oct 2023 22:57:50 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC626BA;
-        Tue, 17 Oct 2023 20:34:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60DA7C4;
+        Tue, 17 Oct 2023 19:57:44 -0700 (PDT)
 X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39I2uYV51918142, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
         by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39I2uYV51918142
@@ -60,7 +60,7 @@ X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
