@@ -2,57 +2,60 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA9697D0734
-	for <lists+linux-mmc@lfdr.de>; Fri, 20 Oct 2023 05:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C2DF7D0787
+	for <lists+linux-mmc@lfdr.de>; Fri, 20 Oct 2023 07:18:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233465AbjJTDvg (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Thu, 19 Oct 2023 23:51:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40650 "EHLO
+        id S233471AbjJTFSo (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Fri, 20 Oct 2023 01:18:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235619AbjJTDvb (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Thu, 19 Oct 2023 23:51:31 -0400
+        with ESMTP id S231400AbjJTFSn (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Fri, 20 Oct 2023 01:18:43 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A165181;
-        Thu, 19 Oct 2023 20:51:28 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39K3nXGi93723204, This message is accepted by code: ctloc85258
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5742B8;
+        Thu, 19 Oct 2023 22:18:38 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39K5ILVJ03796783, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39K3nXGi93723204
+        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39K5ILVJ03796783
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 20 Oct 2023 11:49:33 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+        Fri, 20 Oct 2023 13:18:21 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 20 Oct 2023 11:49:33 +0800
-Received: from RTEXH36506.realtek.com.tw (172.21.6.27) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ 15.1.2375.32; Fri, 20 Oct 2023 13:18:21 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 20 Oct 2023 11:49:33 +0800
-Received: from localhost.localdomain (172.21.252.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server id
- 15.1.2507.17 via Frontend Transport; Fri, 20 Oct 2023 11:49:33 +0800
-From:   Jyan Chou <jyanchou@realtek.com>
-To:     <adrian.hunter@intel.com>, <jh80.chung@samsung.com>,
-        <ulf.hansson@linaro.org>
-CC:     <riteshh@codeaurora.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <asutoshd@codeaurora.org>, <p.zabel@pengutronix.de>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <arnd@arndb.de>,
-        <briannorris@chromium.org>, <doug@schmorgal.com>,
-        <tonyhuang.sunplus@gmail.com>, <abel.vesa@linaro.org>,
-        <william.qiu@starfivetech.com>, <jyanchou@realtek.com>
-Subject: [PATCH V3][4/4] dt-bindings: mmc: Add dt-bindings for realtek mmc driver
-Date:   Fri, 20 Oct 2023 11:49:21 +0800
-Message-ID: <20231020034921.1179-5-jyanchou@realtek.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231020034921.1179-1-jyanchou@realtek.com>
-References: <20231020034921.1179-1-jyanchou@realtek.com>
+ 15.1.2375.7; Fri, 20 Oct 2023 13:18:20 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
+ 15.01.2375.007; Fri, 20 Oct 2023 13:18:20 +0800
+From:   =?utf-8?B?SnlhbiBDaG91IFvlkajoirflrold?= <jyanchou@realtek.com>
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        "adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "jh80.chung@samsung.com" <jh80.chung@samsung.com>
+CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "benchuanggli@gmail.com" <benchuanggli@gmail.com>
+Subject: RE: [PATCH V2][4/4] mmc: Add dt-bindings for realtek mmc driver
+Thread-Topic: [PATCH V2][4/4] mmc: Add dt-bindings for realtek mmc driver
+Thread-Index: AQHaAYdvaUivfrDiG06E3JgYAyloabBPFJAAgAMQaGA=
+Date:   Fri, 20 Oct 2023 05:18:20 +0000
+Message-ID: <c74fafea1ebe454c845e22306e356f7d@realtek.com>
+References: <20231018055326.18256-1-jyanchou@realtek.com>
+ <20231018055326.18256-5-jyanchou@realtek.com>
+ <4a20bcf9-c0d7-45e9-ab19-e7e3bb073601@kernel.org>
+In-Reply-To: <4a20bcf9-c0d7-45e9-ab19-e7e3bb073601@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+x-originating-ip: [172.21.190.236]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -67,180 +70,45 @@ Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Document the device-tree bindings for Realtek SoCs mmc driver.
-
-Signed-off-by: Jyan Chou <jyanchou@realtek.com>
-
----
-v2 -> v3:
-- Modify dt-bindings' content and description.
-- Fix coding style.
-- Update the list of maintainers.
-
-v0 -> v2:
-- Add dt-bindings.
----
----
- .../bindings/mmc/realtek-dw-mshc.yaml         | 150 ++++++++++++++++++
- 1 file changed, 150 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mmc/realtek-dw-mshc.yaml
-
-diff --git a/Documentation/devicetree/bindings/mmc/realtek-dw-mshc.yaml b/Documentation/devicetree/bindings/mmc/realtek-dw-mshc.yaml
-new file mode 100644
-index 000000000000..b1e37fb37be9
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mmc/realtek-dw-mshc.yaml
-@@ -0,0 +1,150 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mmc/realtek-dw-mshc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Realtek designware mobile storage host controller
-+
-+description:
-+  Realtek uses the Synopsys designware mobile storage host controller
-+  to interface a SoC with storage medium. This file documents the Realtek
-+  specific extensions.
-+
-+allOf:
-+  - $ref: synopsys-dw-mshc-common.yaml#
-+
-+maintainers:
-+  - Jyan Chou <jyanchou@realtek.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - realtek,rtd-dw-cqe-emmc
-+  reg:
-+    maxItems: 2
-+
-+  reg-names:
-+    maxItems: 2
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  cqe:
-+    maxItems: 1
-+
-+  clocks:
-+    minItems: 2
-+    maxItems: 4
-+
-+  clock-names:
-+    minItems: 2
-+    maxItems: 4
-+
-+  clock-freq-min-max:
-+    description:
-+      Clk frequency should be in the interval.
-+
-+  resets:
-+    maxItems: 1
-+
-+  reset-names:
-+    const: reset
-+
-+  speed-step:
-+    maxItems: 1
-+
-+  pinctrl-0:
-+    description:
-+      should contain default/high speed pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-1:
-+    description:
-+      should contain sdr50 mode pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-2:
-+    description:
-+      should contain ddr50 mode pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-3:
-+    description:
-+      should contain hs200 speed pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-4:
-+    description:
-+      should contain hs400 speed pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-5:
-+    description:
-+      should contain tune0 pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-6:
-+    description:
-+      should contain tune1 pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-7:
-+    description:
-+      should contain tune2 pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-8:
-+    description:
-+      should contain tune3 pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-9:
-+    description:
-+      should contain tune4 pin ctrl.
-+    maxItems: 1
-+
-+  pinctrl-names:
-+    maxItems: 10
-+
-+required:
-+  - compatible
-+  - reg
-+  - reg-names
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - pinctrl-names
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    emmc: mmc@12000 {
-+        compatible = "realtek,rtd-dw-cqe-emmc";
-+        reg = <0x00012000 0x00600>,
-+              <0x00012180 0x00060>;
-+        reg-names = "emmc", "cqhci";
-+        interrupts = <0 42 4>;
-+        clocks = <&cc 22>, <&cc 26>, <&cc 121>, <&cc 122>;
-+        clock-names = "biu", "ciu", "vp0", "vp1";
-+        clock-freq-min-max = <300000 400000000>;
-+        clock-frequency = <400000>;
-+        vmmc-supply = <&reg_vcc1v8>;
-+        resets = <&rst 20>;
-+        reset-names = "reset";
-+        speed-step = <3>;
-+        cqe = <1>;
-+        pinctrl-names = "default", "sdr50", "ddr50", "hs200", "hs400",
-+                        "tune0", "tune1", "tune2", "tune3", "tune4";
-+        pinctrl-0 = <&emmc_pins_sdr50>;
-+        pinctrl-1 = <&emmc_pins_sdr50>;
-+        pinctrl-2 = <&emmc_pins_ddr50>;
-+        pinctrl-3 = <&emmc_pins_hs200>;
-+        pinctrl-4 = <&emmc_pins_hs400>;
-+        pinctrl-5 = <&emmc_pins_tune0>;
-+        pinctrl-6 = <&emmc_pins_tune1>;
-+        pinctrl-7 = <&emmc_pins_tune2>;
-+        pinctrl-8 = <&emmc_pins_tune3>;
-+        pinctrl-9 = <&emmc_pins_tune4>;
-+        };
--- 
-2.42.0
-
+SGkgS3J6eXN6dG9mLA0KDQo+IFBsZWFzZSB1c2Ugc3ViamVjdCBwcmVmaXhlcyBtYXRjaGluZyB0
+aGUgc3Vic3lzdGVtLiBZb3UgY2FuIGdldCB0aGVtIGZvciBleGFtcGxlIHdpdGggYGdpdCBsb2cg
+LS1vbmVsaW5lIC0tIERJUkVDVE9SWV9PUl9GSUxFYCBvbiB0aGUgZGlyZWN0b3J5IHlvdXIgcGF0
+Y2ggaXMgdG91Y2hpbmcuDQo+IFBsZWFzZSB1c2Ugc2NyaXB0cy9nZXRfbWFpbnRhaW5lcnMucGwg
+dG8gZ2V0IGEgbGlzdCBvZiBuZWNlc3NhcnkgcGVvcGxlIGFuZCBsaXN0cyB0byBDQy4gSXQgbWln
+aHQgaGFwcGVuLCB0aGF0IGNvbW1hbmQgd2hlbiBydW4gb24gYW4gb2xkZXIga2VybmVsLCBnaXZl
+cyB5b3Ugb3V0ZGF0ZWQgZW50cmllcy4gVGhlcmVmb3JlIHBsZWFzZSBiZSBzdXJlIHlvdSBiYXNl
+IHlvdXIgcGF0Y2hlcyBvbiByZWNlbnQgTGludXgga2VybmVsLg0KDQpUaGFua3MgZm9yIHlvdXIg
+cmVtaW5kLiBXZSBoYWQgbW9kaWZpZWQgb3VyIGNvZGUgYW5kIHJlc2VuZCBuZXcgcGF0Y2hlcy4N
+Cg0KPiBZb3UgbWlzc2VkIGF0IGxlYXN0IGRldmljZXRyZWUgbGlzdCAobWF5YmUgbW9yZSksIHNv
+IHRoaXMgd29uJ3QgYmUgdGVzdGVkIGJ5IGF1dG9tYXRlZCB0b29saW5nLiBQZXJmb3JtaW5nIHJl
+dmlldyBvbiB1bnRlc3RlZCBjb2RlIG1pZ2h0IGJlIGEgd2FzdGUgb2YgdGltZSwgdGh1cyBJIHdp
+bGwgc2tpcCB0aGlzIHBhdGNoIGVudGlyZWx5IHRpbGwgeW91IGZvbGxvdyB0aGUgcHJvY2VzcyBh
+bGxvd2luZyB0aGUgPiBwYXRjaCB0byBiZSB0ZXN0ZWQuDQo+IEFsc28sIGNvZGluZyBzdHlsZSBv
+ZiB5b3VyIGV4YW1wbGUgaXMgbWVzc3kuDQoNCkl0IHdhcyBvdXIgbWlzdGFrZSB0aGF0IGRpZG4n
+dCBjaGVjayBkdC1iaW5kaW5ncyBhY2N1cmF0ZWx5LiBXZSBoYWQgY29ycmVjdGVkIGl0IGFuZCBy
+ZXNlbmQgdG8gYWxsIG5lY2Vzc2FyeSBUby9DYyBlbnRyaWVzLiBUaGFua3MuDQoNCkJlc3QgcmVn
+YXJkcywNCkp5YW4NCg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogS3J6eXN6
+dG9mIEtvemxvd3NraSA8a3J6a0BrZXJuZWwub3JnPiANClNlbnQ6IFdlZG5lc2RheSwgT2N0b2Jl
+ciAxOCwgMjAyMyAxMDoyNSBQTQ0KVG86IEp5YW4gQ2hvdSBb5ZGo6Iq35a6JXSA8anlhbmNob3VA
+cmVhbHRlay5jb20+OyBhZHJpYW4uaHVudGVyQGludGVsLmNvbTsgdWxmLmhhbnNzb25AbGluYXJv
+Lm9yZzsgamg4MC5jaHVuZ0BzYW1zdW5nLmNvbQ0KQ2M6IGxpbnV4LW1tY0B2Z2VyLmtlcm5lbC5v
+cmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGJlbmNodWFuZ2dsaUBnbWFpbC5jb20N
+ClN1YmplY3Q6IFJlOiBbUEFUQ0ggVjJdWzQvNF0gbW1jOiBBZGQgZHQtYmluZGluZ3MgZm9yIHJl
+YWx0ZWsgbW1jIGRyaXZlcg0KDQoNCkV4dGVybmFsIG1haWwuDQoNCg0KDQpPbiAxOC8xMC8yMDIz
+IDA3OjUzLCBKeWFuIENob3Ugd3JvdGU6DQo+IERvY3VtZW50IHRoZSBkZXZpY2UtdHJlZSBiaW5k
+aW5ncyBmb3IgUmVhbHRlayBTb0NzIG1tYyBkcml2ZXIuDQo+DQo+IFNpZ25lZC1vZmYtYnk6IEp5
+YW4gQ2hvdSA8anlhbmNob3VAcmVhbHRlay5jb20+DQoNClBsZWFzZSB1c2Ugc3ViamVjdCBwcmVm
+aXhlcyBtYXRjaGluZyB0aGUgc3Vic3lzdGVtLiBZb3UgY2FuIGdldCB0aGVtIGZvciBleGFtcGxl
+IHdpdGggYGdpdCBsb2cgLS1vbmVsaW5lIC0tIERJUkVDVE9SWV9PUl9GSUxFYCBvbiB0aGUgZGly
+ZWN0b3J5IHlvdXIgcGF0Y2ggaXMgdG91Y2hpbmcuDQoNClBsZWFzZSB1c2Ugc2NyaXB0cy9nZXRf
+bWFpbnRhaW5lcnMucGwgdG8gZ2V0IGEgbGlzdCBvZiBuZWNlc3NhcnkgcGVvcGxlIGFuZCBsaXN0
+cyB0byBDQy4gSXQgbWlnaHQgaGFwcGVuLCB0aGF0IGNvbW1hbmQgd2hlbiBydW4gb24gYW4gb2xk
+ZXIga2VybmVsLCBnaXZlcyB5b3Ugb3V0ZGF0ZWQgZW50cmllcy4gVGhlcmVmb3JlIHBsZWFzZSBi
+ZSBzdXJlIHlvdSBiYXNlIHlvdXIgcGF0Y2hlcyBvbiByZWNlbnQgTGludXgga2VybmVsLg0KDQpZ
+b3UgbWlzc2VkIGF0IGxlYXN0IGRldmljZXRyZWUgbGlzdCAobWF5YmUgbW9yZSksIHNvIHRoaXMg
+d29uJ3QgYmUgdGVzdGVkIGJ5IGF1dG9tYXRlZCB0b29saW5nLiBQZXJmb3JtaW5nIHJldmlldyBv
+biB1bnRlc3RlZCBjb2RlIG1pZ2h0IGJlIGEgd2FzdGUgb2YgdGltZSwgdGh1cyBJIHdpbGwgc2tp
+cCB0aGlzIHBhdGNoIGVudGlyZWx5IHRpbGwgeW91IGZvbGxvdyB0aGUgcHJvY2VzcyBhbGxvd2lu
+ZyB0aGUgcGF0Y2ggdG8gYmUgdGVzdGVkLg0KDQpQbGVhc2Uga2luZGx5IHJlc2VuZCBhbmQgaW5j
+bHVkZSBhbGwgbmVjZXNzYXJ5IFRvL0NjIGVudHJpZXMuDQoNCkFsc28sIGNvZGluZyBzdHlsZSBv
+ZiB5b3VyIGV4YW1wbGUgaXMgbWVzc3kuDQoNCkJlc3QgcmVnYXJkcywNCktyenlzenRvZg0KDQo=
