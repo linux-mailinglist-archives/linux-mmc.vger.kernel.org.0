@@ -2,242 +2,215 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 914B97D9D1B
-	for <lists+linux-mmc@lfdr.de>; Fri, 27 Oct 2023 17:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC6C77DAC4D
+	for <lists+linux-mmc@lfdr.de>; Sun, 29 Oct 2023 12:52:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346188AbjJ0Pia (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 27 Oct 2023 11:38:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39274 "EHLO
+        id S230110AbjJ2LwY (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 29 Oct 2023 07:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231429AbjJ0Pi2 (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 27 Oct 2023 11:38:28 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11D48AC;
-        Fri, 27 Oct 2023 08:38:25 -0700 (PDT)
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39RCc60x010675;
-        Fri, 27 Oct 2023 17:37:17 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        message-id:date:mime-version:from:subject:to:cc:references
-        :in-reply-to:content-type:content-transfer-encoding; s=
-        selector1; bh=137N9qL9i5h4t8Cbod1j95elUvUuNi+rOMR+/nkEcGo=; b=EX
-        /VSOoOTnYBW0p53Tuy8tkZXHrE9TCpRNA/bI48SzdaVOLcAioGGb2rDjfu4AwA5k
-        v32rhDVol8dtT3+OOAzKYell3XeaqdcateC0Ht5f5f44AtAT8RLKlj4pjSRODpXr
-        C0G+tE9HPuhvxq3nm5EGbDWsx+uMm9et8AnfTgvKf1VjaRyB+OoZrlta+QCeusS4
-        DtxnglJxdX6gQPW+fzfVM9T+lLDdVWAiWn4tSE7mlX17rCSRm6jWnka0+g6Fhf8e
-        vNoBtK5Ifbj7KqtJXykvIpXKvK2oehCiK/hsOAlK4WYKA3vfmSNeg4DV8PILG2Rh
-        7NAyCWbRDCK0IX4FDaoA==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tywqq4fmr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Oct 2023 17:37:17 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 023E9100062;
-        Fri, 27 Oct 2023 17:37:14 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6CD2C27DB5D;
-        Fri, 27 Oct 2023 17:37:14 +0200 (CEST)
-Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 27 Oct
- 2023 17:37:12 +0200
-Message-ID: <8fa014c3-c0e9-4183-b4fb-90962f71295a@foss.st.com>
-Date:   Fri, 27 Oct 2023 17:37:11 +0200
+        with ESMTP id S229533AbjJ2LwX (ORCPT
+        <RFC822;linux-mmc@vger.kernel.org>); Sun, 29 Oct 2023 07:52:23 -0400
+Received: from smtp1.ms.mff.cuni.cz (smtp1.ms.mff.cuni.cz [IPv6:2001:718:1e03:801::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C385BF;
+        Sun, 29 Oct 2023 04:52:20 -0700 (PDT)
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+        (authenticated)
+        by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 39TBIQdY065431
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+        Sun, 29 Oct 2023 12:18:27 +0100 (CET)
+        (envelope-from balejk@matfyz.cz)
+From:   Karel Balej <balejk@matfyz.cz>
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org
+Cc:     =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Karel Balej <balejk@matfyz.cz>
+Subject: [PATCH 0/2] net: mwifiex: add support for the SD8777 chipset
+Date:   Sun, 29 Oct 2023 12:08:15 +0100
+Message-ID: <20231029111807.19261-1-balejk@matfyz.cz>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-Subject: Re: [PATCH v6 10/11] ARM: dts: stm32: add ETZPC as a system bus for
- STM32MP15x boards
-To:     Rob Herring <robh@kernel.org>
-CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
-        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
-        <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
-        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
-        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
-        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
-        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
-        <arnd@kernel.org>, <richardcochran@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>, <peng.fan@oss.nxp.com>,
-        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-p.hy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
-References: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
- <20231010125719.784627-11-gatien.chevallier@foss.st.com>
- <20231010184212.GA1221641-robh@kernel.org>
- <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
- <20231012153012.GA698406-robh@kernel.org>
- <b16ed06f-66fd-457b-9610-a67ad07deb60@foss.st.com>
- <20231024163956.GA4049342-robh@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20231024163956.GA4049342-robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.201.20.32]
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-27_14,2023-10-27_01,2023-05-22_02
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
+This series introduces simple modifications to the Marvell mwifiex
+wireless driver to make it support the SD8777 chipset which can be found
+in mobile devices using the PXA1908 SoC (the support for which is being
+upstreamed here [1]), among others, such as samsung,coreprimevelte or
+samsung,xcover3lte. The changes are based on the Samsung downstream code
+for coreprimevelte [2].
 
+The driver requires proprietary firmware which is not yet part of
+linux-firmware, but it is packaged in postmarketOS.
 
-On 10/24/23 18:39, Rob Herring wrote:
-> On Mon, Oct 16, 2023 at 02:02:39PM +0200, Gatien CHEVALLIER wrote:
->> Hi Rob,
->>
->> On 10/12/23 17:30, Rob Herring wrote:
->>> On Wed, Oct 11, 2023 at 10:49:58AM +0200, Gatien CHEVALLIER wrote:
->>>> Hi Rob,
->>>>
->>>> On 10/10/23 20:42, Rob Herring wrote:
->>>>> On Tue, Oct 10, 2023 at 02:57:18PM +0200, Gatien Chevallier wrote:
->>>>>> ETZPC is a firewall controller. Put all peripherals filtered by the
->>>>>> ETZPC as ETZPC subnodes and reference ETZPC as an
->>>>>> access-control-provider.
->>>>>>
->>>>>> For more information on which peripheral is securable or supports MCU
->>>>>> isolation, please read the STM32MP15 reference manual.
->>>>>>
->>>>>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
->>>>>> ---
->>>>>>
->>>>>> Changes in V6:
->>>>>>        	- Renamed access-controller to access-controllers
->>>>>>        	- Removal of access-control-provider property
->>>>>>
->>>>>> Changes in V5:
->>>>>>        	- Renamed feature-domain* to access-control*
->>>>>>
->>>>>>     arch/arm/boot/dts/st/stm32mp151.dtsi  | 2756 +++++++++++++------------
->>>>>>     arch/arm/boot/dts/st/stm32mp153.dtsi  |   52 +-
->>>>>>     arch/arm/boot/dts/st/stm32mp15xc.dtsi |   19 +-
->>>>>>     3 files changed, 1450 insertions(+), 1377 deletions(-)
->>>>>
->>>>> This is not reviewable. Change the indentation and any non-functional
->>>>> change in one patch and then actual changes in another.
->>>>
->>>> Ok, I'll make it easier to read.
->>>>
->>>>>
->>>>> This is also an ABI break. Though I'm not sure it's avoidable. All the
->>>>> devices below the ETZPC node won't probe on existing kernel. A
->>>>> simple-bus fallback for ETZPC node should solve that.
->>>>>
->>>>
->>>> I had one issue when trying with a simple-bus fallback that was the
->>>> drivers were probing even though the access rights aren't correct.
->>>> Hence the removal of the simple-bus compatible in the STM32MP25 patch.
->>>
->>> But it worked before, right? So the difference is you have either added
->>> new devices which need setup or your firmware changed how devices are
->>> setup (or not setup). Certainly can't fix the latter case. You just need
->>> to be explicit about what you are doing to users.
->>>
->>
->> I should've specified it was during a test where I deliberately set
->> incorrect rights on a peripheral and enabled its node to see if the
->> firewall would allow the creation of the device.
->>
->>>
->>>> Even though a node is tagged with the OF_POPULATED flag when checking
->>>> the access rights with the firewall controller, it seems that when
->>>> simple-bus is probing, there's no check of this flag.
->>>
->>> It shouldn't. Those flags are for creating the devices (or not) and
->>> removing only devices of_platform_populate() created.
->>>
->>
->> About the "simple-bus" being a fallback, I think I understood why I saw
->> that the devices were created.
->>
->> All devices under a node whose compatible is "simple-bus" are created
->> in of_platform_device_create_pdata(), called by
->> of_platform_default_populate_init() at arch_initcall level. This
->> before the firewall-controller has a chance to populate it's bus.
->>
->> Therefore, when I flag nodes when populating the firewall-bus, the
->> devices are already created. The "simple-bus" mechanism is not a
->> fallback here as it precedes the driver probe.
->>
->> Is there a safe way to safely remove/disable a device created this way?
-> 
-> There's 2 ways to handle this. Either controlling creating the device or
-> controlling probing the device. The latter should just work with
-> fw_devlink dependency. The former probably needs some adjustment to
-> simple-pm-bus driver if you have 'simple-bus' compatible. You want it to
-> probe on old kernels and not probe on new kernels with your firewall
-> driver. Look at the commit history for simple-pm-bus. There was some
-> discussion on it as well.
-> 
+The Marvell repository for PXA1908 [3] contains some information in the
+form of release notes (in a PDF under drivers/marvell/sd8777).
 
-Hi Rob,
+This series was sucessfully tested with the aforementioned smartphone,
+samsung,coreprimevelte. However it has a caveat: the driver is not
+always able to load the firmware onto the device and even when it
+succeeds, it emits some errors and eventually breaks irrecoverably after
+some time, seemingly after heavier usage. dmesg outputs with description
+are below. The suspicion, supported by the fact that the eMMC on the
+smartphone does not work at the moment (it reports as busy and the
+initialization fails with -ETIMEDOUT, see [4] for dmesg output), is that
+the problem is either with the MMC driver (sdhci-pxav3) or the clocks
+driver which according to the author is currently missing some parts
+present in the downstream version. In particular, the lack of tuning in
+the mainline sdhci-pxav3 was considered a possible cause (specifically
+the dvfs tuning which the downstream driver performs), however disabling
+of this tuning in the downstream kernel doesn't seem to have any effect
+on it's ability to use either eMMC or the wireless.
 
-First, thank you for your suggestions.
+Here are the relevant dmesg outputs for several situations (debug
+messages are enabled in the first, not so in the others):
 
-Regarding controlling probing the device: the philosophy of the firewall
-controller was to check a device secure configuration to determine if
-its associated driver should be probed (+handle some firewall
-resources). I'd rather avoid it so that the device isn't created at all.
+This is the usual output when the firmware loading fails. The device has
+to be rebooted before the next attempt to load the firmware because the
+driver seems to think that it's already loaded.
 
-I took a look on the simple-bus driver side. I don't see an obvious way
-on how to do it as the firewall controller driver is a module while the
-devices being populated is done at arch initcall level.
+	[   68.335394] mwifiex_sdio mmc2:0001:1: info: SDIO FUNC1 IO port: 0x10000
+	[   68.485552] mwifiex_sdio mmc2:0001:1: info: downloading FW image (418332 bytes)
+	[   68.698674] mwifiex_sdio mmc2:0001:1: FW download, write iomem (0) failed @ 208016
+	[   68.698711] mwifiex_sdio mmc2:0001:1: prog_fw failed ret=0xffffffff
+	[   68.698724] mwifiex_sdio mmc2:0001:1: info: _mwifiex_fw_dpc: unregister device
 
-I ended up with two propositions:
+The return value of mwifiex_write_data_sync which is invoked during the
+firmware loading is -EILSEQ.
 
-1)I took a shot at implementing a new flag "OF_ACCESS_GRANTED" that
-should be set in the first call of the of_platform_bus_create()
-function for every child node of a "default bus" (simple-bus,
-simple-pm-bus, ...) having the access-controllers property.
-This flag should be unset by the access controller if the access is
-not granted. This covers the particular case where the access controller
-has a simple-bus fallback whilst not creating the devices on the first
-try for the bus' childs.
+Here, the download succeeds but the driver still emits some errors.
+Eventually after some (short in this case) time the wireless stops
+working and the below errors are printed repeatedly (here the failure
+occurred while page loading was in progress in Mozilla Firefox). A
+restart seems to be necessary to get the adapter to work again.
 
-This way, the first round of of_platform_populate() done at arch init
-call level won't create the devices of an access controller child
-nodes. Then, the firewall controller has a chance to clear the flag
-before the second call to this function by the simple-pm-bus driver.
+	[   61.876547] mwifiex_sdio mmc2:0001:1: info: FW download over, size 418332 bytes
+	[   61.981497] mwifiex_sdio mmc2:0001:1: WLAN FW is active
+	[   62.278898] mwifiex_sdio mmc2:0001:1: CMD_RESP: cmd 0x242 error, result=0x2
+	[   62.278919] mwifiex_sdio mmc2:0001:1: mwifiex_process_cmdresp: cmd 0x242 failed during	initialization
+	[   62.661327] mwifiex_sdio mmc2:0001:1: info: MWIFIEX VERSION: mwifiex 1.0 (14.75.33.p119) 
+	[   62.661349] mwifiex_sdio mmc2:0001:1: driver_version = mwifiex 1.0 (14.75.33.p119) 
+	[   63.886186] mwifiex_sdio mmc2:0001:1: info: trying to associate to bssid CENSORED
+	[   63.898581] mwifiex_sdio mmc2:0001:1: info: associated to bssid CENSORED successfully
+	[   64.011982] mwifiex_sdio mmc2:0001:1: CMD_RESP: cmd 0x23f error, result=0x2
+	[  145.926392] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(1) failed: -110
+	[  146.643323] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  147.342918] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(2) failed: -16
+	[  148.041929] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  148.727401] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(3) failed: -16
+	[  149.418479] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  149.418508] mwifiex_sdio mmc2:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
+	[  150.108002] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(1) failed: -16
+	[  150.788011] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  151.452231] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(2) failed: -16
+	[  152.136966] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  152.836739] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(3) failed: -16
+	[  153.545571] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  153.545611] mwifiex_sdio mmc2:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
+	[  154.083665] mwifiex_sdio mmc2:0001:1: cmd_wait_q terminated: -110
+	[  154.083707] mwifiex_sdio mmc2:0001:1: failed to get signal information
+	[...]
 
-If the controller module isn't present, then it's a simple-bus
-behavior to extent of the child devices not being all created in the
-first place. This shouldn't be an issue as in only concerns childs
-of such bus that aren't probed before the bus driver.
+Last observed scenario is again a failure occuring some time after
+firmware loading succeeds. This also seems to be irrecoverable without
+device reboot.
 
-I have a patch that I can send as RFC on top of my series if my
-explanation isn't clear enough.
+	[ 2101.209913] mwifiex_sdio mmc2:0001:1: mwifiex_cmd_timeout_func: Timeout cmd id = 0xa4, act = 0x0
+	[ 2101.209941] mwifiex_sdio mmc2:0001:1: num_data_h2c_failure = 0
+	[ 2101.209949] mwifiex_sdio mmc2:0001:1: num_cmd_h2c_failure = 0
+	[ 2101.209957] mwifiex_sdio mmc2:0001:1: is_cmd_timedout = 1
+	[ 2101.209964] mwifiex_sdio mmc2:0001:1: num_tx_timeout = 0
+	[ 2101.209971] mwifiex_sdio mmc2:0001:1: last_cmd_index = 1
+	[ 2101.209978] mwifiex_sdio mmc2:0001:1: last_cmd_id: 16 00 a4 00 75 00 a4 00 7f 00
+	[ 2101.209988] mwifiex_sdio mmc2:0001:1: last_cmd_act: 00 00 00 00 02 00 00 00 00 00
+	[ 2101.209995] mwifiex_sdio mmc2:0001:1: last_cmd_resp_index = 0
+	[ 2101.210003] mwifiex_sdio mmc2:0001:1: last_cmd_resp_id: 16 80 a4 80 75 80 a4 80 7f 80
+	[ 2101.210010] mwifiex_sdio mmc2:0001:1: last_event_index = 4
+	[ 2101.210018] mwifiex_sdio mmc2:0001:1: last_event: 0b 00 0a 00 0b 00 0a 00 1c 00
+	[ 2101.210025] mwifiex_sdio mmc2:0001:1: data_sent=1 cmd_sent=1
+	[ 2101.210033] mwifiex_sdio mmc2:0001:1: ps_mode=1 ps_state=0
+	[ 2101.210089] mwifiex_sdio mmc2:0001:1: failed to get signal information
+	[ 2101.210761] mwifiex_sdio mmc2:0001:1: PREP_CMD: FW is in bad state
+	[ 2101.210786] mwifiex_sdio mmc2:0001:1: failed to get signal information
+	[ 2101.211162] mwifiex_sdio mmc2:0001:1: ===mwifiex driverinfo dump start===
+	[ 2101.211178] mwifiex_sdio mmc2:0001:1: info: MWIFIEX VERSION: mwifiex 1.0 (14.75.33.p119) 
+	[ 2101.211202] mwifiex_sdio mmc2:0001:1: SDIO register dump start
+	[ 2101.211482] mwifiex_sdio mmc2:0001:1: SDIO Func0 (0x0-0x9): 32 02 02 02 03 00 00 02 03 00 
+	[ 2101.211649] mwifiex_sdio mmc2:0001:1: SDIO Func1 (0x0-0x9): 02 3f 03 00 00 00 00 00 92 00 
+	[ 2101.211740] mwifiex_sdio mmc2:0001:1: SDIO Func1: (0x28) 00 (0x30) 08 (0x34) 07 (0x38) 11 (0x3c) 00 
+	[ 2101.211921] mwifiex_sdio mmc2:0001:1: SDIO Func1 (0x60-0x6a): dc fe 5f 81 ca 04 00 79 79 00 30 
+	[ 2101.314135] mwifiex_sdio mmc2:0001:1: SDIO Func1 (0x60-0x6a): dc fe 5f 81 ca 04 00 79 79 00 30 
+	[ 2101.314168] mwifiex_sdio mmc2:0001:1: SDIO register dump end
+	[ 2101.314300] mwifiex_sdio mmc2:0001:1: ===mwifiex driverinfo dump end===
+	[ 2101.314313] mwifiex_sdio mmc2:0001:1: == mwifiex dump information to /sys/class/devcoredump start
+	[ 2101.314586] mwifiex_sdio mmc2:0001:1: == mwifiex dump information to /sys/class/devcoredump end
+	[ 2101.314610] mwifiex_sdio mmc2:0001:1: PREP_CMD: FW is in bad state
+	[ 2101.314638] mwifiex_sdio mmc2:0001:1: PREP_CMD: FW is in bad state
+	[ 2101.317997] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318029] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318037] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318044] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318051] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318057] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318064] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318071] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318078] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318084] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318091] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318098] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.321278] mwifiex_sdio mmc2:0001:1: info: shutdown mwifiex...
+	[ 2101.323214] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.323250] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.324427] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.419786] mmc2: queuing unknown CIS tuple 0x50 [40 1e fd d1 c0 46 70 47 00 b5 23 48 24 49 01 60 24 48 24 49 01 60 24 49 08 47 1f 48 24 49 01 60] (32 bytes)
+	[ 2101.460850] mmc2: queuing unknown CIS tuple 0x70 [53 f0 21 e3 1e ff 2f e1 10 1f 11 ee 00 00 50 e3 02 2a a0 e3 02 10 c1 01 02 10 81 11 10 1f 01 ee 1e ff 2f e1 01 00 a0 e3 f6 ff ff eb ea ff ff fa 48 00 9f e5 54 10 9f e5 54 20 9f e5 ef ff ff eb] (71 bytes)
+	[ 2101.532495] mmc2: queuing unknown CIS tuple 0xe8 [2f 07 ee 1e ff 2f e1 0e 30 a0 e1 00 00 a0 e3 ea ff ff eb e5 ff ff fa 03 e0 a0 e1 2c 30 9f e5 13 ff 2f e1 00 10 80 e5 1a 9f 00 ee 12 ff 2f e1 04 21 00 80 c0 00 10 80 04 22 00 80 06 0a 46 02 48] (144 bytes)
+	[ 2101.598922] mmc2: queuing unknown CIS tuple 0x9d [29 15 1d 01 00 4d 61 72 76 65 6c 6c 20 42 6c 75 65 74 6f 6f 74 68 20 44 65 76 69 63 65 00 00 ff 20 04 df 02 32 91 21 02 0c 00 22 2a 01 01 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 00 00 00] (162 bytes)
+	[ 2101.599647] mmc2: tried to HW reset card, got error -2
+	[ 2101.599699] mwifiex_sdio mmc2:0001:1: SDIO HW reset failed: -2
 
-2)Make the STM32_FIREWALL configuration switch select the OF_DYNAMIC
-one. This way I can use of_detach_node() function to remove the node
-from the device tree. The cons of this is the device tree is now
-used at runtime.
+Despite these problems, the wireless is overall usable on the phone,
+once the firmware loading succeeds, even for intensive transfers, until
+one of the other failures occurs, for which no rule seems to exist - it
+can happen soon after starting some transfer or it can work for several
+hours under normal load, although some CMD_RESP errors (as above) are
+printed frequently.
 
-Are you considering one of these two proposition as a viable solution?
+[1] https://lore.kernel.org/all/20231010-pxa1908-lkml-v6-0-b2fe09240cf8@skole.hr/
+[2] https://github.com/CoderCharmander/g361f-kernel
+[3] https://github.com/acorn-marvell/brillo_pxa_kernel
+[4] https://wiki.postmarketos.org/wiki/Marvell_PXA1908
 
-Best regards,
-Gatien
+Karel Balej (2):
+  dt-bindings: mwifiex: document use with the SD8777 chipset
+  net: mwifiex: add support for the SD8777 chipset
 
->> Devices that are under the firewall controller (simple-bus) node
->> should not be probed before it as they're child of it.
-> 
-> fw_devlink should take care of parent/child dependencies without any
-> explicit handling of the access ctrl binding.
-> 
-> Rob
+ .../bindings/net/wireless/marvell-8xxx.txt    |  3 ++-
+ drivers/net/wireless/marvell/mwifiex/Kconfig  |  4 ++--
+ drivers/net/wireless/marvell/mwifiex/sdio.c   | 19 +++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/sdio.h   |  1 +
+ include/linux/mmc/sdio_ids.h                  |  1 +
+ 5 files changed, 25 insertions(+), 3 deletions(-)
+
+-- 
+2.42.0
+
