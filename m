@@ -2,162 +2,183 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B0C37DAC39
-	for <lists+linux-mmc@lfdr.de>; Sun, 29 Oct 2023 12:26:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CDF37DAC94
+	for <lists+linux-mmc@lfdr.de>; Sun, 29 Oct 2023 14:09:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbjJ2L0r (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 29 Oct 2023 07:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60240 "EHLO
+        id S230052AbjJ2NJE (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Sun, 29 Oct 2023 09:09:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229730AbjJ2L0q (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 29 Oct 2023 07:26:46 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80DCAB0
-        for <linux-mmc@vger.kernel.org>; Sun, 29 Oct 2023 04:26:43 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-507c1936fd5so5238500e87.1
-        for <linux-mmc@vger.kernel.org>; Sun, 29 Oct 2023 04:26:43 -0700 (PDT)
+        with ESMTP id S229482AbjJ2NJE (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Sun, 29 Oct 2023 09:09:04 -0400
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83B5FC0;
+        Sun, 29 Oct 2023 06:09:01 -0700 (PDT)
+Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6ce2fc858feso2177760a34.3;
+        Sun, 29 Oct 2023 06:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698578802; x=1699183602; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oiJ98AzIdDvp4H2ObVcO2pM8eJBa6hKhd5j05v0RH0w=;
-        b=uLi6D6rPMX7vsQ0EmgjNNq+ZyKOyQQiS9LHJMOSAtFxBQ4S7y+MkJqw6vqGNgl7K+z
-         n8TLocWyaFHZaNNl8aRCjL70LHbZ8Jzc1fAVq5VA8OfX4v2ByoefwdWkEeUyIAKWtheS
-         ojjYof/jpmRMMsukjHpFzXhxw9w65uvCfAdu9r4VBd282N/75uvkWlFyV2Gl6jaRIPeo
-         QYjnpIQxFqHnqiIb5kymevMY7gl/tCNfyXc7sVX5UCLkOBnqgnPAQZP5nrnFwlkNdS3g
-         +61MHF2ruSYLhKCoR76UPkw7IQIG+iWonMuth+jNGxZz2ffRd27OiUvDaCNNgjeoTLmt
-         D0vA==
+        d=gmail.com; s=20230601; t=1698584941; x=1699189741; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8rEsmHyEPkV7MBoxDxxp2oxo1YnlfdW9ufozgcxhuFE=;
+        b=QK1BoZHF1dTzhI0fqLrX23vvfINFRLGDpMUOywVVxezUY0So0vsQkuFRl5AsBShPdy
+         dSsufSPD0jAxJzczvzW5Eyhs0cvVDKjLCntnfnGUT7bC8h4JBg52uCDk7Gv/s3hqONTD
+         IIO8JMDlte1yEBrCdrv2rrfS32lJyZ7PyoEaZ72HdmQCxFrufytw/ubEygMMyQ/Ej5DR
+         5jn78R/5cyPe1V+uC75cWK57uj6dej/BEdifU5Ku5rraEd4YJ3P/JLs4j8tu23hWd00w
+         2ExeHskXEgeoeRI9JqciNGr6EKO/C7lDyz8p/V51szc5/CVBOdaTSQ6wYV87Kg2IlQZu
+         b5xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698578802; x=1699183602;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oiJ98AzIdDvp4H2ObVcO2pM8eJBa6hKhd5j05v0RH0w=;
-        b=OP6usi0y3vaS4j0HDSaKGLsg1DTQRrM9r7neb+6adTSOjjE0fPDzgJbHVlD4wj2QdJ
-         8NNh7C8YkShfgBZZbOmiVfLREtkQPwgbLcZ5anOkCx9UVa6HUOK1HBIhL2RVDMXdaJrX
-         3Gel6F7Yf7GY8RZgBDFV+mf1XyWcnsOXND7Dq/m1kO4umeNEnE3mcH4etJUQC4QZU3Rt
-         0JLe2750QwL8WGxbAFFZraUmvLvLWsVITrzs4pg/VIgoIRk2aKb7EC/d512fbR60DP4x
-         dJfkuUf76GAehbZkDAo2FHgkdTA4GvcKMtyKqqwUXkscZCfDVp7b3fHSnfem8tFI7teI
-         EGrA==
-X-Gm-Message-State: AOJu0YyVuapCh/GVTR5g9yTODduxaAHp49ghUmgIVkUy3gESwt21UcUW
-        k6EQQSFjXfxx9edHZfrdhBjpmA==
-X-Google-Smtp-Source: AGHT+IF3ww+xNZIcGhsqitXJi46WtGMXlhoovfyHbmi3gpzQ9+l3xdAt6vARv3IK3FgMe6Vb5wtNDw==
-X-Received: by 2002:a05:6512:aca:b0:4fd:c8fb:eb71 with SMTP id n10-20020a0565120aca00b004fdc8fbeb71mr3163336lfu.11.1698578801768;
-        Sun, 29 Oct 2023 04:26:41 -0700 (PDT)
-Received: from [192.168.0.22] ([78.10.206.168])
-        by smtp.gmail.com with ESMTPSA id h2-20020a0565123c8200b005030b642ec8sm1000453lfv.157.2023.10.29.04.26.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 29 Oct 2023 04:26:41 -0700 (PDT)
-Message-ID: <dd28569f-b59e-4c07-8b1d-076646396954@linaro.org>
-Date:   Sun, 29 Oct 2023 12:26:40 +0100
+        d=1e100.net; s=20230601; t=1698584941; x=1699189741;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8rEsmHyEPkV7MBoxDxxp2oxo1YnlfdW9ufozgcxhuFE=;
+        b=gID+n57XS72dU3/TzFLNZGD7h7XA9ztjYxtT4DXUFet7kbOkiLNQrPpqCBByX0fMPk
+         1P1/y4FWgsfzFxmNx4Si+F9fmCdpZ7RvXug8jdVN89MQZ07/IIBPUbKbu3qF8Pq6Ir5v
+         iln62uReyuBsecG8HPRB8UhULrgqbqtJrWPb4KD2dphWCEvXY7/yyLhGWgFiud4pYGo+
+         4VuW2n0/9UMW1s38wiflzhZvId3tpNj/pFGUf7AQrh0iU3xAoRi233VppQhzQ0k6Uy0h
+         JD7GyQrvjFCHqO3fAC5ZpATefmlbqj1N+QPS50288x5dASIfCxu/2SnzoiPPYD2rE3Y1
+         iEaQ==
+X-Gm-Message-State: AOJu0Ywllz7OiKN0DNaBA9aIGAz0vtbZUu7tlmHm2HOPTtHOgFuMgtH3
+        44Vh1pffJYNkTzfOM99K+M+Ztc8A0unQgVKfnh2sl1xFcAA=
+X-Google-Smtp-Source: AGHT+IGpgcnqNbXuqkw21XHiLu3JGl/K9IyANpWzyC0AbERHNIwUN7/8BkASMY48GhKsjW160YywNZ4xAk1mlz4h83Y=
+X-Received: by 2002:a9d:6d8a:0:b0:6c6:1e39:e5c6 with SMTP id
+ x10-20020a9d6d8a000000b006c61e39e5c6mr6825448otp.36.1698584940764; Sun, 29
+ Oct 2023 06:09:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: mwifiex: document use with the SD8777
- chipset
-Content-Language: en-US
-To:     Karel Balej <balejk@matfyz.cz>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-Cc:     =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20231029111807.19261-1-balejk@matfyz.cz>
- <20231029111807.19261-2-balejk@matfyz.cz>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231029111807.19261-2-balejk@matfyz.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <TYZPR01MB5556B56D834E02F41C44D81DC95FA@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB5556A3E71554A2EC08597EA4C9CDA@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+In-Reply-To: <TYZPR01MB5556A3E71554A2EC08597EA4C9CDA@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+From:   Anand Moon <linux.amoon@gmail.com>
+Date:   Sun, 29 Oct 2023 18:38:45 +0530
+Message-ID: <CANAwSgTqm2-NsMjZWQwfc77CQhL_kCLnbQpm-ithOBS84UV=4w@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: meson-mx-sdhc: Fix initialization frozen issue
+To:     Ziyang Huang <hzyitc@outlook.com>
+Cc:     ulf.hansson@linaro.org, neil.armstrong@linaro.org,
+        khilman@baylibre.com, jbrunet@baylibre.com,
+        martin.blumenstingl@googlemail.com, yinxin_1989@aliyun.com,
+        regressions@leemhuis.info, briannorris@chromium.org,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 29/10/2023 12:08, Karel Balej wrote:
-> Document the corresponding compatible string for the use of this driver
-> with the Marvell SD8777 wireless chipset.
-> 
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
+Hi Ziyang,
+
+On Tue, 10 Oct 2023 at 22:15, Ziyang Huang <hzyitc@outlook.com> wrote:
+>
+> Commit 4bc31edebde5 ("mmc: core: Set HS clock speed before sending
+> HS CMD13") set HS clock (52MHz) before switching to HS mode. For this
+> freq, FCLK_DIV5 will be selected and div value is 10 (reg value is 9).
+> Then we set rx_clk_phase to 11 or 15 which is out of range and make
+> hardware frozen. After we send command request, no irq will be
+> interrupted and the mmc driver will keep to wait for request finished,
+> even durning rebooting.
+>
+> So let's set it to Phase 90 which should work in most cases. Then let
+> meson_mx_sdhc_execute_tuning() to find the accurate value for data
+> transfer.
+>
+> If this doesn't work, maybe need to define a factor in dts.
+>
+> Fixes: e4bf1b0970ef ("mmc: host: meson-mx-sdhc: new driver for the Amlogic Meson SDHC host")
+> Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
 > ---
+> Changes since v1:
+>   Use Phase 90 instand of value 1
+>
 
+I have tested this patch on my Odroid C1+ board.
+Please add my
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Anand Moon <linux.amoon@gmail.com>
 
+[alarm@alarm ~]$ sudo cat /sys/kernel/debug/mmc1/ios
+clock:          100000000 Hz
+actual clock:   94444445 Hz
+vdd:            21 (3.3 ~ 3.4 V)
+bus mode:       2 (push-pull)
+chip select:    0 (don't care)
+power mode:     2 (on)
+bus width:      3 (8 bits)
+timing spec:    9 (mmc HS200)
+signal voltage: 1 (1.80 V)
+driver type:    0 (driver type B)
+[alarm@alarm ~]$ sync && dd if=/dev/zero of=~/testfile bs=100M count=1
+oflag=dsync && sync
+1+0 records in
+1+0 records out
+104857600 bytes (105 MB, 100 MiB) copied, 5.70235 s, 18.4 MB/s
+[alarm@alarm ~]$ sync && dd if=~/testfile of=/dev/null bs=100M count=1
+iflag=dsync && sync
+1+0 records in
+1+0 records out
+104857600 bytes (105 MB, 100 MiB) copied, 0.20267 s, 517 MB/s
 
----
+Thanks
+-Anand
 
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
-
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
-
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
-
-
-Best regards,
-Krzysztof
-
+>  drivers/mmc/host/meson-mx-sdhc-mmc.c | 26 +++++---------------------
+>  1 file changed, 5 insertions(+), 21 deletions(-)
+>
+> diff --git a/drivers/mmc/host/meson-mx-sdhc-mmc.c b/drivers/mmc/host/meson-mx-sdhc-mmc.c
+> index 97168cdfa8e9..29698fceb89c 100644
+> --- a/drivers/mmc/host/meson-mx-sdhc-mmc.c
+> +++ b/drivers/mmc/host/meson-mx-sdhc-mmc.c
+> @@ -269,7 +269,7 @@ static int meson_mx_sdhc_enable_clks(struct mmc_host *mmc)
+>  static int meson_mx_sdhc_set_clk(struct mmc_host *mmc, struct mmc_ios *ios)
+>  {
+>         struct meson_mx_sdhc_host *host = mmc_priv(mmc);
+> -       u32 rx_clk_phase;
+> +       u32 val, rx_clk_phase;
+>         int ret;
+>
+>         meson_mx_sdhc_disable_clks(mmc);
+> @@ -290,27 +290,11 @@ static int meson_mx_sdhc_set_clk(struct mmc_host *mmc, struct mmc_ios *ios)
+>                 mmc->actual_clock = clk_get_rate(host->sd_clk);
+>
+>                 /*
+> -                * according to Amlogic the following latching points are
+> -                * selected with empirical values, there is no (known) formula
+> -                * to calculate these.
+> +                * Phase 90 should work in most cases. For data transmission,
+> +                * meson_mx_sdhc_execute_tuning() will find a accurate value
+>                  */
+> -               if (mmc->actual_clock > 100000000) {
+> -                       rx_clk_phase = 1;
+> -               } else if (mmc->actual_clock > 45000000) {
+> -                       if (ios->signal_voltage == MMC_SIGNAL_VOLTAGE_330)
+> -                               rx_clk_phase = 15;
+> -                       else
+> -                               rx_clk_phase = 11;
+> -               } else if (mmc->actual_clock >= 25000000) {
+> -                       rx_clk_phase = 15;
+> -               } else if (mmc->actual_clock > 5000000) {
+> -                       rx_clk_phase = 23;
+> -               } else if (mmc->actual_clock > 1000000) {
+> -                       rx_clk_phase = 55;
+> -               } else {
+> -                       rx_clk_phase = 1061;
+> -               }
+> -
+> +               regmap_read(host->regmap, MESON_SDHC_CLKC, &val);
+> +               rx_clk_phase = FIELD_GET(MESON_SDHC_CLKC_CLK_DIV, val) / 4;
+>                 regmap_update_bits(host->regmap, MESON_SDHC_CLK2,
+>                                    MESON_SDHC_CLK2_RX_CLK_PHASE,
+>                                    FIELD_PREP(MESON_SDHC_CLK2_RX_CLK_PHASE,
+> --
+> 2.34.1
+>
+>
+> _______________________________________________
+> linux-amlogic mailing list
+> linux-amlogic@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-amlogic
