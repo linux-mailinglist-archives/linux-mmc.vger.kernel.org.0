@@ -2,94 +2,191 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67F337E0DE4
-	for <lists+linux-mmc@lfdr.de>; Sat,  4 Nov 2023 05:58:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 937617DB5CC
+	for <lists+linux-mmc@lfdr.de>; Mon, 30 Oct 2023 10:09:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234571AbjKDE6U (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sat, 4 Nov 2023 00:58:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44878 "EHLO
+        id S232296AbjJ3JJ2 (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 30 Oct 2023 05:09:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233766AbjKDE6Q (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sat, 4 Nov 2023 00:58:16 -0400
-X-Greylist: delayed 4285 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 03 Nov 2023 21:58:12 PDT
-Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 221D8187
-        for <linux-mmc@vger.kernel.org>; Fri,  3 Nov 2023 21:58:12 -0700 (PDT)
-Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
-        id 2D28547316; Mon, 30 Oct 2023 08:30:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
-        s=mail; t=1698654692;
-        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
-        h=Date:From:To:Subject:From;
-        b=SxZMYgLEtc5RIQZ1G6eROExBYJXZpKAOmDSvXXRtmf7KQOJIT1YNOp6jDZ7TjZdO4
-         bi+u2eaeJtMZ62tZUczwbvRQLDd5zkxVDoMejmAkyMpLQUpTI8qq7BQtRd8gFCPGWH
-         73qXPhCqFxlujeXFFmLfMqXMHHntC63M7hAMdj7GmDySndSFb0sURDhVtFZRvN7sZN
-         Y7wdc9rF/w+1LPxu20U9Ick3FIYBv8pi6YkLAVep6kfrlYtn5locK4RCNq/HhB4Aiv
-         rhIQrjVy/bUriVQBIHzo5+vF6fte4cYx3nP1uZbcmYkG1oBB/KghTD4G621GrflhP4
-         hGKdZEiBMmZmQ==
-Received: by mail.profitpathwaygo.com for <linux-mmc@vger.kernel.org>; Mon, 30 Oct 2023 08:30:28 GMT
-Message-ID: <20231030074500-0.1.2s.1559t.0.iaee8dehmc@profitpathwaygo.com>
-Date:   Mon, 30 Oct 2023 08:30:28 GMT
-From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
-To:     <linux-mmc@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
-X-Mailer: mail.profitpathwaygo.com
+        with ESMTP id S232384AbjJ3JJ1 (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 30 Oct 2023 05:09:27 -0400
+Received: from esa5.hgst.iphmx.com (esa5.hgst.iphmx.com [216.71.153.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62914DE
+        for <linux-mmc@vger.kernel.org>; Mon, 30 Oct 2023 02:09:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1698656965; x=1730192965;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=o03i99xVc8QsCbapwxniTwGQnhmBZ4RhcvPzoIpy8G0=;
+  b=AsVKMewSXtKPioYvxJ8pucuA6RFtQEfMFILffk807aWB11s8bfVSLUjY
+   Q8c9al0eVSxMhGiwvAbVnk9MvNE5yWYJSbZQL8ANko3SP4UVdvAhMKA39
+   6fa8v3CdNHnkR2AT1WNGTRrrwX6+H8uim5niJ6SKZfO2B7yjQZ20F2+oz
+   BIwz+WDGa+axXftx08QD0AnZfpx+K49CcSE9l+o9sxXIl26riIxwsg9HT
+   g8DkpH8XhT4wEKh0a/sXLfrtDtlrh99hS+KkbNWIzugrrAn0/zoOonc4r
+   j1+PBQXJaMt2mdVZBmvDMB0st9kAFQwWLQ3kUkvFpZAwBAgKtOhfu4E9I
+   A==;
+X-CSE-ConnectionGUID: 3XEiIz7QTvWPtoiV7Rg5Cg==
+X-CSE-MsgGUID: Tmml7REYRGSqp3MVaLsbWw==
+X-IronPort-AV: E=Sophos;i="6.03,263,1694707200"; 
+   d="scan'208";a="1047125"
+Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
+  by ob1.hgst.iphmx.com with ESMTP; 30 Oct 2023 17:09:24 +0800
+IronPort-SDR: wHWwmGljlKb4yvBioC0yzN6ZgGzCCELUk2jTUkuQebolY7qx1JUPio4R18fRUszkkbg6LRZys7
+ ynsGeU0ORCGUHH4YIxiQg3uA1yEevfN6q8zeFcQGbcUKoUjiIs3C14hcn/QuS+K2z4D90xHm1N
+ cQ0oVYiQ42S7izz9bEq5haXD8fslFHZxkwc4wSH2p0DYTw1ZQNfvzg6/p7+iam59AJ19EIBtLM
+ f1WqhNBicnkEehNKiAHBj0/k+5xI/4dU754f+/VyurqEd84/PV7SCig7GrSpAKc0BM4+yVcbq2
+ SLo=
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Oct 2023 01:15:30 -0700
+IronPort-SDR: 3dR2YDyjjjGDeZbQyYLymra7h8FkvvG6a9nsz4TSHXlivyxofImGdzcuQ+1hEbUblg7Jb6Xgom
+ weHVWKU0+qnleBwZYOVlMBoGfPZMtwvkY/a890hXZew9Z5benyzTccY8XFRNWAbxMa+n/wkTr7
+ Ezk/IGYECbMkzXtC83zCB/2qHj0dSXXZnwnEaUo6Cu/pmxtlW9/qM9Krq51v+xynzZIx7jA6MR
+ +jAIpxco7kr1Uu2ihAt9G4PkAltVvlVVZAQY7507RhGH1vLWPUWWz+ix+FoM2JopqK3KB5GebV
+ jYw=
+WDCIronportException: Internal
+Received: from avri-office.ad.shared (HELO avri-office.sdcorp.global.sandisk.com) ([10.45.31.142])
+  by uls-op-cesaip02.wdc.com with ESMTP; 30 Oct 2023 02:09:22 -0700
+From:   Avri Altman <avri.altman@wdc.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Daniil Lunev <dlunev@google.com>,
+        Asutosh Das <quic_asutoshd@quicinc.com>,
+        Avri Altman <avri.altman@wdc.com>
+Subject: [PATCH] mmc: core: Use mrq.sbc in close-ended ffu
+Date:   Mon, 30 Oct 2023 11:09:06 +0200
+Message-Id: <20231030090906.1897035-1-avri.altman@wdc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
-        *      blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [URIs: profitpathwaygo.com]
-        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: profitpathwaygo.com]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [141.94.21.238 listed in bl.score.senderscore.com]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [141.94.21.238 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: profitpathwaygo.com]
-        * -0.5 BAYES_05 BODY: Bayes spam probability is 1 to 5%
-        *      [score: 0.0151]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: ******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Field Firmware Update (ffu) may use close-ended or open ended sequence.
+Each such sequence is comprised of a write commands enclosed between 2
+switch commands - to and from ffu mode. So for the close-ended case, it
+will be: cmd6->cmd23-cmd25-cmd6.
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+Some host controllers however, get confused when multi-block rw is sent
+without sbc, and may generate auto-cmd12 which breaks the ffu sequence.
+I encountered  this issue while testing fwupd (github.com/fwupd/fwupd)
+on HP Chromebook x2, a qualcomm based QC-7c, code name - strongbad.
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+Instead of a quirk, or hooking the request function of the msm ops,
+it would be better to fix the ioctl handling and make it use mrq.sbc
+instead of issuing SET_BLOCK_COUNT separately.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+Signed-off-by: Avri Altman <avri.altman@wdc.com>
+---
+ drivers/mmc/core/block.c | 41 ++++++++++++++++++++++++++++++++++++++--
+ include/linux/mmc/mmc.h  |  1 +
+ 2 files changed, 40 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 3a8f27c3e310..6d94617ef206 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -400,6 +400,10 @@ struct mmc_blk_ioc_data {
+ 	struct mmc_ioc_cmd ic;
+ 	unsigned char *buf;
+ 	u64 buf_bytes;
++	unsigned int flags;
++#define MMC_BLK_IOC_DROP	BIT(0)	/* drop this mrq */
++#define MMC_BLK_IOC_SBC	BIT(1)	/* use mrq.sbc */
++
+ 	struct mmc_rpmb_data *rpmb;
+ };
+ 
+@@ -479,6 +483,9 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
+ 	if (!card || !md || !idata)
+ 		return -EINVAL;
+ 
++	if (idata->flags & MMC_BLK_IOC_DROP)
++		return 0;
++
+ 	/*
+ 	 * The RPMB accesses comes in from the character device, so we
+ 	 * need to target these explicitly. Else we just target the
+@@ -532,14 +539,19 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
+ 			return err;
+ 	}
+ 
+-	if (idata->rpmb) {
++	if (idata->rpmb || (idata->flags & MMC_BLK_IOC_SBC)) {
++		u32 sbc_arg = data.blocks;
++
+ 		sbc.opcode = MMC_SET_BLOCK_COUNT;
+ 		/*
+ 		 * We don't do any blockcount validation because the max size
+ 		 * may be increased by a future standard. We just copy the
+ 		 * 'Reliable Write' bit here.
+ 		 */
+-		sbc.arg = data.blocks | (idata->ic.write_flag & BIT(31));
++		if (idata->rpmb)
++			sbc_arg |= (idata->ic.write_flag & BIT(31));
++
++		sbc.arg = sbc_arg;
+ 		sbc.flags = MMC_RSP_R1 | MMC_CMD_AC;
+ 		mrq.sbc = &sbc;
+ 	}
+@@ -1032,6 +1044,28 @@ static inline void mmc_blk_reset_success(struct mmc_blk_data *md, int type)
+ 	md->reset_done &= ~type;
+ }
+ 
++/* close-ended ffu */
++static void mmc_blk_check_ce_ffu(struct mmc_queue_req *mq_rq)
++{
++	struct mmc_blk_ioc_data **idata = mq_rq->drv_op_data;
++
++	if (mq_rq->ioc_count != 4)
++		return;
++
++	if (idata[0]->ic.opcode != MMC_SWITCH)
++		return;
++
++	if (MMC_EXTRACT_INDEX_FROM_ARG(idata[0]->ic.arg) !=
++			EXT_CSD_MODE_CONFIG)
++		return;
++
++	if (idata[1]->ic.opcode == MMC_SET_BLOCK_COUNT &&
++	    idata[2]->ic.opcode == MMC_WRITE_MULTIPLE_BLOCK) {
++		idata[1]->flags |= MMC_BLK_IOC_DROP;
++		idata[2]->flags |= MMC_BLK_IOC_SBC;
++	}
++}
++
+ /*
+  * The non-block commands come back from the block layer after it queued it and
+  * processed it with all other requests and then they get issued in this
+@@ -1059,6 +1093,9 @@ static void mmc_blk_issue_drv_op(struct mmc_queue *mq, struct request *req)
+ 			if (ret)
+ 				break;
+ 		}
++
++		mmc_blk_check_ce_ffu(mq_rq);
++
+ 		fallthrough;
+ 	case MMC_DRV_OP_IOCTL_RPMB:
+ 		idata = mq_rq->drv_op_data;
+diff --git a/include/linux/mmc/mmc.h b/include/linux/mmc/mmc.h
+index 6f7993803ee7..d4d10cabaa57 100644
+--- a/include/linux/mmc/mmc.h
++++ b/include/linux/mmc/mmc.h
+@@ -254,6 +254,7 @@ static inline bool mmc_ready_for_data(u32 status)
+  */
+ 
+ #define EXT_CSD_CMDQ_MODE_EN		15	/* R/W */
++#define EXT_CSD_MODE_CONFIG		30	/* R/W */
+ #define EXT_CSD_FLUSH_CACHE		32      /* W */
+ #define EXT_CSD_CACHE_CTRL		33      /* R/W */
+ #define EXT_CSD_POWER_OFF_NOTIFICATION	34	/* R/W */
+-- 
+2.42.0
 
-Pozdrawiam serdecznie
-Adam Charachuta
