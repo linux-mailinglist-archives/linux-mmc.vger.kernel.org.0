@@ -2,81 +2,128 @@ Return-Path: <linux-mmc-owner@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F82C7E1742
-	for <lists+linux-mmc@lfdr.de>; Sun,  5 Nov 2023 23:01:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 835C07E1A44
+	for <lists+linux-mmc@lfdr.de>; Mon,  6 Nov 2023 07:35:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229986AbjKEWBd (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Sun, 5 Nov 2023 17:01:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40898 "EHLO
+        id S229485AbjKFGfe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
+        Mon, 6 Nov 2023 01:35:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbjKEWBb (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Sun, 5 Nov 2023 17:01:31 -0500
-X-Greylist: delayed 5275 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Nov 2023 14:01:28 PST
-Received: from SMTP-HCRC-200.brggroup.vn (unknown [42.112.212.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF790BF;
-        Sun,  5 Nov 2023 14:01:28 -0800 (PST)
-Received: from SMTP-HCRC-200.brggroup.vn (localhost [127.0.0.1])
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTP id 78A28192B0;
-        Mon,  6 Nov 2023 01:57:51 +0700 (+07)
-Received: from zimbra.hcrc.vn (unknown [192.168.200.66])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTPS id 719E219379;
-        Mon,  6 Nov 2023 01:57:51 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id 0F17B1B8204A;
-        Mon,  6 Nov 2023 01:57:53 +0700 (+07)
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Vw9WEJzCiyUm; Mon,  6 Nov 2023 01:57:52 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id D37601B8203A;
-        Mon,  6 Nov 2023 01:57:52 +0700 (+07)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.hcrc.vn D37601B8203A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hcrc.vn;
-        s=64D43D38-C7D6-11ED-8EFE-0027945F1BFA; t=1699210672;
-        bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=JkahOraNIHUY2hQjLMJ1MnGkZJ5NSgfEclU3aSlyb0jH9L2z9iWo8HOYms38Ck5SL
-         Pu2EnH2z8QEkabrPeTYZMKbUUEiLDRKsOKvTphvs/TfWBuJEHMQZK5PO/57UPek6aV
-         nC3peSjqe1ZXWiLJy0qgLcBb3JkDwSptIcyzOOFKJ6pVtvBRLA/svDboC2LyDxYE4D
-         QFD4ASXU/tglYMiNkWY8XAmqeu3YpUrmTscjHU+JW3qXRRctiNHmh0XYgvOdQW+I3G
-         SBPUKUuNk7L0d+YocQ5kUePABbqE19my9+KQRpDxBtc3NmwIcuUwnL5dyjh6vcslxa
-         HgSQ6C+ZmLxLQ==
-X-Virus-Scanned: amavisd-new at hcrc.vn
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id IWSbvtCDqU5a; Mon,  6 Nov 2023 01:57:52 +0700 (+07)
-Received: from [192.168.1.152] (unknown [51.179.100.52])
-        by zimbra.hcrc.vn (Postfix) with ESMTPSA id 53AB01B8252B;
-        Mon,  6 Nov 2023 01:57:46 +0700 (+07)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230252AbjKFGfd (ORCPT
+        <rfc822;linux-mmc@vger.kernel.org>); Mon, 6 Nov 2023 01:35:33 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C1CE1;
+        Sun,  5 Nov 2023 22:35:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699252531; x=1730788531;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=rkeD9beioJ3ZQPx/PpMCCYUgdpP+5HTzczEs3MjCoL0=;
+  b=N+fJEjNGomtHDq0ioDX+5rik1lxdJXOwtQR2Kl8WC40ZfNap2Sqnhbwa
+   /PY/NKnM+dEyvyJMqRQhfEceac+3D8xhPGShwj8dEBczdEnHEdnAso6Q1
+   Uinq+0y21mkOjbBjvvXyJjL9C+goBzTGr7uVch8v6uwJa84Uy/0O9kcLt
+   6CdgJAMC1Q0IXCd2SBXam5nRHthIAffEAWPoWxp6urt0KKRop4TGoFyx0
+   7X312ppxC39l4Mtw4+wHNtlxWDdKgTMuPN80n5sB5LmiN7UsNnIPd8dSI
+   AjcB0IXhEFwNGPuyiAfnqhuYZl4y7yUMWQEH1kQFKxHzAdYbkC1ccaDJf
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="388098764"
+X-IronPort-AV: E=Sophos;i="6.03,280,1694761200"; 
+   d="scan'208";a="388098764"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2023 22:35:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="765857678"
+X-IronPort-AV: E=Sophos;i="6.03,280,1694761200"; 
+   d="scan'208";a="765857678"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.251.215.231])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2023 22:35:26 -0800
+Message-ID: <8bc2daa3-55ad-44ea-9205-40fb09852561@intel.com>
+Date:   Mon, 6 Nov 2023 08:35:24 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
-To:     Recipients <ch.31hamnghi@hcrc.vn>
-From:   ch.31hamnghi@hcrc.vn
-Date:   Sun, 05 Nov 2023 19:57:35 +0100
-Reply-To: joliushk@gmail.com
-Message-Id: <20231105185746.53AB01B8252B@zimbra.hcrc.vn>
-X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 3/6] mmc: block: Be sure to wait while busy in CQE
+ error recovery
+To:     Avri Altman <Avri.Altman@wdc.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?Q?Kornel_Dul=C4=99ba?= <korneld@chromium.org>,
+        Radoslaw Biernacki <biernacki@google.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Asutosh Das <quic_asutoshd@quicinc.com>
+Cc:     Chaotian Jing <chaotian.jing@mediatek.com>,
+        Bhavya Kapoor <b-kapoor@ti.com>,
+        Kamal Dasu <kamal.dasu@broadcom.com>,
+        Al Cooper <alcooperx@gmail.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Shaik Sajida Bhanu <quic_c_sbhanu@quicinc.com>,
+        Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
+        Victor Shih <victor.shih@genesyslogic.com.tw>,
+        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Aniruddha Tvs Rao <anrao@nvidia.com>,
+        Chun-Hung Wu <chun-hung.wu@mediatek.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20231103084720.6886-1-adrian.hunter@intel.com>
+ <20231103084720.6886-4-adrian.hunter@intel.com>
+ <DM6PR04MB65753B3B797430DF05959210FCA5A@DM6PR04MB6575.namprd04.prod.outlook.com>
+Content-Language: en-US
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <DM6PR04MB65753B3B797430DF05959210FCA5A@DM6PR04MB6575.namprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
 
-Goededag,
-Ik ben mevrouw Joanna Liu en een medewerker van Citi Bank Hong Kong.
-Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
+On 3/11/23 12:48, Avri Altman wrote:
+>> STOP command does not guarantee to wait while busy, but subsequent
+>> command MMC_CMDQ_TASK_MGMT to discard the queue will fail if the
+>> card is busy, so be sure to wait by employing mmc_poll_for_busy().
+> Doesn't the Task Discard Sequence expects you to check CQDPT[i]==1
+> before sending MMC_CMDQ_TASK_MGMT to discard task id i?
 
+We do not clear individual tasks.  Instead the MMC_CMDQ_TASK_MGMT is
+sent with the op-code to "discard entire queue", which will also
+work even if the queue is empty. Refer JESD84-B51A,
+6.6.39.6 CMDQ_TASK_MGMT and Table 43 — Task Management op-codes.
 
-Ik wacht op jullie reacties
-Met vriendelijke groeten
-mevrouw Joanna Liu
+> 
+> Thanks,
+> Avri
+> 
+>>
+>> Fixes: 72a5af554df8 ("mmc: core: Add support for handling CQE requests")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+>> ---
+>>  drivers/mmc/core/core.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c index
+>> 3d3e0ca52614..befde2bd26d3 100644
+>> --- a/drivers/mmc/core/core.c
+>> +++ b/drivers/mmc/core/core.c
+>> @@ -553,6 +553,8 @@ int mmc_cqe_recovery(struct mmc_host *host)
+>>         cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
+>>         mmc_wait_for_cmd(host, &cmd, 0);
+>>
+>> +       mmc_poll_for_busy(host->card, MMC_CQE_RECOVERY_TIMEOUT,
+>> true,
+>> + MMC_BUSY_IO);
+>> +
+>>         memset(&cmd, 0, sizeof(cmd));
+>>         cmd.opcode       = MMC_CMDQ_TASK_MGMT;
+>>         cmd.arg          = 1; /* Discard entire queue */
+>> --
+>> 2.34.1
+> 
 
