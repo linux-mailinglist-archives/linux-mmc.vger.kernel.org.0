@@ -1,194 +1,160 @@
-Return-Path: <linux-mmc+bounces-6-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-10-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E957E7ED6
-	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 18:47:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7A77E7F07
+	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 18:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DA3FB21822
-	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 17:47:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25ADF1C20B71
+	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 17:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1138838DE0;
-	Fri, 10 Nov 2023 17:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C4B3C6BB;
+	Fri, 10 Nov 2023 17:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dVMwdMh7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lsoLL6te"
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAE53A299
-	for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 17:46:39 +0000 (UTC)
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5894D9ED2
-	for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 00:26:57 -0800 (PST)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-32da9ef390fso1040184f8f.2
-        for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 00:26:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1699604816; x=1700209616; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1Sl6LMd5GvY2HGP4rRStwyGMOVlrH/dOjLpczszfQNw=;
-        b=dVMwdMh7csv6ocS6Dn7T4xfuJ7I+6vh9XgT5fDmLsTKqmtCc854XNBLTYIRQbFNE4J
-         yzFeBqXtk422Td9xptMQW6yvadSLHyVEchXOkVvyTA0cm1Vw0eMBNVzyoyjEYGOmkODv
-         L4q52QXVzUykwCqYQKP3GeWAaAYWTvGjyflwE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699604816; x=1700209616;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Sl6LMd5GvY2HGP4rRStwyGMOVlrH/dOjLpczszfQNw=;
-        b=TbOJVvj2vRrkPJH9CFpzAeJjVqSmr1hs4oJtyNMyYfg4wkIN1NLZ1MGXuwiCJAkExw
-         aOCRgKsqqnGz2WiJCqsmRdGgHG71cOHqH+aWh4A124qgbzEkvqiQcIZWuSEF4/aGPTNn
-         GIZE2akspDreTU8+mLay6/Hd4ADKd/AfwEfoZy8Wmc4qZa/YzT0cWNxLJCbJ8pMKFu4I
-         t/m0TBHDKV+AyOpSe/kScxVGaOL2HQxvocu9gYy983tw+ePrBVWPkBpMsYHiru4Qn90X
-         cg6vzOL92YhKjbQlUranTNbnN/sxnbr+g0v9CR9G7cUmytC2O+h2DLkjsgXqt+IjQTcA
-         idiw==
-X-Gm-Message-State: AOJu0YxvVpUaD0iFv1SY6J1vuAmr/dMsv449h3hkVqyUS0kzrkvU6Oe9
-	U3jqCtdbron5vhUzGAkhRhUXcQ==
-X-Google-Smtp-Source: AGHT+IFa/6wfx+9kLbmLi8ldMycAx55pGtShVMYgpoK2iaa/HjZ2LPKqxCeLbkFt09pu6AmXKiAvUQ==
-X-Received: by 2002:adf:8b14:0:b0:331:3a1e:b85 with SMTP id n20-20020adf8b14000000b003313a1e0b85mr971558wra.22.1699604815657;
-        Fri, 10 Nov 2023 00:26:55 -0800 (PST)
-Received: from google.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
-        by smtp.gmail.com with ESMTPSA id z14-20020a056000110e00b0032f7cc56509sm1391486wrw.98.2023.11.10.00.26.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Nov 2023 00:26:55 -0800 (PST)
-Date: Fri, 10 Nov 2023 08:26:53 +0000
-From: Kornel =?utf-8?Q?Dul=C4=99ba?= <korneld@chromium.org>
-To: Sven van Ashbrook <svenva@chromium.org>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jason Lai <jasonlai.genesyslogic@gmail.com>,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-	=?utf-8?Q?Stanis=C5=82aw?= Kardach <skardach@google.com>,
-	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mmc: sdhci-pci-gli: Disable LPM during initialization
-Message-ID: <ZU3pTY0qbA6cDB7f@google.com>
-References: <20231109111934.4172565-1-korneld@chromium.org>
- <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4AE3C08B
+	for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 17:46:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C0A02B7F2;
+	Fri, 10 Nov 2023 01:17:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699607850; x=1731143850;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0OaHHlwLItjCt3c5YKtM0WKbl6EAt2dHV4q+Vl4Xx3o=;
+  b=lsoLL6tefeOOacmGgP8QkW7W2rpqD4kwEtkBEJUUhBgIri62WyB3HpFc
+   t5qYEXV0wa0qgO66w4Vudyd/ajw8yDIV85/Xf08bLlT1IH8oTzdSDxUCB
+   Op5GrpvxNDocWRI5zGiXCTLGOIiXN8j62rNiJEMjKbq2ZkAmHvvf/lLOT
+   qUxzwUzjJsWl57B0nMC4Y/71X6Z/Kx5XIZNvLljrKX9z70fpfVSC4UhKA
+   owspbt3e3q0wpEava1e7dQsxTD1FSaNFRvG5Qon1X0zALVFJIwRupZoqz
+   egeSrEKxAO49+DNYybD7M4rtZTKyxWS9Xlf4jzJqfTCrkOaKKbG2tnU2x
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="394064250"
+X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; 
+   d="scan'208";a="394064250"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2023 01:17:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="854347489"
+X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; 
+   d="scan'208";a="854347489"
+Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 10 Nov 2023 01:17:24 -0800
+Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r1Ndi-0009WM-1t;
+	Fri, 10 Nov 2023 09:17:22 +0000
+Date: Fri, 10 Nov 2023 17:16:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jyan Chou <jyanchou@realtek.com>, ulf.hansson@linaro.org,
+	adrian.hunter@intel.com, jh80.chung@samsung.com,
+	riteshh@codeaurora.org, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	conor+dt@kernel.org, asutoshd@codeaurora.org,
+	p.zabel@pengutronix.de, linux-mmc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	arnd@arndb.de, briannorris@chromium.org, doug@schmorgal.com,
+	tonyhuang.sunplus@gmail.com, abel.vesa@linaro.org,
+	william.qiu@starfivetech.com, jyanchou@realtek.com
+Subject: Re: [PATCH V6][1/4] mmc: solve DMA boundary limitation of CQHCI
+ driver
+Message-ID: <202311101711.FFnMF7iH-lkp@intel.com>
+References: <20231109082043.27147-2-jyanchou@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
+In-Reply-To: <20231109082043.27147-2-jyanchou@realtek.com>
 
-Hi Sven,
+Hi Jyan,
 
->Hi Kornel, see below.
->
->On Thu, Nov 9, 2023 at 6:20 AM Kornel Dulęba <korneld@chromium.org> wrote:
->>
->> To address IO performance commit f9e5b33934ce
->> ("mmc: host: Improve I/O read/write performance for GL9763E")
->> limited LPM negotiation to runtime suspend state.
->> The problem is that it only flips the switch in the runtime PM
->> resume/suspend logic.
->>
->> Disable LPM negotiation in gl9763e_add_host.
->> This helps in two ways:
->> 1. It was found that the LPM switch stays in the same position after
->>    warm reboot. Having it set in init helps with consistency.
->> 2. Disabling LPM during the first runtime resume leaves us susceptible
->>    to the performance issue in the time window between boot and the
->>    first runtime suspend.
->>
->> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Kornel Dulęba <korneld@chromium.org>
->> ---
->>  drivers/mmc/host/sdhci-pci-gli.c | 8 +++++++-
->>  1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
->> index d83261e857a5..ce91d1e63a8e 100644
->> --- a/drivers/mmc/host/sdhci-pci-gli.c
->> +++ b/drivers/mmc/host/sdhci-pci-gli.c
->> @@ -220,6 +220,9 @@
->>
->>  #define GLI_MAX_TUNING_LOOP 40
->>
->> +static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot,
->> +                                             bool enable);
->> +
->>  /* Genesys Logic chipset */
->>  static inline void gl9750_wt_on(struct sdhci_host *host)
->>  {
->> @@ -1281,6 +1284,9 @@ static int gl9763e_add_host(struct sdhci_pci_slot *slot)
->>         if (ret)
->>                 goto cleanup;
->>
->> +       /* Disable LPM negotiation to avoid entering L1 state. */
->> +       gl9763e_set_low_power_negotiation(slot, false);
->> +
->>         return 0;
->
->What happens if the bridge is not driving the system rootfs? Imagine
->the case where
->the bridge is used to drive an auxiliary eMMC, unused until a few hours
->after boot. After this patch, the bridge may remain active (not-L1)
->for the entire time,
->although it's not being used...
+kernel test robot noticed the following build errors:
 
-That's already addressed by runtime PM. LPM negotiation will be
-re-enabled duing the first runtime suspend. The default autosuspend
-delay for all PCI MMC controllers is 50ms, so I think that's fine.
-The only scenario where LPM will never be entered is if the user
-explicitly disabled runtime PM for the controller. In that case however,
-it's arguably better to have the LPM negotiation disabled for the sake 
-of performance.
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.6 next-20231110]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->
->I suspect we want the following:
->1. consistency - LPM register setting and runtime_pm state must agree
->2. power-efficient initial state - bridge must come out of probe
->runtime-suspended
->and LPM must be enabled
->
->I suspect the above will be fulfilled if we do
->
->+ /* Bring to consistent runtime suspended state with LPM negotiation enabled */
->+ gl9763e_set_low_power_negotiation(slot, false);
->+ pm_runtime_set_suspended(dev);
->
->WDYT?
+url:    https://github.com/intel-lab-lkp/linux/commits/Jyan-Chou/mmc-solve-DMA-boundary-limitation-of-CQHCI-driver/20231109-190435
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20231109082043.27147-2-jyanchou%40realtek.com
+patch subject: [PATCH V6][1/4] mmc: solve DMA boundary limitation of CQHCI driver
+config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20231110/202311101711.FFnMF7iH-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231110/202311101711.FFnMF7iH-lkp@intel.com/reproduce)
 
-I don't think this is something that we want do to. Apart from my
-argument above there is one more thing to consider.
-During runtime PM initialization in sdhci_pci_runtime_pm_allow
-the usage counter is dropped using pm_runtime_put_noidle,
-which doesn't trigger the machinery to suspend the device.
-According to the comment that's because the mmc core logic will shortly
-talk to the device, probably to initialize the eMMC card itself.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311101711.FFnMF7iH-lkp@intel.com/
 
->
->>
->>  cleanup:
->> @@ -1323,7 +1329,6 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
->>         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
->>  }
->>
->> -#ifdef CONFIG_PM
->>  static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
->>  {
->>         struct pci_dev *pdev = slot->chip->pdev;
->> @@ -1349,6 +1354,7 @@ static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool
->>         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
->>  }
->>
->> +#ifdef CONFIG_PM
->>  static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
->>  {
->>         struct sdhci_pci_slot *slot = chip->slots[0];
->> --
->> 2.42.0.869.gea05f2083d-goog
->>
+All errors (new ones prefixed by >>):
+
+>> drivers/mmc/host/cqhci-core.c:519:20: error: no member named 'setup_tran_desc' in 'struct cqhci_host_ops'
+           if (cq_host->ops->setup_tran_desc) {
+               ~~~~~~~~~~~~  ^
+   drivers/mmc/host/cqhci-core.c:520:17: error: no member named 'setup_tran_desc' in 'struct cqhci_host_ops'
+                   cq_host->ops->setup_tran_desc(data, cq_host, desc, sg_count);
+                   ~~~~~~~~~~~~  ^
+   2 errors generated.
+
+
+vim +519 drivers/mmc/host/cqhci-core.c
+
+   498	
+   499	static int cqhci_prep_tran_desc(struct mmc_request *mrq,
+   500					struct cqhci_host *cq_host, int tag)
+   501	{
+   502		struct mmc_data *data = mrq->data;
+   503		int i, sg_count, len;
+   504		bool end = false;
+   505		bool dma64 = cq_host->dma64;
+   506		dma_addr_t addr;
+   507		u8 *desc;
+   508		struct scatterlist *sg;
+   509	
+   510		sg_count = cqhci_dma_map(mrq->host, mrq);
+   511		if (sg_count < 0) {
+   512			pr_err("%s: %s: unable to map sg lists, %d\n",
+   513					mmc_hostname(mrq->host), __func__, sg_count);
+   514			return sg_count;
+   515		}
+   516	
+   517		desc = get_trans_desc(cq_host, tag);
+   518	
+ > 519		if (cq_host->ops->setup_tran_desc) {
+   520			cq_host->ops->setup_tran_desc(data, cq_host, desc, sg_count);
+   521			return 0;
+   522		}
+   523	
+   524		for_each_sg(data->sg, sg, sg_count, i) {
+   525			addr = sg_dma_address(sg);
+   526			len = sg_dma_len(sg);
+   527	
+   528			if ((i+1) == sg_count)
+   529				end = true;
+   530			cqhci_set_tran_desc(desc, addr, len, end, dma64);
+   531			desc += cq_host->trans_desc_len;
+   532		}
+   533	
+   534		return 0;
+   535	}
+   536	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
