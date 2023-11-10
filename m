@@ -1,152 +1,194 @@
-Return-Path: <linux-mmc-owner@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B58507E7EA9
-	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 18:46:54 +0100 (CET)
-Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345063AbjKJRqy (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 10 Nov 2023 12:46:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46578 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345973AbjKJRpy (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 10 Nov 2023 12:45:54 -0500
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2089.outbound.protection.outlook.com [40.107.223.89])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B41A8A60;
-        Fri, 10 Nov 2023 00:11:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JxmYd6/1ReUkiumevzPuLPyHdAPcCSQXrN6elUx4ecMsDkgOIowm4zIUa+ZK4WhUGB0OwCj3k283vPibuGhLRLKbx+U/qUNBVS8up4RqZZYDqHmEOaJFZibciJxa8Kb6WQkAc3nSZM/JhXU7J17SvSVrwEvBChZn8n+V2OTfqDi2jTDAz7mn3ozc1anxEtQ/ZJtXGlBWVrdQpRJJcI1xKpc/vuu4Nv1YLfNAsPpoNbozmqH5xVeFJzWBbmTBTx1e/FVcYy2PKWsECB1tDE55PxvvKWXGnQKhDMPg9CAOLDPnEO/HZZ/RsyWgivQhgQ0KskrDKM5JtvpgS+/GigKgDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LZTvxu960/Ln9l61K/o9qHg7+qN+xzlDiSKWIPukt2o=;
- b=XFUFdTnRkjjurLUvSloMHGWugwqlVXe6d9QS/HG5xe1zuboZWDTBgCkY09b230KbNo6mv7d5Ohy6JoVD9VwYZ5i1qSdNO5xCxVvb+Img9MgSMteVaQqFm3lKqFQV7RX7MhAVjabkFAVHNiVtCi93K1LiLEF7n06mZPWC63we4fyfPRfyL/R1OWVnIOBtG1AhbqUvWSPVbJaecIjcG/9f2d+z29FzacExgOP/7Wo/iXH0ld8apsDMi+845Ov9W3dndcA4JMQDARw57Y3xU4uscc65Qh6vGhd92r2HeWR5wg7jKZsTDS/hdowPWOJKJ9IAnvJGH4YLDCEimdq//CcoNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LZTvxu960/Ln9l61K/o9qHg7+qN+xzlDiSKWIPukt2o=;
- b=fDUmST/WddUnMUKAjSJq/Wq17DnHOC2PSLRA8rstlBI7ItWyL0RzC3M1uu7F26aXD6pN0FR2Y4K4mh7wS6/nndSSUaHllLvIr3tgRycRU1zSJP1bhCsBnyyUynKq3w68fExsJY1F5S1lF0kcwGsfOVY1kQrXy9+sq+41BxGyBnM=
-Received: from CH0PR03CA0449.namprd03.prod.outlook.com (2603:10b6:610:10e::25)
- by DS0PR12MB7583.namprd12.prod.outlook.com (2603:10b6:8:13f::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Fri, 10 Nov
- 2023 08:11:10 +0000
-Received: from DS2PEPF00003442.namprd04.prod.outlook.com
- (2603:10b6:610:10e:cafe::81) by CH0PR03CA0449.outlook.office365.com
- (2603:10b6:610:10e::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19 via Frontend
- Transport; Fri, 10 Nov 2023 08:11:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS2PEPF00003442.mail.protection.outlook.com (10.167.17.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6977.16 via Frontend Transport; Fri, 10 Nov 2023 08:11:09 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Fri, 10 Nov
- 2023 02:11:08 -0600
-Received: from xhdlakshmis40.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.32 via Frontend
- Transport; Fri, 10 Nov 2023 02:11:06 -0600
-From:   Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Adrian Hunter <adrian.hunter@intel.com>
-CC:     <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <git@amd.com>,
-        <saikrishna12468@gmail.com>
-Subject: [PATCH] dt bindings: mmc: arasan,sdci: Add gate property for Xilinx platforms
-Date:   Fri, 10 Nov 2023 13:41:05 +0530
-Message-ID: <20231110081105.3295037-1-sai.krishna.potthuri@amd.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003442:EE_|DS0PR12MB7583:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e9f3157-0a03-444a-842b-08dbe1c498fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MZcibu/kNGTH+PVBI4btOVP4Q/rsm4mCUOMUyGBGrFJyUaPhI3G910UeUR7d9yBtqgKJ42E4ONt7/5hOx+S9IHSoXQXBIaEgSrLZTby4WB1H87OxzLRK9ljtLVfJInRe3Q+VdM+VOzRe8AtL0YZ0MaLjWg8u0TncushRD9baOhyZvUJbOT7Bo1DpvxJbow52XA0HqV6dRDfXmPc93xMyGjyL+yfFu5sXMI9gVg6bK6zmHQPvWUj04mrAC1bZxMNjjH8yZfB2LbuoSr9K7l8Gtj7dTMMkr0dyiwk1iGj5PdV3EZyYGyzMwKsje6j0H9hF1oKrNXFVCqeu07mJ5g03MlHX0A73qzOQNECG1Fi2q7Ch11Dd9sMKXe3EMqonIh4BZe8Ey5Js+11CN/p1myTQCHMyyrmRc9KgD9BxSn4kyIqjvhBJEixWq5fB3TEhCGeDJMLFJAyerxpjVocXS9kmdGLQDpIbXBVCwYoMaaRFSnwLVaTxUQJvMd7dzsRtgacksbtQA22TwJcRT1sgN6s2a0M9WQAyP6o6sH5Kldm2J3hJ3yYFrqk5UA9e2C6+gX8q31Jx/VQopxt2odqGa08nyMIKy5cK3jiGKEPjuiogE5ZP8n3DM8iS26tk9h4dUsT6CXQYYLRL3txqkl6adXwyOEStfZNTVA7ZTlHVwfI/W//U5Fo+52uY6+hVIhnMBVPug544ZW8Cbu+KQumbjvmfwKb4IYuNDvLrEuL13QmrbT175PrN4U2hFzp4DKfJru1N/5Ao3n73MVTgK7fydWRRnw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(346002)(376002)(136003)(39860400002)(230922051799003)(82310400011)(64100799003)(451199024)(1800799009)(186009)(40470700004)(46966006)(36840700001)(40480700001)(40460700003)(47076005)(36860700001)(41300700001)(36756003)(4326008)(8936002)(8676002)(86362001)(103116003)(356005)(478600001)(2906002)(5660300002)(316002)(83380400001)(110136005)(82740400003)(81166007)(70586007)(426003)(70206006)(54906003)(26005)(2616005)(7416002)(336012)(1076003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2023 08:11:09.8866
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e9f3157-0a03-444a-842b-08dbe1c498fd
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF00003442.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7583
-X-Spam-Status: No, score=-0.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FORGED_SPF_HELO,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E957E7ED6
+	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 18:47:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DA3FB21822
+	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 17:47:54 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1138838DE0;
+	Fri, 10 Nov 2023 17:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dVMwdMh7"
+X-Original-To: linux-mmc@vger.kernel.org
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAE53A299
+	for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 17:46:39 +0000 (UTC)
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5894D9ED2
+	for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 00:26:57 -0800 (PST)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-32da9ef390fso1040184f8f.2
+        for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 00:26:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1699604816; x=1700209616; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1Sl6LMd5GvY2HGP4rRStwyGMOVlrH/dOjLpczszfQNw=;
+        b=dVMwdMh7csv6ocS6Dn7T4xfuJ7I+6vh9XgT5fDmLsTKqmtCc854XNBLTYIRQbFNE4J
+         yzFeBqXtk422Td9xptMQW6yvadSLHyVEchXOkVvyTA0cm1Vw0eMBNVzyoyjEYGOmkODv
+         L4q52QXVzUykwCqYQKP3GeWAaAYWTvGjyflwE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699604816; x=1700209616;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Sl6LMd5GvY2HGP4rRStwyGMOVlrH/dOjLpczszfQNw=;
+        b=TbOJVvj2vRrkPJH9CFpzAeJjVqSmr1hs4oJtyNMyYfg4wkIN1NLZ1MGXuwiCJAkExw
+         aOCRgKsqqnGz2WiJCqsmRdGgHG71cOHqH+aWh4A124qgbzEkvqiQcIZWuSEF4/aGPTNn
+         GIZE2akspDreTU8+mLay6/Hd4ADKd/AfwEfoZy8Wmc4qZa/YzT0cWNxLJCbJ8pMKFu4I
+         t/m0TBHDKV+AyOpSe/kScxVGaOL2HQxvocu9gYy983tw+ePrBVWPkBpMsYHiru4Qn90X
+         cg6vzOL92YhKjbQlUranTNbnN/sxnbr+g0v9CR9G7cUmytC2O+h2DLkjsgXqt+IjQTcA
+         idiw==
+X-Gm-Message-State: AOJu0YxvVpUaD0iFv1SY6J1vuAmr/dMsv449h3hkVqyUS0kzrkvU6Oe9
+	U3jqCtdbron5vhUzGAkhRhUXcQ==
+X-Google-Smtp-Source: AGHT+IFa/6wfx+9kLbmLi8ldMycAx55pGtShVMYgpoK2iaa/HjZ2LPKqxCeLbkFt09pu6AmXKiAvUQ==
+X-Received: by 2002:adf:8b14:0:b0:331:3a1e:b85 with SMTP id n20-20020adf8b14000000b003313a1e0b85mr971558wra.22.1699604815657;
+        Fri, 10 Nov 2023 00:26:55 -0800 (PST)
+Received: from google.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
+        by smtp.gmail.com with ESMTPSA id z14-20020a056000110e00b0032f7cc56509sm1391486wrw.98.2023.11.10.00.26.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Nov 2023 00:26:55 -0800 (PST)
+Date: Fri, 10 Nov 2023 08:26:53 +0000
+From: Kornel =?utf-8?Q?Dul=C4=99ba?= <korneld@chromium.org>
+To: Sven van Ashbrook <svenva@chromium.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jason Lai <jasonlai.genesyslogic@gmail.com>,
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+	=?utf-8?Q?Stanis=C5=82aw?= Kardach <skardach@google.com>,
+	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mmc: sdhci-pci-gli: Disable LPM during initialization
+Message-ID: <ZU3pTY0qbA6cDB7f@google.com>
+References: <20231109111934.4172565-1-korneld@chromium.org>
+ <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
 Precedence: bulk
-List-ID: <linux-mmc.vger.kernel.org>
 X-Mailing-List: linux-mmc@vger.kernel.org
+List-Id: <linux-mmc.vger.kernel.org>
+List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
 
-From: Swati Agarwal <swati.agarwal@amd.com>
+Hi Sven,
 
-Add gate property in example node for Xilinx platforms which will be used
-to ungate the DLL clock. DLL clock is required for higher frequencies like
-50MHz, 100MHz and 200MHz.
-DLL clock is automatically selected by the SD controller when the SD
-output clock frequency is more than 25 MHz.
+>Hi Kornel, see below.
+>
+>On Thu, Nov 9, 2023 at 6:20 AM Kornel Dulęba <korneld@chromium.org> wrote:
+>>
+>> To address IO performance commit f9e5b33934ce
+>> ("mmc: host: Improve I/O read/write performance for GL9763E")
+>> limited LPM negotiation to runtime suspend state.
+>> The problem is that it only flips the switch in the runtime PM
+>> resume/suspend logic.
+>>
+>> Disable LPM negotiation in gl9763e_add_host.
+>> This helps in two ways:
+>> 1. It was found that the LPM switch stays in the same position after
+>>    warm reboot. Having it set in init helps with consistency.
+>> 2. Disabling LPM during the first runtime resume leaves us susceptible
+>>    to the performance issue in the time window between boot and the
+>>    first runtime suspend.
+>>
+>> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Kornel Dulęba <korneld@chromium.org>
+>> ---
+>>  drivers/mmc/host/sdhci-pci-gli.c | 8 +++++++-
+>>  1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+>> index d83261e857a5..ce91d1e63a8e 100644
+>> --- a/drivers/mmc/host/sdhci-pci-gli.c
+>> +++ b/drivers/mmc/host/sdhci-pci-gli.c
+>> @@ -220,6 +220,9 @@
+>>
+>>  #define GLI_MAX_TUNING_LOOP 40
+>>
+>> +static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot,
+>> +                                             bool enable);
+>> +
+>>  /* Genesys Logic chipset */
+>>  static inline void gl9750_wt_on(struct sdhci_host *host)
+>>  {
+>> @@ -1281,6 +1284,9 @@ static int gl9763e_add_host(struct sdhci_pci_slot *slot)
+>>         if (ret)
+>>                 goto cleanup;
+>>
+>> +       /* Disable LPM negotiation to avoid entering L1 state. */
+>> +       gl9763e_set_low_power_negotiation(slot, false);
+>> +
+>>         return 0;
+>
+>What happens if the bridge is not driving the system rootfs? Imagine
+>the case where
+>the bridge is used to drive an auxiliary eMMC, unused until a few hours
+>after boot. After this patch, the bridge may remain active (not-L1)
+>for the entire time,
+>although it's not being used...
 
-Signed-off-by: Swati Agarwal <swati.agarwal@amd.com>
-Co-developed-by: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
-Signed-off-by: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
----
-Note: This patch only updates the example nodes with the gate property for
-Xilinx platforms.
+That's already addressed by runtime PM. LPM negotiation will be
+re-enabled duing the first runtime suspend. The default autosuspend
+delay for all PCI MMC controllers is 50ms, so I think that's fine.
+The only scenario where LPM will never be entered is if the user
+explicitly disabled runtime PM for the controller. In that case however,
+it's arguably better to have the LPM negotiation disabled for the sake 
+of performance.
 
- Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+>
+>I suspect we want the following:
+>1. consistency - LPM register setting and runtime_pm state must agree
+>2. power-efficient initial state - bridge must come out of probe
+>runtime-suspended
+>and LPM must be enabled
+>
+>I suspect the above will be fulfilled if we do
+>
+>+ /* Bring to consistent runtime suspended state with LPM negotiation enabled */
+>+ gl9763e_set_low_power_negotiation(slot, false);
+>+ pm_runtime_set_suspended(dev);
+>
+>WDYT?
 
-diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml b/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml
-index 3e99801f77d2..9075add020bf 100644
---- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml
-+++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.yaml
-@@ -226,8 +226,8 @@ examples:
-           interrupt-parent = <&gic>;
-           interrupts = <0 48 4>;
-           reg = <0xff160000 0x1000>;
--          clocks = <&clk200>, <&clk200>;
--          clock-names = "clk_xin", "clk_ahb";
-+          clocks = <&clk200>, <&clk200>, <&clk1200>;
-+          clock-names = "clk_xin", "clk_ahb", "gate";
-           clock-output-names = "clk_out_sd0", "clk_in_sd0";
-           #clock-cells = <1>;
-           clk-phase-sd-hs = <63>, <72>;
-@@ -239,8 +239,8 @@ examples:
-           interrupt-parent = <&gic>;
-           interrupts = <0 126 4>;
-           reg = <0xf1040000 0x10000>;
--          clocks = <&clk200>, <&clk200>;
--          clock-names = "clk_xin", "clk_ahb";
-+          clocks = <&clk200>, <&clk200>, <&clk1200>;
-+          clock-names = "clk_xin", "clk_ahb", "gate";
-           clock-output-names = "clk_out_sd0", "clk_in_sd0";
-           #clock-cells = <1>;
-           clk-phase-sd-hs = <132>, <60>;
--- 
-2.25.1
+I don't think this is something that we want do to. Apart from my
+argument above there is one more thing to consider.
+During runtime PM initialization in sdhci_pci_runtime_pm_allow
+the usage counter is dropped using pm_runtime_put_noidle,
+which doesn't trigger the machinery to suspend the device.
+According to the comment that's because the mmc core logic will shortly
+talk to the device, probably to initialize the eMMC card itself.
+
+>
+>>
+>>  cleanup:
+>> @@ -1323,7 +1329,6 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
+>>         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+>>  }
+>>
+>> -#ifdef CONFIG_PM
+>>  static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
+>>  {
+>>         struct pci_dev *pdev = slot->chip->pdev;
+>> @@ -1349,6 +1354,7 @@ static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool
+>>         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+>>  }
+>>
+>> +#ifdef CONFIG_PM
+>>  static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
+>>  {
+>>         struct sdhci_pci_slot *slot = chip->slots[0];
+>> --
+>> 2.42.0.869.gea05f2083d-goog
+>>
 
