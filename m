@@ -1,77 +1,84 @@
-Return-Path: <linux-mmc-owner@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-13-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9538A7E7E7B
-	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 18:45:35 +0100 (CET)
-Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235107AbjKJRpe (ORCPT <rfc822;lists+linux-mmc@lfdr.de>);
-        Fri, 10 Nov 2023 12:45:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46546 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234956AbjKJRoS (ORCPT
-        <rfc822;linux-mmc@vger.kernel.org>); Fri, 10 Nov 2023 12:44:18 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F9C82B7BF
-        for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 03:10:39 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9dbb3e0ff65so305264066b.1
-        for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 03:10:38 -0800 (PST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF287E7F2B
+	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 18:50:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 545CFB218FD
+	for <lists+linux-mmc@lfdr.de>; Fri, 10 Nov 2023 17:50:12 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFC93D99A;
+	Fri, 10 Nov 2023 17:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l5nXoibu"
+X-Original-To: linux-mmc@vger.kernel.org
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD183D3B2
+	for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 17:47:03 +0000 (UTC)
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE123367F
+	for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 04:23:03 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-9becde9ea7bso638662166b.0
+        for <linux-mmc@vger.kernel.org>; Fri, 10 Nov 2023 04:23:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699614637; x=1700219437; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699618982; x=1700223782; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=a5+pLgFcuQzVB7VyT/mmdvsCQPmXOBYaF3kVg/yi6FE=;
-        b=Aj4ThSX2xx8ayyhCZiGDgg5b1PQUNZPwxrvWMS39GMYpg1jcfef3wVtc0lonoVNGm0
-         8PjZMQbO3L0P+oXtYq1SXw27Me+ATYjNpu7qgpBQOd+1FS9eOP3OHmu86BJcD/I/6tsz
-         ADCne5lh9As7J2GKuhPT9Ajsk18f241aBMo2oA+cgcp0cjmtblhAbeMgZP35A5geiguc
-         ZFBYBbJfkRUPl/PbUKnCMf0roZfM8ykdH30bYEaiJP3gOh6w/jr8a+5EVah7IxSwP6Li
-         1/BJ+TtgzcjMldMOZQ0gxNYtAZTlcG0LXCL9rkPFuMdJK3VNT12OrQw5XnZLahaO3RJ5
-         Smmg==
+        bh=NheLNV3Ua+9nO2D3pgEi4qpSiUXy5zhSL2AO/z8qXmU=;
+        b=l5nXoibuLfS/umdPcwSpUxMU/oV/M5UrNSS1Xok4vQJzuPpJksUuujkzEx7tX+UXz/
+         VhHg0Gg3EPuz/4ljdug2b40yormp6rq8tt6yCMGE2Lun5ICuia7nXzZwv64hw35mekbY
+         7oRWRApoJzDqi6+Tn4mKAf6cRnPtu9NK3D+TkS5GNphJkKp2oQJAt9JWyhW8+/qdb8Mc
+         5wGcYoHZ2tqS7ow8dQkNUodd0OpA8Xx3hfhckBIwf9lqqXOSowmQjTFkc4AdujPpHklU
+         YxsgpDE7jz3q/jaxtnhLWtRD+3oEGgciL6X67g94BqnBfFBmyud7F5CkrdjEio/2yNY9
+         YA6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699614637; x=1700219437;
+        d=1e100.net; s=20230601; t=1699618982; x=1700223782;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a5+pLgFcuQzVB7VyT/mmdvsCQPmXOBYaF3kVg/yi6FE=;
-        b=ZzFdF+/dXheop8L4VCIqDf1N50x0gb5mc5gLmWSeaBvVy4pUVlfsBQvnnxjY3L+oR+
-         EYXm3U+uVuzfpir7/+cV1pgw8HD1v7A6zc1N18BbKgu83iBs67LWbJ68f3nK1uLFKdwA
-         /W9dE0BhAsWhiSseKn+5wwv2Ow02PxA2mAQwvsINJIZM1w82bp7z01B88QwuRVW8++zH
-         Z/Zkr49hUnIKjlibd1i1bK8RbH0fv6ZUDGorgD/EwVDO2EdCYGr1hr8q6TfrI5z1ffQI
-         Ocqwmmp5R8MXVIhOhmYGsZH46P7m65YAD7/GjWrr2MO5bYPL+pFQSGmSpsxGSkqlMiBE
-         tx6g==
-X-Gm-Message-State: AOJu0YxKt+D/ywv1cm07jnQ9mCJX0cot+rykFEptPDwkNhGhuXL+r79D
-        jHGINMcZgv9sKCON+A7pPpPrXQ==
-X-Google-Smtp-Source: AGHT+IE+y5aZiqh+tzEhpycSmG8UkDXJ2gMeavrh9mL6aSrPqkPVStsyQfjAwVwwbTj7wfwtgcvNlw==
-X-Received: by 2002:a17:907:7fac:b0:9bf:6200:fe33 with SMTP id qk44-20020a1709077fac00b009bf6200fe33mr7651309ejc.16.1699614637414;
-        Fri, 10 Nov 2023 03:10:37 -0800 (PST)
+        bh=NheLNV3Ua+9nO2D3pgEi4qpSiUXy5zhSL2AO/z8qXmU=;
+        b=VL0a3+PeB9dIfMrG8MMj2U2PpJLGaExOfb1wiAPUrxAmDIAPW9wDWv/7uul3I4Q3SV
+         xqo+l+OgnUpUgo0Y1qWl8mSVNYKhqdFeutV8BdmOqXra6EoqMlap8P+okMQctG3sZk3s
+         wpBS9KQmuJosh0FiYvb9gmc33XRbHituSAleyB+WEsXRn/XNGl7ciK8EFEabHxClfHy5
+         KWymMZG745/GE6AyQV+913brtgHKabBZy+5W9ez1B7GNZMYUaraHJEOh4OCaczFomZpA
+         gnIkhXihL7DhnrF2xJrU98nnOpXk0gJxYfrdCTfgP8zpDXjIVkYjXrTVifvY/xmMc6HI
+         CqZg==
+X-Gm-Message-State: AOJu0YzJ0Ee9zYxYWRAbLlNi/HKBkTSZCeMhMUasFDMVYU10iTHk/QOF
+	RBG2QvyCupiOny0yochMFx2+RQ==
+X-Google-Smtp-Source: AGHT+IEfKhGT7aylCUtQaEIbvPqo35joO+W0xLkMOAI40MlBv/YyULegPUo8vYT+++DF4kdIWilbcA==
+X-Received: by 2002:a17:906:59a8:b0:9db:6437:ef42 with SMTP id m40-20020a17090659a800b009db6437ef42mr1847424ejs.18.1699618982247;
+        Fri, 10 Nov 2023 04:23:02 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id r20-20020aa7cb94000000b00543597cd190sm978412edt.47.2023.11.10.03.10.35
+        by smtp.gmail.com with ESMTPSA id z15-20020a1709060acf00b0099cb0a7098dsm3876197ejf.19.2023.11.10.04.23.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Nov 2023 03:10:36 -0800 (PST)
-Message-ID: <4cf3d481-c16d-4b1c-ab45-3ceff80b0b1b@linaro.org>
-Date:   Fri, 10 Nov 2023 12:10:34 +0100
+        Fri, 10 Nov 2023 04:23:01 -0800 (PST)
+Message-ID: <7f02301c-17dd-415b-a5c0-7bebf8721a55@linaro.org>
+Date: Fri, 10 Nov 2023 13:22:59 +0100
+Precedence: bulk
+X-Mailing-List: linux-mmc@vger.kernel.org
+List-Id: <linux-mmc.vger.kernel.org>
+List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/7] riscv: dts: thead: Add TH1520 mmc controllers and
- sdhci clock
+Subject: Re: [PATCH] dt bindings: mmc: arasan,sdci: Add gate property for
+ Xilinx platforms
 Content-Language: en-US
-To:     Drew Fustini <dfustini@baylibre.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jisheng Zhang <jszhang@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-        Fu Wei <wefu@redhat.com>, Conor Dooley <conor@kernel.org>
-Cc:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20231109-th1520-mmc-v5-0-018bd039cf17@baylibre.com>
- <20231109-th1520-mmc-v5-5-018bd039cf17@baylibre.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
+ Adrian Hunter <adrian.hunter@intel.com>
+Cc: linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, git@amd.com, saikrishna12468@gmail.com
+References: <20231110081105.3295037-1-sai.krishna.potthuri@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -116,61 +123,36 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231109-th1520-mmc-v5-5-018bd039cf17@baylibre.com>
+In-Reply-To: <20231110081105.3295037-1-sai.krishna.potthuri@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
-Precedence: bulk
-List-ID: <linux-mmc.vger.kernel.org>
-X-Mailing-List: linux-mmc@vger.kernel.org
 
-On 10/11/2023 06:41, Drew Fustini wrote:
-> Add node for the SDHCI fixed clock. Add mmc0 node for the first mmc
-> controller instance which is typically connected to the eMMC device.
-> Add mmc1 node for the second mmc controller instance which is typically
-> connected to microSD slot.
+On 10/11/2023 09:11, Sai Krishna Potthuri wrote:
+> From: Swati Agarwal <swati.agarwal@amd.com>
 > 
-> Signed-off-by: Drew Fustini <dfustini@baylibre.com>
+
+Please use subject prefixes matching the subsystem. You can get them for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching.
+It's: dt-bindings
+
+> Add gate property in example node for Xilinx platforms which will be used
+> to ungate the DLL clock. DLL clock is required for higher frequencies like
+> 50MHz, 100MHz and 200MHz.
+> DLL clock is automatically selected by the SD controller when the SD
+> output clock frequency is more than 25 MHz.
+> 
+> Signed-off-by: Swati Agarwal <swati.agarwal@amd.com>
+> Co-developed-by: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
+> Signed-off-by: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
 > ---
->  arch/riscv/boot/dts/thead/th1520.dtsi | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
+> Note: This patch only updates the example nodes with the gate property for
+> Xilinx platforms.
 > 
-> diff --git a/arch/riscv/boot/dts/thead/th1520.dtsi b/arch/riscv/boot/dts/thead/th1520.dtsi
-> index ff364709a6df..f5ec9326c4b8 100644
-> --- a/arch/riscv/boot/dts/thead/th1520.dtsi
-> +++ b/arch/riscv/boot/dts/thead/th1520.dtsi
-> @@ -134,6 +134,13 @@ uart_sclk: uart-sclk-clock {
->  		#clock-cells = <0>;
->  	};
->  
-> +	sdhci_clk: sdhci-clock {
-> +		compatible = "fixed-clock";
-> +		clock-frequency = <198000000>;
-> +		clock-output-names = "sdhci_clk";
-> +		#clock-cells = <0>;
-> +	};
-> +
->  	soc {
->  		compatible = "simple-bus";
->  		interrupt-parent = <&plic>;
-> @@ -292,6 +299,22 @@ dmac0: dma-controller@ffefc00000 {
->  			status = "disabled";
->  		};
->  
-> +		mmc0: mmc@ffe7080000 {
-> +			compatible = "thead,th1520-dwcmshc";
-> +			reg = <0xff 0xe7080000 0x0 0x10000>;
-> +			interrupts = <62 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&sdhci_clk>;
-> +			clock-names = "core";
 
-You miss disable in each mmc node.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
+
 
