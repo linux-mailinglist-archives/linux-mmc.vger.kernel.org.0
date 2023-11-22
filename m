@@ -1,113 +1,159 @@
-Return-Path: <linux-mmc+bounces-171-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-173-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184977F3DAB
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 Nov 2023 06:41:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 105D87F3DC7
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 Nov 2023 06:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C641F281D88
-	for <lists+linux-mmc@lfdr.de>; Wed, 22 Nov 2023 05:41:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4139E1C20DDB
+	for <lists+linux-mmc@lfdr.de>; Wed, 22 Nov 2023 05:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A3713FEF;
-	Wed, 22 Nov 2023 05:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED7014002;
+	Wed, 22 Nov 2023 05:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="V/96vLGq"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="hC1Y6Q11"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B3B1A2;
-	Tue, 21 Nov 2023 21:40:18 -0800 (PST)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AM4gVVs024685;
-	Wed, 22 Nov 2023 05:40:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=M3ih5k73hTUGLAHB8pFzvY3VIGT0+mRjjUOBX7AhHKg=;
- b=V/96vLGqwLjvaljeglMBfb6zOidPyjm4BsuRV+ixuUdIpRo4ulQxgzay0oW7vg7DDdQ0
- kWWtCabn6WQj9F/FZLii7zrvnT712E1LHE4v3zHjSWbymOSVscFUqsZCyLOm4ActOsNl
- vKJzykdu+wYXHPYy0cEQ1KPFhwMFlLZFS9Ag1DiJLAuRaajhA1HvJ+pk+dx9ehNn2UHY
- acK8w4Y892F7qiu6D6w0LdCP4AipqhtRlRx3QCjiFTFcimwoIjsHmE6kLoulFd590RZX
- Bs4sRPOwSxVOkBU3TeFlhukMde5KfMRoplx6e0EWR1qNY14TGU0lvJPNctb5dzHa7tXv 7g== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ugr85u3e6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Nov 2023 05:40:15 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AM5eEKu025905
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Nov 2023 05:40:14 GMT
-Received: from hu-gaurkash-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 21 Nov 2023 21:40:04 -0800
-From: Gaurav Kashyap <quic_gaurkash@quicinc.com>
-To: <linux-scsi@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <ebiggers@google.com>, <neil.armstrong@linaro.org>,
-        <srinivas.kandagatla@linaro.org>
-CC: <linux-mmc@vger.kernel.org>, <linux-block@vger.kernel.org>,
-        <linux-fscrypt@vger.kernel.org>, <omprsing@qti.qualcomm.com>,
-        <quic_psodagud@quicinc.com>, <abel.vesa@linaro.org>,
-        <quic_spuppala@quicinc.com>, <kernel@quicinc.com>,
-        Gaurav Kashyap
-	<quic_gaurkash@quicinc.com>
-Subject: [PATCH v3 12/12] dt-bindings: crypto: ice: document the hwkm property
-Date: Tue, 21 Nov 2023 21:38:17 -0800
-Message-ID: <20231122053817.3401748-13-quic_gaurkash@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231122053817.3401748-1-quic_gaurkash@quicinc.com>
-References: <20231122053817.3401748-1-quic_gaurkash@quicinc.com>
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99DF098;
+	Tue, 21 Nov 2023 21:53:44 -0800 (PST)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3AM5rXcu068166;
+	Tue, 21 Nov 2023 23:53:33 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1700632413;
+	bh=jb1vLiMYPsOH9+E4K2SmeXPXHHJZ+WhX12z4JbrVx9s=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=hC1Y6Q11uZmmxIq9vL9ddpkaFJfBA/z8/mdE6caiWSAEhXMRgFaOQeejKxowsiUgs
+	 bwBHN+Ry+VB+cFVMdZ3N6lWxQQ1buJqkfIg0nQjJ8mBYDokGq5FdzKp7pmREVm3OzC
+	 zKb3evTIhBSFpa5PbN01Z2haWAtFZtNvY5mD/pPI=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3AM5rXwD008142
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 21 Nov 2023 23:53:33 -0600
+Received: from lewvowa02.ent.ti.com (10.180.75.80) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 21
+ Nov 2023 23:53:33 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by lewvowa02.ent.ti.com
+ (10.180.75.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2507.34; Tue, 21 Nov
+ 2023 23:53:33 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 21 Nov 2023 23:53:32 -0600
+Received: from [172.24.227.94] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+	by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3AM5rT2x113793;
+	Tue, 21 Nov 2023 23:53:30 -0600
+Message-ID: <f9d4946e-f5f1-4fb7-adab-eaf624ce838c@ti.com>
+Date: Wed, 22 Nov 2023 11:23:29 +0530
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: AIKcHt8ulWoxBE92h_6_xVSkozyDMypH
-X-Proofpoint-ORIG-GUID: AIKcHt8ulWoxBE92h_6_xVSkozyDMypH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-22_02,2023-11-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- phishscore=0 suspectscore=0 adultscore=0 malwarescore=0 bulkscore=0
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311220040
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mmc: sdhci_am654: Drop lookup for deprecated
+ ti,otap-del-sel
+Content-Language: en-US
+To: Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson
+	<ulf.hansson@linaro.org>
+CC: <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>, <devicetree@vger.kernel.org>
+References: <20231110072535.2695134-1-vigneshr@ti.com>
+ <4bf2e094-622c-4da2-ac46-994acb580bcf@intel.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+In-Reply-To: <4bf2e094-622c-4da2-ac46-994acb580bcf@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-Add documentation for the ice-use-hwkm property in
-qcom ice.
 
-Signed-off-by: Gaurav Kashyap <quic_gaurkash@quicinc.com>
----
- .../bindings/crypto/qcom,inline-crypto-engine.yaml         | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/crypto/qcom,inline-crypto-engine.yaml b/Documentation/devicetree/bindings/crypto/qcom,inline-crypto-engine.yaml
-index ca4f7d1cefaa..93e017dddc9d 100644
---- a/Documentation/devicetree/bindings/crypto/qcom,inline-crypto-engine.yaml
-+++ b/Documentation/devicetree/bindings/crypto/qcom,inline-crypto-engine.yaml
-@@ -24,6 +24,13 @@ properties:
-   clocks:
-     maxItems: 1
- 
-+  qcom,ice-use-hwkm:
-+    type: boolean
-+    description:
-+      Use the supported Hardware Key Manager (HWKM) in Qualcomm
-+      ICE to support wrapped keys. This dictates if wrapped keys
-+      have to be used by ICE.
-+
- required:
-   - compatible
-   - reg
+On 20/11/23 17:38, Adrian Hunter wrote:
+> On 10/11/23 09:25, Vignesh Raghavendra wrote:
+>> ti,otap-del-sel has been deprecated since v5.7 and there are no users of
+>> this property and no documentation in the DT bindings either.
+>> Drop the fallback code looking for this property, this makes
+>> sdhci_am654_get_otap_delay() much easier to read as all the TAP values
+>> can be handled via a single iterator loop.
+>>
+>> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+> 
+> One minor comment below, otherwise:
+> 
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> 
+>> ---
+>>
+>> Based on discussions at [1]
+>> https://lore.kernel.org/linux-mmc/CAPDyKFrCSTW3G6H7qS89d+UQ6RJcAYcKSPULVT8J7XKsUDpHdw@mail.gmail.com/
+>>
+>> CC'ing DT maintainers to see if there any objection to remove
+>> undocumented and deprecated property.
+>>
+>>  drivers/mmc/host/sdhci_am654.c | 25 ++++---------------------
+>>  1 file changed, 4 insertions(+), 21 deletions(-)
+>>
+>> diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+>> index 967bd2dfcda1..402fba0fa418 100644
+>> --- a/drivers/mmc/host/sdhci_am654.c
+>> +++ b/drivers/mmc/host/sdhci_am654.c
+>> @@ -577,32 +577,15 @@ static int sdhci_am654_get_otap_delay(struct sdhci_host *host,
+>>  	int i;
+>>  	int ret;
+>>  
+>> -	ret = device_property_read_u32(dev, td[MMC_TIMING_LEGACY].otap_binding,
+>> -				 &sdhci_am654->otap_del_sel[MMC_TIMING_LEGACY]);
+>> -	if (ret) {
+>> -		/*
+>> -		 * ti,otap-del-sel-legacy is mandatory, look for old binding
+>> -		 * if not found.
+>> -		 */
+>> -		ret = device_property_read_u32(dev, "ti,otap-del-sel",
+>> -					       &sdhci_am654->otap_del_sel[0]);
+>> -		if (ret) {
+>> -			dev_err(dev, "Couldn't find otap-del-sel\n");
+>> -
+>> -			return ret;
+>> -		}
+>> -
+>> -		dev_info(dev, "Using legacy binding ti,otap-del-sel\n");
+>> -		sdhci_am654->legacy_otapdly = true;
+> 
+> With this removal, legacy_otapdly is not used anymore and should be
+> removed also.
+> 
+
+Indeed, will post v2 with cleanup. Thanks for the review!
+
+>> -
+>> -		return 0;
+>> -	}
+>> -
+>>  	for (i = MMC_TIMING_LEGACY; i <= MMC_TIMING_MMC_HS400; i++) {
+>>  
+>>  		ret = device_property_read_u32(dev, td[i].otap_binding,
+>>  					       &sdhci_am654->otap_del_sel[i]);
+>>  		if (ret) {
+>> +			if (i == MMC_TIMING_LEGACY) {
+>> +				dev_err(dev, "Couldn't find mandatory ti,otap-del-sel-legacy\n");
+>> +				return ret;
+>> +			}
+>>  			dev_dbg(dev, "Couldn't find %s\n",
+>>  				td[i].otap_binding);
+>>  			/*
+> 
+
 -- 
-2.25.1
-
+Regards
+Vignesh
 
