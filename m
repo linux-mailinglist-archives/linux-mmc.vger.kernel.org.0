@@ -1,187 +1,162 @@
-Return-Path: <linux-mmc+bounces-518-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-520-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34A481EED8
-	for <lists+linux-mmc@lfdr.de>; Wed, 27 Dec 2023 13:34:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 425C781EEEC
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 Dec 2023 13:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA0E12838BA
-	for <lists+linux-mmc@lfdr.de>; Wed, 27 Dec 2023 12:34:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2F2EB20EB3
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 Dec 2023 12:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C291A44C8D;
-	Wed, 27 Dec 2023 12:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7467944C6D;
+	Wed, 27 Dec 2023 12:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="WckRmBnm"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WnKMiRpS"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C9D4500E;
-	Wed, 27 Dec 2023 12:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mx0b-0016f401.pphosted.com
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BQMrU8r004230;
-	Wed, 27 Dec 2023 04:33:31 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	pfpt0220; bh=QtaJSWsEJTNUz9p29xBwXZsSB1Org89UHEZ7k9tdeeE=; b=Wck
-	RmBnmm9trjIRFfHfGmHVnOipQv7yXf7SoSQmZRFgoGhAkVLhxn6q3/iITU0MCv/n
-	OcqZzj25XOoiN+jMoorl344NuZ2PdoHJKeKybLvlcptbOI2KIOtexkma+P8oZH0f
-	4iGEaIhhe1/DN8f+GJVgdcEud6k7wA7RG4xETIwW4BrVpiqTfYV7hmE98s7tGgEE
-	99Rr49bghYfQvc91qd+eZj9VQNBEx8JiGGZ0BZ6xBHazqBsMfWSqmNfwTjrnKJL0
-	zB0ovA48cOsTxSTlglgoPCIqgkCnMNn7EquwvGjJhfA/9FGQhV5/+yJCFdkLrlO6
-	0Idbj2+se7sw7rnAchQ==
-Received: from dc5-exch02.marvell.com ([199.233.59.182])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3v5yxp0a62-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-	Wed, 27 Dec 2023 04:33:31 -0800 (PST)
-Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH02.marvell.com
- (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 27 Dec
- 2023 04:33:29 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
- (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.48 via Frontend
- Transport; Wed, 27 Dec 2023 04:33:29 -0800
-Received: from dc3lp-swdev041.marvell.com (dc3lp-swdev041.marvell.com [10.6.60.191])
-	by maili.marvell.com (Postfix) with ESMTP id 27EC95B6936;
-	Wed, 27 Dec 2023 04:33:22 -0800 (PST)
-From: Elad Nachman <enachman@marvell.com>
-To: <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-        <conor+dt@kernel.org>, <andrew@lunn.ch>, <gregory.clement@bootlin.com>,
-        <sebastian.hesselbarth@gmail.com>, <huziji@marvell.com>,
-        <ulf.hansson@linaro.org>, <catalin.marinas@arm.com>, <will@kernel.org>,
-        <adrian.hunter@intel.com>, <thunder.leizhen@huawei.com>,
-        <bhe@redhat.com>, <akpm@linux-foundation.org>, <yajun.deng@linux.dev>,
-        <chris.zjh@huawei.com>, <linux-mmc@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-CC: <enachman@marvell.com>, <cyuval@marvell.com>
-Subject: [PATCH 4/4] mmc: xenon: Add ac5 support via bounce buffer
-Date: Wed, 27 Dec 2023 14:32:57 +0200
-Message-ID: <20231227123257.1170590-5-enachman@marvell.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231227123257.1170590-1-enachman@marvell.com>
-References: <20231227123257.1170590-1-enachman@marvell.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D275B44C70
+	for <linux-mmc@vger.kernel.org>; Wed, 27 Dec 2023 12:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-40d4a7f0c4dso42847235e9.1
+        for <linux-mmc@vger.kernel.org>; Wed, 27 Dec 2023 04:38:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1703680734; x=1704285534; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qQNOV67MdhID3408uOfgccIq2xpxNnna5O8nMs9Vl0o=;
+        b=WnKMiRpSG76wxSDOQTSs+UoH4jycqhjzBTPfYqH7IgaJGjsL/Wf3N8XQk7cOE8mNzv
+         qzJr407XvhWUSdqj6GGsZ8suyaTgW9/finEPhoIM/+jSUtf1BeDZi39QOEMCHANFsDqQ
+         4EyVsaKPr0Y6jcsE2tvqkac80+sDl3VFllp0egHXl52G9VBnkMfTg9pxc1EcScCgIJp0
+         EzM27ngCsCRvoLSbQaHGjG1cfBo8aKL1quodMqvhHBJgZs8edZtzfoIaetOu5ffvNCKR
+         0vtq9DuH1N+PCL44/45QW29gSPRJ893JxymbTqOjdF5lgTVNlsUwX0bNYXAdCkKZDjCG
+         FQoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703680734; x=1704285534;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qQNOV67MdhID3408uOfgccIq2xpxNnna5O8nMs9Vl0o=;
+        b=p6PZ9RIInzy7u5Sdf+ONqu2itV/DabTecJmnTTZSV+BgWCEiuSew8G1ite/ukOW2N2
+         CXMktxChbE9S4nYwgOyD9jwP3JE88RaxJ32czKyD+SRrnTx0SnSgTUDCPXHy5zf6mC+Z
+         2joKmI2O20GM0Xer0lnak/IbfiXlwNprfQq6sVCQpUTSk5SnwCB6ES1dGYgH2+lkfoa/
+         zeinLLK8EGKB3tsvLZx4G585MYP3qGUzbwdxqpXE+rEP73VxGKbScRFsSEvIy+tFfAL4
+         5vKsKzheVHyBIpbi3C4HU3HQPUvj2s75DJSGHS183ZfMVLSGxnAbk9aMiKrq4ClZj6Ao
+         Flmg==
+X-Gm-Message-State: AOJu0YwUv/c2VOLVh4QUxXC3sRHs+4AxNImbFrEdryQB18Lm5ebUKWxA
+	rapjWF+YkKqBLDbZiRFTu/KAN0IrH7ZHTA==
+X-Google-Smtp-Source: AGHT+IEv9tgGQOa9iwvgkMwLyzK/Kf/5XcIbxOygixSFeR0V+nxc7Ch4aJlDc0Zz4ZRiymMpN4xWqQ==
+X-Received: by 2002:a05:600c:a04:b0:40d:60a4:4f81 with SMTP id z4-20020a05600c0a0400b0040d60a44f81mr123777wmp.100.1703680733930;
+        Wed, 27 Dec 2023 04:38:53 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.218.27])
+        by smtp.gmail.com with ESMTPSA id m2-20020a05600c4f4200b0040d5c58c41dsm3569893wmq.24.2023.12.27.04.38.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Dec 2023 04:38:53 -0800 (PST)
+Message-ID: <6ff67469-2522-425a-a96a-25460e38beda@linaro.org>
+Date: Wed, 27 Dec 2023 13:38:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: aBy5T6LeTda5mzPy40wZXafzn84gvjX4
-X-Proofpoint-GUID: aBy5T6LeTda5mzPy40wZXafzn84gvjX4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] dt-bindings: mmc: add Marvell ac5
+Content-Language: en-US
+To: Elad Nachman <enachman@marvell.com>, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, andrew@lunn.ch,
+ gregory.clement@bootlin.com, sebastian.hesselbarth@gmail.com,
+ huziji@marvell.com, ulf.hansson@linaro.org, catalin.marinas@arm.com,
+ will@kernel.org, adrian.hunter@intel.com, thunder.leizhen@huawei.com,
+ bhe@redhat.com, akpm@linux-foundation.org, yajun.deng@linux.dev,
+ chris.zjh@huawei.com, linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: cyuval@marvell.com
+References: <20231227123257.1170590-1-enachman@marvell.com>
+ <20231227123257.1170590-3-enachman@marvell.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
+ m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
+ HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
+ XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
+ mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
+ v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
+ cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
+ rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
+ qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
+ aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
+ gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
+ dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
+ NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
+ hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
+ oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
+ H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
+ yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
+ 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
+ 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
+ +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
+ FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
+ 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
+ DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
+ oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
+ 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
+ Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
+ qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
+ /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
+ qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
+ EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
+ KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
+ fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231227123257.1170590-3-enachman@marvell.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Elad Nachman <enachman@marvell.com>
+On 27/12/2023 13:32, Elad Nachman wrote:
+> From: Elad Nachman <enachman@marvell.com>
+> 
+> Add dt bindings for Marvell ac5 eMMC controller
+> 
+> Signed-off-by: Elad Nachman <enachman@marvell.com>
+> ---
+>  Documentation/devicetree/bindings/mmc/marvell,xenon-sdhci.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/mmc/marvell,xenon-sdhci.yaml b/Documentation/devicetree/bindings/mmc/marvell,xenon-sdhci.yaml
+> index 3a8e74894ae0..50c6de8bf0bc 100644
+> --- a/Documentation/devicetree/bindings/mmc/marvell,xenon-sdhci.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/marvell,xenon-sdhci.yaml
+> @@ -34,6 +34,9 @@ properties:
+>            - const: marvell,armada-3700-sdhci
+>            - const: marvell,sdhci-xenon
+>  
+> +      - items:
+> +          - const: marvell,ac5-sdhci
 
-AC5/X/IM SOCs has a variant of the Xenon eMMC controller,
-in which only 31-bit of addressing pass from the controller
-on the AXI bus.
-Since we cannot guarantee that only buffers from the first 2GB
-of memory will reach the driver, the driver is configured for
-SDMA mode, without 64-bit mode, overriding the DMA mask to 34-bit
-to support the DDR memory mapping, which starts at offset 8GB.
+Please make earlier const as enum and add it there.
 
-Signed-off-by: Elad Nachman <enachman@marvell.com>
----
- drivers/mmc/host/sdhci-xenon.c | 33 ++++++++++++++++++++++++++++++++-
- drivers/mmc/host/sdhci-xenon.h |  3 ++-
- 2 files changed, 34 insertions(+), 2 deletions(-)
+> +          - const: marvell,armada-ap806-sdhci
 
-diff --git a/drivers/mmc/host/sdhci-xenon.c b/drivers/mmc/host/sdhci-xenon.c
-index 25ba7aecc3be..4d6df1815da1 100644
---- a/drivers/mmc/host/sdhci-xenon.c
-+++ b/drivers/mmc/host/sdhci-xenon.c
-@@ -18,6 +18,8 @@
- #include <linux/of.h>
- #include <linux/pm.h>
- #include <linux/pm_runtime.h>
-+#include <linux/mm.h>
-+#include <linux/dma-mapping.h>
- 
- #include "sdhci-pltfm.h"
- #include "sdhci-xenon.h"
-@@ -422,6 +424,7 @@ static int xenon_probe_params(struct platform_device *pdev)
- 	struct xenon_priv *priv = sdhci_pltfm_priv(pltfm_host);
- 	u32 sdhc_id, nr_sdhc;
- 	u32 tuning_count;
-+	struct sysinfo si;
- 
- 	/* Disable HS200 on Armada AP806 */
- 	if (priv->hw_version == XENON_AP806)
-@@ -450,6 +453,23 @@ static int xenon_probe_params(struct platform_device *pdev)
- 	}
- 	priv->tuning_count = tuning_count;
- 
-+	/*
-+	 * AC5/X/IM HW has only 31-bits passed in the crossbar switch.
-+	 * If we have more than 2GB of memory, this means we might pass
-+	 * memory pointers which are above 2GB and which cannot be properly
-+	 * represented. In this case, disable ADMA, 64-bit DMA and allow only SDMA.
-+	 * This effectively will enable bounce buffer quirk in the
-+	 * generic SDHCI driver, which will make sure DMA is only done
-+	 * from supported memory regions:
-+	 */
-+	if (priv->hw_version == XENON_AC5) {
-+		si_meminfo(&si);
-+		if (si.totalram * si.mem_unit > SZ_2G) {
-+			host->quirks |= SDHCI_QUIRK_BROKEN_ADMA;
-+			host->quirks2 |= SDHCI_QUIRK2_BROKEN_64_BIT_DMA;
-+		}
-+	}
-+
- 	return xenon_phy_parse_params(dev, host);
- }
- 
-@@ -562,7 +582,17 @@ static int xenon_probe(struct platform_device *pdev)
- 		goto remove_sdhc;
- 
- 	pm_runtime_put_autosuspend(&pdev->dev);
--
-+	/*
-+	 * If we previously detected AC5 with over 2GB of memory,
-+	 * then we disable ADMA and 64-bit DMA.
-+	 * This means generic SDHCI driver has set the DMA mask to
-+	 * 32-bit. Since DDR starts at 0x2_0000_0000, we must use
-+	 * 34-bit DMA mask to access this DDR memory:
-+	 */
-+	if (priv->hw_version == XENON_AC5) {
-+		if (host->quirks2 & SDHCI_QUIRK2_BROKEN_64_BIT_DMA)
-+			dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(34));
-+	}
- 	return 0;
- 
- remove_sdhc:
-@@ -680,6 +710,7 @@ static const struct of_device_id sdhci_xenon_dt_ids[] = {
- 	{ .compatible = "marvell,armada-ap807-sdhci", .data = (void *)XENON_AP807},
- 	{ .compatible = "marvell,armada-cp110-sdhci", .data =  (void *)XENON_CP110},
- 	{ .compatible = "marvell,armada-3700-sdhci", .data =  (void *)XENON_A3700},
-+	{ .compatible = "marvell,ac5-sdhci",	     .data =  (void *)XENON_AC5},
- 	{}
- };
- MODULE_DEVICE_TABLE(of, sdhci_xenon_dt_ids);
-diff --git a/drivers/mmc/host/sdhci-xenon.h b/drivers/mmc/host/sdhci-xenon.h
-index 3e9c6c908a79..0460d97aad26 100644
---- a/drivers/mmc/host/sdhci-xenon.h
-+++ b/drivers/mmc/host/sdhci-xenon.h
-@@ -57,7 +57,8 @@ enum xenon_variant {
- 	XENON_A3700,
- 	XENON_AP806,
- 	XENON_AP807,
--	XENON_CP110
-+	XENON_CP110,
-+	XENON_AC5
- };
- 
- struct xenon_priv {
--- 
-2.25.1
+You also missed here blank line, but that won't matter after above change.
+
+
+Best regards,
+Krzysztof
 
 
