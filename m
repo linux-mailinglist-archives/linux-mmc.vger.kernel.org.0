@@ -1,128 +1,115 @@
-Return-Path: <linux-mmc+bounces-514-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-516-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A6081EEAA
-	for <lists+linux-mmc@lfdr.de>; Wed, 27 Dec 2023 12:51:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6843D81EED5
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 Dec 2023 13:34:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 070E61C22444
-	for <lists+linux-mmc@lfdr.de>; Wed, 27 Dec 2023 11:51:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66F1B1C225DF
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 Dec 2023 12:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23EC3446B8;
-	Wed, 27 Dec 2023 11:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8E944C7C;
+	Wed, 27 Dec 2023 12:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="poj/qxU7"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="g44Hx1CB"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596BD446AB;
-	Wed, 27 Dec 2023 11:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1703677852; x=1704282652; i=markus.elfring@web.de;
-	bh=/Cj1QNl5NB+eMaP0OCGwd5CQPitw8BtjolyhftxjSoQ=;
-	h=X-UI-Sender-Class:Date:To:From:Subject:Cc;
-	b=poj/qxU7lKy2V5VOfd/iOjzwemtIUc6lMQkG7cxdd8TR5HDw8jS+uRxdc6u1BwSk
-	 uLuqTQJlRKtFbRAQ1eHzxunBa5U4OJKVOFjCoz5T5aKF0s1C0740bFmHz8tjFm1BT
-	 rvXPZUROLFMYCEleq2zfz0qFRQ0SNg4BojJh2o/ASAUwNTqn6JGUocQUYydig2Ueh
-	 lykxq8HKrfKp6fCZO44g6ZBp927NEVhuQDPK9lMZrG4wm3/l6Ek1apGrClPUnW3hK
-	 SaZzVIc2Rvf47Y4EI8podxSJtbtujAjPTngUbA8VUWsC42DfJ3PVGhaPOC5cOQIK5
-	 ScNznhHkUy39K89CUw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1M8T7E-1rMsHM16bA-004rUu; Wed, 27
- Dec 2023 12:50:52 +0100
-Message-ID: <2aa6bd31-f3d8-41ac-abf1-9ec7cf7e064b@web.de>
-Date: Wed, 27 Dec 2023 12:50:50 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D0145010;
+	Wed, 27 Dec 2023 12:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mx0b-0016f401.pphosted.com
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BR1MwRC012857;
+	Wed, 27 Dec 2023 04:33:09 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=pfpt0220; bh=GqSpaTDd
+	FI7PPA6Yp+oHf0fLdjW5o73u2ceBRUXehKY=; b=g44Hx1CBPyx3XcBnow0OGszx
+	rGnH8x5UJiJbNJf3qt/qjL6t6/8QYhOWa+qZ3KAdyVvBTOh0kIj63FF5EG6y7PLy
+	FneONNNjmMUBCrK+voco7ZyMieALvnReMXWtai/IhY9ZwBkBmkrA2pGyqiImQj6m
+	pPVDayHsNSHxWZ4IacrD02L7jKTYxKLKY9WcNFvvMHXSG9QVmnzcIJRrQ791LQs8
+	slNhcTpwvu4Gc+cx750whAuS4Khs92XAHeBWjnvvcisgHBvdTyQDpGZTP9FITX4x
+	14euFRDPtpYeNzu1nMb0e1U39ZZ0ucyqZnafrU+dT27YTASKRScLEv389I1S2A==
+Received: from dc5-exch02.marvell.com ([199.233.59.182])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3v5yxp0a58-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+	Wed, 27 Dec 2023 04:33:09 -0800 (PST)
+Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 27 Dec
+ 2023 04:33:06 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.48 via Frontend
+ Transport; Wed, 27 Dec 2023 04:33:06 -0800
+Received: from dc3lp-swdev041.marvell.com (dc3lp-swdev041.marvell.com [10.6.60.191])
+	by maili.marvell.com (Postfix) with ESMTP id BDEDF5B6936;
+	Wed, 27 Dec 2023 04:33:00 -0800 (PST)
+From: Elad Nachman <enachman@marvell.com>
+To: <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <andrew@lunn.ch>, <gregory.clement@bootlin.com>,
+        <sebastian.hesselbarth@gmail.com>, <huziji@marvell.com>,
+        <ulf.hansson@linaro.org>, <catalin.marinas@arm.com>, <will@kernel.org>,
+        <adrian.hunter@intel.com>, <thunder.leizhen@huawei.com>,
+        <bhe@redhat.com>, <akpm@linux-foundation.org>, <yajun.deng@linux.dev>,
+        <chris.zjh@huawei.com>, <linux-mmc@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+CC: <enachman@marvell.com>, <cyuval@marvell.com>
+Subject: [PATCH 0/4] mmc: xenon: add AC5 support
+Date: Wed, 27 Dec 2023 14:32:53 +0200
+Message-ID: <20231227123257.1170590-1-enachman@marvell.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: linux-mmc@vger.kernel.org, kernel-janitors@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Yang Yingliang <yangyingliang@huawei.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] mmc: mmc_spi: Adjust error handling in mmc_spi_probe()
-Cc: LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:pbZP15ZayWiTe57ZMmiJyPG5siAZDUFivZl7Yc9Hcm6ffgH4sSi
- LzmIkWD3lD33goLIHpB665CkPrARlm42eRACDqs8N2PJEZrbepcu90O4eXAndjg1LkN6MVM
- 6tGIcAuKBVpe5Vcij3eoHScl3N/fR2htBRlnwIw9miS8sw9fctUvMK4WihBFQ4JcVZu7m6M
- xwejJlh9gqcLdsKEk3ezw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:DtX1kDKmJww=;gYjek4ZqSnhlJtks+e1Rgqp1BJQ
- tr5MT6zvEkGs7wpAwfW3i/+PJ3c0yNlR1SNLyo1M06sPHDQu+wCHJyVWOXDxbw2IT1jNgg5BX
- DkFG42fQxy+oTbKZ7wwtTmezBbXPE/c1t9xp+/G/Llrb8L9umgnyyje2RDKZf+s3jUIHLcfH6
- tLpr3Wq/IJNVKuPdFehRzkhZxsRoBJAvH4d5JoBbrfx2KyplMkf1IbUxZgG7Ok18G7IYLl5ub
- KCPd4QbeuGhHUsJfk4EXIvXjQ2Tm+cMatfkKM5s/Wlo2rHZt4GnDJaV3g0e5MRkY8q6z8kAYC
- GEbmTjq2l9l5DMRqgr91ap1QFdEyhfSCdgaRbGqYQAIpNlVfzHzih+rSA6Qx1qqkF4ZrVtyAf
- h0ste/FuXKFwZX2whkH+i4KypH2JNKKrEetx1+IeYcSVyvi4PcLxZ+3W+LaF+UGdKIG9rzxU2
- j5Sy9VnjzwUFGJWyJOwskP42q/dcELf2V6YyAVaLcceBHyxrP9l0z9cICNfI134P1R0Q/EQwx
- GHp+T9R2i45wWOGQvI15n7TrbanbyPv788SAvGpXO/4eG6YLujnqXJy+NErvpbLmX8uw+PXAv
- fb/A6G4kw3xNlKs923+N6fbtQutrRsL4ZSByqW77+iP5BzRxGbe1TeJ5VHEW34/tNqXWdwH33
- lZBI2XG3bE2jY5ww38aGeA83CyBBVIVF3VklvhWETjBS5L3fdArYvQqV7ApH6/GUCkY/KRPfr
- nkSISBfTWMA6RjOvCVz0SfvPOsWlQdqu/zAn+CLeDa2x7kWB1O+wVLPdt9cPKG1N9hjhLqppa
- TynzatMFJBfxempMysBb4I4TnqCwb8I6dHv8X7Z/XD/FweRhsqTp6uHqYnB1Ldvo63CogGFq8
- qYo2xdbzKjOBixQJKu+u7wOrxmDOjkkKqlWtxh+0ZibueZKX0RF+xvx6691Y3NDIby1sEP0Ej
- XALPWw==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: eLx3MVwVY76bvTaJo5RxoZPo9Xn3foGL
+X-Proofpoint-GUID: eLx3MVwVY76bvTaJo5RxoZPo9Xn3foGL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 27 Dec 2023 12:23:20 +0100
+From: Elad Nachman <enachman@marvell.com>
 
-The kfree() function was called in one case by
-the mmc_spi_probe() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
+This patch series adds support for the Marvell AC5/X/IM series of SOCs.
+The main hurdles in supporting these SOCs are the following limitations:
+1. DDR starts at offset 0x2_0000_0000
+2. mmc controller has only 31-bit path on the crossbar to the DDR.
 
-* Thus return directly after a call of the function =E2=80=9Ckmalloc=E2=80=
-=9D failed
-  at the beginning.
+Point number one is solved by the first patch, which targets the
+arm64 subsystem, by taking into account the DDR start address when
+calculating the DMA and DMA32 zones.
 
-* Move an error code assignment into an if branch.
+This yields the correct split between DMA, DMA32 and NORMAL zones
+according to the device tree CPU address limitations.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/mmc/host/mmc_spi.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Point number two is solved in the mmc xenon driver by detecting the memory
+size, and when it is more than 2GB, disable ADMA and 64-bit DMA, which
+effectively enables SDMA with a bounce buffer.
+DMA mask is then set manually to 34 bit to account for the DDR starting
+at offset 0x2_0000_0000 .
 
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index b0cccef4cfbf..6e7d8e1e6f38 100644
-=2D-- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -1349,15 +1349,17 @@ static int mmc_spi_probe(struct spi_device *spi)
- 	 * NOTE if many systems use more than one MMC-over-SPI connector
- 	 * it'd save some memory to share this.  That's evidently rare.
- 	 */
--	status =3D -ENOMEM;
- 	ones =3D kmalloc(MMC_SPI_BLOCKSIZE, GFP_KERNEL);
- 	if (!ones)
--		goto nomem;
-+		return -ENOMEM;
-+
- 	memset(ones, 0xff, MMC_SPI_BLOCKSIZE);
+Elad Nachman (4):
+  arm64: mm: Fix SOCs with DDR starting above zero
+  dt-bindings: mmc: add Marvell ac5
+  arm64: dts: ac5: add mmc node and clock
+  mmc: xenon: Add ac5 support via bounce buffer
 
- 	mmc =3D mmc_alloc_host(sizeof(*host), &spi->dev);
--	if (!mmc)
-+	if (!mmc) {
-+		status =3D -ENOMEM;
- 		goto nomem;
-+	}
+ .../bindings/mmc/marvell,xenon-sdhci.yaml     |  3 ++
+ arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi | 33 ++++++++++++++++++-
+ arch/arm64/mm/init.c                          | 20 ++++++++---
+ drivers/mmc/host/sdhci-xenon.c                | 33 ++++++++++++++++++-
+ drivers/mmc/host/sdhci-xenon.h                |  3 +-
+ 5 files changed, 84 insertions(+), 8 deletions(-)
 
- 	mmc->ops =3D &mmc_spi_ops;
- 	mmc->max_blk_size =3D MMC_SPI_BLOCKSIZE;
-=2D-
-2.43.0
+-- 
+2.25.1
 
 
