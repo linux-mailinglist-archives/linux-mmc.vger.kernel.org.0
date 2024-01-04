@@ -1,248 +1,127 @@
-Return-Path: <linux-mmc+bounces-584-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-586-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78DB823B5A
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Jan 2024 05:10:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8572C823C81
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Jan 2024 08:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D36CB24EFE
-	for <lists+linux-mmc@lfdr.de>; Thu,  4 Jan 2024 04:10:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C450DB22535
+	for <lists+linux-mmc@lfdr.de>; Thu,  4 Jan 2024 07:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A498125B9;
-	Thu,  4 Jan 2024 04:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3831DFED;
+	Thu,  4 Jan 2024 07:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="rwLBuq1t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fEph5X2O"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312FAB648
-	for <linux-mmc@vger.kernel.org>; Thu,  4 Jan 2024 04:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 25EBD3F3EE
-	for <linux-mmc@vger.kernel.org>; Thu,  4 Jan 2024 04:10:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1704341433;
-	bh=r0hcB3RaDLd8lTvJ9no/dztI+HIZc74x3uNUcPsxxEg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=rwLBuq1tG6LZmsmOzdh/rycbMhCrFy8n2p9Mv7drC0PTpCKYqF2XiUqipAGZ+ic+8
-	 3F4wVs5i1+CRlikUq/CsqScGyMomwyUoHhBDIniwiA+1Ykqo0Rz56X7bJazLuAaA3b
-	 auBYhYM2lgCIxViKj/zAav1sKPJwEpgazwmaAhbYGpud5WanCeksfVoEdwV7P2cCrv
-	 EVtzd0Fb3Dz4zHEcKbltyWdbPvTxEFICpdbWSPdNmGmJsu+dBpCqRcqjlAxWVqX/vz
-	 Ljra87jFyMQwfnVH8F1d6FtCzWur0d4a4H1FODpoqmdX/4/peo7Q7x8BekL0Bdbvgm
-	 iinoRp/YyaU9w==
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-6d9eb5c8d18so99431b3a.0
-        for <linux-mmc@vger.kernel.org>; Wed, 03 Jan 2024 20:10:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704341432; x=1704946232;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r0hcB3RaDLd8lTvJ9no/dztI+HIZc74x3uNUcPsxxEg=;
-        b=dcpW/k0XE7Xzx2Ggqfoej5Rd8Ecq+MnMvVYO9R/4rCcRb/s3Qq7qBorhg6qEafhhmg
-         BfOedHA3vJ10uACH+9d1DIEckkNq+rHg7x5scaJzpKIZV7LqFErC+OMwnNh3Y3c4A628
-         Dbqqio55k5eFsxHxfMGj3BhnZwpULnps5lz1mLlA9MPUaxqj5qTdvPC+2xtXJoflCDT/
-         HVAT6CcQVek1mDEEdcGruOy6QOlRj78mTpNBYS2zx8YzLbJDMrnDwGzhj5dTGnGFxBdM
-         COJmp3uncXBE+xMGfQo0JO7lwqKxZfQo8MDmBHA8o/ov1gmMXMkgf0WVBV+vnkX29e6S
-         6QDw==
-X-Gm-Message-State: AOJu0YxnVE9FG/ut0Ux4JvvlCdjMeIz4EnvkoXEB4J7ekfgLwrL7E1K+
-	N9huTOPDiOb7ntta9dp1ACNEdZGFuvUEEzjCenw9vixaJMLjkZbdCr/G42tyHvddzYFhfJjfD9o
-	EI7qNLIaqfmxOWh37xztKpvATBdidtJCRqoM7BU5omzXgXezJtOatC8L3cwvx
-X-Received: by 2002:aa7:8512:0:b0:6d9:beca:3a40 with SMTP id v18-20020aa78512000000b006d9beca3a40mr47647pfn.56.1704341431768;
-        Wed, 03 Jan 2024 20:10:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFNEuakNecLb5I0jdMO/2YQk/qQnJr9SDhVt28JjX3J/rSl2zWkKm3UZMldAMtDVv3swCv/K0x5oVbeQ5gy6cQ=
-X-Received: by 2002:aa7:8512:0:b0:6d9:beca:3a40 with SMTP id
- v18-20020aa78512000000b006d9beca3a40mr47642pfn.56.1704341431443; Wed, 03 Jan
- 2024 20:10:31 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441D51DFE2;
+	Thu,  4 Jan 2024 07:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704352363; x=1735888363;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BuiT+rA2z6Mm0sjMPQLK1Ojp5SJ1U85xvH6hRCukWEg=;
+  b=fEph5X2ODMIMzxPE6GqtlmNy++ZrU1qk8pCIi4P4rOkzLjwkVfkKerYI
+   f9TFvgf9NZwvofiDXRGT6sTbTDBLuFPBviSTO5ln8T5x3JgsHVC29dAfC
+   w4rwb3Vu1kaXCm46BCeGUSvoVFv167BlFhzl/jmwdKa6hfdAsTsO23G2k
+   aEYYIPF/HgOoFAHi8oFkdT4fTyZKnUVekiZ7aJm8nP1CHaXjGcaXJa1Vb
+   kY3QoufHgL1V7RNKe5uCQuirevAvs5i03lT+jtUSIBfwoe5p9hiGo/fYR
+   nOtF2/KFheDP8LORA/WXh/cHji3gLNZoVrYSgXL/i3bwTudTFGLvHtUfJ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="461454224"
+X-IronPort-AV: E=Sophos;i="6.04,330,1695711600"; 
+   d="scan'208";a="461454224"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2024 23:12:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="809105147"
+X-IronPort-AV: E=Sophos;i="6.04,330,1695711600"; 
+   d="scan'208";a="809105147"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.35.85])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2024 23:12:39 -0800
+Message-ID: <6d0edbac-9b9c-4a90-a3c9-193198e8a088@intel.com>
+Date: Thu, 4 Jan 2024 09:12:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231221032147.434647-1-kai.heng.feng@canonical.com> <CAPDyKFo6SGV=Zsqmq=dO09tGNsJAURXuvXfbzLwf-4J3KUsC+w@mail.gmail.com>
-In-Reply-To: <CAPDyKFo6SGV=Zsqmq=dO09tGNsJAURXuvXfbzLwf-4J3KUsC+w@mail.gmail.com>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Thu, 4 Jan 2024 12:10:19 +0800
-Message-ID: <CAAd53p7k2oBkzKv_RrNUm9rhJB5htV79sUjbdRxWHHJ46ps6HQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: GL975x: Mask rootport's replay
- timer timeout during suspend
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: adrian.hunter@intel.com, Victor Shih <victor.shih@genesyslogic.com.tw>, 
-	Ben Chuang <benchuanggli@gmail.com>, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: Fix smatch errors
+Content-Language: en-US
+To: Stefan Wahren <wahrenst@gmx.net>,
+ Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>,
+ haibo.chen@nxp.com, ulf.hansson@linaro.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
+ linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20231229130207.3539334-1-hardevsinh.palaniya@siliconsignals.io>
+ <838abf56-e2b1-474b-977a-8671a31053ed@gmx.net>
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <838abf56-e2b1-474b-977a-8671a31053ed@gmx.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 3, 2024 at 6:53=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.org>=
- wrote:
->
-> On Thu, 21 Dec 2023 at 04:23, Kai-Heng Feng <kai.heng.feng@canonical.com>=
- wrote:
-> >
-> > Spamming `lspci -vv` can still observe the replay timer timeout error
-> > even after commit 015c9cbcf0ad ("mmc: sdhci-pci-gli: GL9750: Mask the
-> > replay timer timeout of AER"), albeit with a lower reproduce rate.
-> >
-> > Such AER interrupt can still prevent the system from suspending, so let
-> > root port mask and unmask replay timer timeout during suspend and
-> > resume, respectively.
-> >
-> > Cc: Victor Shih <victor.shih@genesyslogic.com.tw>
-> > Cc: Ben Chuang <benchuanggli@gmail.com>
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> > v2:
-> >  - Change subject to reflect it works on GL9750 & GL9755
-> >  - Fix when aer_cap is missing
-> >
-> >  drivers/mmc/host/sdhci-pci-core.c |  2 +-
-> >  drivers/mmc/host/sdhci-pci-gli.c  | 55 +++++++++++++++++++++++++++++--
-> >  drivers/mmc/host/sdhci-pci.h      |  1 +
-> >  3 files changed, 55 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci=
--pci-core.c
-> > index 025b31aa712c..59ae4da72974 100644
-> > --- a/drivers/mmc/host/sdhci-pci-core.c
-> > +++ b/drivers/mmc/host/sdhci-pci-core.c
-> > @@ -68,7 +68,7 @@ static int sdhci_pci_init_wakeup(struct sdhci_pci_chi=
-p *chip)
-> >         return 0;
-> >  }
-> >
-> > -static int sdhci_pci_suspend_host(struct sdhci_pci_chip *chip)
-> > +int sdhci_pci_suspend_host(struct sdhci_pci_chip *chip)
-> >  {
-> >         int i, ret;
-> >
-> > diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-=
-pci-gli.c
-> > index 77911a57b12c..54943e9df835 100644
-> > --- a/drivers/mmc/host/sdhci-pci-gli.c
-> > +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> > @@ -1429,6 +1429,55 @@ static int sdhci_pci_gli_resume(struct sdhci_pci=
-_chip *chip)
-> >         return sdhci_pci_resume_host(chip);
-> >  }
-> >
-> > +#ifdef CONFIG_PCIEAER
-> > +static void mask_replay_timer_timeout(struct pci_dev *pdev)
-> > +{
-> > +       struct pci_dev *parent =3D pci_upstream_bridge(pdev);
-> > +       u32 val;
-> > +
-> > +       if (!parent || !parent->aer_cap)
->
-> Wouldn't it be more correct to use pci_aer_available(), rather than
-> just checking the aer_cap?
+On 29/12/23 16:34, Stefan Wahren wrote:
+> Hi Hardevsinh,
+> 
+> the patch subject is a too generic. Maybe something like "fix
+> initialization of target_min/max"
+> 
+> Am 29.12.23 um 14:02 schrieb Hardevsinh Palaniya:
+>> Resolve smatch errors in esdhc_executing_tuning()
+>>
+>> esdhc_executing_tuning() error: uninitialized symbol 'target_min'
+>> esdhc_executing_tuning() error: uninitialized symbol 'target_max'
+> I think this deserve
+> 
+> Fixes: 541a95e64d76 ("mmc: sdhci-esdhc-imx: optimize the manual tuing
+> logic to get the best timing")
 
-pci_aer_available() is more of a global check, so checking aer_cap is
-still required for the device.
+Is smatch right though?
 
->
-> If pci_aer_available() can be used, we wouldn't even need the stubs as
-> the is already stubs for pci_aer_available().
+	while (max < ESDHC_TUNE_CTRL_MAX) {	// always true first iteration
 
-A helper that checks both aer_cap and  pci_aer_available() can be
-added for such purpose, but there aren't many users of that.
+	max = min + ESDHC_TUNE_CTRL_STEP;	// max > min
 
-Kai-Heng
+		max -= ESDHC_TUNE_CTRL_STEP;
+		break;				// max >= min
 
->
-> > +               return;
-> > +
-> > +       pci_read_config_dword(parent, parent->aer_cap + PCI_ERR_COR_MAS=
-K, &val);
-> > +       val |=3D PCI_ERR_COR_REP_TIMER;
-> > +       pci_write_config_dword(parent, parent->aer_cap + PCI_ERR_COR_MA=
-SK, val);
-> > +}
-> > +
-> > +static void unmask_replay_timer_timeout(struct pci_dev *pdev)
-> > +{
-> > +       struct pci_dev *parent =3D pci_upstream_bridge(pdev);
-> > +       u32 val;
-> > +
-> > +       if (!parent || !parent->aer_cap)
-> > +               return;
-> > +
-> > +       pci_read_config_dword(pdev, parent->aer_cap + PCI_ERR_COR_MASK,=
- &val);
-> > +       val &=3D ~PCI_ERR_COR_REP_TIMER;
-> > +       pci_write_config_dword(pdev, parent->aer_cap + PCI_ERR_COR_MASK=
-, val);
-> > +}
-> > +#else
-> > +static inline void mask_replay_timer_timeout(struct pci_dev *pdev) { }
-> > +static inline void unmask_replay_timer_timeout(struct pci_dev *pdev) {=
-  }
-> > +#endif
-> > +
-> > +static int sdhci_pci_gl975x_suspend(struct sdhci_pci_chip *chip)
-> > +{
-> > +       mask_replay_timer_timeout(chip->pdev);
-> > +
-> > +       return sdhci_pci_suspend_host(chip);
-> > +}
-> > +
-> > +static int sdhci_pci_gl975x_resume(struct sdhci_pci_chip *chip)
-> > +{
-> > +       int ret;
-> > +
-> > +       ret =3D sdhci_pci_gli_resume(chip);
-> > +
-> > +       unmask_replay_timer_timeout(chip->pdev);
-> > +
-> > +       return ret;
-> > +}
-> > +
-> >  static int gl9763e_resume(struct sdhci_pci_chip *chip)
-> >  {
-> >         struct sdhci_pci_slot *slot =3D chip->slots[0];
-> > @@ -1547,7 +1596,8 @@ const struct sdhci_pci_fixes sdhci_gl9755 =3D {
-> >         .probe_slot     =3D gli_probe_slot_gl9755,
-> >         .ops            =3D &sdhci_gl9755_ops,
-> >  #ifdef CONFIG_PM_SLEEP
-> > -       .resume         =3D sdhci_pci_gli_resume,
-> > +       .suspend        =3D sdhci_pci_gl975x_suspend,
-> > +       .resume         =3D sdhci_pci_gl975x_resume,
-> >  #endif
-> >  };
-> >
-> > @@ -1570,7 +1620,8 @@ const struct sdhci_pci_fixes sdhci_gl9750 =3D {
-> >         .probe_slot     =3D gli_probe_slot_gl9750,
-> >         .ops            =3D &sdhci_gl9750_ops,
-> >  #ifdef CONFIG_PM_SLEEP
-> > -       .resume         =3D sdhci_pci_gli_resume,
-> > +       .suspend        =3D sdhci_pci_gl975x_suspend,
-> > +       .resume         =3D sdhci_pci_gl975x_resume,
-> >  #endif
-> >  };
-> >
-> > diff --git a/drivers/mmc/host/sdhci-pci.h b/drivers/mmc/host/sdhci-pci.=
-h
-> > index 153704f812ed..19253dce687d 100644
-> > --- a/drivers/mmc/host/sdhci-pci.h
-> > +++ b/drivers/mmc/host/sdhci-pci.h
-> > @@ -190,6 +190,7 @@ static inline void *sdhci_pci_priv(struct sdhci_pci=
-_slot *slot)
-> >  }
-> >
-> >  #ifdef CONFIG_PM_SLEEP
-> > +int sdhci_pci_suspend_host(struct sdhci_pci_chip *chip);
-> >  int sdhci_pci_resume_host(struct sdhci_pci_chip *chip);
-> >  #endif
-> >  int sdhci_pci_enable_dma(struct sdhci_host *host);
->
-> Kind regards
-> Uffe
+	win_length = max - min + 1;		// always > 0 since max >= min
+
+	if (win_length > target_win_length) {	// always true first iteration
+		target_min = min;		// always initialized
+		target_max = max;		// always initialized
+
+> 
+> Thanks
+>> Signed-off-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
+>>
+>> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+>> index 40a6e2f8145a..839b60138f04 100644
+>> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+>> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+>> @@ -1166,6 +1166,8 @@ static int esdhc_executing_tuning(struct sdhci_host *host, u32 opcode)
+>>       min = ESDHC_TUNE_CTRL_MIN;
+>>       max = ESDHC_TUNE_CTRL_MIN;
+>>       target_win_length = 0;
+>> +    target_min = 0;
+>> +    target_max = 0;
+>>       while (max < ESDHC_TUNE_CTRL_MAX) {
+>>           /* find the mininum delay first which can pass tuning */
+>>           while (min < ESDHC_TUNE_CTRL_MAX) {
+> 
+
 
