@@ -1,146 +1,273 @@
-Return-Path: <linux-mmc+bounces-661-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-663-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8213836703
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jan 2024 16:10:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AD38370B8
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jan 2024 19:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68C3B28CF3F
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jan 2024 15:10:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CF77283BFA
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Jan 2024 18:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784854D122;
-	Mon, 22 Jan 2024 14:57:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="DUPQGMNd";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YPlo0sjL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2DF57334;
+	Mon, 22 Jan 2024 18:10:59 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CAD4CDFB;
-	Mon, 22 Jan 2024 14:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48F35787A
+	for <linux-mmc@vger.kernel.org>; Mon, 22 Jan 2024 18:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705935461; cv=none; b=hX2qQM2mbMlx77stKRzFwsfuV4EDZzAQGQ6YXKYRt11DbT6SVeH+V26JKLiN2YdxAzqpGetHe90A7sPcoaMwRRdS5brX852mZ/EoNMQ6h44KMAazZf6gv9l/UTAj3hVzuTvXFQYjMnPsq4APPGj0XVk1UHLEkQNLtiiL//NhCw4=
+	t=1705947059; cv=none; b=iJxD6cieD5IyBhgpvODi6pQy9sF7C5KNs+S7pY/vApZK2FSZoW621ehAR7qJs6WOw/1/IUeQq8Wdz4fdS0y1CoTGom7PWaVXWI4x2Hj7xYjOl94gbyPj9fIrMsPvz2b/zZeNAx+gd990SJgh9gh1+5YqvvcCShKyt/Xus4m1RRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705935461; c=relaxed/simple;
-	bh=pPhzL/ayVxzsEBW6rGJdJzE6Tt7pjXmG2h6mduOWEzs=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=TWb/w1/FyebdXs5g3msUAWnQVPhz9pPL5HA/wJkHAZ5CVDaBYlsbrht4el1QAtOkBfjm13hsPaDNARDEq19AUIcs1CoS8mIJp1hSBSwEoNhJpGe5Rf00jSQN1D4ojGd1FT4wvNVThNxM80B0R+LfRLg8Uvfw1KGXELQmhiUNHng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=DUPQGMNd; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YPlo0sjL; arc=none smtp.client-ip=64.147.123.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id 649AF32004AE;
-	Mon, 22 Jan 2024 09:57:37 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 22 Jan 2024 09:57:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1705935456; x=1706021856; bh=vJmTc0y1Bh
-	ti+GplYvBYIWpcWWNiQQECwpgQSF8cB8M=; b=DUPQGMNdKSobkifu+Nk3M9HrXu
-	2ubaVBQ+6b/gk2QR+UHPkZ5080LRUtVZVii+qSPwlPR43WG21STa0y77jgjC3Uf9
-	YrffyS4I+8FGqv6t6I4IiJQIzSJ+J5dpY8PaUESC72uXJabGgvrowO0nhMaxExVj
-	NuOGy7e9heAgukJRzDSVyKb41PCc2GzEhMDJ9C20aAjdFa/CL4iXMRHh85QJ2MWl
-	p2oNOcF6N7cJ1amtTJ0A3obnCg2Aom5QqcdSfte6lOtF5v45jGLeP3onVAjlTr+L
-	nodM3qCbArf/gRD23fPcE5/Tpi/3ZbPscVb53MozqRuUZ/tEBUbzy+cgxrdw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1705935456; x=1706021856; bh=vJmTc0y1Bhti+GplYvBYIWpcWWNi
-	QQECwpgQSF8cB8M=; b=YPlo0sjLT2AK6FlFOVtry0J8mdhoQUje49UQ7wKKL58c
-	0kqU4gFOqHF2p6rlI5ObU/02gGqGqSjs3RFnr40mRShkMY+HLFxif2aeLuBPvAsO
-	6u2RwnGSyoudNG2vV0msVjzvR7+V8qfyEVH0MpU/wxjI2XLT4iDsa39YsABXL+iB
-	/6FKJ3nW1LO/kVd8YIFb7YqoaqFFnxd3LeNEENHMmx10xoDXbnfwzLwcUQdGinfs
-	yWlj6Z3l86eKqz4XeT++0E34TFehGY+zPqNjmBtzpTwcYYyn7JX8OOLfyrUNPGRS
-	8deeZBZytAAZBKldZheOShfaxIKaNsibHUIsprmITg==
-X-ME-Sender: <xms:YIKuZXHcYVYI7BNVkXMOHQbYr178Xyeep7pATj-QZg-QSPIxIZmtGw>
-    <xme:YIKuZUV-2jFWpXwAoZoF9R3SaXFX8Cz1QXdjjaY9P2vZZb4RkcrfG2IwxTha0g3Xj
-    IXSaSxbOvBP2XICjFw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdekiedgieelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
-    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:YIKuZZIZdrzid8sHZ83cK4b3cqb5QvcIr7CWQlFCH54XRbSnmkC7IQ>
-    <xmx:YIKuZVF7vczMBdnkRK0Jxn6DtLx1i6jHEnzhsowaXZxc6drnCKCD8A>
-    <xmx:YIKuZdULaJJb0I8UTwC5TJjYeCLrwT-EKuP30gGPHOWrWxLXjn_N9A>
-    <xmx:YIKuZcEjJGedMrvJp-9HE0Kg10ZUie7VzRZeEZbMt3DErKGn641Rqg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 5F008B6008F; Mon, 22 Jan 2024 09:57:36 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-119-ga8b98d1bd8-fm-20240108.001-ga8b98d1b
+	s=arc-20240116; t=1705947059; c=relaxed/simple;
+	bh=r4hNLx1axTK9D2SO1h2Nidy6wdhcdwS0oI6JMP4mupU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kpPwt7v1AqYa26vzvI2lq1zU6KyaVW8TSXcSLO4AZtFTHn445I5ajVz3skpHZSP+BoTjBVDEc7Dcm8KA5fXP6w3C88dlGRs3BVfxiv4B7CuWVBeOnwSaeRZLceMxfZZi1aI4QBOkII+QsmZMAdgndESOvQn5OvBW4+Xcw1MsMqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rRyiY-0001lP-N0; Mon, 22 Jan 2024 19:08:18 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rRyiS-001ePE-PM; Mon, 22 Jan 2024 19:08:12 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rRyiS-005Zwj-1m;
+	Mon, 22 Jan 2024 19:08:12 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Mark Brown <broonie@kernel.org>
+Cc: kernel@pengutronix.de,
+	Moritz Fischer <mdf@kernel.org>,
+	Wu Hao <hao.wu@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	linux-fpga@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	linux-iio@vger.kernel.org,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Rayyan Ansari <rayyan@ansari.sh>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Martin Tuma <martin.tuma@digiteqautomotive.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	Sergey Kozlov <serjk@netup.ru>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	linux-mmc@vger.kernel.org,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Rob Herring <robh@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Michal Simek <michal.simek@amd.com>,
+	Amit Kumar Mahapatra via Alsa-devel <alsa-devel@alsa-project.org>,
+	linux-mtd@lists.infradead.org,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	chrome-platform@lists.linux.dev,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-mediatek@lists.infradead.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Viresh Kumar <vireshk@kernel.org>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	greybus-dev@lists.linaro.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-integrity@vger.kernel.org,
+	Herve Codina <herve.codina@bootlin.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linux-usb@vger.kernel.org,
+	Helge Deller <deller@gmx.de>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	libertas-dev@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	James Clark <james.clark@arm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-doc@vger.kernel.org
+Subject: [PATCH v2 00/33] spi: get rid of some legacy macros
+Date: Mon, 22 Jan 2024 19:06:55 +0100
+Message-ID: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <d2289b38-f463-43e6-a60c-486fd479d275@app.fastmail.com>
-In-Reply-To: <20240122133932.GB20434@lst.de>
-References: <20240112054449.GA6829@lst.de>
- <9eb0f18e-f3ce-497c-931d-339efee2190d@kernel.dk>
- <CAPDyKFpmEB9FGAmGAQNdEH+DtRtcCNnFszfv_ewihzUU9du+Xg@mail.gmail.com>
- <20240122073423.GA25859@lst.de>
- <14ea6933-763f-4ba7-9109-1eea580e1c29@app.fastmail.com>
- <20240122133932.GB20434@lst.de>
-Date: Mon, 22 Jan 2024 15:57:16 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christoph Hellwig" <hch@lst.de>
-Cc: "Ulf Hansson" <ulf.hansson@linaro.org>, "Jens Axboe" <axboe@kernel.dk>,
- "Ming Lei" <ming.lei@redhat.com>, linux-block@vger.kernel.org,
- "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
- "Linus Walleij" <linus.walleij@linaro.org>, "Andrew Lunn" <andrew@lunn.ch>,
- "Gregory Clement" <gregory.clement@bootlin.com>,
- "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>
-Subject: Re: mmc vs highmem, was: Re: [PATCH 2/2] blk-mq: ensure a q_usage_counter
- reference is held when splitting bios
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5874; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=r4hNLx1axTK9D2SO1h2Nidy6wdhcdwS0oI6JMP4mupU=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7CRGL5rco/IZ7baQyO1t3S9it11eXvRLZKR GbQbTfz3/2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6uwgAKCRCPgPtYfRL+ TlSmB/4k7WiBaRL3saK9pl+Gkw8Hqk7HVFstVTQ/rkaYbIsJGY0xZw8/1EJjSObFeB+APA4aMQh I79wzfj/BAi6u9wIsVNiQ9y/G7wHtwifXCuuRBAfRSQICGNo++YWb4VjoViqUrlwFz1on55YRHO fF0At9RAUzuTpDwaPQlercYTSV2fRZOyE6oFjYu50ibPS5RDRAlt5RMXKu+KeNvZIt1a7rYblZd 3X+5IV8boWAzqfA2x+ESE9bxy64tcf4U55YuI4LIo7T/6pTUUmJEXiJK3Hqi+KdRcDIt0RoY0Co KLQSX3Yu+cnQoWcdVVqzWe5P2RjCFOxbxIHkvh+IxoWx5PzK
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
 
-On Mon, Jan 22, 2024, at 14:39, Christoph Hellwig wrote:
-> On Mon, Jan 22, 2024 at 10:26:30AM +0100, Arnd Bergmann wrote:
->> > A better indicator might be the use of page_address in the I/O path,
->> > which usually comes in the form of using the sg_virt() helper.
->> > For drivers/mmc/ that seems to be: davinci_mmc, moxart-mmc, mvsdio,
->> > mxcmmc, omap, sdhci-esdhc-mcf and sh_mmcif.
->> 
->> Out of these, I think only the mvsdio one is actually use
->> on boards with highmem: davinci, moxart, mxc (imx3) and omap2
->> are old enough to never have had more than 256MB or so of RAM,
->> and mcf (m68k) and sh can't even be built with CONFIG_HIGHMEM.
->
-> It would be good to fix the one or two that could use highmem and add a
-> depends on !HIGHMEM for the others
+Hello,
 
-I would prefer a runtime check here, as one might still have a
-multiplatform kernel where one machine can use highmem and
-another machine can use one of these drivers, e.g. in
-imx_v6_v7_defconfig.
+this is v2 of this patch set.
 
-> and then kill the bounce setup in
-> mmc.  It turn out in addition to the one legacy ISA SCSI driver and the
-> two parport SCSI driver usb-storage actually also sets this flag,
-> which might be a road blocker, but at this point I'm getting ready
-> to just pull the plug if it doesn't break using embedded platforms
-> using mmc entirely.
+Changes since (implicit) v1, sent with Message-Id:
+cover.1705348269.git.u.kleine-koenig@pengutronix.de:
 
-Agreed. I've added the maintainers for the Marvell Armada
-platform to Cc, maybe one of them can look into this, see
-the thread at [1] for this. The problem in the mvsdio.c
-is the sg_virt(data->sg) in mvsd_setup_data(), which will
-stop working when the MMC layer stops using bounce buffers
-for highmem pages.
+ - Rebase to v6.8-rc1
+ - Fix a build failure on sh
+ - Added the tags received in (implicit) v1.
 
-     Arnd
+The slave-mt27xx driver needs some more work. The patch presented here
+is enough however to get rid of the defines handled in patch 32.
+Cleaning that up is out-of-scope for this series, so I'll delay that
+until later.
 
-[1] https://lore.kernel.org/all/20240122073423.GA25859@lst.de/
+Note that Jonathan Cameron has already applied patch 3 to his tree, it
+didn't appear in a public tree though yet. I still included it here to
+make the kernel build bots happy.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (33):
+  fpga: ice40-spi: Follow renaming of SPI "master" to "controller"
+  ieee802154: ca8210: Follow renaming of SPI "master" to "controller"
+  iio: adc: ad_sigma_delta: Follow renaming of SPI "master" to
+    "controller"
+  Input: pxspad - follow renaming of SPI "master" to "controller"
+  Input: synaptics-rmi4 - follow renaming of SPI "master" to
+    "controller"
+  media: mgb4: Follow renaming of SPI "master" to "controller"
+  media: netup_unidvb: Follow renaming of SPI "master" to "controller"
+  media: usb/msi2500: Follow renaming of SPI "master" to "controller"
+  media: v4l2-subdev: Follow renaming of SPI "master" to "controller"
+  misc: gehc-achc: Follow renaming of SPI "master" to "controller"
+  mmc: mmc_spi: Follow renaming of SPI "master" to "controller"
+  mtd: dataflash: Follow renaming of SPI "master" to "controller"
+  mtd: rawnand: fsl_elbc: Let .probe retry if local bus is missing
+  net: ks8851: Follow renaming of SPI "master" to "controller"
+  net: vertexcom: mse102x: Follow renaming of SPI "master" to
+    "controller"
+  platform/chrome: cros_ec_spi: Follow renaming of SPI "master" to
+    "controller"
+  spi: bitbang: Follow renaming of SPI "master" to "controller"
+  spi: cadence-quadspi: Don't emit error message on allocation error
+  spi: cadence-quadspi: Follow renaming of SPI "master" to "controller"
+  spi: cavium: Follow renaming of SPI "master" to "controller"
+  spi: geni-qcom: Follow renaming of SPI "master" to "controller"
+  spi: loopback-test: Follow renaming of SPI "master" to "controller"
+  spi: slave-mt27xx: Follow renaming of SPI "master" to "controller"
+  spi: spidev: Follow renaming of SPI "master" to "controller"
+  staging: fbtft: Follow renaming of SPI "master" to "controller"
+  staging: greybus: spi: Follow renaming of SPI "master" to "controller"
+  tpm_tis_spi: Follow renaming of SPI "master" to "controller"
+  usb: gadget: max3420_udc: Follow renaming of SPI "master" to
+    "controller"
+  video: fbdev: mmp: Follow renaming of SPI "master" to "controller"
+  wifi: libertas: Follow renaming of SPI "master" to "controller"
+  spi: fsl-lib: Follow renaming of SPI "master" to "controller"
+  spi: Drop compat layer from renaming "master" to "controller"
+  Documentation: spi: Update documentation for renaming "master" to
+    "controller"
+
+ .../driver-api/driver-model/devres.rst        |  2 +-
+ Documentation/spi/spi-summary.rst             | 74 +++++++++----------
+ drivers/char/tpm/tpm_tis_spi_main.c           |  4 +-
+ drivers/fpga/ice40-spi.c                      |  4 +-
+ drivers/iio/adc/ad_sigma_delta.c              | 14 ++--
+ drivers/input/joystick/psxpad-spi.c           |  4 +-
+ drivers/input/rmi4/rmi_spi.c                  |  2 +-
+ drivers/media/pci/mgb4/mgb4_core.c            | 14 ++--
+ .../media/pci/netup_unidvb/netup_unidvb_spi.c | 48 ++++++------
+ drivers/media/usb/msi2500/msi2500.c           | 38 +++++-----
+ drivers/media/v4l2-core/v4l2-spi.c            |  4 +-
+ drivers/misc/gehc-achc.c                      |  8 +-
+ drivers/mmc/host/mmc_spi.c                    |  6 +-
+ drivers/mtd/devices/mtd_dataflash.c           |  2 +-
+ drivers/mtd/nand/raw/fsl_elbc_nand.c          |  3 +-
+ drivers/net/ethernet/micrel/ks8851_spi.c      |  4 +-
+ drivers/net/ethernet/vertexcom/mse102x.c      |  2 +-
+ drivers/net/ieee802154/ca8210.c               |  2 +-
+ .../net/wireless/marvell/libertas/if_spi.c    |  2 +-
+ drivers/platform/chrome/cros_ec_spi.c         |  8 +-
+ drivers/spi/spi-ath79.c                       |  4 +-
+ drivers/spi/spi-bitbang.c                     | 64 ++++++++--------
+ drivers/spi/spi-butterfly.c                   |  6 +-
+ drivers/spi/spi-cadence-quadspi.c             |  7 +-
+ drivers/spi/spi-cavium.c                      |  6 +-
+ drivers/spi/spi-cavium.h                      |  2 +-
+ drivers/spi/spi-davinci.c                     |  6 +-
+ drivers/spi/spi-fsl-lib.c                     | 14 ++--
+ drivers/spi/spi-geni-qcom.c                   |  2 +-
+ drivers/spi/spi-gpio.c                        |  2 +-
+ drivers/spi/spi-lm70llp.c                     |  6 +-
+ drivers/spi/spi-loopback-test.c               |  4 +-
+ drivers/spi/spi-oc-tiny.c                     |  6 +-
+ drivers/spi/spi-omap-uwire.c                  |  4 +-
+ drivers/spi/spi-sh-sci.c                      | 10 +--
+ drivers/spi/spi-slave-mt27xx.c                |  2 +-
+ drivers/spi/spi-xilinx.c                      |  4 +-
+ drivers/spi/spi-xtensa-xtfpga.c               |  2 +-
+ drivers/spi/spi.c                             |  2 +-
+ drivers/spi/spidev.c                          |  2 +-
+ drivers/staging/fbtft/fbtft-core.c            |  4 +-
+ drivers/staging/greybus/spilib.c              | 66 ++++++++---------
+ drivers/usb/gadget/udc/max3420_udc.c          |  2 +-
+ drivers/video/fbdev/mmp/hw/mmp_spi.c          | 26 +++----
+ include/linux/spi/spi.h                       | 20 +----
+ include/linux/spi/spi_bitbang.h               |  2 +-
+ include/media/v4l2-common.h                   |  6 +-
+ 47 files changed, 254 insertions(+), 272 deletions(-)
+
+
+base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+-- 
+2.43.0
+
 
