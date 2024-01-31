@@ -1,86 +1,105 @@
-Return-Path: <linux-mmc+bounces-797-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-802-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A976844982
-	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jan 2024 22:13:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5450B844A86
+	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jan 2024 22:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADEFF1F286E5
-	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jan 2024 21:13:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFD771F22291
+	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jan 2024 21:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE9539846;
-	Wed, 31 Jan 2024 21:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5773CF59;
+	Wed, 31 Jan 2024 21:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CINiIu8c"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="aCBlxTj6"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DB438F99;
-	Wed, 31 Jan 2024 21:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192C43B7A1;
+	Wed, 31 Jan 2024 21:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706735582; cv=none; b=GEU9ZbUo+Dr1d205iylenXvF983gSzDkEnAtKwZ2PQKdj8llKO/AZlAHZfKSsaGrPHDoXXuF0pXc6aT0FreWKdYEQDS9xWfjgP+0CjOKrGaG5ebuCHXeY8x7jgpXFF16YgFNKPXiWAKH0KVC0x+D1e0aNphy30d//hCiaf8KciY=
+	t=1706737850; cv=none; b=tHs063usNkKSsr1mvXWCFb8HywWB1X7RtnEngrP2sKb8v9vIbgEHD9uT3Jfyu2JjAu4bjGRbW2NCKOc1T1oAvAP+sPDzDB+fFLKXwOHjrZWyjoumx9u1R43e1f7bbVF/WWH30gBdzyv+bpEMORGVrZsVSeG0CB/s2lhzK427HW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706735582; c=relaxed/simple;
-	bh=DoZ1YihdlAS/IIbEKJ6/i00j2rTLW7LkeFYXNRHaTSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pTovl5nMr0PVkWfr63blS4to9P9XUwoGATyAf4u5DqXHdsyF/tdLiNVS1g/VXwhp/UIhDvgnc39TQknmi4bRVpwAMUv1occoeKcwoTDOdTMhyIddZDMhEots7HvloBjcJYWZaE6/Lnu+Zuve5XQjJgnyDB7XKA3Y93eIOecRJ4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CINiIu8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C539BC43399;
-	Wed, 31 Jan 2024 21:13:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706735581;
-	bh=DoZ1YihdlAS/IIbEKJ6/i00j2rTLW7LkeFYXNRHaTSw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CINiIu8czP40RCAK7E4RK0aQ+zAFTvmZilfkEdTqdNBRgkdym/LBfFgUFWIxkSyqC
-	 UdV+OX0Der+1hMJg/aDvykJyveYus6z/NKcvdJjShIeiuvZFKNO36u1RruuogwTrNx
-	 x16fAy55u9VoK6JrJygC5hPLDuwY8TKDfm/wp9ts=
-Date: Wed, 31 Jan 2024 13:13:01 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jens Wiklander <jens.wiklander@linaro.org>
-Cc: linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-	op-tee@lists.trustedfirmware.org,
-	Shyam Saini <shyamsaini@linux.microsoft.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Jerome Forissier <jerome.forissier@linaro.org>,
-	Sumit Garg <sumit.garg@linaro.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Tomas Winkler <tomas.winkler@intel.com>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH v2 1/3] rpmb: add Replay Protected Memory Block (RPMB)
- subsystem
-Message-ID: <2024013108-hamster-audacious-9e3a@gregkh>
-References: <20240131174347.510961-1-jens.wiklander@linaro.org>
- <20240131174347.510961-2-jens.wiklander@linaro.org>
+	s=arc-20240116; t=1706737850; c=relaxed/simple;
+	bh=AJ7CHvndAYS2a3l/+9EVCWRU12fx/Hr9/yeThq5Bej0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SoiYJ2hcET+nJX67fbCQ3qgZ+mYNe4IshhNK4E4K6fJaZzHy0DLMtHiZWo3q5rJ028JDvJcmL5jYgaDUJD68lwiXBDKsTeNe1+uT8H+X17W+pUUC13A1ES2NqDC9JE/WkBkTSJHRR17wY2CAybqy0YBv9XkKJ97cjqAorw+jKHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=aCBlxTj6; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 40VLojIm123740;
+	Wed, 31 Jan 2024 15:50:45 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1706737845;
+	bh=JQQNLrzTHBVd/MJigjdcPGt25xZhhB98X0xrCURyJCk=;
+	h=From:To:CC:Subject:Date;
+	b=aCBlxTj6pSQ5/+uBH2SH6xMedU3r4a78+WKJnWP1UMKr2IPAQp9B2nCo0a2LxXpHZ
+	 mfl5tcTv69ch1PVlxKvHsjUlBWicxUKQMc4CQwGwIoV2esoWg9SIK9QbFKR8oqr+cc
+	 ZvkovStHGfu8M/pOd3tN/mAgSFazbNh3wNqFXYbI=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 40VLoj50006408
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 31 Jan 2024 15:50:45 -0600
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 31
+ Jan 2024 15:50:44 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 31 Jan 2024 15:50:44 -0600
+Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 40VLoig2062479;
+	Wed, 31 Jan 2024 15:50:44 -0600
+From: Judith Mendez <jm@ti.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+CC: Adrian Hunter <adrian.hunter@intel.com>, <linux-mmc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Randolph Sapp <rs@ti.com>,
+        Vignesh
+ Raghavendra <vigneshr@ti.com>
+Subject: [PATCH v1 0/5] Add tuning algorithm for delay chain
+Date: Wed, 31 Jan 2024 15:50:39 -0600
+Message-ID: <20240131215044.3163469-1-jm@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240131174347.510961-2-jens.wiklander@linaro.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On Wed, Jan 31, 2024 at 06:43:45PM +0100, Jens Wiklander wrote:
-> +struct class rpmb_class = {
+This patch series introduces a new tuning algorithm for
+mmc. The new algorithm should be used when delay chain is
+enabled. The ITAPDLY is selected from the largest passing
+window and the buffer is not viewed as a circular buffer.
+The new tuning algorithm is implemented as per the paper
+published here [0] and has been tested on the following
+platforms: AM62x SK, AM62A SK, AM62p SK, AM64x SK, and AM64x
+EVM.
 
-This structure should be marked as 'const', right?
+The series also includes a few fixes in the sdhci_am654
+driver on OTAPDLYEN/ITAPDLYEN and ITAPDELSEL.
 
-> +	.name = "rpmb",
-> +	.dev_release = rpmb_dev_release,
-> +};
-> +EXPORT_SYMBOL(rpmb_class);
+[0] https://www.ti.com/lit/an/spract9/spract9.pdf
 
-EXPORT_SYMBOL_GPL() to match all the other exports in this file please.
+Judith Mendez (5):
+  mmc: sdhci_am654: Add tuning algorithm for delay chain
+  mmc: sdhci_am654: Write ITAPDLY for DDR52 timing
+  mmc: sdhci_am654: Add missing OTAP/ITAP enable
+  mmc: sdhci_am654: Add ITAPDLYSEL in sdhci_j721e_4bit_set_clock
+  mmc: sdhci_am654: Fix ITAPDLY for HS400 timing
 
-thanks,
+ drivers/mmc/host/sdhci_am654.c | 215 +++++++++++++++++++++++++--------
+ 1 file changed, 165 insertions(+), 50 deletions(-)
 
-greg k-h
+-- 
+2.34.1
+
 
