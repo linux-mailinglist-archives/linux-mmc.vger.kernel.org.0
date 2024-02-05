@@ -1,16 +1,16 @@
-Return-Path: <linux-mmc+bounces-906-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-902-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5643484A3F5
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Feb 2024 20:38:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562B884A3EF
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Feb 2024 20:38:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 896FE1C225C2
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Feb 2024 19:38:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E89731F236F2
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Feb 2024 19:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A594E1BE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAD6131E51;
 	Mon,  5 Feb 2024 19:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
 	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BhYStbx0"
@@ -18,7 +18,7 @@ X-Original-To: linux-mmc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B105131E52;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFB213175D;
 	Mon,  5 Feb 2024 19:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
@@ -29,7 +29,7 @@ ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To; b=T8uiYUn2yLGrVPd5kHEAWCW4xOIqVbzNZWMbiVeaeZpRSAlP/xleJruD8csxDHs4jKiiLqYUlk1dpuvz1NNsIsavXa3UAYh3qL61ukJW7IUb998hUTQ2WTnP9OFleYahvhpI6rVxK4i9SOaofqlLLF+Rfwxo7kcTtSlXETDQ/zo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BhYStbx0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65238C43330;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65263C43390;
 	Mon,  5 Feb 2024 19:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1707159816;
