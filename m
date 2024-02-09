@@ -1,129 +1,79 @@
-Return-Path: <linux-mmc+bounces-986-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-988-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E579184F95E
-	for <lists+linux-mmc@lfdr.de>; Fri,  9 Feb 2024 17:10:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B126284FC3A
+	for <lists+linux-mmc@lfdr.de>; Fri,  9 Feb 2024 19:46:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4366287705
-	for <lists+linux-mmc@lfdr.de>; Fri,  9 Feb 2024 16:09:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF9821C21660
+	for <lists+linux-mmc@lfdr.de>; Fri,  9 Feb 2024 18:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA127317B;
-	Fri,  9 Feb 2024 16:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A06884A48;
+	Fri,  9 Feb 2024 18:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="J85cVTFp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIoLZ3O8"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952AB692FC;
-	Fri,  9 Feb 2024 16:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171D584A2E;
+	Fri,  9 Feb 2024 18:46:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707494994; cv=none; b=U2Wu8MRaXCoklTlXE6rl14qJuHu30tg+CuWUoyBzDhAvpHFfBZl+XIcNuRP48NsWpL1Rd5/McaWOLOFFWMpOfLtrUndqZNMMsoM3vvFhs0+ju+F9x/2/FPD+7IKQT3miiYq+3EHS1HsIfWC5vP82liXr/TNE0ejwEPiEccXz2LE=
+	t=1707504383; cv=none; b=Q1CiQmuN47HrGeMv1ThYf4X362jdrdRLE7EQ01KHbPhRW6Pah3Z9eQXArkSdSTTL8MFpTW2Wfup5kAK3E6/za/moAiQQeWjaffwL+/gNZI4V3j4WG/A5DM14F3+uydDDfXNkIhL+PiGvs2ikdR87gabAxx+oMD3N0rZT9iJT/d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707494994; c=relaxed/simple;
-	bh=EUXzE+XV0Oj4ZZNXbzhOpzuz3ry8oK+NgmkISiGpxaM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L1DLZ0qr6h8AKFXmogvO4jddcjPJ0B77W/qsLeFZFUEBxZCFivAflWjcigoY4FraFdmw/S3Wv5VR0vYaA1TiUQFHoSgy2qJLyKw9TbjSeVvWfDm8XvUVvYgw5GCr9URfUIYnFdjvm9mZ3ke0s5eJR/oQxbikghXGWESH9P7w5rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=J85cVTFp; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 419FDplQ009461;
-	Fri, 9 Feb 2024 16:09:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=LjTE3A8
-	lE4nDNt3ZeTTCb95wZLD7lbCAgOObtlD+fGw=; b=J85cVTFpxirgSclQkLmvOea
-	JgwckbNRwZNVhjrnpCuDUFqRglXhuQdKpVXfPZ1pas+8eS8mKAqeAhfF+UBdBOAz
-	OTRfGkvXR8QFAxFfpIV9GeqEmU+Y1lE4HMb1LFenCOBx6Mm0hhce4KZ7UvKpFgn+
-	lrqTpgVEDzRsEmkobvcScK1eQOF70R6wnSNmJjZS3M21d8Sam7Xp3JSlvfJ7Dj5L
-	2A3wm+MN2TcCgq7A7i2oiuYL4EwJus2zHbyjgMhgUIfl6p4LUAsu62tJVkra8K1V
-	QAOh68OYkAoMOvXF5ERrttyMNw2SAklgmJlmcHZYphCZ3H2SkeFjWgwZw27q9CQ=
-	=
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w5pgpr429-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Feb 2024 16:09:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 419G9nSO013675
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 9 Feb 2024 16:09:49 GMT
-Received: from jhugo-lnx.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Fri, 9 Feb 2024 08:09:48 -0800
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
-To: <adrian.hunter@intel.com>, <ritesh.list@gmail.com>,
-        <quic_asutoshd@quicinc.com>, <quic_bjorande@quicinc.com>
-CC: <linux-mmc@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Jeffrey Hugo <quic_jhugo@quicinc.com>
-Subject: [PATCH v2] MAINTAINERS: Update bouncing @codeaurora addresses
-Date: Fri, 9 Feb 2024 09:09:34 -0700
-Message-ID: <20240209160934.3866475-1-quic_jhugo@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1707504383; c=relaxed/simple;
+	bh=21GVvSyssdPkDuB5I5wVgNGIIIXTJP3ZhVI6r1UTgL4=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=VzH3OXRPxRtcZfEzO4TLiLqJCMBiyPzCrRs4+G1j3P+Sc4JfrNcMOxpwO8GEOcb5jgCnP8ebVgqkFRDj09+L/FvJz8WOe3I6Ath0apmKcES7rxBzRuPy7JHlePxyFpbuGJNg+QFnTjyl63WKII7UYGtRVy66ef4vQSMZODvnAHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIoLZ3O8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E222AC433F1;
+	Fri,  9 Feb 2024 18:46:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707504382;
+	bh=21GVvSyssdPkDuB5I5wVgNGIIIXTJP3ZhVI6r1UTgL4=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=FIoLZ3O8Fv5IrrZjFJgGz8kn+dliXxwyj4uqwoUyv9/+j2JNoqOlB32ewFUvhk8uC
+	 yKt1lRf6qQSvR9GFcRqEVwb4UNksS5FYBe92ZUWmOC50CETpD3wlrrbKd8VoWpRE7s
+	 G28tK5IzNFNnWCEWRFRVNuUfBv6CHinIhrTFu7xZ838d4T18tm58gBDa5XnmVKuiYl
+	 3ZlRSiHssV8U34Oo7UF8rYHxtgjQgwAuYUJRpI5KgsgFQBHBdghVFAn3+28Tfpe0kJ
+	 NSxOzRfkssqwWRj3/bEIRhilSkDBkcCjlM+ZifRigADdETRywgPMF0nar5DkEr1osN
+	 kVijmSpX4OPIg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CC564C41677;
+	Fri,  9 Feb 2024 18:46:22 +0000 (UTC)
+Subject: Re: [GIT PULL] MMC fixes for v6.8-rc4
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20240209124447.768859-1-ulf.hansson@linaro.org>
+References: <20240209124447.768859-1-ulf.hansson@linaro.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20240209124447.768859-1-ulf.hansson@linaro.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v6.8-rc2
+X-PR-Tracked-Commit-Id: cc9432c4fb159a3913e0ce3173b8218cd5bad2e0
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: eb747bcc3611c7b3df6c8e5826f5003daeea6e9f
+Message-Id: <170750438283.872.9640858363374581197.pr-tracker-bot@kernel.org>
+Date: Fri, 09 Feb 2024 18:46:22 +0000
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Linus <torvalds@linux-foundation.org>, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 2L590BeM-v4JjmVJM8zypswIPl5qHeVz
-X-Proofpoint-GUID: 2L590BeM-v4JjmVJM8zypswIPl5qHeVz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-09_13,2024-02-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 mlxscore=0
- priorityscore=1501 suspectscore=0 mlxlogscore=500 bulkscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402090119
 
-The @codeaurora email domain's servers have been decommissioned for a
-long while now, and any emails addressed there will bounce.
+The pull request you sent on Fri,  9 Feb 2024 13:44:47 +0100:
 
-Asutosh has an entry in .mailmap pointing to a new address, but
-MAINTAINERS still lists an old @codeaurora address.  Update MAINTAINERS
-to match .mailmap for anyone reading the file directly.
+> git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v6.8-rc2
 
-Ritesh appears to have changed jobs, but looks to be still active in the
-community.  Update Ritesh's address to the one used in recient community
-postings.  Also Ritesh has indicated their entry should be changed from
-Maintainer (M:) to Reviewer (R:) so make that update while we are making
-changes to the entry.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/eb747bcc3611c7b3df6c8e5826f5003daeea6e9f
 
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
----
+Thank you!
 
-v2: Change Ritesh to R: per Ritesh's suggestion
-
- MAINTAINERS | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4be2fd097f26..56b3311e51de 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7832,8 +7832,8 @@ F:	drivers/media/usb/em28xx/
- 
- EMMC CMDQ HOST CONTROLLER INTERFACE (CQHCI) DRIVER
- M:	Adrian Hunter <adrian.hunter@intel.com>
--M:	Ritesh Harjani <riteshh@codeaurora.org>
--M:	Asutosh Das <asutoshd@codeaurora.org>
-+M:	Asutosh Das <quic_asutoshd@quicinc.com>
-+R:	Ritesh Harjani <ritesh.list@gmail.com>
- L:	linux-mmc@vger.kernel.org
- S:	Supported
- F:	drivers/mmc/host/cqhci*
 -- 
-2.34.1
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
