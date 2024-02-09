@@ -1,139 +1,119 @@
-Return-Path: <linux-mmc+bounces-985-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-987-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3973984F5FF
-	for <lists+linux-mmc@lfdr.de>; Fri,  9 Feb 2024 14:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C28BD84FA64
+	for <lists+linux-mmc@lfdr.de>; Fri,  9 Feb 2024 17:59:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5CEE283F64
-	for <lists+linux-mmc@lfdr.de>; Fri,  9 Feb 2024 13:30:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8800A28176E
+	for <lists+linux-mmc@lfdr.de>; Fri,  9 Feb 2024 16:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDF13BB55;
-	Fri,  9 Feb 2024 13:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A17386126;
+	Fri,  9 Feb 2024 16:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TqhVnpYg"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OST7RopP"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3048C38DC3;
-	Fri,  9 Feb 2024 13:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E4276414;
+	Fri,  9 Feb 2024 16:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707485323; cv=none; b=U8JmrWmvZGhlnFwOLq4BjnpFHOCARYajBz0eOOSZhQfRi4SDhwudlk2akLItqTr6t9ZbS1tuBNxuUdFqTa6UTBVVekLSvFKzGRzmiKwYDdTZiqqwaQFSEM13F9KUgfMWOxG486ftvz6FQ/diCchYGCzXjjz+U0yjA+rwigbNH9Y=
+	t=1707497796; cv=none; b=e+57wdxRRYLMJczKIsx8A9FarLMu6LhhOdQ209Kq342OxlEHripL279OTRRkgnSamgVDot/CgdcKaWBW9p+H+G8J2dJuKRRBSxDPGzTR0Y0nQyos2gg2xtK2QA3xWXds2M1XF/pLXnOPkq4k1PV6U+Ai8Rr/IBownE2PDPaBhV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707485323; c=relaxed/simple;
-	bh=lNwTY81xFGQbjGbLm8+cb2M71UePFXEZSG+wq4uR8/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hjJ8yRS6Lgy6pChBPK5dyFMTnxatzZRUPMeTuV/hO26oBmCH8t1wSP+Zc+XDgtZN9t2WcdNQ9lGD50c8FxOGoabrpeutpCyT4d2d6f1bzWgmhH0D9Bc1LqcoNuQo0t5VOCgTEusj5CSIFhYeLk9PfeV0z9NsBzRmqDa1r4bD8UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TqhVnpYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C573C433C7;
-	Fri,  9 Feb 2024 13:28:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707485322;
-	bh=lNwTY81xFGQbjGbLm8+cb2M71UePFXEZSG+wq4uR8/0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TqhVnpYgBK7Pzno8i3+QFBdi4DvhtmjwhZHCbUT7XLZBPkEJzVlY7NWZqa/ojIXn9
-	 BXyH6d0TcfN8YiiqCmJsBkLGfGul+YOUJlkH/tbJpgK/ex8QiFah4ZxVqH2ZnhSrWj
-	 OGojN55a+WWcakscLCPcVsEdfDRMCF9pCtj6upqZsLhQcL8gQFODqS5GlSsq66lwDC
-	 jXIMtSydrg0DMk85WAS7hguZdP7THZaTEOErrKI2d63mVyF/l4O+mgJsCDxyXi+R9e
-	 31RzfGeWMoHM1vWuQ+8dmreuAGFIO+fxcHEv8UKEvpWOP+rBLUtW8euDmV6WMz6+8s
-	 CLDcn7O++RlyA==
-Date: Fri, 9 Feb 2024 13:28:37 +0000
-From: Lee Jones <lee@kernel.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	linux-renesas-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-sh@vger.kernel.org
-Subject: Re: [PATCH 0/6] mfd: tmio: simplify header and move to platform_data
-Message-ID: <20240209132837.GJ689448@google.com>
-References: <20240209015817.14627-8-wsa+renesas@sang-engineering.com>
- <CAPDyKFpmfgwJ5dJFmORhg1tBewzhB_jrWikpX=b23r-joN91SA@mail.gmail.com>
+	s=arc-20240116; t=1707497796; c=relaxed/simple;
+	bh=J/MfZTMY7vJ/FmpWNtX0rTMAuzY/Rbc8mm8OmM8h5jc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=gypr9OSV2QTGzlfy2SJ3ZGLA0g2fCceCJN0TvsfyaxbY4EBCXmgN937UsOKsHcAvXd+GZ3aKhY92tqVaek9xUgISltV6Vu7c4OkuZVU0A5hdUMd55LNXnx4twoCPw5oK7dCnzgxGTfq3m3U5I9qU1IZwERVxdg3Ic3EGZQGRozs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OST7RopP; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 419COmGT027518;
+	Fri, 9 Feb 2024 16:09:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=c2ziwPPJ87pqspr3WW8ns7hCbOA/kOJcRJXPUxtM2LU=; b=OS
+	T7RopPKnRrAnS6trbo7n7HJdy6ojZ8g46+4pMzhPWVIQIrehb7yIvH4qzUFrO9uJ
+	z2HLmmpN4S/i3lo2qWPY26fAIWdoCcDRNh1DvBAIlQzLDVrO/MF6rxpFPI2LbUaB
+	aVeRLKxsYHv7pdzeuZJElAwRDvMC4goElV3zAf8u+AVE78jwm+VIcZcZOXMpU0hm
+	aR4ZqY1RlkuWjtC7NI9N38RZgi3QIYOasBDUh8OU8d3Aditdg77VJXNa/tVAE/P+
+	ZZspIsJ3463jHwbun1t9y3DhHtHlldn3xiF2s6t67fqF7K6Iq9fLezsHskA1dNg1
+	A3SZd6281Ov4q/eogC2A==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w5m158f2m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Feb 2024 16:09:31 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 419G9Uxn019459
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 9 Feb 2024 16:09:30 GMT
+Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 9 Feb
+ 2024 08:09:29 -0800
+Message-ID: <c175684d-01e2-8603-d9c6-d9354b001143@quicinc.com>
+Date: Fri, 9 Feb 2024 09:09:28 -0700
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPDyKFpmfgwJ5dJFmORhg1tBewzhB_jrWikpX=b23r-joN91SA@mail.gmail.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH] MAINTAINERS: Update bouncing @codeaurora addresses
+Content-Language: en-US
+To: Ritesh Harjani <ritesh.list@gmail.com>, <adrian.hunter@intel.com>,
+        <quic_asutoshd@quicinc.com>, <quic_bjorande@quicinc.com>
+CC: <linux-mmc@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <87il33mn3n.fsf@doe.com>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+In-Reply-To: <87il33mn3n.fsf@doe.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 34i71qS6LTjMNEERIwtULtBvVG8oNTDG
+X-Proofpoint-ORIG-GUID: 34i71qS6LTjMNEERIwtULtBvVG8oNTDG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-09_13,2024-02-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ bulkscore=0 mlxlogscore=516 lowpriorityscore=0 clxscore=1015 spamscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402090119
 
-On Fri, 09 Feb 2024, Ulf Hansson wrote:
-
-> On Fri, 9 Feb 2024 at 02:59, Wolfram Sang
-> <wsa+renesas@sang-engineering.com> wrote:
-> >
-> > The MFD parts of the TMIO have been removed by Arnd, so that only the
-> > SD/MMC related functionality is left. Remove the outdated remains in the
-> > public header file and then move it to platform_data as the data is now
-> > specific for the SD/MMC part.
-> >
-> > Based on 6.8-rc3, build bot is happy. Branch is here:
-> >
-> > git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/sdhi/tmio-simplification
-> >
-> > I'd suggest this goes via the MFD tree, so the series would need acks
-> > from the MMC and SH maintainers. Is that okay with everyone?
+On 2/4/2024 11:39 PM, Ritesh Harjani wrote:
+> Jeffrey Hugo <quic_jhugo@quicinc.com> writes:
 > 
-> Wouldn't it be better to funnel this via the mmc tree? In that way, we
-> can easily avoid conflicts with additional renesas-mmc driver changes
-> that we have in pipe.
+>> The @codeaurora email domain's servers have been decommissioned for a
+>> long while now, and any emails addressed there will bounce.
+>>
+>> Asutosh has an entry in .mailmap pointing to a new address, but
+>> MAINTAINERS still lists an old @codeaurora address.  Update MAINTAINERS
+>> to match .mailmap for anyone reading the file directly.
+>>
+>> Ritesh appears to have changed jobs, but looks to be still active in the
+>> community.  Update Ritesh's address to the one used in recient community
+>> postings.
+>>
+> 
+> Thanks Jeffrey for the cc. Since I am not really active in linux-mmc
+> anymore, I would like to propose to have a Reviewer entry (R:) for
+> myself which I can try to help with.
+> 
+> Is that ok?
 
-You could say the same about changes SH, MFD and Platform Data have in
-the pipe.
+I see no problem with that.  Will send a v2
 
-> Or perhaps there are other changes that make the mfd tree preferred?
-
-MFD is usually preferred since the parent device usually lives there and
-we are well accustomed to merging multi-subsystem related sets.
-
-It doesn't really matter how this is merged.  The only stipulation is
-that whoever applies the set does so on a succinct, immutable, tagged
-branch and sends out a pull-request for everyone else to pull from.
-
-If you want to do that, there are no complains from me.
-
-> > All the best!
-> >
-> >    Wolfram
-> >
-> >
-> > Wolfram Sang (6):
-> >   mfd: tmio: remove obsolete platform_data
-> >   mfd: tmio: remove obsolete io accessors
-> >   mmc: tmio/sdhi: fix includes
-> >   mfd: tmio: update include files
-> >   mfd: tmio: sanitize comments
-> >   mfd: tmio: move header to platform_data
-> >
-> >  MAINTAINERS                                   |   2 +-
-> >  arch/sh/boards/board-sh7757lcr.c              |   2 +-
-> >  arch/sh/boards/mach-ap325rxa/setup.c          |   2 +-
-> >  arch/sh/boards/mach-ecovec24/setup.c          |   2 +-
-> >  arch/sh/boards/mach-kfr2r09/setup.c           |   2 +-
-> >  arch/sh/boards/mach-migor/setup.c             |   2 +-
-> >  arch/sh/boards/mach-se/7724/setup.c           |   2 +-
-> >  drivers/mmc/host/renesas_sdhi_core.c          |   2 +-
-> >  drivers/mmc/host/renesas_sdhi_internal_dmac.c |   5 +-
-> >  drivers/mmc/host/renesas_sdhi_sys_dmac.c      |   5 +-
-> >  drivers/mmc/host/tmio_mmc_core.c              |   3 +-
-> >  drivers/mmc/host/uniphier-sd.c                |   2 +-
-> >  include/linux/mfd/tmio.h                      | 133 ------------------
-> >  include/linux/platform_data/tmio.h            |  64 +++++++++
-> >  14 files changed, 81 insertions(+), 147 deletions(-)
-> >  delete mode 100644 include/linux/mfd/tmio.h
-> >  create mode 100644 include/linux/platform_data/tmio.h
-> >
-> > --
-> > 2.43.0
-> >
-> >
-
--- 
-Lee Jones [李琼斯]
+-Jeff
 
