@@ -1,169 +1,133 @@
-Return-Path: <linux-mmc+bounces-1115-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-1118-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F52D858E83
-	for <lists+linux-mmc@lfdr.de>; Sat, 17 Feb 2024 11:02:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B269858F88
+	for <lists+linux-mmc@lfdr.de>; Sat, 17 Feb 2024 14:01:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 106601F220C8
-	for <lists+linux-mmc@lfdr.de>; Sat, 17 Feb 2024 10:02:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB41128280F
+	for <lists+linux-mmc@lfdr.de>; Sat, 17 Feb 2024 13:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C911DDFF;
-	Sat, 17 Feb 2024 10:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CF17AE54;
+	Sat, 17 Feb 2024 13:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="UIIUWUCS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qiDYlexU"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0900A1CAA5;
-	Sat, 17 Feb 2024 10:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F37A72E;
+	Sat, 17 Feb 2024 13:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708164141; cv=none; b=FiUetxSgwnh40kk5iPKrzaLHK1t0eR9m7b7eREoYqzFnqTwiE+eXsQ5f8tS+hqPr8/RCAp3OJxmSzIe18MkMFv2zoenKMuUxfXXZg2pxIXfL300B/VBcmLZW2CXgxnRQqeCD3ArnLIt2Oqc47es3+QLfiLuzFAiKKgedKm3URao=
+	t=1708174882; cv=none; b=thsOPoms2EcVwOo0l4P0xVJMoA5JCe3n3LWhwcbDi7I/t1xcVMTlaJpMW5ducEzbPp6gi9MfTKnGvA6Cu8DqX/OmIlj0lUNw8KrCK7Y6dY971LK7EgU+WiZDy0lov2yVw9DOot6arepMuG84QmYwpy6IkSeRYNFGD5CuGCaghC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708164141; c=relaxed/simple;
-	bh=c7c1Q3/20PbpOtZUY4apUCKgz6BG6WLPvFsA+YNlXP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jl0Uysgbcbh6mJaLATJsqqSin5AqanPilkkA4GeEAwRIXMTTw8Ggprienc0DYSkG+QGMxRAU8o8DNPL04FYi4a6pXHTc8BfWdGAiMueavDPyMDFo1syqI0ZGjAyZ06HtgcRcO1UZe1vAQH+GoUivjfRhMguUYb3G0EydlwJ/eCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=UIIUWUCS; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a2f79e79f0cso426924766b.2;
-        Sat, 17 Feb 2024 02:02:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1708164134; x=1708768934; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nqfx68Stq1v6Qf4tIPhse4R7f6lQzjIJhU0OnU94194=;
-        b=UIIUWUCSQLDGpM2qU+d8pfLd7YjfRehKfr7N11eQc5S3EHfZNMejDfQqutXuGRr9Om
-         WfOl/OFU6g4nS7cRT6ewI2a1qdF+FvTKuP56z8d+eyGFJ8hn99YIIkia2GL/Pgf468p3
-         peijXMuXCLiLJ16E9P2j2uf/UQH7FPKeVgH5eRolokWUJMumE+hmzODJNvQzbHv9ARKy
-         eRMftZ23e+TzWk8rOtRaFYK0zk5Z/blIb6BsFx0mgZnFC5lrjkmNQOK6ALPeKANQvbZM
-         0oaRKkKW/hVSqfqvN4Vw3koOiOKi/VsC/O9N5XvLct6S8o/fTw+bop/lSIHDxv0b1kcz
-         6INA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708164134; x=1708768934;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nqfx68Stq1v6Qf4tIPhse4R7f6lQzjIJhU0OnU94194=;
-        b=r60UKr7KBgDwbx5T/N38CeX+iI06uSJ1rd8sycb02b3JebPj46qvyWPPexSNa6EPQe
-         HwjVXl+U/fpK+jZdF1KRCXkLj7QLpmAz1xWKR7lPHvrEpCnRE6maq/moqE7fgl8LsT3r
-         oja205CW0jyn+b5QgzLkvI1yI1Ux8jQM7NdV+z7XYBkKHrab5btBjaZVqFzwnzXqM7HZ
-         OW7xI6RFs5zBg81nd6G5PZ6M0W40Wi2aU5uIpua7ON0kUE6dVIvFREj8kB1cOAtO+Tpn
-         MJYaaUDrQi1J/3W8MvvIT6+D84qe6kH7FOUt3yW2mukN7x05jEfwZBw64wvLIWcRCL2x
-         DdkA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/+aTxZZfvppDlPpx8lgW2CYG44n1DMeWFMtw25rFvHhqOEYqxn7RmE1uaPtiOezU1Tzph2l75fNw3nB6o9AuypvJBrdTIrZcLMZspICyjtol3mPHB+kifiaBPxKKdfvJdzUm0Vy0v
-X-Gm-Message-State: AOJu0YzxOjt4byl8W8Wpj/qQf4GwgEgwRfLSNf/7Extwdl0joz86oKGW
-	u5D5/qLBbljMyrtgvSrtOLwPnbLueqAgDffN4kwLbC+gx32xVUKK
-X-Google-Smtp-Source: AGHT+IEb82KoWpU5FoV1SEo4/+fKxZ4+uJYz6Hsw8ouQNl0/LXhPOmil04C+qDwX+A36tj5/j83VzA==
-X-Received: by 2002:a17:906:694b:b0:a3d:590:195e with SMTP id c11-20020a170906694b00b00a3d0590195emr6136810ejs.4.1708164134317;
-        Sat, 17 Feb 2024 02:02:14 -0800 (PST)
-Received: from localhost.localdomain (dynamic-2a01-0c23-c18b-3d00-0000-0000-0000-0e63.c23.pool.telefonica.de. [2a01:c23:c18b:3d00::e63])
-        by smtp.googlemail.com with ESMTPSA id vu2-20020a170907a64200b00a3d2e690abfsm832444ejc.122.2024.02.17.02.02.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Feb 2024 02:02:13 -0800 (PST)
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To: linux-amlogic@lists.infradead.org,
-	linux-mmc@vger.kernel.org,
-	ulf.hansson@linaro.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH v1 2/2] mmc: meson-mx-sdhc: Remove .card_hw_reset callback
-Date: Sat, 17 Feb 2024 11:02:00 +0100
-Message-ID: <20240217100200.1494980-3-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240217100200.1494980-1-martin.blumenstingl@googlemail.com>
-References: <20240217100200.1494980-1-martin.blumenstingl@googlemail.com>
+	s=arc-20240116; t=1708174882; c=relaxed/simple;
+	bh=Zp5MP3tIpNSPxCmAKEOrxtfkCID7BCWlJYIzpEeigsA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=u5GjWnvehijvhZDcBRXZvxnShFzZE6gDAPfxQRZhm3AF3RMiyZCaM1HaX/I3wUiZGJoccme1c2rS21St5ADnfmY9uTc3f889nymdoiaMaRY4t0ufMsAqjafh2XCV8AaVp3Fq2tqgX+bDuq4YdeMr/seJ/L6vhkmAjQhCved63D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qiDYlexU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A5B3C433F1;
+	Sat, 17 Feb 2024 13:01:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708174881;
+	bh=Zp5MP3tIpNSPxCmAKEOrxtfkCID7BCWlJYIzpEeigsA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=qiDYlexUTzAC9s0/LBJ7uWViBmaZVFnR/cqzZBWa7KPlQHnaNPBxyiTPkBxNCe++r
+	 zj4IxiSxyhaWd0dmmn4ETJYFucu+KSg2ABAuf77VAR46RU1BkQJnutzy6UN+Yg/EmE
+	 CXswlxLG6Bnb0mUQMJHExFCAJ3jO1zHLySWYP+J/nPbEG8c48POzHJsbveWPRPcL3o
+	 A/2fyXKM7rwvAYu6wg05lSRDEkfgjYaGJhjiQPcds8QF9YXjSVNh0uKFEtPjOhEHy+
+	 6RhB5QrUB9wjHMPtZHAie6DEZtbt+xXK26IVmw91Wv/5z2qE32vxvaN9HGjlBJ47Bx
+	 ei70OE3G/yp5g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DE79C48BC4;
+	Sat, 17 Feb 2024 13:01:21 +0000 (UTC)
+From: Yang Xiwen via B4 Relay <devnull+forbidden405.outlook.com@kernel.org>
+Subject: [PATCH v4 0/4] mmc: add hi3798mv200 specific extensions of DWMMC
+Date: Sat, 17 Feb 2024 21:00:53 +0800
+Message-Id: <20240217-b4-mmc-hi3798mv200-v4-0-0fdd9bd48532@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAWu0GUC/4XNTQ6CMBCG4auQrq3pTP/QlfcwLgot0ijUADYaw
+ t0tuNFI4vL9knlmJL3rvOvJPhtJ56LvfWhTiE1Gytq0Z0e9TU2QoWCAQAtBm6akted6lzcRGaN
+ Gas6crQCxJOnw1rnKPxb0eEpd+34I3XP5EWFe3xyCWuMiUEa1FcoWuZDGqUO4D9cQLtsyNGQGI
+ /5HMCEMmFXcKQNW/iL8E9GrCE9IBVIoAVrthP5Gpml6ARFF+alAAQAA
+To: Ulf Hansson <ulf.hansson@linaro.org>, 
+ Jaehoon Chung <jh80.chung@samsung.com>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Igor Opaniuk <igor.opaniuk@linaro.org>, 
+ tianshuliang <tianshuliang@hisilicon.com>, David Yang <mmyangfl@gmail.com>, 
+ linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
+ devicetree@vger.kernel.org, Yang Xiwen <forbidden405@outlook.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708174876; l=2215;
+ i=forbidden405@outlook.com; s=20230724; h=from:subject:message-id;
+ bh=Zp5MP3tIpNSPxCmAKEOrxtfkCID7BCWlJYIzpEeigsA=;
+ b=oo7aKmDi8ZJR7z7GleltHEw99pIm5AIBwtboaiX8pUPlWmpzM7nCVd1AL9vVEo2E/kwiYjNek
+ tD4dZeIIweaAQ3GjEOSAA6WxuFy3xdhnXVUSyQK6t3sAY/7OgNUH0Su
+X-Developer-Key: i=forbidden405@outlook.com; a=ed25519;
+ pk=qOD5jhp891/Xzc+H/PZ8LWVSWE3O/XCQnAg+5vdU2IU=
+X-Endpoint-Received:
+ by B4 Relay for forbidden405@outlook.com/20230724 with auth_id=67
+X-Original-From: Yang Xiwen <forbidden405@outlook.com>
+Reply-To: <forbidden405@outlook.com>
 
-Commit 32f18e596141 ("mmc: improve API to make clear hw_reset callback
-is for cards") made it clear that the hw_reset callback is intended for
-resetting the card. Remove the .card_hw_reset callback from the
-meson-mx-sdhc-mmc driver because it's purpose is to reset the SDHC
-controller (FIFOs, PHY, DMA interface, ...).
+it's modified from hi3798cv200 driver, but quite a lot of code gets
+rewritten because of the hardware differences. Actually cv200 DWMMC core
+is called HIMCIV200 while mv200 DWMMC core is called HIMCIV300 in
+downstream.
 
-While here also rename and change the argument of meson_mx_sdhc_hw_reset
-so it cannot be called by accident as a replacement for card_hw_reset in
-the future.
+Pending on:
+[PATCH] mmc: host: replace 1st argument to struct device * for mmc_of_parse_clk_phase():
+	https://lore.kernel.org/all/20240215-mmc_phase-v1-1-f27644ee13e4@outlook.com/
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
 ---
- drivers/mmc/host/meson-mx-sdhc-mmc.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+Changes in v4:
+- rename dw_mmc-hi3798 back to hi3798cv200 - Suggested by Krzysztof Kozlowski.
+- add r-bs to patch 1 and 2 - Reviewed by Krzysztof Kozlowski.
+- Link to v3: https://lore.kernel.org/r/20240217-b4-mmc-hi3798mv200-v3-0-f15464176947@outlook.com
 
-diff --git a/drivers/mmc/host/meson-mx-sdhc-mmc.c b/drivers/mmc/host/meson-mx-sdhc-mmc.c
-index 1ed9731e77ef..31f750301dc1 100644
---- a/drivers/mmc/host/meson-mx-sdhc-mmc.c
-+++ b/drivers/mmc/host/meson-mx-sdhc-mmc.c
-@@ -65,10 +65,8 @@ static const struct regmap_config meson_mx_sdhc_regmap_config = {
- 	.max_register = MESON_SDHC_CLK2,
- };
- 
--static void meson_mx_sdhc_hw_reset(struct mmc_host *mmc)
-+static void meson_mx_sdhc_reset(struct meson_mx_sdhc_host *host)
- {
--	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
--
- 	regmap_write(host->regmap, MESON_SDHC_SRST, MESON_SDHC_SRST_MAIN_CTRL |
- 		     MESON_SDHC_SRST_RXFIFO | MESON_SDHC_SRST_TXFIFO |
- 		     MESON_SDHC_SRST_DPHY_RX | MESON_SDHC_SRST_DPHY_TX |
-@@ -116,7 +114,7 @@ static void meson_mx_sdhc_wait_cmd_ready(struct mmc_host *mmc)
- 		dev_warn(mmc_dev(mmc),
- 			 "Failed to poll for CMD_BUSY while processing CMD%d\n",
- 			 host->cmd->opcode);
--		meson_mx_sdhc_hw_reset(mmc);
-+		meson_mx_sdhc_reset(host);
- 	}
- 
- 	ret = regmap_read_poll_timeout(host->regmap, MESON_SDHC_ESTA, esta,
-@@ -127,7 +125,7 @@ static void meson_mx_sdhc_wait_cmd_ready(struct mmc_host *mmc)
- 		dev_warn(mmc_dev(mmc),
- 			 "Failed to poll for ESTA[13:11] while processing CMD%d\n",
- 			 host->cmd->opcode);
--		meson_mx_sdhc_hw_reset(mmc);
-+		meson_mx_sdhc_reset(host);
- 	}
- }
- 
-@@ -495,7 +493,6 @@ static int meson_mx_sdhc_execute_tuning(struct mmc_host *mmc, u32 opcode)
- }
- 
- static const struct mmc_host_ops meson_mx_sdhc_ops = {
--	.card_hw_reset			= meson_mx_sdhc_hw_reset,
- 	.request			= meson_mx_sdhc_request,
- 	.set_ios			= meson_mx_sdhc_set_ios,
- 	.card_busy			= meson_mx_sdhc_card_busy,
-@@ -618,7 +615,7 @@ static irqreturn_t meson_mx_sdhc_irq_thread(int irq, void *irq_data)
- 	}
- 
- 	if (cmd->error == -EIO || cmd->error == -ETIMEDOUT)
--		meson_mx_sdhc_hw_reset(host->mmc);
-+		meson_mx_sdhc_reset(host);
- 	else if (cmd->data)
- 		/*
- 		 * Clear the FIFOs after completing data transfers to prevent
-@@ -728,7 +725,7 @@ static void meson_mx_sdhc_init_hw(struct mmc_host *mmc)
- {
- 	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
- 
--	meson_mx_sdhc_hw_reset(mmc);
-+	meson_mx_sdhc_reset(host);
- 
- 	regmap_write(host->regmap, MESON_SDHC_CTRL,
- 		     FIELD_PREP(MESON_SDHC_CTRL_RX_PERIOD, 0xf) |
+Changes in v3:
+- dw_mmc-hi3798: fix bot error (Rob Herring)
+- Link to v2: https://lore.kernel.org/r/20240216-b4-mmc-hi3798mv200-v2-0-010d63e6a1d5@outlook.com
+
+Changes in v2:
+- dw_mmc-hi3798mv200: use dev_err_probe() helper - Suggested by Krzysztof Kozlowski.
+- dw_mmc-hi3798mv200: add missing err=0;
+- dw_mmc-hi3798c(m)v200: remove unused MODULE_ALIAS() - Suggested by Krzysztof Kozlowski.
+- binding: rename the binding, a lot of tweaks suggested by Krzysztof Kozlowski.
+- Link to v1: https://lore.kernel.org/r/20240216-b4-mmc-hi3798mv200-v1-0-7d46db845ae6@outlook.com
+
+---
+Yang Xiwen (4):
+      mmc: dw_mmc-hi3798cv200: remove MODULE_ALIAS()
+      mmc: dw_mmc: add support for hi3798mv200
+      dt-bindings: mmc: dw-mshc-hi3798cv200: convert to YAML
+      dt-bindings: mmc: hisilicon,hi3798cv200-dw-mshc: rename to hisilicon,hi3798-dw-mshc
+
+ .../bindings/mmc/hi3798cv200-dw-mshc.txt           |  40 ----
+ .../mmc/hisilicon,hi3798cv200-dw-mshc.yaml         |  94 +++++++++
+ drivers/mmc/host/Kconfig                           |   9 +
+ drivers/mmc/host/Makefile                          |   1 +
+ drivers/mmc/host/dw_mmc-hi3798cv200.c              |   1 -
+ drivers/mmc/host/dw_mmc-hi3798mv200.c              | 235 +++++++++++++++++++++
+ 6 files changed, 339 insertions(+), 41 deletions(-)
+---
+base-commit: 8d3dea210042f54b952b481838c1e7dfc4ec751d
+change-id: 20240121-b4-mmc-hi3798mv200-a5730edf122c
+
+Best regards,
 -- 
-2.43.2
+Yang Xiwen <forbidden405@outlook.com>
 
 
