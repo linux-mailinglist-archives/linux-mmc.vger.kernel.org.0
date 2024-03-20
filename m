@@ -1,222 +1,133 @@
-Return-Path: <linux-mmc+bounces-1471-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-1474-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367E68817D7
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Mar 2024 20:30:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535EB88198C
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Mar 2024 23:38:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE608285D99
-	for <lists+linux-mmc@lfdr.de>; Wed, 20 Mar 2024 19:30:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A2E81F21FD1
+	for <lists+linux-mmc@lfdr.de>; Wed, 20 Mar 2024 22:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4475B8563C;
-	Wed, 20 Mar 2024 19:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718EC8613C;
+	Wed, 20 Mar 2024 22:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="pMZ7IAzk"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jgtcbWn1"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4D485639;
-	Wed, 20 Mar 2024 19:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0968562E;
+	Wed, 20 Mar 2024 22:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710963007; cv=none; b=W2LYDZ9uogStuJyDWxZhPH24IDBtnbIvSCeAcQnJxEsu8FtkOB37jruEFTlJoJbt77LyIp+JqlQpftHfUmzY5wmV65hzZLsqLVFRGer0Zf5OiGVXEHBLcQQW/TtFKx6H90J2zx4Rdhpm993ENYroukc0KLNBPMP1bFZdXRrwts0=
+	t=1710974323; cv=none; b=GBlbxI1q0p/6jwowyujzGOb9wO3j70Zwpyw5VpXdp1/1nb9/c2WAwkhoWzm2gS25OKUtWE+Otom7NkZ/mJRw4Cx7S2EjmuBvOd1u3tnQdpseWsT6UvfV/rNwdeWI9ViQQ/JRO/IlHxcmmPasFQgwPaeGfhJBpzITMKVys7Zc9wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710963007; c=relaxed/simple;
-	bh=fGS3F1q6ekW/yCKZ4NCW6yPu736Ze9C5mVOM0rCHt1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JgEj4gzXKfjYhZm4xbrM882yZdm9be1cdYZfXooyT/9bCIcynlQ4cPXmIUxp8ybmfFwtPFE+QGrVkLX0ODuDv+N1lYBLjYUDU4FRaIuLwitrlZdesgeF/Zp8Iq2VBeOML7B5nbAGzjo6EqWDoCPZwb086ctMu0Mf6Q0OFqfnN1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=pMZ7IAzk reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id c31793086dac50fa; Wed, 20 Mar 2024 20:29:56 +0100
-Received: from kreacher.localnet (unknown [195.136.19.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id AD11D66B753;
-	Wed, 20 Mar 2024 20:29:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1710962996;
-	bh=fGS3F1q6ekW/yCKZ4NCW6yPu736Ze9C5mVOM0rCHt1M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pMZ7IAzkPS9xe7oGU/ABJjyxXCL6MCryXkq5K6JE9mpX5vSJxG0WFtNgbJXIVf3eJ
-	 SZlHgzUFmcZPyMTzDJkxl6Xv1PrO9ajk2Hd22SzeBZ6tDlIzJwgU3PzwvV9ZKm+CSe
-	 wfOOwdBsez5CaTDez8NsyOOBsZtwIU0JX4p9hM1I7d+VP77WnptBU8TanYQwJlmcA7
-	 R/LHglJv3bu+9QQr2+ezRH8vY3/lBa2cDzxhCp7HtfYSthZI+l2F+tRzXrwTM2+P1p
-	 UXoTbgggbmw9mbVNH9xnB4YT5n5L82DM91jxWd1JHWFDC7nE8pSKfFVjXaNEE4jZPW
-	 CCgoikU1bbzcw==
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Francisco Ayala Le Brun <francisco@videowindow.eu>
-Cc: Adrian Hunter <adrian.hunter@intel.com>, linux-mmc@vger.kernel.org,
- linux-kernel@vger.kernel.org, ulf.hansson@linaro.org,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Linus Walleij <linus.walleij@linaro.org>,
- Mario Limonciello <mario.limonciello@amd.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: Bug report: probe of AMDI0040:00 failed with error -16
-Date: Wed, 20 Mar 2024 20:29:55 +0100
-Message-ID: <5767438.DvuYhMxLoT@kreacher>
-In-Reply-To: <36198864-579e-41f0-baf6-917f0a7f4bfa@intel.com>
-References:
- <CAN-StX1HqWqi+YW=t+V52-38Mfp5fAz7YHx4aH-CQjgyNiKx3g@mail.gmail.com>
- <36198864-579e-41f0-baf6-917f0a7f4bfa@intel.com>
+	s=arc-20240116; t=1710974323; c=relaxed/simple;
+	bh=tpyWdyjSsP+daxF6OoB1lyBOWSFqopLKhrW8aYpDHR4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SyDpr6wj1j9Yo538z+j5AuuQ8VwNlUq7SGVW/sD94k8GfMCf+WIUTx9RwLaud1+Hok8tMOvkF7bCT1hr3EdM3v/TXEw3o50Z7u1+BnGh0nJem4JOxnCANfZqtEIUpO5ZJDaKQrGZURrmLs7x7PnG1tELpDSXUCUAatNS+WG/2Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jgtcbWn1; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 42KMcbwL010266;
+	Wed, 20 Mar 2024 17:38:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1710974317;
+	bh=mDiYRNcI/MhcHCQFcwYplc0w//g18+WYtTLi9NZcXxo=;
+	h=From:To:CC:Subject:Date;
+	b=jgtcbWn1Dr0Wp3waS/61fxTEik2ZVS2bZQnSeDiyPXtpR6J+ugMp6l0dPkEfMI+yT
+	 OlUK8Xkknf6TdtFd3Yn+sWQqxbCVaTCKkoLgTGQIPk5qy5A3jJtQKRRAzsY7HGgCyL
+	 skgUKNikVllMTv2ldpH6FNMXDOyswISCAaqs3RFc=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 42KMcbu7053636
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 20 Mar 2024 17:38:37 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 20
+ Mar 2024 17:38:37 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 20 Mar 2024 17:38:37 -0500
+Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 42KMcbum036138;
+	Wed, 20 Mar 2024 17:38:37 -0500
+From: Judith Mendez <jm@ti.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter
+	<adrian.hunter@intel.com>
+CC: Andrew Davis <afd@ti.com>, <linux-mmc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v5 0/7] Add tuning algorithm for delay chain
+Date: Wed, 20 Mar 2024 17:38:30 -0500
+Message-ID: <20240320223837.959900-1-jm@ti.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrleeggdduvdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepuddtpdhrtghpthhtohepfhhrrghntghishgtohesvhhiuggvohifihhnughofidrvghupdhrtghpthhtoheprggurhhirghnrdhhuhhnthgvrhesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmhgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
- ohepuhhlfhdrhhgrnhhsshhonheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=10 Fuz1=10 Fuz2=10
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On Tuesday, March 19, 2024 5:20:41 PM CET Adrian Hunter wrote:
-> On 19/03/24 16:43, Francisco Ayala Le Brun wrote:
-> > Hello,
-> > 
-> > I would like to report a bug.
-> > 
-> > Issue description:
-> > After updating a GHF51 SBC to a newer kernel version, the system was
-> 
-> What was the older / working kernel version?  Are you able
-> to git bisect?
-> 
-> > no longer able to boot. Running the "lsblk" command in the recovery
-> > console showed no mmc storage detected.
-> > 
-> > System Information:
-> > OS: Fedora 40 x86_64
-> > Kernel: 6.8.0-0.rc6.49.fc40.x86_64
-> > 
-> > Relevant Logs:
-> 
-> Really no error / fail messages before the stack dump?
-> 
-> > [   10.920756] Call Trace:
-> > [   10.920763]  <TASK>
-> > [   10.920771]  dump_stack_lvl+0x4d/0x70
-> > [   10.920786]  __setup_irq+0x530/0x6c0
-> > [   10.920801]  request_threaded_irq+0xe5/0x180
-> > [   10.920813]  ? __pfx_sdhci_thread_irq+0x10/0x10 [sdhci]
-> > [   10.920843]  __sdhci_add_host+0x108/0x360 [sdhci]
-> > [   10.920871]  sdhci_acpi_probe+0x3a8/0x500 [sdhci_acpi]
-> > [   10.920894]  platform_probe+0x44/0xa0
-> > [   10.920908]  really_probe+0x19e/0x3e0
-> > [   10.930244]  __driver_probe_device+0x78/0x160
-> > [   10.930264]  driver_probe_device+0x1f/0xa0
-> > [   10.930273]  __driver_attach_async_helper+0x5e/0xe0
-> > [   10.930284]  async_run_entry_fn+0x34/0x130
-> > [   10.930296]  process_one_work+0x170/0x330
-> > [   10.930309]  worker_thread+0x273/0x3c0
-> > [   10.934639]  ? __pfx_worker_thread+0x10/0x10
-> > [   10.934654]  kthread+0xe8/0x120
-> > [   10.934663]  ? __pfx_kthread+0x10/0x10
-> > [   10.934671]  ret_from_fork+0x34/0x50
-> > [   10.934681]  ? __pfx_kthread+0x10/0x10
-> > [   10.934688]  ret_from_fork_asm+0x1b/0x30
-> > [   10.934708]  </TASK>
-> > [   10.940978] mmc0: Failed to request IRQ 7: -16
-> > [   10.943885] sdhci-acpi: probe of AMDI0040:00 failed with error -16
-> 
-> 16 is EBUSY which seems to be used by __setup_irq() for
-> irq mismatch
+This patch series introduces a new tuning algorithm for
+mmc. The new algorithm should be used when delay chain is
+enabled. The ITAPDLY is selected from the largest passing
+window and the buffer is not viewed as a circular buffer.
+The new tuning algorithm is implemented as per the paper
+published here [0] and has been tested on the following
+platforms: AM62x SK, AM62A SK, AM62p SK, AM64x SK, and AM64x
+EVM.
 
-Would you be able to test the patch below and see if it helps?
+The series also includes a few fixes in the sdhci_am654
+driver on OTAPDLYEN/ITAPDLYEN and ITAPDELSEL.
 
----
- drivers/pinctrl/pinctrl-amd.c |    2 +-
- include/linux/interrupt.h     |    5 ++++-
- kernel/irq/manage.c           |   13 +++++++++++--
- 3 files changed, 16 insertions(+), 4 deletions(-)
+Changelog:
+v4->v5:
+- Add dll_enable = false
+v3->v4:
+- Add acked-by
+- Remove extra newline
+v2->v3:
+- Remove fixes tags when not needed
+- Fix return for tuning algorithm
+- Fix ITAPDLY_LAST_INDEX
+- Use reverse fir tree order for variable declarations
+- Save all ITAPDLYENA changes in itap_del_ena[]
+- Remove unnecessary parenthesis
+- Remove unnecessary variables
+- Save itapdlyena for HS400 timing
+v1->v2:
+- Remove unnecessary indentations and if/else in
+ sdhci_am654_calculate_itap
+- Optimize sdhci_am654_calculate_itap()
+- Call sdhci_am654_write_itapdly() in sdhci_am654_set_clock()
+ instead of sdhci_am654_setup_dll()
+- Change otap_del_sel[], itap_del_sel[], and itap_del_ena[]
+ to type u32
+- Revert unnecessary reformating in sdhci_am654_set_clock()
+ and sdhci_j721e_4bit_set_clock()
 
-Index: linux-pm/include/linux/interrupt.h
-===================================================================
---- linux-pm.orig/include/linux/interrupt.h
-+++ linux-pm/include/linux/interrupt.h
-@@ -67,6 +67,8 @@
-  *                later.
-  * IRQF_NO_DEBUG - Exclude from runnaway detection for IPI and similar handlers,
-  *		   depends on IRQF_PERCPU.
-+ * IRQF_COND_ONESHOT - Agree to do IRQF_ONESHOT if already set for a shared
-+ *                 interrupt.
-  */
- #define IRQF_SHARED		0x00000080
- #define IRQF_PROBE_SHARED	0x00000100
-@@ -82,6 +84,7 @@
- #define IRQF_COND_SUSPEND	0x00040000
- #define IRQF_NO_AUTOEN		0x00080000
- #define IRQF_NO_DEBUG		0x00100000
-+#define IRQF_COND_ONESHOT	0x00200000
- 
- #define IRQF_TIMER		(__IRQF_TIMER | IRQF_NO_SUSPEND | IRQF_NO_THREAD)
- 
-@@ -784,7 +787,7 @@ extern void tasklet_setup(struct tasklet
-  * if more than one irq occurred.
-  */
- 
--#if !defined(CONFIG_GENERIC_IRQ_PROBE) 
-+#if !defined(CONFIG_GENERIC_IRQ_PROBE)
- static inline unsigned long probe_irq_on(void)
- {
- 	return 0;
-Index: linux-pm/kernel/irq/manage.c
-===================================================================
---- linux-pm.orig/kernel/irq/manage.c
-+++ linux-pm/kernel/irq/manage.c
-@@ -1642,8 +1642,14 @@ __setup_irq(unsigned int irq, struct irq
- 		}
- 
- 		if (!((old->flags & new->flags) & IRQF_SHARED) ||
--		    (oldtype != (new->flags & IRQF_TRIGGER_MASK)) ||
--		    ((old->flags ^ new->flags) & IRQF_ONESHOT))
-+		    (oldtype != (new->flags & IRQF_TRIGGER_MASK)))
-+			goto mismatch;
-+
-+		if ((old->flags & IRQF_ONESHOT) &&
-+		    (new->flags & IRQF_COND_ONESHOT))
-+			new->flags |= IRQF_ONESHOT;
-+
-+		if ((old->flags ^ new->flags) & IRQF_ONESHOT)
- 			goto mismatch;
- 
- 		/* All handlers must agree on per-cpuness */
-@@ -1665,6 +1671,9 @@ __setup_irq(unsigned int irq, struct irq
- 		shared = 1;
- 	}
- 
-+	/* IRQF_COND_ONESHOT has no meaning from now on, so clear it. */
-+	new->flags &= ~IRQF_COND_ONESHOT;
-+
- 	/*
- 	 * Setup the thread mask for this irqaction for ONESHOT. For
- 	 * !ONESHOT irqs the thread mask is 0 so we can avoid a
-Index: linux-pm/drivers/pinctrl/pinctrl-amd.c
-===================================================================
---- linux-pm.orig/drivers/pinctrl/pinctrl-amd.c
-+++ linux-pm/drivers/pinctrl/pinctrl-amd.c
-@@ -1159,7 +1159,7 @@ static int amd_gpio_probe(struct platfor
- 	}
- 
- 	ret = devm_request_irq(&pdev->dev, gpio_dev->irq, amd_gpio_irq_handler,
--			       IRQF_SHARED | IRQF_ONESHOT, KBUILD_MODNAME, gpio_dev);
-+			       IRQF_SHARED | IRQF_COND_ONESHOT, KBUILD_MODNAME, gpio_dev);
- 	if (ret)
- 		goto out2;
- 
+Judith Mendez (7):
+  mmc: sdhci_am654: Add tuning algorithm for delay chain
+  mmc: sdhci_am654: Write ITAPDLY for DDR52 timing
+  mmc: sdhci_am654: Add OTAP/ITAP delay enable
+  mmc: sdhci_am654: Fix itapdly/otapdly array type
+  mmc: sdhci_am654: Update comments in sdhci_am654_set_clock
+  mmc: sdhci_am654: Add ITAPDLYSEL in sdhci_j721e_4bit_set_clock
+  mmc: sdhci_am654: Fix ITAPDLY for HS400 timing
+
+ drivers/mmc/host/sdhci_am654.c | 176 ++++++++++++++++++++++++++-------
+ 1 file changed, 138 insertions(+), 38 deletions(-)
 
 
-
+base-commit: faf3b8014c357d71c7a9414302e217a1dd1679af
+-- 
+2.43.2
 
 
