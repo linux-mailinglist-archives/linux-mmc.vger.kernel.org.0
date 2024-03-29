@@ -1,67 +1,109 @@
-Return-Path: <linux-mmc+bounces-1655-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-1657-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DAD8927F0
-	for <lists+linux-mmc@lfdr.de>; Sat, 30 Mar 2024 00:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920FC8933BB
+	for <lists+linux-mmc@lfdr.de>; Sun, 31 Mar 2024 18:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C64A31C20C84
-	for <lists+linux-mmc@lfdr.de>; Fri, 29 Mar 2024 23:52:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B61BE1C22436
+	for <lists+linux-mmc@lfdr.de>; Sun, 31 Mar 2024 16:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B640013E40D;
-	Fri, 29 Mar 2024 23:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BA11487DF;
+	Sun, 31 Mar 2024 16:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UyuAf/r+"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZiOo3rkW"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2C013CFA8
-	for <linux-mmc@vger.kernel.org>; Fri, 29 Mar 2024 23:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711756371; cv=none; b=MxMoIv7Q9pN6G2JOfaCdzracsOhqfdJCwRCs14FwUZOkkgOKpFiVPW2rPYImgOoHdKkODgUKfb8mKW0bLJ4YJWAgAlBSS22dIwel3tuQdh4OJe0rNebR6Qa1xBomNgDB3TstSb78wI3sIppJuT2iyBcQUubrtivJyP4XpTxucAo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711756371; c=relaxed/simple;
-	bh=+zWUoumfxb4VH52nz1SrXuzbtzFsJmR2JEUt7cUm5AQ=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC5F1482E7;
+	Sun, 31 Mar 2024 16:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=62.96.220.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711903193; cv=pass; b=RBl+/LpRjKgs7eiNA990CH02ebqbHJWg7nmvhb50ijePbjMGanV8QyDW8FyabqGw5rpFbxEBAfw2jhGUujlUMYt1IB3nmyYPLzj2IwMzjdqLslv1ZF7RBNlegJRcheDUkqRQ4HVQJjDUIAwkpuhqWtyfUtqnCKrX/3SBF/UwgQc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711903193; c=relaxed/simple;
+	bh=37wcXfc5orUvfIH8yRuaE/gUmWlSqhdIeAF2bNJwUqI=;
 	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=OVIxPJ/HjA5Ojq7ZwBSWLKk7S2VYGvxVwirRBJ6kRolIfZt0sQvwCQiDFyVgTXvSmJY/5TpgX3VfcxZTvCVAJyKdJwE2vhYxAd40+lCy6pLxJa6QbV1VqE0LOOPGGpKz+UxQJqB4xUzBNAMn9jMUCtj9/AWTW9V2BO77vFHTMiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UyuAf/r+; arc=none smtp.client-ip=209.85.208.50
+	 MIME-Version:Content-Type; b=t0CoGGGnVtT8i0uXvVEy/hObNlKOOIdSltJ6Eb0gRtb6TpYNhMh+XiIrPRJp2T4n8OK6zWj635Ksyq1pSd2w/bm42CEWEKgAa9uRPHWFJfV2YotTRs07s8Zpxxom3F5Tqe0M/q0BHwbuxO5f2slInrDJY1X7XH5PBuaMTjgajVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZiOo3rkW; arc=none smtp.client-ip=209.85.218.48; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; arc=pass smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-56c5d05128dso1074398a12.0
-        for <linux-mmc@vger.kernel.org>; Fri, 29 Mar 2024 16:52:49 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id 77C7A2083B;
+	Sun, 31 Mar 2024 18:39:50 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id lOLlRCcj_w-e; Sun, 31 Mar 2024 18:39:49 +0200 (CEST)
+Received: from mailout2.secunet.com (mailout2.secunet.com [62.96.220.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by a.mx.secunet.com (Postfix) with ESMTPS id A704E20842;
+	Sun, 31 Mar 2024 18:39:49 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com A704E20842
+Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
+	by mailout2.secunet.com (Postfix) with ESMTP id 99124800050;
+	Sun, 31 Mar 2024 18:39:49 +0200 (CEST)
+Received: from mbx-essen-01.secunet.de (10.53.40.197) by
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sun, 31 Mar 2024 18:39:49 +0200
+Received: from Pickup by mbx-essen-01.secunet.de with Microsoft SMTP Server id
+ 15.1.2507.17; Sun, 31 Mar 2024 16:36:19 +0000
+X-sender: <linux-kernel+bounces-125538-steffen.klassert=secunet.com@vger.kernel.org>
+X-Receiver: <steffen.klassert@secunet.com>
+ ORCPT=rfc822;steffen.klassert@secunet.com NOTIFY=NEVER;
+ X-ExtendedProps=BQAVABYAAgAAAAUAFAARAPDFCS25BAlDktII2g02frgPADUAAABNaWNyb3NvZnQuRXhjaGFuZ2UuVHJhbnNwb3J0LkRpcmVjdG9yeURhdGEuSXNSZXNvdXJjZQIAAAUAagAJAAEAAAAAAAAABQAWAAIAAAUAQwACAAAFAEYABwADAAAABQBHAAIAAAUAEgAPAGIAAAAvbz1zZWN1bmV0L291PUV4Y2hhbmdlIEFkbWluaXN0cmF0aXZlIEdyb3VwIChGWURJQk9IRjIzU1BETFQpL2NuPVJlY2lwaWVudHMvY249U3RlZmZlbiBLbGFzc2VydDY4YwUACwAXAL4AAACheZxkHSGBRqAcAp3ukbifQ049REI2LENOPURhdGFiYXNlcyxDTj1FeGNoYW5nZSBBZG1pbmlzdHJhdGl2ZSBHcm91cCAoRllESUJPSEYyM1NQRExUKSxDTj1BZG1pbmlzdHJhdGl2ZSBHcm91cHMsQ049c2VjdW5ldCxDTj1NaWNyb3NvZnQgRXhjaGFuZ2UsQ049U2VydmljZXMsQ049Q29uZmlndXJhdGlvbixEQz1zZWN1bmV0LERDPWRlBQAOABEABiAS9uuMOkqzwmEZDvWNNQUAHQAPAAwAAABtYngtZXNzZW4tMDIFADwAAgAADwA2AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5NYWlsUmVjaXBpZW50LkRpc3BsYXlOYW1lDwARAAAAS2xhc3NlcnQsIFN0ZWZmZW4FAAwAAgAABQBsAAIAAAUAWAAXAEoAAADwxQktuQQJQ5LSCNoNNn64Q049S2xhc3NlcnQgU3RlZmZlbixPVT1Vc2VycyxPVT1NaWdyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUAJgACAAEFACIADwAxAAAAQXV0b1Jlc3BvbnNlU3VwcHJlc3M6IDANClRyYW5zbWl0SGlzdG9ye
+	TogRmFsc2UNCg8ALwAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuRXhwYW5zaW9uR3JvdXBUeXBlDwAVAAAATWVtYmVyc0dyb3VwRXhwYW5zaW9uBQAjAAIAAQ==
+X-CreatedBy: MSExchange15
+X-HeloDomain: a.mx.secunet.com
+X-ExtendedProps: BQBjAAoAC0umlidQ3AgFAGEACAABAAAABQA3AAIAAA8APAAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5Pcmdhbml6YXRpb25TY29wZREAAAAAAAAAAAAAAAAAAAAAAAUASQACAAEFAAQAFCABAAAAHAAAAHN0ZWZmZW4ua2xhc3NlcnRAc2VjdW5ldC5jb20FAAYAAgABBQApAAIAAQ8ACQAAAENJQXVkaXRlZAIAAQUAAgAHAAEAAAAFAAMABwAAAAAABQAFAAIAAQUAYgAKALcAAADOigAABQBkAA8AAwAAAEh1Yg==
+X-Source: SMTP:Default MBX-ESSEN-02
+X-SourceIPAddress: 62.96.220.36
+X-EndOfInjectedXHeaders: 21535
+X-Virus-Scanned: by secunet
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=147.75.199.223; helo=ny.mirrors.kernel.org; envelope-from=linux-kernel+bounces-125538-steffen.klassert=secunet.com@vger.kernel.org; receiver=steffen.klassert@secunet.com 
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 1174B208A6
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711756371; cv=none; b=Lp8rQJv5Uo7eNQUklkIH5SGpgdllyHO5fJUiqYxedPBS4Xu8pM0aYtwGeBJ3DwVlkdjU54AIxDTqF3ZZEbZrQnz9SUMT2lJvLbzmm+F6nnPLbNT3SrKOF7WrOg1PKUIla0/g6+lvObyj1UjTw30VKYQ2nmX6W5pRJJIIGRpia+0=
+ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711756371; c=relaxed/simple;
+	bh=37wcXfc5orUvfIH8yRuaE/gUmWlSqhdIeAF2bNJwUqI=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=rSwD1Fny38ciI6YYb8O60d5xofXBb8R3s1rdoA/PpN/mGX+7QEWVKhNZeEf6/Y5QnnPRp52EPkKnNVTLah7aRuoOFLBOA+Mag5xuqeqaRwkDPbMyQGq7wTLpPAlngUgLGorSez++Pl4mYP4pBgXftStSMzHKlkqfovdv8OGKt4k=
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZiOo3rkW; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google; t=1711756368; x=1712361168; darn=vger.kernel.org;
         h=mime-version:subject:user-agent:references:in-reply-to:message-id
          :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VPJe2liQDGK5NYpDDQuxER6+e1AFJmS6INA1zI8Sx1o=;
-        b=UyuAf/r+fheOr2cYyTVSQRz7nzLkqUWeHSg+3XK/p7CQU6/RbB+OJHpyTX6r023a9Q
-         TIMspJ/AYUgzQ+UDgPxbzN1dKKcetPW2ioh5NrX3nz/TCfrFh4K7gGeOrEkMXXzTXLoJ
-         32tBXY8WQvb3hZHWrLdTqJz8CXTCtTV7Q3m30=
+        bh=hSoCZghoKr/5/0/ji2xkzkyfBZpmTYwt/cR4yDSElGY=;
+        b=ZiOo3rkWNp/R+HdGR2H0qobBDgosgSs8KztjKGZGGEyU7H+bc0kMNpHvA+vtyUi9Cx
+         kkLHTnoP53q4T/Gbb1psZBU3fcoS9MQO5Iq/kGiHuoZKxkohb6rQr25lj4v+Thkq3RAb
+         AU1jxLT2evI7hgNODWb0ePs7cS+4T7T2C6TT8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1711756368; x=1712361168;
         h=mime-version:subject:user-agent:references:in-reply-to:message-id
          :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VPJe2liQDGK5NYpDDQuxER6+e1AFJmS6INA1zI8Sx1o=;
-        b=S+k4erzbeCPAOjWsSmTszTZmpnFxYYE1wmRsffOKm1KV+zyu0GYRsE5MQi60/PUlV+
-         dl/YMBteU0/uWVVXbME+fMY+nv1oDpstttsWbGX6czhb34aNHLOODq1fb3jwUnnKTyk4
-         2Ka+n1yhY9Ww9/46VJDWgDbY0a4JfFL6ts9On6hGZzkiFOJDT4mgpAs0fVXANOysZtlr
-         oXopYBFDRy0DYO8+twFNilgYadDp4mDq6KSmgWaHuaRJldE/JleIQZuiddjwwer1+pIP
-         3225CElvBr63j7GV94DHC55niuFOuFbF1H499CiXZdg6nT6wrUCuB8sC5ubd/aAj2C9M
-         0Meg==
-X-Gm-Message-State: AOJu0YzESmPXR2xOD88GgvXqF237Jk2yLEHTNL9Hi0sz383HIn4Zlatm
-	TioPabA9A3LZ1W6DMjPEpuwI8jXAcRmvpnvon2uP6yOTeHCyQWth+cYTbs+tMw==
+        bh=hSoCZghoKr/5/0/ji2xkzkyfBZpmTYwt/cR4yDSElGY=;
+        b=VhRcXiciKXb/k01I9xyh61yC0PWkiXrQxtQqTxD3hN08U9H+tLeOcvAotm6NSwwPF+
+         u6h0Yb3f7qXPxmFMyvSu8UHB7L5cWMsYToA3zYMmVyQxaupWbws5/LessFUqmRNf6Sh5
+         RCj1q8h6Gdz07Ebn/oIhz02TiEGutAyCEOFVsUlIQowCYvFa2HvmYNVB/9aWRjg+F/8s
+         JI9vO7ISNb1UtF53FBbrE2HeIRPwX6pNfHDG/tFJ9gCncjWmlMEg1ZBWJ9iImPy16pK4
+         uWVLNITAZUFGOknQ91htjQz7axxRNU/6z1euHiCR0puC6S0ZFRwsNVTg1//yQzF/wBtL
+         A8ig==
+X-Forwarded-Encrypted: i=1; AJvYcCVFKhPZ+tvwWBX97idrmMrDlc5aAZv6nrFIHt1WRKc3ASZLJItWL04gccbXiPFTngDwTkAHEMQ1VtI/p3np5ufOF0xAr/XWoyxkzNhs
+X-Gm-Message-State: AOJu0Ywo7W1cWq8Saci3KUUztux0azGmhPelnrxVMVxbMJynGc7Es2Qm
+	QIsAgEJXf4z2xYr8WFuHBE/ArXjKgBQNnJUJSk/IO2fsT2yWM5eOmqdNp8vmGQ==
 X-Google-Smtp-Source: AGHT+IFlVP4t6RIxSv9LCeKxetcZ0i37Xax/rZfBrQX524SbaGIPRH/aDdJRAvbPea2yviZoN6JCaA==
 X-Received: by 2002:a17:906:595a:b0:a4e:1966:1874 with SMTP id g26-20020a170906595a00b00a4e19661874mr2344347ejr.37.1711756368046;
         Fri, 29 Mar 2024 16:52:48 -0700 (PDT)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id gt14-20020a170906f20e00b00a462e166b9bsm2463600ejb.112.2024.03.29.16.52.46
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 29 Mar 2024 16:52:46 -0700 (PDT)
 From: Arend Van Spriel <arend.vanspriel@broadcom.com>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, Brian Norris <briannorris@chromium.org>, =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
 CC: <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>, <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>
@@ -73,15 +115,17 @@ References: <20240329-module-owner-sdio-v1-0-e4010b11ccaa@linaro.org>
 User-Agent: AquaMail/1.50.0 (build: 105000429)
 Subject: Re: [PATCH 5/7] wifi: brcm80211: drop driver owner initialization
 Precedence: bulk
+Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000048b84b0614d55645"
+Content-Type: multipart/signed; protocol="application/pkcs7-signature";
+	micalg=sha-256; boundary="000000000000488e7b0614d5563d"
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
---00000000000048b84b0614d55645
+--000000000000488e7b0614d5563d
 Content-Type: text/plain; format=flowed; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
@@ -121,7 +165,7 @@ Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
 
 
---00000000000048b84b0614d55645
+--000000000000488e7b0614d5563d
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -202,5 +246,5 @@ JFqEDjLUnhdbJqJBmleRSTMy6ErXZQGHKYsgXAq9uoD/hYcQBrhvT93d/prM2IhsqYCG5fGE1SJ+
 7pt4m6FWERjYzcI2zzJtWnv7nBSVz8ce2sCy8ZEILGrecer3YzIiymoP9mzgoSQ3+7KF9tERH48H
 DjT/qagylnNDhCSyqNmkgnEpwx2KGJdrzmnJZ65YjNHTSI8x4k9r5m6hy6xKf6bd02iPlhXwDB/E
 xQ==
---00000000000048b84b0614d55645--
+--000000000000488e7b0614d5563d--
 
