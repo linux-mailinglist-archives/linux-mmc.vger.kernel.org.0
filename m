@@ -1,166 +1,269 @@
-Return-Path: <linux-mmc+bounces-1737-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-1741-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B7889CCB2
-	for <lists+linux-mmc@lfdr.de>; Mon,  8 Apr 2024 21:53:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0A789D4AB
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Apr 2024 10:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49D8B1C222BD
-	for <lists+linux-mmc@lfdr.de>; Mon,  8 Apr 2024 19:53:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFB4C1C215E9
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Apr 2024 08:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAB614600D;
-	Mon,  8 Apr 2024 19:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B26128818;
+	Tue,  9 Apr 2024 08:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jFjV3Qw/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="idtkfc6M"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A3B14601D
-	for <linux-mmc@vger.kernel.org>; Mon,  8 Apr 2024 19:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02772127B67
+	for <linux-mmc@vger.kernel.org>; Tue,  9 Apr 2024 08:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712605981; cv=none; b=EEkPTSCHp/Sjukk/GZ0OWi212315GCsuDH418Q1VvrrNeYiBws/NYKth3gONbG/zIABR+gFsYES76BGeoRoDzW2jUvR37bOO+m9vb6GF6ZwH/k7he2UyAOIMwkIoDvq7JpNfj1NDKG9ezyFJtJL/YjckyFMUHKtBE9teSiHsp+Y=
+	t=1712651563; cv=none; b=HwKn87cCCclMht3l8/EPhqjakCQCpnwsUqtUWZ8/mRAGmCfbtOHxyT7brKLWnCnrzsgUWX+tXNHjxc0KJgaVS0dYaXmR/cnK0miOn0BCXB6JmSc2KDUaiWafbs2Wh3eFFIoinajFttpLsyfE9rUmNdw/QIXhd7GMOpJ54m2ZvK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712605981; c=relaxed/simple;
-	bh=OiHD6xweYEobi6/iWfkWkxulkdi7AvkEiM4Y+0Pswls=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z1FYP6HpBTJ1dyKkRNFuyHcmMm8wTo1k2ZGN79ZCXyk60RjaHyYZP3RHaMl2vmWKGWBm1QUkH8jZ+sPh9gkCSrmlTYHq9kFhkYbCl8BXWkicb3EcKAnqN7rlZfqkjWI2pJLViw9Lfze1oTY4iU+9kRQVXfdJdD2gXLfAUpXj1rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jFjV3Qw/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712605978;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aLd8G/slPT0OCEh+iNBOZd/UwQFLxMGV8Rc3rYDBFpo=;
-	b=jFjV3Qw/Kkfdzj8hcTBudhbVWBw/zdK8Jm2RQ0HVmG1EgqWBvN0fOxHFtDO/K5YYZkRQ0f
-	01uTkjVh4mMBj/aUiedsEZI/msfky4RGYNit8WmpyDyQQPG9yPTcy1MEheyNXxZO0A44JJ
-	HpR2aRXGNjeIiFTXKAT4KxyVuEH7Sg0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-531-2ej4vuNZPNG5r3vFJdq5EQ-1; Mon, 08 Apr 2024 15:52:57 -0400
-X-MC-Unique: 2ej4vuNZPNG5r3vFJdq5EQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 92E3D1802A06;
-	Mon,  8 Apr 2024 19:52:56 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.192.47])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 9A2EE1C06667;
-	Mon,  8 Apr 2024 19:52:55 +0000 (UTC)
-From: Hans de Goede <hdegoede@redhat.com>
-To: Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	linux-mmc@vger.kernel.org,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-Subject: [PATCH v2 6/6] mmc: sdhci-acpi: Add quirk to enable pull-up on the card-detect GPIO on Asus T100TA
-Date: Mon,  8 Apr 2024 21:52:44 +0200
-Message-ID: <20240408195244.248280-7-hdegoede@redhat.com>
-In-Reply-To: <20240408195244.248280-1-hdegoede@redhat.com>
-References: <20240408195244.248280-1-hdegoede@redhat.com>
+	s=arc-20240116; t=1712651563; c=relaxed/simple;
+	bh=Dpn8MR4nhIt8ge/rBHDPkpyx6ABtUHgj9mzhMzWOtGM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N+3uhzOi/Lw0zLfD+sAZBEIR5smzR5sAp/ZTVpihTy7Bn5NpEgRqmmqNI7WI+bLBwoa06c7Xy3gSSqKebnPwxFznw5cdyXLyHd2JiHncUNZ8XNZnQZT20V5ZKuzDnktQOSKrnm2xsn19fXi6GPw9Oj2+D7b+HX0+skOAtEDAcP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=idtkfc6M; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-22f32226947so1005486fac.2
+        for <linux-mmc@vger.kernel.org>; Tue, 09 Apr 2024 01:32:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712651560; x=1713256360; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2uAodPsYjRsPrLmdLzL3BRTckxAm/m9XO5FXRuJnr4o=;
+        b=idtkfc6MGbap+Yl87M3F3GMxHAEavlp0M9fNQsYW9pVPtAK9Pa3U+JLNmk0n75Wyrm
+         gUBEAiXz7mLoyMpvuK/rMhbwJhUspXLwzyTrAnpRI9ti+kSxdoDCy8B7t/5NS0rkPfH5
+         x8ivm61RZ4LI2AVjkJ442lO9JmC31KPu6a2Ko+4O6LNE+0juKxH1pGvDuBkxH3+RkBBL
+         8veFOFUawwXrue3SZiJjWPj7JHTG/Nh98d8io0gSN1ckZSc0W6kY0zAqQeijToRD/HGX
+         3geRuRVjKa0N+ZRujEBXojmI/BMqhCB4N38bFf6IHLDOguSJD9oUIz12vJkpZHjCMORy
+         Slog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712651560; x=1713256360;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2uAodPsYjRsPrLmdLzL3BRTckxAm/m9XO5FXRuJnr4o=;
+        b=Ufspjs0jfl4QMUl0o7dsKE6fqLvfR7/1gwlnAmUXLApgs18F4gfWHjdZelb/0bJHq+
+         enJfCfDeAa1sRjSriOnTJvhANfw31ogdkTmRjnYI9QkhZX0IdrKvNjEgZtzDw+H6OSr4
+         SUiUv7lP9CjlSZYj0729qiMFn9SjKD4NkAAvswt7RNI3FvRs6PcmdoqLgCTYbVynBZTB
+         xqiSOplAZ1VGngybc9mCOH++XSR5Zn0W2XD8XAXMd4kJNKR6gIqUycYtlgpiDkS3W8qM
+         45a2SmqqUhoZM5pu1EnktP9nvlV1sK0cVJs7lvIjstQ2DBuyCZUVHq4ydNMXHHAkKJog
+         H43A==
+X-Forwarded-Encrypted: i=1; AJvYcCXBgw7aPWPNg4h/biVf5xApFD6n7yZp4AOVFY3dV3f5PG5adjI7YH4R42JItCpkmb0UZcofJxxnLGb6bOgoch9fva1h6zE95XXa
+X-Gm-Message-State: AOJu0YzwngTnwWJZK0ILT5fvZQ3fzvKlFErQ4/NViXGQUCr2BdzjEerR
+	ZmF0ZQ8dspgCZyTd7hrRcbTdI7iDlWQlSEeBhrBNMbuyqoWiQ3EJ52h1BV4w4Miq4bUyNeWfCTR
+	lfAFb3RQy5ul8mqMBkkSOpirFG4MsVEcPvEa/5A==
+X-Google-Smtp-Source: AGHT+IH7JHDXhhK5XHKAYXEHO/Peaa07VhvA3DF/OYJg6/MoyNjNmPTZXZGiO92FclWgq/qAqeYZ6Kc2HK0e9KQDf44=
+X-Received: by 2002:a05:6870:1a8f:b0:229:7f3f:bb6a with SMTP id
+ ef15-20020a0568701a8f00b002297f3fbb6amr9084872oab.32.1712651560033; Tue, 09
+ Apr 2024 01:32:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+References: <20240405115318.904143-1-jens.wiklander@linaro.org>
+ <20240405115318.904143-2-jens.wiklander@linaro.org> <DM6PR04MB65757A966792C93334DE4BF1FC022@DM6PR04MB6575.namprd04.prod.outlook.com>
+In-Reply-To: <DM6PR04MB65757A966792C93334DE4BF1FC022@DM6PR04MB6575.namprd04.prod.outlook.com>
+From: Jens Wiklander <jens.wiklander@linaro.org>
+Date: Tue, 9 Apr 2024 10:32:28 +0200
+Message-ID: <CAHUa44H5q26XjRQnaP4-kAjWT_Pdo2UMsS=xqqOJC6Prra256Q@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] rpmb: add Replay Protected Memory Block (RPMB) subsystem
+To: Avri Altman <Avri.Altman@wdc.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, 
+	"op-tee@lists.trustedfirmware.org" <op-tee@lists.trustedfirmware.org>, 
+	Shyam Saini <shyamsaini@linux.microsoft.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, Jerome Forissier <jerome.forissier@linaro.org>, 
+	Sumit Garg <sumit.garg@linaro.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Bart Van Assche <bvanassche@acm.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tomas Winkler <tomas.winkler@intel.com>, 
+	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The card-detect GPIO for the microSD slot on Asus T100TA / T100TAM models
-stopped working under Linux after commit 6fd03f024828 ("gpiolib: acpi:
-support bias pull disable").
+On Sat, Apr 6, 2024 at 12:27=E2=80=AFPM Avri Altman <Avri.Altman@wdc.com> w=
+rote:
+>
+> > A number of storage technologies support a specialised hardware
+> > partition designed to be resistant to replay attacks. The underlying
+> > HW protocols differ but the operations are common. The RPMB partition
+> > cannot be accessed via standard block layer, but by a set of specific
+> > RPMB commands: WRITE, READ, GET_WRITE_COUNTER, and PROGRAM_KEY.
+> What about the other rpmb operations?
+> There are 7 operations in eMMC.
 
-The GPIO in question is connected to a mechanical switch in the slot
-which shorts the pin to GND when a card is inserted.
+I'm sorry, I don't have access to the spec currently. Do you have a
+special operation in mind? Is it better to mention no operation since
+UFS has even more operations?
 
-The GPIO pin correctly gets configured with a 20K pull-up by the BIOS,
-but there is a bug in the DSDT where the GpioInt for the card-detect is
-configured with a PullNone setting:
+>
+> ............
+>
+> > +/**
+> > + * rpmb_dev_find_device() - return first matching rpmb device
+> > + * @data: data for the match function
+> > + * @match: the matching function
+> > + *
+> > + * Iterate over registered RPMB devices, and call @match() for each pa=
+ssing
+> > + * it the RPMB device and @data.
+> > + *
+> > + * The return value of @match() is checked for each call. If it return=
+s
+> > + * anything other 0, break and return the found RPMB device.
+> > + *
+> > + * It's the callers responsibility to call rpmb_dev_put() on the retur=
+ned
+> > + * device, when it's done with it.
+> > + *
+> > + * Returns: a matching rpmb device or NULL on failure
+> > + */
+> > +struct rpmb_dev *rpmb_dev_find_device(const void *data,
+> > +                                     const struct rpmb_dev *start,
+> > +                                     int (*match)(struct rpmb_dev *rde=
+v,
+> > +                                                  const void *data))
+> > +{
+> > +       struct rpmb_dev *rdev;
+> > +       struct list_head *pos;
+> > +
+> > +       mutex_lock(&rpmb_mutex);
+> > +       if (start)
+> > +               pos =3D start->list_node.next;
+> > +       else
+> > +               pos =3D rpmb_dev_list.next;
+> > +
+> > +       while (pos !=3D &rpmb_dev_list) {
+> Why not just list_for_each_entry instead?
 
-    GpioInt (Edge, ActiveBoth, SharedAndWake, PullNone, 0x2710,
-        "\\_SB.GPO0", 0x00, ResourceConsumer, ,
-        )
-        {   // Pin list
-        0x0026
-        }
+We want to continue from where we left off last time.
 
-Linux now actually honors the PullNone setting and disables the 20K pull-up
-configured by the BIOS.
+>
+> > +               rdev =3D container_of(pos, struct rpmb_dev, list_node);
+> > +               if (match(rdev, data)) {
+> > +                       rpmb_dev_get(rdev);
+> > +                       goto out;
+> > +               }
+> > +               pos =3D pos->next;
+> > +       }
+> > +       rdev =3D NULL;
+> > +
+> > +out:
+> > +       mutex_unlock(&rpmb_mutex);
+> > +
+> > +       return rdev;
+> > +}
+>
+> .....................
+>
+> > +/**
+> > + * rpmb_dev_register - register RPMB partition with the RPMB subsystem
+> > + * @dev: storage device of the rpmb device
+> > + * @ops: device specific operations
+> > + *
+> > + * While registering the RPMB partition extract needed device informat=
+ion
+> > + * while needed resources are available.
+> > + *
+> > + * Returns: a pointer to a 'struct rpmb_dev' or an ERR_PTR on failure
+> > + */
+> > +struct rpmb_dev *rpmb_dev_register(struct device *dev,
+> > +                                  struct rpmb_descr *descr)
+> > +{
+> > +       struct rpmb_dev *rdev;
+> > +
+> > +       if (!dev || !descr || !descr->route_frames || !descr->dev_id ||
+> > +           !descr->dev_id_len)
+> > +               return ERR_PTR(-EINVAL);
+> > +
+> > +       rdev =3D kzalloc(sizeof(*rdev), GFP_KERNEL);
+> > +       if (!rdev)
+> > +               return ERR_PTR(-ENOMEM);
+> > +       rdev->descr =3D *descr;
+> > +       rdev->descr.dev_id =3D kmemdup(descr->dev_id, descr->dev_id_len=
+,
+> > +                                    GFP_KERNEL);
+> In addition to the dev_id, wouldn't it make sense to have your own IDA as=
+ well?
 
-Add a new DMI_QUIRK_SD_CD_ENABLE_PULL_UP quirk which when set calls
-mmc_gpiod_set_cd_config() to re-enable the pull-up and set this for
-the Asus T100TA models to fix this.
+Currently, we don't need it.
 
-Fixes: 6fd03f024828 ("gpiolib: acpi: support bias pull disable")
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Cc: Nuno Sá <nuno.sa@analog.com>
----
-Changes v2:
-- Add {} to else if (quirks & DMI_QUIRK_SD_CD_ENABLE_PULL_UP) branch
----
- drivers/mmc/host/sdhci-acpi.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+>
+> > +       if (!rdev->descr.dev_id) {
+> > +               kfree(rdev);
+> > +               return ERR_PTR(-ENOMEM);
+> > +       }
+> > +
+> > +       rdev->parent_dev =3D dev;
+> > +
+> > +       dev_dbg(rdev->parent_dev, "registered device\n");
+> > +
+> > +       mutex_lock(&rpmb_mutex);
+> > +       list_add_tail(&rdev->list_node, &rpmb_dev_list);
+> > +       blocking_notifier_call_chain(&rpmb_interface,
+> > RPMB_NOTIFY_ADD_DEVICE,
+> > +                                    rdev);
+> > +       mutex_unlock(&rpmb_mutex);
+> > +
+> > +       return rdev;
+> > +}
+> > +EXPORT_SYMBOL_GPL(rpmb_dev_register);
+>
+> ............
+>
+> > new file mode 100644
+> > index 000000000000..251d6b7e6d15
+> > --- /dev/null
+> > +++ b/include/linux/rpmb.h
+> > @@ -0,0 +1,136 @@
+> > +/* SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0 */
+> > +/*
+> > + * Copyright (C) 2015-2019 Intel Corp. All rights reserved
+> > + * Copyright (C) 2021-2022 Linaro Ltd
+> > + */
+> > +#ifndef __RPMB_H__
+> > +#define __RPMB_H__
+> > +
+> > +#include <linux/types.h>
+> > +#include <linux/device.h>
+> > +#include <linux/notifier.h>
+> > +
+> > +/**
+> > + * enum rpmb_type - type of underlying storage technology
+> > + *
+> > + * @RPMB_TYPE_EMMC  : emmc (JESD84-B50.1)
+> > + * @RPMB_TYPE_UFS   : UFS (JESD220)
+> > + * @RPMB_TYPE_NVME  : NVM Express
+> > + */
+> > +enum rpmb_type {
+> > +       RPMB_TYPE_EMMC,
+> > +       RPMB_TYPE_UFS,
+> > +       RPMB_TYPE_NVME,
+> > +};
+> > +
+> > +/**
+> > + * struct rpmb_descr - RPMB descriptor provided by the underlying bloc=
+k
+> > device
+> The use of the term "rpmb descriptor" may be slightly misleading.
+> This is because in UFS there are various descriptors that identifies vari=
+ous characteristics,
+> e.g. device descriptor, geometry descriptor, unit descriptor etc.,
+> and recently UFS4.0 introduced a new descriptor - RPMB descriptor....
 
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index ff45114bf886..b33ff7715587 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -10,6 +10,7 @@
- #include <linux/export.h>
- #include <linux/module.h>
- #include <linux/device.h>
-+#include <linux/pinctrl/pinconf-generic.h>
- #include <linux/platform_device.h>
- #include <linux/ioport.h>
- #include <linux/io.h>
-@@ -82,6 +83,7 @@ enum {
- 	DMI_QUIRK_SD_NO_WRITE_PROTECT				= BIT(1),
- 	DMI_QUIRK_SD_NO_1_8_V					= BIT(2),
- 	DMI_QUIRK_SD_CD_ACTIVE_HIGH				= BIT(3),
-+	DMI_QUIRK_SD_CD_ENABLE_PULL_UP				= BIT(4),
- };
- 
- static inline void *sdhci_acpi_priv(struct sdhci_acpi_host *c)
-@@ -735,6 +737,14 @@ static const struct dmi_system_id sdhci_acpi_quirks[] = {
- 		},
- 		.driver_data = (void *)DMI_QUIRK_SD_NO_WRITE_PROTECT,
- 	},
-+	{
-+		/* Asus T100TA, needs pull-up for cd but DSDT GpioInt has NoPull set */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "T100TA"),
-+		},
-+		.driver_data = (void *)DMI_QUIRK_SD_CD_ENABLE_PULL_UP,
-+	},
- 	{
- 		/*
- 		 * The Lenovo Miix 320-10ICR has a bug in the _PS0 method of
-@@ -928,6 +938,9 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
- 				goto err_free;
- 			dev_warn(dev, "failed to setup card detect gpio\n");
- 			c->use_runtime_pm = false;
-+		} else if (quirks & DMI_QUIRK_SD_CD_ENABLE_PULL_UP) {
-+			mmc_gpiod_set_cd_config(host->mmc,
-+						PIN_CONF_PACKED(PIN_CONFIG_BIAS_PULL_UP, 20000));
- 		}
- 
- 		if (quirks & DMI_QUIRK_RESET_SD_SIGNAL_VOLT_ON_SUSP)
--- 
-2.44.0
+Would RPMB description be better? Or do you have some other idea?
 
+Thanks,
+Jens
 
