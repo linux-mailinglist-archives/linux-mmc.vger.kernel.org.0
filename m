@@ -1,31 +1,31 @@
-Return-Path: <linux-mmc+bounces-1752-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-1749-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD99B89FA12
-	for <lists+linux-mmc@lfdr.de>; Wed, 10 Apr 2024 16:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D755A89F9FD
+	for <lists+linux-mmc@lfdr.de>; Wed, 10 Apr 2024 16:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 215FDB2BD59
-	for <lists+linux-mmc@lfdr.de>; Wed, 10 Apr 2024 14:10:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5374CB34816
+	for <lists+linux-mmc@lfdr.de>; Wed, 10 Apr 2024 14:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A8C15F3FC;
-	Wed, 10 Apr 2024 14:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABB415F3F9;
+	Wed, 10 Apr 2024 14:06:00 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4E115B0F4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD52A15CD4B
 	for <linux-mmc@vger.kernel.org>; Wed, 10 Apr 2024 14:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712757961; cv=none; b=uVBSBmCm/FgX2lIBFG+hHvOA8aMxdSzGl9cdKZJaeM8kADnr4IjDAKFkStjkHdS9AxjIaqRHZYp4MiWO05Fp5S3hLMJ0rC7cc0gtiB11QuZD/ppsaMuekXmWoDkNRtaIkdHaCtT0z3pD8SZMel7YTEvkkZetE7JRejyE/XqvWTE=
+	t=1712757960; cv=none; b=ihPDCrk+FfeJ9awc3wBR5ZtBBMEUHpGsYd6wDWBkRPOlNcr9CMQ2XY3f/cA2e+0wizA3V9b05FLcw/093Bf7xFqzOlcoyjZC4W26eFHiyowHwRzqfYfmEJ/DgCTSeCLl84eJdV2dpdngjK324Bu89ls6aWINo3ubI+wAu7PqSPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712757961; c=relaxed/simple;
-	bh=XI760DIC4FylZDpPbaZopO349gmj/Vp0j2N5bhLPphs=;
+	s=arc-20240116; t=1712757960; c=relaxed/simple;
+	bh=ZjzPv6oCLgl1A0ga41DPf8do2ngSUhwX7c27dENo/qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jLPZKx+EtwODBPXeMbuUKOU0+5n6uLu3KBzGQuziJGCwHFegwJqVRQHr3EE1Lb6eE6jBqmNcIrsAkjsfM7dyO8tANlpCGMunKvEysGeu+WJluxEPJi94c4fWWFiK+mdwDcTxH1PHMlt/PDRufbTbeytjja3FzXnZJVea7IPSyxY=
+	 MIME-Version:Content-Type; b=kvIneguWDzC1k61xKhNnaeyw5BxwD1T7Z3Ane2g+DHfdntSYXkqYmlUrGvzDm8wPdVMtSnxrzzyH6+ENedVtCUacDRjRtQiweoVeRwHXWxLGfPsB2XS90EBqL11wccn48C5DovObL2aEHuZU1R06RF85XE64M8j02c5jyEzfD/Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -33,25 +33,25 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1ruYaJ-0000R2-BY; Wed, 10 Apr 2024 16:05:55 +0200
+	id 1ruYaJ-0000RJ-Hp; Wed, 10 Apr 2024 16:05:55 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1ruYaI-00BVS3-Ux; Wed, 10 Apr 2024 16:05:54 +0200
+	id 1ruYaJ-00BVS6-52; Wed, 10 Apr 2024 16:05:55 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1ruYaI-00Hb2m-2q;
-	Wed, 10 Apr 2024 16:05:54 +0200
+	id 1ruYaJ-00Hb2q-0F;
+	Wed, 10 Apr 2024 16:05:55 +0200
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Maxim Levitsky <maximlevitsky@gmail.com>,
 	Alex Dubov <oakad@yahoo.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-mmc@vger.kernel.org,
 	kernel@pengutronix.de
-Subject: [PATCH 2/3] memstick: rtsx_pci_ms: Convert to platform remove callback returning void
-Date: Wed, 10 Apr 2024 16:05:49 +0200
-Message-ID:  <512d6b6a4d3b8a02cee28635a936340f5f70c65e.1712757795.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 3/3] memstick: rtsx_usb_ms: Convert to platform remove callback returning void
+Date: Wed, 10 Apr 2024 16:05:50 +0200
+Message-ID:  <80969cc7c08c613753bdf2270304983ed0dcc2a0.1712757795.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1712757795.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1712757795.git.u.kleine-koenig@pengutronix.de>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2012; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=XI760DIC4FylZDpPbaZopO349gmj/Vp0j2N5bhLPphs=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmFpy+n6Jff9g1M4g3mKm7blKpqcpLouhLiEtYR fT2DhU3C/WJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZhacvgAKCRCPgPtYfRL+ TiOcB/0c1uDyb9XLhJx7XmWXxihH5+gu1gYICvPcPXM0N/s4yOdKFje9Y8uRM4vpdGKKAkmdVIR eN6Niywx/hJDZvdXGcf3fsXaJ1nsybRU7zurUXqJ79WGaBbIpGGpTB7tquFsRIFr8UfpRxJJjQO ggzuWJ+fbb4aStgYYgtgQ7rGYjIuLY67NH05sA9LE7Zt1fPyS1pbIrCa8rMyKAWgr7QShKGz8Dm WWGRFOqApamr/HggJz9Fp57e5HPM3/M04jONwlCs4q655jy94IsynbDlPqfbUgX6NnERlNnJQWG UeYAl3AoYjpP2lmN5FjcnNQPt6KvY6JRoKu/4/ivbZiW+p06
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2037; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=ZjzPv6oCLgl1A0ga41DPf8do2ngSUhwX7c27dENo/qY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmFpy/cQ6HEdbvnLyMZ1nr3irRwNmI8b57pyBqo HpptUlVN3CJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZhacvwAKCRCPgPtYfRL+ TvilCACMNGg0SmkbkjV9TMxTQJ+pjyv/97MDmqgfFM1jjdZb3tVgxp7cS1G8u31vf8xFXIR+CGv 3eUSbGrl7TqOfcuwSzwaFe4Jja7elC5yuWg9n4QnTPNUtUKWYgwpUi8J/HKo58RtehpkhISrY1r aVAwlRFSIoVFvanV3JjMmrg1U9TCjsgdPAO9xv0ewrq9AKuwlIcsD1CgkKr4pDDRbr6j0DEatJ1 v+0vVTq3WIwNJnLifca+bZL7rBBn3fp2MFMua3zK4k0LVjJUdjL8BZw1hbPZH6wEb/WoXdNT6nD AOScDZP5YdJEEb4irqJX8DTG75VbVfn5lGuABs3sPyDVLceM
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -85,40 +85,40 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/memstick/host/rtsx_pci_ms.c | 6 ++----
+ drivers/memstick/host/rtsx_usb_ms.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/memstick/host/rtsx_pci_ms.c b/drivers/memstick/host/rtsx_pci_ms.c
-index 7c6dba6de230..980a54513e6c 100644
---- a/drivers/memstick/host/rtsx_pci_ms.c
-+++ b/drivers/memstick/host/rtsx_pci_ms.c
-@@ -574,7 +574,7 @@ static int rtsx_pci_ms_drv_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/drivers/memstick/host/rtsx_usb_ms.c b/drivers/memstick/host/rtsx_usb_ms.c
+index 29271ad4728a..246876ac713c 100644
+--- a/drivers/memstick/host/rtsx_usb_ms.c
++++ b/drivers/memstick/host/rtsx_usb_ms.c
+@@ -805,7 +805,7 @@ static int rtsx_usb_ms_drv_probe(struct platform_device *pdev)
+ 	return err;
  }
  
--static int rtsx_pci_ms_drv_remove(struct platform_device *pdev)
-+static void rtsx_pci_ms_drv_remove(struct platform_device *pdev)
+-static int rtsx_usb_ms_drv_remove(struct platform_device *pdev)
++static void rtsx_usb_ms_drv_remove(struct platform_device *pdev)
  {
- 	struct realtek_pci_ms *host = platform_get_drvdata(pdev);
- 	struct rtsx_pcr *pcr;
-@@ -610,8 +610,6 @@ static int rtsx_pci_ms_drv_remove(struct platform_device *pdev)
- 
- 	dev_dbg(&(pdev->dev),
- 		": Realtek PCI-E Memstick controller has been removed\n");
+ 	struct rtsx_usb_ms *host = platform_get_drvdata(pdev);
+ 	struct memstick_host *msh = host->msh;
+@@ -840,8 +840,6 @@ static int rtsx_usb_ms_drv_remove(struct platform_device *pdev)
+ 		": Realtek USB Memstick controller has been removed\n");
+ 	memstick_free_host(msh);
+ 	platform_set_drvdata(pdev, NULL);
 -
 -	return 0;
  }
  
- static struct platform_device_id rtsx_pci_ms_ids[] = {
-@@ -625,7 +623,7 @@ MODULE_DEVICE_TABLE(platform, rtsx_pci_ms_ids);
+ static struct platform_device_id rtsx_usb_ms_ids[] = {
+@@ -855,7 +853,7 @@ MODULE_DEVICE_TABLE(platform, rtsx_usb_ms_ids);
  
- static struct platform_driver rtsx_pci_ms_driver = {
- 	.probe		= rtsx_pci_ms_drv_probe,
--	.remove		= rtsx_pci_ms_drv_remove,
-+	.remove_new	= rtsx_pci_ms_drv_remove,
- 	.id_table       = rtsx_pci_ms_ids,
- 	.suspend	= rtsx_pci_ms_suspend,
- 	.resume		= rtsx_pci_ms_resume,
+ static struct platform_driver rtsx_usb_ms_driver = {
+ 	.probe		= rtsx_usb_ms_drv_probe,
+-	.remove		= rtsx_usb_ms_drv_remove,
++	.remove_new	= rtsx_usb_ms_drv_remove,
+ 	.id_table       = rtsx_usb_ms_ids,
+ 	.driver		= {
+ 		.name	= "rtsx_usb_ms",
 -- 
 2.43.0
 
