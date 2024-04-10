@@ -1,134 +1,101 @@
-Return-Path: <linux-mmc+bounces-1748-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-1751-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4418689F907
-	for <lists+linux-mmc@lfdr.de>; Wed, 10 Apr 2024 15:58:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6814D89F984
+	for <lists+linux-mmc@lfdr.de>; Wed, 10 Apr 2024 16:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 669F91C21016
-	for <lists+linux-mmc@lfdr.de>; Wed, 10 Apr 2024 13:58:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9938D1C2842A
+	for <lists+linux-mmc@lfdr.de>; Wed, 10 Apr 2024 14:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D82C16E889;
-	Wed, 10 Apr 2024 13:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="IzDMXIcE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D1715EFBD;
+	Wed, 10 Apr 2024 14:06:01 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C3516F0C8
-	for <linux-mmc@vger.kernel.org>; Wed, 10 Apr 2024 13:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C8F15EFC4
+	for <linux-mmc@vger.kernel.org>; Wed, 10 Apr 2024 14:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712757263; cv=none; b=H6h50gO2gpJvtp5DlHCykssvRdlasrsCbaHsWyzvKUtq5UU48Fl6oOTNFYZSA6sw+E41F6y97cgABT7SxWp5M26WNo/wfcm1oodVStDoqAVBtYbSsKvvRZIU+a2GLAfQW8wlJXHddj4Cj+jdwL/A/8SRIefWEfQiJ+VSmJ3S0yQ=
+	t=1712757961; cv=none; b=ardTPmmUaf+cmfob90iVkejQDOEKiD2S5wQmnSMKoinywFPg0Nq4QVAmql203RHxxBUEMjcpo6BShBuAlpBZTXp8PVRDyYr8GSdfE5miHVYV/x6Clkt8pN79U/UBpzklOYRA+qcXIe75oT151ZJEn25SOpEtJQdfjVexGG4WiXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712757263; c=relaxed/simple;
-	bh=FA/JdKZlZ4wileZrc4xp1llDql17/NQkyQ+ez5FGdwI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f0wzj7O8Mhz63F/TUhXp5qTKJB+lsjVKrNqdOsju9sWe1l5KJ5UoJbw4/wAfmjDmKPUWCjYXJwvyMvXzkUUN3NxphLERZjk/+lelqSZApEdmYgDZAfCM5oXrb06cFu0BDhdztDrjyRkkoy9OrBee6Q+3+B10cRK/tskJ/dHRvYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=IzDMXIcE; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-56c404da0ebso10044536a12.0
-        for <linux-mmc@vger.kernel.org>; Wed, 10 Apr 2024 06:54:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1712757259; x=1713362059; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=om0OP/V4nCTPs4aw/OiE4dwxH9wZZxHeDC9s7eqLnZs=;
-        b=IzDMXIcESBv5IrpIpcW0X1lmc+XKu6Zt15PO4BYAj+k6KhlUY+rEaJ2/xfD5Zex8J9
-         Va4A3MCsgWm6x+k5DyJrWn9mK9XN2mDe0UYfTnwAwmkwtkBv9zg/oLFtjokWoigLaDjJ
-         8eSDhOAeLObXl6TgaUyNBC2iQCVOyt3bv/supk4Qiyvxq0DKhJLu/f2sh15iyplApeEl
-         7FgAP7qMzVEWSY6ooCLvZuxnVLNcORaaj5F+x7d/5dgo/3N4IiXp+51vXXwwq/NZUY7p
-         ATSIgp5RaLQvVU7RUmAPy8dM1qo9bIF/9XOliLIFyIfl4IJCgCiZ9AAtmVJ9uBRDpQBD
-         9BnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712757259; x=1713362059;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=om0OP/V4nCTPs4aw/OiE4dwxH9wZZxHeDC9s7eqLnZs=;
-        b=dwecMdc4PKlxpT3lSG+w5vDNMaFUYKNHNp0fD+Hv0Kn6Rwd4FbzKk8SYQl8G1QHIpj
-         p4eYypAsJ0Cpd0krAdWrKSwBQqUEM/ODKJzEofXI0g463eHuarGVYTEliCYTXwRHbHyV
-         ZNo7Gn33hj97q0GZ27GiBaW26EzROKcDzz62mxYBbZbZPoRX6Fn/0nvuJD+TQkp1oXwK
-         Z7NfGfmknC0Zj2Km2atFtYAxcrSgL0muwjGONMyARmGOgOj9HEdfGd9GPkTF0p/OqrpG
-         /5L8W2RDDXWRIrUsSTCPlr/eijbb0eQVtrAuzq3wEAUuzviac22G2ySqU06V/ns4PjoN
-         zkgg==
-X-Gm-Message-State: AOJu0YxIWUsjJo1zTXcj7mmJpUUjRZcEKwZKqDEKc02J2H/zF+i/A595
-	Wdm9jFfwAu7uDU39yjkEZOvx8D+EPxbj6wI2NeI3aUp3DpNcu5xY5kemtAr6V9k=
-X-Google-Smtp-Source: AGHT+IGFaK7YauW3aftv+Qevb50NofJrq4hZ5pzMklC6FKomV3FAiFrZZzWTPk+ZoftKIoNvunVBHg==
-X-Received: by 2002:a17:906:4a54:b0:a51:d1a7:ad6 with SMTP id a20-20020a1709064a5400b00a51d1a70ad6mr1598346ejv.76.1712757259608;
-        Wed, 10 Apr 2024 06:54:19 -0700 (PDT)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.8])
-        by smtp.gmail.com with ESMTPSA id j24-20020a17090643d800b00a51d46c684csm3979691ejn.89.2024.04.10.06.54.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Apr 2024 06:54:19 -0700 (PDT)
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-To: wsa+renesas@sang-engineering.com,
-	ulf.hansson@linaro.org
+	s=arc-20240116; t=1712757961; c=relaxed/simple;
+	bh=3A/6Eaj4uCA3Cr1QhNJwOOLCNTpFf29DT7iOOUZG5y8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QavAyLjqUdycQLqc09gqKdVkM5koPHZvga3ceEPxNzpkkf7Y/NkXp9RSAfhnhGFkN5meonhUScg0h5cEhlEfQnNkBxaRTvGd9TQWpEIazwvs0bV4THwlY+2Wwr5lIEYorvboYx8wwoWxOXUSAxDyw6GAUuMl5nIBHGz1COuBRCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1ruYaJ-0000R0-7l; Wed, 10 Apr 2024 16:05:55 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1ruYaI-00BVRx-KC; Wed, 10 Apr 2024 16:05:54 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1ruYaI-00Hb2e-1l;
+	Wed, 10 Apr 2024 16:05:54 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Maxim Levitsky <maximlevitsky@gmail.com>,
+	Alex Dubov <oakad@yahoo.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-mmc@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Hien Huynh <hien.huynh.px@renesas.com>
-Subject: [PATCH v2] mmc: renesas_sdhi: Set the SDBUF after reset
-Date: Wed, 10 Apr 2024 16:54:16 +0300
-Message-Id: <20240410135416.2139173-1-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.39.2
+	kernel@pengutronix.de
+Subject: [PATCH 0/3] memstick: Convert to platform remove callback returning void
+Date: Wed, 10 Apr 2024 16:05:47 +0200
+Message-ID: <cover.1712757795.git.u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1019; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=3A/6Eaj4uCA3Cr1QhNJwOOLCNTpFf29DT7iOOUZG5y8=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmFpy8voL1PGnAy2NIcXkyM881JXtv38+7sKDnp gkRFcFHi+mJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZhacvAAKCRCPgPtYfRL+ TqfwB/49l7Vo1XIsMqjAM+/EDqCis9Mi4bWih3Q8B4f4D5r2h+5de0T6vNh0NbsMshUi6nqcSp/ hijwV22qHTbuk3xkCLWVy+9mSzklotD0axyW+5BxYIrlRUdsuagUsMpxz4JdhroVM/7TedWgE6S IX9rBoLE7SSdIBbBjyknqE9yud9uFWhJq3HhUEhy4vNqK+iuhhtx3dXzHmh98Nx+gax5iG/XFAJ xCDAhwdUbI9demF2MAna1M1xAJH9nyjSUJz0YH+Jz6Xc5ZaqD15KHySNCtk608B4twKsYEYDEOS 3QxUHCPvWvFRxUBGCv8v0W+egKVfi/FWwBo2oDPQejLkme2k
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
 
-For development purpose, renesas_sdhi_probe() could be called w/
-dma_ops = NULL to force the usage of PIO mode. In this case the
-renesas_sdhi_enable_dma() will not be called before transferring data.
+Hello,
 
-If renesas_sdhi_enable_dma() is not called, renesas_sdhi_clk_enable()
-call from renesas_sdhi_probe() will configure SDBUF by calling the
-renesas_sdhi_sdbuf_width() function, but then SDBUF will be reset in
-tmio_mmc_host_probe() when calling tmio_mmc_reset() though host->reset().
-If SDBUF is zero the data transfer will not work in PIO mode for RZ/G3S.
+this series converts all platform drivers below drivers/memstick/ to not
+use struct platform_device::remove() any more. See commit 5c5a7680e67b
+("platform: Provide a remove callback that returns no value") for an
+extended explanation and the eventual goal.
 
-To fix this call again the renesas_sdhi_sdbuf_width(host, 16) in
-renesas_sdhi_reset(). The call of renesas_sdhi_sdbuf_width() was not
-removed from renesas_sdhi_clk_enable() as the host->reset() is optional.
+All conversations are trivial, because the driver's .remove() callbacks
+returned zero unconditionally.
 
-Co-developed-by: Hien Huynh <hien.huynh.px@renesas.com>
-Signed-off-by: Hien Huynh <hien.huynh.px@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
+There are no interdependencies between these patches, so they can be
+applied independently if needed. This is merge window material.
 
-Changes in v2:
-- fixed typos in commit description
-- limit the comment lines to 80 chars
+Best regards
+Uwe
 
- drivers/mmc/host/renesas_sdhi_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Uwe Kleine-König (3):
+  memstick: rtsx_pci_ms: Drop if block with always false condition
+  memstick: rtsx_pci_ms: Convert to platform remove callback returning
+    void
+  memstick: rtsx_usb_ms: Convert to platform remove callback returning
+    void
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index f84f60139bcf..5233731a94c4 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -589,6 +589,12 @@ static void renesas_sdhi_reset(struct tmio_mmc_host *host, bool preserve)
- 			sd_ctrl_write16(host, CTL_RESET_SD, 0x0001);
- 			priv->needs_adjust_hs400 = false;
- 			renesas_sdhi_set_clock(host, host->clk_cache);
-+
-+			/*
-+			 * In case the controller works in PIO mode the SDBUF
-+			 * needs to be set as its reset value is zero.
-+			 */
-+			renesas_sdhi_sdbuf_width(host, 16);
- 		} else if (priv->scc_ctl) {
- 			renesas_sdhi_scc_reset(host, priv);
- 		}
+ drivers/memstick/host/rtsx_pci_ms.c | 9 ++-------
+ drivers/memstick/host/rtsx_usb_ms.c | 6 ++----
+ 2 files changed, 4 insertions(+), 11 deletions(-)
+
+base-commit: 6ebf211bb11dfc004a2ff73a9de5386fa309c430
 -- 
-2.39.2
+2.43.0
 
 
