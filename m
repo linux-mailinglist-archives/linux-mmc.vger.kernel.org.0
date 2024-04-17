@@ -1,136 +1,102 @@
-Return-Path: <linux-mmc+bounces-1855-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-1857-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBCE18A7F4A
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Apr 2024 11:10:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BD18A8971
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Apr 2024 18:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AF17281A28
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Apr 2024 09:10:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E42AB22C62
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Apr 2024 16:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC87F1292F2;
-	Wed, 17 Apr 2024 09:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB6517107F;
+	Wed, 17 Apr 2024 16:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="kSsB5pTZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c1Hti2V+"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BFD12B170
-	for <linux-mmc@vger.kernel.org>; Wed, 17 Apr 2024 09:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BC1171065;
+	Wed, 17 Apr 2024 16:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713345026; cv=none; b=tkjBGbbZ+BzX7GWogabkUqE724b4lpRCXB7JRoE4mXqvlDo/Y1W9V9MdPlBHDJ0LtvhxA0nu/CSBSvNirUQzgs4LUYaUhGqeJxX06SC7EOirWx+R1+Heb+SkQiwpwjALdDD2Q+g2yLnllesVoh6ngtWIZLR05WX2ZB+WlCqk/Cs=
+	t=1713373037; cv=none; b=Y16gVsssYHWaQiWB9vf8ZpYi+hpSKXNlgSnQQHpEaIIdFkcjizd8WRmr548cOFydZnqAKVOgffeb731LF2AJbyJhC075ewi6u2iwumrz9TXzZ3ukNXconlmx1jRTF37SBfsPbShlcoJecAPPoM6ZCIoEc36q8SML+Lf+ciR6rm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713345026; c=relaxed/simple;
-	bh=+QeEIqFP1x7pjxGVBLX2oJJ3QMIreSoze6Axcpun5SQ=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=K0Lr2SY/kjwW+vY4JeDTdVwiSy4wn0R3zoBD5TeZPDFNE5k8cNAwOwYCMEYjGtSxh4tCcoau2JCBpsQYqcQO1vIsawsRYnfqiTjEsJ/6LIKGy4fDRQJXYTNUcz7VsfjaUXlUnYFo7JzwT7/UKk0G4FsdR/ZHhCLqo0Dnt56IXQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=kSsB5pTZ; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1713373037; c=relaxed/simple;
+	bh=nnPwhmqR5uv6fWz7NfCdn9lU2POCEtx4qFDnpKF8Gko=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IGa+aazJlMpbOZ9FA9bNROdeR1Nv+0F3pXIcx6GUZVn56igjxpwQ+fhilLhJIcTN82yz3fJiwbVn+ba/iBidTuhHUbuLOtyh4dxCFnnjJMs5oB4mOM+CRGdxJ29fS36mBgxMED0vV65MCBFGO7EyAthDgum6tkIPqeyFotg46zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c1Hti2V+; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713373036; x=1744909036;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nnPwhmqR5uv6fWz7NfCdn9lU2POCEtx4qFDnpKF8Gko=;
+  b=c1Hti2V+1yBm44Wi4LS4qMalw4MT9SnYF26QgCkJzGwhHkZP9J7ntYoH
+   KRH73iyulQwZv9GGrGVZI3LuxKWfRREyo4+CBvbxj0muKsQivNG1s27KQ
+   NDbspphQjSLPwvWGhFh4e8b5VfPl2VeDiOiLgeI4WhCEi6eOVxUoRgHI8
+   jfEFHW0D21oVh0VfPYSxIk143EbtMdaL5yjp6nodl11fKHQFp6De1bTbG
+   MiDmTsyZFBjg9GkUmWnXODXywVfpbzUysZOaP9m1tiz20anzTkQvUWg02
+   pG77NDtKV7doh3wyF38AM4pCwQwEt018bfniAtsIE9l0yV+eDiyM4G6Km
+   Q==;
+X-CSE-ConnectionGUID: eIOya1voQNiHDdxj9JHpUQ==
+X-CSE-MsgGUID: TvYeObRbTxia+WojptR8Ew==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8737005"
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
+   d="scan'208";a="8737005"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 09:57:15 -0700
+X-CSE-ConnectionGUID: HqoFZmTHRpq8oXio9GQFiA==
+X-CSE-MsgGUID: 3yg0nCVHTwa5Ro4jN/zkuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
+   d="scan'208";a="22571636"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa010.jf.intel.com with ESMTP; 17 Apr 2024 09:57:13 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 8C237E1; Wed, 17 Apr 2024 19:57:11 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-mmc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Aubin Constans <aubin.constans@microchip.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Subject: [PATCH v1 0/5] mmc: atmel-mci: Get rid of leftovers and clean up
+Date: Wed, 17 Apr 2024 19:55:12 +0300
+Message-ID: <20240417165708.2965612-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1713345021;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JPZOh8qgnWmEGT/5r73g/lb1+OERAT2Q0obHNfTKROY=;
-	b=kSsB5pTZ8PrcAFeIaXtZysBriUEPjEGbqjSGoGeYysW0V3B7wOFUsU9mb9yQXUSLPUq1GX
-	L2Oe/9s31xZQM3/dM/xecDr9iSja+CVp5XuiFFu9ocJMaMGQmaY2vhu8thob4YAebRouP1
-	ViHOdEDs6tuDmFW0B0BfKNWVG29UcPb3xXp/cC+110R1MOzamJdP25wICzRBNtF67R7ILK
-	Wy5Iv4g326nPuJhEsszkt4SanAb7jo22HJK1AyeFqRW0hQFx2/Si7MDeeZiYlxuQBXwaZj
-	AvITYffspzVxEKOrm2Jq1427xMrTjBKIfIDzMwGei1f0ksfIeevorj+nFSKkLw==
-Date: Wed, 17 Apr 2024 11:10:20 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: Felix Qin <xiaokeqinhealth@126.com>
-Cc: ulf.hansson@linaro.org, linux-mmc@vger.kernel.org, Avri.Altman@wdc.com
-Subject: Re: [PATCH v2 1/1] mmc: core: increase the number of retries of the
- ACMD41
-In-Reply-To: <20240417084500.152486-1-xiaokeqinhealth@126.com>
-References: <20240417084500.152486-1-xiaokeqinhealth@126.com>
-Message-ID: <a440b197809c7c86913ff5aaf0dee69c@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Transfer-Encoding: 8bit
 
-On 2024-04-17 10:45, Felix Qin wrote:
-> Extensive testing has shown that a few specific SD cards require
-> an increase in the number of command retries to successfully
-> initialize.
-> 
-> More info:
-> Platform: Rockchip SoC + DW Multimedia host Controller
-> SD card: Xvv microSD CMH34A17TMA12 (Made in Korea)
-> Note: The SD card is custom-made by the customer in collaboration
-> with the wafer foundry.
-> 
-> Signed-off-by: Felix Qin <xiaokeqinhealth@126.com>
-> Acked-by: Avri Altman <avri.altman@wdc.com>
+I used to have some patches against the driver, but it appears that part
+of it has been applied (in different form as done by someone else).
+However, there is still room to improve, hence this spring cleanup series.
 
-Looking good to me.  Thanks for including the additional details.
+Andy Shevchenko (5):
+  mmc: atmel-mci: Get rid of platform data leftovers
+  mmc: atmel-mci: Use temporary variable for struct device
+  mmc: atmel-mci: Replace platform device pointer by generic one
+  mmc: atmel-mci: Incapsulate used to be a platform data into host
+    structure
+  mmc: atmel-mci: Switch to use dev_err_probe()
 
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+ drivers/mmc/host/atmel-mci.c | 308 +++++++++++++++--------------------
+ 1 file changed, 131 insertions(+), 177 deletions(-)
 
-> ---
-> v2: Add more info
-> ---
-> ---
->  drivers/mmc/core/sd_ops.c | 4 ++--
->  drivers/mmc/core/sd_ops.h | 8 ++++++++
->  2 files changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mmc/core/sd_ops.c b/drivers/mmc/core/sd_ops.c
-> index a59cd592f06e..b3b6e8725b80 100644
-> --- a/drivers/mmc/core/sd_ops.c
-> +++ b/drivers/mmc/core/sd_ops.c
-> @@ -127,7 +127,7 @@ int mmc_send_app_op_cond(struct mmc_host *host,
-> u32 ocr, u32 *rocr)
->  		cmd.arg = ocr;
->  	cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R3 | MMC_CMD_BCR;
-> 
-> -	for (i = 100; i; i--) {
-> +	for (i = SD_APP_OP_COND_RETRIES; i; i--) {
->  		err = mmc_wait_for_app_cmd(host, NULL, &cmd);
->  		if (err)
->  			break;
-> @@ -147,7 +147,7 @@ int mmc_send_app_op_cond(struct mmc_host *host,
-> u32 ocr, u32 *rocr)
-> 
->  		err = -ETIMEDOUT;
-> 
-> -		mmc_delay(10);
-> +		mmc_delay(SD_APP_OP_COND_INTERVAL);
->  	}
-> 
->  	if (!i)
-> diff --git a/drivers/mmc/core/sd_ops.h b/drivers/mmc/core/sd_ops.h
-> index 7667fc223b74..80c5c836ccd1 100644
-> --- a/drivers/mmc/core/sd_ops.h
-> +++ b/drivers/mmc/core/sd_ops.h
-> @@ -10,6 +10,14 @@
-> 
->  #include <linux/types.h>
-> 
-> +/*
-> + * Extensive testing has shown that a few specific SD cards require
-> + * an increase in the number of command retries to successfully
-> + * initialize.
-> + */
-> +#define SD_APP_OP_COND_RETRIES  200
-> +#define SD_APP_OP_COND_INTERVAL 10	/* millisecond */
-> +
->  struct mmc_card;
->  struct mmc_host;
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
+
 
