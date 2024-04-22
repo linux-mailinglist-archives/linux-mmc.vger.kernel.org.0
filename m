@@ -1,163 +1,238 @@
-Return-Path: <linux-mmc+bounces-1872-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-1874-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4458AC83C
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Apr 2024 11:02:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 819188AC8B4
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Apr 2024 11:19:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D7D1C20D38
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Apr 2024 09:02:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4DB31C20AA6
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Apr 2024 09:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCBF5101A;
-	Mon, 22 Apr 2024 09:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3178B20B28;
+	Mon, 22 Apr 2024 09:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="OLhAufRG"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HfYUo3wY"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01olkn2032.outbound.protection.outlook.com [40.92.103.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1092BAEB;
-	Mon, 22 Apr 2024 09:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.103.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713776524; cv=fail; b=clHN2rEBHmnIpdpMzjORMLyNHyd6kx6zTFWoQY+yDitZg0klAcc3FBoHjuUchjtTIDhBCd92T5VGQvgSlTSpQuAatqYzcnvN01tGn6XclJJIOa5sQgCL9hZNuDeYz5nGSchkmq/alN8VBplC+3cyNfqStC1tVHsmQN8LFzrCGGQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713776524; c=relaxed/simple;
-	bh=lZSB9WW1wsYJwGjeJSmVtPn7R5nEAL8yKBNoKA2dGBU=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qipt/5g00bLuOTSsDpO9W5JWLyZvy/gjcBbdai8E2T/f82GxnlJPndVHYBpfhyWRFQZNG4v6zgRqdPq2erGASOA83EoRoQ9I65H7azVhGZt+OQ1xhvyswIbsI/Me/gkf9u1WMdJeWt8Njx0AIap2k9IjiNDZ5Yq59Q/4z+sn0LI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=OLhAufRG; arc=fail smtp.client-ip=40.92.103.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eOX2mLueHeRNcm2W3gHkUfJ2I62Ov3z67qOXAGQWAgrOLsjUf+G2vzZgbIeKdeeRYuJAp+lPfzrKUWQFdLxFX8woCYpAaR41vjdc5ml2f7xlbDlYYYZ2azZ1+82QmvjyrWtL6RcNhhKgMdM9ThpT1m1O21/mL6V2879Ky/umlnEzAv69Q01KnObAFHg08AwVYlW/NJ894ZYWcgrP9DiwODzW5m+oRvfCuNitkSH/6zhBHkeW4OIffid4GltbzC0NDaI17E+5yFT14JCs/5Lp0odtuZ6lM+z/OK9Ws8LwRfSooSJ6+JMw3ffmGpQJTpHl0HL8f6m3ycFt/PmCPdDwmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pokqtTbS+ZVgajyh+JbR6aYqoJBmafLKoXxLbK6OiDo=;
- b=jFB6LQcA50GIeglwGlTKzQr/TgHkIJoypXLiBf84DdniE3qY4+q91bifci4uvLasrgeult6g892JJkKH3sVWqGyfIkfWPIRHNaO/ZbC5BPazWVepDIssS7rfNfykHNthfGol0lkkfCmlHcHISchllbCPQIPzT/XyuOI921F637nvW54yAgjjvQZDzJO5E8yrI6j61BIZrc62HeTADqPn0WZn+bB1+so+r+4fE+wq92evXDKkYLZ8SVcGGzJ+K7N3l7xcSuuUKl3KogjqN4hPBpRm/SlQWkVUmD2gQLiLIA3P2duEuDerV6pqa15Rdx2/lN/phWzm+PDxq6Xlqp9aJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pokqtTbS+ZVgajyh+JbR6aYqoJBmafLKoXxLbK6OiDo=;
- b=OLhAufRG66yyiwcXayFJTZ4/YlGYTWmIEEcaRS5U4KnQV6rHv0L4bUxUaRiz+nMLpGSiGQWk2oSik42IhdOrcz8hGSbj/ou6gjH0OSqvUr6ZDt61eUGCU11KzHM2nO3jKwaXIJWW6oiMFkRUccs373i86f/oLacFxE/aw7BiSQXmg6PJacIF9XJOcSrQgIvQ6UHkoW7DDjVdIVvzQkoKEGUJvcYFJDzNAL/u4ds4QwHGwVDuvM5N2CuH9myc6/tqCWtJ53oHXDK5fWYL8iT/AatWYQti7CaDVhW9yXTOuvkNhyU8YmpUNGAJEeBo349Lmzv1plqTD4RlF4p3ja5myQ==
-Received: from MA0P287MB2822.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:138::5)
- by PN3P287MB0058.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:92::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Mon, 22 Apr
- 2024 09:01:55 +0000
-Received: from MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
- ([fe80::664:2ecc:c36:1f2c]) by MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
- ([fe80::664:2ecc:c36:1f2c%3]) with mapi id 15.20.7472.044; Mon, 22 Apr 2024
- 09:01:55 +0000
-Message-ID:
- <MA0P287MB28226B9C954F3DBD9B5E29A5FE122@MA0P287MB2822.INDP287.PROD.OUTLOOK.COM>
-Date: Mon, 22 Apr 2024 17:01:49 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/1] mmc: sdhci-of-dwcmshc: enhance framework
-To: Chen Wang <unicornxw@gmail.com>, adrian.hunter@intel.com,
- ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
- linux-kernel@vger.kernel.org, jszhang@kernel.org, dfustini@baylibre.com,
- yifeng.zhao@rock-chips.com, shawn.lin@rock-chips.com, chao.wei@sophgo.com,
- haijiao.liu@sophgo.com, xiaoguang.xing@sophgo.com, tingzhu.wang@sophgo.com,
- guoren@kernel.org, inochiama@outlook.com
-References: <cover.1713257181.git.unicorn_wang@outlook.com>
-From: Chen Wang <unicorn_wang@outlook.com>
-In-Reply-To: <cover.1713257181.git.unicorn_wang@outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TMN: [T9VZIN5pAZNK1cBSpDz4a0hEOzVGmoBw]
-X-ClientProxiedBy: TY2PR02CA0059.apcprd02.prod.outlook.com
- (2603:1096:404:e2::23) To MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:138::5)
-X-Microsoft-Original-Message-ID:
- <9d86721a-8872-4d95-8f91-66237e2cbdb0@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F5253E22
+	for <linux-mmc@vger.kernel.org>; Mon, 22 Apr 2024 09:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713777586; cv=none; b=HJydH5BrEqixNBovtvQ097k6WFWheV3o0VP+ed5vK0UWur8tEkXZivMot37TIToSZi3ujhv6O2SLC4FlLhtZ1ImL+tckg/9wJAh0mrAYrH+oibUFq1DFSzcwaSe7i+MQ30xhl0vhxHtBRrSuGhKbTkR3UagKn5/fAJ8YnRcG8YY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713777586; c=relaxed/simple;
+	bh=I45VUWhuXURUSVj+8uJKTDfPULq0Uh+WYABE2W57hjU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Y7uRPJmi+CkcZPy0N315mQrjeMP6NGWiIvQcoCpknhXfYe+IB1253TJobd5uyOfPzRmKD9jZLOPVmw1Eg7fkTXm5m5JiVPlBHz0Dbk9wGIJIXNS/uLrvqj7tbICwCPvdD8jw94H2f9XevM6odoVGhbONEoCe4TVJR2umFSABGhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HfYUo3wY; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5196c755e82so5811532e87.0
+        for <linux-mmc@vger.kernel.org>; Mon, 22 Apr 2024 02:19:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713777583; x=1714382383; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PGzCOSU1rFq/B8hSMfK1PNYMgY5AsUXkBH/HL6E/O8s=;
+        b=HfYUo3wYeDXsm6pIoCrUmtPOMFwKOVq5RCos2Ti3xiaAglJk70Xslm8sZigY4sk71C
+         LXw3JwaiTpjAhm32qdJLQWb2+xsZS+mVuqdSIFc5FOYOjT8wZtz7/RsyaIXK8jKuG3v8
+         kLTsz4Dfdy7ThsFNXjo/0ky6HSSxaGbtPcteJeQu0TOgdQNK7dbNNJ/gvltQX4j+gsys
+         ZED382hK0aX6IqxOmoSRUymlpHCTLbbfCq2M+zQ734L0cWMOUVRIDwk+AsUpeMBRmx1x
+         /nnHMK19ZvP7j9/PSpx+AjTC324m3g17XiBAuiJCcN8fkfg1gtaNj7IfquwTbBZDapbg
+         KfOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713777583; x=1714382383;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PGzCOSU1rFq/B8hSMfK1PNYMgY5AsUXkBH/HL6E/O8s=;
+        b=S/RmkxN96dNZxLoN8ktMJemQCSiwT6Fqp5AKw/tXiLlbeqp/2o6SorHpxob1+Qc/Gu
+         KlXH5Mb0efQpNN7KmOo0puttwVqyFCwl2fEnK6qSs/DxHVWjtQGnCuQOfx0TsY2Hthrd
+         DGYkTGC3aRkLaImWZogSsuuLneq6uol3nRPE51Y0OEWyRxdwVczVMelQ9paem9gPDrHY
+         bpdHU3AReiTmPEMGSldaXwfTk6Aiqpg5nfHEVVFFBECdBEWueyGjbP40Nk1r+FpVwriX
+         HcRCIdkcHuA2Kq9kulFzcvoot+FZWdjY8ZuQfR88kwNfGaYHDDjFFRNsAiE2KaR9BQUL
+         U4ug==
+X-Forwarded-Encrypted: i=1; AJvYcCXGn+X5pDvcATOqqsYDrSA/MJyY1ZKZNhJl8VwdyOBPYU3QW0xyEGZCcZZCh8EaUm/fugBMs8gAQ2beuiQzInl02IC386layn1p
+X-Gm-Message-State: AOJu0Yy38fGrduVEkozOfouBIVfAiF2bL0C6hxTnX+udiyrkDIGG9lTd
+	ouvy3tzk85l50elubXW3uu3ohMP9eWfDMYGAWlDpXTg9jV/eepxnrsjYI8kAFrA=
+X-Google-Smtp-Source: AGHT+IHK07q6d758NnY7KwadjWeV4oigarBGCihMRrsLu//L5GE8ybqQcQzNHmPk7UG5kqgL3SN8+w==
+X-Received: by 2002:a05:6512:74b:b0:513:1a9c:ae77 with SMTP id c11-20020a056512074b00b005131a9cae77mr4832865lfs.52.1713777579585;
+        Mon, 22 Apr 2024 02:19:39 -0700 (PDT)
+Received: from rayden.urgonet (h-217-31-164-171.A175.priv.bahnhof.se. [217.31.164.171])
+        by smtp.gmail.com with ESMTPSA id q23-20020a50c357000000b0056e672573e5sm5560810edb.88.2024.04.22.02.19.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Apr 2024 02:19:38 -0700 (PDT)
+From: Jens Wiklander <jens.wiklander@linaro.org>
+To: linux-kernel@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	op-tee@lists.trustedfirmware.org
+Cc: Shyam Saini <shyamsaini@linux.microsoft.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Jerome Forissier <jerome.forissier@linaro.org>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH v5 0/3] Replay Protected Memory Block (RPMB) subsystem
+Date: Mon, 22 Apr 2024 11:19:33 +0200
+Message-Id: <20240422091936.3714381-1-jens.wiklander@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MA0P287MB2822:EE_|PN3P287MB0058:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a93bdde-6dec-4483-08cd-08dc62aadb97
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	ruGKVhFNoOidYrsHbZQlJy7sjV9ETYAOGIO3w4aCdAWJjWoywPiQ3f7Hy/z4Ivb4J52mztzq2aw2owk6Y3MvnUs3Ta6My0GJVNJ+sW+JfU0SdiSYV44YjwNW67xU/0g3QI4u9GecZpfpB7qEq4geHWNE/ze509w3xDy8b38MowYMo2dZ/NymyqOorFUKETNVhlIlRrgU2DDD0JCOoPh4ZdkImuYMQYT5gcd3nxvkrrGJ/y3bnzOjOGFYQdL21j0e6U0/Uk/O0YFbbHIhkmX2a94NQeoYmgzt9zlaD0sCQnQaKvE8AIRCEGcFOt0IYajUizyaHTrQiazWsKtsSOvoA1F16P3yRanXFWhlswOpbGZzyb6De8CJfJgBfJuYrqE1Ca8I2DOSwJ3+zaYJk37reyXfTTG5Tws260eb42BkrLMoPpv+qs2Tk8UEM203qn6CLuAsOcznvRkE6Cn4KuB+jp+LgLubOMgjm1+jSC/406AgJcrfKxfp5lJKemMueZgZ/FwoBbCd+nXqUQT8HOKadn1eda31KVuYufIUWCDJGD2tJKXIrsr/B28XwsMKfktGS+EYpg/WfQEORBZoaybF5hij1+T/INnRnZIy4LUCNDN/M93tzT4rqVy1AuU8o57/w/TyJxbr93L3rXJZHZUCUDG1eB3QFpc8OmA4Iy5wj1MrmjuBFmtg9jVmZHjRElws12BDUqz6ANPzXYPHRTp6zA==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d1FvUmFLUktFRjloOGFxZFRLZmlKTjhKeXJKUUdKME5rbjQ1YkZhWG1acGxi?=
- =?utf-8?B?bmxIWGJYUVNIU3JzOW9MR3lkaUJCTzV1RUNLTGtVbFk1N21pamk2YlltakJs?=
- =?utf-8?B?NmhWWU1vSVFWcUV3THU2ZnNHSlZLRHNmK09HeWFRdUtVbFdLamRJcjc5SFpC?=
- =?utf-8?B?Tm1SWDBmdzQvVzhVL3ZqVnY4WUdWMWFNNFZkSHVOeVd3bUhZZmhXRGxUbEM4?=
- =?utf-8?B?QWp1cFE3cVVobkl5dmxoN1J2eXdKWXV3QXc4c0h2UUY0SEdyMnYyYlJ6VnA4?=
- =?utf-8?B?NHl3T3ZZbklQVTdvUjJPRFkvdUg1RXVwVTlzbDNDME5NRU9ZTG1kWC90SmMz?=
- =?utf-8?B?ejhTZitacUh2RWwydlp5YUpWUDVyTythN3FTNEhNY01kWlV5R0RLTHA2WTRX?=
- =?utf-8?B?SVhxNCtsdXVUSGUwUEZSd1FuSDBMYUMwWDlwMUxMYnVrT3pNem1TQW13Vytv?=
- =?utf-8?B?V0xINHpJckNMQ2k5UEprZjhnR21WNVVFRlczdm5nZVptVkdjSzQ0ZXhSZnlq?=
- =?utf-8?B?cjBoR1VyQ2FHaitPc283aFRwdlZ2REYrOUhidmlUUkMxVWlMVGpSNFYrVDhi?=
- =?utf-8?B?V0NnYnZCWHVXeE1xQ01KTUZDUlRTeWJrYUdjZUk1MXFNaTVyckJ3WWZiSS8y?=
- =?utf-8?B?SjJqWjVETHg5S0VuNlEvOGJ0blVqUWZkcjZHTEQwVk9vWW03ZEQ4WHkxN0ll?=
- =?utf-8?B?TTd6TVdTc2dZbkw5TWxwRGFuZ2VQeDZYNTlURks1OE42TUhsdFc3UFVGSFNk?=
- =?utf-8?B?SHljaWIwM2JUbXhPWUZrZkg5K1N0UzZzemtoM3JVbXNHdXhlSXFjL3hBWG5P?=
- =?utf-8?B?Q1JHN3dVVzJ3R3pZVWd2QWtKQzJmTTZabHgwMndiYUYrTDQ0N3ZmTm0vMWpt?=
- =?utf-8?B?NGcza2F4V0l2Nk8vNVkrbGpkNkFYcnNodE5EWkhJczd5VjVpYW05blJsalFy?=
- =?utf-8?B?NVBtNXdOeTFkNFRXeDNDTjArWHhXN3llLytFZllzNVJtR3BRbHJsQ204a2pN?=
- =?utf-8?B?SXM0M3J0dVVlWlMwbURIUFBFMnlUR1JGNlFQazZqWlFRYkl1Z2U1SkM5VlRD?=
- =?utf-8?B?QnhXbXc1eHhjcGRvV21nMGlROWN3NTJNdmFhc25yM3U1aEhTTHRQaFB5U2lC?=
- =?utf-8?B?T0RiMjNsL240SWY3TG9Ka3R1ZkdlamxkRENrWmd0UFBUU044QjM2eHhNRzQ3?=
- =?utf-8?B?SG1qbmsrTk9FUkQ0MnF2RnFPV1lzVmdLTW1TUTV2YUlIeGhXWk1rTE9nMGov?=
- =?utf-8?B?SWJlU0kwT2hVWGM1aHlnWGFhRHFrT084QUR0ZVBFZUhrOUtWbVpLNDR0b21y?=
- =?utf-8?B?L2lic25kYjVpaVQwNWVtNEx6S0pUTlBGbS92MmEzV1Q1WXlPNUZFQVNBUzJY?=
- =?utf-8?B?UTBvQmQ2UjRjQVc5c0FvK05oNkJKZ1FoUUhhUVlvTVdaWHFaRitkRWF0SHow?=
- =?utf-8?B?TGJxUzI1TnRwWXJJcnJFYW5oRW1mbWdWV0tzRGdmekNKenlrb21RanRRYmQ0?=
- =?utf-8?B?R0U5dnl3aE1rbVpJUDBwS1E5eTUraG9Id2dabjRiV0RuZmVqaU5HK3pLYTFJ?=
- =?utf-8?B?RjlMVVZNYUFJSHJYOEcrUk10dnpBd0pZWFNNQng3WUhEc2xaSERlRlEwMHpO?=
- =?utf-8?B?bklyakd4RnliZ0FOQUtkR0MwVVg5ZzQ2d3ExOEk0OGFUOUI2cS9JZEpuZy9l?=
- =?utf-8?Q?9moUgEL2zxxCTCwjBbv1?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a93bdde-6dec-4483-08cd-08dc62aadb97
-X-MS-Exchange-CrossTenant-AuthSource: MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2024 09:01:55.1188
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN3P287MB0058
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-hi， any comments on this patch?
+Hi,
 
-Another patch [1] has dependency on this one, so I would hope someone 
-can review and comment this one first, thanks.
+This patch set introduces a new RPMB subsystem, based on patches from [1],
+[2], and [3]. The RPMB subsystem aims at providing access to RPMB
+partitions to other kernel drivers, in particular the OP-TEE driver. A new
+user space ABI isn't needed, we can instead continue using the already
+present ABI when writing the RPMB key during production.
 
-Link：https://lore.kernel.org/linux-riscv/cover.1713258948.git.unicorn_wang@outlook.com/ 
-[1]
+I've added and removed things to keep only what is needed by the OP-TEE
+driver. Since the posting of [3], there has been major changes in the MMC
+subsystem so "mmc: block: register RPMB partition with the RPMB subsystem"
+is in practice completely rewritten.
 
-On 2024/4/16 17:43, Chen Wang wrote:
-> From: Chen Wang <unicorn_wang@outlook.com>
->
-> When I tried to add a new soc to sdhci-of-dwcmshc, I found that the
-> existing driver code could be optimized to facilitate expansion for
-> the new soc.
->
-> Thanks,
-> Chen
->
-> ---
->
-> Chen Wang (1):
->    mmc: sdhci-of-dwcmshc: add callback framework for expansion
->
->   drivers/mmc/host/sdhci-of-dwcmshc.c | 185 ++++++++++++++++------------
->   1 file changed, 107 insertions(+), 78 deletions(-)
->
->
-> base-commit: 4cece764965020c22cff7665b18a012006359095
+With this OP-TEE can access RPMB during early boot instead of having to
+wait for user space to become available as in the current design [4].
+This will benefit the efi variables [5] since we wont rely on userspace as
+well as some TPM issues [6] that were solved.
+
+The OP-TEE driver finds the correct RPMB device to interact with by
+iterating over available devices until one is found with a programmed
+authentication matching the one OP-TEE is using. This enables coexisting
+users of other RPMBs since the owner can be determined by who knows the
+authentication key.
+
+The corresponding secure world OP-TEE patches are available at [7].
+
+I've put myself as a maintainer for the RPMB subsystem as I have an
+interest in the OP-TEE driver to keep this in good shape. However, if you'd
+rather see someone else taking the maintainership that's fine too. I'll
+help keep the subsystem updated regardless.
+
+[1] https://lore.kernel.org/lkml/20230722014037.42647-1-shyamsaini@linux.microsoft.com/
+[2] https://lore.kernel.org/lkml/20220405093759.1126835-2-alex.bennee@linaro.org/
+[3] https://lore.kernel.org/linux-mmc/1478548394-8184-2-git-send-email-tomas.winkler@intel.com/
+[4] https://optee.readthedocs.io/en/latest/architecture/secure_storage.html#rpmb-secure-storage
+[5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c44b6be62e8dd4ee0a308c36a70620613e6fc55f
+[6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7269cba53d906cf257c139d3b3a53ad272176bca
+[7] https://github.com/jenswi-linaro/optee_os/tree/rpmb_probe
+
+Thanks,
+Jens
+
+Changes since v4:
+* "rpmb: add Replay Protected Memory Block (RPMB) subsystem"
+  - Describing struct rpmb_descr as RPMB description instead of descriptor
+* "mmc: block: register RPMB partition with the RPMB subsystem"
+  - Addressing review comments
+  - Adding more comments for struct rpmb_frame
+  - Fixing assignment of reliable_wr_count and capacity in mmc_blk_rpmb_add()
+* "optee: probe RPMB device using RPMB subsystem"
+  - Updating struct rpmb_dev_info to match changes in "rpmb: add Replay
+    Protected Memory Block (RPMB) subsystem"
+
+Changes since v3:
+* Move struct rpmb_frame into the MMC driver since the format of the RPMB
+  frames depend on the implementation, one format for eMMC, another for
+  UFS, and so on
+* "rpmb: add Replay Protected Memory Block (RPMB) subsystem"
+  - Adding Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+  - Adding more description of the API functions
+  - Removing the set_dev_info() op from struct rpmb_ops, the needed information
+    is supplied in the arguments to rpmb_dev_register() instead.
+  - Getting rid of struct rpmb_ops since only the route_frames() op was
+    remaining, store that op directly in struct rpmb_dev
+  - Changed rpmb_interface_register() and rpmb_interface_unregister() to use
+    notifier_block instead of implementing the same thing ourselves
+* "mmc: block: register RPMB partition with the RPMB subsystem"
+  - Moving the call to rpmb_dev_register() to be done at the end of
+    mmc_blk_probe() when the device is fully available
+* "optee: probe RPMB device using RPMB subsystem"
+  - Use IS_REACHABLE(CONFIG_RPMB) to determine if the RPMB subsystem is
+    available
+  - Translate TEE_ERROR_STORAGE_NOT_AVAILABLE if encountered in get_devices()
+    to recognize the error in optee_rpmb_scan()
+  - Simplified optee_rpmb_scan() and optee_rpmb_intf_rdev()
+
+Changes since v2:
+* "rpmb: add Replay Protected Memory Block (RPMB) subsystem"
+  - Fixing documentation issues
+  - Adding a "depends on MMC" in the Kconfig
+  - Removed the class-device and the embedded device, struct rpmb_dev now
+    relies on the parent device for reference counting as requested
+  - Removed the now unneeded rpmb_ops get_resources() and put_resources()
+    since references are already taken in mmc_blk_alloc_rpmb_part() before
+    rpmb_dev_register() is called
+  - Added rpmb_interface_{,un}register() now that
+    class_interface_{,un}register() can't be used ay longer
+* "mmc: block: register RPMB partition with the RPMB subsystem"
+  - Adding the missing error cleanup in alloc_idata()
+  - Taking the needed reference to md->disk in mmc_blk_alloc_rpmb_part()
+    instead of in mmc_rpmb_chrdev_open() and rpmb_op_mmc_get_resources()
+* "optee: probe RPMB device using RPMB subsystem"
+  - Registering to get a notification when an RPMB device comes online
+  - Probes for RPMB devices each time an RPMB device comes online, until
+    a usable device is found
+  - When a usable RPMB device is found, call
+    optee_enumerate_devices(PTA_CMD_GET_DEVICES_RPMB)
+  - Pass type of rpmb in return value from OPTEE_RPC_CMD_RPMB_PROBE_NEXT
+
+Changes since Shyam's RFC:
+* Removed the remaining leftover rpmb_cdev_*() function calls
+* Refactored the struct rpmb_ops with all the previous ops replaced, in
+  some sense closer to [3] with the route_frames() op
+* Added rpmb_route_frames()
+* Added struct rpmb_frame, enum rpmb_op_result, and enum rpmb_type from [3]
+* Removed all functions not needed in the OP-TEE use case
+* Added "mmc: block: register RPMB partition with the RPMB subsystem", based
+  on the commit with the same name in [3]
+* Added "optee: probe RPMB device using RPMB subsystem" for integration
+  with OP-TEE
+* Moved the RPMB driver into drivers/misc/rpmb-core.c
+* Added my name to MODULE_AUTHOR() in rpmb-core.c
+* Added an rpmb_mutex to serialize access to the IDA
+* Removed the target parameter from all rpmb_*() functions since it's
+  currently unused
+
+Jens Wiklander (3):
+  rpmb: add Replay Protected Memory Block (RPMB) subsystem
+  mmc: block: register RPMB partition with the RPMB subsystem
+  optee: probe RPMB device using RPMB subsystem
+
+ MAINTAINERS                       |   7 +
+ drivers/misc/Kconfig              |  10 ++
+ drivers/misc/Makefile             |   1 +
+ drivers/misc/rpmb-core.c          | 232 ++++++++++++++++++++++++++++
+ drivers/mmc/core/block.c          | 241 +++++++++++++++++++++++++++++-
+ drivers/tee/optee/core.c          |  30 ++++
+ drivers/tee/optee/device.c        |   7 +
+ drivers/tee/optee/ffa_abi.c       |   8 +
+ drivers/tee/optee/optee_private.h |  21 ++-
+ drivers/tee/optee/optee_rpc_cmd.h |  35 +++++
+ drivers/tee/optee/rpc.c           | 232 ++++++++++++++++++++++++++++
+ drivers/tee/optee/smc_abi.c       |   7 +
+ include/linux/rpmb.h              | 136 +++++++++++++++++
+ 13 files changed, 964 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/misc/rpmb-core.c
+ create mode 100644 include/linux/rpmb.h
+
+-- 
+2.34.1
+
 
