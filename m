@@ -1,210 +1,270 @@
-Return-Path: <linux-mmc+bounces-2081-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-2085-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECBD8C48D0
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2024 23:25:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6E98C58DD
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 May 2024 17:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 223E5281621
-	for <lists+linux-mmc@lfdr.de>; Mon, 13 May 2024 21:25:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADCEB1F22A79
+	for <lists+linux-mmc@lfdr.de>; Tue, 14 May 2024 15:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA3E8288F;
-	Mon, 13 May 2024 21:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C1F17F36B;
+	Tue, 14 May 2024 15:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PLx66NV8"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=mecka.net header.i=@mecka.net header.b="WJNXqHYz"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2056.outbound.protection.outlook.com [40.107.101.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF6780632
-	for <linux-mmc@vger.kernel.org>; Mon, 13 May 2024 21:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715635540; cv=fail; b=gUqh9NAnkr7gjRodCt/tXVu8kMUOZ1GTUrR2PY8VAyECOr9bdDP4nsV+opLZjEwN4UwOaCRCHK9WSbuPHOV6zQwkYTV/XyXyFJCsop/5zYmiE6FpimIJzz3cgxblBOvuM2ldmwuC+/Z22MybdDAo1Bxm3uOYIVmuI06Ear/yvUA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715635540; c=relaxed/simple;
-	bh=V42f7jI/qv4WVFsOBNOjXu/de1RbecBKuDHRbH7G+Hw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=kNSs26XOzf5OiItC1L/5RPnc+mRJJUUWMMrUOVKnZziPjZ2w7PxOQiRDQJ20OEoZcBPZoLi1BzNQhjA+2JEt99yuoW3Dvr9aBHYeQ1XaQ+EQYZ+7ls/EnASKP7Qa1oVEc7Zks4ApjhvVzJN6KEglCFStSbo1Jvrcv+nUkkZR7lg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PLx66NV8; arc=fail smtp.client-ip=40.107.101.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aQZ4sdzVmHGGpjSbZ1FIiMXD9bNddOPIWAInX35flNThvuSytDEM88RrsnXGO6i3Q6GrMRATqoE11iHq86n5ikegOYZg968W0IyTGFo3xFxToPLb75494iHp75rmcEhJd/VFe5EJ1UpHpKfuijuXfV6T0xo2DXssOJrBbXClh/WgJEg4ej/L2e/VRy8rVMgVo3BpVxq2gxJsqXCtZaz0vqhuLt5hFwJHvVv7J/zG/fZxrKoeY+Z1NQnHujGJ49NCtXyvEv2t/CNk/iXdoF/eC43A9puJGZMEVPOeuo6Lyu8ych2GyWp4MBi5SeJgfPiiqYrJkfuKPN6Z9tlu8GGmbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V42f7jI/qv4WVFsOBNOjXu/de1RbecBKuDHRbH7G+Hw=;
- b=fHNYmp7FUF4pswJ8QFKkf9CVBjGFoZ56KaeKKJdlRkVC2BXAUcfOzvo4gd/Kwd2p8TWeYzII4161XlaDfwuaYCcEU3tkN/HNKzgPtvP+6XI+YHikNEj+GKQ6CfbW3iMayZh1ZlkFxIIBl9MdsG4ojJdHTLXM3EnQXnL81DJUXTRgOJo1utelO0Adydl6yFlh7uyo4S9618GtqlITxSymbzgWlcSQPrAn8R3ebNpHFiEpCO2JhHFQH9DBy/qzfAdoyyuP1sxBjB2O/JJQ241gHX2ryyDdztXH3buw0UDgqz0a9z7AoicN9ag0vwxJKQt/G15G86N/PsNgx5RXNtfoIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V42f7jI/qv4WVFsOBNOjXu/de1RbecBKuDHRbH7G+Hw=;
- b=PLx66NV8oF7xg1h44+fih0BGfJg4QdlAWzGT9cygLr5LtHVbVLxy85agwqc5HXDvK9Yh2N3B+VbZdVRmsn0Ul1s6otbX4e3u2oFDyPxUJHPPbGIJGOjLSbf4KxVsTl3MEjCChsFd8gtYjbxoe0ymMvhl2CpooaI0xcDAQaHXK6qPj8bDYO2uAe5dL0h8kCdHDjIzvSH8N0D84H5FU4TL0jH4Ennsp5uxaWhhHMBb/DldrASL1p8v1fXcrVGN+KcKmFT75314lH5b2bvh26cG5gUamp1zql7pAFFntNuHxf1dddnr8+7t2DVh63CyUUPNsFWRMfilOALh/7iEhMK4Wg==
-Received: from BN9PR12MB5068.namprd12.prod.outlook.com (2603:10b6:408:135::21)
- by LV2PR12MB5893.namprd12.prod.outlook.com (2603:10b6:408:175::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Mon, 13 May
- 2024 21:25:36 +0000
-Received: from BN9PR12MB5068.namprd12.prod.outlook.com
- ([fe80::7274:cdb1:c663:641b]) by BN9PR12MB5068.namprd12.prod.outlook.com
- ([fe80::7274:cdb1:c663:641b%3]) with mapi id 15.20.7544.052; Mon, 13 May 2024
- 21:25:36 +0000
-From: Liming Sun <limings@nvidia.com>
-To: Adrian Hunter <adrian.hunter@intel.com>
-CC: linux-mmc <linux-mmc@vger.kernel.org>
-Subject: RE: Question about mmc_blk_issue_flush() failure and recovery in
- Linux kernel
-Thread-Topic: Question about mmc_blk_issue_flush() failure and recovery in
- Linux kernel
-Thread-Index: Adqk3+wMGg+oOeL0Saq9hCN9UR8q4AAElWGAACJidEA=
-Date: Mon, 13 May 2024 21:25:36 +0000
-Message-ID:
- <BN9PR12MB5068D7320A458F0A057B1920D3E22@BN9PR12MB5068.namprd12.prod.outlook.com>
-References:
- <BN9PR12MB5068667F4108339D4B140274D3E22@BN9PR12MB5068.namprd12.prod.outlook.com>
- <579d5e7a-0745-4598-9d1d-ac951992a549@intel.com>
-In-Reply-To: <579d5e7a-0745-4598-9d1d-ac951992a549@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR12MB5068:EE_|LV2PR12MB5893:EE_
-x-ms-office365-filtering-correlation-id: e637b477-7696-42e5-d7c4-08dc73933ab5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230031|376005|366007|1800799015|38070700009;
-x-microsoft-antispam-message-info:
- =?utf-8?B?aGQycGtpM1lpWmJwV3doaGVBb3Y4MksyTEZlSm1DMmp3M1cwSmxwNHA2cnd6?=
- =?utf-8?B?VS9pZWlTWGk5YXdxUU9CWWJ1cUtEYWVNN2RzOVhqYXNZb0E2N2h1YXc1UTJ1?=
- =?utf-8?B?RjM5bzBDV0szY200NkhBRzYrc1JuOTc4ZVNoaHE0WUNwZmp1SVl1REQ2UDBV?=
- =?utf-8?B?N2wzdjZHeHhhc0RCbmljbDdRTkkvK1RHRll3d09sdTJ1ZWVLS2FHbzM2Zm5R?=
- =?utf-8?B?Z1UyT3lnNGQzYU0wQ0FWUzA1a2JTdUV2OXJNWm9sY000VFRCeUtRaWk1Mmo4?=
- =?utf-8?B?cXpyN1MzTDR4b0lFSGltM1FWcDZXM1IvMDdlVFB4L0VkQ0NTVmRlTjh2QUp2?=
- =?utf-8?B?SmVBcTBab1o4Smd4YTdKNWxaQXJSbzEyRVJsOXpIN2c1ZUFKTzJRbFUvVWxt?=
- =?utf-8?B?UDRiTktrK015aGxFUXdNZ2p3THZpOFVuZjNYWVl1ci9HSEJSWG1ubkRETm5D?=
- =?utf-8?B?T0h6NWV5M09ibzNrc0xVU2w2TklBYlBueFZDL3RoOXhCQlpKREtISjZlWFJL?=
- =?utf-8?B?dUl6anRudHpLWXpOMm9WcWxMVXNYQkhKNTZDTWFINHprenR6S1FuRitjeEpJ?=
- =?utf-8?B?bDVMTENsVUEwVG1WYm8yT3diWi9zOTd5cVkrdUVzYnVNM1grNVdieXdXTFN1?=
- =?utf-8?B?TkY4SzA5UjNUQW9RQlYzSllIelRvWnZVeEphREVrUnc1VExhRGNkWmY2Q1FK?=
- =?utf-8?B?K2k0WjlYemNrU1hIeURIbGU3aVZ6eXJ0WisxdFZlQzBwVUFYaTh1YnFobnkr?=
- =?utf-8?B?WTB5eTFNeS9JU1ZQNTRVZ1VPQkdEQlZ5VGcyL2Nhb3RsRWErV0hGc2hFLzkw?=
- =?utf-8?B?VXl2aGgzanNaNUFaRVhmQzZvSmg0VzdzZFZVU0JQMDF6enhMQVgvc2xDSEU2?=
- =?utf-8?B?SWNZVEptdmJCM0NsN3BRZnYxdWFIY0hVMldnM05OcjJNMHczeG5rRFZGa0Ny?=
- =?utf-8?B?UndHMnQwOUZMb0NqamM1SllPMWYrZXkwVGJ1QjZya0tORWY0S0xkc3lKNTd5?=
- =?utf-8?B?TCtuM1VMeDM1ZEhJN1VHcEVmODRMRkxlV2VNcUpOVXg1MDlodmh2azkwV1Jh?=
- =?utf-8?B?S1IxaEkzQ05nYmZzUHdxQVF1QXo2TjRlUVlWOXkxRWhnbTJjNFBPYlZBNngy?=
- =?utf-8?B?aUZCTjN6OWJyV0hlbDN6cXFOSERsdVlJbGZYd2xqTkJlMjliZlJYVDIwc3hl?=
- =?utf-8?B?bE9PMTlGWi9kOXgwQk1PZkFha3NSKzhZSW96VWd3cEpQbzhmeE0wOW84dWZD?=
- =?utf-8?B?T1F5WW9rdzBjL3prQkVVRDYvcXE1MFRZSm9zdWV0SFZDNUJhVGs5d05IYytN?=
- =?utf-8?B?Z2trRmdnWStvMTlQczVzaUNadEtIRC9TYVpxR0RFOXRFYUd5T1VrUjdCZUxG?=
- =?utf-8?B?dlM4eUlHZWp6RXhjZm5OMHJCemJORHJaRGNpWm5kVUdJUlRrOVZyb2V4QVV4?=
- =?utf-8?B?YnRZc2dOT3F2ei9TNGJNVXJVSCtIOEJML1R2ekZ5TWtoNjFYOEdsZUFJd1cy?=
- =?utf-8?B?eFYyT3lCVVMxdm0vcnpEKzhkOE5semh2R0dwWXZESXhJQng0SGlGbzM3NE9h?=
- =?utf-8?B?czQ3OGZkOGtublhNQTZ5R1crVGFnRDljM0lhSzdLYTRDWVFHRWJnZXdQZjJw?=
- =?utf-8?B?anZ6MTQra2ladWtiZ2pHa3JVeVI3a0FKak53M3lRay91ZUNXSElQT3BLbVpC?=
- =?utf-8?B?Mkx4cmhrUERnTmhXMm5JbEZNZnAwVlNXbGZxa01GdTUyeE1wSkJoQmpJZENO?=
- =?utf-8?B?aSs4VXI1U2JacjNiTzhsbHFLcWpqQk9zbXpjSDZpcjN5bmNtMHNiNUZydjVw?=
- =?utf-8?B?Z1YrMFdzWFFjcU9FUEVVQT09?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5068.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?STVYajdseGZ4YStKa0dxWWZHOFlaa3NhaEVWTVFIVy9yWEVjWklvaDJlTEtv?=
- =?utf-8?B?RXhvVG0xaGE1ZnorbTBvVys1T281aGIvQk1UNjZ4Y3p6UmpMa29namxNeUZa?=
- =?utf-8?B?a1FveDJCWkd1UnNkQk5aSGZVbU1lTW9EUU11OFNDR1hMQm5MQy9nU1J5Nlhl?=
- =?utf-8?B?WjM5UDhLTVdQb3M3SzdtYVBmaytDSTFxNXpFU0wvOE8zSTVqNGlFRUUxanlu?=
- =?utf-8?B?NnJvalFGcWVLenAzbDJEam1yWHdmcDB5bThTQXoxd2U5ZzdTNU5xdkx0cGlT?=
- =?utf-8?B?b1BZQTkweXFRcnVpS2xROVVyWk9HTnljYUtsS2hIaGN6OC9aUUhyK0x0V2Rv?=
- =?utf-8?B?U0FlUTRUREFjNHBqdVRITEg4M01RWnhNcHFGd20xN1pCR1h1a2FqR0UrdHZ2?=
- =?utf-8?B?UUZVZDhNZzRIcjYyRkFPb2prU0txcW1BVkFhdzhITms1VWRnY3pFNnV2ajEw?=
- =?utf-8?B?ZzAraUo0Yys0ZVZFWVgxMitja3JLaXBkUld1YzhtMnFpMkxwVGtaeTU1MnZu?=
- =?utf-8?B?N0paUkJGMHhaU1N5ZHVrYXJUM1VqS1hzMnBoT3IwMytpSnBLOW1YZVdCTWlW?=
- =?utf-8?B?YjByNHViNmhyLzJSYTVjbTVBZktQZk5CWmtOQnMyTzRkSGVxY3NNY2xWNkJT?=
- =?utf-8?B?c0xtYTA0TzBOd2F6SWw5dWs4UGx2K0h5QVlpY2tQRHdBVFlQeFRJUXh5R2Qx?=
- =?utf-8?B?ajVhSHU2d0s3dElWcVVWQ3U4T2w2ZzNjMVo5SS9hRjNla3o4QmkyOFpFVGhh?=
- =?utf-8?B?TXFpcmxxTHl0bDN1MmlocWdZVlQ2cmErcWJ1TitTalRIWlh2VmFVQjgwa2hO?=
- =?utf-8?B?RkVXVDNnZUFtZG9obTk0N0ZFNGxSSEFhSW01ZE8rcDBjNThmOWFKWjlqNnAx?=
- =?utf-8?B?aVRSVUNvNE51WTFyOHhNYTYxZTZLT1FPODhYTmZ3TThTTmw2dDNUaXZUclVv?=
- =?utf-8?B?eXFyOG5qNHpvK1RuM0FvaUFuTnpkMDd6alIyZ1BiNWFsOW9WdlFQVmN1MGNa?=
- =?utf-8?B?UCswb28rYkZtT2s3N1BWa0pBRmlCdFUvSm1GYldWNHRlOHdGTStoR2NGcDg2?=
- =?utf-8?B?RE51T3FkaWdkK3lPcXVRN3ZOeGNnV09XbkVhTy91V3RKS3kvVDZmbEdubUhi?=
- =?utf-8?B?RE53M0FQdXpDSHp4Qy9HWVlRY09JNmtOamJvVkZya3hsdm5KeG8vSDh5RTAr?=
- =?utf-8?B?QS9RdE1wUHB3d29uZUcxRHhacGVQeWE4QmQ2bDFscXhMRDB4Wm5pNlZsSTJy?=
- =?utf-8?B?aitVejBXNjBBdlFEN2hCREhxdk82dEV5dmh0NFBId2lnN29jOUwvMC93T3ZN?=
- =?utf-8?B?OW1MVEszL1o4Vm01QXFOdnJhTy9PelNHdTNHR2gzSnhRbGNZb2lERWNOVzJj?=
- =?utf-8?B?R2FvenViZXhCY2tSSEJCNE15MTZmRUFJYzh4ekVJYzNBa2U1eGdCelMrWnVy?=
- =?utf-8?B?cHBMQ3ZVaHBoVXNJeWs4Z2t4SitnWm9PQmtpYnRodXdMdEJ0T2lGQUJyYmlo?=
- =?utf-8?B?K0xJZFBZZ1lXRUlGWVk0c3ZhdXpjcDlVaDRBa1dVSCs1VWowOVBGK0FRSUxl?=
- =?utf-8?B?TVd6NTZBOWlkZnpiNlJSWmRRckszSjhaWEhMOG5VYjA3QkJUT3doVUdvcG9L?=
- =?utf-8?B?ZXI3S0krTlIySStIaEd4RjhPN1oyanRJS096K2pnb2wycmNCeXNwVEkzb3dZ?=
- =?utf-8?B?dWQ3OWFaMVdhR09lMUtLWUw5aUpaelFIU1VGemJKTUNOaXNGL1pYUjkxbkJ3?=
- =?utf-8?B?d2JGNm1iaWE2OGZpcDhOSWpDR082c2lJWmlPT1MrK1dyZG1LR09OUk16RVRP?=
- =?utf-8?B?bkFMWmQ5MDJkdDFpT0R3Q2oyTE1HOUpyamUzZTFuWXZtOFlXaktYUERNKzk5?=
- =?utf-8?B?MS9EUzdKYlh2SWxjRWxkQ3VaSURzNE9xUk9hemYxUit3MGgzcWhZQ2xuWGRF?=
- =?utf-8?B?MUdaQ2krdlFxTHFHakZCMGpZZ3h0THRROHJXdEFLWDhFQ1Yyck15c0JTdjBZ?=
- =?utf-8?B?Z09mVnc3U29jejJ6TkozZEFtMzRjbE9YVG9DZWY1c2hNYk1HYmpneEt1RWFG?=
- =?utf-8?B?ZjRHUWNrbE8ydU5YR2R1ZnNaY092REFrYjNVL0dORHYwdW1xUC9EbGdIL0Qz?=
- =?utf-8?Q?BYug=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mecka.net (mecka.net [159.69.159.214])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C8417EBB5;
+	Tue, 14 May 2024 15:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.159.214
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715701071; cv=none; b=Tk8z4pMVQC+7B44BiActzPAP9tkjVvMEb6ku1RUcnMZ6nFOmuVmY5GLteBrbP4aIxwy5j9oLww4UiC108qiKLrjUq3KZytPYKfNRR5eBzzIZ6dOArVDcECHCNq6X9V6EXVXgvqO0pop0SUhNbHoGDvt9ym/mjBQbtoHODILsy7w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715701071; c=relaxed/simple;
+	bh=iqtol5Q5n/ItXuNrwcXvYs8Rssb6MbCysL3rzdw8tkw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HXrSdVxdUdvrQcfEMQt7meLfiRYOmN2WANO2WYpRyGs6wq6k6UWKCb8grX2R+jMr9GUy2ocGmZ8yYW2gq+9qHmm7YJqiDs+XKUxaHKyGIfhJzNwnIkSJD+9FfcLyIEIMJ1ZbVuH1J7IGt9GajKwrwCzbig8THYAz99tt4SuCtwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mecka.net; spf=pass smtp.mailfrom=mecka.net; dkim=fail (0-bit key) header.d=mecka.net header.i=@mecka.net header.b=WJNXqHYz reason="key not found in DNS"; arc=none smtp.client-ip=159.69.159.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mecka.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mecka.net
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mecka.net; s=2016.11;
+	t=1715700491; bh=iqtol5Q5n/ItXuNrwcXvYs8Rssb6MbCysL3rzdw8tkw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WJNXqHYzdETZsf3OAagzhm9csiGqgI+jGTWJzPjMlHfRpBTyCQfK1XXA/BO1cepHA
+	 IQDoQ2R5cWy+0KJkS+MX8aw3deEzEzGVn9ABaiA1JYUlmA1NJlg2v0/kUAqJInJVhV
+	 3j7c48Cy1SGNS9uPtFF5+Ki4ue+p8VvWnTEGVbIXgCn48Zd0iL2JcUMZzpUI13hsIO
+	 /iSp8W8k6q+idx5n3aZyHtMnsp33402d4mDulI1NtKlMWdjl495S/8GepBQK4ij5sg
+	 ejOizgR5RyoK6048gA7vqk+frKOBzSNc3a775Hx6D3fbg4oqHEGH51s2Vos1UThWcY
+	 1/44TtY/0nBtA==
+Received: from mecka.net (unknown [185.147.11.134])
+	by mecka.net (Postfix) with ESMTPSA id 9B1C24D463B;
+	Tue, 14 May 2024 17:28:10 +0200 (CEST)
+Date: Tue, 14 May 2024 15:28:09 +0000
+From: Manuel Traut <manut@mecka.net>
+To: Jens Wiklander <jens.wiklander@linaro.org>
+Cc: linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+	op-tee@lists.trustedfirmware.org,
+	Shyam Saini <shyamsaini@linux.microsoft.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Jerome Forissier <jerome.forissier@linaro.org>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v6 0/3] Replay Protected Memory Block (RPMB) subsystem
+Message-ID: <ZkODCTnCe7l0KiFs@mecka.net>
+References: <20240507091619.2208810-1-jens.wiklander@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5068.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e637b477-7696-42e5-d7c4-08dc73933ab5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2024 21:25:36.1748
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DC5gYwzRcPdj5P+kUTZLBiAzyqeT9++Vqf+R6HyAgUgoKjl8aSLIN0RF63AmyzZ8tVquOZBzqmxXWtCJi2Fghg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5893
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240507091619.2208810-1-jens.wiklander@linaro.org>
 
-TWFrZSBzZW5zZS4gVGhhbmtzIEFkcmlhbi4NCg0KLSBMaW1pbmcNCg0KPiAtLS0tLU9yaWdpbmFs
-IE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBBZHJpYW4gSHVudGVyIDxhZHJpYW4uaHVudGVyQGludGVs
-LmNvbT4NCj4gU2VudDogTW9uZGF5LCBNYXkgMTMsIDIwMjQgMTI6NTkgQU0NCj4gVG86IExpbWlu
-ZyBTdW4gPGxpbWluZ3NAbnZpZGlhLmNvbT4NCj4gQ2M6IGxpbnV4LW1tYyA8bGludXgtbW1jQHZn
-ZXIua2VybmVsLm9yZz4NCj4gU3ViamVjdDogUmU6IFF1ZXN0aW9uIGFib3V0IG1tY19ibGtfaXNz
-dWVfZmx1c2goKSBmYWlsdXJlIGFuZCByZWNvdmVyeSBpbg0KPiBMaW51eCBrZXJuZWwNCj4gDQo+
-IE9uIDEzLzA1LzI0IDA1OjQ3LCBMaW1pbmcgU3VuIHdyb3RlOg0KPiANCj4gUGxlYXNlIGNjIGxp
-bnV4LW1tYyBtYWlsaW5nIGxpc3QuICBPdGhlcnMgbWF5IGJlIGFibGUgdG8gaGVscA0KPiBvciBo
-YXZlIHNpbWlsYXIgaXNzdWVzLg0KPiANCj4gPiBJIHNhdyB0aGF0IExpbnV4IGVtbWMvYmxvY2sg
-aGFzIHJlY292ZXJ5IG1lY2hhbmlzbSwgYnV0IHNvbWVob3cgYSBwYXRoDQo+IGxpa2UgYmVsb3cg
-ZG9lc27igJl0IHNlZW0gdG8gdHJpZ2dlciBpdC4NCj4gPg0KPiA+IFvCoCAyODUuODU4ODM4XSBt
-bWMwOiBjYWNoZSBmbHVzaCBlcnJvciAtMTEwDQo+IA0KPiBDYWNoZSBmbHVzaCBlcnJvciBtZWFu
-cyBhbnkgZGF0YSBpbiB0aGUgY2FjaGUgd2lsbCBiZSBsb3N0Lg0KPiANCj4gR2VuZXJhbGx5LCB0
-aGlzIGlzIGFscmVhZHkgdW5hY2NlcHRhYmxlIGkuZS4gcmVjb3ZlcnkgZnJvbQ0KPiBoZXJlIGlz
-IG5vdCBhIHByaW9yaXR5IGJlY2F1c2Ugd2Ugc2hvdWxkbid0IGdldCBoZXJlLg0KPiANCj4gQWxz
-byB0aGUgZmlsZSBzeXN0ZW0gbWF5IGJlIGNvcnJ1cHQsIGFuZCB0aGVyZSBkb2Vzbid0IHNlZW0N
-Cj4gdG8gYmUgYW55dGhpbmcgdGhlIG1tYyBzdWJzeXN0ZW0gY2FuIGRvIGFib3V0IHRoYXQuDQo+
-IA0KPiA+IFvCoCAyODUuODYyNzc2XSBibGtfdXBkYXRlX3JlcXVlc3Q6IEkvTyBlcnJvciwgZGV2
-IG1tY2JsazAsIHNlY3Rvcg0KPiA0MjAwMjU3NyBvcCAweDE6KFdSSVRFKSBmbGFncyAweDI5ODAw
-IHBoeXNfc2VnIDEgcHJpbyBjbGFzcyAwDQo+ID4gW8KgIDI4NS44NzQwMDZdIFhGUyAobW1jYmxr
-MHAzKTogbG9nIEkvTyBlcnJvciAtNQ0KPiA+IFvCoCAyODUuODc4MzY5XSBYRlMgKG1tY2JsazBw
-Myk6IExvZyBJL08gRXJyb3IgRGV0ZWN0ZWQuIFNodXR0aW5nIGRvd24NCj4gZmlsZXN5c3RlbQ0K
-PiA+IFvCoCAyODUuODg1NDg5XSBYRlMgKG1tY2JsazBwMyk6IFBsZWFzZSB1bm1vdW50IHRoZSBm
-aWxlc3lzdGVtIGFuZCByZWN0aWZ5DQo+IHRoZSBwcm9ibGVtKHMpDQo+IA0KPiBUbyByZWNvdmVy
-eSBmcm9tIGhlcmUgcHJvYmFibHkgbWVhbnMNCj4gCXVubW91bnQgdGhlIGZpbGUgc3lzdGVtDQo+
-IAlmaXggaXQNCj4gCXVuYmluZCBhbmQgcmViaW5kIHRoZSBlTU1DIGhvc3QgY29udHJvbGxlcg0K
-PiANCj4gPiBGcm9tIHRoZSBjb2RlLCBpdCBtaWdodCBiZSBjYWxsZWQgZnJvbSBtbWNfYmxrX21x
-X2lzc3VlX3JxKCkgw6ANCj4gTU1DX0lTU1VFX1NZTkMvUkVRX09QX0ZMVVNIIMOgIG1tY19ibGtf
-aXNzdWVfZmx1c2goKSB3aGljaCBmYWlscy4NCj4gPg0KPiA+IFdvdWxkIGl0IG1ha2Ugc2Vuc2Ug
-dG8gdHJpZ2dlciBlbW1jIHJlY292ZXJ5IGZvciB0aGlzIHBhdGggb3IgYW55DQo+IHN1Z2dlc3Rp
-b24gaG93IHRvIGRvIGl0Pw0KPiANCj4gR2VuZXJhbGx5IHRoZSBwcmlvcml0eSB3b3VsZCBiZSBw
-cmV2ZW50aW5nIHRoZSBjYWNoZQ0KPiBmbHVzaCBlcnJvci4gIFRvIHN0YXJ0IHdpdGgsIGlkZW50
-aWZ5IHdoYXQgaXMgY2F1c2luZw0KPiBpdC4NCg0K
+Hi Jens,
+
+thank you very much for v6! It took me some time to figure out why it is
+not working.. However it seems to be on the OP-TEE side and not related
+to this kernel series.
+
+I need this change:
+
+@@ -1214,12 +1225,13 @@ static TEE_Result tee_rpmb_init(void)
+        }
+
+        if (rpmb_ctx->reinit) {
+                if (rpmb_ctx->legacy_operation || !rpmb_ctx->key_verified) {
+                        rpmb_ctx->wr_cnt_synced = false;
+                        rpmb_ctx->key_derived = false;
+                        rpmb_ctx->dev_info_synced = false;
+                        rpmb_ctx->reinit = false;
+-                       goto next;
+                }
+                res = rpmb_probe_reset();
+                if (res) {
+
+@@ -1236,17 +1248,23 @@ static TEE_Result tee_rpmb_init(void)
+                        if (!memcmp(rpmb_ctx->cid, dev_info.cid,
+                                   RPMB_EMMC_CID_SIZE)) {
+                                rpmb_ctx->reinit = false;
++                               rpmb_ctx->legacy_operation = false;
+                                return TEE_SUCCESS;
+                        }
+                }
+        }
+
+to ensure that the non legacy mode is selected, even if the first RPMB
+request comes from a compiled in TA.
+
+Thanks for your work, it makes it really easy now to implement ARM
+System Ready IR with an fTPM and continue the boot measurements in the
+initrd with the new tpm2.target in systemd v256.
+
+Regards
+Manuel
+
+On Tue, May 07, 2024 at 11:16:16AM +0200, Jens Wiklander wrote:
+> Hi,
+> 
+> This patch set introduces a new RPMB subsystem, based on patches from [1],
+> [2], and [3]. The RPMB subsystem aims at providing access to RPMB
+> partitions to other kernel drivers, in particular the OP-TEE driver. A new
+> user space ABI isn't needed, we can instead continue using the already
+> present ABI when writing the RPMB key during production.
+> 
+> I've added and removed things to keep only what is needed by the OP-TEE
+> driver. Since the posting of [3], there has been major changes in the MMC
+> subsystem so "mmc: block: register RPMB partition with the RPMB subsystem"
+> is in practice completely rewritten.
+> 
+> With this OP-TEE can access RPMB during early boot instead of having to
+> wait for user space to become available as in the current design [4].
+> This will benefit the efi variables [5] since we wont rely on userspace as
+> well as some TPM issues [6] that were solved.
+> 
+> The OP-TEE driver finds the correct RPMB device to interact with by
+> iterating over available devices until one is found with a programmed
+> authentication matching the one OP-TEE is using. This enables coexisting
+> users of other RPMBs since the owner can be determined by who knows the
+> authentication key.
+> 
+> The corresponding secure world OP-TEE patches are available at [7].
+> 
+> I've put myself as a maintainer for the RPMB subsystem as I have an
+> interest in the OP-TEE driver to keep this in good shape. However, if you'd
+> rather see someone else taking the maintainership that's fine too. I'll
+> help keep the subsystem updated regardless.
+> 
+> [1] https://lore.kernel.org/lkml/20230722014037.42647-1-shyamsaini@linux.microsoft.com/
+> [2] https://lore.kernel.org/lkml/20220405093759.1126835-2-alex.bennee@linaro.org/
+> [3] https://lore.kernel.org/linux-mmc/1478548394-8184-2-git-send-email-tomas.winkler@intel.com/
+> [4] https://optee.readthedocs.io/en/latest/architecture/secure_storage.html#rpmb-secure-storage
+> [5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c44b6be62e8dd4ee0a308c36a70620613e6fc55f
+> [6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7269cba53d906cf257c139d3b3a53ad272176bca
+> [7] https://github.com/jenswi-linaro/optee_os/tree/rpmb_probe_v6
+> 
+> Thanks,
+> Jens
+> 
+> Changes since v5:
+> Manuel Traut reported and investigated an error on an i.MX8MM, the root
+> cause was identified as insufficient alignment on frames sent to the RPMB
+> device. Fixed in the OP-TEE driver as described below.
+> * "rpmb: add Replay Protected Memory Block (RPMB) subsystem"
+>   - Adding a missing EXPORT_SYMBOL_GPL()
+> * "optee: probe RPMB device using RPMB subsystem"
+>   - Replacing the old OPTEE_RPC_CMD_RPMB ABI with OPTEE_RPC_CMD_RPMB_FRAMES
+>     to get rid of the small header struct rpmb_req (now removed) causing
+>     the problem.
+>   - Matching changes on the secure side + support for re-initializing
+>     RPMB in case a boot stage has used RPMB, the latter also reported by 
+>     Manuel Traut.
+> 
+> Changes since v4:
+> * "rpmb: add Replay Protected Memory Block (RPMB) subsystem"
+>   - Describing struct rpmb_descr as RPMB description instead of descriptor
+> * "mmc: block: register RPMB partition with the RPMB subsystem"
+>   - Addressing review comments
+>   - Adding more comments for struct rpmb_frame
+>   - Fixing assignment of reliable_wr_count and capacity in mmc_blk_rpmb_add()
+> * "optee: probe RPMB device using RPMB subsystem"
+>   - Updating struct rpmb_dev_info to match changes in "rpmb: add Replay
+>     Protected Memory Block (RPMB) subsystem"
+> 
+> Changes since v3:
+> * Move struct rpmb_frame into the MMC driver since the format of the RPMB
+>   frames depend on the implementation, one format for eMMC, another for
+>   UFS, and so on
+> * "rpmb: add Replay Protected Memory Block (RPMB) subsystem"
+>   - Adding Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>   - Adding more description of the API functions
+>   - Removing the set_dev_info() op from struct rpmb_ops, the needed information
+>     is supplied in the arguments to rpmb_dev_register() instead.
+>   - Getting rid of struct rpmb_ops since only the route_frames() op was
+>     remaining, store that op directly in struct rpmb_dev
+>   - Changed rpmb_interface_register() and rpmb_interface_unregister() to use
+>     notifier_block instead of implementing the same thing ourselves
+> * "mmc: block: register RPMB partition with the RPMB subsystem"
+>   - Moving the call to rpmb_dev_register() to be done at the end of
+>     mmc_blk_probe() when the device is fully available
+> * "optee: probe RPMB device using RPMB subsystem"
+>   - Use IS_REACHABLE(CONFIG_RPMB) to determine if the RPMB subsystem is
+>     available
+>   - Translate TEE_ERROR_STORAGE_NOT_AVAILABLE if encountered in get_devices()
+>     to recognize the error in optee_rpmb_scan()
+>   - Simplified optee_rpmb_scan() and optee_rpmb_intf_rdev()
+> 
+> Changes since v2:
+> * "rpmb: add Replay Protected Memory Block (RPMB) subsystem"
+>   - Fixing documentation issues
+>   - Adding a "depends on MMC" in the Kconfig
+>   - Removed the class-device and the embedded device, struct rpmb_dev now
+>     relies on the parent device for reference counting as requested
+>   - Removed the now unneeded rpmb_ops get_resources() and put_resources()
+>     since references are already taken in mmc_blk_alloc_rpmb_part() before
+>     rpmb_dev_register() is called
+>   - Added rpmb_interface_{,un}register() now that
+>     class_interface_{,un}register() can't be used ay longer
+> * "mmc: block: register RPMB partition with the RPMB subsystem"
+>   - Adding the missing error cleanup in alloc_idata()
+>   - Taking the needed reference to md->disk in mmc_blk_alloc_rpmb_part()
+>     instead of in mmc_rpmb_chrdev_open() and rpmb_op_mmc_get_resources()
+> * "optee: probe RPMB device using RPMB subsystem"
+>   - Registering to get a notification when an RPMB device comes online
+>   - Probes for RPMB devices each time an RPMB device comes online, until
+>     a usable device is found
+>   - When a usable RPMB device is found, call
+>     optee_enumerate_devices(PTA_CMD_GET_DEVICES_RPMB)
+>   - Pass type of rpmb in return value from OPTEE_RPC_CMD_RPMB_PROBE_NEXT
+> 
+> Changes since Shyam's RFC:
+> * Removed the remaining leftover rpmb_cdev_*() function calls
+> * Refactored the struct rpmb_ops with all the previous ops replaced, in
+>   some sense closer to [3] with the route_frames() op
+> * Added rpmb_route_frames()
+> * Added struct rpmb_frame, enum rpmb_op_result, and enum rpmb_type from [3]
+> * Removed all functions not needed in the OP-TEE use case
+> * Added "mmc: block: register RPMB partition with the RPMB subsystem", based
+>   on the commit with the same name in [3]
+> * Added "optee: probe RPMB device using RPMB subsystem" for integration
+>   with OP-TEE
+> * Moved the RPMB driver into drivers/misc/rpmb-core.c
+> * Added my name to MODULE_AUTHOR() in rpmb-core.c
+> * Added an rpmb_mutex to serialize access to the IDA
+> * Removed the target parameter from all rpmb_*() functions since it's
+>   currently unused
+> 
+> Jens Wiklander (3):
+>   rpmb: add Replay Protected Memory Block (RPMB) subsystem
+>   mmc: block: register RPMB partition with the RPMB subsystem
+>   optee: probe RPMB device using RPMB subsystem
+> 
+>  MAINTAINERS                       |   7 +
+>  drivers/misc/Kconfig              |  10 ++
+>  drivers/misc/Makefile             |   1 +
+>  drivers/misc/rpmb-core.c          | 233 +++++++++++++++++++++++++++++
+>  drivers/mmc/core/block.c          | 241 +++++++++++++++++++++++++++++-
+>  drivers/tee/optee/core.c          |  30 ++++
+>  drivers/tee/optee/device.c        |   7 +
+>  drivers/tee/optee/ffa_abi.c       |   8 +
+>  drivers/tee/optee/optee_private.h |  21 ++-
+>  drivers/tee/optee/optee_rpc_cmd.h |  35 +++++
+>  drivers/tee/optee/rpc.c           | 166 ++++++++++++++++++++
+>  drivers/tee/optee/smc_abi.c       |   7 +
+>  include/linux/rpmb.h              | 136 +++++++++++++++++
+>  13 files changed, 899 insertions(+), 3 deletions(-)
+>  create mode 100644 drivers/misc/rpmb-core.c
+>  create mode 100644 include/linux/rpmb.h
+> 
+> -- 
+> 2.34.1
+> 
 
