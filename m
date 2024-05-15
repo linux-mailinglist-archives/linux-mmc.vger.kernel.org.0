@@ -1,170 +1,139 @@
-Return-Path: <linux-mmc+bounces-2091-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-2094-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 130EC8C6624
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2024 14:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 449598C687C
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2024 16:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7DDA1F2324F
-	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2024 12:11:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA7D31F22827
+	for <lists+linux-mmc@lfdr.de>; Wed, 15 May 2024 14:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B19762FF;
-	Wed, 15 May 2024 12:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EEE13F455;
+	Wed, 15 May 2024 14:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="b7j/bn6Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CueoZhB2"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3E7602B;
-	Wed, 15 May 2024 12:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC02128374;
+	Wed, 15 May 2024 14:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715775042; cv=none; b=sXxDgjOSBhIsUEdRcHiSXLDUM1jEn/snz95La+Vx15e/wZYy9jblZWC0bJAH/yEsARhfZLZtN8s+OsKHqCX6sx0/kfYpNq5hN5sLtaz0atOvhFDQXRmncyk40r71D1t1Yex8dL+BWvJbaPY3b2UrhDeYjikJDKo78aQ0qPkeFWU=
+	t=1715782943; cv=none; b=My5MG/+zZgTWznqrON6VtFbyQMIyxGNzCZ9YQmYEpqkxvu4q5oouYWbQb/oLO8T/yQvvJelVkWCteu/30fGr41rMM2qgA3oDKkRZzB2Z0wrQoDAHB+oOsaC1+8bWZl/RxQxXSVgXnZ+G7iZiHvrDqWonzclAd2pegU4vEdHzvkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715775042; c=relaxed/simple;
-	bh=U45sYz07c9/bh6hjiQ6b076yXpod53g0Oz1PD5e5z0I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ijYgi+10336bcf3btMRd6TNlu6LZkDAQwar1n15jDtorSNtSzath25DkylsCb1n9Eruf0KT58k/Epoyv7vlJsCYy+nlEb1dfVQZS4aGdJTvWWsLy8s7EbpDPEZkBS8x59DaMqA/DkvH+DF/4illnkxMDvqcEAqJCe0pTEJodeAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=b7j/bn6Y; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44F90fIl009791;
-	Wed, 15 May 2024 12:10:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-type; s=qcppdkim1; bh=Cn7Uutm95jKjzlbLmmvM
-	ddbDJUyHiP9YYs0w6BuoGtU=; b=b7j/bn6YpsYDsSAD8myBN5aBpt5uuyQcVJAi
-	Z5ZtWBtQRc7ZTcLEcVMxVn3fhwp9p1ZSsNIRCdF/xAYr/ct5jg39CY3Ekt8RAA6g
-	oSXc38vqnh4esumLVzIZkx+S1AyodgGSLBqZTlivbKxxNmlXF5xE74HhsuZZMn1Q
-	72VaZUszazapw0cS88+sLN4o/qB4t02+RmTuJkzpJdX1zZ3DZHxSb441jqg07s2w
-	CmKzdF7M5XBZZJcO0DNLRvMwgflIGdzBLsWc7hyiTNNQVwS1aGWiZAEJS99cwSRj
-	KpNnG+Yzls6y7sHg+55XyVJ2efnRX+c5QM0n829U7u6+xG/IsA==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y3x51kw9t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 12:10:37 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44FCAa73023664
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 12:10:36 GMT
-Received: from hyd-e160-a01-3-01.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 15 May 2024 05:10:33 -0700
-From: Naina Mehta <quic_nainmeht@quicinc.com>
-To: <ulf.hansson@linaro.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>, <bhupesh.sharma@linaro.org>
-CC: <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        Naina Mehta
-	<quic_nainmeht@quicinc.com>
-Subject: [PATCH 3/3] arm64: dts: qcom: sdx75-idp: add SDHCI for SD Card
-Date: Wed, 15 May 2024 17:39:58 +0530
-Message-ID: <20240515120958.32032-4-quic_nainmeht@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240515120958.32032-1-quic_nainmeht@quicinc.com>
-References: <20240515120958.32032-1-quic_nainmeht@quicinc.com>
+	s=arc-20240116; t=1715782943; c=relaxed/simple;
+	bh=IYa8U3GwTT6emlBqHWo5mWIUbSrmH2NUdPO0Of/UvTk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lVBL7gbYuJic5L52HgXurxgGHZtEVudYs1gCaIIFngj3sMn/SQ7B1t9nOvOtU4IWmtqqc8nWUnhtgz23u0N+FLWTjthqJH4SEBvzg6ihio5FWtQZbLaVytHjiKJHLezgYNySlrNwVNRlZmSF7tdg/Z0Yipd9FiQc7IVyI4Pv4Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CueoZhB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF0BC116B1;
+	Wed, 15 May 2024 14:22:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715782943;
+	bh=IYa8U3GwTT6emlBqHWo5mWIUbSrmH2NUdPO0Of/UvTk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CueoZhB2zuuGwLARJMmvT6lzIV9pb4IWmO3syNwwkyLYfCqzWvzHWUe5tmQaK8N2b
+	 bA6SGbE3v1U3+VL1radDeRqtjTyFHZ85n0PN+bob4zqVdsNpefqV2P+/536RZe2scF
+	 +6W/KbwrcNATWV4M0KDpzL1pxCccXzdWlagdRN0R0b+pXA683vjjAFVwUyBy7IPrqx
+	 zQBhNQwpYFYdDMUBosVdSDWfFo0aJjnVfZKeH791NoIvME9t5X9Jw7sH1x0zuFO8xc
+	 GkLIDGgOCtPekJRh255BXM0E+/dOZgFW9Yk0J7cOzHULSMmALYbXGdA2iv4bKClr+J
+	 FaKjtsMkpNpqQ==
+Message-ID: <89359317-8f96-4781-924c-93cac1e0c443@kernel.org>
+Date: Wed, 15 May 2024 16:22:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Kp_3wrGex8hghk7VJA0Hd6J1bUmm5EZd
-X-Proofpoint-ORIG-GUID: Kp_3wrGex8hghk7VJA0Hd6J1bUmm5EZd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-15_06,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
- mlxscore=0 impostorscore=0 adultscore=0 clxscore=1015 mlxlogscore=999
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405150084
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: mmc: sdhci-msm: Document the SDX75
+ compatible
+To: Naina Mehta <quic_nainmeht@quicinc.com>, ulf.hansson@linaro.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ andersson@kernel.org, konrad.dybcio@linaro.org, bhupesh.sharma@linaro.org
+Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20240515120958.32032-1-quic_nainmeht@quicinc.com>
+ <20240515120958.32032-2-quic_nainmeht@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240515120958.32032-2-quic_nainmeht@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Enable SDHCI on sdx75-idp to support SD card.
-Also add the required regulators.
+On 15/05/2024 14:09, Naina Mehta wrote:
+> Document the compatible for SDHCI on SDX75 SoC.
+> 
+> Signed-off-by: Naina Mehta <quic_nainmeht@quicinc.com>
+> ---
 
-Signed-off-by: Naina Mehta <quic_nainmeht@quicinc.com>
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 ---
- arch/arm64/boot/dts/qcom/sdx75-idp.dts | 45 ++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdx75-idp.dts b/arch/arm64/boot/dts/qcom/sdx75-idp.dts
-index f76e72fb2072..6f94278cf837 100644
---- a/arch/arm64/boot/dts/qcom/sdx75-idp.dts
-+++ b/arch/arm64/boot/dts/qcom/sdx75-idp.dts
-@@ -41,6 +41,29 @@
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, you can skip it (please do
+not feel offended by me posting it here - no bad intentions intended).
+If you do not know the process, here is a short explanation:
 
- 		vin-supply = <&vph_ext>;
- 	};
-+
-+	vreg_sd_vccb: sd-vccb {
-+		compatible = "regulator-gpio";
-+		regulator-name = "vreg_sd_vccb";
-+		regulator-min-microvolt = <1650000>;
-+		regulator-max-microvolt = <3600000>;
-+		enable-gpios = <&tlmm 102 GPIO_ACTIVE_HIGH>;
-+		gpios = <&tlmm 84 GPIO_ACTIVE_HIGH>;
-+		states = <1650000 0>, <3600000 1>;
-+		startup-delay-us = <5000>;
-+		enable-active-high;
-+		regulator-boot-on;
-+
-+		vin-supply = <&vph_ext>;
-+	};
-+
-+	vreg_sd_vdd: sd-vdd {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vreg_sd_vdd";
-+		regulator-min-microvolt = <2950000>;
-+		regulator-max-microvolt = <2950000>;
-+		vin-supply = <&vreg_sd_vccb>;
-+	};
- };
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions, under or above your Signed-off-by tag. Tag is "received", when
+provided in a message replied to you on the mailing list. Tools like b4
+can help here. However, there's no need to repost patches *only* to add
+the tags. The upstream maintainer will do that for tags received on the
+version they apply.
 
- &apps_rsc {
-@@ -259,8 +282,30 @@
- 	status = "okay";
- };
+https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
 
-+&sdhc {
-+	cd-gpios = <&tlmm 103 GPIO_ACTIVE_LOW>;
-+	vmmc-supply = <&vreg_sd_vdd>;
-+	vqmmc-supply = <&vreg_sd_vccb>;
-+	bus-width = <4>;
-+	no-sdio;
-+	no-mmc;
-+
-+	pinctrl-0 = <&sdc1_default &sd_cd>;
-+	pinctrl-1 = <&sdc1_sleep &sd_cd>;
-+	pinctrl-names = "default", "sleep";
-+
-+	status = "okay";
-+};
-+
- &tlmm {
- 	gpio-reserved-ranges = <110 6>;
-+
-+	sd_cd: sd-cd-state {
-+		pins = "gpio103";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
- };
-
- &uart1 {
---
-2.17.1
+Best regards,
+Krzysztof
 
 
