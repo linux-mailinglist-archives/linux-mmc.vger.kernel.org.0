@@ -1,71 +1,71 @@
-Return-Path: <linux-mmc+bounces-2195-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-2200-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77708CE9C1
-	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2024 20:29:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F088C8CE9DA
+	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2024 20:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CADC31C20E97
-	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2024 18:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7792B1F2302F
+	for <lists+linux-mmc@lfdr.de>; Fri, 24 May 2024 18:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C576612F5;
-	Fri, 24 May 2024 18:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33314F1EE;
+	Fri, 24 May 2024 18:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="lfEYg52p"
+	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="HCrdbbkA"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-wm1-f99.google.com (mail-wm1-f99.google.com [209.85.128.99])
+Received: from mail-wr1-f99.google.com (mail-wr1-f99.google.com [209.85.221.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC0F4EB3D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B497E5028C
 	for <linux-mmc@vger.kernel.org>; Fri, 24 May 2024 18:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.99
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716575287; cv=none; b=L/xnJsrVwTQOEzU0rQIcRG2X5TvpoeT9nwF2Hx8o6YE5OrNa31dNcqfI1s5XYRT5R89NXy1AgJ2lirzoRgtP5cbSYPNmK/FW5PS65WNga0nTrTGoyorpLiW7PpNVYbNZXw+NAishCW3L/nrhmIumMPcMIZN+FOQmFoczKjlwtSg=
+	t=1716575290; cv=none; b=hGn/DmfTL3cI+vnxcB2EaPcLhQ0/KovQ8iuyboblSe9wNMH40OYPNR6OfLmxuzkFA8IthfHwF7WOG24eEVRLOFhYxxsebWZQG6wZrBikNqhxUHuWb4fRAc9OGLJWxZhcIlm+NDwwdx/rpnJ1JO4QoSel5UgPPanAXUP2IGiqQIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716575287; c=relaxed/simple;
-	bh=vAXHDE0/SqkQsUMGiVCRffAB088Mi79YDBrfTqisc/Y=;
+	s=arc-20240116; t=1716575290; c=relaxed/simple;
+	bh=F8/KqPuTA3STsdOrh0OGo7BppxoWY1fWB0fqUmwksXo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NJx/mev3JYO+l/eC4bSQpCVecpQOOLcvEpel+jm8WGs1L/wrejr9niU37ieJyp65ajsSi0brm1N7V3U8Qvy9ulZbTMdHA+IEsvsbBuqpup+706KS8Of/YWXwssBNNZK7izOXN14U37McIgpiyRZ+wkFX1bKZjj4DyvjBi3X/ws0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=lfEYg52p; arc=none smtp.client-ip=209.85.128.99
+	 MIME-Version; b=nT6fDnwW0TgfB+9nvj6P4HiCAe1QOZTGV+p5BnknEZnFG0N9O1BwV3KHYErMwcjQpsBWNPzVRzpp1Wk7VrY9XCDm/tB+sBtSRNPwwfobKJeqML0suo2lfZCiBVUX6eqkghl/WFfktAsfD54TeA1QgTtrIrggMSgdgZQfQehDpGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=HCrdbbkA; arc=none smtp.client-ip=209.85.221.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
-Received: by mail-wm1-f99.google.com with SMTP id 5b1f17b1804b1-4200ee78f34so32625635e9.3
+Received: by mail-wr1-f99.google.com with SMTP id ffacd0b85a97d-351da5838fcso7218236f8f.1
         for <linux-mmc@vger.kernel.org>; Fri, 24 May 2024 11:28:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=raspberrypi.com; s=google; t=1716575278; x=1717180078; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LczGECRfXrurv9dI4g4iDY7uh7b4Krp6PtWjBnzvVYI=;
-        b=lfEYg52pyu+DKsD80EA7rNZ2YDy7brFQQ1vMXAb1docWr7tuY1IgRRqSq5MT4QWp0P
-         sgwiBC90cJ4/L6vugOJxWR0YJO+PP5niD7GiJpqWSLeyW20FOtsPtVk8CPck5MnCpKJh
-         DeD1nf2R/CAuWqwhVsJtFCSHgNACajOGFjWIx30547WdOSe6frg6fMruNgUlfWwNuZMo
-         nDffxv+b3+/z9TwG3h8mjVLJSpvQai77nfpxJEdD6RvTl1qoU0pxGe8fsFYo3LWfFPrL
-         SGVs0gTCyCsT2qPPuxclMo3AEatxcJ7PWRRSSeWTi9g9tEkocdzYubTwdkoOmFkcDbxX
-         Y2BQ==
+        bh=M/tSxq6GA4AT2Mm+nWQe3L0M6c7/C4J7O/BV4BAy6ic=;
+        b=HCrdbbkAjz1tSpFIwBraoBEQcqzzGcabQBgTv52KLoBobA2t/QS6RtuOifaiwI5G0J
+         5O0jn6BKDJmwgu+XfACyb31fSyKoNSNttHo9e+UkptKYOKE+iQlsELMZLZxGIWyP44o7
+         ybQu5ZYseUCLyGyGqnBZ8tFfUnoCpu7Ge1JXYbYiNCjHforIsRtz0sH4YvtpDI1bd/+E
+         bk/PsZrvZ+YbBo4AhXwA7I7mYGfG55MxEhLau8u9cbPW3EWCDcIHk+FJDCFvqImozoCt
+         bDD2Ep8dFJgT8wz1tv5J69punW6kzhkxd3zu7dYxF65boaHmmecBdTnJdUA8iKxuP19R
+         tqtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1716575278; x=1717180078;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LczGECRfXrurv9dI4g4iDY7uh7b4Krp6PtWjBnzvVYI=;
-        b=gwUnNGHYkY+mBlIbPOtMsAr/dBW3bNL654CWDWhwWk9nFlwi7eqUEjff33aAnvEfEw
-         tA/szKh7/5TbvEj5gJJTpRXpAl2CZOPR5qXS7MJVZLIdUS9y+7u3iHyzwMK+pfc/SrEJ
-         nVDAy6F9EHzf7Ho4Vn89hFE+UZUnwzeG0etTYwdLPNWot3GrGJ6OAXn199yy0xK512Tu
-         +UL00WgiudQe1kbO7YM3a9zRwpTKfMPmmwkKya8uSwOnuAy7GuBPgvpkY9ggsI6pFv5+
-         BIT+GWq3L7zfeyntoL+4NjySaQXA7KB0T1dMU6d/m/mBY8xonLf7ZEB4Y4OzfHMqYc10
-         yNcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUddPptjMuBTcCtxYx4uAi+zLjU/Ulphq9E9puauLfwZRCle0w5QCHeRt8ZZoFq3kfyloaMNilHSrickcR9Nj6AmJHmi/7yv6UE
-X-Gm-Message-State: AOJu0YxNPtvNrAaJJJMhCeX4e3KRwRor7lntd2UTJ+7odf5iyUio6BSE
-	ncPouNVskXAUpmFP73MqH/p82tUumUv2rLlPK2mLMLuXjlR3uO/zSvAkdJhfEowptAYkjKTBr8l
-	Pav+bare4IUC21ACR9v/pqB6Pg0NjWdkA
-X-Google-Smtp-Source: AGHT+IFZwqy7hi4v9+jui3sDRfDYyIcnFYr2RUg4s5QWzy/T07+ZLpqeeBjaPUd6wfnyXf+trffGHFzZtrlM
-X-Received: by 2002:a05:600c:2948:b0:41f:ec3e:9797 with SMTP id 5b1f17b1804b1-421089de607mr27580345e9.16.1716575278201;
+        bh=M/tSxq6GA4AT2Mm+nWQe3L0M6c7/C4J7O/BV4BAy6ic=;
+        b=itUfNgz4YtjG/RCkwjU9kmsZd05aEMsKV8fjqx6j2XhBwZaKVM2P99hOIAPskWu4iQ
+         qBOXpDuBoAm6RMZVT6h9n/VhIlgRdT3nwc77pVVqupYqRQf+X5HqZ5Qf6phGY/TN8qS7
+         I9HRaBmSWH3GkOO70SGVVZRHBniTUqF/e8IM+EzfhZhPqeoufLfUKmLsZ0mAULdvM2Lb
+         b05fFuIvlq68qh9/kzg6mW4yBa3MmQdlrPopwynQl3fsEJcxwIelyUgkUGraDyynT2aF
+         uOKc30GtjeH1B7uDPEJ1p60wHAZSyXSSM2epunfwxcjBtK/4w6KwGfrObTcDeQn30gP7
+         dviw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcRLwjOhwke+5Y6SEth8ileYS5aDI8XnPDbT1qRlvW7iWQctk/j3FvjqSgHkOJE+DYhzgyPgIl+EcK+6oZUFNxNZkcEriXaEDd
+X-Gm-Message-State: AOJu0YzFEkLQjWv5pkQmg6+phTYC3/g6xzp1HjjLPJwmyq+K0F7wqUrJ
+	KHoHwYazqYZYnbyPYyvDmE13gOYVyN0FTLjAbSaLjPQOQbUh69/6cO7+w/Z6zkmFb0Z4+Ev8pwt
+	euVp9q9YRfXAbfZUXc4r/CRJ1BX8+ykzw
+X-Google-Smtp-Source: AGHT+IGz+W6dkdCIXw0ZDp1B/MgrtzNbyRrO8ywWOE/qPAQsbvGxItyKlknvWBy72WuD1SEAMZ/Y6JavBjaB
+X-Received: by 2002:a05:6000:4597:b0:354:e775:19fd with SMTP id ffacd0b85a97d-355221819d2mr1987214f8f.26.1716575278649;
         Fri, 24 May 2024 11:27:58 -0700 (PDT)
 Received: from raspberrypi.com ([188.39.149.98])
-        by smtp-relay.gmail.com with ESMTPS id ffacd0b85a97d-35586b0b42fsm56761f8f.115.2024.05.24.11.27.57
+        by smtp-relay.gmail.com with ESMTPS id ffacd0b85a97d-3557a1c67f0sm61533f8f.70.2024.05.24.11.27.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 24 May 2024 11:27:58 -0700 (PDT)
 X-Relaying-Domain: raspberrypi.com
@@ -106,9 +106,9 @@ Cc: devicetree@vger.kernel.org,
 	iommu@lists.linux.dev,
 	linux-sound@vger.kernel.org,
 	Dave Stevenson <dave.stevenson@raspberrypi.com>
-Subject: [PATCH 12/18] dmaengine: bcm2835: Read ranges if dma-ranges aren't mapped
-Date: Fri, 24 May 2024 19:26:56 +0100
-Message-Id: <20240524182702.1317935-13-dave.stevenson@raspberrypi.com>
+Subject: [PATCH 13/18] arm: dt: Add dma-ranges to the bcm283x platforms
+Date: Fri, 24 May 2024 19:26:57 +0100
+Message-Id: <20240524182702.1317935-14-dave.stevenson@raspberrypi.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240524182702.1317935-1-dave.stevenson@raspberrypi.com>
 References: <20240524182702.1317935-1-dave.stevenson@raspberrypi.com>
@@ -120,217 +120,89 @@ List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We have a historical error in the DT files that don't define
-the dma-ranges fully, and DMA users have been passing in
-DMA addresses instead of CPU physical addresses.
-
-As DT is ABI, we have to be able to work with old DT but new
-kernel, which means handling this missing dma-range mapping
-somehow.
-The "ranges" property has always been defined correctly, so
-abuse that in the event that dma-ranges are missing.
-
-There appears to be no easy route to access "ranges", so
-duplicate the functions for handling "dma-ranges" here to
-keep the hack contained.
+In order to use the dma_map_resource for mappings, add the
+dma-ranges to the relevant DT files.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 ---
- drivers/dma/bcm2835-dma.c | 139 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 134 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/broadcom/bcm2711.dtsi | 12 ++++++++++--
+ arch/arm/boot/dts/broadcom/bcm2835.dtsi |  3 ++-
+ arch/arm/boot/dts/broadcom/bcm2836.dtsi |  3 ++-
+ arch/arm/boot/dts/broadcom/bcm2837.dtsi |  3 ++-
+ 4 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/dma/bcm2835-dma.c b/drivers/dma/bcm2835-dma.c
-index e48008b06716..06407691ef28 100644
---- a/drivers/dma/bcm2835-dma.c
-+++ b/drivers/dma/bcm2835-dma.c
-@@ -25,6 +25,7 @@
- #include <linux/interrupt.h>
- #include <linux/list.h>
- #include <linux/module.h>
-+#include <linux/of_address.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/io.h>
-@@ -37,6 +38,12 @@
- #define BCM2835_DMA_MAX_DMA_CHAN_SUPPORTED 14
- #define BCM2835_DMA_CHAN_NAME_SIZE 8
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+index d64bf098b697..d6f32d32b456 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+@@ -42,7 +42,8 @@ soc {
+ 			 <0x7c000000  0x0 0xfc000000  0x02000000>,
+ 			 <0x40000000  0x0 0xff800000  0x00800000>;
+ 		/* Emulate a contiguous 30-bit address range for DMA */
+-		dma-ranges = <0xc0000000  0x0 0x00000000  0x40000000>;
++		dma-ranges = <0xc0000000  0x0 0x00000000  0x40000000>,
++			     <0x7c000000  0x0 0xfc000000  0x03800000>;
  
-+struct bcm2835_bus_dma_region {
-+	phys_addr_t	cpu_start;
-+	dma_addr_t	dma_start;
-+	u64		size;
-+};
-+
- /**
-  * struct bcm2835_dmadev - BCM2835 DMA controller
-  * @ddev: DMA device
-@@ -48,6 +55,8 @@ struct bcm2835_dmadev {
- 	struct dma_device ddev;
- 	void __iomem *base;
- 	dma_addr_t zero_page;
-+	bool ranges_initialised;
-+	struct bcm2835_bus_dma_region *ranges_map;
- };
+ 		/*
+ 		 * This node is the provider for the enable-method for
+@@ -550,7 +551,14 @@ scb {
+ 		#size-cells = <1>;
  
- struct bcm2835_dma_cb {
-@@ -71,6 +80,7 @@ struct bcm2835_dma_chan_map {
+ 		ranges = <0x0 0x7c000000  0x0 0xfc000000  0x03800000>,
+-			 <0x6 0x00000000  0x6 0x00000000  0x40000000>;
++			 <0x0 0x40000000  0x0 0xff800000  0x00800000>,
++			 <0x6 0x00000000  0x6 0x00000000  0x40000000>,
++			 <0x0 0x00000000  0x0 0x00000000  0xfc000000>;
++		dma-ranges = <0x4 0x7c000000  0x0 0xfc000000  0x03800000>,
++			     <0x0 0x00000000  0x0 0x00000000  0x80000000>,
++			     <0x0 0x80000000  0x0 0x80000000  0x80000000>,
++			     <0x1 0x00000000  0x1 0x00000000  0x80000000>,
++			     <0x1 0x80000000  0x1 0x80000000  0x80000000>;
  
- 	phys_addr_t slave_addr;
- 	unsigned int xfer_size;
-+	bool ranges;
- };
+ 		pcie0: pcie@7d500000 {
+ 			compatible = "brcm,bcm2711-pcie";
+diff --git a/arch/arm/boot/dts/broadcom/bcm2835.dtsi b/arch/arm/boot/dts/broadcom/bcm2835.dtsi
+index 15cb331febbb..480e12fd8a17 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2835.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2835.dtsi
+@@ -35,7 +35,8 @@ cpu@0 {
  
- struct bcm2835_chan {
-@@ -279,6 +289,114 @@ static inline bool need_dst_incr(enum dma_transfer_direction direction)
- 	return false;
- };
+ 	soc {
+ 		ranges = <0x7e000000 0x20000000 0x02000000>;
+-		dma-ranges = <0x40000000 0x00000000 0x20000000>;
++		dma-ranges = <0x80000000 0x00000000 0x20000000>,
++			     <0x7e000000 0x20000000 0x02000000>;
+ 	};
  
-+static int bcm2835_dma_init_ranges(struct dma_chan *chan)
-+{
-+	struct bcm2835_dmadev *od = to_bcm2835_dma_dev(chan->device);
-+	struct device *dev = chan->device->dev;
-+	struct device_node *node = of_node_get(dev->of_node);
-+	const __be32 *ranges = NULL;
-+	bool found_ranges = false;
-+	struct of_range_parser parser;
-+	struct of_range range;
-+	struct bcm2835_bus_dma_region *r;
-+	int len, num_ranges = 0;
-+	int ret = 0;
-+
-+	while (node) {
-+		ranges = of_get_property(node, "ranges", &len);
-+
-+		/* Ignore empty ranges, they imply no translation required */
-+		if (ranges && len > 0)
-+			break;
-+
-+		/* Once we find 'dma-ranges', then a missing one is an error */
-+		if (found_ranges && !ranges) {
-+			ret = -ENODEV;
-+			goto out;
-+		}
-+		found_ranges = true;
-+
-+		node = of_get_next_parent(node);
-+	}
-+
-+	if (!node || !ranges) {
-+		pr_debug("no ranges found for node(%pOF)\n", dev->of_node);
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+
-+	of_pci_range_parser_init(&parser, node);
-+	for_each_of_range(&parser, &range) {
-+		if (range.cpu_addr == OF_BAD_ADDR) {
-+			pr_err("translation of DMA address(%llx) to CPU address failed node(%pOF)\n",
-+			       range.bus_addr, node);
-+			continue;
-+		}
-+		num_ranges++;
-+	}
-+
-+	if (!num_ranges) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	r = kcalloc(num_ranges + 1, sizeof(*r), GFP_KERNEL);
-+	if (!r) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	/*
-+	 * Record all info in the generic DMA ranges array for struct device,
-+	 * returning an error if we don't find any parsable ranges.
-+	 */
-+	od->ranges_map = r;
-+	of_pci_range_parser_init(&parser, node);
-+	for_each_of_range(&parser, &range) {
-+		pr_debug("dma_addr(%llx) cpu_addr(%llx) size(%llx)\n",
-+			 range.bus_addr, range.cpu_addr, range.size);
-+		if (range.cpu_addr == OF_BAD_ADDR)
-+			continue;
-+		r->cpu_start = range.cpu_addr;
-+		r->dma_start = range.bus_addr;
-+		r->size = range.size;
-+		r++;
-+	}
-+out:
-+	of_node_put(node);
-+	return ret;
-+}
-+
-+static dma_addr_t bcm2835_translate_phys_to_dma(struct bcm2835_dmadev *od,
-+						phys_addr_t paddr)
-+{
-+	const struct bcm2835_bus_dma_region *m;
-+
-+	for (m = od->ranges_map; m && m->size; m++) {
-+		u64 offset = paddr - m->cpu_start;
-+
-+		if (paddr >= m->cpu_start && offset < m->size)
-+			return m->dma_start + offset;
-+	}
-+
-+	/* make sure dma_capable fails when no translation is available */
-+	return DMA_MAPPING_ERROR;
-+}
-+
-+static dma_addr_t
-+bcm2835_dma_map_using_range(struct dma_chan *chan, phys_addr_t phys_addr,
-+			    size_t size, enum dma_data_direction dir)
-+{
-+	struct bcm2835_dmadev *od = to_bcm2835_dma_dev(chan->device);
-+
-+	if (!od->ranges_initialised) {
-+		bcm2835_dma_init_ranges(chan);
-+		od->ranges_initialised = true;
-+	}
-+
-+	return bcm2835_translate_phys_to_dma(od, phys_addr);
-+}
-+
- static int bcm2835_dma_map_slave_addr(struct dma_chan *chan,
- 				      phys_addr_t dev_addr,
- 				      size_t dev_size,
-@@ -307,8 +425,11 @@ static int bcm2835_dma_map_slave_addr(struct dma_chan *chan,
- 	    dev_dir == map->dir)
- 		return 0;
+ 	arm-pmu {
+diff --git a/arch/arm/boot/dts/broadcom/bcm2836.dtsi b/arch/arm/boot/dts/broadcom/bcm2836.dtsi
+index 783fe624ba68..4ab7769c056a 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2836.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2836.dtsi
+@@ -8,7 +8,8 @@ / {
+ 	soc {
+ 		ranges = <0x7e000000 0x3f000000 0x1000000>,
+ 			 <0x40000000 0x40000000 0x00001000>;
+-		dma-ranges = <0xc0000000 0x00000000 0x3f000000>;
++		dma-ranges = <0xc0000000 0x00000000 0x3f000000>,
++			     <0x7e000000 0x3f000000 0x01000000>;
  
--	/* Remove old mapping if present. */
--	if (map->xfer_size) {
-+	/*
-+	 * Remove old mapping if present and we haven't used our own "ranges"
-+	 * mapping (which has no unmap)
-+	 */
-+	if (map->xfer_size && !map->ranges) {
- 		dev_dbg(chan->device->dev, "chan: unmap %zx@%pap to %pad dir: %s\n",
- 			dev_size, &dev_addr, &map->addr,
- 			dev_dir == DMA_TO_DEVICE ? "DMA_TO_DEVICE" : "DMA_FROM_DEVICE");
-@@ -322,9 +443,17 @@ static int bcm2835_dma_map_slave_addr(struct dma_chan *chan,
- 				     dev_dir, 0);
+ 		local_intc: interrupt-controller@40000000 {
+ 			compatible = "brcm,bcm2836-l1-intc";
+diff --git a/arch/arm/boot/dts/broadcom/bcm2837.dtsi b/arch/arm/boot/dts/broadcom/bcm2837.dtsi
+index 84c08b46519d..d034d6a8caad 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2837.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2837.dtsi
+@@ -7,7 +7,8 @@ / {
+ 	soc {
+ 		ranges = <0x7e000000 0x3f000000 0x1000000>,
+ 			 <0x40000000 0x40000000 0x00001000>;
+-		dma-ranges = <0xc0000000 0x00000000 0x3f000000>;
++		dma-ranges = <0xc0000000 0x00000000 0x3f000000>,
++			     <0x7e000000 0x3f000000 0x01000000>;
  
- 	if (dma_mapping_error(chan->device->dev, map->addr)) {
--		dev_err(chan->device->dev, "chan: failed to map %zx@%pap",
--			dev_size, &dev_addr);
--		return -EIO;
-+		map->addr = bcm2835_dma_map_using_range(chan, dev_addr, dev_size,
-+							dev_dir);
-+		if (dma_mapping_error(chan->device->dev, map->addr)) {
-+			dev_err(chan->device->dev, "chan: failed to map %zx@%pap",
-+				dev_size, &dev_addr);
-+
-+			return -EIO;
-+		}
-+		map->ranges = true;
-+	} else {
-+		map->ranges = false;
- 	}
- 
- 	dev_dbg(chan->device->dev, "chan: map %zx@%pap to %pad dir: %s\n",
+ 		local_intc: local_intc@40000000 {
+ 			compatible = "brcm,bcm2836-l1-intc";
 -- 
 2.34.1
 
