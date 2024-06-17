@@ -1,145 +1,88 @@
-Return-Path: <linux-mmc+bounces-2555-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-2565-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA2C90A140
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2024 03:00:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC3890A280
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2024 04:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F6B283AD6
-	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2024 01:00:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91C11B2173C
+	for <lists+linux-mmc@lfdr.de>; Mon, 17 Jun 2024 02:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA86B20B12;
-	Mon, 17 Jun 2024 00:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68A617B50F;
+	Mon, 17 Jun 2024 02:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LGOoOiAK"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="lKni1Uel"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D848F4A;
-	Mon, 17 Jun 2024 00:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025C3433A0;
+	Mon, 17 Jun 2024 02:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718585957; cv=none; b=PPDzRRegwTULuD+ixYUX3tvXkFZmtjhKwVQS6j4xmthqKrqx8apnUSzhHCDenbxAWwIjiigQmxvhvXkdrM/Y42LCGch7+vwwW1JQ68xzK9a6bZeaFGse5iKg6tCMh4+HCAJelUGNAGgNC/vZgjmmm3dhx7ABWb1kVDCqe+zHwKw=
+	t=1718591777; cv=none; b=VrPpWRLJvWrF8az7naNOOKBHai5VALchGEY/7LusaPtSwtN9qk0yA9j2Ds8QZlIAkQFWTwDxf3/T3mf0MGO4h8FzZSwu3hdnUiFqyNeDTFExCcdV/NUwKxyhnOHkwkPp6wd3j2XYi9SIVarby+d6vW3u6yhb26tqcEdIfqIVJ+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718585957; c=relaxed/simple;
-	bh=FwqKcOIv4GQCodcXi2e3L3EQODaxv7W2g/QQYq16pqQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EYfreGKI26wM0hzKSIoX3PCC/Yjc1WM0OkCh5u01qOvHWJiQRdMiHmpWf2gDnGIb5nbI1l4EHrLvxGyDbojmRFv+2qYwyRn9pI40tOR+HYfl4Y06ZqY5TFWrdGXM0pVZyAEvnLYeWGAtg+l7efJVqZfGEjf5aZjr69p97H4Js+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LGOoOiAK; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45GMmmU6013562;
-	Mon, 17 Jun 2024 00:59:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UBBz4g7z4CveweyGcx/P2q1vldz1n0QvWjbJsIslRvg=; b=LGOoOiAKrvcq5D/K
-	x0p4nlmfYjMhkdA6H3r57TNXiih8mPR88RbezgI0yQCkINhDjhHFDg6Dg42AVSgi
-	EoJjKnPt6x0+PD10o0Fi1c2sEB/cWevqXEQX/EluFFm+Uo4F8M/2h9uZMmYokfUw
-	rci/8do/koeFsMlpanEoRa6HpgTCI3uPophn2elz+NAjAC/BaQ257r6EgpTjEJEm
-	XChZY9HoUvmSDDmv4DTWnY7CJ+RTAOTD06kTSDLxMkTCxevFyNT+N0WHkHUCTBHV
-	QMpNhyfdGaT2UG+MgAbwM6igoQNSZ2rZnympyw2TL8Mdsy/INXWtEQXt4/c5yA2T
-	reIgNQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ys3qf2cra-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jun 2024 00:59:03 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45H0x2Fv001350
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jun 2024 00:59:02 GMT
-Received: from hu-gaurkash-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 16 Jun 2024 17:58:58 -0700
-From: Gaurav Kashyap <quic_gaurkash@quicinc.com>
-To: <linux-arm-msm@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <andersson@kernel.org>, <ebiggers@google.com>,
-        <neil.armstrong@linaro.org>, <srinivas.kandagatla@linaro.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <robh+dt@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <kernel@quicinc.com>, <linux-crypto@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <quic_omprsing@quicinc.com>,
-        <quic_nguyenb@quicinc.com>, <bartosz.golaszewski@linaro.org>,
-        <konrad.dybcio@linaro.org>, <ulf.hansson@linaro.org>,
-        <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <mani@kernel.org>,
-        <davem@davemloft.net>, <herbert@gondor.apana.org.au>,
-        <psodagud@quicinc.com>, <quic_apurupa@quicinc.com>,
-        <sonalg@quicinc.com>, Gaurav Kashyap
-	<quic_gaurkash@quicinc.com>
-Subject: [PATCH v5 15/15] arm64: dts: qcom: sm8550: add hwkm support to ufs ice
-Date: Sun, 16 Jun 2024 17:51:10 -0700
-Message-ID: <20240617005825.1443206-16-quic_gaurkash@quicinc.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240617005825.1443206-1-quic_gaurkash@quicinc.com>
-References: <20240617005825.1443206-1-quic_gaurkash@quicinc.com>
+	s=arc-20240116; t=1718591777; c=relaxed/simple;
+	bh=avLxiTbr2hZOXLZqS+bzuinJ+DnSpN8T7kEP/BWMQFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OyaDSGkgbSUsxiU8xOExKoz6Mr0ETC/b1667X7VVi2ohSbVPm78wy1qyiLZYfIOjnf8ybyEpIAsVHx2DmUuuSULawPxkFW/0EXtc+TMWJSmF9kZ0Mi9SOTgvbvuN7NUuqaivk8s63BiGE85dUMgIMUGpz4sydI2Z41471iQ8r3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=lKni1Uel; arc=none smtp.client-ip=123.58.177.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=53RT71/gJhh3KSDTNrn1PfJkyyOiqhQIN18tBU+cdU0=;
+	b=lKni1Uel2RCukDr4Zf7WbwCuH/BjaijZ5Yi62kOY4yCKMHpkUIH+bNb0ghb+Kw
+	ROp6uCvehpOAQPCkueOQwGQHOM6r5SMaptLj6nSJgzoF9vxUc1rNXes87T9U/IAu
+	ydhhusOszVa/JQSeAbyEAagT1lLI6YaqD1LKkObkE6frc=
+Received: from dragon (unknown [114.216.76.201])
+	by smtp1 (Coremail) with SMTP id ClUQrAD3_3bnoG9mgmAMCA--.4517S3;
+	Mon, 17 Jun 2024 10:35:20 +0800 (CST)
+Date: Mon, 17 Jun 2024 10:35:19 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v5 3/3] arm64: dts: layerscape: Change node name from
+ 'esdhc' to 'mmc'
+Message-ID: <Zm+g5x6mCX0EY64j@dragon>
+References: <20240613-ls_waring_esdhc-v5-0-36644e2fe21c@nxp.com>
+ <20240613-ls_waring_esdhc-v5-3-36644e2fe21c@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: n1iAnwKrO5XF8j45QrOF7kLNEYDZnHA4
-X-Proofpoint-ORIG-GUID: n1iAnwKrO5XF8j45QrOF7kLNEYDZnHA4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-16_12,2024-06-14_03,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- malwarescore=0 spamscore=0 mlxlogscore=927 bulkscore=0 phishscore=0
- lowpriorityscore=0 mlxscore=0 priorityscore=1501 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406170006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240613-ls_waring_esdhc-v5-3-36644e2fe21c@nxp.com>
+X-CM-TRANSID:ClUQrAD3_3bnoG9mgmAMCA--.4517S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cr47Ar4kCw4DXr43Cw48WFg_yoW8Wr4xp3
+	WUZr1UGrZ3KFyakasa9w1xCrnrKw4Sgrn09rnrWasFg3sxuFW0vF1rtana9w18Xw1rAw4x
+	Ka45Jry8tryYqw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jfiSdUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDhABZVszYrukEQABs-
 
-The Inline Crypto Engine (ICE) for UFS/EMMC supports the
-Hardware Key Manager (HWKM) to securely manage storage
-keys. Enable using this hardware on sm8550.
+On Thu, Jun 13, 2024 at 10:32:07AM -0400, Frank Li wrote:
+> Use common node name 'mmc' to fix DTB_CHECK warning.
+> Add compatible string 'fsl,ls2080a-esdhc' for fsl-lx2160a.
+> 
+> arch/arm64/boot/dts/freescale/fsl-ls1012a-frdm.dtb: esdhc@1560000: $nodename:0: 'esdhc@1560000' does not match '^mmc(@.*)?$'
+> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: esdhc@1560000: $nodename:0: 'esdhc@1560000' does not match '^mmc(@.*)?$'
+> arch/arm64/boot/dts/freescale/fsl-ls1046a-frwy.dtb: esdhc@1560000: $nodename:0: 'esdhc@1560000' does not match '^mmc(@.*)?$'
+> arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: esdhc@2140000: $nodename:0: 'esdhc@2140000' does not match '^mmc(@.*)?$'
+> arch/arm64/boot/dts/freescale/fsl-ls2080a-qds.dtb: esdhc@2140000: $nodename:0: 'esdhc@2140000' does not match '^mmc(@.*)?$'
+> arch/arm64/boot/dts/freescale/fsl-lx2160a-honeycomb.dtb: esdhc@2140000: compatible:0: 'fsl,esdhc' is not one of ['fsl,mpc8536-esdhc', 'fsl,mpc8378-esdhc', 'fsl,p2020-esdhc', 'fsl,p4080-esdhc', 'fsl,t1040-esdhc', 'fsl,t4240-esdhc', 'fsl,ls1012a-esdhc', 'fsl,ls1028a-esdhc', 'fsl,ls1088a-esdhc', 'fsl,ls1043a-esdhc', 'fsl,ls1046a-esdhc', 'fsl,ls2080a-esdhc']
+>         from schema $id: http://devicetree.org/schemas/mmc/fsl,esdhc.yaml#
+> arch/arm64/boot/dts/freescale/fsl-lx2160a-honeycomb.dtb: esdhc@2140000: $nodename:0: 'esdhc@2140000' does not match '^mmc(@.*)?$'
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-This requires two changes:
-1. Register size increase: HWKM is an additional piece of hardware
-   sitting alongside ICE, and extends the old ICE's register space.
-2. Explicitly tell the ICE driver to use HWKM with ICE so that
-   wrapped keys are used in sm8550.
-
-NOTE: Although wrapped keys cannot be independently generated and
-tested on this platform using generate, prepare and import key calls,
-there are non-kernel paths to create wrapped keys, and still use the
-kernel to program them into ICE. Hence, enabling wrapped key support
-on sm8550 too.
-
-Signed-off-by: Gaurav Kashyap <quic_gaurkash@quicinc.com>
----
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index c55a818af935..a81f7d54d592 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -2076,8 +2076,11 @@ opp-300000000 {
- 		ice: crypto@1d88000 {
- 			compatible = "qcom,sm8550-inline-crypto-engine",
- 				     "qcom,inline-crypto-engine";
--			reg = <0 0x01d88000 0 0x8000>;
-+			reg = <0 0x01d88000 0 0x10000>;
-+
- 			clocks = <&gcc GCC_UFS_PHY_ICE_CORE_CLK>;
-+
-+			qcom,ice-use-hwkm;
- 		};
- 
- 		tcsr_mutex: hwlock@1f40000 {
--- 
-2.43.0
+Applied, thanks!
 
 
