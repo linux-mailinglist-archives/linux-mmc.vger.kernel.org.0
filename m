@@ -1,201 +1,398 @@
-Return-Path: <linux-mmc+bounces-2685-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-2687-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CB790F3E9
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jun 2024 18:19:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D2590F6B9
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jun 2024 21:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7A41C21BAC
-	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jun 2024 16:19:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC4FD283991
+	for <lists+linux-mmc@lfdr.de>; Wed, 19 Jun 2024 19:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BF8153561;
-	Wed, 19 Jun 2024 16:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D02158A3A;
+	Wed, 19 Jun 2024 19:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gxrQ7+Ho"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wf1XOlcW"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CCF1534E6;
-	Wed, 19 Jun 2024 16:19:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFAF155759;
+	Wed, 19 Jun 2024 19:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718813968; cv=none; b=LG36XMr3AvtslOy+fHIlBZf1qYtsl6s0tR9DklmTkPVCXuPbL+RuKDxsjRMDmEFjlHOdHXnIPaCbYPNVtp64/4zElc0rrz1Oq3SPixQwUjkeXO5fI5wguFVdlrjsnji3q2v4wJndoSgMo3gBeU7DRkrYtUMAJTzLy+wYXG1N8bA=
+	t=1718824220; cv=none; b=aY5Q1K9fEuKbYsYAU8hyfxp52aOnYR2zI794kciKBzWHDFuPbWL4hNlJBZ8Bs6klVnS89S0uSx+MFqh1d3A5bSIRTV3IZfOTfSV0ZPNiKolp8+aEJtOYweHp939qTUrwaMcnnuSWSgRCmqrtYaaBO+P791958sXrkvicwVbyVzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718813968; c=relaxed/simple;
-	bh=UMgouaT6S/IixEQF8EjbaOo9Ec9dIFnfX3ko37uhAoM=;
+	s=arc-20240116; t=1718824220; c=relaxed/simple;
+	bh=WAmFx+ZAhBE6QYFnuAIgPCTyeKlQ0c2u0P1mZZ6eo2s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A2NSkeqTfi4IFJqqWNgZaY7qEoYxRDjxorjl3j+ttNLOIXtDNxCaZlYzSAcPhNZOc3fafNVnKPTJsCuvblsfed42YV3/zxDZHUixGDC9q18g+7qzuKqc/gn9kVUxAizBnka3od/4+h9gMdmSvXRCKOjFVaj0oENd99mMm/p9jV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gxrQ7+Ho; arc=none smtp.client-ip=209.85.160.49
+	 To:Cc:Content-Type; b=pE58gKPtYolM4LR4gTx1tZoP1ZQFKrKQLiuSHQ6stQO5mdbDCIlyXgTZw0jwTJK8RtYytj0J8lJ9wkl1l5x0dW9fQ2naVmrx5EANIZtduMU4L7sNaeA8okH0Fy5ybNzz4f3Rsygj+orduftSeDGqouL7+kN+MROMdHnp3+dzqJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wf1XOlcW; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-25488f4e55aso19694fac.0;
-        Wed, 19 Jun 2024 09:19:25 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a6fb696d2d8so8958266b.1;
+        Wed, 19 Jun 2024 12:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718813965; x=1719418765; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718824217; x=1719429017; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vFTtLiupNQjUDm5wJ7kx2VnTWJ/TIurLfPXStd+BLtA=;
-        b=gxrQ7+HoV/6xifISWjvwpbsC7cY44G4DGahaMD8NXHngr5/YHeUWA9Y4aU9jVZ5Pqw
-         /voMBbL0IELciBUgDnWGEtqQP0X7Qk90cq7Hib/ZLFfaZb8HDwY/WnDtzx6suRXfDpsa
-         7MIjHsZOndJe6axUuh9NMjRVsSLhKy1kyzbcjFAxoKJo0ZG146cO2HQq+9azqwlKORko
-         6aa3fcD/yd/oFmSUkPtO5GEkhztpylzNGBqi/h2cQkyjKW89rPo3Wx7L5gC9zvRt36GN
-         m8giRC3xXRgyiwds13fUyyqU7ulzwjoXMHwBceCsR09nRmvU5xB0JAjGjTE4X4JSqfFp
-         5OHA==
+        bh=ahlND5Zmd1zch0hsIJlAQEvMAiC/XZH76a69+Fwt53Q=;
+        b=Wf1XOlcWsbSG9aBaqeoXp3/VT/rXDkYi/ghPnCEP/RH7rgYdV72/nP80pkt1P+vVNf
+         +fhDPN6yGX99ZInJKxoWBx/FsEMyW0KiN0HUqOL8JV45LYWcTkcWesYI+JFV7K2/XsVJ
+         wKUllft9iIMK9/854hnjW8yxZiK6u95kVmGcAd9uzRTqwO3dDyqiM7FV03Cv0g2Mt0mc
+         suXb36ptvec8L1K3+cHN3dMAyemtvN7VHC8rFZFHhygrdUhoCO7btO6aYcWS5AaJPt4v
+         VcRFj+CMgo2D8mJMtiVHKmK3VZuBpCc6nYqXjgVvREjx3dSlaKMxrbFUYkwXx1KoG8vP
+         B1zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718813965; x=1719418765;
+        d=1e100.net; s=20230601; t=1718824217; x=1719429017;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vFTtLiupNQjUDm5wJ7kx2VnTWJ/TIurLfPXStd+BLtA=;
-        b=Sa/qZcsMJiehhDkK38PZIbgaiPh6Fr210i/kRV4lx0GGUjCY/m2rUoUs7chuemoDKr
-         yu0ma1L3TAnSVAiLf0ricHXNuzyoUepgzB11zV3rx36TTzwukTwol+rPTFJToL5Dkf/9
-         ItdJDsVpNJ2WpVzo6kYxevmKCzDgiaoqTXuf2gB5G0SZJ/LrG07Wy/uryQYRZexTBtMi
-         AFhT0v10/9GOait4NUTdH6lkNpD43qTFmUj8L6T6tY09ZZMxT6Ipr82d3ZpkdqOXBzUh
-         2p2jLsMHps8kUwGISCCpmZZ3TmmEU3zJZ+IPB/aEut0WvvDmHujO4O4h+W45qYqGdfaS
-         3cgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtGniZNGRuozn42BXvGcsVOvmWwvvOjQZ1sQGC1XMsYeyBLTi2YmWjDeTMGi5lR5sxQhQKLUMQc46gukJm7awdqrZd79W46K2vEy1NVAnGBnxGsmVpf9ACXbjVRiMSg4vaI19UMbcVgZhu7v7gbh/K0FxZp8BiHT7TeZ4WalINkiYD4q6teBhfYekf
-X-Gm-Message-State: AOJu0YwN+55EB/E2NS4DUFXW06c6kjmOHzNLdhtXawHG36z0ZW1aYMY7
-	x1IGWjSb4GxC2HUT1CvWzeu2Cj5i78OkNpJ3VuG/PY9UDThmVNxvViEU1O14FqigyjVdKj9qvvF
-	ikoPvcY5DgSQ0+pQN6e4Zb+MryJ8=
-X-Google-Smtp-Source: AGHT+IG8lcFqoVxgi4qmEwYOa2FXhJDu1cbELTejcdqT7shjKmkU/mTPDTR+dr1wTP2oazD7SaMIDyBEPwcu4hTw8Zg=
-X-Received: by 2002:a05:6870:5247:b0:254:956f:ff9a with SMTP id
- 586e51a60fabf-25c94a1f1b3mr3499722fac.32.1718813964714; Wed, 19 Jun 2024
- 09:19:24 -0700 (PDT)
+        bh=ahlND5Zmd1zch0hsIJlAQEvMAiC/XZH76a69+Fwt53Q=;
+        b=DrkmFZ8kuHuLGyJFtkZLq07KFuFhiOpC0wUWoXgy+ODR1ubT+IdNXjUbFAeVFvmh5Q
+         n63g3O3DVgmacdvCY5aeOYiFcKsvwTyjkamuI710b5NP3BPWeCzSN+6vFMVAFKjR4ez7
+         8/dUTqQXc0des1qNGd3oJlmkncGHUllLCduHa8qtgDCyXJQSBGXlhPN77dtKODgYwDJK
+         Kropz4ILyFUKmHppj2Utb6pS/JXGrx7Pq+zHj6ZtG5N1z+Tltwlo/uIkT92QEgP2p6sU
+         0cMOvcu8ldujqh8a4WGhRaLmcQ3LkWlHzNjKzfGtoMMmMRyS5HnFQXKKo3TfEn0FSFSx
+         glQA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZNkP2B/3RuLwegjtZuvBR7kzdDPZnYzitSQf659HL5C9qD6RxLkwCFwon7cfy5aUdE8iOqqAqDKlKZjnudmYYg2qPDv23UZALYBVGSY5Iiv3rYzwnw9I9NlGVz9YMRs4j8ctKAXzck53MmCaOTBrVWUtkgtCN31C8o3akFj3YBcW0QQ==
+X-Gm-Message-State: AOJu0YyyriPeWgtFNsumEUQKigc7apfQ5dy9kk05B0s1qbBgazcWqLly
+	gsbvQc538Xgh452r3vG2EYJyoBEgsrn3EJlAatg+kuuAzwzYPQZAtlIbLlwv15Fu0uphe3YVGUY
+	fvj0wIZEl2WRaw37+LBnqi2jioXA=
+X-Google-Smtp-Source: AGHT+IG4EwmKdtxr3rqPxduBQKlfNFGX/bVsYbwYUwt0xso+kVroPnVAVQiWZQJtFZGOfOIImTMOT+FeU9/N8iQIJas=
+X-Received: by 2002:a17:906:3112:b0:a6e:f793:461f with SMTP id
+ a640c23a62f3a-a6fab6459b0mr207708666b.38.1718824216746; Wed, 19 Jun 2024
+ 12:10:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240613091721.525266-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20240613091721.525266-4-prabhakar.mahadev-lad.rj@bp.renesas.com> <prdvmtsp35yy2naohivbrya3go6vh5ji2cdjoebw3ovditcujo@bhck6tca6mhj>
-In-Reply-To: <prdvmtsp35yy2naohivbrya3go6vh5ji2cdjoebw3ovditcujo@bhck6tca6mhj>
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Wed, 19 Jun 2024 17:18:58 +0100
-Message-ID: <CA+V-a8u6KAFp1pox+emszjCHqvNRYrkOPpsv5XBdkAVJQMxjmA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 3/3] mmc: renesas_sdhi: Add support for RZ/V2H(P) SoC
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-mmc@vger.kernel.org, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Conor Dooley <conor+dt@kernel.org>, 
-	devicetree@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Magnus Damm <magnus.damm@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Prabhakar <prabhakar.csengg@gmail.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20240619054641.277062-1-shanchun1218@gmail.com> <20240619054641.277062-3-shanchun1218@gmail.com>
+In-Reply-To: <20240619054641.277062-3-shanchun1218@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 19 Jun 2024 21:09:39 +0200
+Message-ID: <CAHp75VcJGoDaAbD7vWin8yTGarrLZbVQqucHs+M9rAAS0BZd9g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: sdhci-of-ma35d1: Add Novoton MA35D1 SDHCI driver
+To: Shan-Chun Hung <shanchun1218@gmail.com>
+Cc: ulf.hansson@linaro.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, adrian.hunter@intel.com, p.zabel@pengutronix.de, 
+	pbrobinson@gmail.com, serghox@gmail.com, mcgrof@kernel.org, 
+	prabhakar.mahadev-lad.rj@bp.renesas.com, forbidden405@outlook.com, 
+	tmaimon77@gmail.com, linux-arm-kernel@lists.infradead.org, 
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ychuang3@nuvoton.com, schung@nuvoton.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Wolfram,
+On Wed, Jun 19, 2024 at 7:47=E2=80=AFAM Shan-Chun Hung <shanchun1218@gmail.=
+com> wrote:
+>
+> This adds the SDHCI driver for the MA35 series SoC. It is based upon the
+> SDHCI interface, but requires some extra initialization.
+>
+> Signed-off-by: schung <schung@nuvoton.com>
 
-Thank you for the review.
+Even I agree with Markus' remarks, so please correct your SoB by using
+something similar to the From line.
 
-On Mon, Jun 17, 2024 at 9:31=E2=80=AFAM Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
->
-> Hi Prabhakar,
->
-> > - Ive modelled the regulator now to control the PWEN aswell.
->
-> Yay, this looks much better. Good work!
->
-> > - I have still kept regulator bits in quirks I was wondering if I shoul=
-d
-> >   move this to renesas_sdhi_of_data instead?
->
-> I think so. An internal regulator is not a quirk.
->
-Agreed.
+...
 
-> > - I still need to add checks if the internal regulator used and
-> >   only then call regulator_enable/regulator_set_voltage. ATM I am still
-> >   unclear on differentiating if internal/external regulator is used.
->
-> When it comes to re-enabling the regulator in sdhi_reset, I think this
-> can be a sdhi_flag like SDHI_FLAG_ENABLE_REGULATOR_IN_RESET or alike.
->
-OK.
+> +config MMC_SDHCI_OF_MA35D1
+> +       tristate "SDHCI OF support for the MA35D1 SDHCI controller"
+> +       depends on ARCH_A35 || COMPILE_TEST
+> +       depends on MMC_SDHCI_PLTFM
 
-> When it comes to the regulator, I wonder if it wouldn't be clearer to
-> replace renesas_sdhi_internal_dmac_register_regulator() with a proper
-> probe function and a dedicated compatible value for it. We could use
-> platform_driver_probe() to instantiate the new driver within the SDHI
-> probe function. This will ensure that the regulator driver will only be
-> started once the main driver got all needed resources (mapped
-> registers).
->
-I did give it a try with platform_driver_probe() and failed.
+> +       depends on OF && COMMON_CLK
 
-- Firstly I had to move the regulator node outside the SDHI node for
-platform_driver_probe() to succeed or else it failed with -ENODEV (at
-https://elixir.bootlin.com/linux/latest/source/drivers/base/platform.c#L953=
+OF is not compile dependency AFAICS, if you want make it functional, use
+
+  depends on OF || COMPILE_TEST
+
+...
+
+You are missing a lot of header inclusions, please follow IWYU principle.
+
++ array_size.h
++ bits.h
+
+> +#include <linux/clk.h>
+
++ device.h
+
+> +#include <linux/dma-mapping.h>
+
++ err.h
+
+> +#include <linux/mfd/syscon.h>
+
++ math.h
++ mod_devicetable.h
+
+> +#include <linux/module.h>
+> +#include <linux/mmc/mmc.h>
+> +#include <linux/pinctrl/consumer.h>
+
++ platform_device.h
+
+> +#include <linux/regmap.h>
+> +#include <linux/reset.h>
+> +#include <linux/slab.h>
+
++ types.h
+
+...
+
+> +#define BOUNDARY_OK(addr, len) \
+> +       ((addr | (SZ_128M - 1)) =3D=3D ((addr + len - 1) | (SZ_128M - 1))=
 )
-- In Renesas SoCs we have multiple instances of SDHI, the problem
-being for each instance we are calling platform_driver_probe(). Which
-causes a problem as the regulator node will use the first device.
 
-Let me know if I have missed something obvious here.
+Besides sizes.h being missed, this can be done with help of ALIGN()
+macro (or alike). So, kill this and use the globally defined macro
+inline.
 
-> My gut feeling is that it will pay off if the internal regulator will be
-> described in DT as any other regulator. Like, we could name the
-> regulator in DT as always etc...
->
-> More opinions on this idea are welcome, though...
->
-> > --- a/drivers/mmc/host/renesas_sdhi.h
-> > +++ b/drivers/mmc/host/renesas_sdhi.h
-> > @@ -11,6 +11,9 @@
-> >
-> >  #include <linux/dmaengine.h>
-> >  #include <linux/platform_device.h>
-> > +#include <linux/regmap.h>
->
-> Regmap can luckily go now.
->
-Agreed.
+...
 
-> > +#include <linux/regulator/driver.h>
-> > +#include <linux/regulator/machine.h>
-> >  #include "tmio_mmc.h"
-> >
-> >  struct renesas_sdhi_scc {
-> > @@ -49,6 +52,9 @@ struct renesas_sdhi_quirks {
-> >       bool manual_tap_correction;
-> >       bool old_info1_layout;
-> >       u32 hs400_bad_taps;
-> > +     bool internal_regulator;
-> > +     struct regulator_desc *rdesc;
-> > +     struct regulator_init_data *reg_init_data;
-> >       const u8 (*hs400_calib_table)[SDHI_CALIB_TABLE_MAX];
-> >  };
-> >
-> > @@ -93,6 +99,8 @@ struct renesas_sdhi {
-> >       unsigned int tap_set;
-> >
-> >       struct reset_control *rstc;
-> > +
-> > +     struct regulator_dev *sd_status;
->
-> This is a strange name for the regulater. Especially given that you have
-> as well the more fitting 'u32 sd_status' in the code later.
->
-I will update it.
+> +       /* If the clock frequency exceeds MMC_HIGH_52_MAX_DTR,
+> +        *      disable command conflict check.
+> +        */
 
-> ...
->
-> > +static struct regulator_init_data r9a09g057_regulator_init_data =3D {
-> > +     .constraints =3D {
-> > +             .valid_ops_mask =3D REGULATOR_CHANGE_STATUS,
->
-> Don't we need REGULATOR_CHANGE_VOLTAGE here as well? Or is this implicit
-> because of REGULATOR_VOLTAGE? Can't find this, though.
->
-I will investigate it.
+  /*
+   * The comment style is wrong and
+   * the indentation in the second line.
+   * Fix it as in this example.
+   */
 
-Cheers,
-Prabhakar
+...
+
+> +static void ma35_voltage_switch(struct sdhci_host *host)
+> +{
+> +       /* Wait for 5ms after set 1.8V signal enable bit */
+> +       usleep_range(5000, 5500);
+
+Use fsleep()
+
+> +}
+> +
+> +static int ma35_execute_tuning(struct mmc_host *mmc, u32 opcode)
+> +{
+> +       struct sdhci_host *host =3D mmc_priv(mmc);
+> +       struct sdhci_pltfm_host *pltfm_host =3D sdhci_priv(host);
+> +       struct ma35_priv *priv =3D sdhci_pltfm_priv(pltfm_host);
+> +
+> +       /* Limitations require a reset SD/eMMC before tuning. */
+> +       if (!IS_ERR(priv->rst)) {
+
+It's way too big for indentation, moreover it uses an unusual pattern,
+usually we check for an error case first. So, invert the conditional
+and this all code will become much better.
+
+> +               int idx;
+> +               u32 *val;
+> +
+> +               val =3D kmalloc(ARRAY_SIZE(restore_data), GFP_KERNEL);
+> +               for (idx =3D 0; idx < ARRAY_SIZE(restore_data); idx++) {
+> +                       if (restore_data[idx].width =3D=3D 32)
+
+sizeof(u32) ?
+
+> +                               val[idx] =3D sdhci_readl(host, restore_da=
+ta[idx].reg);
+> +                       else if (restore_data[idx].width =3D=3D 8)
+
+sizeof(u8) ?
+
+> +                               val[idx] =3D sdhci_readb(host, restore_da=
+ta[idx].reg);
+> +               }
+> +
+> +               reset_control_assert(priv->rst);
+> +               reset_control_deassert(priv->rst);
+> +
+> +               for (idx =3D 0; idx < ARRAY_SIZE(restore_data); idx++) {
+> +                       if (restore_data[idx].width =3D=3D 32)
+> +                               sdhci_writel(host, val[idx], restore_data=
+[idx].reg);
+> +                       else if (restore_data[idx].width =3D=3D 8)
+> +                               sdhci_writeb(host, val[idx], restore_data=
+[idx].reg);
+
+As per above?
+
+> +               }
+> +
+> +               kfree(val);
+> +       }
+> +
+> +       return sdhci_execute_tuning(mmc, opcode);
+> +}
+
+...
+
+> +static int ma35_probe(struct platform_device *pdev)
+> +{
+> +       struct device *dev =3D &pdev->dev;
+
+Since you have it, use it!
+
+> +       struct sdhci_pltfm_host *pltfm_host;
+> +       struct sdhci_host *host;
+> +       struct ma35_priv *priv;
+> +       int err;
+> +       u32 extra, ctl;
+> +
+> +       host =3D sdhci_pltfm_init(pdev, &sdhci_ma35_pdata,
+> +                               sizeof(struct ma35_priv));
+
+One line?
+
+> +       if (IS_ERR(host))
+> +               return PTR_ERR(host);
+> +
+> +       /*
+> +        * extra adma table cnt for cross 128M boundary handling.
+> +        */
+
+Wrong comment style.
+
+> +       extra =3D DIV_ROUND_UP_ULL(dma_get_required_mask(&pdev->dev), SZ_=
+128M);
+> +       if (extra > SDHCI_MAX_SEGS)
+> +               extra =3D SDHCI_MAX_SEGS;
+
+min() ? clamp() ?
+
+> +       host->adma_table_cnt +=3D extra;
+> +       pltfm_host =3D sdhci_priv(host);
+> +       priv =3D sdhci_pltfm_priv(pltfm_host);
+
+> +       if (dev->of_node) {
+
+Why?
+
+> +               pltfm_host->clk =3D devm_clk_get(&pdev->dev, NULL);
+> +               if (IS_ERR(pltfm_host->clk)) {
+
+> +                       err =3D PTR_ERR(pltfm_host->clk);
+> +                       dev_err(&pdev->dev, "failed to get clk: %d\n", er=
+r);
+
+Use
+
+  return dev_err_probe(...);
+
+> +                       goto free_pltfm;
+
+This is wrong. You may not call non-devm before devm ones, otherwise
+it makes a room for subtle mistakes on remove-probe or unbind-bind
+cycles. Have you tested that?
+
+> +               }
+> +               err =3D clk_prepare_enable(pltfm_host->clk);
+> +               if (err)
+> +                       goto free_pltfm;
+
+Use _enabled variant of devm_clk_get() instead.
+
+> +       }
+> +
+> +       err =3D mmc_of_parse(host->mmc);
+> +       if (err)
+> +               goto err_clk;
+> +
+> +       priv->rst =3D devm_reset_control_get(&pdev->dev, NULL);
+
+No error check?!
+
+> +       sdhci_get_of_property(pdev);
+> +
+> +       priv->pinctrl =3D devm_pinctrl_get(&pdev->dev);
+> +       if (!IS_ERR(priv->pinctrl)) {
+> +               priv->pins_default =3D pinctrl_lookup_state(priv->pinctrl=
+, "default");
+> +               priv->pins_uhs =3D pinctrl_lookup_state(priv->pinctrl, "s=
+tate_uhs");
+> +               pinctrl_select_state(priv->pinctrl, priv->pins_default);
+> +       }
+> +
+> +       if (!(host->quirks2 & SDHCI_QUIRK2_NO_1_8_V)) {
+> +               u32 reg;
+> +
+> +               priv->regmap =3D syscon_regmap_lookup_by_phandle(
+> +                               pdev->dev.of_node, "nuvoton,sys");
+
+dev_of_node(dev)
+
+> +
+> +               if (!IS_ERR(priv->regmap)) {
+> +                       /* Enable SDHCI voltage stable for 1.8V */
+> +                       regmap_read(priv->regmap, MA35_SYS_MISCFCR0, &reg=
+);
+> +                       reg |=3D BIT(17);
+> +                       regmap_write(priv->regmap, MA35_SYS_MISCFCR0, reg=
+);
+> +               }
+> +
+> +               host->mmc_host_ops.start_signal_voltage_switch =3D
+> +                                       ma35_start_signal_voltage_switch;
+> +       }
+> +
+> +       host->mmc_host_ops.execute_tuning =3D ma35_execute_tuning;
+> +
+> +       err =3D sdhci_add_host(host);
+> +       if (err)
+> +               goto err_clk;
+> +
+> +       /* Enable INCR16 and INCR8 */
+> +       ctl =3D sdhci_readw(host, MA35_SDHCI_MBIUCTL);
+> +       ctl &=3D ~MA35_SDHCI_INCR_MSK;
+> +       ctl |=3D MA35_SDHCI_INCR16|MA35_SDHCI_INCR8;
+> +       sdhci_writew(host, ctl, MA35_SDHCI_MBIUCTL);
+> +
+> +       return 0;
+
+> +err_clk:
+> +       clk_disable_unprepare(pltfm_host->clk);
+
+This will go with the _enabled variant being used.
+
+> +free_pltfm:
+> +       sdhci_pltfm_free(pdev);
+
+This should go to be correct in ordering.
+
+> +       return err;
+> +}
+> +
+> +static int ma35_remove(struct platform_device *pdev)
+
+Use remove_new callback.
+
+> +{
+> +       struct sdhci_host *host =3D platform_get_drvdata(pdev);
+> +       struct sdhci_pltfm_host *pltfm_host =3D sdhci_priv(host);
+> +
+> +       sdhci_remove_host(host, 0);
+
+> +       clk_disable_unprepare(pltfm_host->clk);
+> +       sdhci_pltfm_free(pdev);
+
+At least these two will go away as per probe error path.
+
+> +       return 0;
+> +}
+
+...
+
+> +MODULE_AUTHOR("shanchun1218@google.com");
+
+Needs to be fixed as Markus said.
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
