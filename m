@@ -1,44 +1,45 @@
-Return-Path: <linux-mmc+bounces-2752-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-2754-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83CE910A21
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jun 2024 17:40:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAFB910A25
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jun 2024 17:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF041F22AC3
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jun 2024 15:40:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9805B21BDE
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Jun 2024 15:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB511B0132;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D941A1B1412;
 	Thu, 20 Jun 2024 15:39:59 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [195.130.137.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01941B0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40001B013A
 	for <linux-mmc@vger.kernel.org>; Thu, 20 Jun 2024 15:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718897999; cv=none; b=empArxnZ8Sh2SZu4rivVm5cWmzot6Vf/OT5E/KaJrT3gYnRk5JXNykVcy4MgnVJiOo7KZVIv4AEDeNGqtteZh4oBgdNWOHc1e7y6/isqHLe5y+SAy9M7km6x49AW8Q8qKBJN8Ma1AMasUZncBflEPFVUz3eMjAf86hKnSCaebO0=
+	t=1718897999; cv=none; b=ue6ad2PmvWAwc4JmXKUOhrKsjTIMPj9B86sD10fzUPIljIYc/pZ4CC4F76uwkx7kn8rMTQQoAgeCU/g12J4bycL68ntw9sOSinDaFtVYjVE5hsp5nHz0Ydaw8UcvUWSU94DHX+srYeX7ZM5dRSfLvjHW6PUgC4o0hzjhzwaShjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1718897999; c=relaxed/simple;
-	bh=EGan0DPRyj1iH/qlzBQ+qSQPs0ak1SMhLvLNyPKTR4s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o3jwfCr6jHc2VS//WudkRV1m4gSRG3I5Gmiq8MWEsmMqf92yAEehJbut/PBrUhvoC1eQz1Xal5kkcQwjvyrwTyaSRIUNh+lv4fwPcc24kjGhz1dW7qiDKxaG3trBRRMFYnJ2SgoGB2qP6YEkm62nwom4DjSbdmw1n0RTtWKu54k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
+	bh=Oh/XNnIXMWckXGB3LZdCngk6WfCW3KRvbELGvIZUJGM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=p6s6QThlrTRVvFu63OCyJVMUhSwDMbqxz6pRzWy2BpLSyTL49YfDXVRyugM6y3lApYchwo4q3yKHdbW4PaZZdKUwZ3m61l3SY2m3DjNllDEmOtV+89BPcwF/nk1aKNdKZzQgHyyFjnG4A6+YDS63DmUt7qhE2WE/GEnDdmOSxaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:260f:cd5c:91b1:523c])
-	by laurent.telenet-ops.be with bizsmtp
-	id drfo2C00R0Y0hZi01rfocP; Thu, 20 Jun 2024 17:39:49 +0200
+	by michel.telenet-ops.be with bizsmtp
+	id drfo2C00S0Y0hZi06rfouM; Thu, 20 Jun 2024 17:39:49 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1sKJt6-0005LW-Oa;
+	id 1sKJt6-0005LV-Oa;
 	Thu, 20 Jun 2024 17:39:48 +0200
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1sKJt6-000LnR-Le;
+	id 1sKJt6-000LnU-MK;
 	Thu, 20 Jun 2024 17:39:48 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
@@ -50,10 +51,12 @@ To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
 Cc: linux-mmc@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 0/2] mmc: tmio: Remove obsolete callbacks
-Date: Thu, 20 Jun 2024 17:39:44 +0200
-Message-Id: <cover.1718897545.git.geert+renesas@glider.be>
+Subject: [PATCH 1/2] mfd: tmio: Remove obsolete .set_clk_div() callback
+Date: Thu, 20 Jun 2024 17:39:45 +0200
+Message-Id: <e0fa98f138a7b2836128178f8b3a757978517307.1718897545.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1718897545.git.geert+renesas@glider.be>
+References: <cover.1718897545.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -62,38 +65,27 @@ List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-	Hi all,
+Commit bef64d2908e825c5 ("mmc: remove tmio_mmc driver") removed the last
+user of the .set_clk_div() callback in the tmio_mmc_data structure.
 
-This patch series removes two unused callbacks from the tmio_mmc_data
-structure, and related infrastructure code.
-  - The first patch touches only the MFD subsystem.
-  - The second patch touches both the MMC and MFD subsystems, and has a
-    contextual dependency on the first patch.  If really needed, it can
-    be split in an MMC and MFD part, but the MFD part depends on the MMC
-    part anyway.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ include/linux/mfd/tmio.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-Thanks for your comments!
-
-Geert Uytterhoeven (2):
-  mfd: tmio: Remove obsolete .set_clk_div() callback
-  mmc: tmio: Remove obsolete .set_pwr() callback()
-
- drivers/mmc/host/tmio_mmc.h      | 3 ---
- drivers/mmc/host/tmio_mmc_core.c | 8 --------
- include/linux/mfd/tmio.h         | 2 --
- 3 files changed, 13 deletions(-)
-
+diff --git a/include/linux/mfd/tmio.h b/include/linux/mfd/tmio.h
+index eace8ea6cda05a3d..aca74ac1ff69e6f7 100644
+--- a/include/linux/mfd/tmio.h
++++ b/include/linux/mfd/tmio.h
+@@ -101,7 +101,6 @@ struct tmio_mmc_data {
+ 	unsigned int			max_blk_count;
+ 	unsigned short			max_segs;
+ 	void (*set_pwr)(struct platform_device *host, int state);
+-	void (*set_clk_div)(struct platform_device *host, int state);
+ };
+ 
+ /*
 -- 
 2.34.1
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
 
