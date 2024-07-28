@@ -1,70 +1,70 @@
-Return-Path: <linux-mmc+bounces-3114-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3107-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0672C93E40B
-	for <lists+linux-mmc@lfdr.de>; Sun, 28 Jul 2024 10:14:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F54793E405
+	for <lists+linux-mmc@lfdr.de>; Sun, 28 Jul 2024 10:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDAA8281BFC
-	for <lists+linux-mmc@lfdr.de>; Sun, 28 Jul 2024 08:14:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFEC51C20DDE
+	for <lists+linux-mmc@lfdr.de>; Sun, 28 Jul 2024 08:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3FFD534;
-	Sun, 28 Jul 2024 08:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F94C13B;
+	Sun, 28 Jul 2024 08:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="nQerns0S"
+	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="QSjf0jwx"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
+Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E780C13B
-	for <linux-mmc@vger.kernel.org>; Sun, 28 Jul 2024 08:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.71.154.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84DE15E88
+	for <linux-mmc@vger.kernel.org>; Sun, 28 Jul 2024 08:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.143.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722154466; cv=none; b=SLYBZTb3s0CeKFkG+7LhTlQAMgTXwCerH7qgDBoWLkWXN3vc8tfxzFfi3zf31C2wEw9xXYwaIlj7vzO9O/fF3B0KXKmiRyQocSJ779Sj11yLoN+OdhllMqLMhrb3jrKj7ofqAJJ9iHlHJyEcqh7yBuisSoI/QbIAjnXQ1uIRuFU=
+	t=1722154417; cv=none; b=gSkn9rS8xQxoplGXvHUl8C6Y9FWLWwl7ovf4IHXDivNzUNgQDkx0dzHhpT2an0/aC491aduhDawcoq2ZVlQrX8RK4aE+CSdWGkMcCeKHw63s6Ys2I/uD0xfgukz97+nZBDfqov8bl+JIx9KyDbi1G5Md9NhJdsJANSuXxNRuLRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722154466; c=relaxed/simple;
-	bh=ZEgObMbnv6e4XAH8wAQxCGBp478qeQKb/VSh+uWR0MQ=;
+	s=arc-20240116; t=1722154417; c=relaxed/simple;
+	bh=KQ34oRMswWKaUD5gQuHBgpKk5zj/IZmCJxdHEcJMn6o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H0zNkALctJHhUgavq5b7vh3vCZdB1eAReah1wdWd2FRD7ByvwienmPNTD/ci+PKRFfOlBasTCuwZvJcCgNkadgGH8vF1NtmGEjX2pOiB+Gx6mzBpkJ9om040DFeBkl24Z/K68V45Wm1hwzZJlcl73UoKpYvy7QE6Xuylj9kGlpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=nQerns0S; arc=none smtp.client-ip=216.71.154.42
+	 MIME-Version; b=JF6h3cAd3xu3pk7zmc0t9dw294gPh/hZDeVltsobU/nCUOFdcR7Eh0hkKWoKMfAP9oaEiWVxVAPyO8K5l0se6jxTR+v1cwAZFkpLyJV685yV5W6n7El8RgFOiX5mnAgGX/llwyjPR3uxmiVePXEp4ykoAMlz8ulWiHYaKtg8R+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=QSjf0jwx; arc=none smtp.client-ip=68.232.143.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1722154464; x=1753690464;
+  t=1722154415; x=1753690415;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZEgObMbnv6e4XAH8wAQxCGBp478qeQKb/VSh+uWR0MQ=;
-  b=nQerns0S44T72rat8bGIlhvOadBhl13rUfENuGaTDJjjI/QKk8JiwPoB
-   o3ZtD7MowOsDMPHv2RqfRmVlrle++vyCsSbM+XKroNAY49zTdUVkLISVq
-   UEh9bXDnWjJssFvYJRvFrQs1JekUzYem5RNwF62OOUYSbyQ5WoXYc7GUF
-   xe1SatghSb4hFF6QmPAaDiXlvzYStrHcjeP5c8M2oBUu3c2c9lAPZvntZ
-   n48JvGeSGtum+JVGa9iLpE7P9VaeU0S8AlXd3QyHX5zrargqO+OBrbACJ
-   NJ9nIOkIwPFKlv/fk0m5dilYC4d9qCJYSJvTzagDIBeivQE+T4MotbrK/
-   g==;
-X-CSE-ConnectionGUID: Cy5lsA0pQqaossaF7n+ZjQ==
-X-CSE-MsgGUID: HO5Nx/4IRQqg9PTRz+ShmA==
+  bh=KQ34oRMswWKaUD5gQuHBgpKk5zj/IZmCJxdHEcJMn6o=;
+  b=QSjf0jwx+o444NwJOOH4iOw96IALky37qlW7NYwu6RyR5a7PaeacTWJA
+   u5GifOttGvkzp8/13kKtAbMLDwQ4QklwOmdCnYjFrOHW+qUnjjsRHvxsP
+   p1Re2Q4r9N0wahDfFkiOJzVrhujTWJY1v/EsY8r3xB8blobDsWfzV1O5l
+   hSlRyKGzztvRUpHmjCzIGa265CGlhBdbVvLzUd0ImaGheGhcTa/UNhvAv
+   +NSfwGPJPRjgRXisG73rVXc7HOoHdRQW3h5weGLBm12dsg7AIq1ka2U71
+   0tfViozFB9mM6aUpi6RAw3lUKoy0a7Cc8ehfDBksccns4qJBvdJ0yMiUf
+   Q==;
+X-CSE-ConnectionGUID: XZmjY/j0QnmEWSCLl0Orew==
+X-CSE-MsgGUID: VqDRD7VSREGq+zFXecnkVg==
 X-IronPort-AV: E=Sophos;i="6.09,243,1716220800"; 
-   d="scan'208";a="22256097"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 28 Jul 2024 16:13:18 +0800
-IronPort-SDR: 66a5f104_ybCAqaAP/PgDqF0/viYR1PcjsFEKlg86UwfaALsixQEETv7
- VRDVgu7H5p8MVgV9KaIja1fcpnaJI6rLvlABZ8g==
+   d="scan'208";a="23160000"
+Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 28 Jul 2024 16:13:27 +0800
+IronPort-SDR: 66a5f10d_PVCGO2obxV4yzF1PJRZhT8aOAgcQ1x8mKPcXbLw3KnVRY7q
+ F6UhcT/0/yn6iVBmSBAG+kzgArCv8OSPrOOLHpA==
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2024 00:19:33 -0700
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2024 00:19:42 -0700
 WDCIronportException: Internal
 Received: from avri-office.ad.shared (HELO avri-office.sdcorp.global.sandisk.com) ([10.45.31.142])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2024 01:13:17 -0700
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2024 01:13:26 -0700
 From: Avri Altman <avri.altman@wdc.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>,
 	linux-mmc@vger.kernel.org
 Cc: Ricky WU <ricky_wu@realtek.com>,
 	Avri Altman <avri.altman@wdc.com>
-Subject: [PATCH 01/10] mmc: sd: SDUC Support Recognition
-Date: Sun, 28 Jul 2024 11:11:45 +0300
-Message-Id: <20240728081154.1782120-2-avri.altman@wdc.com>
+Subject: [PATCH 02/10] mmc: sd: Add SD CSD version 3.0
+Date: Sun, 28 Jul 2024 11:11:46 +0300
+Message-Id: <20240728081154.1782120-3-avri.altman@wdc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240728081154.1782120-1-avri.altman@wdc.com>
 References: <20240728081154.1782120-1-avri.altman@wdc.com>
@@ -76,97 +76,110 @@ List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ACMD21 was extended to support the host-card handshake during
-initialization.  The card expects that the HCS & HO2T bits to be set in
-the command argument, and sets the applicable bits in the R3 returned
-response.  On the contrary, if a SDUC card is inserted to a
-non-supporting host, it will never respond to this ACMD21 until
-eventually, the host will timed out and give up.
+Ultra Capacity SD cards (SDUC) was already introduced in SD7.0.  Those
+cards support capacity larger than 2TB and up to including 128TB.
+Properly parse the csd register as the c_size field got expanded to 28
+bits.
 
 Signed-off-by: Avri Altman <avri.altman@wdc.com>
 ---
- drivers/mmc/core/sd_ops.c | 19 +++++++++++++++----
- include/linux/mmc/host.h  |  6 ++++++
- include/linux/mmc/sd.h    |  1 +
- 3 files changed, 22 insertions(+), 4 deletions(-)
+ drivers/mmc/core/bus.c   |  4 +++-
+ drivers/mmc/core/card.h  |  3 +++
+ drivers/mmc/core/sd.c    | 16 +++++++++++-----
+ include/linux/mmc/card.h |  2 +-
+ 4 files changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mmc/core/sd_ops.c b/drivers/mmc/core/sd_ops.c
-index 8b9b34286ef3..7f6963dac873 100644
---- a/drivers/mmc/core/sd_ops.c
-+++ b/drivers/mmc/core/sd_ops.c
-@@ -168,12 +168,16 @@ int mmc_send_app_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)
- 		.cmd = &cmd
- 	};
- 	int err;
-+	u32 sduc_arg = SD_OCR_CCS | SD_OCR_2T;
+diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c
+index 0ddaee0eae54..30763b342bd3 100644
+--- a/drivers/mmc/core/bus.c
++++ b/drivers/mmc/core/bus.c
+@@ -321,7 +321,9 @@ int mmc_add_card(struct mmc_card *card)
+ 	case MMC_TYPE_SD:
+ 		type = "SD";
+ 		if (mmc_card_blockaddr(card)) {
+-			if (mmc_card_ext_capacity(card))
++			if (mmc_card_ult_capacity(card))
++				type = "SDUC";
++			else if (mmc_card_ext_capacity(card))
+ 				type = "SDXC";
+ 			else
+ 				type = "SDHC";
+diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
+index b7754a1b8d97..64dcb463a4f4 100644
+--- a/drivers/mmc/core/card.h
++++ b/drivers/mmc/core/card.h
+@@ -23,6 +23,7 @@
+ #define MMC_CARD_SDXC		(1<<3)		/* card is SDXC */
+ #define MMC_CARD_REMOVED	(1<<4)		/* card has been removed */
+ #define MMC_STATE_SUSPENDED	(1<<5)		/* card is suspended */
++#define MMC_CARD_SDUC		(1<<6)		/* card is SDUC */
  
- 	cmd.opcode = SD_APP_OP_COND;
-+	cmd.arg = ocr;
-+
- 	if (mmc_host_is_spi(host))
--		cmd.arg = ocr & (1 << 30); /* SPI only defines one bit */
-+		cmd.arg &= (1 << 30); /* SPI only defines one bit */
- 	else
--		cmd.arg = ocr;
-+		cmd.arg |= sduc_arg;
-+
- 	cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R3 | MMC_CMD_BCR;
+ #define mmc_card_present(c)	((c)->state & MMC_STATE_PRESENT)
+ #define mmc_card_readonly(c)	((c)->state & MMC_STATE_READONLY)
+@@ -30,11 +31,13 @@
+ #define mmc_card_ext_capacity(c) ((c)->state & MMC_CARD_SDXC)
+ #define mmc_card_removed(c)	((c) && ((c)->state & MMC_CARD_REMOVED))
+ #define mmc_card_suspended(c)	((c)->state & MMC_STATE_SUSPENDED)
++#define mmc_card_ult_capacity(c) ((c)->state & MMC_CARD_SDUC)
  
- 	err = __mmc_poll_for_busy(host, SD_APP_OP_COND_PERIOD_US,
-@@ -182,8 +186,15 @@ int mmc_send_app_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)
- 	if (err)
- 		return err;
+ #define mmc_card_set_present(c)	((c)->state |= MMC_STATE_PRESENT)
+ #define mmc_card_set_readonly(c) ((c)->state |= MMC_STATE_READONLY)
+ #define mmc_card_set_blockaddr(c) ((c)->state |= MMC_STATE_BLOCKADDR)
+ #define mmc_card_set_ext_capacity(c) ((c)->state |= MMC_CARD_SDXC)
++#define mmc_card_set_ult_capacity(c) ((c)->state |= MMC_CARD_SDUC)
+ #define mmc_card_set_removed(c) ((c)->state |= MMC_CARD_REMOVED)
+ #define mmc_card_set_suspended(c) ((c)->state |= MMC_STATE_SUSPENDED)
+ #define mmc_card_clr_suspended(c) ((c)->state &= ~MMC_STATE_SUSPENDED)
+diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+index 1c8148cdda50..28193a9b31c9 100644
+--- a/drivers/mmc/core/sd.c
++++ b/drivers/mmc/core/sd.c
+@@ -157,6 +157,7 @@ static int mmc_decode_csd(struct mmc_card *card)
+ 			mmc_card_set_readonly(card);
+ 		break;
+ 	case 1:
++	case 2:
+ 		/*
+ 		 * This is a block-addressed SDHC or SDXC card. Most
+ 		 * interesting fields are unused and have fixed
+@@ -172,14 +173,19 @@ static int mmc_decode_csd(struct mmc_card *card)
+ 		e = UNSTUFF_BITS(resp, 96, 3);
+ 		csd->max_dtr	  = tran_exp[e] * tran_mant[m];
+ 		csd->cmdclass	  = UNSTUFF_BITS(resp, 84, 12);
+-		csd->c_size	  = UNSTUFF_BITS(resp, 48, 22);
  
--	if (rocr && !mmc_host_is_spi(host))
--		*rocr = cmd.resp[0];
-+	if (!mmc_host_is_spi(host)) {
-+		if (rocr)
-+			*rocr = cmd.resp[0];
-+
-+		if ((cmd.resp[0] & sduc_arg) == sduc_arg)
-+			host->caps2 |= MMC_CAP2_SD_SDUC;
+-		/* SDXC cards have a minimum C_SIZE of 0x00FFFF */
+-		if (csd->c_size >= 0xFFFF)
++		if (csd_struct == 1)
++			m = UNSTUFF_BITS(resp, 48, 22);
 +		else
-+			host->caps2 &= ~MMC_CAP2_SD_SDUC;
-+	}
- 
- 	return 0;
- }
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index 88c6a76042ee..a9c36a3e1a10 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -427,6 +427,7 @@ struct mmc_host {
- #define MMC_CAP2_CRYPTO		0
- #endif
- #define MMC_CAP2_ALT_GPT_TEGRA	(1 << 28)	/* Host with eMMC that has GPT entry at a non-standard location */
-+#define MMC_CAP2_SD_SDUC	(1 << 29)	/* SD over 2TB */
- 
- 	int			fixed_drv_type;	/* fixed driver type for non-removable media */
- 
-@@ -638,6 +639,11 @@ static inline int mmc_card_uhs(struct mmc_card *card)
- 		card->host->ios.timing <= MMC_TIMING_UHS_DDR50;
- }
- 
-+static inline int mmc_card_is_sduc(struct mmc_host *host)
-+{
-+	return host->caps2 & MMC_CAP2_SD_SDUC;
-+}
++			m = UNSTUFF_BITS(resp, 48, 28);
++		csd->c_size = m;
 +
- void mmc_retune_timer_stop(struct mmc_host *host);
++		if (csd->c_size >= 0x400000 && mmc_card_is_sduc(card->host))
++			mmc_card_set_ult_capacity(card);
++		else if (csd->c_size >= 0xFFFF)
+ 			mmc_card_set_ext_capacity(card);
  
- static inline void mmc_retune_needed(struct mmc_host *host)
-diff --git a/include/linux/mmc/sd.h b/include/linux/mmc/sd.h
-index 6727576a8755..865cc0ca8543 100644
---- a/include/linux/mmc/sd.h
-+++ b/include/linux/mmc/sd.h
-@@ -36,6 +36,7 @@
- /* OCR bit definitions */
- #define SD_OCR_S18R		(1 << 24)    /* 1.8V switching request */
- #define SD_ROCR_S18A		SD_OCR_S18R  /* 1.8V switching accepted by card */
-+#define SD_OCR_2T		(1 << 27)    /* HO2T/CO2T - SDUC support */
- #define SD_OCR_XPC		(1 << 28)    /* SDXC power control */
- #define SD_OCR_CCS		(1 << 30)    /* Card Capacity Status */
+-		m = UNSTUFF_BITS(resp, 48, 22);
+-		csd->capacity     = (1 + m) << 10;
++		csd->capacity     = (1 + (typeof(sector_t))m) << 10;
  
+ 		csd->read_blkbits = 9;
+ 		csd->read_partial = 0;
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index f34407cc2788..f39bce322365 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -35,7 +35,7 @@ struct mmc_csd {
+ 	unsigned int		wp_grp_size;
+ 	unsigned int		read_blkbits;
+ 	unsigned int		write_blkbits;
+-	unsigned int		capacity;
++	sector_t		capacity;
+ 	unsigned int		read_partial:1,
+ 				read_misalign:1,
+ 				write_partial:1,
 -- 
 2.25.1
 
