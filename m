@@ -1,70 +1,70 @@
-Return-Path: <linux-mmc+bounces-3116-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3109-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A01793E40D
-	for <lists+linux-mmc@lfdr.de>; Sun, 28 Jul 2024 10:14:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C4293E407
+	for <lists+linux-mmc@lfdr.de>; Sun, 28 Jul 2024 10:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E8B4281DB6
-	for <lists+linux-mmc@lfdr.de>; Sun, 28 Jul 2024 08:14:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D3181C20DD9
+	for <lists+linux-mmc@lfdr.de>; Sun, 28 Jul 2024 08:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49093DF42;
-	Sun, 28 Jul 2024 08:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C050C13B;
+	Sun, 28 Jul 2024 08:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="lHDN45SM"
+	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="nUSI2TTD"
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D33C13B
-	for <linux-mmc@vger.kernel.org>; Sun, 28 Jul 2024 08:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556D8BA20
+	for <linux-mmc@vger.kernel.org>; Sun, 28 Jul 2024 08:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.71.154.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722154488; cv=none; b=ThYuiAYz5MhT+wxVetcEektB6gfIt8rIX1z0+dAHHkiFGVIGoZxfipl/usLRKgmQhic/i8DVpEWHjVr7CTXMAubXUZjB3JNTl32gp1IAZqaf/BJRsKpWIifT8RmRsZJBm14Vi4kzopJt+bD1r+6LDEzLVcXSXPm0thAX+Hf3feQ=
+	t=1722154434; cv=none; b=dPQBAxa1DkF4IqqTJUNucuCHFJC928j2B1wqZtc+LVQvid1zbB0SfkcDxt4f/T51r5zNamCjEl8C9ey6CEbhNP8EufRT4qwp1E48nxn1qCj0NCJuvIpcYYGwexI2PBwaN2FYU8VOMJ3wMZWDG8RI57mK6eYu+jeJVAcmr0Ysclc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722154488; c=relaxed/simple;
-	bh=8vklSCxbwQmBqkwyEQxE9z9GSmPMa5EQCOmr4nxL940=;
+	s=arc-20240116; t=1722154434; c=relaxed/simple;
+	bh=BoKIbjjurzqYFYYKFBYg+GzXOxVAHzR514QYDJtnOfY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NDzbiC4leLTWjMns/J43cSTao0S1Wa+E12Mp1RaCh5RRqTqUkX1H5DRyA4uwbQNRXqWujftY64Rgh6psgr66amLupo8dme44sGatoDEcFVHzdbvGYwJ0avs8ig3ul9TaJF7Ow/ouFPqmCx21vnWRciKTB7a1jNDV0epXiPYaAV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=lHDN45SM; arc=none smtp.client-ip=216.71.154.45
+	 MIME-Version; b=Oj5Dn+wIO9eso4OeC+gA3aSU0C1yAmnfOkiihIcODpK2++gjv4pWgK07/amVfvqvLxE7u3rDB2+vsWVJVuo7SqDxLBLo8hIANokD0QX7tAw60+EJ6lwZk812ILQPFCb5kFGP6wRmmOvg3YIaGlHGMllFvZ41nZPTqH/Z4F36NhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=nUSI2TTD; arc=none smtp.client-ip=216.71.154.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1722154486; x=1753690486;
+  t=1722154432; x=1753690432;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8vklSCxbwQmBqkwyEQxE9z9GSmPMa5EQCOmr4nxL940=;
-  b=lHDN45SMZ7svN/5VuqVxHf4iYwG1QrBAerOf0tKoOAYVEmZcAtI09ac6
-   OfQaezzEX+e8ftkOV6kfpixR9zFy44vxYXi3nY01AePLx+WVSNiivn5vD
-   trFCFEuHpWYSSDuUbCdQp70T/5c1ACmRKebORanARASN0r7IvKDHzsbLQ
-   5InR0P5lskINMFlrDotHwwWfPYcF9aLVGs5VTUpC+Y2bBO8JUL4HIv4f1
-   DZy9Oy1sCjKSCR7esLFx27J3F0On8BWTN0r+NeQi0avr2f3Caiwq1nMWb
-   7hCNpQeVGkMnYj/l7Iel7zrCdcCzQb7sRclwqupGynHV0jrmeZNBDubnY
-   g==;
-X-CSE-ConnectionGUID: aDzcQy0wRbGVCsSBndx1JA==
-X-CSE-MsgGUID: iezgi68TQaymxu3XxeBczw==
+  bh=BoKIbjjurzqYFYYKFBYg+GzXOxVAHzR514QYDJtnOfY=;
+  b=nUSI2TTDeETKfiGtIXlHzsgZcCuQyF6IMkNZJMiv1GzrXnBvKsrFN+c/
+   hxezsee7k4Znw9JpoaRBkqR0p5ztTBmutqGLXh5TunVwD93O+dkyv1tpn
+   LXrVgAVvDq/355GXXBSn7wABzNTUy6i7f1GUtX7mKd6+9jyglfR9DWGgX
+   Hq4HyV6mC05G5oqDjYbuWcfOJUeS15k6PyLvufzO9E9SmWZFbUuta0piP
+   C482B1M2hn2FwvKq61mLURTeV1kI8Lt6DHZXweZJQvEOu1ACDL9SF2z4E
+   BYMnh7AkDYZRbO5dL9Q4DWJ6Y80SgY726oU4s0Jl8SMeFzQYiBen3OO9n
+   A==;
+X-CSE-ConnectionGUID: gelN8qUTTO+eKnpK+jcrDQ==
+X-CSE-MsgGUID: Z1EUmgtqQTGfPmSIuo/T3w==
 X-IronPort-AV: E=Sophos;i="6.09,243,1716220800"; 
-   d="scan'208";a="22909124"
+   d="scan'208";a="22909126"
 Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 28 Jul 2024 16:13:43 +0800
-IronPort-SDR: 66a5f11d_ootoeREntYTuuuR+KmdUSvTBi07m9lbfK9HxpAUdLDJuN/T
- 2CGaYuPtLwRBujRuZiL7eOG/hooJmSdKtu2CS/A==
+  by ob1.hgst.iphmx.com with ESMTP; 28 Jul 2024 16:13:51 +0800
+IronPort-SDR: 66a5f125_UnVa6ZV0c42B3xhNdwztVQ9e2HFtrBIcpvcLn2wgmx/nsM5
+ sE4sJQP6ZEF5i9iI9Ln4OBQ+W5M2pv74GoZlD+w==
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2024 00:19:58 -0700
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2024 00:20:06 -0700
 WDCIronportException: Internal
 Received: from avri-office.ad.shared (HELO avri-office.sdcorp.global.sandisk.com) ([10.45.31.142])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2024 01:13:42 -0700
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2024 01:13:50 -0700
 From: Avri Altman <avri.altman@wdc.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>,
 	linux-mmc@vger.kernel.org
 Cc: Ricky WU <ricky_wu@realtek.com>,
 	Avri Altman <avri.altman@wdc.com>
-Subject: [PATCH 06/10] mmc: core: Add close-ended Ext memory addressing
-Date: Sun, 28 Jul 2024 11:11:50 +0300
-Message-Id: <20240728081154.1782120-7-avri.altman@wdc.com>
+Subject: [PATCH 07/10] mmc: host: Add close-ended Ext memory addressing
+Date: Sun, 28 Jul 2024 11:11:51 +0300
+Message-Id: <20240728081154.1782120-8-avri.altman@wdc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240728081154.1782120-1-avri.altman@wdc.com>
 References: <20240728081154.1782120-1-avri.altman@wdc.com>
@@ -76,77 +76,76 @@ List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In a multi-block data transfer, CMD23 shall precede CMD22. Prepare CMD22
-in advance as an additional extension of the mrq, to be handle by the
-host once CMD23 is done.
+In a close-ended multi-block data transfer, CMD23 shall precede CMD22.
+Handle that logic once the sbc is done.
+
+Host drivers that handle their own sbc logic, e.g. bcm2835 etc. are out
+of scope of this change.
 
 Signed-off-by: Avri Altman <avri.altman@wdc.com>
 ---
- drivers/mmc/core/block.c |  7 +++++++
- drivers/mmc/core/core.c  | 18 ++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ drivers/mmc/host/sdhci.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index eb41d2803c9b..fd3ee4d5db31 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1713,6 +1713,13 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
- 			(do_data_tag ? (1 << 29) : 0);
- 		brq->sbc.flags = MMC_RSP_R1 | MMC_CMD_AC;
- 		brq->mrq.sbc = &brq->sbc;
-+
-+		if (mmc_card_is_sduc(card->host)) {
-+			brq->ext.opcode = SD_ADDR_EXT;
-+			brq->ext.arg = FIELD_GET(SDUC_ADDR_EXT_MASK, blk_rq_pos(req));
-+			brq->ext.flags = MMC_RSP_R1 | MMC_CMD_AC;
-+			brq->mrq.ext = &brq->ext;
-+		}
- 	} else if (mmc_card_is_sduc(card->host)) {
- 		u8 ext_addr = FIELD_GET(SDUC_ADDR_EXT_MASK, blk_rq_pos(req));
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index f62b489c9e9c..75a91d0ed16a 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -1791,9 +1791,36 @@ static void sdhci_read_rsp_136(struct sdhci_host *host, struct mmc_command *cmd)
+ 	}
+ }
  
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index d6c819dd68ed..754e628b061b 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -184,6 +184,14 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
- 				mrq->sbc->resp[2], mrq->sbc->resp[3]);
++static struct mmc_command *sdhci_get_sbc_ext(struct sdhci_host *host,
++					     struct mmc_command *cmd)
++{
++	if (mmc_card_is_sduc(host->mmc)) {
++		/*  Finished CMD22, now send actual command */
++		if (cmd == cmd->mrq->ext)
++			return cmd->mrq->cmd;
++	}
++
++	/* Finished CMD23 */
++	if (cmd == cmd->mrq->sbc) {
++		if (mmc_card_is_sduc(host->mmc)) {
++			/* send CMD22 after CMD23 */
++			if (WARN_ON(!cmd->mrq->ext))
++				return NULL;
++			else
++				return cmd->mrq->ext;
++		} else {
++			/* Finished CMD23, now send actual command */
++			return cmd->mrq->cmd;
++		}
++	}
++
++	return NULL;
++}
++
+ static void sdhci_finish_command(struct sdhci_host *host)
+ {
+ 	struct mmc_command *cmd = host->cmd;
++	struct mmc_command *sbc_ext = NULL;
+ 
+ 	host->cmd = NULL;
+ 
+@@ -1828,14 +1855,13 @@ static void sdhci_finish_command(struct sdhci_host *host)
  		}
- 
-+		if (mrq->ext) {
-+			pr_debug("%s: req done <CMD%u>: %d: %08x %08x %08x %08x\n",
-+				mmc_hostname(host), mrq->ext->opcode,
-+				mrq->ext->error,
-+				mrq->ext->resp[0], mrq->ext->resp[1],
-+				mrq->ext->resp[2], mrq->ext->resp[3]);
-+		}
-+
- 		pr_debug("%s: req done (CMD%u): %d: %08x %08x %08x %08x\n",
- 			mmc_hostname(host), cmd->opcode, err,
- 			cmd->resp[0], cmd->resp[1],
-@@ -270,6 +278,12 @@ static void mmc_mrq_pr_debug(struct mmc_host *host, struct mmc_request *mrq,
- 			 mrq->sbc->arg, mrq->sbc->flags);
  	}
  
-+	if (mrq->ext) {
-+		pr_debug("<%s: starting CMD%u arg %08x flags %08x>\n",
-+			 mmc_hostname(host), mrq->ext->opcode,
-+			 mrq->ext->arg, mrq->ext->flags);
-+	}
-+
- 	if (mrq->cmd) {
- 		pr_debug("%s: starting %sCMD%u arg %08x flags %08x\n",
- 			 mmc_hostname(host), cqe ? "CQE direct " : "",
-@@ -309,6 +323,10 @@ static int mmc_mrq_prep(struct mmc_host *host, struct mmc_request *mrq)
- 		mrq->sbc->error = 0;
- 		mrq->sbc->mrq = mrq;
- 	}
-+	if (mrq->ext) {
-+		mrq->ext->error = 0;
-+		mrq->ext->mrq = mrq;
-+	}
- 	if (mrq->data) {
- 		if (mrq->data->blksz > host->max_blk_size ||
- 		    mrq->data->blocks > host->max_blk_count ||
+-	/* Finished CMD23, now send actual command. */
+-	if (cmd == cmd->mrq->sbc) {
+-		if (!sdhci_send_command(host, cmd->mrq->cmd)) {
++	sbc_ext = sdhci_get_sbc_ext(host, cmd);
++	if (sbc_ext) {
++		if (!sdhci_send_command(host, sbc_ext)) {
+ 			WARN_ON(host->deferred_cmd);
+ 			host->deferred_cmd = cmd->mrq->cmd;
+ 		}
+ 	} else {
+-
+ 		/* Processed actual command. */
+ 		if (host->data && host->data_early)
+ 			sdhci_finish_data(host);
 -- 
 2.25.1
 
