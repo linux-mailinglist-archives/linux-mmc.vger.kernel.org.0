@@ -1,247 +1,143 @@
-Return-Path: <linux-mmc+bounces-3125-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3128-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DC9941174
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jul 2024 14:03:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9DA94287F
+	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jul 2024 09:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0D88B26C08
-	for <lists+linux-mmc@lfdr.de>; Tue, 30 Jul 2024 12:00:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 770AC1F2377E
+	for <lists+linux-mmc@lfdr.de>; Wed, 31 Jul 2024 07:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC73B19E7D8;
-	Tue, 30 Jul 2024 11:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA851A76A3;
+	Wed, 31 Jul 2024 07:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bHWvaI8g"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="rc3/aITt"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10olkn2025.outbound.protection.outlook.com [40.92.40.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4D41A00DF;
-	Tue, 30 Jul 2024 11:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722340755; cv=none; b=qyfG9c2U2G7QVPf8XWHryl+xToLebPyNjSJpFAo9V6NUSkRJ7qou7XHxlbKdyldGSa8HbAzo1rqLWXB0X1w+KG/0GVyCRo9Uz0hL15WIok3LkRoJ5qSdDQRoGMBVrP682iXZzn8eYzReMGuEXCE2vloK0HCNiTgtLL99WrNwY3w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722340755; c=relaxed/simple;
-	bh=Br5iul1IKL3n9WzMsepXe4wCxuWuLJrejZMwQltHxc8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Kt6ogvFcCIWg0HxCPyjlORhrftUbNSgSws+ACEGy5Ii90YYuHtRU9LvwY7KJ3dCEh1QLG1scEDfVdhONRF8E4c0MiX+cV0HNCMrWE5raLkC9d/kP+lqcELeLkXoZEzPRGobgjA4N0IIQtpC4lmAeOtB/3S9JKB4VqGEd6BLf6WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bHWvaI8g; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46UA3P6M016748;
-	Tue, 30 Jul 2024 11:58:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=5iafdj6H+Dw
-	nHZy21LrrA4/vHtwtOgC9r8TCOiDQlGg=; b=bHWvaI8gwx16R8/CcQgx5wRhPv4
-	heTCWmfP1WmTpAhC4P5VCD6vGthgGUGvNc2nf/6Wg4NC0YdyWPPgKGtoappgbM0I
-	V4SZjLiyZY1b8HqhPGeJ8UV5dh8KU6gk8HVg/t8TdG43FJZ/+b6pscU5IiBTlKT2
-	gdmWANfjKWOq7uz2CZcIzCo9oWeBC7suB/NPK9dXoDzkZmomN/U63Lu9PaszimDA
-	wG65QK2WFXdBTgncHPKkjAlvarEqtlh54cuPuoqlscwgW0B0UO987fngR5vNcM/h
-	4c21BGjXjnUFwetm0/GTrHw/O4IVIOaOuh6eIocVbZhVC3NldIuXgvana6w==
-Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40ms4375bn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 11:58:46 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTP id 46UBwf73001365;
-	Tue, 30 Jul 2024 11:58:42 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 40msykdx6r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 11:58:42 +0000
-Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 46UBwfdv001324;
-	Tue, 30 Jul 2024 11:58:42 GMT
-Received: from hu-devc-blr-u22-a.qualcomm.com (hu-mdalam-blr.qualcomm.com [10.131.36.157])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 46UBwgJK001392
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 11:58:42 +0000
-Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 466583)
-	id C9DC0413B5; Tue, 30 Jul 2024 17:28:40 +0530 (+0530)
-From: Md Sadre Alam <quic_mdalam@quicinc.com>
-To: axboe@kernel.dk, agk@redhat.com, snitzer@kernel.org, mpatocka@redhat.com,
-        adrian.hunter@intel.com, quic_asutoshd@quicinc.com,
-        ritesh.list@gmail.com, ulf.hansson@linaro.org, andersson@kernel.org,
-        konrad.dybcio@linaro.org, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dm-devel@lists.linux.dev,
-        linux-mmc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        quic_viswanat@quicinc.com, quic_srichara@quicinc.com,
-        quic_varada@quicinc.com
-Cc: quic_mdalam@quicinc.com
-Subject: [PATCH 6/6] mmc: sdhci-msm: Add additional algo mode for inline encryption
-Date: Tue, 30 Jul 2024 17:28:38 +0530
-Message-Id: <20240730115838.3507302-7-quic_mdalam@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240730115838.3507302-1-quic_mdalam@quicinc.com>
-References: <20240730115838.3507302-1-quic_mdalam@quicinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0868B23BB;
+	Wed, 31 Jul 2024 07:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.40.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722412728; cv=fail; b=GBJDITJyLBTRzTPoF/alw84G2tJn70icJf0r6jaMYPATjW20dmdzueZg9VriBpc7p+xAxtDmUCIwukCnMlaZlSEmqfVMDcb6A5VKoEYaN0DEeLmpWRvw3dwoB1pRyNVnsrZ843n4se225FAsw34ukW8hTMxy6TMgPukwbrHvyCU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722412728; c=relaxed/simple;
+	bh=BOQFCSVrZI2EfB+B2ppqHnoqf5MLbT8Cis6ChcSmqY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=N+L+MpGatMBw0fVnCQDeo4RVb832hlv+dOq99jzZA1ZuPl0hXGOVB4EXWCatACqFWEWMu/UDyOAgG2GuRya7ycK70rfCJ5XXUsJhO1QELOmoP3susbC4t10f0Bx+sMnNzof3P5hbA9fUMvanJmtKVghEpxKcU5znzDjq8NUozcg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=rc3/aITt; arc=fail smtp.client-ip=40.92.40.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hCGRqhi7slA4gadufyBhDh+/cxxVeWm4W7F2h2UfN2f2p4ZqrY83HDW3ZSpTC7jKWw1c565vH+zSOtF2vT83NnuMLCdiuqgDFEI9PisZtgTNaCD7+TKfZ9aXxnZJyUAMNZ6qaZ0ld1o5plbLBqXyKJKP4shY0soJlu1hZJV924q/XN1dPd76FP0Cn10PPkqIqgP4u7E1U51eFWS0ToEGyN+opvD8UX5tb06G5/GopjNsksMxdNktpnRrtjLs2Jb79E3a6ahV9R53JKAUCVOseQ1kTQo9RTw2+KD3c453lkETeWYj+1Lve2plOWmGbLvfXVhmOaUyzZr93DxeDbBqYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l31kTjDUM6lrLQCWDqRK07Aaiv2VCztZ01dcWCtWFBE=;
+ b=WhkdMqya7LgFa4YKDjGogfQURXWvwxiayYyW7eG5ixFZBXAAh4rGzpHbqbN4ydRWdoubObktDT6mfDZQp24IHvdl+J1nQR490YsdAaJaPnoRQLxAum3Vekapq4++UtEhOde7gp+QEVdypSMpI0zSOskQhjQtl8tvDTCap7JIcESy5ezWFWI92BDOKtb41WqtwgoVW1X4b97ZQ5Xwq557Iuuf1qu3djvjWnAPllSScUdaIH2jMsCiaek5EejUfRsiVIK3er1kT4nTrKstSheEmKNVuywXsuToIRCFucqI14iIrgPx62gY9LfOrMo+hag0G82sd5N9jz6WtAJKrHje7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l31kTjDUM6lrLQCWDqRK07Aaiv2VCztZ01dcWCtWFBE=;
+ b=rc3/aITtZ1eZira6wp9nzL8B+aXBsjjDQBzMeNoHaGt0KIlQcCOILBWhGNdIhS5WPB30KYwGSWPivkYUs/NTVPHLk41EIHlZhQ6QxF6sBEFy8gPm8tnKd7zCZjCAGj8iyvOn8zcPo3BsAsyxELlftD0a66YcoT5GzhaaufOwybpIdxkp3hYCq4+4jcML9EH6gZERkFSHLqHouxNKzgAK0zCIyCgYC56dOJR7bJoo9TRwnzyjtHcFDcpSEzDzsjZlaflUBgmXWe5jD5xtdTdv3ItNPnciDpJaC7zfV5D7ooStDABWd73sqPYqHUJVX7N7Lj3o2R4HZ1wRtx80pXAj8w==
+Received: from IA1PR20MB4953.namprd20.prod.outlook.com (2603:10b6:208:3af::19)
+ by LV3PR20MB7123.namprd20.prod.outlook.com (2603:10b6:408:1b6::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Wed, 31 Jul
+ 2024 07:58:42 +0000
+Received: from IA1PR20MB4953.namprd20.prod.outlook.com
+ ([fe80::ab0b:c0d3:1f91:d149]) by IA1PR20MB4953.namprd20.prod.outlook.com
+ ([fe80::ab0b:c0d3:1f91:d149%5]) with mapi id 15.20.7807.026; Wed, 31 Jul 2024
+ 07:58:42 +0000
+Date: Wed, 31 Jul 2024 15:58:12 +0800
+From: Inochi Amaoto <inochiama@outlook.com>
+To: Chen Wang <unicornxw@gmail.com>, adrian.hunter@intel.com, 
+	aou@eecs.berkeley.edu, conor+dt@kernel.org, guoren@kernel.org, inochiama@outlook.com, 
+	jszhang@kernel.org, krzysztof.kozlowski+dt@linaro.org, palmer@dabbelt.com, 
+	paul.walmsley@sifive.com, robh@kernel.org, ulf.hansson@linaro.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, chao.wei@sophgo.com, haijiao.liu@sophgo.com, 
+	xiaoguang.xing@sophgo.com, tingzhu.wang@sophgo.com
+Cc: Chen Wang <unicorn_wang@outlook.com>
+Subject: Re: [PATCH v5 8/8] riscv: sophgo: dts: add mmc controllers for
+ SG2042 SoC
+Message-ID:
+ <IA1PR20MB4953350D2A8084D53362785FBBB12@IA1PR20MB4953.namprd20.prod.outlook.com>
+References: <cover.1721377374.git.unicorn_wang@outlook.com>
+ <5110a64d513390c01daf3b4a6a6fc5560baf77a8.1721377374.git.unicorn_wang@outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5110a64d513390c01daf3b4a6a6fc5560baf77a8.1721377374.git.unicorn_wang@outlook.com>
+X-TMN: [Gob5Lht3fZXb+B1CzTPqNjCU72tac35xPB4MV4ZxNS8=]
+X-ClientProxiedBy: TYWP286CA0003.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:178::22) To IA1PR20MB4953.namprd20.prod.outlook.com
+ (2603:10b6:208:3af::19)
+X-Microsoft-Original-Message-ID:
+ <t53u23r4jwfc4n3j57pc7o2xg5d2qaycqxl2muufk2k7zpyzxh@k465xiotrld2>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Wgzb38TwClZThWRfIODRej4zHS0zg-oL
-X-Proofpoint-ORIG-GUID: Wgzb38TwClZThWRfIODRej4zHS0zg-oL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-30_11,2024-07-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 priorityscore=1501
- clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407300084
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR20MB4953:EE_|LV3PR20MB7123:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0969f831-c031-4237-c5cd-08dcb1369883
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199028|8060799006|5072599009|19110799003|440099028|3412199025|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	HxXU3Ra+HGhXJL1UkRj2sSrR/U/VxfrzKW7Q96RrPMfJNQjh5LoAvDsHialsw7Q1vEVpSXYdyB9z/CJ8U8l63LNkG2oTJAJi7w+DkVJsKumZLapZAGXVcT3eNU5txYyu55W0WG9wvLKNwt6Jo9+IW1EaslYlPH1zw1m9vIiq+xqWU4C07Kklx/UkNfYdGz9d4I1HlLauAjhz5LdSwyq8XM4tFpva246OG3PoHfsay5t9ubTpjMu6itdugoJ4pHOiQugpp4JHdcN23OKl8sRe08Si6B1DCrrjo7QC2UP35urTJLqynmYpDcCDXEUlw8yphHPo2eTdvJ/r4McL8i8KbDJLU45+3eJR4pytSwLhbYx1VmZq1KlW024368YbvLr11cbAXEB5teUwhC/1lAgG0d++f4r/8iKB/jjpAJHUTIcfSZ7iX7Fy9Pg5FgYiSID/gYJsyvGgcCmPmb68VHxgJS6GlzjAO4EQ0ktNAskF9xldE9R8U0TWOPBTihQYZMV+/IoSl9KRqT3Hb5+o+LB2UiL3fjPA/W84AOKhDkCn7wQkIeJyCRzMC0fqs2jRzF7WiWixqqK7753UxK0/lChHmDIM52fNilUcuAYdAps3lwviVQwtEm4RtruDkOwP2joJOv4dnChrfdj3A0/vBORBVlXuULGr6sVnAJvlmjXBnm2ZHnniLGiQZeJqehrsTyggDlxd1UdezSnh5KYn72fYuw==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MTVmu9VFnGQAVBNJtT6gjlNhQK/iQBuLAFD+miYu83lS03o429pgkC53jaxa?=
+ =?us-ascii?Q?94qwsVNmyW06VZCfYixyRf5rezqm2zV8+878w86zjYfnWPGH+Gx3f/E+TAcj?=
+ =?us-ascii?Q?KkyriGXOKyeaX57IWavHoYZ2eRLWKh1XQm/Y30UKYqf5zqyUhjZL4SqIrRns?=
+ =?us-ascii?Q?J+7+KuU16/mcr+Fby00m+80DIh19OAmnELFoWA53swA77oHurGuSJtQAVKJk?=
+ =?us-ascii?Q?3WoR98s5+U6vHcx1Zj/dx4hE0U18my3SWd8HTRIu5+Iug3Jjy3PpKuUqZuHP?=
+ =?us-ascii?Q?sJTGEIuxvEX/sOs630/EFyAiYL8Xl2JVXNpoRF7TblObkJbwrTff/u356Eqa?=
+ =?us-ascii?Q?7/jrAO5V6XngiGN/TUNzk5+WhzrwjZYrcWKGAT05iG/von27V6tc2pmrd1l2?=
+ =?us-ascii?Q?1KbG6InpuCvdTpYUC5FrXtK+jk8xBUp4JhIjPJT8BD6aZxRy6aG4W3pFPxDl?=
+ =?us-ascii?Q?rNfGAGrGQket1LH7KuLRwI3oCj4KXVGU02XaonNPMpiA4Guk+i5w35NMMRxZ?=
+ =?us-ascii?Q?vfvwF5+4d97pqi+Odjb59LMEGI6U2LfI/9fYx6khzHCCPbABtWi0XRSnlA1A?=
+ =?us-ascii?Q?g7gU+0QD9F7b3tNoykAlP6+0xYIp937YJZbwGy4hAatF5fS/YU/z86d1ojUd?=
+ =?us-ascii?Q?1C4TJIwIf22TjUcrcLJ3xC0smPU+9/McGx6MjRoCcjqhusvJ0OCxpbNOGSAq?=
+ =?us-ascii?Q?Eq/7cg6dGfMdHXA+9fcYsN1sZPgvrnuCvNaqM9SfRKoQf8Ce1Hr7CXbMqcje?=
+ =?us-ascii?Q?X7qQSEC22QAocp6O0CAt7UKhRrLZ34zr7nQn2l+O9td+pCvQvJ9n90lixNWh?=
+ =?us-ascii?Q?QQaSnPTU1wBy9tvEmp+Gqd5mk39P0Q2qllOT2G5toEOI/dIXEgRnBXI3+3lL?=
+ =?us-ascii?Q?0u+aYI1DTuT6OUEJ4+5jsjF94m2FwjVo+nj6HCnSOX8DNexJ47NFiuaob3Hn?=
+ =?us-ascii?Q?Bs27PUqPhgxaWUqzPXRDf4PEYibXAx9Gt2SWGlZaSyqOk0fMPeYn/FRInvwV?=
+ =?us-ascii?Q?sdU6XHezTbuBGfVUFcCZmczSaNAaO36P1KVYp1LvrJ/jA2OGX8jyXwWz25wc?=
+ =?us-ascii?Q?+llUqJW8eVulKzpHHEj+K2O8+hDWI5AHYtHHAM/vz+rlyiRlrkC/uP2BlISn?=
+ =?us-ascii?Q?OZ0edRiYQmaDgiifXNRTsDB9MAMV6UWnU1uLsLls/HzgHBE1Q7ECqdZ7WEmj?=
+ =?us-ascii?Q?+UPKB+zAqK7mprAE9w8H+tJX00ip0frHOZr9aX///yeldhzvR9EduPu6hDmA?=
+ =?us-ascii?Q?A/e5jmmfQhKt3oGsxo5T?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0969f831-c031-4237-c5cd-08dcb1369883
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR20MB4953.namprd20.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2024 07:58:42.7408
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR20MB7123
 
-Add support for AES-XTS-128, AES-CBC-128 and AES-CBS-256 modes for
-inline encryption. Since ICE (Inline Crypto Engine) supports these
-all modes
+On Fri, Jul 19, 2024 at 04:47:22PM GMT, Chen Wang wrote:
+> From: Chen Wang <unicorn_wang@outlook.com>
+> 
+> SG2042 has two MMC controller, one for emmc, another for sd-card.
+> 
+> Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
 
-Co-developed-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
----
- drivers/mmc/host/sdhci-msm.c | 10 ++----
- drivers/soc/qcom/ice.c       | 65 +++++++++++++++++++++++++++++++-----
- 2 files changed, 58 insertions(+), 17 deletions(-)
+Please rebase your patch based on sophgo/for-next.
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index e113b99a3eab..fc1db58373ce 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -1867,17 +1867,11 @@ static int sdhci_msm_program_key(struct cqhci_host *cq_host,
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
- 	union cqhci_crypto_cap_entry cap;
- 
--	/* Only AES-256-XTS has been tested so far. */
- 	cap = cq_host->crypto_cap_array[cfg->crypto_cap_idx];
--	if (cap.algorithm_id != CQHCI_CRYPTO_ALG_AES_XTS ||
--		cap.key_size != CQHCI_CRYPTO_KEY_SIZE_256)
--		return -EINVAL;
- 
- 	if (cfg->config_enable & CQHCI_CRYPTO_CONFIGURATION_ENABLE)
--		return qcom_ice_program_key(msm_host->ice,
--					    QCOM_ICE_CRYPTO_ALG_AES_XTS,
--					    QCOM_ICE_CRYPTO_KEY_SIZE_256,
--					    cfg->crypto_key,
-+		return qcom_ice_program_key(msm_host->ice, cap.algorithm_id,
-+					    cap.key_size, cfg->crypto_key,
- 					    cfg->data_unit_size, slot);
- 	else
- 		return qcom_ice_evict_key(msm_host->ice, slot);
-diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
-index fbab7fe5c652..f387b884c516 100644
---- a/drivers/soc/qcom/ice.c
-+++ b/drivers/soc/qcom/ice.c
-@@ -19,6 +19,9 @@
- 
- #include <soc/qcom/ice.h>
- 
-+#define AES_128_CBC_KEY_SIZE			16
-+#define AES_256_CBC_KEY_SIZE			32
-+#define AES_128_XTS_KEY_SIZE			32
- #define AES_256_XTS_KEY_SIZE			64
- 
- /* QCOM ICE registers */
-@@ -161,36 +164,80 @@ int qcom_ice_suspend(struct qcom_ice *ice)
- }
- EXPORT_SYMBOL_GPL(qcom_ice_suspend);
- 
-+static int qcom_ice_get_algo_mode(struct qcom_ice *ice, u8 algorithm_id,
-+				  u8 key_size, enum qcom_scm_ice_cipher *cipher,
-+				  u32 *key_len)
-+{
-+	struct device *dev = ice->dev;
-+
-+	switch (key_size) {
-+	case QCOM_ICE_CRYPTO_KEY_SIZE_128:
-+		fallthrough;
-+	case QCOM_ICE_CRYPTO_KEY_SIZE_256:
-+		break;
-+	default:
-+		dev_err(dev, "Unhandled crypto key size %d\n", key_size);
-+		return -EINVAL;
-+	}
-+
-+	switch (algorithm_id) {
-+	case QCOM_ICE_CRYPTO_ALG_AES_XTS:
-+		if (key_size == QCOM_ICE_CRYPTO_KEY_SIZE_256) {
-+			*cipher = QCOM_SCM_ICE_CIPHER_AES_256_XTS;
-+			*key_len = AES_256_XTS_KEY_SIZE;
-+		} else {
-+			*cipher = QCOM_SCM_ICE_CIPHER_AES_128_XTS;
-+			*key_len = AES_128_XTS_KEY_SIZE;
-+		}
-+		break;
-+	case QCOM_ICE_CRYPTO_ALG_BITLOCKER_AES_CBC:
-+		if (key_size == QCOM_ICE_CRYPTO_KEY_SIZE_256) {
-+			*cipher = QCOM_SCM_ICE_CIPHER_AES_256_CBC;
-+			*key_len = AES_256_CBC_KEY_SIZE;
-+		} else {
-+			*cipher = QCOM_SCM_ICE_CIPHER_AES_128_CBC;
-+			*key_len = AES_128_CBC_KEY_SIZE;
-+		}
-+		break;
-+	default:
-+		dev_err_ratelimited(dev, "Unhandled crypto capability; algorithm_id=%d, key_size=%d\n",
-+				    algorithm_id, key_size);
-+		return -EINVAL;
-+	}
-+
-+	dev_info(dev, "cipher: %d key_size: %d", *cipher, *key_len);
-+
-+	return 0;
-+}
-+
- int qcom_ice_program_key(struct qcom_ice *ice,
- 			 u8 algorithm_id, u8 key_size,
- 			 const u8 crypto_key[], u8 data_unit_size,
- 			 int slot)
- {
- 	struct device *dev = ice->dev;
-+	enum qcom_scm_ice_cipher cipher;
- 	union {
- 		u8 bytes[AES_256_XTS_KEY_SIZE];
- 		u32 words[AES_256_XTS_KEY_SIZE / sizeof(u32)];
- 	} key;
- 	int i;
- 	int err;
-+	u32 key_len;
- 
--	/* Only AES-256-XTS has been tested so far. */
--	if (algorithm_id != QCOM_ICE_CRYPTO_ALG_AES_XTS ||
--	    key_size != QCOM_ICE_CRYPTO_KEY_SIZE_256) {
--		dev_err_ratelimited(dev,
--				    "Unhandled crypto capability; algorithm_id=%d, key_size=%d\n",
--				    algorithm_id, key_size);
-+	if (qcom_ice_get_algo_mode(ice, algorithm_id, key_size, &cipher, &key_len)) {
-+		dev_err(dev, "Unhandled crypto capability; algorithm_id=%d, key_size=%d\n",
-+			algorithm_id, key_size);
- 		return -EINVAL;
- 	}
- 
--	memcpy(key.bytes, crypto_key, AES_256_XTS_KEY_SIZE);
-+	memcpy(key.bytes, crypto_key, key_len);
- 
- 	/* The SCM call requires that the key words are encoded in big endian */
- 	for (i = 0; i < ARRAY_SIZE(key.words); i++)
- 		__cpu_to_be32s(&key.words[i]);
- 
--	err = qcom_scm_ice_set_key(slot, key.bytes, AES_256_XTS_KEY_SIZE,
--				   QCOM_SCM_ICE_CIPHER_AES_256_XTS,
-+	err = qcom_scm_ice_set_key(slot, key.bytes, key_len, cipher,
- 				   data_unit_size);
- 
- 	memzero_explicit(&key, sizeof(key));
--- 
-2.34.1
-
+Regards,
+Inochi
 
