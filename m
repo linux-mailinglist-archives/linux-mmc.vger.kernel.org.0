@@ -1,174 +1,142 @@
-Return-Path: <linux-mmc+bounces-3214-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3216-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2742A94792E
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 12:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13CA0947C8F
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 16:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ABAA1F22120
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 10:15:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFDD91F2272C
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 14:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CC513C90B;
-	Mon,  5 Aug 2024 10:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA33C139D13;
+	Mon,  5 Aug 2024 14:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oI2ORlXd"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="IaOjWVR4"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17462153804
-	for <linux-mmc@vger.kernel.org>; Mon,  5 Aug 2024 10:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D1B12D20D
+	for <linux-mmc@vger.kernel.org>; Mon,  5 Aug 2024 14:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722852905; cv=none; b=V5oduBBZekG3x9VVr+FQlQo9gyy0D+U76pBIrveIAE5zDitwgL45i03a7xZOe7w0DCwXa09p4lUgKQmBJwsde9lVk8RrmxA+mDC03Riu3P6YPHViQVIPRRSI1ikouJqS2mPm6ltpFe/GHjHKujWdT9BYm1OeG2xaBLYg23nsoBY=
+	t=1722867021; cv=none; b=IVB3CsH1iyle77crnMQVO10f+KIq78VG2Sf/33RhpIv6+8wEBJsOvl/HHhlYuKOZL/8Jgz9TfEr0eEF7WoDFMhmUwLI/aqDLaQ9FZCDvcUZOjPh42KxYYSFDbtw4C8uiq4qXcXh35hn8kt/rh1IESPCF0d25+9t6yOUoyjbhyWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722852905; c=relaxed/simple;
-	bh=iRwmgmhT4KqFnsQ0P95yay3PR79n7RkGMBABFu5stiU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jKXQhwoOeW4bVTLvnoTVTbeFX+cY+YhlZ1qmhTakGL/f3UDzccH9dVab+PpdMa70Jx16zqp6baO0ssT6BUpewnwuPdTe12W3mwHyDz4fsYyEgnc1Fd7bqV1XPz131VLDkqpDOwdwdPcUISmPl5W72CoO52/7wDG2SVtoQ4LKnXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oI2ORlXd; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e0b286b922eso8054825276.1
-        for <linux-mmc@vger.kernel.org>; Mon, 05 Aug 2024 03:15:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722852902; x=1723457702; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7PId6VbES8ejzo2uY7FaNwSx3/upuclSuKnTrgn0fnk=;
-        b=oI2ORlXdxj30BjWwQtRlhPdHWB5M1cpzmnqde7c889eJPmacnpopMVYVQ99gReMkn2
-         6/lIkc7DdJ0jhMKQWXVLeCaBHoh8YF5/xrWq5YHDIMH1etkHNP7l9dpT2bCJfL2ow8kH
-         rgKGxRvI6yr14c3GVrMmkDvfJc1LR9J97Mwgr9pSrTJM203O5/PtdFu2H/XNiIvG1DRm
-         GWNCjuMpN70WBH6DscIJTqQWJbvCsCDCKDiGOih1nFIKFNI083XT9hzEKPL8OHxQbzLE
-         sIMtiCmM+XDaTyDZl8OGqNxIJrzdBuUqh5ZCe8+gusUCX7B0X+f+tBkoeVAqU+fmS7EL
-         +KuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722852902; x=1723457702;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7PId6VbES8ejzo2uY7FaNwSx3/upuclSuKnTrgn0fnk=;
-        b=EgS1p8KpDtiHtaUOECLuTQCvLG8xvqq/LMVbdFql+Hgt2kTj9oOFvJBrod9cXlAYFx
-         2aUx9qbTX6/RN0NubtljHbUFR2h4TXsV8c7UYg8Rq3GUwYyLVxHaCazSG9rai8UCs17t
-         Jyytpy8BsRLRaGPKuYO7qJjo9KFDJ+JEI/YvUEHU5igazXs0Z64ppvKWnvtcy6c6KYJ+
-         /2/CpOzKVgOxYDZ+EIm2wjUcqoNJB5/hJXt48PNzMUFoEn3c9Sf2DHBWTsfw4U3cbVr1
-         tehfbkDeCrVIPNKhIgdW6Lyp/oNnenxX6w48i6zxuDKmX2wGTEPHWaddSxDaPpwo+Tz/
-         GxfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVaDAU/fN4hZfCRpz4QvRWONOJW3TmjqnygMHjvB+ib3JtAhauDsq/AN3mTVavvPuhh6OIEUeF8wFajSsj2SopkMezrnrsUBI7i
-X-Gm-Message-State: AOJu0Yzz582cfVQyUWnR571873QCDbwx4SPWWZA+1ZXSROkerSxD4oG4
-	rec9byrGcGJjPTNweF5fvXtE+T9ypUTmWrnqgBTs6krP/DN5x5zMBu4xYuMm6UOW0yxjRQ0wY3v
-	/WDnod3xs9hYajwsORloE6k+CqcAC142JlGZtEw==
-X-Google-Smtp-Source: AGHT+IFvONQFJleLY7L+1QwTRWODvOHPNAHqljS/7GjMMR/pJEw+N3kl7iJ2pkiOBpcqDAPkdX1gmWCfDTI6SBhQwvw=
-X-Received: by 2002:a05:6902:120e:b0:e0b:c297:8a1f with SMTP id
- 3f1490d57ef6-e0bde2e1809mr11328079276.24.1722852902080; Mon, 05 Aug 2024
- 03:15:02 -0700 (PDT)
+	s=arc-20240116; t=1722867021; c=relaxed/simple;
+	bh=CRk+WSvg+8ew6Axl9UsveI8a1vmiJxVs2T0r9Dd2K6o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bzpNS6jIYYFWIBO29FvauosFKMKA/kJCmFs9B/oixe4Qs8y2irSTRkxUl1TBjRGdv4P0w+NaDJVXpAPQ5bB33pQp12Et3gsZddlxQjK5dBtd6oXrNiRn+cxClve97oObifhSZEThKfjgdFL2SVuOze7E3ebGmgqUkfchPvx3OV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=IaOjWVR4; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=VC7W
+	KpuwekykfBr8ihdjN8Kp943rQ0vp+Rxzc1f6dM4=; b=IaOjWVR4dCjLxNxJihk4
+	8UG0Q0HrzC69VPZNP0QdivZuHbUesoL1qKJj7otmMAMZovNP0FDhWci5noO5veaV
+	gRNh5BfTw8ClwNA2mrE/ditz7Ji1c+qgrzn8ra+HgAaoFIbdcws4iWqUhNxa/wuE
+	8uzPeAIHELZtA5wbas4yJee2xmaEM2ZAb+bubV6Wg5mrr90yWH5RoK5VLjgOcXWE
+	gJAf0tRV80nfD2HeHQBEVC4bE8iAVks0x+jeTHGC0sd1RFoflm+57a6/OvXXetub
+	gqR4mVLuUD4sp/NOHu8cwURS+tEjbzpyLSTa0LoD4+h33yroQ1fr0cfQ0eqb5v78
+	+w==
+Received: (qmail 2002488 invoked from network); 5 Aug 2024 16:10:14 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 5 Aug 2024 16:10:14 +0200
+X-UD-Smtp-Session: l3s3148p1@vMFdPPAeYskgAwDPXxLGAIH3oZkcU6AS
+Date: Mon, 5 Aug 2024 16:10:13 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Prabhakar <prabhakar.csengg@gmail.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-mmc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: Re: [PATCH v5 3/3] mmc: renesas_sdhi: Add RZ/V2H(P) compatible string
+Message-ID: <ZrDdRZOdXv4c6-P8@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Prabhakar <prabhakar.csengg@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-mmc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20240724182119.652080-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20240724182119.652080-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240802032121.GA4019194@sony.com>
-In-Reply-To: <20240802032121.GA4019194@sony.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 5 Aug 2024 12:14:25 +0200
-Message-ID: <CAPDyKFoTdMpvuXR16OqY8G6t_4jCJDW9+wz=_fBc=kZSL1KbqQ@mail.gmail.com>
-Subject: Re: [PATCH] mmc: core: apply SD quirks earlier during probe
-To: Keita Aihara <keita.aihara@sony.com>
-Cc: Jonathan Bell <jonathan@raspberrypi.com>, Tim.Bird@sony.com, Shingo.Takeuchi@sony.com, 
-	Masaya.Takahashi@sony.com, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="06jFUOUZfUFs2FzP"
+Content-Disposition: inline
+In-Reply-To: <20240724182119.652080-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-On Fri, 2 Aug 2024 at 05:21, Keita Aihara <keita.aihara@sony.com> wrote:
->
-> Applying MMC_QUIRK_BROKEN_SD_CACHE is broken, as the card's extended
-> registers are parsed prior to the quirk being applied in mmc_blk.
 
-In what way is it a problem to read the extended registers first?
+--06jFUOUZfUFs2FzP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
-> Split this out into an SD-specific list of quirks and apply in
-> mmc_sd_init_card instead.
->
-> Fixes: c467c8f08185 ("mmc: Add MMC_QUIRK_BROKEN_SD_CACHE for Kingston Canvas Go Plus from 11/2019")
-> Authored-by: Jonathan Bell <jonathan@raspberrypi.com>
-> Signed-off-by: Jonathan Bell <jonathan@raspberrypi.com>
-> Signed-off-by: Keita Aihara <keita.aihara@sony.com>
+On Wed, Jul 24, 2024 at 07:21:19PM +0100, Prabhakar wrote:
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+>=20
+> The SD/MMC block on the RZ/V2H(P) ("R9A09G057") SoC is similar to that
+> of the R-Car Gen3, but it has some differences:
+> - HS400 is not supported.
+> - It has additional SD_STATUS register to control voltage,
+>   power enable and reset.
+> - It supports fixed address mode.
+>=20
+> To accommodate these differences, a SoC-specific 'renesas,sdhi-r9a09g057'
+> compatible string is added.
+>=20
+> Note for RZ/V2H(P), we are using the `of_rzg2l_compatible` OF data as it
+> already handles no HS400 and fixed address mode support. Since the SDxIOVS
+> and SDxPWEN pins can always be used as GPIO pins on the RZ/V2H(P) SoC, no
+> driver changes are done to control the SD_STATUS register.
 
-Kind regards
-Uffe
+Okay, so you mux the pins as GPIOs and leave SD_STATUS alone. Smart
+move.
 
-> ---
->  drivers/mmc/core/quirks.h | 22 +++++++++++++---------
->  drivers/mmc/core/sd.c     |  4 ++++
->  2 files changed, 17 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-> index cca71867bc4a..92905fc46436 100644
-> --- a/drivers/mmc/core/quirks.h
-> +++ b/drivers/mmc/core/quirks.h
-> @@ -15,6 +15,19 @@
->
->  #include "card.h"
->
-> +static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
-> +       /*
-> +        * Kingston Canvas Go! Plus microSD cards never finish SD cache flush.
-> +        * This has so far only been observed on cards from 11/2019, while new
-> +        * cards from 2023/05 do not exhibit this behavior.
-> +        */
-> +       _FIXUP_EXT("SD64G", CID_MANFID_KINGSTON_SD, 0x5449, 2019, 11,
-> +                  0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
-> +                  MMC_QUIRK_BROKEN_SD_CACHE, EXT_CSD_REV_ANY),
-> +
-> +       END_FIXUP
-> +};
-> +
->  static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
->  #define INAND_CMD38_ARG_EXT_CSD  113
->  #define INAND_CMD38_ARG_ERASE    0x00
-> @@ -53,15 +66,6 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
->         MMC_FIXUP("MMC32G", CID_MANFID_TOSHIBA, CID_OEMID_ANY, add_quirk_mmc,
->                   MMC_QUIRK_BLK_NO_CMD23),
->
-> -       /*
-> -        * Kingston Canvas Go! Plus microSD cards never finish SD cache flush.
-> -        * This has so far only been observed on cards from 11/2019, while new
-> -        * cards from 2023/05 do not exhibit this behavior.
-> -        */
-> -       _FIXUP_EXT("SD64G", CID_MANFID_KINGSTON_SD, 0x5449, 2019, 11,
-> -                  0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
-> -                  MMC_QUIRK_BROKEN_SD_CACHE, EXT_CSD_REV_ANY),
-> -
->         /*
->          * Some SD cards lockup while using CMD23 multiblock transfers.
->          */
-> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-> index 1c8148cdda50..ee37ad14e79e 100644
-> --- a/drivers/mmc/core/sd.c
-> +++ b/drivers/mmc/core/sd.c
-> @@ -26,6 +26,7 @@
->  #include "host.h"
->  #include "bus.h"
->  #include "mmc_ops.h"
-> +#include "quirks.h"
->  #include "sd.h"
->  #include "sd_ops.h"
->
-> @@ -1475,6 +1476,9 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
->                         goto free_card;
->         }
->
-> +       /* Apply quirks prior to card setup */
-> +       mmc_fixup_device(card, mmc_sd_fixups);
-> +
->         err = mmc_sd_setup_card(host, card, oldcard != NULL);
->         if (err)
->                 goto free_card;
-> --
-> 2.43.2
->
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+
+For the record:
+
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+
+
+--06jFUOUZfUFs2FzP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmaw3UEACgkQFA3kzBSg
+KbajIQ//cfYfi1vC75daca5woTDJICrAM8gVdOmFDa8hFFc0LKwgUQFYiWu6CjOE
+VPyCunnEM0YxAHOgc4pmBfysESH/qPnd78wLKDmFxabr8FUGGbRPxsM9nvNC/mlp
+Of5A2RSMayNAz+s15fcMwhZJT2V3U4rCDHVK+iZPjJ3Opfx5CzNta7aRVlvWBJC/
+dmX7Sh4g1RDsJ+52VVX4hPXOFjEoZSwFeRv68kBvXkXhGu8He8Z+kE3oe1N/uBwb
+mcML9RQQgH+pNHirTZPpMvyPtnQizCt6qEbWcQ5cIDkV1uGiZ/lIaztNIayB6zIu
+izS7YDVNWRsjvHERsGQz14XgphDFhDlHTnxcDThGtd4brt3GB1twsf5wuD6fnQO7
+vnQJnFHrgb7LoJqdg9v01NkoJ+7WSryPez2puxPGhWEQzGWBsThjsTQnsmnAXzcr
+Iy8tE66/sJUYWDjsZEMHKgaPnRlrUl6BYGIDSWRO7jCqGfi7bCc6iLh2/m1wN7Wi
+iqgd0grWq75DCxz2UVEZX/Zk2mhv7430QB34q1iRDErRu07UsM/+T3SoRafQtgFw
+CEOog9Hn4IIlNubE93JlJ7O4DBDb5ugc4Ogs8LSa7NURXix9vC4XcUGZmPLTetVA
+Ngtyhv7vfRplIR4Pu5HN08vLgz9QiS5cXx3rUW3g5hhHruOYI1o=
+=pRex
+-----END PGP SIGNATURE-----
+
+--06jFUOUZfUFs2FzP--
 
