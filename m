@@ -1,172 +1,155 @@
-Return-Path: <linux-mmc+bounces-3215-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3212-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9E1947A2C
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 13:01:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED22947916
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 12:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA9FA1C20EE8
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 11:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D67E1F221CF
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 10:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A9B155398;
-	Mon,  5 Aug 2024 11:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144CA1547C0;
+	Mon,  5 Aug 2024 10:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ewMw5G2h"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="d4yJhM4u"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A5F13AD11;
-	Mon,  5 Aug 2024 11:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6B71448D8
+	for <linux-mmc@vger.kernel.org>; Mon,  5 Aug 2024 10:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722855693; cv=none; b=eT9LhlD8ZslM6eUb/r9K/h/I8ebUR1/WKI4BOhLh7FwYqyrs47pg1xIzyIeIuAQl/zIFXOAmi7ZDjNNNVl7htF3XkHg6VbbLm1HSD47TqcvEzdcgkOi4QpSDDvR4XFqdi2wPrK12O2JncVtzg+NSmWw5JMPy5Y8WReUbCb1HsOQ=
+	t=1722852591; cv=none; b=JYa75m9MaRViJ/hJuk8e65b8cccMWTLsNV1uEVvMOaS/xzflM+ua3j04WKJZk9w/m0sd4FyRGOxQ67DtXCebe/yzl5FjY/pR7jGKhTSEDcYV2cnJLlJ11ikvxHIwZDl8mv6pozRKr+lhvRhYEuWpAR4Ly/T8/6lnAe2rbsNUlWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722855693; c=relaxed/simple;
-	bh=562EsOMsTxNo/513EjVttaLWSasgWOtYFHwi01GnFiQ=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eyzrsijaPlx3p2CrzBwwfzOmWb/1BXV4tD335fKmxDttOz0+tpKTQxHzO1OX3eXcqit+MK+kFkKNoQncV25Ka0pTdziPHKtNMFC29wLr7Wl0alPti5FotFFL9RLQKt99mMq1f0ChRsS0fCbJ1ybZFGaLiKfO4u5FOE63U7772SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ewMw5G2h; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5a20de39cfbso13213507a12.1;
-        Mon, 05 Aug 2024 04:01:31 -0700 (PDT)
+	s=arc-20240116; t=1722852591; c=relaxed/simple;
+	bh=+K9hSpGtE/3iLHQcSO8dUwYSy1HxcajpYURwgaK4bfw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fuDcBEYwT8HmXPnd4p1wrqk7AXJIzkLyChL23Iu+C01nuSrTTmvUnJdmq98TQ7yiFr0Ou0XQz2ov56rolJHtMqJ+J93jpqAwuOUNeIwPSljpb9AKYDdurEUoBKEY/zRq9ccMssomjadw1WRoA6tekJ3U9w6wHOyTe5mao8FtR30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=d4yJhM4u; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e0bf677e0feso1863944276.1
+        for <linux-mmc@vger.kernel.org>; Mon, 05 Aug 2024 03:09:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722855690; x=1723460490; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=w92A5DSLMtWgFu3PG5e7V2aasOF9qr2/85zMzlFL76I=;
-        b=ewMw5G2hfb5N7gcErad1/HzRLHk+6Jr6aVl4ox2PAuBYkrSNcj5Xw8CaVPJAWIhhzS
-         AK0uN4uKvJsCYiXvwtvab24PO7AOgBV9zLpRWopIcpFYQJegG9VSV6f5oye9NRQdpU+y
-         /SzB+P3i0QwWbDNv9wLdhC533iw74mH0QC1HR813zaAsGyXcQio2NuK0yUZUsCaUOHtY
-         1PZL3OrbkVG+4KIvKdlB3IpVS8l0Okmug/s9DTElemjXQhO0+FHy16BKO7Iwf+BSASml
-         5aHMmpJiOtoJ9PKLJ2FULhrw73Qs3t4Ovj0DNW6c8gPWWW6etgrfFSRi81lgiAFFdp05
-         x02g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722855690; x=1723460490;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1722852588; x=1723457388; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w92A5DSLMtWgFu3PG5e7V2aasOF9qr2/85zMzlFL76I=;
-        b=NkthOx9SKwsIlAguOLXOTJt/QLwE1GclegdzbdiDiVG5a3ji169Bju3aSAwcuU5I52
-         ngW3aldodTEBjCh/lgG9r0GKnKnFJQTrraQ11v9aDUEduB0WIKVM72odF/j8n9CFdybg
-         Uwp98SWyHBAojwyHT/gLiiNLL8TA67kSQ97nNiQT3uII3d4z7NL6NFu/08/3k6A1KIyo
-         +Db49CiOsG7ePQ5mRvww49Ck7QoyLtgQZHezxtqJjrjk2/FFf8ygCjIm7mKLDAxRvohJ
-         y5cBAfyA+JzWXJ8PlsYe2dB7z7GR7L8LaXAqBKZH47G7xXv1VgntEWRxBdM5XnoE9Kol
-         H3sg==
-X-Forwarded-Encrypted: i=1; AJvYcCXjqkZSUhz6U4feZnDpwtOdXTBnnk0CtGqnxb/oKT19ngsb1CchETAwpo+wf4hBIgdIjKauPA+5hz44DVODZg34an9qxvUoWQY2HpkL/HLLEr6UuvJx2cTNKkP7jWAEuT0nJ3ii57MIwsNJEQyCXDFYnyIoVv2gZ4CrTV8nLJ72CnyHiQ==
-X-Gm-Message-State: AOJu0YxTKKHRTvFn4VybY1aevTHaydfPxoOQ3MhmpLOOWuxSp15mz4o4
-	J7TLaQdSEtisVtPS5MErbDjw9LGNcImFYgfqLajk35WYo5aUaAhv
-X-Google-Smtp-Source: AGHT+IG3bgoM32LacSe8Aeid35LCdMXycqCOoZj2eJ0y9sS0Tr1FkiYG5HntASlHWcu+NtMPW2GNSg==
-X-Received: by 2002:aa7:c50e:0:b0:57d:456:e838 with SMTP id 4fb4d7f45d1cf-5b7f57f6c52mr8123532a12.31.1722855689903;
-        Mon, 05 Aug 2024 04:01:29 -0700 (PDT)
-Received: from Ansuel-XPS. (host-95-255-112-66.business.telecomitalia.it. [95.255.112.66])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b83a153f34sm4805088a12.56.2024.08.05.04.01.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 04:01:29 -0700 (PDT)
-Message-ID: <66b0b109.050a0220.93681.d015@mx.google.com>
-X-Google-Original-Message-ID: <ZrA-9btkfLnpPip-@Ansuel-XPS.>
-Date: Mon, 5 Aug 2024 04:54:45 +0200
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Joern Engel <joern@lazybastard.org>,
-	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	Wolfram Sang <wsa-dev@sang-engineering.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-nvme@lists.infradead.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 6/6] mtd: parser: add support for Airoha parser
-References: <20240804174414.18171-7-ansuelsmth@gmail.com>
- <202408050612.Ya1m6REu-lkp@intel.com>
+        bh=PndH4jnAZ185cGSKb8aNel1LJ2ETeEsYl8hD1+owehA=;
+        b=d4yJhM4uaAAOBaRyU5bMwBHuHP9Ntd3SOpgRm0Ub4Zn1xSBmB9s2FU9H+S+H+xllew
+         cI6gMbWdrg5TTrUNbXwI3y3HcWzh4msDIEmYLVp/4tXEBsVIAaVpCEprm8jXa/yoX3FB
+         h//MgtmeQkzayhoZA6NsGwgBU+uzG7A0g3Lu6aPxe0ZE+Yw+CupccWLlUeUgAIEpocSa
+         vKpXapd0i8UyaVJxV6Zu2XsFOn4VD9PrS2QJ3zJvf8W8avev9Jh8cnK2dR/uM7uHYEZi
+         y2ita2wjeEQx1A7ykRlK30fZ+xwJYcwHh6KGgorMhLz55KPoiveqFKmtJxJepisHn38y
+         Qbzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722852588; x=1723457388;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PndH4jnAZ185cGSKb8aNel1LJ2ETeEsYl8hD1+owehA=;
+        b=TXiGv6v+LGGRUfYydK6OGNB1BihdJSxzanrmEM/aVU9x76jnh3dKspmKCuEXWuoio1
+         Q01q7AQqpD+pnlWemJXSzcfDknHZdTDjQvRZ5CqqktNVNo/xxci3mpEpxiyKQ6V23EyN
+         VTRlT6OchdI2vyjF2B2JL6Nghcisf4YlzWrqi2ftGYTKdwXR8K5DkX/3a+UJPnDrqB8K
+         puMy0jsPEv5NkRw0iezySze0iCJPms5s4DMSYiHJ1d8ZebDTU6TlrQsboQlvKxR2ANcg
+         wqSCmOjQysFB2adAVcADXBHxJ94ENt97BmzL/S1ggyEzhKPX8K2kOT1x+i9rZFfxUCgf
+         TZwA==
+X-Forwarded-Encrypted: i=1; AJvYcCVdiyjLHk8ch49DiP+XlcsoBoNFbk9BJvIAvkYCUms118obrlwyJx8grKqsgiRQw+n2MVTy2lMwrTT5/iLWpfnkAQ3I7WLIg0Pw
+X-Gm-Message-State: AOJu0YxvLYZeg2pICNqKilCchIX67Yn3xpid2xVhfmK/bEMq6tlTijhM
+	wzLKJ2qTGNR5oNWsyZEiYihTjv+oa0VaZKqtUIvGWs5hNft+CkgKe9gEzUk0cI5CbmfjC6EYdbb
+	rNrEXfjhQr7tsd3EftJnpq+Hewiicdj6yEOy3Yg==
+X-Google-Smtp-Source: AGHT+IGg/GAsaKY8g93SL83rdsel5V/KlOUKwAqZsoGoMsz8VtQS+2FhX5IVmdELMhBPT3sA0+WSrmuA7ocZtIVCyHY=
+X-Received: by 2002:a5b:1cb:0:b0:e0b:1519:e0d3 with SMTP id
+ 3f1490d57ef6-e0bde2c64acmr11465264276.6.1722852588222; Mon, 05 Aug 2024
+ 03:09:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202408050612.Ya1m6REu-lkp@intel.com>
+References: <20240724182119.652080-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20240724182119.652080-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <CAMuHMdXkPwfVT-iJp70pEi5ubpc5YBKt=a2C5NmL_tjbocXKRQ@mail.gmail.com> <CA+V-a8ttfEHwXqUU2OqxhjJ3E2jt+xCBrbziHtOUs1g74tandA@mail.gmail.com>
+In-Reply-To: <CA+V-a8ttfEHwXqUU2OqxhjJ3E2jt+xCBrbziHtOUs1g74tandA@mail.gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 5 Aug 2024 12:09:12 +0200
+Message-ID: <CAPDyKFppZPadtEBocoVyQJkchKzQ4WgnLb0_CYgeHWk+noVbFg@mail.gmail.com>
+Subject: Re: [PATCH v5 1/3] dt-bindings: mmc: renesas,sdhi: Document RZ/V2H(P) support
+To: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Magnus Damm <magnus.damm@gmail.com>, linux-mmc@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 05, 2024 at 06:52:04AM +0800, kernel test robot wrote:
-> Hi Christian,
-> 
-> kernel test robot noticed the following build errors:
-> 
-> [auto build test ERROR on robh/for-next]
-> [also build test ERROR on linus/master v6.11-rc1 next-20240802]
-> [cannot apply to mtd/mtd/next mtd/mtd/fixes]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Marangi/dt-bindings-nvme-Document-nvme-card-compatible/20240805-014740
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-> patch link:    https://lore.kernel.org/r/20240804174414.18171-7-ansuelsmth%40gmail.com
-> patch subject: [PATCH v2 6/6] mtd: parser: add support for Airoha parser
-> config: xtensa-allyesconfig (https://download.01.org/0day-ci/archive/20240805/202408050612.Ya1m6REu-lkp@intel.com/config)
-> compiler: xtensa-linux-gcc (GCC) 14.1.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240805/202408050612.Ya1m6REu-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202408050612.Ya1m6REu-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->    drivers/mtd/parsers/ofpart_airoha.c: In function 'airoha_partitions_post_parse':
->    drivers/mtd/parsers/ofpart_airoha.c:33:16: error: implicit declaration of function 'kzalloc' [-Wimplicit-function-declaration]
->       33 |         prop = kzalloc(sizeof(*prop), GFP_KERNEL);
->          |                ^~~~~~~
-> >> drivers/mtd/parsers/ofpart_airoha.c:33:14: error: assignment to 'struct property *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
->       33 |         prop = kzalloc(sizeof(*prop), GFP_KERNEL);
->          |              ^
-> 
-> 
-> vim +33 drivers/mtd/parsers/ofpart_airoha.c
-> 
->     10	
->     11	int airoha_partitions_post_parse(struct mtd_info *mtd,
->     12					 struct mtd_partition *parts,
->     13					 int nr_parts)
->     14	{
->     15		struct mtd_partition *part;
->     16		int len, a_cells, s_cells;
->     17		struct device_node *pp;
->     18		struct property *prop;
->     19		const __be32 *reg;
->     20		__be32 *new_reg;
->     21	
->     22		part = &parts[nr_parts - 1];
->     23		pp = part->of_node;
->     24	
->     25		/* Skip if ART partition have a valid offset instead of a dynamic one */
->     26		if (!of_device_is_compatible(pp, "airoha,dynamic-art"))
->     27			return 0;
->     28	
->     29		/* ART partition is set at the end of flash - size */
->     30		part->offset = mtd->size - part->size;
->     31	
->     32		/* Update the offset with the new calculate value in DT */
->   > 33		prop = kzalloc(sizeof(*prop), GFP_KERNEL);
-> 
-> -- 
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+On Fri, 2 Aug 2024 at 11:32, Lad, Prabhakar <prabhakar.csengg@gmail.com> wr=
+ote:
+>
+> Hi Geert,
+>
+> On Fri, Aug 2, 2024 at 10:11=E2=80=AFAM Geert Uytterhoeven <geert@linux-m=
+68k.org> wrote:
+> >
+> > Hi Prabhakar,
+> >
+> > On Wed, Jul 24, 2024 at 8:22=E2=80=AFPM Prabhakar <prabhakar.csengg@gma=
+il.com> wrote:
+> > > From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > >
+> > > The SD/MMC block on the RZ/V2H(P) ("R9A09G057") SoC is similar to tha=
+t
+> > > of the R-Car Gen3, but it has some differences:
+> > > - HS400 is not supported.
+> > > - It has additional SD_STATUS register to control voltage,
+> > >   power enable and reset.
+> > > - It supports fixed address mode.
+> > >
+> > > To accommodate these differences, a SoC-specific 'renesas,sdhi-r9a09g=
+057'
+> > > compatible string is added.
+> > >
+> > > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com=
+>
+> > > ---
+> > > v4->v5
+> > > - Dropped regulator node.
+> >
+> > Thanks for your patch, which is now commit 32842af74abc8ff9
+> > ("dt-bindings: mmc: renesas,sdhi: Document RZ/V2H(P) support") in
+> > mmc/next.
+> >
+> > > --- a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> > > +++ b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
+> > > @@ -18,6 +18,7 @@ properties:
+> > >            - renesas,sdhi-r7s9210 # SH-Mobile AG5
+> > >            - renesas,sdhi-r8a73a4 # R-Mobile APE6
+> > >            - renesas,sdhi-r8a7740 # R-Mobile A1
+> > > +          - renesas,sdhi-r9a09g057 # RZ/V2H(P)
+> > >            - renesas,sdhi-sh73a0  # R-Mobile APE6
+> > >        - items:
+> > >            - enum:
+> > > @@ -66,6 +67,7 @@ properties:
+> > >                - renesas,sdhi-r9a07g054 # RZ/V2L
+> > >                - renesas,sdhi-r9a08g045 # RZ/G3S
+> > >                - renesas,sdhi-r9a09g011 # RZ/V2M
+> > > +              - renesas,sdhi-r9a09g057 # RZ/V2H(P)
+> >
+> > This looks wrong to me.
+> > Did you want to add it to the clocks constraint, like the third hunk
+> > in v4[1], and was it mangled in a rebase?
+> >
+> Oouch, yes you are correct, this had to go in the clock constraint.
 
-Mhhh somehow I can't repro this with instructions?
--- 
-	Ansuel
+I am happy to apply a fix on top for that.
+
+Kind regards
+Uffe
 
