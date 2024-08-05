@@ -1,121 +1,172 @@
-Return-Path: <linux-mmc+bounces-3211-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3215-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E04947900
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 12:05:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9E1947A2C
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 13:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C95DB2811B4
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 10:05:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA9FA1C20EE8
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 11:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DBE154C03;
-	Mon,  5 Aug 2024 10:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A9B155398;
+	Mon,  5 Aug 2024 11:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O3TTsa+D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ewMw5G2h"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE0C1547DB
-	for <linux-mmc@vger.kernel.org>; Mon,  5 Aug 2024 10:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A5F13AD11;
+	Mon,  5 Aug 2024 11:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722852287; cv=none; b=JB+p29dBuLNcD+pIP/FiMMShrieB10u4M+ruInurC0+ZBW2XbooNZcyEl+Op/sBn7D/BPU+dEBIta/iOh+4n/WcmQiQKD5tLxHSXLzgXmPune7N140hPTqPNtUeN9zIWRLudc534eBgGSlj8A9TcQAsA41WMde+E4fl7TAIy4jo=
+	t=1722855693; cv=none; b=eT9LhlD8ZslM6eUb/r9K/h/I8ebUR1/WKI4BOhLh7FwYqyrs47pg1xIzyIeIuAQl/zIFXOAmi7ZDjNNNVl7htF3XkHg6VbbLm1HSD47TqcvEzdcgkOi4QpSDDvR4XFqdi2wPrK12O2JncVtzg+NSmWw5JMPy5Y8WReUbCb1HsOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722852287; c=relaxed/simple;
-	bh=NrP89VFBY7rsx7EbXcSXKLeYzXolWV8BMUaTDdNiuIc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r49LSYb/7KS3q4UBRKVKh3UvUVFJYRNZjtDXbSvxRUs4WwF27YqE83Zdpp1P9LCxk7eOaT7t0/OqMkNO94+z4GgdIs4azZ2CFjeS8UYK7pamFKYadBtodHlWE6fw/5ShyhtigCzaZC7BH/hUxKWFg/hxbGI8NT7ocUtS05lPGHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O3TTsa+D; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e08a538bf7bso4047288276.1
-        for <linux-mmc@vger.kernel.org>; Mon, 05 Aug 2024 03:04:44 -0700 (PDT)
+	s=arc-20240116; t=1722855693; c=relaxed/simple;
+	bh=562EsOMsTxNo/513EjVttaLWSasgWOtYFHwi01GnFiQ=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eyzrsijaPlx3p2CrzBwwfzOmWb/1BXV4tD335fKmxDttOz0+tpKTQxHzO1OX3eXcqit+MK+kFkKNoQncV25Ka0pTdziPHKtNMFC29wLr7Wl0alPti5FotFFL9RLQKt99mMq1f0ChRsS0fCbJ1ybZFGaLiKfO4u5FOE63U7772SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ewMw5G2h; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5a20de39cfbso13213507a12.1;
+        Mon, 05 Aug 2024 04:01:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722852284; x=1723457084; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=hSYGTPrpLH+BuhVL/Q/2E8uLKhl1KfRAsEdIshJ8Sjg=;
-        b=O3TTsa+DOEhyRzwzJxdy1IBqByszFg6gCQwqgUQD/YS+eunwj3Okal63tnHQD3gFzS
-         mklCASjot+6W+j97Q9xgl+oMyXSXffRPE8CpBS1WTM+6tDBfIZtqdT/xazSIL7wGnYi1
-         z/lmgqcTj2hExLsPZ2dWUEHuNUmiVHEG1MlLjr0hxpxldcYNbiO+ACcjROcraZAdg8Av
-         yEItCOtmHBCJCIez6ao8zHGxGWnbKuWU0un2VLkYOIVqKmybvzwzrIW6SvPANNZvR1v0
-         Bn+AEWvutwS8jgZmVCDuKX0NDvqLA+PLLQDqsqk0KYPRn+J13KxhyrK/KuKNSL//s/tU
-         kMiw==
+        d=gmail.com; s=20230601; t=1722855690; x=1723460490; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=w92A5DSLMtWgFu3PG5e7V2aasOF9qr2/85zMzlFL76I=;
+        b=ewMw5G2hfb5N7gcErad1/HzRLHk+6Jr6aVl4ox2PAuBYkrSNcj5Xw8CaVPJAWIhhzS
+         AK0uN4uKvJsCYiXvwtvab24PO7AOgBV9zLpRWopIcpFYQJegG9VSV6f5oye9NRQdpU+y
+         /SzB+P3i0QwWbDNv9wLdhC533iw74mH0QC1HR813zaAsGyXcQio2NuK0yUZUsCaUOHtY
+         1PZL3OrbkVG+4KIvKdlB3IpVS8l0Okmug/s9DTElemjXQhO0+FHy16BKO7Iwf+BSASml
+         5aHMmpJiOtoJ9PKLJ2FULhrw73Qs3t4Ovj0DNW6c8gPWWW6etgrfFSRi81lgiAFFdp05
+         x02g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722852284; x=1723457084;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hSYGTPrpLH+BuhVL/Q/2E8uLKhl1KfRAsEdIshJ8Sjg=;
-        b=wYIYW9PtVldP3cIVqIOCMogfDmdQxZ6/PUlGwXzuD5BFl/+zNtN4Jc5SXKUsYdLi0y
-         1HuZYLb2N1vCnd+mPV2kGUU4WsWw8FKECnEf+Dx4pteR0YOj5PLzoAEd1iTHaqGxmMsQ
-         iQorN5lZC/G41lHsKDH8ODu+/owcXNgJlv+akC0qI+pXxdmceUr9N7ukDlk4OLoq39aI
-         SszggySoVyPUnzItLrpTSAcJUgLaAOZi3GR56f0B/1IRy71o5GUcwtNPUxR9+hEwSjk+
-         8iX/BeaN4nREx1kiDMmbX375QaeNjS6/RwlxaDkZh6WP+7mhGvritrgbflrkxabseOex
-         kOMg==
-X-Forwarded-Encrypted: i=1; AJvYcCV37e49FPfHtpuvGg0G8qLrJKNR2sNpOCHzd8qD6y3TUeQGjJothFTROncW2ZXRA5cw8SaCJn2nRiuYpJffWEAl/+4hot6cd957
-X-Gm-Message-State: AOJu0YzNGA6LQm+QW0RZgZh2FRzNXa/TkL9TlyfKukBhYoYNZbPHWOvL
-	hOmVUWCCD2owvCDwKJnXSU2XuMqSm44p+2LgAGnQQCTXAPbxsBHJrvrCx+mw2Tx0ex8WPbn22BN
-	evchQMmdXGoyJuCEBzazarRBq/NLPHwZcFQz/Cg==
-X-Google-Smtp-Source: AGHT+IE28QvjYWO5xF3nlYl96xgvVqGoKpL4LpWlRu2pROebD4A3WQjuKfY14W5cvKLlfjChMzAEUCdDmxnejwKRHho=
-X-Received: by 2002:a05:6902:2b0d:b0:e0b:bf20:4fdd with SMTP id
- 3f1490d57ef6-e0bde8ee6f3mr10631170276.1.1722852284031; Mon, 05 Aug 2024
- 03:04:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722855690; x=1723460490;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w92A5DSLMtWgFu3PG5e7V2aasOF9qr2/85zMzlFL76I=;
+        b=NkthOx9SKwsIlAguOLXOTJt/QLwE1GclegdzbdiDiVG5a3ji169Bju3aSAwcuU5I52
+         ngW3aldodTEBjCh/lgG9r0GKnKnFJQTrraQ11v9aDUEduB0WIKVM72odF/j8n9CFdybg
+         Uwp98SWyHBAojwyHT/gLiiNLL8TA67kSQ97nNiQT3uII3d4z7NL6NFu/08/3k6A1KIyo
+         +Db49CiOsG7ePQ5mRvww49Ck7QoyLtgQZHezxtqJjrjk2/FFf8ygCjIm7mKLDAxRvohJ
+         y5cBAfyA+JzWXJ8PlsYe2dB7z7GR7L8LaXAqBKZH47G7xXv1VgntEWRxBdM5XnoE9Kol
+         H3sg==
+X-Forwarded-Encrypted: i=1; AJvYcCXjqkZSUhz6U4feZnDpwtOdXTBnnk0CtGqnxb/oKT19ngsb1CchETAwpo+wf4hBIgdIjKauPA+5hz44DVODZg34an9qxvUoWQY2HpkL/HLLEr6UuvJx2cTNKkP7jWAEuT0nJ3ii57MIwsNJEQyCXDFYnyIoVv2gZ4CrTV8nLJ72CnyHiQ==
+X-Gm-Message-State: AOJu0YxTKKHRTvFn4VybY1aevTHaydfPxoOQ3MhmpLOOWuxSp15mz4o4
+	J7TLaQdSEtisVtPS5MErbDjw9LGNcImFYgfqLajk35WYo5aUaAhv
+X-Google-Smtp-Source: AGHT+IG3bgoM32LacSe8Aeid35LCdMXycqCOoZj2eJ0y9sS0Tr1FkiYG5HntASlHWcu+NtMPW2GNSg==
+X-Received: by 2002:aa7:c50e:0:b0:57d:456:e838 with SMTP id 4fb4d7f45d1cf-5b7f57f6c52mr8123532a12.31.1722855689903;
+        Mon, 05 Aug 2024 04:01:29 -0700 (PDT)
+Received: from Ansuel-XPS. (host-95-255-112-66.business.telecomitalia.it. [95.255.112.66])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b83a153f34sm4805088a12.56.2024.08.05.04.01.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Aug 2024 04:01:29 -0700 (PDT)
+Message-ID: <66b0b109.050a0220.93681.d015@mx.google.com>
+X-Google-Original-Message-ID: <ZrA-9btkfLnpPip-@Ansuel-XPS.>
+Date: Mon, 5 Aug 2024 04:54:45 +0200
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Joern Engel <joern@lazybastard.org>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Wolfram Sang <wsa-dev@sang-engineering.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-nvme@lists.infradead.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 6/6] mtd: parser: add support for Airoha parser
+References: <20240804174414.18171-7-ansuelsmth@gmail.com>
+ <202408050612.Ya1m6REu-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240805040131.450412-1-felix@kaechele.ca> <20240805040131.450412-2-felix@kaechele.ca>
-In-Reply-To: <20240805040131.450412-2-felix@kaechele.ca>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 5 Aug 2024 12:04:07 +0200
-Message-ID: <CAPDyKFqyRevbmPy6h8BsiTLBi6=J+9uRmSib43bzzZHFEmDSVg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mmc: sdio: add Qualcomm QCA9379-3 SDIO id
-To: Felix Kaechele <felix@kaechele.ca>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Rocky Liao <quic_rjliao@quicinc.com>, 
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
-	linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202408050612.Ya1m6REu-lkp@intel.com>
 
-On Mon, 5 Aug 2024 at 06:01, Felix Kaechele <felix@kaechele.ca> wrote:
->
-> Adds the id for Qualcomm QCA9379-3 SDIO based cards such as
-> the LITEON WCBN3510A and Silex SX-SDMAC2.
->
-> Signed-off-by: Felix Kaechele <felix@kaechele.ca>
+On Mon, Aug 05, 2024 at 06:52:04AM +0800, kernel test robot wrote:
+> Hi Christian,
+> 
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on robh/for-next]
+> [also build test ERROR on linus/master v6.11-rc1 next-20240802]
+> [cannot apply to mtd/mtd/next mtd/mtd/fixes]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Marangi/dt-bindings-nvme-Document-nvme-card-compatible/20240805-014740
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+> patch link:    https://lore.kernel.org/r/20240804174414.18171-7-ansuelsmth%40gmail.com
+> patch subject: [PATCH v2 6/6] mtd: parser: add support for Airoha parser
+> config: xtensa-allyesconfig (https://download.01.org/0day-ci/archive/20240805/202408050612.Ya1m6REu-lkp@intel.com/config)
+> compiler: xtensa-linux-gcc (GCC) 14.1.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240805/202408050612.Ya1m6REu-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202408050612.Ya1m6REu-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    drivers/mtd/parsers/ofpart_airoha.c: In function 'airoha_partitions_post_parse':
+>    drivers/mtd/parsers/ofpart_airoha.c:33:16: error: implicit declaration of function 'kzalloc' [-Wimplicit-function-declaration]
+>       33 |         prop = kzalloc(sizeof(*prop), GFP_KERNEL);
+>          |                ^~~~~~~
+> >> drivers/mtd/parsers/ofpart_airoha.c:33:14: error: assignment to 'struct property *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+>       33 |         prop = kzalloc(sizeof(*prop), GFP_KERNEL);
+>          |              ^
+> 
+> 
+> vim +33 drivers/mtd/parsers/ofpart_airoha.c
+> 
+>     10	
+>     11	int airoha_partitions_post_parse(struct mtd_info *mtd,
+>     12					 struct mtd_partition *parts,
+>     13					 int nr_parts)
+>     14	{
+>     15		struct mtd_partition *part;
+>     16		int len, a_cells, s_cells;
+>     17		struct device_node *pp;
+>     18		struct property *prop;
+>     19		const __be32 *reg;
+>     20		__be32 *new_reg;
+>     21	
+>     22		part = &parts[nr_parts - 1];
+>     23		pp = part->of_node;
+>     24	
+>     25		/* Skip if ART partition have a valid offset instead of a dynamic one */
+>     26		if (!of_device_is_compatible(pp, "airoha,dynamic-art"))
+>     27			return 0;
+>     28	
+>     29		/* ART partition is set at the end of flash - size */
+>     30		part->offset = mtd->size - part->size;
+>     31	
+>     32		/* Update the offset with the new calculate value in DT */
+>   > 33		prop = kzalloc(sizeof(*prop), GFP_KERNEL);
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-Kind regards
-Uffe
-
-> ---
->  include/linux/mmc/sdio_ids.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-> index 7cddfdac2f57..63000a8f4b13 100644
-> --- a/include/linux/mmc/sdio_ids.h
-> +++ b/include/linux/mmc/sdio_ids.h
-> @@ -52,6 +52,7 @@
->  #define SDIO_DEVICE_ID_ATHEROS_AR6004_19       0x0419
->  #define SDIO_DEVICE_ID_ATHEROS_AR6005          0x050A
->  #define SDIO_DEVICE_ID_ATHEROS_QCA9377         0x0701
-> +#define SDIO_DEVICE_ID_ATHEROS_QCA9379         0x0801
->
->  #define SDIO_VENDOR_ID_BROADCOM                        0x02d0
->  #define SDIO_DEVICE_ID_BROADCOM_NINTENDO_WII   0x044b
-> --
-> 2.45.2
->
+Mhhh somehow I can't repro this with instructions?
+-- 
+	Ansuel
 
