@@ -1,257 +1,140 @@
-Return-Path: <linux-mmc+bounces-3194-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3197-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0699947379
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 04:54:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48293947419
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 06:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7727D2810D6
-	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 02:54:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78AC61C20F9E
+	for <lists+linux-mmc@lfdr.de>; Mon,  5 Aug 2024 04:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBEF770F5;
-	Mon,  5 Aug 2024 02:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846AA143878;
+	Mon,  5 Aug 2024 04:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="ergNx+bt"
+	dkim=pass (1024-bit key) header.d=kaechele.ca header.i=@kaechele.ca header.b="OF1LGJsi"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01olkn2026.outbound.protection.outlook.com [40.92.103.26])
+Received: from mail.kaechele.ca (mail.kaechele.ca [54.39.219.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3E142071;
-	Mon,  5 Aug 2024 02:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.103.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722826445; cv=fail; b=j48qc+08XMeBwIpP8r9wTcaKDSdbP8W/rqpb1UEFXKIKpwTiT5zB1R/T2eW7RUjqpDSAS0COoDAqU5APWGML5qOd6HbuXL42nNL3MwCDiQEHkmi662xsDGPFtZJys29LvY2lj5y/ad/E2SV6IP4Q1Q+HcrJNph3Yf6Ww3dLq7WI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722826445; c=relaxed/simple;
-	bh=JlCsl8XFMDB5tIkWs2zjFPMdN5JbxB+exkTDNRYTTd0=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=E6xRApqHVU5aJSgP8kvtiCYJpd8cif864PAdWr94If/MIlrhx8gwi6vnFgLJO0j5l3qdecgbW+JK5SMBJbsXQBt0zhQd3nM6taC4RnWJ1QqMJ0DZ1IAZlHA0AbgOq5smdLS98eJcfZ8T8+ncZaW4HZnCFRunv2m4+9br85PRIWg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=ergNx+bt; arc=fail smtp.client-ip=40.92.103.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iGNNoC1imts+HhYNmSY8VQT2Ir9CH6aLqhJ3MbXHnDA4GUgKuL71WNmZZb2gMT6dFlUvf6jzDqvaKTM514Q1cOuJrCxX8X26MUX9CQzq1fWMIudfw+iUCox/06j+XROfVSDALtNJrr/lDyxlwAIJQJzllcfK4AcAN7r48Ar5DkZ/OcMw49kl0Qhf18a4eHWhArlNzg12BJh2sbwJpfXrtaJ3tMX3MfjP5yDGWxtZ0qFL+wLwfR5lifTJNlvgd0fbRCMD1YbbjJze88x9QWYgSUALesqCCVGBYBb0Fbvx/tsbw78kHt1ttmaeZ1CdyI8zG9/RrYGSN14Wm3bld7puBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AHgECP8hWEFZ61d8LTTK4XCLUZID+fssB4xbIjb+ImM=;
- b=S2llFy4xND37duHieviPbn4sBkyHK6b9jHmkUnEqDivi52cFYuTFQKc/shdornJrOLnGNn0M/cQsdrViu2C3+cRg6gDlpLkxFtM+FOdvSVq8o+QpjfCOzFcdUXJC88QFYe35NCu5K9XhKFfQ2wV06UxAa6B44yeWsS3B97DZNWJhXv0JuA5X4OsDvDjIb8l4+iv4dY3hh7PTFD/KJ6qtBhC9DRk7vcTGUJeb8AYuduYB/7wxh3NpHltLJz4b2MWB857g8IyCOmzenYUtQ0QzfEaFv/S9bzSvQmTKFaclemB8ieoVNaQF7R9lTQROdXdjfe1xwkU8JNbkc2IgSYGjFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AHgECP8hWEFZ61d8LTTK4XCLUZID+fssB4xbIjb+ImM=;
- b=ergNx+btQOm8uyaDhBEU5W2RNTo8YRcf6Pt+4zSo+qLYSFszRHK7OeRl8CyegJVylwHRA0JOZupxhh//4dDNelqG1gdmL6X1bZ8DDuNWVDXg3l+vIuz1XnW2Sbl9ekIZfl4usPuMEre2RqxeC+gnGZ+Z8Ho77gT3/kRawIbIm9jI9J4/bPbC+UTH++lesjWs5pG5ClUgol5+5Yn5LS9lzSQMvvj/Hy6yvvCmaKRBXUVhWAsHQF+Rdvysh0vdCo9fxNSP6dxoc7LLpKIfunEkg1hjTTdX8QynB3hP4puw73qB1Z6r3poCZScE3mlGs62km/RHGEp7v3nX03qJaYe3yg==
-Received: from MA0P287MB2822.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:138::5)
- by PN0P287MB1476.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:183::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.24; Mon, 5 Aug
- 2024 02:53:50 +0000
-Received: from MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
- ([fe80::a94:ad0a:9071:806c]) by MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
- ([fe80::a94:ad0a:9071:806c%6]) with mapi id 15.20.7828.023; Mon, 5 Aug 2024
- 02:53:50 +0000
-Message-ID:
- <MA0P287MB28220B7C6CF3DD77D8278A53FEBE2@MA0P287MB2822.INDP287.PROD.OUTLOOK.COM>
-Date: Mon, 5 Aug 2024 10:53:47 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/8] mmc: sdhci-of-dwcmshc: Add Sophgo SG2042 support
-To: Inochi Amaoto <inochiama@outlook.com>, Chen Wang <unicornxw@gmail.com>,
- adrian.hunter@intel.com, aou@eecs.berkeley.edu, conor+dt@kernel.org,
- guoren@kernel.org, jszhang@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- palmer@dabbelt.com, paul.walmsley@sifive.com, robh@kernel.org,
- ulf.hansson@linaro.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- linux-riscv@lists.infradead.org, chao.wei@sophgo.com,
- haijiao.liu@sophgo.com, xiaoguang.xing@sophgo.com, tingzhu.wang@sophgo.com
-References: <cover.1721377374.git.unicorn_wang@outlook.com>
- <IA1PR20MB49539C30076AB6D14B20BD57BBB12@IA1PR20MB4953.namprd20.prod.outlook.com>
-From: Chen Wang <unicorn_wang@outlook.com>
-In-Reply-To: <IA1PR20MB49539C30076AB6D14B20BD57BBB12@IA1PR20MB4953.namprd20.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TMN: [ElKF3ttqQhrN9VQAjUo394Dh78ifzwiH]
-X-ClientProxiedBy: SI1PR02CA0035.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::8) To MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:138::5)
-X-Microsoft-Original-Message-ID:
- <69283ee7-508f-40a2-9a5d-858b21ff9c93@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5157639;
+	Mon,  5 Aug 2024 04:01:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.39.219.105
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722830508; cv=none; b=ep+nZc6WERgg7IMr9VVdZL5r7kX8Jhh7EJaUz/H/Q/h85w0ufjcB38usCd+xR24bbvM4Lvugs2A/wnqo+o/08upXQ8idRgIfuS9cXcI5ubfx28iO8BuRzlscHt8uRUIiX5utRqYsl0mJk1seDTG1hwV4rBMSO8hQ5IK//GEJHq8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722830508; c=relaxed/simple;
+	bh=07+1FVUgYC9ex4rTFJDQlLyNZWVcelgysbLKsmkJBqw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rzxpd93TIDsv4bAdO1PSS0Z0J6sVFOZOFjH0oTWvv6hth1m6weVsXFT3FWhMzneBwwk1XheEJtKAB4rBFPuLQEHS4gmO69MQBhdKIWIoV62fOUNzAEwlGA350VqYKzC7k0d/ko6LsN2w0lJNuz6XjY3iMH651ecNDsKgwsk4YSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaechele.ca; spf=pass smtp.mailfrom=kaechele.ca; dkim=pass (1024-bit key) header.d=kaechele.ca header.i=@kaechele.ca header.b=OF1LGJsi; arc=none smtp.client-ip=54.39.219.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaechele.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaechele.ca
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C5067C005F;
+	Mon,  5 Aug 2024 00:01:59 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaechele.ca; s=201907;
+	t=1722830523; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=GsQnhxsqicayvGUucI+ZWGDAQY9dTcFVmUnm38tQ6lo=;
+	b=OF1LGJsioPiIYWkr11cBsPOSimABMCK3Nb9UjZA9q7p+f4fuNp1OSYFbfH+eCe1GuquS5l
+	QphP3P0i1ItRDdVDOSbD7Ura+z9RehCwow5JcrQIQ6vssHQu2TG0gwSMwIW+8glWEj4uZP
+	kPTuSBdtFG6YP4zWIO8zmeRPMemZzBU=
+From: Felix Kaechele <felix@kaechele.ca>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+	Rocky Liao <quic_rjliao@quicinc.com>
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath10k@lists.infradead.org,
+	linux-mmc@vger.kernel.org
+Subject: [PATCH 0/4] Add support for QCA9379 hw1.0 SDIO WiFi/BT
+Date: Mon,  5 Aug 2024 00:01:27 -0400
+Message-ID: <20240805040131.450412-1-felix@kaechele.ca>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MA0P287MB2822:EE_|PN0P287MB1476:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3583e230-8bc1-4006-de06-08dcb4f9d5d1
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|461199028|5072599009|19110799003|8060799006|4302099013|440099028|3412199025|56899033|1602099012;
-X-Microsoft-Antispam-Message-Info:
-	FVhpRT3H5/8oLJiqdURJsfSeTar65EAKz74QPy03RdPSLd0GsCZK63+ovmxr111IYStg3kchkmJMBKQcbeqig8At1v4FgpUMY1GTQ/V19YBPM/kmpwoQ32r/jg0qjp8hTmS3X9FxmQXTTfTzdSlriwYj4h4ubLBhKZ+YX8+3wjY8ZdZmvumyKjAhmwOmHKBMlWRFWfh4gKK5cBILWJKS2RqYAoqed+3UrEN0z4bgg+41C7B2XvMNLSYCQRPpwv4ldFfOHkgmqx+yyXsTJxoa8PTz/SoE/qvLYoklYm6QAQxGtdsg9mCCQsZYM3dUg8bqBGSEzXLUzZdlnSHeDunHbC61qg9kzq4kXWZqWEff7Ch/0XnZkC+13mXbuVPxwqx9DwTzgUrkJvIFT8rB9WHNSUKKRSF7SPNGN4dOsdW6HUjbjaszEoKtpv064YlCq6lyubyAlZF/OIqmhE/y50LRzXNGJ8MAvCGO/xbpnq9O8Got2F+lW40WUCFyeVXMxPipbgCAhM666Gds6DbWF5ylADF5tPP3mTlNX1yfZjKbGgp8ToURxBHThwXC3WN+ERQup+49pGuKOHxLBgPABnX/YI41ZPhyE/xuvPeQS3tmixQA/oIL0TWtmKNEz541ERd5l1iCVpR2Cg3/o8nLpZOgsNJVWUAgwYXgchSofE+we2JxcVHfIVjHIWuyIGHwjSWZicjAWHZZ3ryc85O+IqzVig5eKOrB6/xMVFr//xUrV+IWw08SanallC5blYjyZgf+TdEjN1VgSJVTAkvvpUPUO8yucyCopwtglkuV7i8gBbw=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RnU2dU51VzJZbjZzd2JFeXh3bXBXTWdvRHJGc242YXdxdHZPdllIdm9JMGJC?=
- =?utf-8?B?c2pIQ3Vxa1FuNDFJU1BxVHBmbXlPSlpjTlBPTXBPM2VSb05hK3ZTNUhjNnM5?=
- =?utf-8?B?S1VidllpRXhKNWFuemVmZkxocWx3STdsUUVmcmdHRTlkKzZWY0Z0c0lYSTM3?=
- =?utf-8?B?WG9INTRobk9kQzZickNYZEYrRXhPNjVwU0FTclVEQnc2bk04THE1Nkk0SHhY?=
- =?utf-8?B?Q1pzRjJXVU5Gd2Y3Z1FGNGpleXpwUW1tODNSVkxXMUtrcU8reDFKUWdzcVMr?=
- =?utf-8?B?ZkF2bzdNd2F5RW8vdGJwR2dLMEtDV1FpeDJ3bVFHNm43TTJYRlk5dEMzMXkw?=
- =?utf-8?B?VE9mYXU2MEN0R1ovdjhBYTY5cVBWcHZ0NWVuQ2FGaFlBK2hCQmdLZFFiUXdS?=
- =?utf-8?B?N3hFczVCb1FKL2lGZFJnaW1HUVhuMVJIRk5hZHE0MHBPTFNCM1ZqeFNTa0hC?=
- =?utf-8?B?V0JMY3Jkbktqc3Y4TDNhSW8zbGtqMTNqOE8wOFNPMy9RYWFYT05UbmlZRFdS?=
- =?utf-8?B?TUduWTNLQ2ZBU2tNK0xOYzdNR3BaZng0TGdaSVlpK3FLS3haWEx4Ym5kS3Zv?=
- =?utf-8?B?NCtyU1hkSjZKdXlMSURqdUtudWRubEI1S3dqdjRVQUk5NmxVbFJNdGFLMlRs?=
- =?utf-8?B?TkN4VE11TkhyYTJYTXJJR1l2YnpobFRIb2pxdUxvQS9sZVp1ZldQNnA3V0hN?=
- =?utf-8?B?TVgrZDBsRkZUS2Jpc1FHTmc5MlFFQzFtNzV1RG1TV2ZYMCtjbUpVWGl4anlT?=
- =?utf-8?B?N0crMkFOM0xDUVNvN2NlK2lZVm5WUVZ1enp5YW8vZlVzb2thZEtFMTlCbDls?=
- =?utf-8?B?OHltaVkxbjFKOWpHRGE4MGRwM2VZeXRsYmRxbHAyR21ydi9odUNqM0xnY0Z0?=
- =?utf-8?B?WUxEcnBEMDJidDZEb011RWtHeSt3N3hSVUpEQ0JwOUNaMis0NHg0dmZOWTNJ?=
- =?utf-8?B?cVU3aWNPVEN4ZkpzMXgrSEJtbWZGYWpMTlFGRFp0YmNOVmFzaFlxRGh4K3Z5?=
- =?utf-8?B?UU9XSU53ZEJGdmF2SUVIRlJsM2FYMUsxMDZGRmd3SlZoMHVINjVVM3RFeUpm?=
- =?utf-8?B?L2huT0NmczVXd0hZdG1Td256L3l1QWpjOUJIMEd3cW5JZUFES25JQzJDMHBz?=
- =?utf-8?B?Q1BIR1hRdXdxQlM0Qzd3TzkxbDc2a0hIRW9JTnpHR2Npd2JlV3pmZmhqTmFy?=
- =?utf-8?B?Qy9WeUJHUGZzbDliTU9BMHJ0SVhSYWh1cjFrZVNER2VjRjRPT2dIdUFyN05y?=
- =?utf-8?B?Q2J6UlI5Z0xHQjQ2VGprWnZDZGk4S25OOEtCK3pKUXBmcS9PNjFSS1VaS2ZB?=
- =?utf-8?B?RUtRWXFScDZ5cU1IdWRjYjFSYTMvalFDTytuMGVBYk9PbUdUZ2hVTExhWVdV?=
- =?utf-8?B?SjhCc0dqaSsxWUNRaDlhOWt4N0d5aVBWeVhVdDNFSml4b0I0bHorbytGMWdn?=
- =?utf-8?B?cDVJeXBReHBobWdhVUo5cjNFc0xZZ21YWTN3bE02ditUeUt1Snc3a0lKK2hX?=
- =?utf-8?B?UEY5ODcxa3NLZUptM3paMzIwSGdkaTRmS1gxMGlPZUhoQXlBUjRremdTa0Rp?=
- =?utf-8?B?V2M2N0ZBRjI3WVJBQkhQN0x3Z0NXZTY5N0QyUSsxTXMxd1gzcU5Hbktpbnlz?=
- =?utf-8?B?aGpVWU0zakE2T2xpTHBoTnJqMUZ3RFJONVgweW9jeFNvcGg5UXZYaHhDZWZz?=
- =?utf-8?Q?hgtjaA66MgVzta6MBucf?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3583e230-8bc1-4006-de06-08dcb4f9d5d1
-X-MS-Exchange-CrossTenant-AuthSource: MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2024 02:53:50.8649
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN0P287MB1476
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+
+Add support for Qualcomm QCA9379-3 SDIO based adapters.
+
+The Bluetooth part is straightforward. It simply adds a DT compatible
+string to the existing driver.
+
+The WiFi part is a followup to the RFC I sent back in February [0], that
+didn't receive any comments.
+
+Since then I aligned the patch closer to what the driver does for the
+QCA6174 rather than the QCA9377, as the latter hasn't been touched in a
+while.
+With that the driver no longer throws errors for non-existent calibration
+data.
+
+The roaming and group re-keying issues still persist, but may not be
+specific to this chipset, as this (or a similar issue) is apparently seen
+on other chipsets as well [1].
+The user impact of this issue is an intermittent loss of connectivity
+while the adapter re-associates. Other than that the connection is
+stable.
+
+I have tested this patch on a Lenovo ThinkSmart View (CD-18781Y) that
+comes with a LITEON WCBN3510A module. The firmware and boardfile used for
+testing was pulled from the original Android image. A file at
+/modem/verinfo/ver_info.txt on the Android image identifies the WiFi
+part as "WLAN.NPL.1.6-00163-QCANPLSWPZ-1" and the Bluetooth part as
+"BTFM.NPL.1.0.4-00002-QCABTFMSWPZ-1".
+
+No firmware files are currently available from public repositories, but
+they should available from the vendor website [2] for customers that have
+the according access.
+
+I can submit the boardfile to the ath10k list once this patch is
+accepted. The one that is included with the Android system image has a
+sha256sum of 65767cca6a1ff88a9899235acdeeed1e9447a2f16f41d38052202835d5bda7d4.
+
+If someone from Qualcomm could add both the WiFi and BT firmwares to the
+linux-firmware repositories that would be much appreciated.
+I'm happy to test any firmware before submission, if desired.
+
+Thanks,
+Felix
+
+[0]: https://lore.kernel.org/ath10k/20240229032700.414415-1-felix@kaechele.ca/T/
+[1]: https://lore.kernel.org/ath10k/c407064a-1c2f-46ec-ac57-32bf9cf6f5c6@gmail.com/T/
+[2]: https://www.qualcomm.com/products/technology/wi-fi/qca9379#Software
+
+Felix Kaechele (4):
+  mmc: sdio: add Qualcomm QCA9379-3 SDIO id
+  wifi: ath10k: add support for QCA9379 hw1.0 SDIO
+  dt-bindings: net: bluetooth: qualcomm: add QCA9379 compatible
+  Bluetooth: hci_qca: add compatible for QCA9379
+
+ .../net/bluetooth/qualcomm-bluetooth.yaml     |  2 +
+ drivers/bluetooth/hci_qca.c                   |  1 +
+ drivers/net/wireless/ath/ath10k/core.c        | 37 +++++++++++++++++++
+ drivers/net/wireless/ath/ath10k/hw.h          | 10 +++++
+ drivers/net/wireless/ath/ath10k/pci.c         |  2 +
+ drivers/net/wireless/ath/ath10k/sdio.c        |  5 ++-
+ drivers/net/wireless/ath/ath10k/targaddrs.h   |  3 ++
+ include/linux/mmc/sdio_ids.h                  |  1 +
+ 8 files changed, 60 insertions(+), 1 deletion(-)
 
 
-On 2024/7/31 16:00, Inochi Amaoto wrote:
-> On Fri, Jul 19, 2024 at 04:44:38PM GMT, Chen Wang wrote:
->> From: Chen Wang <unicorn_wang@outlook.com>
->>
->> This patchset is composed of two parts:
->> - one is the improvement of the sdhci-of-dwcmshc framework,
->> - the other is the support for sg2042 based on the improvement of the
->>    framework.
->> The reason for merging the two parts into one patchset is mainly to
->> facilitate review, especially to facilitate viewing why we need to
->> improve the framework and what benefits it will bring to us.
->>
->> When I tried to add a new soc(SG2042) to sdhci-of-dwcmshc, I found
->> that the existing driver code could be optimized to facilitate expansion
->> for the new soc. Patch 1 ~ Patch 5 is for this.
->>
->> Patch 6 ~ 7 are adding support for the mmc controller for Sophgo SG2042.
->> Adding corresponding new compatible strings, and implement
->> custom callbacks for SG2042 based on new framework.
->>
->> Patch 8 is the change for DTS.
->>
->> By the way, although I believe this patch only optimizes the framework
->> of the code and does not change the specific logic, simple verification
->> is certainly better. Since I don't have rk35xx/th1520 related hardware,
->> it would be greatly appreciated if someone could help verify it.
->> Note, the DTS change has dependency on clock changes for SG2042, which
->> has not been merged in master/upstream, so if you want to test this
->> new sdhci-of-dwcmshc driver for other hardware except SG2042, don't
->> pick patch 8.
->>
->> Clocks changes for SG2042 are expected to be in 6.11-rc1 soon, I will
->> do catch up with that when it is relased and provide a new revision,
->> but anyway please feel free review this version and welcome your comments.
->>
->> ---
->>
->> Changes in v5:
->>
->>    The patch series is based on latest 'next' branch of [mmc-git].
->>
->>    - Based on Adrian's suggestion, split the first part of the patch into 5.
->>    - Updated bindings and DTS as per suggestion from Krzysztof, Jisheng and Conor.
->>
->> Changes in v4:
->>
->>    The patch series is based on latest 'next' branch of [mmc-git]. You can simply
->>    review or test the patches at the link [4].
->>
->>    Improved the dirvier code as per comments from Adrian Hunter, drop moving
->>    position and renaming for some helper functions.
->>
->>    Put the sg2042 support as part of this series, improve the bindings and code
->>    as per comments from last review.
->>
->> Changes in v3:
->>    
->>    The patch series is based on latest 'next' branch of [mmc-git]. You can simply
->>    review or test the patches at the link [3].
->>
->>    Improved the dirvier code as per comments from Adrian Hunter.
->>    Define new structure for dwcmshc platform data/ops. In addition, I organized
->>    the code and classified the helper functions.
->>
->>    Since the file changes were relatively large (though the functional logic did
->>    not change much), I split the original patch into four for the convenience of
->>    review.
->>
->> Changes in v2:
->>
->>    Rebased on latest 'next' branch of [mmc-git]. You can simply review or test the
->>    patches at the link [2].
->>
->> Changes in v1:
->>
->>    The patch series is based on v6.9-rc1. You can simply review or test the
->>    patches at the link [1].
->>
->> Link: git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git [mmc-git]
->> Link: https://lore.kernel.org/linux-mmc/cover.1713257181.git.unicorn_wang@outlook.com/ [1]
->> Link: https://lore.kernel.org/linux-mmc/cover.1714270290.git.unicorn_wang@outlook.com/ [2]
->> Link: https://lore.kernel.org/linux-mmc/cover.1718241495.git.unicorn_wang@outlook.com/ [3]
->> Link: https://lore.kernel.org/linux-mmc/cover.1718697954.git.unicorn_wang@outlook.com/ [4]
->>
->> ---
->>
->> Chen Wang (8):
->>    mmc: sdhci-of-dwcmshc: add common bulk optional clocks support
->>    mmc: sdhci-of-dwcmshc: move two rk35xx functions
->>    mmc: sdhci-of-dwcmshc: factor out code for th1520_init()
->>    mmc: sdhci-of-dwcmshc: factor out code into dwcmshc_rk35xx_init
->>    mmc: sdhci-of-dwcmshc: add dwcmshc_pltfm_data
->>    dt-bindings: mmc: sdhci-of-dwcmhsc: Add Sophgo SG2042 support
->>    mmc: sdhci-of-dwcmshc: Add support for Sophgo SG2042
->>    riscv: sophgo: dts: add mmc controllers for SG2042 SoC
->>
->>   .../bindings/mmc/snps,dwcmshc-sdhci.yaml      |  60 ++-
->>   .../boot/dts/sophgo/sg2042-milkv-pioneer.dts  |  17 +
->>   arch/riscv/boot/dts/sophgo/sg2042.dtsi        |  28 ++
->>   drivers/mmc/host/sdhci-of-dwcmshc.c           | 459 ++++++++++++------
->>   4 files changed, 391 insertions(+), 173 deletions(-)
->>
->>
->> base-commit: b85e021853976aaebd3788e7e721020570754199
->> -- 
->> 2.34.1
->>
-> Work on both Duo and Huashan Pi. Both sd and emmc are fine.
->
-> Tested-by: Inochi Amaoto <inochiama@outlook.com>
-
-Thanks a lot.
-
-Regards,
-
-Chen.
+base-commit: aefacd7c75edfaf6690819c1990b851f4c7b50cf
+-- 
+2.45.2
 
 
