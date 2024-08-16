@@ -1,151 +1,136 @@
-Return-Path: <linux-mmc+bounces-3351-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3353-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A91954352
-	for <lists+linux-mmc@lfdr.de>; Fri, 16 Aug 2024 09:51:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DCD9544F5
+	for <lists+linux-mmc@lfdr.de>; Fri, 16 Aug 2024 10:59:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E63141C24FC0
-	for <lists+linux-mmc@lfdr.de>; Fri, 16 Aug 2024 07:51:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F0A01F216ED
+	for <lists+linux-mmc@lfdr.de>; Fri, 16 Aug 2024 08:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF2413F426;
-	Fri, 16 Aug 2024 07:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B4413C801;
+	Fri, 16 Aug 2024 08:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="JUb7yDP3"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="J1UE/ruN"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from mail-m127166.xmail.ntesmail.com (mail-m127166.xmail.ntesmail.com [115.236.127.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3782E13DBBC;
-	Fri, 16 Aug 2024 07:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E677A13B286;
+	Fri, 16 Aug 2024 08:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.236.127.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723794360; cv=none; b=Q5z1hBcaU65Hl9qhZkeiDtCXMqg33xZFSM2PPTM8FkOC8BAqZvoB9sa0En1qC5RCQfNqOiw70Y1SaDej/xFbg5s6nhmus6SXjk1QfcOrs38bQXp9wC70D++Ew0SZ0OWid9EEcl0KQLHpiq9IrLvYws0k9C6sus+kmVwrLsnAzfA=
+	t=1723798784; cv=none; b=HYqxLXGd+tMLU5QFoF2IbD5vPdyIOTy5TFXtHQShoaTpaT9T3Fr3chKOe+z6E4vm7RH3yAjjRq4bMOpl4r5CrjmzxfJmCNTgVCxVgcf7P0TWVnmwdWOj86QcllCDjOuluMOreVqK6Xq2mN7YoUpU/cFvP60ePsqEkjzzmBIQoFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723794360; c=relaxed/simple;
-	bh=tVPflXbLDBP9NpqaPLzSWTzKxCdCOy2pQJM8Ph5x4sI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G/tPQxPQ2bHoHZ2MaLVpBfSlWN9mVfJGqZdAkJMtuKUNFjPVKFPbnDa4+ZZb5Pmt/8UuIEOch2ECIrg+qQzRnH82O48ElE3bYZYh9a/w4ouILbEw/GZFEMUlf+BrLhhvL4REH82cjmaYHeP7rnPWTRi+8sI4ET89Ec5fuI/zEvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=JUb7yDP3; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=k1rqrEp/hgoHj2qZTKIDmCM8YN6/xOQc45Uuml075HM=; b=JUb7yDP3quBbz3YJPP4izpsuJJ
-	xBdwzYZb1tEl0yUWdPhOXKtLXJRhoqyJ2qV2J8b17nEZTZQGQYfLonDsrWG3sPt6ohw5gRgm3/jdx
-	inS6+iYlt3T/NyETWp+nduY/rSUIyBoLwI31FJfVOOvfPHRnwDmlAjNd+GAkhQ5XjGkvGQhp1MWzA
-	S8tFBrvN6F3ZDFHBEAoOorFn4+THrVzp9WnVwbLi6cW5aeHF60Femlxgpp+dC9IJ4ehNxHDrZf45W
-	9SWea14LpGJwqqzAjB93x8XxcbLZQw/dvXRo6JmlwD1dMBivKsyPz7Z/dYcb+EqtxxxCJv8G4ljn4
-	/AgeigKQ==;
-Received: from i53875a9f.versanet.de ([83.135.90.159] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sereh-0007MW-1Y; Fri, 16 Aug 2024 09:45:51 +0200
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To: linux-kernel@vger.kernel.org,
- Detlev Casanova <detlev.casanova@collabora.com>,
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jaehoon Chung <jh80.chung@samsung.com>, linux-mmc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, kernel@collabora.com
-Subject: Re: [PATCH v3 1/3] dt-bindings: mmc: Add support for rk3576 dw-mshc
-Date: Fri, 16 Aug 2024 09:45:49 +0200
-Message-ID: <2504176.W2GruxG5Vl@diego>
-In-Reply-To: <e640cbc4-6870-4607-a91e-0af41dd76df9@kernel.org>
-References:
- <20240814223555.3695-1-detlev.casanova@collabora.com>
- <5057223.82XvGhxQ46@diego> <e640cbc4-6870-4607-a91e-0af41dd76df9@kernel.org>
+	s=arc-20240116; t=1723798784; c=relaxed/simple;
+	bh=Xm3fx8Xa4ANe/iABtyTd5CMBETIZxfcy+1hfSJGJ0ys=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=kMNhZ+1xUjqKzAjKQ+4ZOgnw5vG+1fkxv94UdEW21+dWNiRDhvRqMNO2hcLtni2/A2JAYXIyN2k41b+O2+w5Y5oVb1oI+vl52iMC3qPViIorE8eXJyGrrHnllZEd49gmDL9ihLKDGir24trLrYo2+fa5rZ840sXk8Cy4Zuj91Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=J1UE/ruN; arc=none smtp.client-ip=115.236.127.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+DKIM-Signature: a=rsa-sha256;
+	b=J1UE/ruNV7QGyM0y41B5pMuLmVchxWYjJmDqZINeHWDXSansizu6IXSpjUkqLTeg0zS80Lun+gWCHGetcKil7Fke8S4LBE+E9/7vJnGaLhogGWazpVCLFnj7bym4QBZTzXHPIc/4FgWcBAQluFsWtl6xSPjbmdHvK2V2bcaruyA=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=iL3g7hzaLQ+rrYtLHSAvIW1379wSOIx3YsifSBddCrY=;
+	h=date:mime-version:subject:message-id:from;
+Received: from [172.16.12.45] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTPA id E30FD4601FE;
+	Fri, 16 Aug 2024 08:43:48 +0800 (CST)
+Message-ID: <2517e284-88d0-4cf3-97cf-55567f35eb82@rock-chips.com>
+Date: Fri, 16 Aug 2024 08:43:48 +0800
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+User-Agent: Mozilla Thunderbird
+Cc: shawn.lin@rock-chips.com, Ulf Hansson <ulf.hansson@linaro.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Jaehoon Chung <jh80.chung@samsung.com>, linux-mmc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, kernel@collabora.com
+Subject: Re: [PATCH v3 2/3] mmc: dw_mmc-rockchip: Add v2 tuning support
+To: Detlev Casanova <detlev.casanova@collabora.com>,
+ linux-kernel@vger.kernel.org
+References: <20240814223555.3695-1-detlev.casanova@collabora.com>
+ <20240814223555.3695-3-detlev.casanova@collabora.com>
+ <5dc82aa2-82a0-4778-b598-88775d5f791c@rock-chips.com>
+ <2742918.mvXUDI8C0e@trenzalore>
+Content-Language: en-GB
+From: Shawn Lin <shawn.lin@rock-chips.com>
+In-Reply-To: <2742918.mvXUDI8C0e@trenzalore>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQkNMSVZPShlLSx5OGUMaTx9WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhCSE
+	JVSktLVUpCS0tZBg++
+X-HM-Tid: 0a9158a4051103aekunme30fd4601fe
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6KyI6OTo6CDIrSzoCNiktTFY#
+	MVEKFA9VSlVKTElITE1CS0hLSENIVTMWGhIXVQgTGgwVVRcSFTsJFBgQVhgTEgsIVRgUFkVZV1kS
+	C1lBWU5DVUlJVUxVSkpPWVdZCAFZQUhCSE43Bg++
 
-Am Freitag, 16. August 2024, 08:52:04 CEST schrieb Krzysztof Kozlowski:
-> On 15/08/2024 15:49, Heiko St=FCbner wrote:
-> > Am Donnerstag, 15. August 2024, 00:34:00 CEST schrieb Detlev Casanova:
-> >> Add the compatible string for rockchip,rk3576-dw-mshc and add support
-> >> for the rockchip,v2-tuning flag, a new feature of this core.
-> >>
-> >> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
-> >> ---
-> >>  Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml | 1 +
-> >>  1 file changed, 1 insertion(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.ya=
-ml b/Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml
-> >> index 211cd0b0bc5f3..0543cdb51c657 100644
-> >> --- a/Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml
-> >> +++ b/Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml
-> >> @@ -39,6 +39,7 @@ properties:
-> >>                - rockchip,rk3368-dw-mshc
-> >>                - rockchip,rk3399-dw-mshc
-> >>                - rockchip,rk3568-dw-mshc
-> >> +              - rockchip,rk3576-dw-mshc
-> >>                - rockchip,rk3588-dw-mshc
-> >>                - rockchip,rv1108-dw-mshc
-> >>                - rockchip,rv1126-dw-mshc
-> >=20
-> > this would mark the rk3576-dw-mshc as being the "same" as the
->=20
-> Not the same, but compatible.
->=20
-> > core rk3288 variant. rk3288 was the first controller introducing the
-> > clock tuning for higher speeds. with the clocks being part of the CRU.
-> >=20
-> > As we can see in later patches, this rk3576 though changes that
-> > setup with moving the tunable clock configurations into the controller
-> > itself.
-> >=20
-> > So please don't claim to be compatible to the 3288, but instead start
-> > a new block for this new set of controllers:
->=20
-> The question is can new device work with old compatible (without new
-> features)?
+在 2024/8/15 21:23, Detlev Casanova 写道:
+> On Wednesday, 14 August 2024 20:55:37 EDT Shawn Lin wrote:
+>> Hi Detlev
+>>
+>> 在 2024/8/15 6:34, Detlev Casanova 写道:
+>>> From: Shawn Lin <shawn.lin@rock-chips.com>
+>>>
+>>> v2 tuning will inherit pre-stage loader's phase settings for the first
+>>> time, and do re-tune if necessary.
+>>> Re-tune will still try the rough degrees, for instance, 90, 180, 270,
+>>> 360 but continue to do the fine tuning if sample window isn't good
+>>> enough.
+>>>
+>>> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+>>> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+>>> ---
+>>>
+>>>    drivers/mmc/host/dw_mmc-rockchip.c | 49 ++++++++++++++++++++++++++++++
+>>>    1 file changed, 49 insertions(+)
+>>>
+>>> diff --git a/drivers/mmc/host/dw_mmc-rockchip.c
+>>> b/drivers/mmc/host/dw_mmc-rockchip.c index b07190ba4b7ac..367633f4e8892
+>>> 100644
+>>> --- a/drivers/mmc/host/dw_mmc-rockchip.c
+>>> +++ b/drivers/mmc/host/dw_mmc-rockchip.c
+> 
+> [...]
+> 
+>>>    		
+>>>    		priv->default_sample_phase = 0;
+>>>
+>>> +	priv->use_v2_tuning =
+>>> +		of_device_is_compatible(host->dev->of_node,
+>>> +					"rockchip,rk3576-dw-
+> mshc");
+>>> +
+>>
+>> v2 is a kind of software decision instead of hardware dependency.
+>> So in theory, any SoC can claim to use it via DT.
+> 
+> Yes but from my tests, only rk3576 won't work without it. So it makes sense to
+> only use v2 for this SoC (and other future ones not supported yet)
+> 
 
-the rk3288 and following have their clock phase tuning for hs-modes in
-the main soc's clock controller. Hence you have the "ciu-drive" and
-"ciu-sample" clocks [0].
+However from both of the IC design POV and the test from my side,
+we just need internal phase support patch, and rk3576 could
+work.
 
-On the rk3576 (and probably following) those clock phase settings moved
-inside the mmc controller itself. So there are no external phase clocks
-anymore.
-
-So right now we have two types in the binding, the rk2928 type [1],
-used on the old rk3066 and rk3188 socs, that did not support mmc hs-modes
-and the rk3288-type which introduced phase tuning via clocks from the
-main clock controller.
-
-The rk3576 now switches to having phase tuning in the mmc controller
-itself. So throwing that on unmodified code for the rk3288 will get you
-degraded functionality, because the tuning won't work because there are
-no "ciu-drive" and "ciu-sample" anymore .
-
-
-And with that separate compatible we could also "tighten" the binding
-a bit to make those additional clocks more explicit for the rk3288 type.
-
-
-Heiko
-
-
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/arch/arm64/boot/dts/rockchip/rk3399.dtsi#n410
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml#n27
-
-
-
+>>
+>>>    	priv->drv_clk = devm_clk_get(host->dev, "ciu-drive");
+>>>    	if (IS_ERR(priv->drv_clk))
+>>>    	
+>>>    		dev_dbg(host->dev, "ciu-drive not available\n");
+> 
+> 
+> Detlev.
+> 
+> 
 
