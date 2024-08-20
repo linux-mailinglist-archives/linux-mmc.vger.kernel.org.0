@@ -1,97 +1,190 @@
-Return-Path: <linux-mmc+bounces-3374-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3376-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56629958A13
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2024 16:48:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CF2958AAE
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2024 17:05:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4D68B231E1
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2024 14:48:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB09EB24A2E
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Aug 2024 15:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2129191F70;
-	Tue, 20 Aug 2024 14:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE5D1922DF;
+	Tue, 20 Aug 2024 15:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="eQD6BfpZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eX3IUulk"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF96190477;
-	Tue, 20 Aug 2024 14:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E8B191F8B
+	for <linux-mmc@vger.kernel.org>; Tue, 20 Aug 2024 15:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724165256; cv=none; b=vBoIrzJya9RVNyj5gqzur+j0flfIqt8IrDGpGWaCE1twF2kk5eFl+79X/BA/RYoHyzbyCAIo7k9VmafwisUNhBDQUM4tKFNmS/Z0DTiCTzOlykFJqiV4hyGnSh53+UYM7ja62DN6rt+Yuxgj09h2qPpNdc3m+xlvE53Td8rHToQ=
+	t=1724166273; cv=none; b=p2cUgLie/NQLKQZu9ieXQUn8jYvl1aDdBNfxh23bXOYhjeboGKhHhLZyM173qCrmqjcWQbsUFUMCUpxUrkagQdKWw5N1FwU4YfhIe1MXnI1GdA8EJj+2/xyjofo0KUT1+otu1MswatC2SybVPIfc5Kt1nH0Sllvqkls8HJJFDFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724165256; c=relaxed/simple;
-	bh=RPfJlisKrzDoTGaoZ7uPi4f1TxcmpGkWqR5hGE0Dh/s=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=pjn5e3r+YIJvGO7s2qE30khV0gtsXvjuuxyKj4i7nhEznMla/goZCNknKXqsFbKN5LIE81eYqNLOB2jJLgJ9tMJjJSx6kz1+fRIP85+Lwj/sxsWALSbmUPQNJBjE/mV+fx6cvDliJCknTwNCjAQWt8mZ/CwXaQBpTUBU7n5L/+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=eQD6BfpZ; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47KElW4W075704;
-	Tue, 20 Aug 2024 09:47:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1724165252;
-	bh=RPfJlisKrzDoTGaoZ7uPi4f1TxcmpGkWqR5hGE0Dh/s=;
-	h=Date:Subject:From:To:CC:References:In-Reply-To;
-	b=eQD6BfpZt+KX9//Gp2otjevlWnY2dONNZf6VJTluJwvmBhO/8JvxuKa9sPFjHFzH9
-	 cdSKvflkxvGtPjt06cnWephPChQMxKMOxz9Ndqmouowy/FnWgFALXnj5A/O5Gy+IkJ
-	 oyB1i5PhpcoDt3lX209ycYt13LCcCSt+jcOKnpr8=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47KElWTF081274
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 20 Aug 2024 09:47:32 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 20
- Aug 2024 09:47:31 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 20 Aug 2024 09:47:31 -0500
-Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47KElVbD123118;
-	Tue, 20 Aug 2024 09:47:31 -0500
-Message-ID: <954ef458-7234-4d65-8315-526aab85fc1a@ti.com>
-Date: Tue, 20 Aug 2024 09:47:31 -0500
+	s=arc-20240116; t=1724166273; c=relaxed/simple;
+	bh=ah7+7BkSfB911Enb39ddRA57gc04wb8bQEKuZp49XdQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MM9a1hxgRjXxoeN0QaDj+t/qdJ+BqlVW9fACs719GRcH8lQR3abb90nmCKSqk/01O8fxa++Adh/+NrFnJ3WJ5epB5JxsYYi6KLN1IzKUPih8IUB+LL/mJZVtsxCE0sJv8Uz8eT2cuVjWI1PxkNzabzzIKJpE++dJuwtdjluDwQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eX3IUulk; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e13cda45037so3800681276.3
+        for <linux-mmc@vger.kernel.org>; Tue, 20 Aug 2024 08:04:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1724166271; x=1724771071; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=QymlgjTNRqIV3rZop0Kitq2l8ztNw7AyLvkCeJKN2Tw=;
+        b=eX3IUulkgCWJ0dltsWnS4LO3QIhgYnHAp/tLVRvbZNmIJtgIgyxWomBravJ+Ev2/w1
+         LUKpmuBNt0xR98aA5L2RmLV72U86YPjWot9RIIqS/48xSFVVqWWg2wB81ikXi9nBfWOX
+         24k7B8sLGyN1jKj55OQg8EUMnmPogk/wPVZFBsr2hFrZqXiYdBKVadt5oIgyT667pDFF
+         GOQ7BuNLVN5D/D8CUgRX0+vDsKolDt0pTo02FUm/to3Zk2fwGvKSAeUy4HLQn4Bew6Pi
+         OfqOrIz0iFR+Mj+P1AbpwB3tCQvGpa777gl/R+VJrAbUlrRfqSHlYuO560fl9/tQwM8q
+         5dBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724166271; x=1724771071;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QymlgjTNRqIV3rZop0Kitq2l8ztNw7AyLvkCeJKN2Tw=;
+        b=EToeVmZRZZikAh3Od0g1qgTOhKQ4uF+lyzocV4ROOfCjuUa+nc7BfluSPEkI+7Xxae
+         OyA1g/DJRbBDFWok98N/dRwx/gGHettFKVAbzKXW6gEKA6D3zdxwb8Z9H6/rQqon502h
+         1vk00esVTW2zo3bZeWKXtbHNYGblwTrC6ygEq8Ds5j0VCK9brY9inLdo449fXHLJQMCM
+         ibg07L46vTkdyVpwe/SU60iHGFERDXtta8Ggtu7WOIFjYbddkLOSN0iRaktIEhwYLCvK
+         ASdOj+5Gb3qAytU7ZupPgTAQsywvStQ2mW+Jc3+VSqCPAuM0H4t7RkW/wvMeARs73Z4t
+         81oA==
+X-Forwarded-Encrypted: i=1; AJvYcCXRZz0nSBnl1iwThGDauAiHWcLmUdnxwjlfqLyBFs+PQ5seCjxKNpQM5od/SMbkosEIizHP8fasotlTYbT9LUi7aljGccz/N0jw
+X-Gm-Message-State: AOJu0Yyvnb2Cek1UMCp9KjVsctCCbOSCcPXLk86kUW2M7xBJaTSDI238
+	tI7DNdx0YvZXhB3/apYicbODz6WgLZsrcP9edhXIyzDUZQKX0qAzAOF8jaXVQ6UMdl9KlN69pXF
+	M66aDalSehYw26ILwKZ55q5vtK1EhfmzbjEHGukBPRgiic0k9
+X-Google-Smtp-Source: AGHT+IHRPogyQeifNNpdcrG/2P/91T40oKsMgqm1u9P+z3SSUiAdkrzhHiYd4En0abFAGkoCse3nJ+T5VYE9Y+owePc=
+X-Received: by 2002:a05:6902:270a:b0:e13:da55:4e5d with SMTP id
+ 3f1490d57ef6-e13da5559c9mr11273007276.38.1724166270614; Tue, 20 Aug 2024
+ 08:04:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mmc: sdhci_am654: Add retry tuning
-From: Judith Mendez <jm@ti.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-CC: Adrian Hunter <adrian.hunter@intel.com>, <linux-mmc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20240815201542.421653-1-jm@ti.com>
- <20240815201542.421653-2-jm@ti.com>
-Content-Language: en-US
-In-Reply-To: <20240815201542.421653-2-jm@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20240815201542.421653-1-jm@ti.com> <20240815201542.421653-3-jm@ti.com>
+ <CAPDyKFpb0o2w9=nRp98XnqoLKtFOCDssJzy+53mg1bW8y0UmUw@mail.gmail.com> <acbf7997-6989-4de6-bf25-3b5589ad2eb9@ti.com>
+In-Reply-To: <acbf7997-6989-4de6-bf25-3b5589ad2eb9@ti.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 20 Aug 2024 17:03:54 +0200
+Message-ID: <CAPDyKFoekvs1XLGVewB8vA=rsGN4ikB9uw80AVw6NVRF-rgffA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: sdhci_am654: Add tuning debug prints
+To: Judith Mendez <jm@ti.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>, linux-mmc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+On Tue, 20 Aug 2024 at 16:41, Judith Mendez <jm@ti.com> wrote:
+>
+> Hi Ulf Hansson,
+>
+> On 8/20/24 6:33 AM, Ulf Hansson wrote:
+> > On Thu, 15 Aug 2024 at 22:15, Judith Mendez <jm@ti.com> wrote:
+> >>
+> >> Add debug prints to tuning algorithm for debugging.
+> >>
+> >> Signed-off-by: Judith Mendez <jm@ti.com>
+> >> ---
+> >>   drivers/mmc/host/sdhci_am654.c | 5 +++++
+> >>   1 file changed, 5 insertions(+)
+> >>
+> >> diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+> >> index c3d485bd4d553..a909f8de0eabe 100644
+> >> --- a/drivers/mmc/host/sdhci_am654.c
+> >> +++ b/drivers/mmc/host/sdhci_am654.c
+> >> @@ -457,11 +457,13 @@ static u32 sdhci_am654_calculate_itap(struct sdhci_host *host, struct window
+> >>
+> >>          if (!num_fails) {
+> >>                  /* Retry tuning */
+> >> +               dev_err(dev, "No failing region found, retry tuning\n");
+> >
+> > A dev_err seems to be too heavy, but I am not sure at what frequency
+> > this could occur?
+>
+> Having no failing region is what we call a corner case, it rarely
+> happens. The one case where it did happen, it took a good amount
+> of time to discover there were no failing regions found. The tuning
+> algorithm had to be looped 3 times before finding a failing itapdly.
+>
+> >
+> > Why isn't a dev_dbg sufficient?
+>
+> I thought about using dev_dbg, but based on some feedback after coming
+> upon this issue on a board bring up case, we think it would help
+> enormously if we make it as obvious as possible when no failing region
+> is found.
+>
+> The one case where this came up, the dev_err print would only print 3
+> times... Now this is only one case and we are not aware of any more
+> cases like this, also we cannot replicate on TI EVM's.
 
-On 8/15/24 3:15 PM, Judith Mendez wrote:
-> Add retry tuning up to 10 times if we fail to find
-> a failing region or no passing itapdly. This is
-> necessary since some eMMC's have been observed to never
-> find a failing itapdly on the first couple of tuning
-> iterations, but eventually do. It been observed that the
-> tuning algorithm does not need to loop more than 10 times
-> before finding a failing itapdly.
+What happens if/when we fail here? Do we fail to detect the card or do
+we end up running it in some degraded mode?
 
-Will fix-up this commit message as well, there has only
-been one case like this so far.
+If the latter a dev_warn, the former a dev_err(). Does that make sense?
 
-~ Judith
+>
+> >
+> >>                  return -1;
+> >>          }
+> >>
+> >>          if (fail_window->length == ITAPDLY_LENGTH) {
+> >>                  /* Retry tuning */
+> >> +               dev_err(dev, "No passing ITAPDLY, retry tuning\n");
+> >
+> > Ditto.
+>
+> Same idea as above..
+>
+> But with this print, the maximum amount of prints that could be printed
+> is 20, is this too many prints in your opinion?
 
+This sounds like dev_dbg to me. We are not really failing, as we are
+making a re-try and will most likely succeed then, right?
+
+>
+>
+> >
+> >>                  return -1;
+> >>          }
+> >>
+> >> @@ -505,6 +507,7 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
+> >>          struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
+> >>          unsigned char timing = host->mmc->ios.timing;
+> >>          struct window fail_window[ITAPDLY_LENGTH];
+> >> +       struct device *dev = mmc_dev(host->mmc);
+> >>          u8 curr_pass, itap;
+> >>          u8 fail_index = 0;
+> >>          u8 prev_pass = 1;
+> >> @@ -542,12 +545,14 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
+> >>
+> >>          if (ret >= 0) {
+> >>                  itap = ret;
+> >> +               dev_dbg(dev, "Final ITAPDLY=%d\n", itap);
+> >>                  sdhci_am654_write_itapdly(sdhci_am654, itap, sdhci_am654->itap_del_ena[timing]);
+> >>          } else {
+> >>                  if (sdhci_am654->tuning_loop < RETRY_TUNING_MAX) {
+> >>                          sdhci_am654->tuning_loop++;
+> >>                          sdhci_am654_platform_execute_tuning(host, opcode);
+> >>                  } else {
+> >> +                       dev_err(dev, "Failed to find ITAPDLY, fail tuning\n");
+> >
+> > The commit message only talks about debug messages, but this is an
+> > error message. Perhaps update the commit message a bit?
+>
+> Sure will do, after we conclude the discussion above and in v2.
+>
+> Thanks so much for reviewing.
+>
+
+Kind regards
+Uffe
 
