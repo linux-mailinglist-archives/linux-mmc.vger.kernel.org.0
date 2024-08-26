@@ -1,71 +1,91 @@
-Return-Path: <linux-mmc+bounces-3515-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3518-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D4895FB2A
-	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2024 23:05:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF3995FBA8
+	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2024 23:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9492B1F22F25
-	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2024 21:05:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C180B2333B
+	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2024 21:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259F913C9CF;
-	Mon, 26 Aug 2024 21:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F1B1993BD;
+	Mon, 26 Aug 2024 21:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="tRIHOkcO"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YJwdP/tN"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2068.outbound.protection.outlook.com [40.107.100.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954DA881E;
-	Mon, 26 Aug 2024 21:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724706299; cv=none; b=OOpwGUMw2qbU13/dSNHzVKhMRiK5MYqeHIy1/E4VOaWjpIkT9bvkRLB+7CpWCIe0DBj2WSGVmn2ICTgc7ZhOwe3pjQ6oQwKPtD4nniGS+EKNoTGOs6iiJIsjAfoArQG/CBQDY5dcG8Wv0ycIlXtRSSImmeUZlKiVuHDr5dZ96uA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724706299; c=relaxed/simple;
-	bh=JkhJFKFIkm79UbFh96wQZUTAoNWKn4eTgKW9tzvn/98=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cdKit1ZIH2ZQkAg3hS3xz3EUWwuJUiSxejkrUjZiyy0QNwlpNWzFbC51/UX/8r7TB5mwcAiDsrNt7Lyn+EBMzzC/t0ThxUwGXeR2AdhAfbRR5LAI1DidfxxPewLMX3t0WsW2goFF9zEBRac6oulNsehJn6NlEhwudJInL6y6gn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=tRIHOkcO; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47QL4tgR123216;
-	Mon, 26 Aug 2024 16:04:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1724706295;
-	bh=aTMH6CJkz+UkcfHV2rNhCeL5bfIeJkBghWir786/2Gg=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=tRIHOkcOhfw0nZvGmeExEBssUurZa6XNtbwoxOZPUiLk7J2w/UArIJUvPYOiiwM49
-	 eCHj/8b5izzf1+ZG/Nax/iZfQwHaZ8eYzcIJQPmHJwvRuZspdpH+6nn8u6rNlrukRN
-	 iJAFQ9SGzoEcaOcT81CsWLJm4lcMcI3LVnrU64iQ=
-Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47QL4tI9051938
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 26 Aug 2024 16:04:55 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 26
- Aug 2024 16:04:55 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 26 Aug 2024 16:04:54 -0500
-Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47QL4sZW089210;
-	Mon, 26 Aug 2024 16:04:54 -0500
-From: Judith Mendez <jm@ti.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-CC: Adrian Hunter <adrian.hunter@intel.com>, <linux-mmc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 2/2] mmc: sdhci_am654: Add prints to tuning algorithm
-Date: Mon, 26 Aug 2024 16:04:54 -0500
-Message-ID: <20240826210454.3928033-3-jm@ti.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240826210454.3928033-1-jm@ti.com>
-References: <20240826210454.3928033-1-jm@ti.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA44A19A288;
+	Mon, 26 Aug 2024 21:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724707617; cv=fail; b=aMa2bq4MBAbW46yX1xyOuXEPg3VTsymzKBNdknSzGp62gvZKXSbsT2Z8ibMC2DbqCovhZhPg9/0P/o+lycSBkHOIhy9ItxGBlWrWYlImk2M1zOZXZ4q1QK4pr1Q1szMcwC/iD2K9ccVm9h5SscMSrNJnxdslURIQkURRZ3CFNXc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724707617; c=relaxed/simple;
+	bh=wpQXg9Di62OGh+wnzeEq5dTmWbpdd3smlJtZWSh/rBI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n8985AhCQftiNKE+gqUujQRjaxb/Bx8L1sljrO0A4EL6cFp2f+ww7/SghhsannBPhFCMbLY8QPpZqKEcqBTflYyTCL+6Tr3D9TVMEunjPYS4hUoBo+xOX9O389IX4mtWHhpNTNUPxycXFxz1aV36WiCOZ9MY+6VxzbX836HL55w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YJwdP/tN; arc=fail smtp.client-ip=40.107.100.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Cr9eViEUPNO6Kb5I7K6rHCicAnihX21q64i2LuZ9kujSiNl7rqZvxz+a+ZuLVGHw3BW15wdvQNnbvmqecCOUkxeYucV7ByCh24UfB3mTzqlRHd0zioYM2i5xtlJiC+fY2mjPMBpu9ZUX3mpuOJw/6L7F71UppRBYT2dUWAhbKzC3g64IotH4r79bTsbA0Tp6nqhc5nnp3wngCpUzdMNfFvLDCDSieagQQJeVZocLx8+Cr8MGARrQW5PzdL8Uh5YcVEjAN4KysjzyUJcZTZf8c71ucEvBx0nve01414J/K1S/UQbYPHeCSMdIOtkuaZssQWtRT+3fmU/mqWkQUDrpZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o6JeckLYSKOR1pLvB/LxAC2tq7Nu4l3LA1pDgNUAMug=;
+ b=v0C9AJENATwpLrbJB7BMHWEscpHPxNtNtnNrK7DvJD7H8Hu6hNi5NimOjB5XhbSLnZ4rtCWm5ZNvt/M71Rhm46aGLRFA8+Ka6H/1M1svjXCyu7nNQyefKWL6od6svzWpf4X6KPMAOCG7GQTwLv7RwAJ4RDOVni7H7FjmvHA1lVbygb+IA6cHB+gjExbKdZ5re5kha4c+scjpbzXMBS4ex/o9CxReTdsaILKFlW67zeMkmv43BJARY2mfE5V0iKz5Y/9HnBo9RlJXEarAnN/qLTk82yPV0iEWw/rY00HGmR+s/xmFWUMAP/3M/TT1bfU1Qo9pj+PTen7Zhrl8mvjyrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o6JeckLYSKOR1pLvB/LxAC2tq7Nu4l3LA1pDgNUAMug=;
+ b=YJwdP/tNB04KUerop0fpk8OVW9TR+sivdmgbSmcjZO9fO9CwW6JVLjguLTdtsX0S2z6IhlxPqINgB6x/0AfTLHz5m4HzC+HEGAkdio34+5QbOpt4uRihcgIUY2JEtmck53bNsmKjTyZAfsKtvJCoPGcI83yCZBbxeo0dOW7JWjUBDPlYlfZ7pXwR3LQyj4VtM3jwE2TxNjzMFzS/Jj8xsU7/O/3zSaBF8DhXMjVn7oJUV+YmYMUsZHV+1a45iELSaqAXjPb4sorPmId5FQmkCHHhKkwN1LZhbvxlrMC3Hg7HaXYYljuFA84nlUp8URrHeNqACLnAJmirjRWNXcBzEw==
+Received: from CH0PR03CA0201.namprd03.prod.outlook.com (2603:10b6:610:e4::26)
+ by SA1PR12MB5613.namprd12.prod.outlook.com (2603:10b6:806:22b::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.23; Mon, 26 Aug
+ 2024 21:26:50 +0000
+Received: from DS3PEPF0000C37C.namprd04.prod.outlook.com
+ (2603:10b6:610:e4:cafe::18) by CH0PR03CA0201.outlook.office365.com
+ (2603:10b6:610:e4::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.24 via Frontend
+ Transport; Mon, 26 Aug 2024 21:26:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS3PEPF0000C37C.mail.protection.outlook.com (10.167.23.6) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7918.13 via Frontend Transport; Mon, 26 Aug 2024 21:26:49 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 26 Aug
+ 2024 14:26:33 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 26 Aug
+ 2024 14:26:32 -0700
+Received: from vdi.nvidia.com (10.127.8.12) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Mon, 26 Aug
+ 2024 14:26:31 -0700
+From: Liming Sun <limings@nvidia.com>
+To: Adrian Hunter <adrian.hunter@intel.com>, Ulf Hansson
+	<ulf.hansson@linaro.org>, David Thompson <davthompson@nvidia.com>
+CC: Liming Sun <limings@nvidia.com>, <linux-mmc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH v1 1/1] mmc: sdhci-of-dwcmshc: Add hw_reset() support for BlueField-3 SoC
+Date: Mon, 26 Aug 2024 17:26:27 -0400
+Message-ID: <73703c853e36f3cd61114e4ac815926d94a1a802.1724695127.git.limings@nvidia.com>
+X-Mailer: git-send-email 2.30.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -74,76 +94,119 @@ List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37C:EE_|SA1PR12MB5613:EE_
+X-MS-Office365-Filtering-Correlation-Id: 510c8bb9-546a-4cec-75bd-08dcc615cbd2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?iGza6bZmEL82Z6NcrhQfYRBtV6g5iXKhC4FyPkDy9xEZVPBBthCN6hSzqlry?=
+ =?us-ascii?Q?uQFmzI+v3U2sEAvciT2IATE7lJ6fG0U+PbhG0F9vIgm89S4kEsmezulNsUka?=
+ =?us-ascii?Q?2AbaKHryCclr2/MUwmx9SOf1sUvWPBrcGBUn1Sa1MwOeWD8KsaQwTyQlVyZc?=
+ =?us-ascii?Q?uXjvKcTSI2e3PA0anwWeaJQKZ2M+FpPPtj3TnhgwQ0zN0OrKUC25w7wb7qf6?=
+ =?us-ascii?Q?4RAPmvhG/+vnqaIb5LbFCigvKxvEEnSpQ6+H7itGdIiJ71D2K8ZK9Y5xqs+6?=
+ =?us-ascii?Q?M6IKMTyy16Gxy1m6vrfkGLROZ7NOe0vth+QbOjBHpbLqjsWFsegnO7m9Tb1e?=
+ =?us-ascii?Q?2MFwnW9yEGTiWpLCd8QTNucEDS/U1i3HesbngqBrCdcrP2ETA7t7bQbCfUi7?=
+ =?us-ascii?Q?xiXjR43cCnvotFnWbM09edJPELP3pcpTq5b+D0ZQl/r3KGM0E0iLhzauQtnQ?=
+ =?us-ascii?Q?13pgTZgLHOaVPB0OIFgj11hCL9LfD5R18LFqaicVTnqWmGp4oAtplTYtaoSH?=
+ =?us-ascii?Q?Y3qQ8XNnQRXNl2uu4kmuiIR2zzTWWqt8lE+mIbUPAOVF6lWGT+Cg7MKO0wUh?=
+ =?us-ascii?Q?CHLYQFo2HvffK+wFOetKvwfhDd8GOfQd+hV/b/l5fNIqQFHcXcBPtGtGFchU?=
+ =?us-ascii?Q?yb+WjtErNg9wGSH/30Nf1xIqa+waOqN5GmEha84rJ3Q7+P0PhBzOIV2sBHaZ?=
+ =?us-ascii?Q?qpTNjbcfNNXpV2yfVGgVbAsCPR05r5WkVVPrLKW3CPRIYAWpXAiHwGKOaiCX?=
+ =?us-ascii?Q?xMg82HEu3aIVuHPeN1RxE/h5ra0/R0jt8NiBnFrTHV0xuCmAEJSvE9PK0QDO?=
+ =?us-ascii?Q?dxAJNlF4xXHaXetBZ/KIQpG3UZYi1eZkDHirnwP0EaMiRftQUjTW8bFrSpw0?=
+ =?us-ascii?Q?guM712Gt1rUWxkcxJDohCk8HqP7+z9XWI9BgfXGdTPn1crEsVygRXXdJ12iS?=
+ =?us-ascii?Q?IE8HMSx1EYe0/QbRujJZtCoqKsTZmredL0BRDiHakJ3QT5h5ZS1Xx2LsMfOm?=
+ =?us-ascii?Q?7yQMRIzwRD/dXk8Pf4M2yxxZA4EIp6hJoxzMnsfoDNF7h3FW9jzPVwe6aqkX?=
+ =?us-ascii?Q?PIl7gcQbUiqCXZbVlJC5uy01prTJJ1tRqguFbkJOzmV+Rpx10P/Vu/jSzrnc?=
+ =?us-ascii?Q?3hiyHwcskK8AJ4wC9sjjQLy6DpOr4V0Bg1ai1drEPIZURp1uTa6PzXlncMZs?=
+ =?us-ascii?Q?wiCoK9jfJKLfzOTyufjCe37qpDRnRV3ZECmIE3FcD16lFYgDJ5qcbjK8k6hv?=
+ =?us-ascii?Q?lo3VwAGkF2RuM48hqJq5n335J+QC4BQqsJOATV+20IMXXZTNAUAqwXLfbzc9?=
+ =?us-ascii?Q?gsFwzKDIQMYtoZGf4Qy+uqlzhLQDfy3PRauFLgMVKuAdaLR0xN32t4tlhXl+?=
+ =?us-ascii?Q?2/BZm7KwdN+LdeLZheE2wwBtdQ31xCxuHytQRyOUKAFaE4sL3i5ZWNpUoFEF?=
+ =?us-ascii?Q?K4jTK/7qr2SLkif2lAL1IFZ8exBFxeJy?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2024 21:26:49.4229
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 510c8bb9-546a-4cec-75bd-08dcc615cbd2
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF0000C37C.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5613
 
-Add debug prints to tuning algorithm for debugging.
-Also add error print if we fail tuning.
+The eMMC RST_N register is implemented as secure register on
+the BlueField-3 SoC and controlled by TF-A. This commit adds the
+hw_reset() support which sends an SMC call to TF-A for the eMMC
+HW reset.
 
-Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Liming Sun <limings@nvidia.com>
 ---
-Changes since v2:
-- Move struct *dev = mmc_dev() to patch 2/2
----
- drivers/mmc/host/sdhci_am654.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index 13da003363e1d..0aa3c40ea6ed8 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -457,11 +457,13 @@ static int sdhci_am654_calculate_itap(struct sdhci_host *host, struct window
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index ba8960d8b2d4..3c763e67e4ac 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -8,6 +8,7 @@
+  */
  
- 	if (!num_fails) {
- 		/* Retry tuning */
-+		dev_dbg(dev, "No failing region found, retry tuning\n");
- 		return -1;
- 	}
+ #include <linux/acpi.h>
++#include <linux/arm-smccc.h>
+ #include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
+@@ -201,6 +202,9 @@
+ 					 SDHCI_TRNS_BLK_CNT_EN | \
+ 					 SDHCI_TRNS_DMA)
  
- 	if (fail_window->length == ITAPDLY_LENGTH) {
- 		/* Retry tuning */
-+		dev_dbg(dev, "No passing itapdly, retry tuning\n");
- 		return -1;
- 	}
++/* SMC call for BlueField-3 eMMC RST_N */
++#define BLUEFIELD_SMC_SET_EMMC_RST_N	0x82000007
++
+ enum dwcmshc_rk_type {
+ 	DWCMSHC_RK3568,
+ 	DWCMSHC_RK3588,
+@@ -1111,6 +1115,29 @@ static const struct sdhci_ops sdhci_dwcmshc_ops = {
+ 	.irq			= dwcmshc_cqe_irq_handler,
+ };
  
-@@ -505,6 +507,7 @@ static int sdhci_am654_do_tuning(struct sdhci_host *host,
- 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
- 	unsigned char timing = host->mmc->ios.timing;
- 	struct window fail_window[ITAPDLY_LENGTH];
-+	struct device *dev = mmc_dev(host->mmc);
- 	u8 curr_pass, itap;
- 	u8 fail_index = 0;
- 	u8 prev_pass = 1;
-@@ -525,6 +528,7 @@ static int sdhci_am654_do_tuning(struct sdhci_host *host,
- 		if (!curr_pass) {
- 			fail_window[fail_index].end = itap;
- 			fail_window[fail_index].length++;
-+			dev_dbg(dev, "Failed itapdly=%d\n", itap);
- 		}
- 
- 		if (curr_pass && !prev_pass)
-@@ -546,6 +550,7 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
- 	unsigned char timing = host->mmc->ios.timing;
-+	struct device *dev = mmc_dev(host->mmc);
- 	int itapdly;
- 
- 	do {
-@@ -554,9 +559,12 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
- 			break;
- 	} while (++sdhci_am654->tuning_loop < RETRY_TUNING_MAX);
- 
--	if (itapdly < 0)
-+	if (itapdly < 0) {
-+		dev_err(dev, "Failed to find itapdly, fail tuning\n");
- 		return -1;
-+	}
- 
-+	dev_dbg(dev, "Passed tuning, final itapdly=%d\n", itapdly);
- 	sdhci_am654_write_itapdly(sdhci_am654, itapdly, sdhci_am654->itap_del_ena[timing]);
- 	/* Save ITAPDLY */
- 	sdhci_am654->itap_del_sel[timing] = itapdly;
++#ifdef CONFIG_ACPI
++static void dwcmshc_bf3_hw_reset(struct sdhci_host *host)
++{
++	struct arm_smccc_res res = { 0 };
++
++	arm_smccc_smc(BLUEFIELD_SMC_SET_EMMC_RST_N, 0, 0, 0, 0, 0, 0, 0, &res);
++
++	if (res.a0)
++		pr_err("%s: RST_N failed.\n", mmc_hostname(host->mmc));
++}
++
++static const struct sdhci_ops sdhci_dwcmshc_bf3_ops = {
++	.set_clock		= sdhci_set_clock,
++	.set_bus_width		= sdhci_set_bus_width,
++	.set_uhs_signaling	= dwcmshc_set_uhs_signaling,
++	.get_max_clock		= dwcmshc_get_max_clock,
++	.reset			= sdhci_reset,
++	.adma_write_desc	= dwcmshc_adma_write_desc,
++	.irq			= dwcmshc_cqe_irq_handler,
++	.hw_reset		= dwcmshc_bf3_hw_reset,
++};
++#endif
++
+ static const struct sdhci_ops sdhci_dwcmshc_rk35xx_ops = {
+ 	.set_clock		= dwcmshc_rk3568_set_clock,
+ 	.set_bus_width		= sdhci_set_bus_width,
 -- 
-2.46.0
+2.18.4
 
 
