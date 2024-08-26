@@ -1,136 +1,107 @@
-Return-Path: <linux-mmc+bounces-3514-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3517-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2F595FA26
-	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2024 21:57:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA7E95FB2D
+	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2024 23:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EED11C2145D
-	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2024 19:57:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 883521C21360
+	for <lists+linux-mmc@lfdr.de>; Mon, 26 Aug 2024 21:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88C11993BD;
-	Mon, 26 Aug 2024 19:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E624619A288;
+	Mon, 26 Aug 2024 21:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b="yMt3jDjC"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jM5zt9Uk"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB744199221
-	for <linux-mmc@vger.kernel.org>; Mon, 26 Aug 2024 19:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB7113A87A;
+	Mon, 26 Aug 2024 21:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724702212; cv=none; b=O8f/FfyFb9EiCvhfICIYPHA4muWb7qstZ3d1Cs6FjObvu/Kevb8KsdYT/Z1fDvqu4o+vOHz+0t4XdOIwZA4doGa0xdQPybchwTFz8XQJMsPZLl771VROJIYZj0fbBZaFAShU5GvC3F5Ogie9RCprik+75d+jAEkVvROjSS17/yg=
+	t=1724706300; cv=none; b=X30MWgBZGtMcp7pQCStMJDOBQRjr4uqHJzTyWAXt4Orrb+Coi7ckmtI0Y40aFgnevWk8yBqLN5uKXYAHyCWb0d/2cWbVNf3Scp7bwiCeBo2VOtwfkciar/RfcPUhruQly/oHBJ4pRrHxi4yxvz4anxaCOxgEiLyK2vQVvGTw7K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724702212; c=relaxed/simple;
-	bh=f44u1tmOhjyUpYSb/IUGjf0UFDthWX1iuarJYnkxt8E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=omrd3C55HAeDmAgJEDMwGUvz6MdJdq8R7hchoafLyg6l4nqfrOba/yKPiy4mu/gUf5FZ/1nkiN0Tdsm62IMgo2qjm2+IEc7adkBQd7STuvFnBw9RMhAZftgB9nBzBpV2KGRjja3CuEmu3DGp+maWtCBFDNttmZt/2gzNKsL32nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow.org; spf=pass smtp.mailfrom=cknow.org; dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b=yMt3jDjC; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow.org
+	s=arc-20240116; t=1724706300; c=relaxed/simple;
+	bh=R9uLlhL/QJEfx9rXtl1B/tB/67HRfRDUS4gVLh6qgqY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OBuKRYo/zc5J5Qd7dhojK9c0BxAVXXOYx4c4XacW4DsHDeTGFGjqnuvaX/ztyRZ8HGLIImZxh6HvRJD/Mbhpj19WZifXwK/H1gtzvlUyawGZA88gMGZq7r+HG/gNYLjOg/OFd8s/53KOLieklIidiRjvTdcaTuUG2Gnn3WbrYA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jM5zt9Uk; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47QL4tAC091840;
+	Mon, 26 Aug 2024 16:04:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1724706295;
+	bh=/6K4TEyQTNUDOlIhMUrdVD+3bayAzvVcz0txO3nguNU=;
+	h=From:To:CC:Subject:Date;
+	b=jM5zt9Ukz49XUKoBBpTHyppEiHVOBpOymPjgc0qGpfpQTHBEBWkQ3CUlE+m7Zjx42
+	 NSzq31gvWQ2iukyb+3rHWCs4pnTkmn9bKApu+nd+nJiO0OqhVTw1/bQhu23QBrxXlW
+	 i0aX4h9EUkA4LGzbBS3wuvFkiBsiLVMs+XMQ46g4=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47QL4tc4027350
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 26 Aug 2024 16:04:55 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 26
+ Aug 2024 16:04:55 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 26 Aug 2024 16:04:54 -0500
+Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47QL4sZU089210;
+	Mon, 26 Aug 2024 16:04:54 -0500
+From: Judith Mendez <jm@ti.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+CC: Adrian Hunter <adrian.hunter@intel.com>, <linux-mmc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 0/2] Add retry tuning sequence
+Date: Mon, 26 Aug 2024 16:04:52 -0500
+Message-ID: <20240826210454.3928033-1-jm@ti.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow.org; s=key1;
-	t=1724702208;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lSNB16YmTmGtSszFku9OEpzxCSlM3sSnGKMEEle5Jqc=;
-	b=yMt3jDjCx/B0z6xC082cVw0HQY4Me/FagDvE50oGlZZXCMF5Jq6LNhf+2Qxm6GxDSPpGhy
-	osQCkmyACysyLu+u650VEqjzcGGEzFWl7uD9cGiG2uKMLG+neaKZVbHPdqs4NgFfV9kN36
-	F6RecMyRzzHf5tUuKzWLlXy6Zq2aaUrO4Nqz767HIHttvZPw1xfRvEvz1/LRgm5SKRKgW5
-	e98Q7S61cpPqJ69fgCnm4wfemUXqHoZmqLDjo7EW4Gn5fu5LKSLz7FsFpc5L1IqLMoKSNw
-	zVNkFcO6HzXLN8irNUWL94mMo90EcrTYmktZgOLYwgwJL0BRUy5LS22/0nNbVQ==
-Content-Type: multipart/signed;
- boundary=128cfb0fa1f91e2aae272ffecd950e1f386b558b6f3d91eca48fb6bdbb70;
- micalg=pgp-sha256; protocol="application/pgp-signature"
-Date: Mon, 26 Aug 2024 21:56:34 +0200
-Message-Id: <D3Q3WI8AHRJ1.3B8E985JAVVC2@cknow.org>
-Cc: <airlied@gmail.com>, <alchark@gmail.com>, <andi.shyti@kernel.org>,
- <andyshrk@163.com>, <broonie@kernel.org>, <cl@rock-chips.com>,
- <conor+dt@kernel.org>, <daniel@ffwll.ch>, <devicetree@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <dsimic@manjaro.org>,
- <efectn@protonmail.com>, <finley.xiao@rock-chips.com>,
- <gregkh@linuxfoundation.org>, <heiko@sntech.de>, <honyuenkwun@gmail.com>,
- <jagan@edgeble.ai>, <jamie@jamieiles.com>, <jic23@kernel.org>,
- <jirislaby@kernel.org>, <jonas@kwiboo.se>, <jszhang@kernel.org>,
- <kernel@collabora.com>, <krzk+dt@kernel.org>, <lars@metafoo.de>,
- <lee@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
- <linux-rockchip@lists.infradead.org>, <linux-serial@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, <linux-watchdog@vger.kernel.org>,
- <linux@roeck-us.net>, <maarten.lankhorst@linux.intel.com>,
- <macromorgan@hotmail.com>, <megi@xff.cz>, <michael.riesch@wolfvision.net>,
- <mripard@kernel.org>, <robh@kernel.org>, <tim@feathertop.org>,
- <tzimmermann@suse.de>, <ulf.hansson@linaro.org>, <wim@linux-watchdog.org>
-Subject: Re: [PATCH v2 11/12] arm64: dts: rockchip: Add rk3576 SoC base DT
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Diederik de Haas" <didi.debian@cknow.org>
-To: "Detlev Casanova" <detlev.casanova@collabora.com>, "Chukun Pan"
- <amadeus@jmu.edu.cn>
-References: <23624422.6Emhk5qWAg@trenzalore>
- <20240825140824.200453-1-amadeus@jmu.edu.cn>
- <22403959.EfDdHjke4D@bootstrap>
-In-Reply-To: <22403959.EfDdHjke4D@bootstrap>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
---128cfb0fa1f91e2aae272ffecd950e1f386b558b6f3d91eca48fb6bdbb70
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
+Due to failures to find failing region issues seen on some
+boards, add retry tuning sequence to make the tuning algorithm
+more robust. The tuning algorithm will re-execute up to 10
+times if there is no failing or passing itapdly.
 
-On Mon Aug 26, 2024 at 8:28 PM CEST, Detlev Casanova wrote:
-> On Sunday, 25 August 2024 10:08:24 EDT Chukun Pan wrote:
-> > > --- /dev/null
-> > > +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-> > > ...
-> > > +		opp-1416000000 {
-> > > +			opp-hz =3D /bits/ 64 <1416000000>;
-> > > +			opp-microvolt =3D <725000 725000 950000>;
-> > > +			opp-microvolt-L1 =3D <712500 712500 950000>;
-> > > +			opp-microvolt-L2 =3D <700000 700000 950000>;
-> > > +			opp-microvolt-L3 =3D <700000 700000 950000>;
-> > > +			opp-microvolt-L4 =3D <700000 700000 950000>;
-> > > +			opp-microvolt-L5 =3D <700000 700000 950000>;
-> > > +			clock-latency-ns =3D <40000>;
-> > > +		};
-> > > ...
-> >=20
-> > I'm curious if these frequencies work properly. On the bsp kernel,
-> > 'opp-microvolt-L<name>' is used by the PVTM driver, I don't know
-> > if it works on the upstream kernel.
->
-> Which seems to correspond to the set opp-hz value. As mentionned by Alexe=
-y,=20
-> the opp-microvolt-L.* values are not used by the driver.
->
-> I also have not tested any cpufreq settings/driver on this board yet. I c=
-an=20
-> remove the opp-microvolt-L.* for now.
+Due to the same issue above, add prints to the tuning algorithm
+to make debugging these corner-cases easier.
 
-If you run this command on the upstream kernel:
-``grep -r "opp-microvolt" arch/arm64/boot/dts/rockchip/``
+Changes since v2:
+- Use do while loop instead of while in patch 1/2
+- Move initialization of tuning_loop to sdhci_am654_init
+- Separate error path in patch 1/2
+- Move struct *dev = mmc_dev() to patch 2/2
 
-you'll see it doesn't use the opp-microvolt-LN variants anywhere,
-so this is indeed a downstream/BSP only thing.
+link to v1:
+https://lore.kernel.org/linux-mmc/20240815201542.421653-1-jm@ti.com
+link to v2:
+https://lore.kernel.org/linux-mmc/20240821192435.1619271-1-jm@ti.com
 
---128cfb0fa1f91e2aae272ffecd950e1f386b558b6f3d91eca48fb6bdbb70
-Content-Type: application/pgp-signature; name="signature.asc"
+Judith Mendez (2):
+  mmc: sdhci_am654: Add retry tuning
+  mmc: sdhci_am654: Add prints to tuning algorithm
 
------BEGIN PGP SIGNATURE-----
+ drivers/mmc/host/sdhci_am654.c | 54 +++++++++++++++++++++++++++-------
+ 1 file changed, 43 insertions(+), 11 deletions(-)
 
-iHUEABYIAB0WIQT1sUPBYsyGmi4usy/XblvOeH7bbgUCZszd+QAKCRDXblvOeH7b
-bsPMAP9CORw/HV6VNrTduOL78GjAIEpWxM/M9+0BOgYkBHnzpQEAjK8fuZpW3HrN
-ri8LuinsuvlO+D0OMT9SEJJAE8prZQE=
-=pQv4
------END PGP SIGNATURE-----
 
---128cfb0fa1f91e2aae272ffecd950e1f386b558b6f3d91eca48fb6bdbb70--
+base-commit: 538076ce6b8dfe5e8e8d9d250298030f165d8457
+-- 
+2.46.0
+
 
