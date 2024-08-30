@@ -1,67 +1,82 @@
-Return-Path: <linux-mmc+bounces-3631-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3634-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B5B965A00
-	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2024 10:20:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB1D965A54
+	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2024 10:30:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74BB928ACC7
-	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2024 08:20:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACDA428D6AD
+	for <lists+linux-mmc@lfdr.de>; Fri, 30 Aug 2024 08:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6921667ED;
-	Fri, 30 Aug 2024 08:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F383F16D4E5;
+	Fri, 30 Aug 2024 08:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="MXIUC3hB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n87VcqIl"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3936D13D53E;
-	Fri, 30 Aug 2024 08:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A2514F13A;
+	Fri, 30 Aug 2024 08:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725006008; cv=none; b=Glj++0ywd6FiMUxWKl6l3eEj9X10RW7/WvZkBgE5f/0E5TJCVGmSyK5dVLZO+Dh6F7YYGd5IRQ/co4InX+18euz9PS5gJj0WITxMH86OGXFBySFItjyBFKiYwYgOZITVNj2wap3EGkEHckRA6n5YGFDBpvTA44W2Mig/slzwzjc=
+	t=1725006617; cv=none; b=SlNdlHqH7U2FKGQhEk2Q0UPfNWrGaHH/eEX2S3fvUkXv/BakBkYSxE/KGe7+BTVmYHn7C8bgzKVcnKboiiLxbePSyHGTd8TVrbQMiHCnvmnWGuY6S+WAXlU3n5k3fHuDVtdtxOed7TY56gxmvXzJ/vSODTCg7XfLEXCBefXavog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725006008; c=relaxed/simple;
-	bh=zeiNe3RDjxa0ANwXXvSkRZhe0L3aObfW49MAHahbOCs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=amBOu2/t8fAmbzzf9kdl2WDlatcaRmSf12qQabTMDcX9+JdiElvHmvnjHna5cZxD584sb44GvIyHax/TKQlTXCUe3RojDHQT5UaCdeNqoeh3F6+4AC/lxQ0IPf7yWF6bcOXcr8UNnytZH5qfyXzBLhPimIc/TiL1feTp1B8TAmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=MXIUC3hB; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1725006007; x=1756542007;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=zeiNe3RDjxa0ANwXXvSkRZhe0L3aObfW49MAHahbOCs=;
-  b=MXIUC3hBG7mahGsQxslqTuMCMPUsCMOGJDRHdbf5m6MN94ujFzti6FOW
-   vcpBf1dxxQYJPy4rgb64yb5lfNlMoz7AgzP6gNUXAE+eQfCJOmGRGG8hf
-   h8RdKr2x3Ys9IxoorIH8FUdD1m0pMx+CAINhn4ewVoYDuO3oV6PRqTtOl
-   6ZVKn5ku9FVq4x4UGOp7JmSi1UvCLne0GkDjc83fFCDH94jisLnncknE4
-   61lKGWCzp3N+cucE5c0wVWhFQuZ3tjdRBUpXxxScm6Qk/Yfs3oU6KKdE3
-   r3VTK1Win+nI5jPqVQaRB4W89soys3dYHEE+bykJ4e+mrBtsWQmzbzK3d
-   g==;
-X-CSE-ConnectionGUID: UTJOvnZHRjSQL+I5bPdPIQ==
-X-CSE-MsgGUID: dvHOL8cNQt+/McnANW+RSw==
-X-IronPort-AV: E=Sophos;i="6.10,188,1719903600"; 
-   d="scan'208";a="34150018"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Aug 2024 01:20:05 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 30 Aug 2024 01:20:04 -0700
-Received: from che-lt-i70843lx.mchp-main.com (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Fri, 30 Aug 2024 01:20:00 -0700
-From: Dharma Balasubiramani <dharma.b@microchip.com>
-Date: Fri, 30 Aug 2024 13:49:43 +0530
-Subject: [PATCH v2 2/2] dt-bindings: mmc: atmel,sama5d2-sdhci: Add sama7d65
- compatible
+	s=arc-20240116; t=1725006617; c=relaxed/simple;
+	bh=+qWkkkxG743ImM/aahK9UM7XRQPRK07QH/l7Lrn/2g4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=QLA2jMZC7TtrZ845uPtYsmT1I9L9tEthhxCaC/M2X7no9RcVqSgonYO4n3KxvhjPwhx/sdYH8VlD2TYje42vTPbZz1qh/b82M8yxivM2NfpzmnrqktOiSS/ptzlnTEsO8GstPxoetU2GAHHa94IgHNJQuezCu/I8FoWY2MKaWNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n87VcqIl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1355C4CEC2;
+	Fri, 30 Aug 2024 08:30:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725006617;
+	bh=+qWkkkxG743ImM/aahK9UM7XRQPRK07QH/l7Lrn/2g4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=n87VcqIld4h3oj7jmm7RfOPl4zckDOEs8srTmVTODlJPFoBWJTdLkpxKb/TTrDPNI
+	 RpHdWXpgebIFMc/qPmm4qzLIU/IUXikZBg9fEljw5P/AOGdNBkoPI9gH5NVY29Dhxj
+	 0X1uhyjUZT+Aui4Sd6KyzejiYNza+LZ5CXen9SIXDTegOWyX/nTpdat55CRq0o5GTY
+	 kwc8M8dElgz1oXzLOA1CYsDOeadPufbX+4woWWT7nRP10Yqzc9IYsRuD24HA4Io+QG
+	 F5nYBaRSeP36LV/Z3WWPzyZZZEr6rtTbrq62Rxt/JKgxUcvItsy5MM3zN18fyGINmP
+	 7xquAQuP5GK1g==
+From: Lee Jones <lee@kernel.org>
+To: linux-kernel@vger.kernel.org, 
+ Detlev Casanova <detlev.casanova@collabora.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Andi Shyti <andi.shyti@kernel.org>, Lee Jones <lee@kernel.org>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>, Chris Morgan <macromorgan@hotmail.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>, 
+ Chukun Pan <amadeus@jmu.edu.cn>, Muhammed Efe Cetin <efectn@protonmail.com>, 
+ Andy Yan <andyshrk@163.com>, Jagan Teki <jagan@edgeble.ai>, 
+ Dragan Simic <dsimic@manjaro.org>, Ondrej Jirman <megi@xff.cz>, 
+ Jimmy Hon <honyuenkwun@gmail.com>, Elon Zhang <zhangzj@rock-chips.com>, 
+ Finley Xiao <finley.xiao@rock-chips.com>, 
+ Elaine Zhang <zhangqing@rock-chips.com>, Liang Chen <cl@rock-chips.com>, 
+ Yifeng Zhao <yifeng.zhao@rock-chips.com>, 
+ Jisheng Zhang <jszhang@kernel.org>, Jamie Iles <jamie@jamieiles.com>, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, dri-devel@lists.freedesktop.org, 
+ linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org, 
+ linux-serial@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-watchdog@vger.kernel.org, kernel@collabora.com, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <01020191998a2fd4-4d7b091c-9c4c-4067-b8d9-fe7482074d6d-000000@eu-west-1.amazonses.com>
+References: <20240828151028.41255-1-detlev.casanova@collabora.com>
+ <01020191998a2fd4-4d7b091c-9c4c-4067-b8d9-fe7482074d6d-000000@eu-west-1.amazonses.com>
+Subject: Re: (subset) [PATCH v3 04/11] dt-bindings: mfd: syscon: Add rk3576
+ QoS register compatible
+Message-Id: <172500660860.97285.13837050366813522297.b4-ty@kernel.org>
+Date: Fri, 30 Aug 2024 09:30:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -69,52 +84,20 @@ List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240830-atmel-sdhci-v2-2-b7f58973f3fc@microchip.com>
-References: <20240830-atmel-sdhci-v2-0-b7f58973f3fc@microchip.com>
-In-Reply-To: <20240830-atmel-sdhci-v2-0-b7f58973f3fc@microchip.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni
-	<alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Aubin Constans <aubin.constans@microchip.com>
-CC: <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	Dharma Balasubiramani <dharma.b@microchip.com>
+Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1725005989; l=903;
- i=dharma.b@microchip.com; s=20240209; h=from:subject:message-id;
- bh=zeiNe3RDjxa0ANwXXvSkRZhe0L3aObfW49MAHahbOCs=;
- b=I7+5YXaFh01UaSu1Dkd8REhCZqUEK0Sj4J8i/YlblfbJvMRXQT5HpUI/5lqWOmYAKUxTIoDqP
- 0pTJint7khzAcuRnBhYOeB82dawSgFDW5czhl3X5Cer9TScCg3rKG5s
-X-Developer-Key: i=dharma.b@microchip.com; a=ed25519;
- pk=kCq31LcpLAe9HDfIz9ZJ1U7T+osjOi7OZSbe0gqtyQ4=
 
-Add mmc binding documentation for sama7d65.
+On Wed, 28 Aug 2024 15:10:55 +0000, Detlev Casanova wrote:
+> Document rk3576 compatible for QoS registers.
+> 
+> 
 
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
----
- Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+Applied, thanks!
 
-diff --git a/Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml b/Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml
-index 91d18b2545e1..31b3c719b3e2 100644
---- a/Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml
-+++ b/Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml
-@@ -25,6 +25,11 @@ properties:
-           - enum:
-               - microchip,sama7g5-sdhci
-           - const: microchip,sam9x60-sdhci
-+      - items:
-+          - enum:
-+              - microchip,sama7d65-sdhci
-+          - const: microchip,sama7g5-sdhci
-+          - const: microchip,sam9x60-sdhci
- 
-   reg:
-     maxItems: 1
+[04/11] dt-bindings: mfd: syscon: Add rk3576 QoS register compatible
+        commit: 2f9709b8541dc742235743d19b8a6e2baa2e81d4
 
--- 
-2.43.0
+--
+Lee Jones [李琼斯]
 
 
