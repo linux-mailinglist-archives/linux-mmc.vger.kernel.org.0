@@ -1,139 +1,209 @@
-Return-Path: <linux-mmc+bounces-3671-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-3673-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D8B969DB8
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2024 14:37:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2BF969DBD
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2024 14:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0F741F22054
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2024 12:37:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFD22B21E38
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Sep 2024 12:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8583D1B12F0;
-	Tue,  3 Sep 2024 12:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3A71D86EE;
+	Tue,  3 Sep 2024 12:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B4TNSYdR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L+6+HTbL"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7CA1A0BCB
-	for <linux-mmc@vger.kernel.org>; Tue,  3 Sep 2024 12:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726F81D0958
+	for <linux-mmc@vger.kernel.org>; Tue,  3 Sep 2024 12:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725367066; cv=none; b=VF/RTR1ND3KwqWKqJAlnAll/CnYH1aWHrPs4NmxjAxJjZmn1CHYfEuVqZ2kroYeX2cN1jm7GL+6l5zUA/yN8ZENsstGCRwZMaIc8xZGkF+ndStwc0chEQH9I9JJM0BhGE9GXu3gyj98XrTPXjE6CSuZpUWyv3y2jBGGIpxPeE9o=
+	t=1725367076; cv=none; b=AGiYDf2gD3j8BvwPYmUXhqPgj8nZDeV8gz8O6C9qXdxepMBNi5D1wwMkVPOSbRzwpAbljtM/yrc5qI4heS8gkf/mfzTa8K+LIR3hVcKMiIUt+xoTofB6ACIe2+dbVSdPywD09HsjDhutDvlv11BBVeXvkS0JQA3/c2dsiX69sxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725367066; c=relaxed/simple;
-	bh=w0NDR4g3yWZcVdllP+36hvrmByCu7wczMm3XTMj/jGM=;
+	s=arc-20240116; t=1725367076; c=relaxed/simple;
+	bh=ZIRFzy8O/JFEsQSefz4z/A5D21hKvmWKwaIPahrMiZQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a/wCE/yFR6rNsgWMwZKdMbJM7rFBPhCqtulO9Qfzgae4Q5WfO87xXaxDAtm6FFC5XcrycXV44Y9IX7ww+OWE596lTNsc/6ulSOBwsumx2XyFWf/bDS1JUh6wT4hs0jAm+mDZJvr4ik3Kb8hJGH5PX8Z3Xaswi5Ki5b6+qgWtCns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=B4TNSYdR; arc=none smtp.client-ip=209.85.219.178
+	 To:Cc:Content-Type; b=WFVDC7blJvTU9uE3HN5VBNkMPyaMVkMVPGESK1clwvyvQosozUke4nb3ikYfk/QdO7PuRiOnGowxBo+efmSZoTg4F+zUoovlUMJ/mhZnps9MUGd7PPY5sIvPjCphq0oACCkVTzMU68YoPpWHoIzFy/3wlbqXz0IwoGAbLDWcnOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L+6+HTbL; arc=none smtp.client-ip=209.85.219.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e116a5c3922so4991197276.1
-        for <linux-mmc@vger.kernel.org>; Tue, 03 Sep 2024 05:37:44 -0700 (PDT)
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e03caab48a2so4035214276.1
+        for <linux-mmc@vger.kernel.org>; Tue, 03 Sep 2024 05:37:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725367064; x=1725971864; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1725367073; x=1725971873; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xRSvMnDTMDKxhA7VhtYh7uLTsocsLyQdi8v0n2nl6pk=;
-        b=B4TNSYdROzfSRY2GSYbhWSiTJ2y+IProWkB1BIpcDNtrVd8Vg8k38hVWC3aoFTjSZd
-         B1U5eIWJZ3QRkNkowCgI5SVw6csdua6+V6O91OmPrSsiNjtjUa1OCVFc0AKuRRNOmAI3
-         rQ+QwqN7MrpYOmE2ogJjEkrKYuEjniKLiPcm4IOCceNM3UZx27C1EDr1saEKbzmux6uf
-         R7KoerIEh7R7v5timvpeMMnjiyJezffBhktxJ3gr2iQBGMy5qfm5hEWtuU7XxDDwe03K
-         0qpxeeP/BQOEWKVTThAxpZMFn5D4xzkxUQsWcjCCxkc8LOivTFrS2hbwS7ZaaaS8nPoI
-         pABg==
+        bh=bowRaP9KnP0kRw4rrPkc8McUFkoLeQptHo1hDde4lEk=;
+        b=L+6+HTbLPCN/uX4X5CiLPL3GlOD2peWBawL6ChdIJVm7nX1h0acsP41YytQQPqi/rA
+         5Ewf50ZzDedyKYQoB2HN2G7IItQlJ/kaAa6hfbM7fEyL2dJxD3X3CsHfhEgb0AAC3qKr
+         LzFmu6vc7fa3gi6SSi6RPoDPTUYFCETMZ/9ujyQCN2QlB8bQiQ83reBlHaxkZ0sAzZ7x
+         RdKjIPMwC0YtCR1hYeh+8BSDoSOgfexCr+/Sa1T76mUKc+BECN0O2mMmPXkDJMmv71oo
+         /xYXfiVQVlUNfw50VZ8S9sWk94SBEgILyp9R0hujcaCeQuWOkoJJvu0f2oqdbhkybgtt
+         uqLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725367064; x=1725971864;
+        d=1e100.net; s=20230601; t=1725367073; x=1725971873;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xRSvMnDTMDKxhA7VhtYh7uLTsocsLyQdi8v0n2nl6pk=;
-        b=btW91246FG/3S47EAvIXIyRxsvQ7Zj55mb1YPd2X0EbqS+orix+YVLXfr6w7EZeZfS
-         tahzFKJviWsXDDuHyFmEP5jJlP1UFvX7q7ptrSQ4efpXZpfCfcZBagN5yORDKBqGtFXH
-         9ZSKGtEt9MyQm7P/LW+OB8VNZfuF37+GPyUKRh/7ERfKu8hsP/BG89BHGb/oVBA88JuL
-         nhNAjG8LxfuSPNXpTzRyNFh+PdT/uoN2GMssYid4v0s+vfz5xB23XSI308bXORkVJi54
-         Hky5eyB82pa3sNlickz0CyAiZUpW2usD4DjB57d9EXQgfS8ZbwNVIf2QAUiBSl+FLoxC
-         5uYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhHt8cuu/+lIeF+8Oowl2mfszt/nZlmuRl5a3ZiPbvd5wwKH6x4/Q0uvgKCfjvbgFaCF+awj48HBg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxC51SrbSFmKUD1EVt7uXk2EEpEaehpLwsOUW6SFmzTlD1pWhwa
-	8IJ8ce+DG4ki1fODfJ/0u4YumbpG8rdOg+j4fMZ0XgPcz2nitooV8y1mNiXZhbezQzFg+tHI+KX
-	VoaiRIRzojvNRBTe7X1KgZSmYkKp4vC316mPC4Q==
-X-Google-Smtp-Source: AGHT+IFQF8b0/Dxwwp4pWzLNZOOlIYeobiuC9YLSQvh3EAc6u9FMJheFaNSQtuz4xhHdNlC0iKN7ML0RWiRLCHQ408U=
-X-Received: by 2002:a05:6902:1b8c:b0:e13:c6ec:2a7d with SMTP id
- 3f1490d57ef6-e1a7a1a1cdemr15286662276.37.1725367063845; Tue, 03 Sep 2024
- 05:37:43 -0700 (PDT)
+        bh=bowRaP9KnP0kRw4rrPkc8McUFkoLeQptHo1hDde4lEk=;
+        b=caBQuvH0aKvn1rlCUb6ISF14N8QlNX9jromeHUFkqM1DPP72+Pg+E9pdvNC4RA6f57
+         s1DxmX0EHnyc2dBbmADdjEr2cvzyTv7rIjhfQJsF2o9G0elPZ1y2RtqrJWwFUA9sqsZb
+         5KoiWjuWWyLEcHLz0P/p7q8AvwiW33Bho9YUFA8fNYhU05WcvwJzYWZPgUy44edJrauU
+         4oTG6NJ+CgsvcB2vatFEBcV2uqAfIQEB9qFm5V/EyD9fsPzmrTx2/QnrO3Z6KxwM3JYM
+         xCRfqVMbVVoOkHwvKjc+ZXFLvqIIn3syw8cSFAswHiuGlbFk4yhbLpX9oWH5jbncH+Z9
+         Y2/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVDyM+kH2SOtK+j+SD2dzhwEEqlA/wZxUSfMtu5UUNFHf1zk5k0xTO3vosZrOtIqQmsvroFOBIJHS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9bAAtcDHfrAYVgi3paCBcBouHzI0XVU9sFWYdjJfC1eJofNqn
+	9ubqGwIv+cbEz3IqSihbfqjPNWA+hIwURfwcDokJ2NR4CYNjlVV3+gGPKBdtW34qpopHttKkcZL
+	eCwVNTV9JAObxog5WCjYggb0TaQZnXBuLF2eg0m81OkT/C5Q2
+X-Google-Smtp-Source: AGHT+IEaowgdIJ3AzaGZI6j/OEXNzDMqgE0yQw9WffqvnjW3A9WpWnsw2p2fKeOMZaFS9fN+AIIW+6GY8wPVS5fO5fQ=
+X-Received: by 2002:a25:8583:0:b0:e1a:89d7:9271 with SMTP id
+ 3f1490d57ef6-e1a89d79563mr8359242276.21.1725367067352; Tue, 03 Sep 2024
+ 05:37:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <010201919996ef8a-db8bbe89-3c18-4dc3-bd0c-6498f09d978a-000000@eu-west-1.amazonses.com>
-In-Reply-To: <010201919996ef8a-db8bbe89-3c18-4dc3-bd0c-6498f09d978a-000000@eu-west-1.amazonses.com>
+References: <CGME20240829024728epcas1p2847ea2802d1cc4edeb74559c67925622@epcas1p2.samsung.com>
+ <20240829024709.402285-1-cw9316.lee@samsung.com>
+In-Reply-To: <20240829024709.402285-1-cw9316.lee@samsung.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 3 Sep 2024 14:37:07 +0200
-Message-ID: <CAPDyKFrZKq69yHnA1w813b6nwy1Bn_A=1c133CSk9scO1qMxEg@mail.gmail.com>
-Subject: Re: [PATCH v5 0/3] Add dw_mmc support for rk3576
-To: Detlev Casanova <detlev.casanova@collabora.com>
-Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Jaehoon Chung <jh80.chung@samsung.com>, linux-mmc@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, kernel@collabora.com
+Date: Tue, 3 Sep 2024 14:37:11 +0200
+Message-ID: <CAPDyKFqPq3QOj948WfARerU3fByaVoAsfeu5kEdEhHHV6iVCEw@mail.gmail.com>
+Subject: Re: [PATCH] mmc:sd:Replace the argument of mmc_sd_switch with the
+ already declared define
+To: Chanwoo Lee <cw9316.lee@samsung.com>
+Cc: ricardo@marliere.net, avri.altman@wdc.com, dsimic@manjaro.org, 
+	jonathan@raspberrypi.com, xiaokeqinhealth@126.com, linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 28 Aug 2024 at 17:24, Detlev Casanova
-<detlev.casanova@collabora.com> wrote:
+On Thu, 29 Aug 2024 at 04:47, Chanwoo Lee <cw9316.lee@samsung.com> wrote:
 >
-> The SD card controller on the rk3576 SoC stores the phase settings into
-> the dw_mmc controller, so the code has to be adapted to implement that.
+> Replace with already defined values for readability.
+> And since the value of the 'mode' parameter is only used as 0 or 1,
+> I changed the data type from 'int' to 'bool'.
 >
-> Although the feature can be detected through the USRID register value, the
-> decision to use it is based on the compatible.
+> --------------------------------------------------
+> /sd.h
+> /*
+>  * SD_SWITCH argument format:
+>  *      [31] Check (0) or switch (1)
+> ...
 >
-> The compatible for rk3576 is added in its own group of compatible to mark
-> that all devices compatible with rk3576 have internal phase settings and
-> don't have the ciu-drive and ciu-sample clocks.
+> /*
+>  * SD_SWITCH mode
+>  */
+>   define SD_SWITCH_CHECK         0
+>   define SD_SWITCH_SET           1
+> -------------------------------------------------
 >
-> Changes since v4:
-> - Drop commit that ignores phase above 270 degrees
-> - Use a bool instead of int for internal_phase field
-> - Fix pahse typo
->
-> Changes since v3:
-> - Remove internal phase auto detection
-> - Set compatible in own block, with own dt_parse function
-> - Add internal_phase variable
-> - Use function to set clock parameters based on internal_phase variable
->   instead of multiple ifs
-> - Use different commit for skipping phases higher than 270
->
-> Changes since v2:
-> - Drop rockchip,v2-tuning and use compatible-based detection
-> - Fix coding style
->
-> Changes since v1:
-> - Renamed use-v2-tuning to v2-tuning
-> - Rewrite v2-tuning description as the hardware feature
->
-> Detlev.
->
-> Detlev Casanova (2):
->   dt-bindings: mmc: Add support for rk3576 dw-mshc
->   mmc: dw_mmc-rockchip: Add support for rk3576 SoCs
->
-> Shawn Lin (1):
->   mmc: dw_mmc-rockchip: Add internal phase support
->
->  .../bindings/mmc/rockchip-dw-mshc.yaml        |   2 +
->  drivers/mmc/host/dw_mmc-rockchip.c            | 217 ++++++++++++++++--
->  2 files changed, 204 insertions(+), 15 deletions(-)
->
+> Signed-off-by: Chanwoo Lee <cw9316.lee@samsung.com>
 
-The series applied for next, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/core/sd.c     | 13 ++++++++-----
+>  drivers/mmc/core/sd_ops.c |  3 +--
+>  include/linux/mmc/host.h  |  3 ++-
+>  3 files changed, 11 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+> index ee37ad14e79e..d7318c2647da 100644
+> --- a/drivers/mmc/core/sd.c
+> +++ b/drivers/mmc/core/sd.c
+> @@ -346,7 +346,7 @@ static int mmc_read_switch(struct mmc_card *card)
+>          * The argument does not matter, as the support bits do not
+>          * change with the arguments.
+>          */
+> -       err = mmc_sd_switch(card, 0, 0, 0, status);
+> +       err = mmc_sd_switch(card, SD_SWITCH_CHECK, 0, 0, status);
+>         if (err) {
+>                 /*
+>                  * If the host or the card can't do the switch,
+> @@ -402,7 +402,8 @@ int mmc_sd_switch_hs(struct mmc_card *card)
+>         if (!status)
+>                 return -ENOMEM;
+>
+> -       err = mmc_sd_switch(card, 1, 0, HIGH_SPEED_BUS_SPEED, status);
+> +       err = mmc_sd_switch(card, SD_SWITCH_SET, 0,
+> +                       HIGH_SPEED_BUS_SPEED, status);
+>         if (err)
+>                 goto out;
+>
+> @@ -434,7 +435,8 @@ static int sd_select_driver_type(struct mmc_card *card, u8 *status)
+>                                                    card_drv_type, &drv_type);
+>
+>         if (drive_strength) {
+> -               err = mmc_sd_switch(card, 1, 2, drive_strength, status);
+> +               err = mmc_sd_switch(card, SD_SWITCH_SET, 2,
+> +                               drive_strength, status);
+>                 if (err)
+>                         return err;
+>                 if ((status[15] & 0xF) != drive_strength) {
+> @@ -514,7 +516,7 @@ static int sd_set_bus_speed_mode(struct mmc_card *card, u8 *status)
+>                 return 0;
+>         }
+>
+> -       err = mmc_sd_switch(card, 1, 0, card->sd_bus_speed, status);
+> +       err = mmc_sd_switch(card, SD_SWITCH_SET, 0, card->sd_bus_speed, status);
+>         if (err)
+>                 return err;
+>
+> @@ -605,7 +607,8 @@ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
+>                 current_limit = SD_SET_CURRENT_LIMIT_200;
+>
+>         if (current_limit != SD_SET_CURRENT_NO_CHANGE) {
+> -               err = mmc_sd_switch(card, 1, 3, current_limit, status);
+> +               err = mmc_sd_switch(card, SD_SWITCH_SET, 3,
+> +                               current_limit, status);
+>                 if (err)
+>                         return err;
+>
+> diff --git a/drivers/mmc/core/sd_ops.c b/drivers/mmc/core/sd_ops.c
+> index 8b9b34286ef3..f93c392040ae 100644
+> --- a/drivers/mmc/core/sd_ops.c
+> +++ b/drivers/mmc/core/sd_ops.c
+> @@ -336,14 +336,13 @@ int mmc_app_send_scr(struct mmc_card *card)
+>         return 0;
+>  }
+>
+> -int mmc_sd_switch(struct mmc_card *card, int mode, int group,
+> +int mmc_sd_switch(struct mmc_card *card, bool mode, int group,
+>         u8 value, u8 *resp)
+>  {
+>         u32 cmd_args;
+>
+>         /* NOTE: caller guarantees resp is heap-allocated */
+>
+> -       mode = !!mode;
+>         value &= 0xF;
+>         cmd_args = mode << 31 | 0x00FFFFFF;
+>         cmd_args &= ~(0xF << (group * 4));
+> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> index 7140e1a7edb4..8fc2b328ec4d 100644
+> --- a/include/linux/mmc/host.h
+> +++ b/include/linux/mmc/host.h
+> @@ -649,7 +649,8 @@ static inline void mmc_debugfs_err_stats_inc(struct mmc_host *host,
+>         host->err_stats[stat] += 1;
+>  }
+>
+> -int mmc_sd_switch(struct mmc_card *card, int mode, int group, u8 value, u8 *resp);
+> +int mmc_sd_switch(struct mmc_card *card, bool mode, int group,
+> +               u8 value, u8 *resp);
+>  int mmc_send_status(struct mmc_card *card, u32 *status);
+>  int mmc_send_tuning(struct mmc_host *host, u32 opcode, int *cmd_error);
+>  int mmc_send_abort_tuning(struct mmc_host *host, u32 opcode);
+> --
+> 2.34.1
+>
 
