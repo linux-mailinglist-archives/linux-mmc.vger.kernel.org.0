@@ -1,77 +1,77 @@
-Return-Path: <linux-mmc+bounces-4207-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4209-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1150F992A91
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2024 13:46:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFFD992AA5
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2024 13:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42E211C229AD
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2024 11:46:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 153D4B222FB
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2024 11:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2851B4F2F;
-	Mon,  7 Oct 2024 11:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2A51D1F58;
+	Mon,  7 Oct 2024 11:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="3HRROZGG"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="uQgzd2Xn"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E9E18BC10
-	for <linux-mmc@vger.kernel.org>; Mon,  7 Oct 2024 11:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD1E1D1302
+	for <linux-mmc@vger.kernel.org>; Mon,  7 Oct 2024 11:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728301559; cv=none; b=N00+jljaygTJjh/6l6e4hazy39jqHtl4/qO0l16hVFRhP1EtmgOZh+DJGXJuo8JEjxBPNCM0kxHnMiZkjfPudPsKmtJT7H0QeMA3b9Ig2Dc1ugBlmS9pevV+CWYgjTwIF2LiGPYom/5Ybxql5ICL/Su0EBEwf+ksBMvTRlp6dXU=
+	t=1728301766; cv=none; b=pNS/fKwUOTL3tFh9OwGJtwxad1UQTSXDQUG8THXvD8SOBYSPiUdoBIEqUaJCi3C5npAvbT50lrFfHsAESC9VUiLFvAi9iOTrP5nt+0huBRtEa8sBTMT55cBjYstcs0V3Wb64jKL+BTNPxazapJ+xo/LzlpVxX8hfQkx9+uSF4J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728301559; c=relaxed/simple;
-	bh=jESfmue0np+sznfxFUnf226R9lUQNlDJcp5q8IXgN54=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LA/YawRiNUIbJiZZoJ7A8CkptJVHvr+dFKWK8UA5XNqqMX6sJZ61jZQfljImQHd+/at9cyuEZvDK92I1aq43BnbaPsKiE8S5PRo23O6JtzDngvdjG9A9P6zpz+29rhJiHQ3I4F/ZtHShctO5TmrUAqouvsv+87gaSEJyyn2U3og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=3HRROZGG; arc=none smtp.client-ip=209.85.221.47
+	s=arc-20240116; t=1728301766; c=relaxed/simple;
+	bh=3HpEuDlKwvLMsJm5pK5n4l/IzWqXEfzLiU8zqrPKi4A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dgPwV+Jt4xwNTmoGeJPcSWwmMa3knN2I7pjdhD9BA7jYVpfBmLiW5Cm9XYPuAIC4riYedtGZjatf5pwbaG1ET7eXbOCO7caYutS1PVcKndWMyt2yctFVaiYJYlSE749357nj6rNTpzyLd0KMLVrSofin2bP5YmPt2yENff2Un4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=uQgzd2Xn; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37cfff59d04so3420251f8f.1
-        for <linux-mmc@vger.kernel.org>; Mon, 07 Oct 2024 04:45:56 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42cae4eb026so44806915e9.0
+        for <linux-mmc@vger.kernel.org>; Mon, 07 Oct 2024 04:49:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1728301555; x=1728906355; darn=vger.kernel.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1728301761; x=1728906561; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HnfRZrs5rd9jTocE6z1mGyd4iAKiwxMzAQadUPnEw/M=;
-        b=3HRROZGGyl9oqHtYebGZ1OK7hDlsCYz+YCJWiMD3KAoxaBFdRpA4IxCvnCJmxIjPwN
-         UGWXtufAHVj4u6hGSlN4agpgX2QC1SfXN1B0gR3b6Z6Cj6RMUr2Hbe8mVEZM10A5DMZX
-         7JOqQG2NPaRRFpFHX0Xnqs2H0FS2QwDE2OV2PpEBD1vJOG3OacEXZ+cKP8QaDZs3okvm
-         y1aouZqH42EDdBzstF4aPIKeKQqxHnKbjpufJfVPK1z6JAZjkrG+RIhgaWvPGBFHKY61
-         8dj/tyR+baalJ60XwjyyoCsFT9f9OKlHGuQcdlbrXLZWpSZ71KDcVkHsfrnH0I8mRxaP
-         GLsA==
+        bh=1LvSfzkrrq1edO65ZqABisdNdPzmZ+rbdqRIfcFP+q4=;
+        b=uQgzd2Xn+2BHY1NkMLan5yce1rV5dcMlCjyavgie+aQEJ5h/EnNsUjP3YsGm7gOot4
+         4gvkZvSgCYzg8WiBtf03cjMy2WSbZ4O9gLfWopW3TRrDX5lC1MzVQZvt+C+VWhX8zbvP
+         kdiYZ/aDaOjxnjQmC0bml5gok53Xiy4vogvN5fiEea4M6xwmMKHolbGOU8jxNbm2Gi7b
+         rdxzL3qjyUBZMq5wFD/CWGkGNIskRQG7n54I1nUOpqKnUScUwhMBOTO1VqZByVH+CUWQ
+         eHGv5uu6zt7rlEx4/b5dSQPuK6MPcKS63vmmuhJq2Liwj4g/zztps9W2QAslJQ6NWxdD
+         8v7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728301555; x=1728906355;
+        d=1e100.net; s=20230601; t=1728301761; x=1728906561;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HnfRZrs5rd9jTocE6z1mGyd4iAKiwxMzAQadUPnEw/M=;
-        b=XYM239Rl9bNq9GSyrzMl4HH6R/FhY/bN1XyjLFKdFsTDNSA2Ymxnu+pioIrPSKCNet
-         QDCmIY1bIcPxbyc3QkkBL9KGEa2+TtcMC6SPXcIGI0T+SnsVoaiKGDb2siVxrjVZBfP1
-         3rnN7YnrivKN5w1m5HDyxb5z9rBkXK0jTZaTgRQ1u37zo8Ja8heuVW420mosQPbziBpw
-         adoFFNcMtrQD/6EujrSwPmz85r7Llgd8+rVmSkEs3wAnpipuGf+zLx9RAW7h1reILXp1
-         OjaMGc1CEpVt+YU9wx1wuCjHpbL9DuV3uDQz53Qlyv4VJcFBwYLBbcOp5OS665P9c/SA
-         Y3bg==
-X-Gm-Message-State: AOJu0Yw2+F9+tsN6h6nm3dWpN9fsvKXn6+gdPqvW2Gi2gGiNZcM01xg/
-	Gl3kCLX85xlvSFVqYGIdsE4XK6zuTvb58wtUeoyUOe8fsL899cqJMEZFPx6MkgI=
-X-Google-Smtp-Source: AGHT+IHv2HDJzBlWcJX+EM1VUKdDajOjn74SvjnVr6X2+w9ayFZJ8r4VM0n4+22m48JJDuduijUscg==
-X-Received: by 2002:adf:ce05:0:b0:374:c1d7:4ef9 with SMTP id ffacd0b85a97d-37d0f70c86cmr5784457f8f.26.1728301555040;
-        Mon, 07 Oct 2024 04:45:55 -0700 (PDT)
+        bh=1LvSfzkrrq1edO65ZqABisdNdPzmZ+rbdqRIfcFP+q4=;
+        b=vZCe8NsWrcIR2eY8RTk+J5mgPfn8AtFso9gBbdWNGsmNkCR2YYkXXQQ5rpy0fcS7+W
+         tRcaBSktEpb5PRdvSu2rZ3XXmlsJ5qeUozcB4jW8Dz9D2PueDJcfPn+YlQNv4obM08jA
+         uAEpKndLMGuatV4s9pEagwkoGAfAIn1PHrMRqBl1nhrF+X73LSFyb4EcqXpXXCwrEHNM
+         UrGOdWm0KuNKWeyQKuELiJee4umGKQAic9KySOagjvkTy0W12o/IyhgZvNk/ogcNvhgu
+         bKPUMNdc4enqi8BVrRUA/aGZfbplt0h/290vlwOeU3CqB1RMy+g5F4nQOzQbsgdKqGtW
+         Vu0w==
+X-Gm-Message-State: AOJu0YxSp8c9uqvP6/lViJyN2cv+95Vc++tDWLT1sosuZ2hzvv4Qr6et
+	owpuCGDnBwy+uv43MuinznHj3ybL7iryj2YPxPZvapqIDBApRXH0tyCfAQfQuPs=
+X-Google-Smtp-Source: AGHT+IHf9LR6ONgc+274pvmiS4LyQDk910hcJu4EDlErL63s34vj95abPuZqXzebRsqQn2xLWBrS2w==
+X-Received: by 2002:a5d:64e7:0:b0:37c:cd8a:50e3 with SMTP id ffacd0b85a97d-37d0e6eee41mr8463433f8f.13.1728301761130;
+        Mon, 07 Oct 2024 04:49:21 -0700 (PDT)
 Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:6100:637:cbe9:f3bc])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d169734a8sm5562454f8f.101.2024.10.07.04.45.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d16920549sm5548261f8f.54.2024.10.07.04.49.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 04:45:54 -0700 (PDT)
+        Mon, 07 Oct 2024 04:49:20 -0700 (PDT)
 From: Bartosz Golaszewski <brgl@bgdev.pl>
 To: Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-mmc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH] mmc: mmc_spi: fix snprintf() output buffer size
-Date: Mon,  7 Oct 2024 13:45:49 +0200
-Message-ID: <20241007114549.51213-1-brgl@bgdev.pl>
+Subject: [PATCH 1/2] mmc: davinci: order includes alphabetically
+Date: Mon,  7 Oct 2024 13:49:17 +0200
+Message-ID: <20241007114918.52066-1-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
@@ -79,43 +79,57 @@ List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-GCC 13 complains about the truncated output of snprintf():
+For better readability, put all header inclusions in alphabetical order.
 
-drivers/mmc/host/mmc_spi.c: In function ‘mmc_spi_response_get’:
-drivers/mmc/host/mmc_spi.c:227:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
-      |                                                                ^
-drivers/mmc/host/mmc_spi.c:227:9: note: ‘snprintf’ output between 26 and 43 bytes into a destination of size 32
-  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  228 |                 cmd->opcode, maptype(cmd));
-
-Increase the size of the target buffer.
-
-Fixes: 15a0580ced08 ("mmc_spi host driver")
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/mmc/host/mmc_spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/davinci_mmc.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 8fee7052f2ef..fa1d1a1b3142 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -222,7 +222,7 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
- 	u8 	leftover = 0;
- 	unsigned short rotator;
- 	int 	i;
--	char	tag[32];
-+	char	tag[43];
+diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
+index 7ed533758dbe..fe7712532e84 100644
+--- a/drivers/mmc/host/davinci_mmc.c
++++ b/drivers/mmc/host/davinci_mmc.c
+@@ -7,24 +7,23 @@
+  * Copyright (C) 2009 David Brownell
+  */
  
- 	snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
- 		cmd->opcode, maptype(cmd));
+-#include <linux/module.h>
+-#include <linux/ioport.h>
+-#include <linux/platform_device.h>
+ #include <linux/clk.h>
+-#include <linux/err.h>
+ #include <linux/cpufreq.h>
+-#include <linux/mmc/host.h>
+-#include <linux/io.h>
+-#include <linux/irq.h>
+ #include <linux/delay.h>
+-#include <linux/dmaengine.h>
+ #include <linux/dma-mapping.h>
+-#include <linux/mmc/mmc.h>
+-#include <linux/of.h>
+-#include <linux/mmc/slot-gpio.h>
++#include <linux/dmaengine.h>
++#include <linux/err.h>
+ #include <linux/interrupt.h>
+-
++#include <linux/io.h>
++#include <linux/ioport.h>
++#include <linux/irq.h>
++#include <linux/mmc/host.h>
++#include <linux/mmc/mmc.h>
++#include <linux/mmc/slot-gpio.h>
++#include <linux/module.h>
++#include <linux/of.h>
+ #include <linux/platform_data/mmc-davinci.h>
++#include <linux/platform_device.h>
+ 
+ /*
+  * Register Definitions
 -- 
 2.43.0
 
