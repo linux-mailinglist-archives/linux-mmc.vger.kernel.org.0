@@ -1,125 +1,145 @@
-Return-Path: <linux-mmc+bounces-4208-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4210-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE7A992AA2
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2024 13:49:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5A7992E2D
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2024 16:03:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 595E3284087
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2024 11:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BA771F2153B
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Oct 2024 14:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4167D1D1E71;
-	Mon,  7 Oct 2024 11:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86B61D47B0;
+	Mon,  7 Oct 2024 14:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="JHW2tjgK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="C6GUEqu5"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE471D26E1
-	for <linux-mmc@vger.kernel.org>; Mon,  7 Oct 2024 11:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8661D4323
+	for <linux-mmc@vger.kernel.org>; Mon,  7 Oct 2024 14:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728301765; cv=none; b=BoLFvOK/6vo/JR2mEW01Z2mz5Pp1kM+XhIxKVwP8tELlKD1yrzYjEhEgcg1I4PNbAsMHnxHGUyFCrEPz0BCYIFGnCxlHhUF2SxLo4HRQISgYHJn85UGL6//bt3ZKlo6YfzouptKnEV5vYCU3WTfeWUX6SeXp1Coq/466jnlTJWc=
+	t=1728309824; cv=none; b=KmjPUcYPe2IbO59KZCUsxbPHhMsLfmwjQKa+mtMGAmpTOtmlAJm2eVtZU29TPgKVil+NajWcduva6pZT827P8xoWXM1VXUnuq2NklQbckpTp5KeXHLNDwcsebPFveDOJGQ6x3mfLdYKT2Z0XUN9sGCjhUwEEtMYAcvvP6gSCcyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728301765; c=relaxed/simple;
-	bh=CwpOFg4bgrjWyI+5S61q1hT+KgK4ZNfQCXjlswun6jQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCKBWlEXE3tqB9TATu9+Y8ENzxIhbMbXGY3+V8ybuSGEgZgigZVCjJOK/JUCZeYB9RnpNgdwr3jhktacq+3Q+Gu/bX9tTgXdhlu1eCOlqVoM81MAWE0aVXS3jE8HLgzlcwUaTPF+RsJxST3/Gk7vFUAiE0eZtNt6wlfURYsP/90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=JHW2tjgK; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37cdbcb139cso3399974f8f.1
-        for <linux-mmc@vger.kernel.org>; Mon, 07 Oct 2024 04:49:23 -0700 (PDT)
+	s=arc-20240116; t=1728309824; c=relaxed/simple;
+	bh=I8UIXlkyqy4Mwtxfe+Lk97YCZk/oHsm/QktDgn6rVqI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VRK8moNwsnbeC28BJ4Ry5bGzA/0OnY7CNMNs9oe0BbI7Jnc6KpRC2AJjkgn4imppdtC/eKsqR/z3mdTSu75U4IdMfFEA7gOYBOUnRr/+xFhs29mx3NdEPdWbwsX6jH3fi/tKpjcI40AkmvPsqp8JfTXv9TZnLcukUVhvBmekxCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=C6GUEqu5; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-37ccc600466so2265259f8f.1
+        for <linux-mmc@vger.kernel.org>; Mon, 07 Oct 2024 07:03:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1728301762; x=1728906562; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xQ1GRfK/HWDCVNGLvs5ZEQCWn2sGXdSUqplniVgccr8=;
-        b=JHW2tjgKK29fB2qySkPju7KsNUOUKe6FcC3uDEelNB42/hv9j+3OihWu8dgy0yBJHG
-         lSFHceTpX5ilbTS0KeNUlJ9gMEWs4jhTbK4b2S735rXHGF6aGDHfRnqY8eHk9js5cs4e
-         vxjDPxItkneKZYyRLdvISXfL2sGRTegBMVxYGqXG/SI8egQoHm7fOhILABgqjZhIT6fo
-         aEg/DbIIdD8weAcVDfk2QVFnNNFQVGCG0YHGKaNA1aahXO3Sh8XHaC3b2TxotU1Zwf/t
-         4uyE5qxhATdEAXz2RO80N79qfXcNMRrjnOzCcE6x5olN2xMfFW50mSokwCm3v6kLy+p3
-         e0Fw==
+        d=linaro.org; s=google; t=1728309821; x=1728914621; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JSLxNDuYdWpagdzEer92KL4yq/BpaLG5xeJAnFgYcHM=;
+        b=C6GUEqu5XDbfKfTGvf4bhUYawrjSlqdFWR451loDAUOF6m33y9XZ5gmbH8CvOpTCoJ
+         i33iaFK5l/CK/3us+4AXArHw4zx3MVQaFtglnSDfrpklAH1pNE0292U17AdY3NgZR95v
+         t8KuTSGlnMIrIiJ8Waof3F9iUgTt283KBUNYNVohHsujvsP/3HdkCqQahtQ1D5svHSiE
+         zb50qfPAivgak7hXoveIYZuIxQ2ItTGrMVcFtBxA2Ukb3ZNgMvwtTjIQhlpOQjIKV0ON
+         hD82qJE/uUvCr4tkfGn8KE03IX/iBmnrwawFm85lZ8KXbh0L1/r9ZmUD9Kdbg8mrJsWs
+         /prw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728301762; x=1728906562;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xQ1GRfK/HWDCVNGLvs5ZEQCWn2sGXdSUqplniVgccr8=;
-        b=pXIwJcHAxsT0k/VVgNixuuq+crRqI/ISeo5GkUHeC3yMeosiPTcZtIMYQDjFYs1TW6
-         Nr5N7uOEfW49YO3WN2ngozrca4ZeOl3oMNaK2c5ulZ8WljvOdB3JtYMa6nOcjdAVLsdh
-         nV1JKkgfGx18IFDA8eRmv5iL0EC2hRkpjoWIJm3Q2/HHss+in+ICY3goO8k1PnK5DUpB
-         QfYKB4FCWbIC24LKeTHPQShWgKw0Pw3dE68v5UJp2WlcFoZGnaAJsYXQ+O25nLPppqTu
-         Lk/mwkmD5iSVtn8B2f/KsDybUtQdo+X3kKNUXrgjYbhJ9AffGTnK1ioEAmY+wmMwjv6P
-         6/Xw==
-X-Gm-Message-State: AOJu0YyqgtsdbiqU1mxlPJRD9wzc8r+kxEgT/WGON8II20vuehDyaAHq
-	rkoasQFg6Y+iGFidTSDHCD6Y2HtE9O4YZe+B83JVN8oA1Hz9iTtYIaydaYvfimk=
-X-Google-Smtp-Source: AGHT+IEwMe0aQIiePL+driFAFg5OQweZ9DeNFvdb5Z7/K3dj+OH4I/ZCu5wOlj/zuMs5TASSSQk3rQ==
-X-Received: by 2002:a5d:6b0b:0:b0:374:cea0:7d3d with SMTP id ffacd0b85a97d-37d0eae49b7mr6321283f8f.53.1728301761703;
-        Mon, 07 Oct 2024 04:49:21 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:6100:637:cbe9:f3bc])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d16920549sm5548261f8f.54.2024.10.07.04.49.21
+        d=1e100.net; s=20230601; t=1728309821; x=1728914621;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JSLxNDuYdWpagdzEer92KL4yq/BpaLG5xeJAnFgYcHM=;
+        b=DTVVA43kK223ptJGA5ExNS1JXM6EOD5g7pkyKXpmZ7O0h8UwlpxGG4Tkhv+W8YvcPY
+         f7KE0I+FyWtyddn512vr2jmMYZ5nPbPYx4S4MVD4dq5ZGAzElg72UFdqP/sS/2epTQ36
+         fAYqQ+8tYLTwrY/mg2qH6QESZmteTWvuiHMpYhgLS1jE4VaCNCb0uqWEFUG/UHHgDgkD
+         rFCrS6p652V5c9Xcu4LFBpxPbFMnwGxzaSsejD//M0fsObxvLoi8/qsKV+iuHT2DJWYQ
+         A2T2BCfq6WIGZSGH0KU3DK1GiMji2CP7wkyCR/H0eYQsSKIAL8EQdfrz3V0wO9nrTrOw
+         r5uQ==
+X-Gm-Message-State: AOJu0Yy6YymT5IzkGbqGHthIY79AUOjeFNJJYX8eNSAapCQfngi7D9R9
+	lD+wdxlShml+G4EU4ljI5223O9rEj1FBfjR6/kOcS2lDrXpsoEQ2z2bCBI41bvg=
+X-Google-Smtp-Source: AGHT+IEvaY76Nbh6y2EgunS5NO4YnfqBAs/pRm2aYkZb2LWol2ctokQ924n5nzY5hSHUuWzsXLPd9w==
+X-Received: by 2002:a5d:63d2:0:b0:37c:cd38:c51f with SMTP id ffacd0b85a97d-37d0e6bcc41mr6226690f8f.10.1728309820972;
+        Mon, 07 Oct 2024 07:03:40 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d1688a486sm5857022f8f.0.2024.10.07.07.03.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 04:49:21 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: linux-mmc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 2/2] mmc: davinci: use generic device_get_match_data()
-Date: Mon,  7 Oct 2024 13:49:18 +0200
-Message-ID: <20241007114918.52066-2-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241007114918.52066-1-brgl@bgdev.pl>
-References: <20241007114918.52066-1-brgl@bgdev.pl>
+        Mon, 07 Oct 2024 07:03:40 -0700 (PDT)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH v3 0/3] dt-bindings: mmc: document mmc-slot and convert
+ amlogic,meson-mx-sdio.txt to dtschema
+Date: Mon, 07 Oct 2024 16:03:36 +0200
+Message-Id: <20241007-topic-amlogic-arm32-upstream-bindings-fixes-convert-meson-mx-sdio-v3-0-ad4eb22c2a8d@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADjqA2cC/63OwW7CMAyA4VdBOc9TEqB0O+09Jg5O6xRLJK6cL
+ gKhvvtSTtudk/Vblj4/TCFlKuZz9zBKlQtLbrF/25nhgnki4LG18dYf7IdzsMjMA2C6yrRNTXs
+ PP3NZlDBB4DxyngpEvlGBQXIlXSBRkQzpBmVkgS7iyR4PHYXQm+bMSs/zxnyfW1+4LKL350vVb
+ dtX6tWBg3AKEanvO+/c15UzqryLTmbjq/9DevsK0oOFI2IfxkjWYfxHruv6CwT7ycuGAQAA
+To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Kevin Hilman <khilman@baylibre.com>, 
+ Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Neil Armstrong <neil.armstrong@linaro.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1603;
+ i=neil.armstrong@linaro.org; h=from:subject:message-id;
+ bh=I8UIXlkyqy4Mwtxfe+Lk97YCZk/oHsm/QktDgn6rVqI=;
+ b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBnA+o6HBbW7RjCo+cyD/An3Cd3RF6bmB9Gj7SZUyyW
+ rYH6HbuJAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCZwPqOgAKCRB33NvayMhJ0ToDD/
+ 4tn0/fx8ukJ5zSvvWZSIZcyUsUnVIywgPK3SNYCw8Jov6H9n6Engg/jfkH2UR9NZ/kE5xrKc37jsid
+ 7VMNKqU749yPjO/YQQWkU+/a/UxvCzJAM/sR/ljYF7LgggpvRtySMB/dRg1IIUjZwMK9YGjpG0hlpS
+ 7QvlpaDjAg1grVn0dfBEpNIYfx3NtgCww/r1Hc3XcekUDMRovo9IdMfAK5E+kR2T80uC7uQMsy3LS0
+ uL0hNhJJfgc9ZYd3UQAkeN2ZefcXvLNTOVuF/XYx1DRBdrMLKQj8KWwre0Y1zAtga1gUZjwJaDEG+I
+ X499SgBjmWBsReJc4l9OvD59JoEFn6xJSVD4QeCC5ZZpG6vA+K/eSIBluzi+WbYf9I3qgz8TSOelwn
+ sQ265Ln3+S2P2EVIS9HSDOYS/ps13a5S5ApyN93N7FQ9wFC2ZXKQ9EsuPzWK1Lh2nHJt6FaD3D940H
+ tyJS2leQ+WRofTTTHd/o5cL8+3T1T54ewroxegNkNuanOZUPwzS8QPKK1kC+nKyOubtPI4Pa2l43W9
+ y67MtW7uQOQ8bOqrwOWd6A4mtNQpDlFQoCJ6a6BxUE9/rr6vRMSFzXbr/bs6dvpAp4Vc5EtiM6gBjC
+ 4/vAURZ9Qhynb/hLSBpEc2Y4swml6jFwEMRlQrF7Qw1lN0hiMbck/k2cvVJQ==
+X-Developer-Key: i=neil.armstrong@linaro.org; a=openpgp;
+ fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Document mmc-slot because used by amlogic,meson-mx-sdio.txt and
+cavium-mmc.txt, so make it common.
 
-There's no reason for this driver to use the OF-specific variant so
-switch to using the generic device_get_match_data() helper instead.
-
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 ---
- drivers/mmc/host/davinci_mmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Changes in v3:
+- Revert and insteads move common properties between slot and controller into mmc-controller-common.yaml
+- Fix other comments on patch 2 & 3
+- Link to v2: https://lore.kernel.org/r/20240920-topic-amlogic-arm32-upstream-bindings-fixes-convert-meson-mx-sdio-v2-0-5aa8bdfe01af@linaro.org
 
-diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
-index fe7712532e84..cde4c4339ab7 100644
---- a/drivers/mmc/host/davinci_mmc.c
-+++ b/drivers/mmc/host/davinci_mmc.c
-@@ -21,9 +21,9 @@
- #include <linux/mmc/mmc.h>
- #include <linux/mmc/slot-gpio.h>
- #include <linux/module.h>
--#include <linux/of.h>
- #include <linux/platform_data/mmc-davinci.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- 
- /*
-  * Register Definitions
-@@ -1228,7 +1228,7 @@ static int davinci_mmcsd_probe(struct platform_device *pdev)
- 
- 	host->mmc_input_clk = clk_get_rate(host->clk);
- 
--	pdev->id_entry = of_device_get_match_data(&pdev->dev);
-+	pdev->id_entry = device_get_match_data(&pdev->dev);
- 	if (pdev->id_entry) {
- 		ret = mmc_of_parse(mmc);
- 		if (ret) {
+Changes in v2:
+- Fixed description, limited to 3 slots
+- Moved out mmc-slot in a separate common schema
+- Link to v1: https://lore.kernel.org/r/20240911-topic-amlogic-arm32-upstream-bindings-fixes-convert-meson-mx-sdio-v1-1-b7bfae886211@linaro.org
+
+---
+Neil Armstrong (3):
+      dt-bindings: mmc: controller: move properties common with slot out to mmc-controller-common
+      dt-bindings: mmc: document mmc-slot
+      dt-bindings: mmc: convert amlogic,meson-mx-sdio.txt to dtschema
+
+ .../bindings/mmc/amlogic,meson-mx-sdio.txt         |  54 ----
+ .../bindings/mmc/amlogic,meson-mx-sdio.yaml        |  94 ++++++
+ .../bindings/mmc/mmc-controller-common.yaml        | 357 +++++++++++++++++++++
+ .../devicetree/bindings/mmc/mmc-controller.yaml    | 344 +-------------------
+ .../devicetree/bindings/mmc/mmc-slot.yaml          |  49 +++
+ 5 files changed, 503 insertions(+), 395 deletions(-)
+---
+base-commit: 47ac09b91befbb6a235ab620c32af719f8208399
+change-id: 20240911-topic-amlogic-arm32-upstream-bindings-fixes-convert-meson-mx-sdio-6fa70546ebb8
+
+Best regards,
 -- 
-2.43.0
+Neil Armstrong <neil.armstrong@linaro.org>
 
 
