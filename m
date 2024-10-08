@@ -1,242 +1,161 @@
-Return-Path: <linux-mmc+bounces-4247-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4250-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E89995151
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Oct 2024 16:19:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D144995194
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Oct 2024 16:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8E79B2A507
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Oct 2024 14:07:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D19E9B21B91
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Oct 2024 14:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCF51DFE0A;
-	Tue,  8 Oct 2024 14:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3C01DF96B;
+	Tue,  8 Oct 2024 14:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tLw0WCLo"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="es1Z/ANU"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E060F1DFD80
-	for <linux-mmc@vger.kernel.org>; Tue,  8 Oct 2024 14:06:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC511CEAAA
+	for <linux-mmc@vger.kernel.org>; Tue,  8 Oct 2024 14:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728396387; cv=none; b=C9snsJuK/OlDONzi7URFRUqP21n3P77lpTnOcr12r+VpaQBYAgRUsyVB4S9rcW87Yo/WMCU9AXyg9NNFtD0SbbWpTQrPo2zy9QxDqnbReemcX+l9iImbwQbX7hJYVrHQNloU5kxARBSnGs07e+jHVSJdCOrM/vzfI3QlgUS2lTQ=
+	t=1728397023; cv=none; b=ippjFqZQqSBscXOXaiIBKmtBQ+7T7//1etcvcFOMOwFOvu6x6dy6UISYa3oNhGBQ2IqYwf5KSyGvaEyp8Zr5c8uy1HpE7VPr3jOZslFEfpCXHwoqlN/rpmpjgJJig1ajO+tgPykycMg6lOi2flbK5v4sIBrsb5gFq6EctYDNpBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728396387; c=relaxed/simple;
-	bh=/wepMDnYlUXv/rY1mPSzvHM7+ihzA4MTCC5rPo7Ip/s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fvsUfyO1HN4hluHbtTqi8UIA3rMucg04wLbB6bBBfEoQb0qj4bQnAkPkivCNSwEL5kTgkrU6M8w6WZ7ziw3FZCJJ3vO0ktefQvl+3ylbkjak2xe1/EinxoHfTMAO4RWjZGaxDZ01+5Fth5PTAPXvG49LQyH8JLoRAQDySxz7xGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tLw0WCLo; arc=none smtp.client-ip=209.85.218.42
+	s=arc-20240116; t=1728397023; c=relaxed/simple;
+	bh=UkTNdZ4bOXW8oYPKMVJ6hvZIHf+eC5vYvqnPjPO6TUE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JK+n4r+yNjZQPCrgK/XNRnnVSDufoQIlgQN390PfGFmbDaGWY2CaXIYJLTd5RcULrESiqkVRQ1riS9yKcqEiyf6EeTK8aqNdKn2okpEmEkEKKH4/O2XfKA6rT6aXB13BnVawflfED8j5AHfoWOPM8QBo5yowjm3jSAMEhYswoJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=es1Z/ANU; arc=none smtp.client-ip=209.85.219.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a995f56ea2dso277753266b.1
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Oct 2024 07:06:25 -0700 (PDT)
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e28ea358f65so971858276.0
+        for <linux-mmc@vger.kernel.org>; Tue, 08 Oct 2024 07:17:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728396384; x=1729001184; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Yby2pAJQGQQ4BLv4UmAUtT0Ab6F1CguJYAAc/ZeZG0w=;
-        b=tLw0WCLoPQHxxiQuwwQ0WhpfssYnZZcvNplOc99RT0ZW4EvaYM/6v3hZny3mYQg+3b
-         3d6mJ0qrMMySwH6zFYwI6CQSwxspMQ4b9sVbBxsPJTc7N5s5NnrTxIFbM77PpHG+HcgI
-         3BrMAwAvg4hEoc2cZW01E5oPJbimXbaDPAAnEeiA6U1gHlK9+HdM7ivadlQJG6nkO9Qm
-         1CUvD43Pc7aLAWlXpTKuEUnsZkRGVI3bNGLQ4O7fcilhaLqiQ1uYrrTiReHZinIamRJD
-         mEMN9ajaJ6u19/YXPV9ScsLYjWQV1ohi68cdrecV702/7u/sHcubbB8Jmj6XL0C7Wr2o
-         r2tQ==
+        d=linaro.org; s=google; t=1728397021; x=1729001821; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zP9h4DJsAwsrhGSa7N8S+hvtyECH+0TD7DFBPSUfj1g=;
+        b=es1Z/ANUt/2PuzCddIESCvJWQXyWBIpTa+DcAiz1Qu3zScHDzYLORUfKAM+owpaDuD
+         4YmePfhLxY7rUl++J7OpQDpH7TE9Q1t6X9Qrxq+qYxi1awLPh2cNVmiQWU2ZZBEzP97i
+         eO7boOf7GKDTzfqZ58T11iAxRhdd4WTclbv5Ylmf1YyMhGG+s1ACfS01mEq9/6pLI5+B
+         EX4qEJmA3OnqXba1vU6mPdoqSO35llznnYU9ChBgGaDyP72sRZCPe4imnynfS7lqNXF1
+         zTaZwujmMywxv4zZCxvaDGgqnqDMp1HH6OUhvhIzo/f6vz+8Tirjgblgwok+O7nPh8Pn
+         7a4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728396384; x=1729001184;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1728397021; x=1729001821;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Yby2pAJQGQQ4BLv4UmAUtT0Ab6F1CguJYAAc/ZeZG0w=;
-        b=FTwiYSZehTXudo9bhkvWBBP3Pu5lzFygQ4tqsCE8n4VlRAdkYiJLgWl3mNwhHjvaVo
-         cNLyW/CAeg22dt9BPg11wyKp6IiEYR2NgkAAg5la0MvklX9zRer5B0W+qQivadrBilkB
-         bQ3hvUz+iYrEsVv+uFUM99HH9DmdZrdAEaDIkgnlb/ZnwDmjzGt28XKg8PifhoJhIoOe
-         gbzqZ8EfRaMRrCm3XaifVvfI7XX4/nfkvq7ImVDplYslrI4bB8MswcP4pWDwYk0aRnZy
-         gWKB4tk/HJq+VuQj1ytLHmMuBmRFtSjlp+q775xEQfxA/i01g4/bPqGKmMzfaC7YXmW3
-         Ykcw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIBsA0o9D225BEyedlCS43nN3sZDreCdJ2k6eRAiYcfvrBvwtmjXUFgJPAxCXdjtBSDe8BQf0MB5s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuWk2oDKNciIAUFN4N1CzGGpEoZTwy58CNCYNeUAS7EuvanU4W
-	UD5Tvv7aL5zJ6ht7xLVyNsOa/9aHP475Mz2Zr2DlA62cKTfjuXBrPsFim+GvjEAel+pt0GjX44z
-	J
-X-Google-Smtp-Source: AGHT+IHSb8VGy5xIfpBZZPl9Eg1HcJczEG/WofH8sxPb3vzyCLZuxljudG0QqV6qpmiODgrsijvVbw==
-X-Received: by 2002:a17:907:84d:b0:a86:799d:f8d1 with SMTP id a640c23a62f3a-a991c0282c1mr1567397366b.47.1728396384159;
-        Tue, 08 Oct 2024 07:06:24 -0700 (PDT)
-Received: from [127.0.1.1] ([82.77.84.93])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a994f50fcd4sm320714266b.171.2024.10.08.07.06.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2024 07:06:23 -0700 (PDT)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Tue, 08 Oct 2024 17:05:56 +0300
-Subject: [PATCH 2/4] arm64: dts: qcom: x1e80100: Describe the SDHC
- controllers
+        bh=zP9h4DJsAwsrhGSa7N8S+hvtyECH+0TD7DFBPSUfj1g=;
+        b=KqtUOEhKrXD8HUHmbVpYWrrsGgs4BLZme4bz/gODLGEhyoBu4B6k+Icr71U65WsXYr
+         i5mjuKpVmU/DWMeB86YTwbP4VUS/92Mx7d0D49AxwV/tRdJlWhra/01+OS1P3hJai//x
+         0qCTLlD4fA/6xid7VhAIS3xIihbvJLFfK4MSkehx/erisi3i2RpGb3yBze/UxWF7VWZv
+         QYMBMAW588M4HK3MRkwBmDBK7RNoF/17W7UpZ5rHaRDC975Lj0OjPhPhMZhwFVZFos0r
+         PylwnmoCiKRDeZF7zO5z9sxF7/H/4eJzHePmhfoTP8zS/Z5BIgRauNKZH2DJ/dwqH/ba
+         9Uvw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4873L2YEGPriKyEBKvwclEVkX3cLoXaact2NIwZb3fwSPmF0G2TrRa/ehQiANPAy28cIurzoQouw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjNBo/eXdP4akeXEAzkn7wSGnIGx7MvMk4fmB4B91udY5LqR35
+	H61DnNkqmJ28utY40QJJuirgH8yRyDKIJJwY49jgWrLqMhQqf08ReNcdo8zA6JROo4rclDN/RPd
+	KoypC5GmRot1JBG4Xs+UC6R8gqEMn9EF7AEHb9g==
+X-Google-Smtp-Source: AGHT+IFurydxnrI+CHeh0ogyuTUXiIwB25WFmX9OYU9Dg8GrojDvKYyR0qSp+PNVc4F3L05RqX7iOmnnS3SL4rXngFc=
+X-Received: by 2002:a25:b34d:0:b0:e26:acc:4088 with SMTP id
+ 3f1490d57ef6-e28f9bad98dmr276784276.27.1728397020952; Tue, 08 Oct 2024
+ 07:17:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241008-x1e80100-qcp-sdhc-v1-2-dfef4c92ae31@linaro.org>
-References: <20241008-x1e80100-qcp-sdhc-v1-0-dfef4c92ae31@linaro.org>
-In-Reply-To: <20241008-x1e80100-qcp-sdhc-v1-0-dfef4c92ae31@linaro.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Johan Hovold <johan@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-mmc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, Abel Vesa <abel.vesa@linaro.org>
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3818; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=/wepMDnYlUXv/rY1mPSzvHM7+ihzA4MTCC5rPo7Ip/s=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnBTxWwyk7TwbA5VUIJ5PUThgEa8mxtt9XCkq4c
- ofkaO5coZKJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZwU8VgAKCRAbX0TJAJUV
- Vo/ZEADHyqy72IV9raRErouS/AvseAOcY+Wbl+sIu7CIqhnz9cDRNfVhr41QISlYCaHEWlD1wmn
- qcO3qf421jus28seiJRAYuahUiww4Lw8V/aO+HHR+miZTPQNie8TpGqSgPxFOuPt8UDYEd+JJkK
- 3mM9IbtGTx3Q6ZLXtADSCN7hHP+mCfgBdnCSidge5z2FvQ2mQmLJ09DXEuvhoEbVGQj2S/Qj4qU
- ocQOLTOiMB4Lz4nQJ1OP5UMOzulCVlYl+VuRUzQm8dPO3t7+oNt+U+MR6igmr39sog/NC8T6MrS
- pCrtfDohZu52++PDSrMZtaCytVUudKehriGjq/P1iS0v2ZvmhjWctOjQhJ3a98tP83x70KqXy/1
- 3PtBjuw9Ebt46Wc8mmwKPGtWIUB6AfhnDunPIgf0hdMmK8Mpwef+iWOobtnTaNyugZjJgGQ6CxO
- DguFMv2nNQ7gF0tIzh0sUYZIxQtxM/UoZ3dT2Aq4fm8n0dNuHHTlo297bCxcw3g8pqWMM6LF9Oq
- q+fIdportGOYGHNJslX9aeCUF/+TUgg1h/k1BS9FiDk+IZV0GVzRnq1kTA2dcB02L7VfG/xfszb
- jnROt4MQqMFj617VZKMyL0u3uZ2MyswMTgb6+c5QKmsbTWfCcOTYaXzF62LRa2hbc67msk/yUFo
- 6Rthsv2WE46H9KA==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+References: <20241007114549.51213-1-brgl@bgdev.pl> <ab1180ff-b435-46c8-82a8-66fea41db110@wanadoo.fr>
+ <CAMRc=MfrQNc1idCD8fBbOx5bWzCU6f-Ryefu-eoxfzOaA8=_Fg@mail.gmail.com>
+In-Reply-To: <CAMRc=MfrQNc1idCD8fBbOx5bWzCU6f-Ryefu-eoxfzOaA8=_Fg@mail.gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 8 Oct 2024 16:16:24 +0200
+Message-ID: <CAPDyKFpNuKMQhqiWhOz2j+9Ubj_FaBb54x-GincD6m2n6UbH0Q@mail.gmail.com>
+Subject: Re: [PATCH] mmc: mmc_spi: fix snprintf() output buffer size
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, linux-mmc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Describe the two SHDC v5 controllers found on x1e80100 platform.
+On Tue, 8 Oct 2024 at 09:13, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+>
+> On Mon, Oct 7, 2024 at 8:09=E2=80=AFPM Christophe JAILLET
+> <christophe.jaillet@wanadoo.fr> wrote:
+> >
+> > Le 07/10/2024 =C3=A0 13:45, Bartosz Golaszewski a =C3=A9crit :
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >
+> > > GCC 13 complains about the truncated output of snprintf():
+> > >
+> > > drivers/mmc/host/mmc_spi.c: In function =E2=80=98mmc_spi_response_get=
+=E2=80=99:
+> > > drivers/mmc/host/mmc_spi.c:227:64: error: =E2=80=98snprintf=E2=80=99 =
+output may be truncated before the last format character [-Werror=3Dformat-=
+truncation=3D]
+> > >    227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI=
+_%s",
+> > >        |                                                             =
+   ^
+> > > drivers/mmc/host/mmc_spi.c:227:9: note: =E2=80=98snprintf=E2=80=99 ou=
+tput between 26 and 43 bytes into a destination of size 32
+> > >    227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI=
+_%s",
+> > >        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+> > >    228 |                 cmd->opcode, maptype(cmd));
+> > >
+> > > Increase the size of the target buffer.
+> > >
+> > > Fixes: 15a0580ced08 ("mmc_spi host driver")
+> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > > ---
+> > >   drivers/mmc/host/mmc_spi.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+> > > index 8fee7052f2ef..fa1d1a1b3142 100644
+> > > --- a/drivers/mmc/host/mmc_spi.c
+> > > +++ b/drivers/mmc/host/mmc_spi.c
+> > > @@ -222,7 +222,7 @@ static int mmc_spi_response_get(struct mmc_spi_ho=
+st *host,
+> > >       u8      leftover =3D 0;
+> > >       unsigned short rotator;
+> > >       int     i;
+> > > -     char    tag[32];
+> > > +     char    tag[43];
+> > >
+> > >       snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+> > >               cmd->opcode, maptype(cmd));
+> >
+> > 'tag' is only used in a dev_dbg() at the end of the function.
+> >
+> > Maybe "  ... CMD%d response SPI_%s" could me moved directly within the
+> > dev_dbg(). This would save a few bytes on the stack, save a snprintf()
+> > in the normal path and fix the warning without the need of magic number=
+.
+> >
+> > just my 2c.
+> >
+> > CJ
+>
+> I would be hesitant to change this logic here. The cmd struct is
+> manipulated pretty extensively later in the function which leads me to
+> believe that this snprintf() here was done on purpose.
 
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
----
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 108 +++++++++++++++++++++++++++++++++
- 1 file changed, 108 insertions(+)
+The cmd->opcode and cmd->flags aren't really something a host driver
+should need to change. It's the core that sets them to inform the host
+driver about the command.
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index a36076e3c56b5b8815eb41ec55e2e1e5bd878201..b835fd87b977ae81f687c4ea15f6f2f89e02e9b1 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -3880,6 +3880,114 @@ lpass_lpicx_noc: interconnect@7430000 {
- 			#interconnect-cells = <2>;
- 		};
- 
-+		sdhc_2: mmc@8804000 {
-+			compatible = "qcom,x1e80100-sdhci", "qcom,sdhci-msm-v5";
-+			reg = <0 0x08804000 0 0x1000>;
-+
-+			interrupts = <GIC_SPI 207 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 223 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "hc_irq", "pwr_irq";
-+
-+			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
-+				 <&gcc GCC_SDCC2_APPS_CLK>,
-+				 <&rpmhcc RPMH_CXO_CLK>;
-+			clock-names = "iface", "core", "xo";
-+			iommus = <&apps_smmu 0x520 0>;
-+			qcom,dll-config = <0x0007642c>;
-+			qcom,ddr-config = <0x80040868>;
-+			power-domains = <&rpmhpd RPMHPD_CX>;
-+			operating-points-v2 = <&sdhc2_opp_table>;
-+
-+			interconnects = <&aggre2_noc MASTER_SDCC_2 0 &mc_virt SLAVE_EBI1 0>,
-+					<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_SDCC_2 0>;
-+			interconnect-names = "sdhc-ddr", "cpu-sdhc";
-+			bus-width = <4>;
-+			dma-coherent;
-+
-+			/* Forbid SDR104/SDR50 - broken hw! */
-+			sdhci-caps-mask = <0x3 0>;
-+
-+			status = "disabled";
-+
-+			sdhc2_opp_table: opp-table {
-+				compatible = "operating-points-v2";
-+
-+				opp-19200000 {
-+					opp-hz = /bits/ 64 <19200000>;
-+					required-opps = <&rpmhpd_opp_min_svs>;
-+				};
-+
-+				opp-50000000 {
-+					opp-hz = /bits/ 64 <50000000>;
-+					required-opps = <&rpmhpd_opp_low_svs>;
-+				};
-+
-+				opp-100000000 {
-+					opp-hz = /bits/ 64 <100000000>;
-+					required-opps = <&rpmhpd_opp_svs>;
-+				};
-+
-+				opp-202000000 {
-+					opp-hz = /bits/ 64 <202000000>;
-+					required-opps = <&rpmhpd_opp_svs_l1>;
-+				};
-+			};
-+		};
-+
-+		sdhc_4: mmc@8844000 {
-+			compatible = "qcom,x1e80100-sdhci", "qcom,sdhci-msm-v5";
-+			reg = <0 0x08844000 0 0x1000>;
-+
-+			interrupts = <GIC_SPI 261 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 227 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "hc_irq", "pwr_irq";
-+
-+			clocks = <&gcc GCC_SDCC4_AHB_CLK>,
-+				 <&gcc GCC_SDCC4_APPS_CLK>,
-+				 <&rpmhcc RPMH_CXO_CLK>;
-+			clock-names = "iface", "core", "xo";
-+			iommus = <&apps_smmu 0x160 0>;
-+			qcom,dll-config = <0x0007642c>;
-+			qcom,ddr-config = <0x80040868>;
-+			power-domains = <&rpmhpd RPMHPD_CX>;
-+			operating-points-v2 = <&sdhc4_opp_table>;
-+
-+			interconnects = <&aggre2_noc MASTER_SDCC_4 0 &mc_virt SLAVE_EBI1 0>,
-+					<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_SDCC_4 0>;
-+			interconnect-names = "sdhc-ddr", "cpu-sdhc";
-+			bus-width = <4>;
-+			dma-coherent;
-+
-+			/* Forbid SDR104/SDR50 - broken hw! */
-+			sdhci-caps-mask = <0x3 0>;
-+
-+			status = "disabled";
-+
-+			sdhc4_opp_table: opp-table {
-+				compatible = "operating-points-v2";
-+
-+				opp-19200000 {
-+					opp-hz = /bits/ 64 <19200000>;
-+					required-opps = <&rpmhpd_opp_min_svs>;
-+				};
-+
-+				opp-50000000 {
-+					opp-hz = /bits/ 64 <50000000>;
-+					required-opps = <&rpmhpd_opp_low_svs>;
-+				};
-+
-+				opp-100000000 {
-+					opp-hz = /bits/ 64 <100000000>;
-+					required-opps = <&rpmhpd_opp_svs>;
-+				};
-+
-+				opp-202000000 {
-+					opp-hz = /bits/ 64 <202000000>;
-+					required-opps = <&rpmhpd_opp_svs_l1>;
-+				};
-+			};
-+		};
-+
- 		usb_2_hsphy: phy@88e0000 {
- 			compatible = "qcom,x1e80100-snps-eusb2-phy",
- 				     "qcom,sm8550-snps-eusb2-phy";
+I looked closer and it seems to be correct in this case too.
 
--- 
-2.34.1
-
+Kind regards
+Uffe
 
