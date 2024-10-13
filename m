@@ -1,56 +1,56 @@
-Return-Path: <linux-mmc+bounces-4338-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4342-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D34299BBEF
-	for <lists+linux-mmc@lfdr.de>; Sun, 13 Oct 2024 23:09:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E5B99BBF4
+	for <lists+linux-mmc@lfdr.de>; Sun, 13 Oct 2024 23:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FD911C2095B
-	for <lists+linux-mmc@lfdr.de>; Sun, 13 Oct 2024 21:09:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D371F20F36
+	for <lists+linux-mmc@lfdr.de>; Sun, 13 Oct 2024 21:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80AC14AD2E;
-	Sun, 13 Oct 2024 21:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF41C14F121;
+	Sun, 13 Oct 2024 21:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="NfjZ8Iu4";
-	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="BO5wdJ2I"
+	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="Ep1SsPv/";
+	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="XPqWJpAp"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.81])
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB18136345
-	for <linux-mmc@vger.kernel.org>; Sun, 13 Oct 2024 21:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB9F14AD2B
+	for <linux-mmc@vger.kernel.org>; Sun, 13 Oct 2024 21:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.82
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728853782; cv=pass; b=ZcQ6vARMpRsRA6C1zCUfqaeRNTxbWMmTeCtMrl+cbAfIXFTCzz1LKuX8VDrv5LJgPVqgI/WVH1+bfgmAuYelTB53RhwlUFJPt7Oti9/hxu16r3UKx88e5Ah01PQhRetiD3FHzUCy02jyohPebiTTkj+A7sOPj6sItyWzjR2SR8o=
+	t=1728853787; cv=pass; b=d6ZBHPTOu3J0oEl5kKy1iFIGpmtD3LOaXpbEdxHAWqvGa0i763bKQ6tCkZWfsmvh+xBxrVyxhNTjy7rSFfm+1gmecjIgzEXo3GONSxC81sb3PE/GCGC6f+5emX13FfGM3gsQsv5Tqlq+u3zdRhLPYGZjF5Q8TU2VU0YaR6H6E4w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728853782; c=relaxed/simple;
-	bh=8oW5Dsyc/RpFudOVLoMeeD4uX9PAwHtRT1OyfCt0l5I=;
+	s=arc-20240116; t=1728853787; c=relaxed/simple;
+	bh=78ehn2GW49afHlr67uwSENexqgP92ivsson6G2+a40A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hIwmIpvFlDJJ328EBbhmQBAi8ebUTWGUNUoqrsetUnkjEKb9BaQ4pcEXg88zesMHwyVJcryLMUDDtg0BMqi2ZJwkd0IObyOxwcAg/B9b/p2hOVG/5qVfrorcoKZ+57+k8l0W3Zvena3jjssDNijWPha6yJ14rrR7gwBKmNIG444=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=NfjZ8Iu4; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=BO5wdJ2I; arc=pass smtp.client-ip=85.215.255.81
+	 MIME-Version:Content-Type; b=EfMpAq6xWnKeNWJY5cCggNV9StmtmvMqzkxMWSLAqZ7QOKe8eVFeHUI/kYU38K/7VJORZjynHpLyZNgu103/R5Yj3cw6+NPHWo//4gw6B4LLbD6bQgFvRaGwxjp4lsFStiKCTfdv0gwveO1Cc/gESVZZWeScKMHQ5X3VIH5S3BE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=Ep1SsPv/; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=XPqWJpAp; arc=pass smtp.client-ip=85.215.255.82
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=iokpp.de
 ARC-Seal: i=1; a=rsa-sha256; t=1728853775; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=CJ+I6lu+QFebemg/LAXJr8SZjdxQkYrbvpMV09RU6C/cLlN66X0TOXPa/YlA5bhcOC
-    CVq+vLchvz4bmczXrYDQZA2842gPhUoRMGKQF5X5flo0X9gpllro8vaF2FimU+YbBIfj
-    m8+l0NXao7y2sKwAS16eQq72aOSvi+bM3yk9G5O/bwAIZvnUhklRMghgL7GI0LfaNhyz
-    WNuWSImpoP0zdqUYqGASgmLh4nLWMgb5SWytfD2GICeJD/525l44Rleril7qdpbixPwy
-    /e3bOlEhKoJzhIESCys1/IJ7FxBukEU4F4g1K/qlminx1X2Jir5MIF2IVwrvyBxIYeTY
-    YnGg==
+    b=jKgpQD6/WvFFcvn+M03ClA3YRWotKEdkt1M9RmdPYztk6nWNRFANsMIsLzpSYVEfq9
+    F/7EaMUUKuDlMNPelUYrxj06u12TE3Bx2L+KdhVfQCyPPmHO82/GUUhADcyViAfcNRrF
+    UD5RRd8x0VLQxFbLITw/LOxmLxQN+q0f7WHJAJZw2QG3+8eSZlJJuQSpmIXK5GcG5CGO
+    elvU+vFz5WY2S6NL+h0DA82cDjks2cKMTC/6WmP15oF0s7ijS4v/Bic5X8ljEs0cweP2
+    opySODv4mG1sm9VVyJm5D6CGJPm6G0MYiK8yCzio/FbKBn046zGJ0ArIpyjjbphLEJzf
+    eBaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1728853775;
     s=strato-dkim-0002; d=strato.com;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=0+fg29ijt/vicpmsBPgGVe5s3S4w+t2hVEcOX11Cs60=;
-    b=gxJLIxFS1W9ksLiPHhjHCV3aa9vstIHRPdln5mjpvqXhNb4iJOe1ca+ENTC3y1HgiY
-    R/wuNsiY/3P4PPozhqOMf01f5KlPqtiqFb+0TcoiCiiByVcX/pLmGFktNP+q9fW7QwY9
-    osgodJL6udtAiU1792X52Zoa48ZknUndaigK7AkV+gCzxz0ID4Rm7zqJSUQTWbJlSEwV
-    sCLSMp5+rgae98l4fGLFIYVSX7GjIwv/pvNxhxZxYkMF7/ZwxAmbESVRzqzzYvXlmyO3
-    jbdCGJfEF7Ikvey3ECbjo8JUuyhIdhdqESE2sceYDz9jEPcY/6AbfdLpyt4iBetgQd/x
-    rzYg==
+    bh=mtLlqwMfJdraYzKTVBUXLPJ+pM1xcACVTC/wkwYtcvE=;
+    b=oW2JFtrZ16gdzGp0iYkYFlLxLOv+a8t5V4YXiQc1PL5pz8rirbYl5L37mT4Cyky2mK
+    L0Lf+txgbVEJ4WmfbeIEVge7efLC3V8m0O0Xjq9xNn+yDXQtkoYAGF8gQ7Q0EhZdIeH0
+    PNd+dhKvbMmJSgcMNP7/5hG2YPdpyE1tgPHCFV+b+NgKhTKhqIWNvQSjr3i6qyg2juE2
+    jpipLpeff9xeVOuxavNVumg5E68mK8L5eSm3a6plQJlm9gvnYP4EsVN5Ln39jWAgb3UU
+    uJePUY727N5ldhZSy6eIMZAebcX17L7t35GxjCYhqP6+cGJOVAzWOn7W6QbCAMxnhH8L
+    QFWA==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
@@ -59,24 +59,24 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1728853775;
     s=strato-dkim-0002; d=iokpp.de;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=0+fg29ijt/vicpmsBPgGVe5s3S4w+t2hVEcOX11Cs60=;
-    b=NfjZ8Iu4+EUmVlNESOye1QzF+4QscmghlbId9AiahG9CSIZPNo2gVw5+An7c1PmWWQ
-    UeitlIB9cb6FQCDRw3HTCNk6bOUHmuQUz/gYD6o+RpJNwz8p24o2hSUP24Inj2aPCrgQ
-    ferdAK8bu886poDy0xDmoXFuPEoKFcPcFQ0kobQ+U2WzTL2k/h3DbZY672EWVJBulyo9
-    qwlKkWwCKfWxr+PnjtNW8mF+HSFQ+LR+NA5De+9sTFzeuPzQKVGDxinJICUXnhUts+3X
-    QHMq/0HPTGNz+fbCo3eOa7O3yb0ycLs9pzD5tiqQKa6Lt8boY/6vJbKZ/I1bkrV/nIR6
-    RN2A==
+    bh=mtLlqwMfJdraYzKTVBUXLPJ+pM1xcACVTC/wkwYtcvE=;
+    b=Ep1SsPv/uMzSzPr+JFe/jRGd0Ygple7LO9kq/d7VnRN6XlBJsCMWaDLtS8k5bTIN+A
+    KJPewEw1T4MSViIo5XSsTLjYcXTgdVuxhiCxp2dSHo15dLY7oiEvhK81CIhlZUd00+PE
+    mGdZrCqWbl735HSTiCvIc0fCZK+C3J4gcFoLjHCRLvR7Z6Kfu/NWMeOsizmFYdUlzATW
+    kglJjzvXrhiom4LG/gwszB142AOUGyXL+oYFoaJOtFzPaoBLyBUuSybG7dJ3nTqf91W3
+    hTn83joB0LjUbHAbvCg39tbvmNYhebAzXrFlgEuej/GSD2LpxV4FnObBdK0YiK20XByU
+    RxHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1728853775;
     s=strato-dkim-0003; d=iokpp.de;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=0+fg29ijt/vicpmsBPgGVe5s3S4w+t2hVEcOX11Cs60=;
-    b=BO5wdJ2I0WFparTn55BZugPe1Sru6bnvUfDTke8Idq71Y349QIbFle2oO2xYNKxnNf
-    qM4tW6rK6tzqD2Klb9CQ==
+    bh=mtLlqwMfJdraYzKTVBUXLPJ+pM1xcACVTC/wkwYtcvE=;
+    b=XPqWJpAph4yUprnX46SivinNgFbGA8afCxhaSw9dWT7zzA10auVdnIrbN69DrXzRRd
+    WdN2tDqYo9v+dRsYLrBw==
 X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSfNuhhDSDt3O256fJ4HnWXON1RD+6IXG87q6MA1dHIkU4bBBNmkv0kIa54BlKI8="
 Received: from Munilab01-lab.speedport.ip
     by smtp.strato.de (RZmta 51.2.8 AUTH)
-    with ESMTPSA id z0e6b009DL9ZB83
+    with ESMTPSA id z0e6b009DL9ZB84
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
     Sun, 13 Oct 2024 23:09:35 +0200 (CEST)
@@ -86,9 +86,9 @@ To: avri.altman@wdc.com,
 	vfazio@xes-inc.com,
 	linux-mmc@vger.kernel.org
 Cc: Bean Huo <beanhuo@micron.com>
-Subject: [RESENT PATCH v3 4/5] mmc-utils: Added FFU mode 4 that uses CMD6 and CMD24 for single-block firmware download
-Date: Sun, 13 Oct 2024 23:09:24 +0200
-Message-Id: <20241013210925.123632-5-beanhuo@iokpp.de>
+Subject: [RESENT PATCH v3 5/5] mmc-utils: add FFU mode 5 for firmware download using repeated CMD24 command to download FW bundle
+Date: Sun, 13 Oct 2024 23:09:25 +0200
+Message-Id: <20241013210925.123632-6-beanhuo@iokpp.de>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241013210925.123632-1-beanhuo@iokpp.de>
 References: <20241013210925.123632-1-beanhuo@iokpp.de>
@@ -103,106 +103,123 @@ Content-Type: text/plain; charset="us-ascii"
 
 From: Bean Huo <beanhuo@micron.com>
 
-FFU mode 4 initiates firmware download with CMD6 to enter FFU mode, followed by CMD24 for
-single-block write. After each block is written, CMD6 is used to exit FFU mode.
+Add FFU mode 5 which enters FFU mode with CMD6, followed by repeated CMD24 commands to perform
+single-block writes for the firmware download. After downloading all firmware data, CMD6 is issued
+to exit FFU mode.
 
 Signed-off-by: Bean Huo <beanhuo@micron.com>
 ---
  mmc.1      |  3 +++
  mmc.c      |  5 +++++
- mmc_cmds.c | 17 ++++++++++++++++-
+ mmc_cmds.c | 23 ++++++++++++++++++-----
  mmc_cmds.h |  1 +
- 4 files changed, 25 insertions(+), 1 deletion(-)
+ 4 files changed, 27 insertions(+), 5 deletions(-)
 
 diff --git a/mmc.1 b/mmc.1
-index d1598f7..5e147d7 100644
+index 5e147d7..d478992 100644
 --- a/mmc.1
 +++ b/mmc.1
-@@ -198,6 +198,9 @@ Same as 'ffu', but uses CMD23+CMD25 for repeated downloads and remains in FFU mo
- .BI ffu3 " \fIimage\-file\-name\fR " " \fIdevice\fR " " [\fIchunk\-bytes\fR]
- Same as 'ffu', but uses CMD25+CMD12 Open-ended Multiple-block write to download and remains in FFU mode until completion.
+@@ -201,6 +201,9 @@ Same as 'ffu', but uses CMD25+CMD12 Open-ended Multiple-block write to download
+ .BI ffu4 " \fIimage\-file\-name\fR " " \fIdevice\fR " " [\fIchunk\-bytes\fR]
+ Same as 'ffu', but uses CMD24 Single-block write to download, exiting FFU mode after each block is written.
  .TP
-+.BI ffu4 " \fIimage\-file\-name\fR " " \fIdevice\fR " " [\fIchunk\-bytes\fR]
-+Same as 'ffu', but uses CMD24 Single-block write to download, exiting FFU mode after each block is written.
++.BI ffu5 " \fIimage\-file\-name\fR " " \fIdevice\fR " " [\fIchunk\-bytes\fR]
++Same as 'ffu', but uses CMD24 Single-block write for repeated downloads, remaining in FFU mode until completion.
 +.TP
  .BI erase " " \fItype\fR " " \fIstart-address\fR " " \fIend\-address\fR " " \fIdevice\fR
  Send Erase CMD38 with specific argument to the device.
  .br
 diff --git a/mmc.c b/mmc.c
-index a0227ca..fd78f9b 100644
+index fd78f9b..3c74549 100644
 --- a/mmc.c
 +++ b/mmc.c
-@@ -244,6 +244,11 @@ static struct Command commands[] = {
- 		"Same as 'ffu', but uses CMD25+CMD12 Open-ended Multiple-block write to download and remains in FFU mode until completion.\n",
+@@ -249,6 +249,11 @@ static struct Command commands[] = {
+ 		"Same as 'ffu', but uses CMD24 Single-block write to download, exiting FFU mode after each block written.\n",
  	  NULL
  	},
-+	{ do_ffu4, -2,
-+	  "ffu4", "<image name> <device> [chunk-bytes]\n"
-+		"Same as 'ffu', but uses CMD24 Single-block write to download, exiting FFU mode after each block written.\n",
++	{ do_ffu5, -2,
++	  "ffu5", "<image name> <device> [chunk-bytes]\n"
++		"Same as 'ffu', but uses CMD24 Single-block write for repeated downloads, remaining in FFU mode until completion.\n",
 +	  NULL
 +	},
  	{ do_erase, -4,
  	"erase", "<type> " "<start address> " "<end address> " "<device>\n"
  		"Send Erase CMD38 with specific argument to the <device>\n\n"
 diff --git a/mmc_cmds.c b/mmc_cmds.c
-index 6c38387..6290440 100644
+index 6290440..bdfaea7 100644
 --- a/mmc_cmds.c
 +++ b/mmc_cmds.c
-@@ -2839,6 +2839,11 @@ static void set_ffu_download_cmd(struct mmc_ioc_multi_cmd *multi_cmd, __u8 *ext_
- 		mmc_ioc_cmd_set_data(multi_cmd->cmds[0], buf + offset);
- 		set_single_cmd(&multi_cmd->cmds[1], MMC_STOP_TRANSMISSION, 0, 0, 0);
- 		multi_cmd->cmds[1].flags = MMC_RSP_SPI_R1B | MMC_RSP_R1B | MMC_CMD_AC;
-+	} else if (ffu_mode == 4) {
-+		fill_switch_cmd(&multi_cmd->cmds[0], EXT_CSD_MODE_CONFIG, EXT_CSD_FFU_MODE);
-+		set_single_cmd(&multi_cmd->cmds[1], MMC_WRITE_BLOCK, 1, 1, arg);
-+		mmc_ioc_cmd_set_data(multi_cmd->cmds[1], buf + offset);
-+		fill_switch_cmd(&multi_cmd->cmds[2], EXT_CSD_MODE_CONFIG, EXT_CSD_NORMAL_MODE);
+@@ -2844,8 +2844,12 @@ static void set_ffu_download_cmd(struct mmc_ioc_multi_cmd *multi_cmd, __u8 *ext_
+ 		set_single_cmd(&multi_cmd->cmds[1], MMC_WRITE_BLOCK, 1, 1, arg);
+ 		mmc_ioc_cmd_set_data(multi_cmd->cmds[1], buf + offset);
+ 		fill_switch_cmd(&multi_cmd->cmds[2], EXT_CSD_MODE_CONFIG, EXT_CSD_NORMAL_MODE);
++	} else if (ffu_mode == 5) {
++		set_single_cmd(&multi_cmd->cmds[0], MMC_WRITE_BLOCK, 1, 1, arg);
++		mmc_ioc_cmd_set_data(multi_cmd->cmds[0], buf + offset);
  	}
  }
++
  static int enter_ffu_mode(int *dev_fd)
-@@ -2924,8 +2929,10 @@ static int do_ffu_download(int *dev_fd, __u8 *ext_csd, __u8 *fw_buf, off_t fw_si
- 		return -EINVAL;
- 	}
- 
--	if (ffu_mode != 1) /* in FFU mode 1, mmc_ioc_multi_cmd contains 4 commands */
-+	if (ffu_mode == 2 || ffu_mode == 3) /* in FFU mode 2, 3, mmc_ioc_multi_cmd contains 2 commands */
+ {
+        int ret;
+@@ -2933,6 +2937,8 @@ static int do_ffu_download(int *dev_fd, __u8 *ext_csd, __u8 *fw_buf, off_t fw_si
  		num_of_cmds = 2;
-+	else if (ffu_mode == 4)
-+		num_of_cmds = 3; /* in FFU mode 4, mmc_ioc_multi_cmd contains 3 commands */
+ 	else if (ffu_mode == 4)
+ 		num_of_cmds = 3; /* in FFU mode 4, mmc_ioc_multi_cmd contains 3 commands */
++	else if (ffu_mode == 5)
++		num_of_cmds = 1; /* in FFU mode 5, it is  single command mode  */
  
  	/* allocate maximum required */
  	multi_cmd = calloc(1, sizeof(struct mmc_ioc_multi_cmd) + num_of_cmds * sizeof(struct mmc_ioc_cmd));
-@@ -3068,6 +3075,10 @@ static int __do_ffu(int nargs, char **argv, __u8 ffu_mode)
+@@ -2957,11 +2963,14 @@ do_retry:
+ 		/* prepare multi_cmd for FFU based on cmd to be used */
+ 		set_ffu_download_cmd(multi_cmd, ext_csd, bytes_per_loop, fw_buf, off, ffu_mode);
+ 
+-		/* send ioctl with multi-cmd, download firmware bundle */
+-		ret = ioctl(*dev_fd, MMC_IOC_MULTI_CMD, multi_cmd);
++		if (num_of_cmds > 1)
++			/* send ioctl with multi-cmd, download firmware bundle */
++			ret = ioctl(*dev_fd, MMC_IOC_MULTI_CMD, multi_cmd);
++		else
++			ret = ioctl(*dev_fd, MMC_IOC_CMD, &multi_cmd->cmds[0]);
+ 
+ 		if (ret) {
+-			perror("Multi-cmd ioctl");
++			perror("ioctl failed");
+ 			/*
+ 			 * In case multi-cmd ioctl failed before exiting from
+ 			 * ffu mode
+@@ -3075,8 +3084,8 @@ static int __do_ffu(int nargs, char **argv, __u8 ffu_mode)
  		goto out;
  	}
  
-+	if (ffu_mode ==4)
-+		/* FFU mode 4 uses CMD24, the write is limited to single-block operations*/
-+		default_chunk = 512;
-+
- 	sect_done = do_ffu_download((int *)&dev_fd, ext_csd, fw_buf, fw_size, default_chunk, ffu_mode);
+-	if (ffu_mode ==4)
+-		/* FFU mode 4 uses CMD24, the write is limited to single-block operations*/
++	if (ffu_mode ==4 || ffu_mode == 5)
++		/* FFU mode 4/5 uses CMD24, the write is limited to single-block operations*/
+ 		default_chunk = 512;
  
- 	/* Check programmed sectors */
-@@ -3150,6 +3161,10 @@ int do_ffu3(int nargs, char **argv) {
- 	return __do_ffu(nargs, argv, 3);
+ 	sect_done = do_ffu_download((int *)&dev_fd, ext_csd, fw_buf, fw_size, default_chunk, ffu_mode);
+@@ -3165,6 +3174,10 @@ int do_ffu4(int nargs, char **argv) {
+ 	return __do_ffu(nargs, argv, 4);
  }
  
-+int do_ffu4(int nargs, char **argv) {
-+	return __do_ffu(nargs, argv, 4);
++int do_ffu5(int nargs, char **argv) {
++	return __do_ffu(nargs, argv, 5);
 +}
 +
  int do_general_cmd_read(int nargs, char **argv)
  {
  	int dev_fd;
 diff --git a/mmc_cmds.h b/mmc_cmds.h
-index e3e9192..27dc6c4 100644
+index 27dc6c4..d198de8 100644
 --- a/mmc_cmds.h
 +++ b/mmc_cmds.h
-@@ -44,6 +44,7 @@ int do_cache_dis(int nargs, char **argv);
- int do_ffu(int nargs, char **argv);
+@@ -45,6 +45,7 @@ int do_ffu(int nargs, char **argv);
  int do_ffu2(int nargs, char **argv);
  int do_ffu3(int nargs, char **argv);
-+int do_ffu4(int nargs, char **argv);
+ int do_ffu4(int nargs, char **argv);
++int do_ffu5(int nargs, char **argv);
  int do_read_scr(int argc, char **argv);
  int do_read_cid(int argc, char **argv);
  int do_read_csd(int argc, char **argv);
