@@ -1,82 +1,82 @@
-Return-Path: <linux-mmc+bounces-4337-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4340-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F61E99BBF2
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BE799BBF1
 	for <lists+linux-mmc@lfdr.de>; Sun, 13 Oct 2024 23:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4666B20E9C
-	for <lists+linux-mmc@lfdr.de>; Sun, 13 Oct 2024 21:09:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9214282892
+	for <lists+linux-mmc@lfdr.de>; Sun, 13 Oct 2024 21:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C839215252D;
-	Sun, 13 Oct 2024 21:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B1E136345;
+	Sun, 13 Oct 2024 21:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="UuGutWlX";
-	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="EEVhV+Ar"
+	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="US6ljpT6";
+	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="YreTz09X"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.81])
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB561465BE
-	for <linux-mmc@vger.kernel.org>; Sun, 13 Oct 2024 21:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D357F48C
+	for <linux-mmc@vger.kernel.org>; Sun, 13 Oct 2024 21:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728853782; cv=pass; b=NEnaXbV/bDQeLkf5bWRR1z677XMvVMAxhWRXj/bGAmRFwwHGExaJCzvug6/JB5scVX/+RbRRzeC9xZ8+CCCiokX0xtH+7NXviHYC5xAcx9ocPvuPhS2E5uXLK+CgaJgvqOCFs7XPpgPTJlWSVdG8QVNblbFM/bbKTTqfJBkh2Fo=
+	t=1728853782; cv=pass; b=vGwQe/qtZpzs43qHYZUiHIRvbFBNyofJpWBX1tvnHDiRigAecLQaBFh3HsyuOqr6NG7Zp81WGRSq/jXY1eUe/ekn1UoTuuEDWNTAi0f/8rH3df8mNfLmiKQgEyc/KtO3FMtJTOAsOGMWW1tg6PUEDGMplFBbmN202uk5Y5d8gaI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728853782; c=relaxed/simple;
-	bh=TV2oBRczUy1L9A7Q8KwtDqssOcxI2uv50pFVfGCsUlM=;
+	bh=XmX4NgDoxP5XJO6ZVosSXsQk/U1Dd5vZuzI5M5/HHTk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i69N1tFJzh8YMOwE4a/02upQvH+g10kUbjHC5UqgzsZMA1Tj/QNxx7Q1Y7BcAijbY5VEs1IXGJMwNBYEek41Xlxxc1K49RlBl66QWsXK+95KhR+qXDVoKqizuqNFCKBmjFNIYOE6lL99ByEOTSqjWsaX276K1PMITbdf/IYcvjI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=UuGutWlX; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=EEVhV+Ar; arc=pass smtp.client-ip=85.215.255.81
+	 MIME-Version:Content-Type; b=f2F1h75KqnnjMVwWxkejIq0zxolCfuEr0am2d6jiZpH1qEN7Wq9HJesvccOsDJGhczXq3ciA2df7ofEQoOv4MYjYkoliIr5h1PyWaAJgqO1c+JjchTpPGZqK2NoUw3un3jt0OKBlfCOqlk5sglJiKCO5Q5NXUrhgweqD1zAVXpA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=US6ljpT6; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=YreTz09X; arc=pass smtp.client-ip=81.169.146.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=iokpp.de
-ARC-Seal: i=1; a=rsa-sha256; t=1728853774; cv=none;
+ARC-Seal: i=1; a=rsa-sha256; t=1728853775; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=e8XRWjsPeuR1h8RBJBnqtDQ4/DgWPOrXLkRbGiwtJJeB+WhAOl+7FYaDRB+cimPGfE
-    dgp9vYk4P8kCG1dPIiUYQ+6HkUdcrxL7zaxxzLHEh4Br5LWcIBTocHf0wvGKoFUU0Nip
-    6fFpk3DTn6yKEd4+S1dyi42zEyn5tIcM7e75j6thIHBctuiTQHz+0D1ddnT9p+lls4K+
-    FIA6JqtKmjPWUHfcxaKBpar4iIoJd5KlydjeTW4IYiGtG9BOiCGJ7edh5hNBoe9jtEZk
-    BzOnbJlkwMX5dOatlpETNm8inH3SSm7Hsy6KzNMlzuc9BqMpKHg3806n6c86q7OqMV0C
-    dHzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1728853774;
+    b=Axs3zSknRAR2Gh7pJT1PY8oQLlVhXW15dqelWvh3Z/VKPDMoSpI7kihI8aKnrREpxa
+    bVXPE3K7vBjShhkgJMWmf4jfIo+l9DPqLBj2IcgirCm9opdx0tVHP2qvIdQEHRr97T73
+    fMZYOq8Hxlx8s3TX47CjaEFh9vC3CK2vVYtnzvfRy7KVmFAokulKC5fpQNorS/+W6gZF
+    ETl76noQAE56V1s6w7bzRoQjMDeghDmsmGRY4ONAiWY/c28HQQ4U0GQPbw1tQoOZUb2j
+    TBl5Qq5dliXH1LOLr0BcFy3HyzWV1wdSccdBbLmxYwLNRjmrimsSvdUpa0txHubj0up0
+    ig1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1728853775;
     s=strato-dkim-0002; d=strato.com;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=H2dfH3vQI/TPQxxyBi1cnkemDN5jGXKmbTKOVRCQlzc=;
-    b=QKL+R+UbpR/3gF1OnVIGmEMIN8Ouv+MujOgPzJqMhLgil9ViKn8HgIkFcqe7Pct8o5
-    dlD09PmHjePW6vuZ00RcWmadeVzzTcJbTcqI8xDGBFonIt2bv6lvh1RQJJ+UL26KvMpF
-    Pnq9y43/M+fbip9GemukZWFh83cfRoL7/gkf6A6O+vLnEuawIqiP2LiswiPwiqTs1L9P
-    A9pV6pGFsl01dpUnnJdDEfBpuR5DSLZh/jf5J2/0QoQLitJ8N8aqUNYYeBlj9Fp1svf/
-    8fN4HWOoKOdTdT9VKX2YQMkkd5VdNK5wCrBsQL5iTqpey1z2MS6UQhGjKMBcwPh3IHFu
-    gulQ==
+    bh=8FKF1EqrtyYkTljkfqgN6q4D1U/LdrhhotSGK4nGnvw=;
+    b=bY2rdKGV4GWJWFSPGqDr0bwK2ARk5Yvr44GEMjCi0KBPXPmg/4vhq3OrsY7ub9oteN
+    7d4UBoYltzAN6udYzMa6U4U6bPad98VZ+eLdCdpvSk8ogKrCeZDLs9TDdbr5/9DGNENt
+    oW9cyPhecjyBP0SRTFfLXlkQ/pkw3gpMHd7ruaZlGRIfCAtkhFB+Ka4zMXHwFY0kHejf
+    0C+dZKsdtAe8Hq7HjOL4b1PfQwifOEIvgkHY4o8KHRmDTMbV25Zk/BSm1iRZ1C2+oObL
+    oBmKPVSArlKWx+NKA4+uMnk6u3JVzxccinwA76yAEk3/YFsP+HwL7oydJ1wGrMZ/UJ/e
+    IKMw==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1728853774;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1728853775;
     s=strato-dkim-0002; d=iokpp.de;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=H2dfH3vQI/TPQxxyBi1cnkemDN5jGXKmbTKOVRCQlzc=;
-    b=UuGutWlXdWqcup/vjOjSQjGg5I2hDpeva3Ad897J7hccixednsVGaSkh0YLI//zVpB
-    HM78AmBbStrFAOfz8jP1si/meVYgiB/khKEWTLzo45xI/ySqu+dtys1RkefK7T96PQcy
-    P4ml5YvnI7TDm2cbwHBuQa3A4YaFw77lQhSKKCYVyDxkNQXEbBl7gUKzNXhrJVWSfpqM
-    zmLJ7NyfsFENuZLZGBtntuFCGESor1s0Pq3m3XapiR/KgOK2zND16juKdNwCsAd+qXer
-    KWQIj9NYxWQn8i9LdnXQmEbnjtjF8oWUL+Bfq/lPNvd1S1s0DasfHdV7TgciHcdZ2uY6
-    x5AA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1728853774;
+    bh=8FKF1EqrtyYkTljkfqgN6q4D1U/LdrhhotSGK4nGnvw=;
+    b=US6ljpT638lokKItFhdolhtc7Qgr0qCcJsI1XzVFr5CaK0vbs9nCmrC93sS5Kr5Mft
+    X7W2NZ9B4BBjvCeN3q2DijpibrE0S9VhzF21/sbZz7UVcNkFlttrLfgOGAqB4f3+OhQb
+    qU2skpDi4e2VMwsXqpnH/nMuIDSdAy4w3bY6vMcLCPc6TtL/HBl2RolYOn4LXhFA7V9d
+    BuDyGKxxaxvZWPwAh7g0WyhOypZqo03uI5jK71jQDK2NgBEQ5RT5OqO0YhBy35LdJnku
+    r/wSGYg+V/QJEVQSHvuYieFeTgldW9sj2+u5N51sYECnddd1zhBV4ahfsDGCvl2T/uEM
+    BKTQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1728853775;
     s=strato-dkim-0003; d=iokpp.de;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=H2dfH3vQI/TPQxxyBi1cnkemDN5jGXKmbTKOVRCQlzc=;
-    b=EEVhV+ArZt4ZwnJ+lQfgCB0a0nV+MzPc4tMqC7nUSmaTeD4jvxBdg7hmz4TUObAuLe
-    qXu8baJrdiB6/jHLtFBw==
+    bh=8FKF1EqrtyYkTljkfqgN6q4D1U/LdrhhotSGK4nGnvw=;
+    b=YreTz09XwceFWHMzlyRSesEh/5+lI9shVWn+vJrqZ9SNlhsS/g9naWEIgxy24jxKRV
+    B+tjoGVpVyh3x0rPERDQ==
 X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSfNuhhDSDt3O256fJ4HnWXON1RD+6IXG87q6MA1dHIkU4bBBNmkv0kIa54BlKI8="
 Received: from Munilab01-lab.speedport.ip
     by smtp.strato.de (RZmta 51.2.8 AUTH)
-    with ESMTPSA id z0e6b009DL9YB80
+    with ESMTPSA id z0e6b009DL9YB81
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
     Sun, 13 Oct 2024 23:09:34 +0200 (CEST)
@@ -86,9 +86,9 @@ To: avri.altman@wdc.com,
 	vfazio@xes-inc.com,
 	linux-mmc@vger.kernel.org
 Cc: Bean Huo <beanhuo@micron.com>
-Subject: [RESENT PATCH v3 1/5] mmc-utils: Refactor common FFU code into functions to support additional FFU modes
-Date: Sun, 13 Oct 2024 23:09:21 +0200
-Message-Id: <20241013210925.123632-2-beanhuo@iokpp.de>
+Subject: [RESENT PATCH v3 2/5] mmc-utils: Add FFU mode 2
+Date: Sun, 13 Oct 2024 23:09:22 +0200
+Message-Id: <20241013210925.123632-3-beanhuo@iokpp.de>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241013210925.123632-1-beanhuo@iokpp.de>
 References: <20241013210925.123632-1-beanhuo@iokpp.de>
@@ -103,416 +103,233 @@ Content-Type: text/plain; charset="us-ascii"
 
 From: Bean Huo <beanhuo@micron.com>
 
-Refactor common FFU code into functions to support additional FFU modes. Follow-up
-patches will focus on implementing additional FFU modes and enhancements.
+Added a new FFU mode 2 that ensures atomic firmware image download to improve reliability
+and provide a smoother FFU process. In this mode, begins with CMD6, followed by repeated
+CMD23+CMD25 for downloading the firmware image. Once the entire firmware image is downloaded,
+the FFU mode is exited with CMD6, ensuring the download is treated as an atomic operation.
 
 Signed-off-by: Bean Huo <beanhuo@micron.com>
 ---
- mmc_cmds.c | 287 +++++++++++++++++++++++++++++++----------------------
- 1 file changed, 171 insertions(+), 116 deletions(-)
+ mmc.1      |  3 ++
+ mmc.c      |  5 +++
+ mmc_cmds.c | 92 +++++++++++++++++++++++++++++++++++++++++-------------
+ mmc_cmds.h |  1 +
+ 4 files changed, 79 insertions(+), 22 deletions(-)
 
+diff --git a/mmc.1 b/mmc.1
+index e153557..b98b63f 100644
+--- a/mmc.1
++++ b/mmc.1
+@@ -192,6 +192,9 @@ Run Field Firmware Update with \fIimage\-file\-name\fR on the device.
+ .br
+ if [\fIchunk\-bytes\fR] is omitted, mmc-utils will try to run ffu using the largest possible chunks: max(image-file, 512k).
+ .TP
++.BI ffu2 " \fIimage\-file\-name\fR " " \fIdevice\fR " " [\fIchunk\-bytes\fR]
++Same as 'ffu', but uses CMD23+CMD25 for repeated downloads and remains in FFU mode until completion.
++.TP
+ .BI erase " " \fItype\fR " " \fIstart-address\fR " " \fIend\-address\fR " " \fIdevice\fR
+ Send Erase CMD38 with specific argument to the device.
+ .br
+diff --git a/mmc.c b/mmc.c
+index 2c5b9b5..f1d98e6 100644
+--- a/mmc.c
++++ b/mmc.c
+@@ -234,6 +234,11 @@ static struct Command commands[] = {
+ 		"should be in decimal bytes and sector aligned.\n",
+ 	  NULL
+ 	},
++	{ do_ffu2, -2,
++	  "ffu2", "<image name> <device> [chunk-bytes]\n"
++		"Same as 'ffu', but uses CMD23+CMD25 for repeated downloads and remains in FFU mode until completion.\n",
++	  NULL
++	},
+ 	{ do_erase, -4,
+ 	"erase", "<type> " "<start address> " "<end address> " "<device>\n"
+ 		"Send Erase CMD38 with specific argument to the <device>\n\n"
 diff --git a/mmc_cmds.c b/mmc_cmds.c
-index 3b1bcf4..72921a7 100644
+index 72921a7..b507bff 100644
 --- a/mmc_cmds.c
 +++ b/mmc_cmds.c
-@@ -29,6 +29,7 @@
- #include <stdint.h>
- #include <assert.h>
- #include <linux/fs.h> /* for BLKGETSIZE */
-+#include <stdbool.h>
- 
- #include "mmc.h"
- #include "mmc_cmds.h"
-@@ -2810,15 +2811,13 @@ out:
- 	return ret;
+@@ -2812,21 +2812,55 @@ out:
  }
  
--static void set_ffu_single_cmd(struct mmc_ioc_multi_cmd *multi_cmd,
--			       __u8 *ext_csd, unsigned int bytes, __u8 *buf,
--			       off_t offset)
-+static void set_ffu_download_cmd(struct mmc_ioc_multi_cmd *multi_cmd, __u8 *ext_csd,
-+				unsigned int bytes, __u8 *buf, off_t offset)
+ static void set_ffu_download_cmd(struct mmc_ioc_multi_cmd *multi_cmd, __u8 *ext_csd,
+-				unsigned int bytes, __u8 *buf, off_t offset)
++				unsigned int bytes, __u8 *buf, off_t offset, __u8 ffu_mode)
  {
  	__u32 arg = per_byte_htole32(&ext_csd[EXT_CSD_FFU_ARG_0]);
  
- 	/* send block count */
--	set_single_cmd(&multi_cmd->cmds[1], MMC_SET_BLOCK_COUNT, 0, 0,
--		       bytes / 512);
-+	set_single_cmd(&multi_cmd->cmds[1], MMC_SET_BLOCK_COUNT, 0, 0, bytes / 512);
- 	multi_cmd->cmds[1].flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_AC;
+-	/* send block count */
+-	set_single_cmd(&multi_cmd->cmds[1], MMC_SET_BLOCK_COUNT, 0, 0, bytes / 512);
+-	multi_cmd->cmds[1].flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_AC;
++	if (ffu_mode == 1) {
++		/* send block count */
++		set_single_cmd(&multi_cmd->cmds[1], MMC_SET_BLOCK_COUNT, 0, 0, bytes / 512);
++		multi_cmd->cmds[1].flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_AC;
++
++		/*
++		 * send image chunk: blksz and blocks essentially do not matter, as
++		 * long as the product is fw_size, but some hosts don't handle larger
++		 * blksz well.
++		 */
++		set_single_cmd(&multi_cmd->cmds[2], MMC_WRITE_MULTIPLE_BLOCK, 1, bytes / 512, arg);
++		mmc_ioc_cmd_set_data(multi_cmd->cmds[2], buf + offset);
++	} else if (ffu_mode == 2) {
++		set_single_cmd(&multi_cmd->cmds[0], MMC_SET_BLOCK_COUNT, 0, 0, bytes / 512);
++		multi_cmd->cmds[0].flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_AC;
++		set_single_cmd(&multi_cmd->cmds[1], MMC_WRITE_MULTIPLE_BLOCK, 1, bytes / 512, arg);
++		mmc_ioc_cmd_set_data(multi_cmd->cmds[1], buf + offset);
++	}
++}
++static int enter_ffu_mode(int *dev_fd)
++{
++       int ret;
++       struct mmc_ioc_cmd cmd;
++       memset(&cmd, 0, sizeof(cmd));
  
- 	/*
-@@ -2826,23 +2825,141 @@ static void set_ffu_single_cmd(struct mmc_ioc_multi_cmd *multi_cmd,
- 	 * long as the product is fw_size, but some hosts don't handle larger
- 	 * blksz well.
- 	 */
--	set_single_cmd(&multi_cmd->cmds[2], MMC_WRITE_MULTIPLE_BLOCK, 1,
--		       bytes / 512, arg);
-+	set_single_cmd(&multi_cmd->cmds[2], MMC_WRITE_MULTIPLE_BLOCK, 1, bytes / 512, arg);
- 	mmc_ioc_cmd_set_data(multi_cmd->cmds[2], buf + offset);
+-	/*
+-	 * send image chunk: blksz and blocks essentially do not matter, as
+-	 * long as the product is fw_size, but some hosts don't handle larger
+-	 * blksz well.
+-	 */
+-	set_single_cmd(&multi_cmd->cmds[2], MMC_WRITE_MULTIPLE_BLOCK, 1, bytes / 512, arg);
+-	mmc_ioc_cmd_set_data(multi_cmd->cmds[2], buf + offset);
++       fill_switch_cmd(&cmd, EXT_CSD_MODE_CONFIG, EXT_CSD_FFU_MODE);
++       ret = ioctl(*dev_fd, MMC_IOC_CMD, &cmd);
++       if (ret)
++               perror("enter FFU mode faled\n");
++
++       return ret;
++}
++
++static int exit_ffu_mode(int *dev_fd)
++{
++       int ret;
++       struct mmc_ioc_cmd cmd;
++       memset(&cmd, 0, sizeof(cmd));
++
++       fill_switch_cmd(&cmd, EXT_CSD_MODE_CONFIG, EXT_CSD_NORMAL_MODE);
++       ret = ioctl(*dev_fd, MMC_IOC_CMD, &cmd);
++       if (ret)
++               perror("exit FFU mode faled\n");
++
++       return ret;
  }
  
-+static int get_ffu_sectors_programmed(int *dev_fd, __u8 *ext_csd)
-+{
-+	int ret;
-+
-+	ret = read_extcsd(*dev_fd, ext_csd);
-+	if (ret) {
-+		fprintf(stderr, "Could not read EXT_CSD\n");
-+		return ret;
-+	}
-+
-+	ret = per_byte_htole32((__u8 *)&ext_csd[EXT_CSD_NUM_OF_FW_SEC_PROG_0]);
-+
-+	return ret;
-+}
-+
-+static bool ffu_is_supported(__u8 *ext_csd, char *device)
-+{
-+	if (ext_csd == NULL) {
-+		fprintf(stderr, "ext_cst is NULL\n");
-+		return false;
-+	}
-+
-+	if (ext_csd[EXT_CSD_REV] < EXT_CSD_REV_V5_0) {
-+		fprintf(stderr, "The FFU feature is only available on devices >= "
-+			"MMC 5.0, not supported in %s\n", device);
-+		return false;
-+	}
-+
-+	if (!(ext_csd[EXT_CSD_SUPPORTED_MODES] & EXT_CSD_FFU)) {
-+		fprintf(stderr, "FFU is not supported in %s\n", device);
-+		return false;
-+	}
-+
-+	if (ext_csd[EXT_CSD_FW_CONFIG] & EXT_CSD_UPDATE_DISABLE) {
-+		fprintf(stderr, "Firmware update was disabled in %s\n", device);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+static int do_ffu_download(int *dev_fd, __u8 *ext_csd, __u8 *fw_buf, off_t fw_size,
-+							unsigned int chunk_size)
-+{
-+	int ret;
-+	__u8 num_of_cmds = 4;
-+	off_t bytes_left, off;
-+	unsigned int bytes_per_loop, sect_done, retry = 3;
-+	struct mmc_ioc_multi_cmd *multi_cmd = NULL;
-+
-+	if (!dev_fd || !fw_buf || !ext_csd) {
-+		fprintf(stderr, "unexpected NULL pointer\n");
-+		return -EINVAL;
-+	}
-+	/* allocate maximum required */
-+	multi_cmd = calloc(1, sizeof(struct mmc_ioc_multi_cmd) + num_of_cmds * sizeof(struct mmc_ioc_cmd));
-+	if (!multi_cmd) {
-+		perror("failed to allocate memory");
-+		return -ENOMEM;
-+	}
-+
-+	/* prepare multi_cmd for FFU based on cmd to be used */
-+	/* put device into ffu mode */
-+	fill_switch_cmd(&multi_cmd->cmds[0], EXT_CSD_MODE_CONFIG, EXT_CSD_FFU_MODE);
-+
-+	/* return device into normal mode */
-+	fill_switch_cmd(&multi_cmd->cmds[3], EXT_CSD_MODE_CONFIG, EXT_CSD_NORMAL_MODE);
-+
-+do_retry:
-+	bytes_left = fw_size;
-+	off = 0;
-+	multi_cmd->num_of_cmds = num_of_cmds;
-+
-+	while (bytes_left) {
-+		bytes_per_loop = bytes_left < chunk_size ? bytes_left : chunk_size;
-+
-+		/* prepare multi_cmd for FFU based on cmd to be used */
-+		set_ffu_download_cmd(multi_cmd, ext_csd, bytes_per_loop, fw_buf, off);
-+
-+		/* send ioctl with multi-cmd, download firmware bundle */
-+		ret = ioctl(*dev_fd, MMC_IOC_MULTI_CMD, multi_cmd);
-+
-+		if (ret) {
-+			perror("Multi-cmd ioctl");
-+			/*
-+			 * In case multi-cmd ioctl failed before exiting from
-+			 * ffu mode
-+			 */
-+			ioctl(*dev_fd, MMC_IOC_CMD, &multi_cmd->cmds[3]);
-+			goto out;
-+		}
-+
-+		sect_done = get_ffu_sectors_programmed(dev_fd, ext_csd);
-+		if (sect_done <= 0) {
-+			/* By spec, host should re-start download from the first sector if sect_done is 0 */
-+			ioctl(*dev_fd, MMC_IOC_CMD, &multi_cmd->cmds[3]);
-+			if (retry > 0) {
-+				retry--;
-+				fprintf(stderr, "Programming failed. Retrying... (%d)\n", retry);
-+				goto do_retry;
-+			}
-+			fprintf(stderr, "Programming failed! Aborting...\n");
-+			ret = sect_done;
-+			goto out;
-+		} else {
-+			fprintf(stderr, "Programmed %d/%jd bytes\r", sect_done * 512, (intmax_t)fw_size);
-+		}
-+
-+		bytes_left -= bytes_per_loop;
-+		off += bytes_per_loop;
-+	}
-+
-+	ret = get_ffu_sectors_programmed(dev_fd, ext_csd);
-+out:
-+	free(multi_cmd);
-+	return ret;
-+
-+}
-+
- int do_ffu(int nargs, char **argv)
+ static int get_ffu_sectors_programmed(int *dev_fd, __u8 *ext_csd)
+@@ -2871,7 +2905,7 @@ static bool ffu_is_supported(__u8 *ext_csd, char *device)
+ }
+ 
+ static int do_ffu_download(int *dev_fd, __u8 *ext_csd, __u8 *fw_buf, off_t fw_size,
+-							unsigned int chunk_size)
++							unsigned int chunk_size, __u8 ffu_mode)
  {
-+	off_t fw_size;
-+	char *device;
-+	int sect_done = 0;
- 	int dev_fd, img_fd;
--	int retry = 3, ret = -EINVAL;
-+	int ret = -EINVAL;
- 	unsigned int sect_size;
- 	__u8 ext_csd[512];
--	__u8 *buf = NULL;
--	off_t fw_size, bytes_left, off;
--	char *device;
-+	__u8 *fw_buf = NULL;
- 	struct mmc_ioc_multi_cmd *multi_cmd = NULL;
- 	unsigned int default_chunk = MMC_IOC_MAX_BYTES;
--	__u32 sect_done = 0;
- 
- 	assert (nargs == 3 || nargs == 4);
- 
-@@ -2852,6 +2969,7 @@ int do_ffu(int nargs, char **argv)
- 		perror("device open failed");
- 		exit(1);
+ 	int ret;
+ 	__u8 num_of_cmds = 4;
+@@ -2883,6 +2917,10 @@ static int do_ffu_download(int *dev_fd, __u8 *ext_csd, __u8 *fw_buf, off_t fw_si
+ 		fprintf(stderr, "unexpected NULL pointer\n");
+ 		return -EINVAL;
  	}
 +
- 	img_fd = open(argv[1], O_RDONLY);
- 	if (img_fd < 0) {
- 		perror("image open failed");
-@@ -2859,28 +2977,22 @@ int do_ffu(int nargs, char **argv)
- 		exit(1);
- 	}
- 
-+	if (nargs == 4) {
-+		default_chunk = strtol(argv[3], NULL, 10);
-+		if (default_chunk > MMC_IOC_MAX_BYTES || default_chunk % 512) {
-+			fprintf(stderr, "Invalid chunk size");
-+			goto out;
-+		}
-+	}
++	if (ffu_mode != 1) /* in FFU mode 1, mmc_ioc_multi_cmd contains 4 commands */
++		num_of_cmds = 2;
 +
- 	ret = read_extcsd(dev_fd, ext_csd);
- 	if (ret) {
- 		fprintf(stderr, "Could not read EXT_CSD from %s\n", device);
- 		goto out;
- 	}
- 
--	if (ext_csd[EXT_CSD_REV] < EXT_CSD_REV_V5_0) {
--		fprintf(stderr,
--			"The FFU feature is only available on devices >= "
--			"MMC 5.0, not supported in %s\n", device);
--		goto out;
--	}
--
--	if (!(ext_csd[EXT_CSD_SUPPORTED_MODES] & EXT_CSD_FFU)) {
--		fprintf(stderr, "FFU is not supported in %s\n", device);
--		goto out;
--	}
--
--	if (ext_csd[EXT_CSD_FW_CONFIG] & EXT_CSD_UPDATE_DISABLE) {
--		fprintf(stderr, "Firmware update was disabled in %s\n", device);
-+	if (ffu_is_supported(ext_csd, device) != true)
- 		goto out;
--	}
- 
- 	fw_size = lseek(img_fd, 0, SEEK_END);
- 	if (fw_size == 0) {
-@@ -2888,15 +3000,6 @@ int do_ffu(int nargs, char **argv)
- 		goto out;
- 	}
- 
--	/* allocate maximum required */
--	buf = malloc(fw_size);
--	multi_cmd = calloc(1, sizeof(struct mmc_ioc_multi_cmd) +
--				4 * sizeof(struct mmc_ioc_cmd));
--	if (!buf || !multi_cmd) {
--		perror("failed to allocate memory");
--		goto out;
--	}
--
- 	/* ensure fw is multiple of native sector size */
- 	sect_size = (ext_csd[EXT_CSD_DATA_SECTOR_SIZE] == 0) ? 512 : 4096;
- 	if (fw_size % sect_size) {
-@@ -2904,61 +3007,32 @@ int do_ffu(int nargs, char **argv)
- 		goto out;
- 	}
- 
--	if (nargs == 4) {
--		default_chunk = strtol(argv[3], NULL, 10);
--		if (default_chunk > MMC_IOC_MAX_BYTES || default_chunk % 512) {
--			fprintf(stderr, "Invalid chunk size");
--			goto out;
--		}
-+	/* allocate maximum required */
-+	fw_buf = malloc(fw_size);
-+	if (!fw_buf) {
-+		perror("failed to allocate memory");
-+		goto out;
+ 	/* allocate maximum required */
+ 	multi_cmd = calloc(1, sizeof(struct mmc_ioc_multi_cmd) + num_of_cmds * sizeof(struct mmc_ioc_cmd));
+ 	if (!multi_cmd) {
+@@ -2890,14 +2928,12 @@ static int do_ffu_download(int *dev_fd, __u8 *ext_csd, __u8 *fw_buf, off_t fw_si
+ 		return -ENOMEM;
  	}
  
 -	/* prepare multi_cmd for FFU based on cmd to be used */
--
--	multi_cmd->num_of_cmds = 4;
--
 -	/* put device into ffu mode */
--	fill_switch_cmd(&multi_cmd->cmds[0], EXT_CSD_MODE_CONFIG,
--			EXT_CSD_FFU_MODE);
+-	fill_switch_cmd(&multi_cmd->cmds[0], EXT_CSD_MODE_CONFIG, EXT_CSD_FFU_MODE);
 -
 -	/* return device into normal mode */
--	fill_switch_cmd(&multi_cmd->cmds[3], EXT_CSD_MODE_CONFIG,
--			EXT_CSD_NORMAL_MODE);
--
- 	/* read firmware */
- 	lseek(img_fd, 0, SEEK_SET);
--	if (read(img_fd, buf, fw_size) != fw_size) {
-+	if (read(img_fd, fw_buf, fw_size) != fw_size) {
- 		perror("Could not read the firmware file: ");
- 		ret = -ENOSPC;
- 		goto out;
- 	}
+-	fill_switch_cmd(&multi_cmd->cmds[3], EXT_CSD_MODE_CONFIG, EXT_CSD_NORMAL_MODE);
  
--do_retry:
--	bytes_left = fw_size;
--	off = 0;
--	while (bytes_left) {
--		unsigned int chunk_size = bytes_left < default_chunk ?
--					  bytes_left : default_chunk;
--
--		/* prepare multi_cmd for FFU based on cmd to be used */
--		set_ffu_single_cmd(multi_cmd, ext_csd, chunk_size, buf, off);
--
--		/* send ioctl with multi-cmd */
--		ret = ioctl(dev_fd, MMC_IOC_MULTI_CMD, multi_cmd);
-+	sect_done = do_ffu_download((int *)&dev_fd, ext_csd, fw_buf, fw_size, default_chunk);
- 
--		if (ret) {
--			perror("Multi-cmd ioctl");
--			/*
--			 * In case multi-cmd ioctl failed before exiting from
--			 * ffu mode
--			 */
--			ioctl(dev_fd, MMC_IOC_CMD, &multi_cmd->cmds[3]);
--			goto out;
--		}
--
--		bytes_left -= chunk_size;
--		off += chunk_size;
-+	/* Check programmed sectors */
-+	if (sect_done > 0 && (sect_done * 512) == fw_size) {
-+		fprintf(stderr, "Programmed %jd/%jd bytes\n", (intmax_t)fw_size, (intmax_t)fw_size);
-+		fprintf(stderr, "Programming finished with status %d \n", ret);
-+	} else {
-+		fprintf(stderr, "Firmware bundle download failed. Operation status %d\n", sect_done);
-+		ret = -EIO;
+ do_retry:
++
++	if (num_of_cmds != 4 && enter_ffu_mode(dev_fd))
 +		goto out;
- 	}
--
- 	/*
- 	 * By spec - check if mode operation codes are supported in ffu features,
- 	 * if not then skip checking number of sectors programmed after install
-@@ -2969,48 +3043,29 @@ do_retry:
- 		goto out;
- 	}
++
+ 	bytes_left = fw_size;
+ 	off = 0;
+ 	multi_cmd->num_of_cmds = num_of_cmds;
+@@ -2906,7 +2942,7 @@ do_retry:
+ 		bytes_per_loop = bytes_left < chunk_size ? bytes_left : chunk_size;
  
--	ret = read_extcsd(dev_fd, ext_csd);
--	if (ret) {
--		fprintf(stderr, "Could not read EXT_CSD from %s\n", device);
--		goto out;
--	}
--
--	/* Test if we need to restart the download */
--	sect_done = per_byte_htole32(&ext_csd[EXT_CSD_NUM_OF_FW_SEC_PROG_0]);
--	/* By spec, host should re-start download from the first sector if sect_done is 0 */
--	if (sect_done == 0) {
--		if (retry--) {
--			fprintf(stderr, "Programming failed. Retrying... (%d)\n", retry);
--			goto do_retry;
--		}
--		fprintf(stderr, "Programming failed! Aborting...\n");
--		goto out;
--	}
--
--	if ((sect_done * sect_size) == fw_size) {
--		fprintf(stderr, "Programmed %jd/%jd bytes\n", (intmax_t)fw_size, (intmax_t)fw_size);
--		fprintf(stderr, "Programming finished with status %d \n", ret);
--	}
--	else {
--		fprintf(stderr, "FW size and number of sectors written mismatch. Status return %d\n", ret);
-+	fprintf(stderr, "Installing firmware on %s...\n", device);
-+	multi_cmd = calloc(1, sizeof(struct mmc_ioc_multi_cmd) + 2 * sizeof(struct mmc_ioc_cmd));
-+	if (!multi_cmd) {
-+		perror("failed to allocate memory");
-+		ret = -ENOMEM;
- 		goto out;
+ 		/* prepare multi_cmd for FFU based on cmd to be used */
+-		set_ffu_download_cmd(multi_cmd, ext_csd, bytes_per_loop, fw_buf, off);
++		set_ffu_download_cmd(multi_cmd, ext_csd, bytes_per_loop, fw_buf, off, ffu_mode);
+ 
+ 		/* send ioctl with multi-cmd, download firmware bundle */
+ 		ret = ioctl(*dev_fd, MMC_IOC_MULTI_CMD, multi_cmd);
+@@ -2917,7 +2953,7 @@ do_retry:
+ 			 * In case multi-cmd ioctl failed before exiting from
+ 			 * ffu mode
+ 			 */
+-			ioctl(*dev_fd, MMC_IOC_CMD, &multi_cmd->cmds[3]);
++			exit_ffu_mode(dev_fd);
+ 			goto out;
+ 		}
+ 
+@@ -2941,6 +2977,9 @@ do_retry:
+ 		off += bytes_per_loop;
  	}
  
--	fprintf(stderr, "Installing firmware on %s...\n", device);
- 	/* Re-enter ffu mode and install the firmware */
- 	multi_cmd->num_of_cmds = 2;
--
--	/* set ext_csd to install mode */
--	fill_switch_cmd(&multi_cmd->cmds[1], EXT_CSD_MODE_OPERATION_CODES,
--			EXT_CSD_FFU_INSTALL);
-+	/* put device into ffu mode */
-+	fill_switch_cmd(&multi_cmd->cmds[0], EXT_CSD_MODE_CONFIG, EXT_CSD_FFU_MODE);
-+	/* Re-enter ffu mode and set ext_csd to install mode */
-+	fill_switch_cmd(&multi_cmd->cmds[1], EXT_CSD_MODE_OPERATION_CODES, EXT_CSD_FFU_INSTALL);
- 
- 	/* send ioctl with multi-cmd */
- 	ret = ioctl(dev_fd, MMC_IOC_MULTI_CMD, multi_cmd);
- 
- 	if (ret) {
- 		perror("Multi-cmd ioctl failed setting install mode");
-+		fill_switch_cmd(&multi_cmd->cmds[1], EXT_CSD_MODE_CONFIG, EXT_CSD_NORMAL_MODE);
- 		/* In case multi-cmd ioctl failed before exiting from ffu mode */
--		ioctl(dev_fd, MMC_IOC_CMD, &multi_cmd->cmds[3]);
-+		ioctl(dev_fd, MMC_IOC_CMD, &multi_cmd->cmds[1]);
- 		goto out;
- 	}
- 
-@@ -3022,16 +3077,16 @@ do_retry:
- 
- 	/* return status */
- 	ret = ext_csd[EXT_CSD_FFU_STATUS];
--	if (ret) {
-+	if (ret)
- 		fprintf(stderr, "%s: error %d during FFU install:\n", device, ret);
--		goto out;
--	} else {
-+	else
- 		fprintf(stderr, "FFU finished successfully\n");
--	}
- 
++	if (num_of_cmds != 4 && exit_ffu_mode(dev_fd))
++		goto out;
++
+ 	ret = get_ffu_sectors_programmed(dev_fd, ext_csd);
  out:
--	free(buf);
--	free(multi_cmd);
-+	if (fw_buf)
-+		free(fw_buf);
-+	if (multi_cmd)
-+		free(multi_cmd);
- 	close(img_fd);
- 	close(dev_fd);
+ 	free(multi_cmd);
+@@ -2948,7 +2987,8 @@ out:
+ 
+ }
+ 
+-int do_ffu(int nargs, char **argv)
++
++static int __do_ffu(int nargs, char **argv, __u8 ffu_mode)
+ {
+ 	off_t fw_size;
+ 	char *device;
+@@ -3022,7 +3062,7 @@ int do_ffu(int nargs, char **argv)
+ 		goto out;
+ 	}
+ 
+-	sect_done = do_ffu_download((int *)&dev_fd, ext_csd, fw_buf, fw_size, default_chunk);
++	sect_done = do_ffu_download((int *)&dev_fd, ext_csd, fw_buf, fw_size, default_chunk, ffu_mode);
+ 
+ 	/* Check programmed sectors */
+ 	if (sect_done > 0 && (sect_done * 512) == fw_size) {
+@@ -3092,6 +3132,14 @@ out:
  	return ret;
+ }
+ 
++int do_ffu(int nargs, char **argv) {
++	return __do_ffu(nargs, argv, 1);
++}
++
++int do_ffu2(int nargs, char **argv) {
++	return __do_ffu(nargs, argv, 2);
++}
++
+ int do_general_cmd_read(int nargs, char **argv)
+ {
+ 	int dev_fd;
+diff --git a/mmc_cmds.h b/mmc_cmds.h
+index 5f2bef1..81364f4 100644
+--- a/mmc_cmds.h
++++ b/mmc_cmds.h
+@@ -42,6 +42,7 @@ int do_rpmb_write_block(int nargs, char **argv);
+ int do_cache_en(int nargs, char **argv);
+ int do_cache_dis(int nargs, char **argv);
+ int do_ffu(int nargs, char **argv);
++int do_ffu2(int nargs, char **argv);
+ int do_read_scr(int argc, char **argv);
+ int do_read_cid(int argc, char **argv);
+ int do_read_csd(int argc, char **argv);
 -- 
 2.34.1
 
