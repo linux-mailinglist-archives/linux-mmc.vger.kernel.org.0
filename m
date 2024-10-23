@@ -1,166 +1,175 @@
-Return-Path: <linux-mmc+bounces-4452-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4457-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B979AC669
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2024 11:28:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B009ACD90
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2024 16:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 122B41C210E1
-	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2024 09:28:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A8E1C255BA
+	for <lists+linux-mmc@lfdr.de>; Wed, 23 Oct 2024 14:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1367719ADAA;
-	Wed, 23 Oct 2024 09:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7741E2610;
+	Wed, 23 Oct 2024 14:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bHQ2gViK"
+	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="o6Kw6JU+";
+	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="gc9LCj28"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.160])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46912145323;
-	Wed, 23 Oct 2024 09:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729675691; cv=none; b=ShweOX9RTnuSPy389yAmQ35sO+tPD/9EawkMFM3Bbt9c8OxPgjnB3OU2oCaglzV6aym5i7qEsRq72nCmZMQRDckl0plJtj0/dCagwhP9qxc+LbaL45xEGuL6jN7Eq6rlfUByIMeWtmlv7By2MBvaDLB50nBC4zbp7pzVatV63rI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729675691; c=relaxed/simple;
-	bh=3uGqvu1Ej5ubfR28oRtrKkgKiPTsTNphLMCiEe3h7cU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NeMeo0SR2HbhQGfkoL2ei2d+xwdatrNYpu06bWIz3zto7QPcgxPrxDS7SgyQgcMSE33V4BM/R/iI9cfEjdHvruHAe8+1w3V86EJiRzX6C78+0nAfrkyPOtDFNELk/j6LaawkG3MbtdnIBfCnGyLF6GQzQBdRlc51VtNoJ8cPtdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bHQ2gViK; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49MLa12E032117;
-	Wed, 23 Oct 2024 09:28:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=0zcOS3vwAB9
-	86vCIVBrctvyeC9FGKnHLF6qnxLRHULw=; b=bHQ2gViKAwOLV856D++W9VzIrcn
-	9C5+oX/8XDgwcL5y6VOZZ/iaiXv1r00pYjUA05JBkG8cl8E/ASImq+BK1kFXSWmV
-	aM1ylwE0dkLmfWxFaiUrulYG8mLdH4U1dCVWG5CK1/LZICszYgg03w2DueImF+TQ
-	lgBXy1FqLc1I/ccNwlmgyiudvH2rIYrZlVtrT/J47vPd3Mx+R8smfkP9ve3FTlFL
-	d9hn0BdxfzfG3z+5SZvQAUXhr7z7PUPai6UK8rU0MxNZ25D7Mhdkcf5PtwLM3oWo
-	XZZsQOM1eUZtd6pkJb/kesN4fhC3H8L6n8QokN0e4lt0IZgt3Ji0WI0pcBA==
-Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em3vsnv5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Oct 2024 09:28:05 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 49N9S4sm006099;
-	Wed, 23 Oct 2024 09:28:04 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 42cqceqjjk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Oct 2024 09:28:04 +0000
-Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49N9S3Ce006094;
-	Wed, 23 Oct 2024 09:28:03 GMT
-Received: from cse-cd02-lnx.ap.qualcomm.com (cse-cd02-lnx.qualcomm.com [10.64.75.246])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 49N9S2fO006075
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Oct 2024 09:28:03 +0000
-Received: by cse-cd02-lnx.ap.qualcomm.com (Postfix, from userid 4571896)
-	id 836F9137E; Wed, 23 Oct 2024 17:28:01 +0800 (CST)
-From: Yuanjie Yang <quic_yuanjiey@quicinc.com>
-To: ulf.hansson@linaro.org, robh@kernel.org, krzk+dt@kernel.org,
-        conor+dt@kernel.org, bhupesh.sharma@linaro.org, andersson@kernel.org,
-        konradybcio@kernel.org
-Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        quic_tingweiz@quicinc.com, Yuanjie Yang <quic_yuanjiey@quicinc.com>
-Subject: [PATCH v1 3/3] arm64: dts: qcom: qcs615-ride: Enable SD and emmc node
-Date: Wed, 23 Oct 2024 17:27:08 +0800
-Message-Id: <20241023092708.604195-4-quic_yuanjiey@quicinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034361E2606
+	for <linux-mmc@vger.kernel.org>; Wed, 23 Oct 2024 14:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.160
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729694518; cv=pass; b=Surg+ZjL5ITNnx6FbGZFX2E1TkFHEEQh455CcnMRGCcT2NEcJYgLjiVtE+T8OOedi+CGG8YRyy3nZEJb1+we4YRt3n5OX5XcyJK3bsoQ5tTjm9r+rCyU6mY5USehH0oiGG1NRJKeuZm4J3mC5TgvcA5WQ0hJSNzgxtav9CLJb1E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729694518; c=relaxed/simple;
+	bh=J7Bfl+7hquDBF91RxmHwA6GI4xGbfnC6bhT2hnlxnHU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=JKaglRez2zD/9hJZ1ciwZbo6kWKRESWpr8HdrYP7XrUYRXCe+MzNiCQDJAxmMfUMBSheQv/mezszPcioMMb06piq2YqARq+FacJWvP0ZuRl0APYJaQXCRrZzk021i2y13r6cdewalDmTsbZiN1txr3c++LjVZMRAXvGIZY0S49w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=o6Kw6JU+; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=gc9LCj28; arc=pass smtp.client-ip=81.169.146.160
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=iokpp.de
+ARC-Seal: i=1; a=rsa-sha256; t=1729694329; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=LPrJZPvL+5LmWZVZ/vDQN7jcfviV7r3N3/JpE+twdKNQdB41uv+WTBGCD+j3N23rLl
+    xMf4+5ab7MeLg+kpM/buyzKoW6AJyzIqp6fOyBitWSz/S/vIV1utnUTXIVrrl/VuKdqX
+    XQIo2W336Jbrv8wbF7azHMGT523McThTkEj4tLB8u9Zu0x87ydXkcYEnZHCvLha2vyrd
+    gBWV1UOVMwEMa8ui6NCRnj3NJF/FcPoPfUQeG83FUtHZjNRqnXRj09Bhunud/rAN1hGs
+    HauBkcTH1vAdqkQ/ohegREHi9U+p8JaljQNlPjUIYMIJdt2vgAtPQJAIpeSlH1HisICL
+    M6KQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1729694329;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=2CHizuN/dbjj3UAK+J4sPeWTuQT7n/7DZDpBofVhcm8=;
+    b=OBzKdV5LXtenppaxsSUFiX9lUgVgUU6txNK6bhxmQnZyjY+ZzpLOsMWuxkcddbEvDM
+    thTHoKQDldNER3N+csahn2BsTZd8WYHva+M2tTAbvzQBs6vR6+BiIwG87fCdVMpKaeCm
+    t1RF20o8hla/5+ouFGf/YpOcRiogHnXHwMqogvPbywZvBRTVpyighaDJ22UtVATzl7Ft
+    uDavtsWOOeuY6f09nV7vUzeZkFzUSGFze/Aw+XsQYPLS1UOKQfXNZqahQjRoQFhHjM5W
+    tYITc35BrF9obzNlGobXCagnyniVerYGllKedPEiKbcYdA4YN4sGw9orBrwhjJvJ3oq0
+    6eLQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1729694329;
+    s=strato-dkim-0002; d=iokpp.de;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=2CHizuN/dbjj3UAK+J4sPeWTuQT7n/7DZDpBofVhcm8=;
+    b=o6Kw6JU+2KVWYDCFnzrYAWoe9MvwKMwbbPySdI8o0Hau2thg10RVq99yRGBbfP9B8Y
+    WLghfiYxsUGG5+9HkLyPRiCidbfnUocF7ePua+h7v8jAJOV/FA+6L1gt+Evw9/vOdolQ
+    tKYE/9UubFrvU2zxiolehTa2fcVUhP/rPABzA4zvUlTJr/oMpgbQ6X5ZTGdH4Wjch2BZ
+    ZraVBHvx0GQsLmditForLHT21XVfp+Hqpdzem712pURnDyCRdWQBmWahg/aDoQPaD6N5
+    l/FZ8I0hjSgf8j5Nk7t4Ju+6iWzBFie4iyLgVnF4IXS2AP3YYtwHqXEBslmULMwZoszT
+    wluA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1729694329;
+    s=strato-dkim-0003; d=iokpp.de;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=2CHizuN/dbjj3UAK+J4sPeWTuQT7n/7DZDpBofVhcm8=;
+    b=gc9LCj28gI7cXTiZjG5IkdoUFZyXzuhceIEhEXkY1KHMA8bMRccwrUiuog9ZDeAUYd
+    P8IKagmDRGrrh/zpilBA==
+X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSfNuhhDSDt3O2J2YOom0XQaPis+nU/xK"
+Received: from Munilab01-lab.micron.com
+    by smtp.strato.de (RZmta 51.2.11 AUTH)
+    with ESMTPSA id za0ed209NEcmTm7
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 23 Oct 2024 16:38:48 +0200 (CEST)
+From: Bean Huo <beanhuo@iokpp.de>
+To: avri.altman@wdc.com,
+	ulf.hansson@linaro.org,
+	linux-mmc@vger.kernel.org,
+	vfazio@xes-inc.com
+Cc: Bean Huo <beanhuo@iokpp.de>
+Subject: [PATCH v4 0/5] Add multiple FFU modes in mmc-utils based on eMMC specification 6.6.18 for flexible firmware updates
+Date: Wed, 23 Oct 2024 16:38:34 +0200
+Message-Id: <20241023143839.108572-1-beanhuo@iokpp.de>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241023092708.604195-1-quic_yuanjiey@quicinc.com>
-References: <20241023092708.604195-1-quic_yuanjiey@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: nCk8um1MtyLi1fI16ZGRkuSwJTkjvyOd
-X-Proofpoint-ORIG-GUID: nCk8um1MtyLi1fI16ZGRkuSwJTkjvyOd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- malwarescore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
- mlxlogscore=946 priorityscore=1501 mlxscore=0 suspectscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410230058
 
-Enable SD and emmc on the Qualcomm QCS615 Ride platform.
+Following the discussions with Avri at the 2024 ALPSS, I am submitting these patches to
+introduce multiple FFU modes, as defined in the eMMC specification 6.6.18.
 
-Signed-off-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
----
- arch/arm64/boot/dts/qcom/qcs615-ride.dts | 31 ++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+The new FFU implementation can support diverse vendor requirements and operational conditions.
+The key benefits include:
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs615-ride.dts b/arch/arm64/boot/dts/qcom/qcs615-ride.dts
-index 4ef969a6af15..7a5d0a3e725c 100644
---- a/arch/arm64/boot/dts/qcom/qcs615-ride.dts
-+++ b/arch/arm64/boot/dts/qcom/qcs615-ride.dts
-@@ -5,6 +5,7 @@
- /dts-v1/;
- 
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-+#include <dt-bindings/gpio/gpio.h>
- #include "qcs615.dtsi"
- / {
- 	model = "Qualcomm Technologies, Inc. QCS615 Ride";
-@@ -12,6 +13,8 @@ / {
- 	chassis-type = "embedded";
- 
- 	aliases {
-+		mmc0 = &sdhc_1;
-+		mmc1 = &sdhc_2;
- 		serial0 = &uart0;
- 	};
- 
-@@ -213,6 +216,34 @@ &rpmhcc {
- 	clocks = <&xo_board_clk>;
- };
- 
-+&sdhc_1 {
-+	pinctrl-0 = <&sdc1_state_on>;
-+	pinctrl-1 = <&sdc1_state_off>;
-+	pinctrl-names = "default", "sleep";
-+
-+	vmmc-supply = <&vreg_l17a>;
-+	vqmmc-supply = <&vreg_s4a>;
-+
-+	non-removable;
-+	no-sd;
-+	no-sdio;
-+
-+	status = "okay";
-+};
-+
-+&sdhc_2 {
-+	pinctrl-0 = <&sdc2_state_on>;
-+	pinctrl-1 = <&sdc2_state_off>;
-+	pinctrl-names = "default", "sleep";
-+
-+	cd-gpios = <&tlmm 99 GPIO_ACTIVE_LOW>;
-+
-+	vmmc-supply = <&vreg_l10a>;
-+	vqmmc-supply = <&vreg_l2a>;
-+
-+	status = "okay";
-+};
-+
- &uart0 {
- 	status = "okay";
- };
+1, The host can select the most appropriate update mode based on device capabilities and
+firmware size.
+2, The patches ensure that firmware downloads are treated as a single, uninterrupted operation,
+preventing partial updates that could compromise device stability.
+3, Some new modes keep the device in FFU mode throughout the process, reducing the risk of
+premature exits and update failures.
+
+By supporting these modes, we can better accommodate varying firmware sizes and ensure smoother,
+more reliable firmware updates across different scenarios.
+
+
+Summary of Changes:
+
+FFU mode 1:
+Uses CMD6 to enter FFU mode, CMD23 to set the block count, CMD25 for multiple-block write, and
+CMD6 to exit FFU mode. This mode may exit FFU mode during the download if the firmware size exceeds
+the chunk size.
+
+FFU mode 2:
+Similar to mode 1, but repeats CMD23+CMD25 for each chunk, ensuring FFU mode is maintained
+throughout the firmware download. FFU mode is only exited after the entire firmware has been
+successfully downloaded.
+
+FFU mode 3: use CMD25+CMD12 for open-ended multiple-block write
+Introduces a method using CMD25 for open-ended multiple-block writes followed by CMD12 to stop
+the transmission. This allows for a smoother and more continuous firmware bundle download.
+
+FFU mode 4: use CMD6 and CMD24 for single-block write
+A new mode that uses CMD6 to enter FFU mode, CMD24 for single-block writes, and CMD6 to exit FFU
+mode after each write cycle. This ensures granular control over each block but may introduce more
+frequent mode transitions.
+
+FFU mode 5: use CMD6 and repeated CMD24 sequence
+In this mode, CMD6 is used to enter FFU mode, followed by repeated CMD24 single-block writes.
+After all firmware data is written, CMD6 is used to exit FFU mode, ensuring an atomic and
+uninterrupted download process.
+
+
+Changelog:
+
+ v1 -- v2:
+ 	1. Added memset() to clean command structure
+ v2 -- V3:
+ 	1. Refactor patch, and remove ffu dedicated file mmc_ffu.c
+ v3 -- v4:
+ 	1. Incorporated Avri’s comments
+	2. Due to "ERROR: in command 'ffu', 'ffu' is ambiguous" when using "mmc ffu", update
+	   default FFU mode 'ffu' to 'ffu1'
+
+
+
+Bean Huo (5):
+  mmc-utils: Refactor common FFU code into functions to support
+    additional FFU modes
+  mmc-utils: Add FFU mode 2
+  mmc-utils: Add new FFU mode using CMD25+CMD12 for Open-ended write
+    download FW
+  mmc-utils: Add FFU mode 4 that uses CMD6 and CMD24 single-block write
+    to download firmware
+  mmc-utils: Add FFU mode 5 for firmware download using repeated CMD24
+    single-block write command
+
+ mmc.1      |  14 +-
+ mmc.c      |  24 ++-
+ mmc.h      |   1 +
+ mmc_cmds.c | 480 +++++++++++++++++++++++++++++++++++++----------------
+ mmc_cmds.h |   6 +-
+ 5 files changed, 381 insertions(+), 144 deletions(-)
+
 -- 
 2.34.1
 
