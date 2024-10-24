@@ -1,191 +1,211 @@
-Return-Path: <linux-mmc+bounces-4487-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4493-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E299AF35B
-	for <lists+linux-mmc@lfdr.de>; Thu, 24 Oct 2024 22:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2559AF385
+	for <lists+linux-mmc@lfdr.de>; Thu, 24 Oct 2024 22:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04B2F280208
-	for <lists+linux-mmc@lfdr.de>; Thu, 24 Oct 2024 20:09:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CBD12848A6
+	for <lists+linux-mmc@lfdr.de>; Thu, 24 Oct 2024 20:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4205E1E3DF2;
-	Thu, 24 Oct 2024 20:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D8721732C;
+	Thu, 24 Oct 2024 20:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="kDbvvuXg";
-	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="CgCp4s3m"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="rlrONhmw"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.163])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CACF22B67B
-	for <linux-mmc@vger.kernel.org>; Thu, 24 Oct 2024 20:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.163
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729800549; cv=pass; b=h+0KTF+m28YMVXVO431iceJK0qSUK1RZBrDzoQTXXB+MhWjV++IGHfoh8/wSvqfmQVumwGsOUzi9+S0kgJJN/kjU+JZK4qw+0B1LFQSnYi18AFz8Iroxnqe+Cs7gF6wClh0PxAV9KKndmIQRxQuDRIN3JItwLdwGlm+BirZTxC4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729800549; c=relaxed/simple;
-	bh=y9Ze0Rs/RrlEOSiDikKHf8VnLppfPHVvMpp7OvvXLoU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sjkThtKXIWFTulq1jg22EhiwF/JCRRQSPPN9PEGjKD8vOof0kqDWWAebWA3H0+4GPABSRAX5MqaQ3SCTOu5Qib84TM0H23NUlXkqIczLUpRiUg/QbnZARHeVMyXper6SOvQyOkkwurefDpCr+p7xwbQ//z9I6QJbUjY85chIEwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=kDbvvuXg; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=CgCp4s3m; arc=pass smtp.client-ip=81.169.146.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=iokpp.de
-ARC-Seal: i=1; a=rsa-sha256; t=1729800536; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=hJIjj9EEoNZyvo7wTIpvNr2NOlZEqfAdazSNZxQET+m1cnQT1dARtpQR9/msYVVqNn
-    7rKPev80ZCw212fA2kYmJVnlFXyrEt0NHRdQalKac78UMa63IqgKYkGexLBl6cgEzOmX
-    vYJTjHYfdGYSBLoiY+qVZ5lpIc+wg/cykcjEvBCRueOQhu44ALmzRiOLWSi8P/kXf6EJ
-    uq5JiEnFOCO4raeNLveT2zsG029FrKeajEuSGsvBKWud8NdoE70u2RCoG11iMqcwrZZl
-    XruxTOZv0BvfzQp+SBbQHdwttcvhmmagWGdlKwbDelwqO4331Qp5t0z7cKiL/gomh/vc
-    c30Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1729800536;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=y9Ze0Rs/RrlEOSiDikKHf8VnLppfPHVvMpp7OvvXLoU=;
-    b=tCx1lx52naKJMUIbPtGAO+YQKoNQlNQBqtmW2G7kVQdDcg3qpQoNmn0rxmFu8cZH00
-    o72MQL66MoxaSArvUgLLuWfm/o/tVE6BBWIJ8jAUkn9arF5nFhj/vTS+Sg7W43TFEMxf
-    bIwaGmveSEtfskvx6r8K7crKOnmFtErgoTmJ1AAIo2s7JYsTbdqHjBl+NSBaGuRfbRiI
-    yy+/TEtn8zrFpCd+7/PfLou6D60yJ59ak5UlPQzRBA/5aCkRr5RrKRzwP/AA8yceElNd
-    Bxr6lAuOESWzsjdrKSvUM5VowNLv2F9zTnR0g0hQTobttGdhL+NuBoFixnJ0lHa1Wetj
-    BYcg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1729800536;
-    s=strato-dkim-0002; d=iokpp.de;
-    h=References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=y9Ze0Rs/RrlEOSiDikKHf8VnLppfPHVvMpp7OvvXLoU=;
-    b=kDbvvuXg5tEtBcBO+ShSQPrKqF5HbyA9b7sAAXfN1wIvUwzwewkVvQXW5h6cGNvO83
-    swx5N76ZdSzSefVm0TYjVSt69M9aAXGQZWjjyPHpO/41BvRhwPSw7MYo2RefATDX33xc
-    4OFHSAyiSYR3i7hLZmjtTXJFwkzTIBwG1u9AaROxOH1NVnynhGs41leTbp1idchOdprB
-    jg8K74D5aAQBP6hKfVtK2gNuWH9MmBDE9yLuxRk6Qv/zOvX7smS5mWRJGhSONtHbAi5i
-    mJD8B6r4Y+1+qB7f7bwSbpjLwOUuPpyOWwEkdaKgzV9x58YvSEmcA3p5r8+XaElz1f+l
-    zSpQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1729800536;
-    s=strato-dkim-0003; d=iokpp.de;
-    h=References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=y9Ze0Rs/RrlEOSiDikKHf8VnLppfPHVvMpp7OvvXLoU=;
-    b=CgCp4s3mMkBaokJPXtsSrW5Iq+J87UZ03TyIwDecI3zsZv5fZm0SuvTU4LXKtg87ds
-    /aZA9lXC3IfdhyzXLWCg==
-X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSe9tgBDSDt0V0zNriHg+YfT0rGWYpI+wh+kpzZtBynObdN32R3IYC9YTJ7ZVUKg="
-Received: from p200300c58718670d68cbcc3f1f585372.dip0.t-ipconnect.de
-    by smtp.strato.de (RZmta 51.2.11 AUTH)
-    with ESMTPSA id za0ed209OK8uYP6
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 24 Oct 2024 22:08:56 +0200 (CEST)
-Message-ID: <a2ecff531910f11428b6830c8053872c4a6a19c2.camel@iokpp.de>
-Subject: Re: [PATCH v4 2/5] mmc-utils: Add FFU mode 2
-From: Bean Huo <beanhuo@iokpp.de>
-To: Avri Altman <Avri.Altman@wdc.com>, "ulf.hansson@linaro.org"
-	 <ulf.hansson@linaro.org>, "linux-mmc@vger.kernel.org"
-	 <linux-mmc@vger.kernel.org>, "vfazio@xes-inc.com" <vfazio@xes-inc.com>
-Cc: Bean Huo <beanhuo@micron.com>
-Date: Thu, 24 Oct 2024 22:08:55 +0200
-In-Reply-To: <DM6PR04MB6575BEE89D1BB00936AC702AFC4E2@DM6PR04MB6575.namprd04.prod.outlook.com>
-References: <20241023143839.108572-1-beanhuo@iokpp.de>
-	 <20241023143839.108572-3-beanhuo@iokpp.de>
-	 <BL0PR04MB6564794698F1DF0223380CC0FC4E2@BL0PR04MB6564.namprd04.prod.outlook.com>
-	 <eccc31a9689842d711e163a2d4d8b14f97100f83.camel@iokpp.de>
-	 <11ab9fb918d7ceb15c75560086b0b988db2ad24d.camel@iokpp.de>
-	 <DM6PR04MB6575BEE89D1BB00936AC702AFC4E2@DM6PR04MB6575.namprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9A51AF0B4;
+	Thu, 24 Oct 2024 20:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729801149; cv=none; b=SOUwqOWX48JGZRhxPj4mD4f77QnXJGyqss4Uu/CiodK1RH10zcpOc6yjDADUhonbd1EyiYCFM8bANrDIr46FA7SeyHImLnJmTvOhJoBaP2y85Yg3ZLSK6jt3n+zONipuecSzu7/QMtFCC+V27PrP1kQIrOP+VagoSkyL0fmqOQo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729801149; c=relaxed/simple;
+	bh=chFReANjoFbR/EOWjbngDVwAhvRT0iFTXIz7TOSRJ9Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=CAqulrK7/unphW3XCr+1aVOUTPYLA4cqfKnyZL9q6F4Jtdh8d8NsdTP3y4l/CfPJzQwFpZds456NHRf9g4a9vPU2yUPSXOqJo36JTC0rkptKf6tvLXY+qykr67UiEEcNEWnvJZ6J44q/H2ZZt7wl4JMf9KfBdtFfkM1plkhG6i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=rlrONhmw; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1729801124; x=1730405924; i=wahrenst@gmx.net;
+	bh=PtKUSt76TFKjgPtCZaStNyJsHewdsH1Gq+qwbgfGJx8=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=rlrONhmwbFBMDJKoPv7/3S8ucoq8BpWiyXHArNOD0qLSPPtmuOdxfF5EgxBpuKW/
+	 9J8DJigZKKNrYZEXIRBe3yNMRK7QZ/3IsDgwdCCCzu9qZ/mlk4MyXa2VX6wJMGysh
+	 /QzYMnsQWwCIefYg+hkM3LDl1aWPYJUPJBg5daPca9ebtbXurkoK+g7NOCNi9R1gq
+	 MrSRcmaGX7uAwM39FYWcpwLG/7T1q9VujvmfSydAaskfkYtE3wW93Z6MsYMUGl8Pp
+	 +zJQqun4VaiD5Lswu3XuSLtZmBHbkmfpfAb5nIOcmV5Ota2hk1b76GOGtU56pZ2vo
+	 DvQAy9UWLM8c+dRdZw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from stefanw-SCHENKER ([37.4.248.43]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N6KUd-1txFAw4ArR-011077; Thu, 24
+ Oct 2024 22:18:44 +0200
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Minas Harutyunyan <hminas@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Lukas Wunner <lukas@wunner.de>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kernel-list@raspberrypi.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	dmaengine@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH V4 0/9] ARM: bcm2835: Implement initial S2Idle for Raspberry Pi
+Date: Thu, 24 Oct 2024 22:18:28 +0200
+Message-Id: <20241024201837.79927-1-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rosCn8TgOlNX2wametBtbGfMR3eZDUEXXPwiriDu32upykHIbic
+ fmHLinS3U/6xb+TnrijjccDbOy+PuE0qo0vcUD9UtfC9SmhV9YbRTPes6pCbNTV1hbWQboi
+ xmultiPaTtGtOyJy61yd0l119nB0C0do3BVrwBk82iyWX3nTK+yiTZfrGVYxqo9ejRvrGab
+ 6EPxyxEReps4d5ikwEaWA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:YfEKRit8jiw=;FeQV+C8u75T71joCCUHYJpSuo6j
+ dVoyWYKoS64cdQrsUzi0FsUvSdGAk/T1M/7fwBroYoNSLEa8CvbGkhN2+kK91aHnbaEJP1cc3
+ +6ExxHSs9l3GqKSR1Iiu2XQ3nR5gqVuYOAhcLUdqeLwlyvCWr5lhUMOF3GdImaACDmHdFXHqm
+ 8KVM2wa7osHrv0rZ7qIHFwu1SKcDbxL8i/escMhPsDrqWQtqDH1WSiCOgM1GeLsOYtUeW4qHT
+ 70fW0CPWf/gTkkk7cs2UY2V0DYTqoqqO9g1DLnoI48e2b9kjwa9WADZ1JWpJ7iQwq77ApHpYl
+ qV3zzPup9/LVMrMG1CTokPj46b3+jGAwjqMvTtrMRAtYgfnqHLyvWwuT4hO6wp2V5Q6qd8pbd
+ b5fK328iuukzfE+JcB5DEc/QyvfdKGoska/uGfCRQzIRry0IXOK+LOj7T9SDyU9SgxxuVhjT7
+ og0TKRETaSmIHqkL3TEyEmPqJRevP2Hd3qphEJGPHj92gjF3WrZejLVHD9VjBhF4ReXJ+TLFA
+ OrKqYMwBBHk9eeuBMMskVvZfUn4Faj3PyjM7r8X7S7c1YaK2Uwv34TGLQATfujU8laIrFHnrX
+ M09gxJ2Q3L+Tt8MpImar/ZFxBalNlRLwygr0N5KMGYoJRNm44qo8N9deqlqEYEuaPFY3yiTIe
+ hYz/yvcwu2HRRPi3SRchyJs3n8YcDPRlQl4j3dUGIUprkDkShRDP+AyjEV49CKwE5TZ5vEP35
+ t6xQN8THJqHtCSsQNADz33RFMbILsmzCSXtn34T9YzAHWiHb3l+ahvRs265N+Ct8L4gNhU0EF
+ oWEiNGofT+7kXgM7XfobRyDA==
 
-On Thu, 2024-10-24 at 18:19 +0000, Avri Altman wrote:
-> > On Thu, 2024-10-24 at 11:04 +0200, Bean Huo wrote:
-> > > On Thu, 2024-10-24 at 08:00 +0000, Avri Altman wrote:
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { do_ffu, -2,
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "ffu", "<image =
-name> <device> [chunk-bytes]\n"
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { do_ffu1, -2,
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "ffu1", "<image=
- name> <device> [chunk-bytes]\n"
-> > > > Ah, but didn't we establish that the current API should be
-> > > > retained
-> > > > to act as the default mode?
-> > > >=20
-> > > > Thanks,
-> > > > Avri
-> > >=20
-> > > Avri,
-> > >=20
-> > > Corret, the reason for updating the default FFU mode name from
-> > > 'ffu'
-> > > to
-> > > 'ffu1' is to avoid the error: 'ERROR: in command 'ffu', 'ffu' is
-> > > ambiguous' when using 'mmc ffu'. Without this change, the system
-> > > will
-> > > encounter ambiguity.
-> > >=20
-> > >=20
-> > > I am considering a naming scheme like opt_ffu1 and opt_ffu2, that
-> > > works well for maintaining consistency and keeping the names
-> > > concise.
-> > >=20
-> > > ffu2 could become opt_ffu1 (indicating the first optimized or
-> > > alternate FFU mode).
-> > >=20
-> > > ffu3 could become opt_ffu2.
-> > > ffu4 could become opt_ffu3.
-> > > ffu5 could become opt_ffu4.
-> > >=20
-> > > then keep default ffu name as it is used to be.
-> > >=20
-> > > how do you think?
-> > >=20
-> > >=20
-> > >=20
-> > > Kind regards,
-> > > Bean
-> >=20
-> > Avri,
-> >=20
-> > how do you think about above my proposal of changing ffux to
-> > opt_ffux?
-> I don't really have a strong opinion about that.
-> As long as the current mode stay the same.
->=20
-> Thanks,
-> Avri
+This series implement the initial S2Idle support for
+the Raspberry Pi, which was a long time on my TODO list [1]. The
+changes allow to suspend and resume the Raspberry Pi via debug UART.
+The focus is on the BCM2835 SoC, because it's less complex than its
+successors and have enough documentation.
 
+Now the VC4 part has been split from the series [4], because of some issue=
+s
+in that part.
 
-To avoid ambiguity while keeping the default FFU mode as 'ffu', I
-cannot use prefix ffu. I=E2=80=99m considering using the prefix opt_ffu for=
- the
-optional FFU modes. This would allow us to differentiate between the
-default FFU implementation and the various optimized or alternative
-modes without using the "ffu" prefix directly.
+Cherry-picking of patches should be fine.
 
+Test steps:
+- configure debug console (pl011 or mini UART) as wakeup source
+- send system to idle state
 
-opt_ffu1: First optional/optimized FFU mode
-opt_ffu2: Second optional/optimized FFU mode
-opt_ffu3, etc.
+  echo freeze > /sys/power/state
 
-This would keep the default ffu unchanged while allowing us to add
-clarity and scalability to the naming of other FFU modes.
+- wakeup system by console traffic
 
+The clock gating must be restored, because otherwise we have a
+regression on Raspberry Pi 3 B+ . Luckily the disabling of clock gating
+isn't necessary anymore. Thanks to the rest of the DWC2 patches which
+based on an idea of Doug Anderson. The USB domain is now powered down
+and the USB devices are still usable after resume. There might be room
+for improvements, but at least the system won't freeze forever as before.
 
+Here are some figures for the Raspberry Pi 1 (without any
+devices connected except of a debug UART):
 
+running but CPU idle =3D 1.67 W
+S2Idle               =3D 1.33 W
 
-Hi Ulf
+In comparison with HDMI & USB keyboard connected (but neither active
+nor wakeup source):
 
-What=E2=80=99s your thought on this approach?
+running but CPU idle =3D 1.82 W
+S2Idle               =3D 1.33 W
 
-Kind regards,=20
-Bean
+The series has been successfully tested on the following platforms:
+Raspberry Pi 1 B
+Raspberry Pi 3 B+
+
+Changes in V4:
+- added Reviewed-by from Doug
+- dropped applied VC4 improvement patches
+- fix DWC2 register backup
+- add revert because of Raspberry Pi 3B+ regression
+- add suspend/resume support for DMA & eMMC to be on the safe side
+
+Changes in V3:
+- added Reviewed-by & Acked-by from Florian & Ma=C3=ADra
+- dropped applied pmdomain & bcm2835aux patches
+- address comments by Ma=C3=ADra (patch 3 & 5)
+- replace old USB recovery patch with canary approach [3], which should
+  work with other platforms
+
+Changes in V2:
+- rebased against todays mainline
+- added Reviewed-by from Florian
+- added Acked-by from Minas
+- dropped "irqchip/bcm2835: Enable SKIP_SET_WAKE and MASK_ON_SUSPEND"
+  because it has been applied by Thomas Gleixner
+- dropped "pmdomain: raspberrypi-power: Avoid powering down USB"
+  because this workaround has been replaced by patch 14
+- use drm_err_once instead of DRM_ERROR and return connector_status_unknow=
+n
+  in patch 6
+- add new patch in order to clean-up all DRM_ERROR
+- add new patch to improve raspberrypi-power logging
+- add new patch to simplify V3D clock retrieval
+- add new patch 5 to avoid power down of wakeup devices
+- add new patch 12 to avoid confusion about ACPI ID of BCM283x USB
+- add new patch 8 & 10 which address the problem that HDMI
+  is not functional after s2idle
+- add more links and fix typo in patch 13
+- add new WIP patch 14 which recover DWC2 register after power down
+- take care of UART clock in patch 15 as commented by Florian
+- use SYSTEM_SLEEP_PM_OPS in patch 15
+
+[1] - https://github.com/lategoodbye/rpi-zero/issues/9
+[2] - https://bugzilla.redhat.com/show_bug.cgi?id=3D2283978
+[3] - https://lore.kernel.org/linux-usb/CAD=3DFV=3DW7sdi1+SHfhY6RrjK32r8iA=
+Ge4w+O_u5Sp982vgBU6EQ@mail.gmail.com/
+[4] - https://lore.kernel.org/dri-devel/20241003124107.39153-1-wahrenst@gm=
+x.net/
+
+Stefan Wahren (9):
+  Revert "usb: dwc2: Skip clock gating on Broadcom SoCs"
+  dmaengine: bcm2835-dma: add suspend/resume pm support
+  mmc: bcm2835: Fix type of current clock speed
+  mmc: bcm2835: Introduce proper clock handling
+  mmc: bcm2835: add suspend/resume pm support
+  usb: dwc2: gadget: Introduce register restore flags
+  usb: dwc2: Refactor backup/restore of registers
+  usb: dwc2: Implement recovery after PM domain off
+  ARM: bcm2835_defconfig: Enable SUSPEND
+
+ arch/arm/configs/bcm2835_defconfig |   2 -
+ drivers/dma/bcm2835-dma.c          |  30 ++++++++
+ drivers/mmc/host/bcm2835.c         |  56 +++++++++++---
+ drivers/usb/dwc2/core.c            |   1 +
+ drivers/usb/dwc2/core.h            |  23 +++++-
+ drivers/usb/dwc2/gadget.c          | 116 +++++++++++++++--------------
+ drivers/usb/dwc2/hcd.c             |  99 ++++++++++++------------
+ drivers/usb/dwc2/params.c          |   1 -
+ drivers/usb/dwc2/platform.c        |  38 ++++++++++
+ 9 files changed, 245 insertions(+), 121 deletions(-)
+
+=2D-
+2.34.1
 
 
