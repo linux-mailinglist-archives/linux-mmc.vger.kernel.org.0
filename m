@@ -1,119 +1,137 @@
-Return-Path: <linux-mmc+bounces-4534-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4536-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334A49B0642
-	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2024 16:53:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 190F59B0893
+	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2024 17:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC714283D86
-	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2024 14:52:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCAF5280A70
+	for <lists+linux-mmc@lfdr.de>; Fri, 25 Oct 2024 15:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EA3171E70;
-	Fri, 25 Oct 2024 14:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C831415B130;
+	Fri, 25 Oct 2024 15:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JvGd3VBv"
+	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="coBG6Tt7"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D235158A2E
-	for <linux-mmc@vger.kernel.org>; Fri, 25 Oct 2024 14:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B5D169AC5;
+	Fri, 25 Oct 2024 15:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729867938; cv=none; b=oj2DzTgU/ajsmzq2wZkAtfwbVJGaYGeOXMxtj5ZD4Z3w2bgItZ5vVtJtdoOScn4WnFsEJUs27McllA2zRec47KGN9Yn3pLn/07GIhRrKGegsShrO8B7uj46+ql0W/HGYx0uN9CgcBBMS21DduHDvHir2tgGq64FGOSZQU0Do3xU=
+	t=1729870843; cv=none; b=KhxGGAfU1fomA2Eu1eew888CSZvvYH+bApnEtniQZfW4eKZACgWEmj+T8ef7JadqPLi6XaOyaVE+JXD7Y+dyMaUJSRAR1woW+HB04b8mHWBsHHpDB6ajoimRKw3KBfY+EFP63nh3Dp0Nm+MEeUTd7OH2+hkO+8+yWPpRXT6t8DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729867938; c=relaxed/simple;
-	bh=BIJuuavrMOlGZTXnRZtJFIBi6jsUUmE/2bFNi5XpxeM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s25zkEZ8F4aM/gV/nEVwfF+3dV82ZAhyzcD/Y/ST5UUiBCDRZ9kHI80Jbh23mkBgmZsQW19O9+JU7lgOs1AZ+bD35TUlfW6esvvQaXvEuKJ5TD5tvaQ6viCeucS1dOZ99wpg/4lSobgqVPjl7vNRsApjNL6v/k1znDSvls4pqZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JvGd3VBv; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5c9428152c0so2447196a12.1
-        for <linux-mmc@vger.kernel.org>; Fri, 25 Oct 2024 07:52:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729867935; x=1730472735; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nrOief8nbYiJuOMekAxMqg6yuzzPDCii8DxLZ9mR0vA=;
-        b=JvGd3VBv4GyxKHxqlO3OtS5A7Y9aW8WI5C3XtQioof5mkInUsNYSitGjR5xH1MnTQg
-         WdZpr/NNaaI9vXWunowmvckOPg0QessiRxsH+XSpOVfFQjP3hD3gFyDQRDXk7S8cCwdj
-         sDYUmU65pftdWsdBRj2bvEi7STzfaOG078Nvw4ddmAjahiWQ7vwq3xJZRL6Aie7XhvIL
-         SjtnFVrxKXatkC6UoMejsBoH6rkobxo3bZH3IFLsMNSF7ztnvBrU9WCL9CFlitNwNurT
-         +EqA/8i/7qyBl6pvm+x/insO18akILP4vgFi+rJoB5AW8YLvikUp84yHTvDj5TWhlCkV
-         nojA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729867935; x=1730472735;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nrOief8nbYiJuOMekAxMqg6yuzzPDCii8DxLZ9mR0vA=;
-        b=YHSJqgKEaE/gYjog6mWseqG9jFKhUIP0ajvsSKzrySdTusmsYWteP3PwOYVT6SMb5B
-         shL0h+/6kA4GTKhpN8JPrXescsRFhDko7Sa1L1ad0z9a35kPPsYkkP3aiLvXIN/jYR79
-         Z08AKkVqGxYpMN+XF0E0dF/L3EkJ3vLNj5DJXsWV5W2osUSeT5EYm5cWgcxfbWcHsJMd
-         HY5kwsnJrpK8Xbyc1H6mncjgryo3wcyHTivyzS3y4XKXskKq/k2Sq0TdmfEbX35MgCiG
-         Z5uY9YYctL7JnrxdvlOY5nqWuqLMYuHNVo372o8jlCd4jhfAFqBLUitvBs15Zwwk188H
-         gYRg==
-X-Forwarded-Encrypted: i=1; AJvYcCWPc/ahIqsBznOogDcDHljEInJDQeieVTf/ibvU9DQfHH1E1nerR/A29BTjEFfu17u5NX3fRsSlx9E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZmZv/Owskzf6rBSEeZAaZ7ggHyAzP0HBLy88WDflSmtJJMGXG
-	bWIfXwVWBw3fsDPFWXwWnMqZ2adsIURuLXPawYLIwX0zNSJe2/ZyeuDzmIKQWgfB0xw5EkPD5Uj
-	iHM7Ayr+ktAmjWHnm/vwYxBm+HHu+Af+5bhj9qQ==
-X-Google-Smtp-Source: AGHT+IHscqiA2vwhlqzyfYQiuye1p7e18GSeto+pEBjS430QeRHPKdPaupXdrDQYhsEJh+l4Tn8aYInhGwbc5CIL1KA=
-X-Received: by 2002:a05:6402:4304:b0:5c9:2a5a:5f0e with SMTP id
- 4fb4d7f45d1cf-5cba249c506mr5998675a12.28.1729867934911; Fri, 25 Oct 2024
- 07:52:14 -0700 (PDT)
+	s=arc-20240116; t=1729870843; c=relaxed/simple;
+	bh=lnzej9riwoP0T3XvrgsBen19+FPab1L5CE0OE6JawpQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aa1aGpGUtv7RKkHupRlncuCZLi/K0eLCFRC5D2ySp7q7sPU2ZGioUV9zirIBs79ERluxEV42CZ7VOvin/yr7hlvRV1Pa5RzfAIeMBeOIybNvEfPizY2PJJaLGSMiINXbVG1Suj+DaeqmFe6ak+vFyFPXiOSIMrODeVa1y1S0ULo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=coBG6Tt7; arc=none smtp.client-ip=157.90.84.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
+Received: from [192.168.178.76] (host-212-18-30-247.customer.m-online.net [212.18.30.247])
+	(Authenticated sender: g.gottleuber@tuxedocomputers.com)
+	by mail.tuxedocomputers.com (Postfix) with ESMTPSA id 81C8D2FC0063;
+	Fri, 25 Oct 2024 17:40:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
+	s=default; t=1729870830;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c//f/7s6BWOQiiDwzMLRRIcTmPrSjbMYXtncbing1bQ=;
+	b=coBG6Tt7Bzq424t8FVpqd5E+0hRt40TI+qQnzcTQGSWbaYChpiAGIZ3vkk3oZA7Zg2cMCo
+	9aYNyHwL/tH+3EwenOn2IpQhVKg+p28azFIkgSU9hMuBksHhKeCeReEnypg28tzTCHpCHz
+	7y6hWHMyTFNT3AdB8gTIa8dD7rNqCNg=
+Authentication-Results: mail.tuxedocomputers.com;
+	auth=pass smtp.auth=g.gottleuber@tuxedocomputers.com smtp.mailfrom=ggo@tuxedocomputers.com
+Message-ID: <4dd25dca-f217-4abd-88e8-0a6b03760dd7@tuxedocomputers.com>
+Date: Fri, 25 Oct 2024 17:40:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241023092708.604195-1-quic_yuanjiey@quicinc.com> <20241023092708.604195-2-quic_yuanjiey@quicinc.com>
-In-Reply-To: <20241023092708.604195-2-quic_yuanjiey@quicinc.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 25 Oct 2024 16:51:28 +0200
-Message-ID: <CAPDyKFr-Gzd3Mzn+vN6DXO9C4Xrvpv4z5V2G_VRTzOa=89Fd3w@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] dt-bindings: mmc: Add sdhci compatible for QCS615
-To: Yuanjie Yang <quic_yuanjiey@quicinc.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	bhupesh.sharma@linaro.org, andersson@kernel.org, konradybcio@kernel.org, 
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	quic_tingweiz@quicinc.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mmc: sdhci-pci-gli: GL9767: Fix low power mode on the
+ set clock function
+To: Ulf Hansson <ulf.hansson@linaro.org>, Ben Chuang <benchuanggli@gmail.com>
+Cc: adrian.hunter@intel.com, victor.shih@genesyslogic.com.tw,
+ greg.tu@genesyslogic.com.tw, ben.chuang@genesyslogic.com.tw,
+ HL.Liu@genesyslogic.com.tw, Lucas.Lai@genesyslogic.com.tw,
+ victorshihgli@gmail.com, linux-mmc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Georg Gottleuber <ggo@tuxedocomputers.com>,
+ Werner Sembach <wse@tuxedocomputers.com>, cs@tuxedo.de
+References: <20241025060017.1663697-1-benchuanggli@gmail.com>
+ <CAPDyKFpb5ZePhXziLH3VbuKKywJZbo8UBF1NM1_dyOWq9oLDng@mail.gmail.com>
+Content-Language: en-US
+From: Georg Gottleuber <ggo@tuxedocomputers.com>
+In-Reply-To: <CAPDyKFpb5ZePhXziLH3VbuKKywJZbo8UBF1NM1_dyOWq9oLDng@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 23 Oct 2024 at 11:28, Yuanjie Yang <quic_yuanjiey@quicinc.com> wrote:
->
-> Document the sdhci compatible for Qualcomm QCS615 to support
-> function for emmc and sd card on the Soc.
->
-> Signed-off-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
+Hello Ben, hello Uffe,
 
-Applied for next, thanks!
+thank you for this fix.
 
-Kind regards
-Uffe
+Am 25.10.24 um 15:22 schrieb Ulf Hansson:
+> + Georg
+> 
+> On Fri, 25 Oct 2024 at 08:01, Ben Chuang <benchuanggli@gmail.com> wrote:
+>>
+>> From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+>>
+>> On sdhci_gl9767_set_clock(), the vendor header space(VHS) is read-only
+>> after calling gl9767_disable_ssc_pll() and gl9767_set_ssc_pll_205mhz().
+>> So the low power negotiation mode cannot be enabled again.
+>> Introduce gl9767_set_low_power_negotiation() function to fix it.
+>>
+>> The explanation process is as below.
+>>
+>> static void sdhci_gl9767_set_clock()
+>> {
+>>         ...
+>>         gl9767_vhs_write();
+>>         ...
+>>         value |= PCIE_GLI_9767_CFG_LOW_PWR_OFF;
+>>         pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value); <--- (a)
+>>
+>>         gl9767_disable_ssc_pll(); <--- (b)
+>>         sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+>>
+>>         if (clock == 0)
+>>                 return;  <-- (I)
+>>
+>>         ...
+>>         if (clock == 200000000 && ios->timing == MMC_TIMING_UHS_SDR104) {
+>>                 ...
+>>                 gl9767_set_ssc_pll_205mhz(); <--- (c)
+>>         }
+>>         ...
+>>         value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
+>>         pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value); <-- (II)
+>>         gl9767_vhs_read();
+>> }
+>>
+>> (a) disable low power negotiation mode. When return on (I), the low power
+>> mode is disabled.  After (b) and (c), VHS is read-only, the low power mode
+>> cannot be enabled on (II).
+>>
+>> Fixes: d2754355512e ("mmc: sdhci-pci-gli: Set SDR104's clock to 205MHz and enable SSC for GL9767")
+> 
+> Is this the same problem as being reported in
+> https://lore.kernel.org/all/41c1c88a-b2c9-4c05-863a-467785027f49@tuxedocomputers.com/
+> 
+> ?
 
+Yes, this patch fixes
+https://bugzilla.kernel.org/show_bug.cgi?id=219284
 
-> ---
->  Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> index b32253c60919..164a45cdb972 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> @@ -43,6 +43,7 @@ properties:
->                - qcom,ipq9574-sdhci
->                - qcom,qcm2290-sdhci
->                - qcom,qcs404-sdhci
-> +              - qcom,qcs615-sdhci
->                - qcom,qdu1000-sdhci
->                - qcom,sc7180-sdhci
->                - qcom,sc7280-sdhci
-> --
-> 2.34.1
->
+This makes my patch obsolete.
+
+Kind regards,
+Georg
 
