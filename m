@@ -1,150 +1,150 @@
-Return-Path: <linux-mmc+bounces-4607-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4614-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561019B805E
-	for <lists+linux-mmc@lfdr.de>; Thu, 31 Oct 2024 17:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6717C9B89D2
+	for <lists+linux-mmc@lfdr.de>; Fri,  1 Nov 2024 04:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F16041F22178
-	for <lists+linux-mmc@lfdr.de>; Thu, 31 Oct 2024 16:40:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 127F81F22F5D
+	for <lists+linux-mmc@lfdr.de>; Fri,  1 Nov 2024 03:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7351C462C;
-	Thu, 31 Oct 2024 16:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2162148857;
+	Fri,  1 Nov 2024 03:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jqeBTNH4"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="e06ZpUlN"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA511C460E
-	for <linux-mmc@vger.kernel.org>; Thu, 31 Oct 2024 16:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4679B13A24D;
+	Fri,  1 Nov 2024 03:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730392798; cv=none; b=TrlQf5sRvO3PiyObLv9B9WQFlKShmMz+jZShLj7heWnMSU4zM7KxGvzSRZDt7t1YbkEQtCvYoQOV5Miz/mbEooXZe+Arj0YoDNfdHvt9rSQWcMS8rx6NLJG7HEOWoKxxSdJ0rKrkodiYbhhdyNa3ApNAxY2YztJiyrSILRK6AeM=
+	t=1730430951; cv=none; b=PoEvkHsJ6zVfgxlPUc0pldWnIDeifdePIEwJ8cVOP/OPtbKvSfaN4V8ocvB7fmbMlnssxoKaC+x3L1zYi+Dxi47d3uTKAQUjqF7kkkqFfCbKbwfBHEg2ZmyV4GF5Hor+BsbAY2aedpeXuzOYFZQ642AYt6/xCBb8Blbz6mqvpiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730392798; c=relaxed/simple;
-	bh=8XdQ3HwoGz9iwZrBvHIi2ThJVAVqoiAgmx48uKGlkIA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a1HMjwAYqFmqRZrzs3kqaPSnGUDf1Zww2gHSVrJcFLaN3lPiKOYkzY0/+TElLizrywKB/yP/XGSshpOeb1QwwoTXUkE0iSugxnncJRIGy4vQ45Qm8sbB/ULD84/D8J9XRapwR7ovm/hXS7UYoKK21y+Jcb+/tOmMfyjOHo1noS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jqeBTNH4; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6ea656c60a4so853617b3.3
-        for <linux-mmc@vger.kernel.org>; Thu, 31 Oct 2024 09:39:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730392795; x=1730997595; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=I5eUYcRuTA0oniMSyBjEXihZ+0pUSIHnqHbjfdV88TE=;
-        b=jqeBTNH4ZUHOoaJQaKwME0YQqrJRpzT/deyPzYCTs5bgeEmVbNaGby/TdNdrcfA4j6
-         tfJieDaHstHnXX0wUvw9SDFzR5v1mD8RDV4UAARMs8ve/yMjhgEQbR3sAj+k/90ra5dZ
-         KOhO9pn/NLtu4IKezpNOrU2F1yAYY9qI3Aq9Px5a2Cuq0W70AHhLXHCTGQ1rF5M956QX
-         ti4fqSCCeVfqPpX8lS60qghMTls47EZhUtm9lLk1xNmc0Rbf4Ii0wSg9IQHkNI7NwkCK
-         n1TLiM2cD0xsDBTd01byO2wAAWpWZGXX8wbLH4df0hT9DOmGFHqFIQBnGgAqHE+edGjV
-         e33w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730392795; x=1730997595;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I5eUYcRuTA0oniMSyBjEXihZ+0pUSIHnqHbjfdV88TE=;
-        b=cta8D51Y5UnFG+h/x5VSZTxYT22J/j3ESamB23EWyfQNLMWtk3aoKkcvG148uBHB5/
-         zAW0yeuXVguqfZFTMfRjPMhhdXuBPbUKEVLvcG6JMNsBQTMpjnsyMFvRT4hceVFaveK+
-         dC3+O3YJZbEyIQ6V09yoH4j81HHzUfVoPWB+ObIhaJIn314BKmeCNkuzlAthS9ME1K1G
-         Nz+yJ9bbeqC492ht5pDSEVqtXY+L5F8mXxA7DEI+A6wqtMXQQilZklXdZiVoIlyDvs9I
-         8aYp5S2bC1z/yLrLWt3burZm9vgj503aKm9p0nzH/yWtfEJ4FEMyYXplagBojfZPzaF1
-         A6KQ==
-X-Gm-Message-State: AOJu0YyMX76+HrsdnC6VWLrVMYiVTzs/O/1lGEJCCnq3Xt8bPCuU6FgG
-	9FirGqy49LiSygufNsGoHYL1dX9pdQId7I097Ek27kfecCcGalBIELr87F1Fa2e1VlN+JZHM70E
-	+k3ewYBB0gANCUGvX4WJniZYmaEHKeWTfg7Nsjg==
-X-Google-Smtp-Source: AGHT+IH5Npva13M2z10+7v7COaSYdI5KHd4w5hjE2VqqWorqJ619LAZy1oHvwY0yx6RGyRiZthiLSnPJ+J5yQO4L4lU=
-X-Received: by 2002:a05:690c:f8d:b0:6e2:1527:4447 with SMTP id
- 00721157ae682-6ea3b87e1b5mr90465817b3.1.1730392795180; Thu, 31 Oct 2024
- 09:39:55 -0700 (PDT)
+	s=arc-20240116; t=1730430951; c=relaxed/simple;
+	bh=Z/Z3v3f5ZNuL1B/BD2BcQLw4mmBCJrnNHI1teHcC+iI=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=lOLBw3wiv5eztpIJeHV2yIq+BNIF1jKyyR8TIvbEPxkeC+dlLj3RNO4MsivNKjqrMJnzxZgoGMeUajOcm8GdD0Z56uhKYKxMwNuVtWGyXREc81gNnhMsH/JGAvnAPtmOHcyPX8H+XeAUmI7E3iB2bsfvXBlNBtzI6qbPabu6diU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=e06ZpUlN; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49VMbU12008963;
+	Fri, 1 Nov 2024 03:15:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:date:from:message-id:subject:to; s=qcppdkim1; bh=xrhQ149HLnk4
+	JXhbaoX5SCWn4CD66hZ2w9+VqWyaaLE=; b=e06ZpUlNfoP+xUzayshvYCGYsG6+
+	+yVW4rlYPF/4jJ17LplVRQui6Rl/lCzMksxk7SpxODpkjytg9xMp9c3+xL3MSlfF
+	+XSFGlVZ5Vi1T8T1+hGgJkOJPjB9zZcKFPTgZ7rT9CbnldDjXtdR33eY2+dfcDYk
+	HjpV0qQhI7Xq2n8KHDHofs2Htc9atYiJNDFNW68uVvyUTUBaWQlH/PVtTq9rKD/P
+	4SOZGJVnrC9om0/kCua8qolgw88V7JQrJ4AEe/dhPcutdU2zn3H//V7p3xYxxL3Q
+	W8q5S5A99xs1ncWJ1eHf2bldc5KbTQo68uVQ5lUm0Jz2vgC+d5Ixn/Eb+w==
+Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42grgusq53-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Nov 2024 03:15:44 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A13Fe6e010611;
+	Fri, 1 Nov 2024 03:15:41 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 42gsgmd4tc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Fri, 01 Nov 2024 03:15:40 +0000
+Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A13FekI010585;
+	Fri, 1 Nov 2024 03:15:40 GMT
+Received: from hu-maiyas-hyd.qualcomm.com (hu-spuppala-hyd.qualcomm.com [10.213.108.54])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTP id 4A13FeQt010579;
+	Fri, 01 Nov 2024 03:15:40 +0000
+Received: by hu-maiyas-hyd.qualcomm.com (Postfix, from userid 4137148)
+	id 7B3D95001B7; Fri,  1 Nov 2024 08:45:39 +0530 (+0530)
+From: Seshu Madhavi Puppala <quic_spuppala@quicinc.com>
+To: Adrian Hunter <adrian.hunter@intel.com>,
+        Asutosh Das <quic_asutoshd@quicinc.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        quic_gaurkash@quicinc.com, quic_neersoni@quicinc.com,
+        quic_spuppala@quicinc.com
+Subject: [PATCH RFC 0/6] Hardware wrapped key support for MMC core
+Date: Fri,  1 Nov 2024 08:45:33 +0530
+Message-Id: <20241101031539.13285-1-quic_spuppala@quicinc.com>
+X-Mailer: git-send-email 2.17.1
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: hj8AtRXfLcJMXeR1v4kl2u5FnMUYeUho
+X-Proofpoint-GUID: hj8AtRXfLcJMXeR1v4kl2u5FnMUYeUho
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 adultscore=0 mlxscore=0 bulkscore=0 suspectscore=0
+ phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411010022
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241030112216.4057-1-victorshihgli@gmail.com> <ece430b5-fa6b-4ad0-adfd-73778bae539b@intel.com>
-In-Reply-To: <ece430b5-fa6b-4ad0-adfd-73778bae539b@intel.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 31 Oct 2024 17:39:15 +0100
-Message-ID: <CAPDyKFr62e7aTqjQq1QuOv2xN2RuNrF=gezG6UT=YdTnkqq7Cw@mail.gmail.com>
-Subject: Re: [PATCH V1] mmc: sdhci-uhs2: correction of incorrect type in argument
-To: Adrian Hunter <adrian.hunter@intel.com>, Victor Shih <victorshihgli@gmail.com>
-Cc: linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	benchuanggli@gmail.com, HL.Liu@genesyslogic.com.tw, 
-	Greg.tu@genesyslogic.com.tw, kernel test robot <lkp@intel.com>, 
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>, 
-	Victor Shih <victor.shih@genesyslogic.com.tw>
-Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 30 Oct 2024 at 14:08, Adrian Hunter <adrian.hunter@intel.com> wrote:
->
-> On 30/10/24 13:22, Victor Shih wrote:
-> > From: Victor Shih <victor.shih@genesyslogic.com.tw>
-> >
-> > There is a type issue in the argument in the __sdhci_uhs2_send_command()
-> > that will generate a warning when building the kernel.
-> >
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202410260525.ZUuPhMJz-lkp@intel.com/
-> > Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> > Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+This series adds support for wrapped keys by implementing relevant
+callbacks MMC core and QCom layer.
 
-Applied for next and by adding a suggested-by tag from Adrian, thanks!
+They patches do the following:
+- Tested on top of Hardware wrapped key support for QCom ICE and UFS core: https://patchwork.kernel.org/project/linux-scsi/cover/20241011-wrapped-keys-v7-0-e3f7a752059b@linaro.org/
 
-> > ---
-> >  drivers/mmc/host/sdhci-uhs2.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/mmc/host/sdhci-uhs2.c b/drivers/mmc/host/sdhci-uhs2.c
-> > index 43820eb5a7ea..7f41ca67b069 100644
-> > --- a/drivers/mmc/host/sdhci-uhs2.c
-> > +++ b/drivers/mmc/host/sdhci-uhs2.c
-> > @@ -649,7 +649,8 @@ static void __sdhci_uhs2_send_command(struct sdhci_host *host, struct mmc_comman
-> >        * MSB when preparing config read/write commands.
-> >        */
-> >       for (j = 0; j < cmd->uhs2_cmd->payload_len / sizeof(u32); j++) {
-> > -             sdhci_writel(host, *(cmd->uhs2_cmd->payload + j), SDHCI_UHS2_CMD_PACKET + i);
-> > +             sdhci_writel(host, *(__force u32 *)(cmd->uhs2_cmd->payload + j),
-> > +                          SDHCI_UHS2_CMD_PACKET + i);
-> >               i += 4;
-> >       }
-> >
->
-> Thanks for doing this.
->
-> I just noticed there is another issue that was reported but
-> did not get highlighted:
->
-> >> drivers/mmc/host/sdhci-uhs2.c:73:16: sparse: sparse: cast to restricted __be16
->
-> So the following is needed also:
->
-> diff --git a/drivers/mmc/host/sdhci-uhs2.c b/drivers/mmc/host/sdhci-uhs2.c
-> index 0a597240d299..c53b64d50c0d 100644
-> --- a/drivers/mmc/host/sdhci-uhs2.c
-> +++ b/drivers/mmc/host/sdhci-uhs2.c
-> @@ -70,7 +70,7 @@ EXPORT_SYMBOL_GPL(sdhci_uhs2_dump_regs);
->
->  static inline u16 uhs2_dev_cmd(struct mmc_command *cmd)
->  {
-> -       return be16_to_cpu((__be16)cmd->uhs2_cmd->arg) & UHS2_ARG_IOADR_MASK;
-> +       return be16_to_cpu((__force __be16)cmd->uhs2_cmd->arg) & UHS2_ARG_IOADR_MASK;
->  }
->
->  static inline int mmc_opt_regulator_set_ocr(struct mmc_host *mmc,
->
+Tested on QCM6490.
 
-Let's deal with the issue above as another separate patch on top.
-Victor, can you please submit a patch according to the above and add
-Adrian's suggested-by tag.
+How to test:
 
-Kind regards
-Uffe
+Use the wip-wrapped-keys branch from https://github.com/ebiggers/fscryptctl
+to build a custom fscryptctl that supports generating wrapped keys.
+
+Enable the following config options:
+CONFIG_BLK_INLINE_ENCRYPTION=y
+CONFIG_QCOM_INLINE_CRYPTO_ENGINE=m
+CONFIG_FS_ENCRYPTION_INLINE_CRYPT=y
+CONFIG_MMC_CRYPTO=y
+
+$ mkfs.ext4 -F -O encrypt,stable_inodes /dev/mmcblk0p12
+$ mount /dev/mmcblk0p12 -o inlinecrypt /mnt
+$ fscryptctl generate_hw_wrapped_key /dev/mmcblk0p12 > /mnt/key.longterm
+$ fscryptctl prepare_hw_wrapped_key /dev/mmcblk0p12 < /mnt/key.longterm > /tmp/key.ephemeral
+$ KEYID=$(fscryptctl add_key --hw-wrapped-key < /tmp/key.ephemeral /mnt)
+$ rm -rf /mnt/dir
+$ mkdir /mnt/dir
+$ fscryptctl set_policy --hw-wrapped-key --iv-ino-lblk-32 "$KEYID" /mnt/dir
+$ dmesg > /mnt/dir/test.txt
+$ sync
+
+Reboot the board
+
+$ mount /dev/mmcblk0p12 -o inlinecrypt /mnt
+$ ls /mnt/dir
+$ fscryptctl prepare_hw_wrapped_key /dev/mmcblk0p12 < /mnt/key.longterm > /tmp/key.ephemeral
+$ KEYID=$(fscryptctl add_key --hw-wrapped-key < /tmp/key.ephemeral /mnt)
+$ fscryptctl set_policy --hw-wrapped-key --iv-ino-lblk-32 "$KEYID" /mnt/dir
+$ cat /mnt/dir/test.txt # File should now be decrypted
+
+Seshu Madhavi Puppala (6):
+  mmc: host: support wrapped keys in mmc
+  mmc: host: add support to derive software secret
+  mmc: host: add support for generate, import and prepare keys
+  mmc: host: wrapped keys support in mmc qcom
+  mmc: host: implement derive sw secret vop in mmc qcom
+  mmc: host: support for generate, import and prepare key
+
+ drivers/mmc/host/cqhci-crypto.c | 79 +++++++++++++++++++++++++++++----
+ drivers/mmc/host/cqhci.h        | 22 +++++++++
+ drivers/mmc/host/sdhci-msm.c    | 59 +++++++++++++++++++++++-
+ 3 files changed, 151 insertions(+), 9 deletions(-)
+
+-- 
+2.17.1
+
 
