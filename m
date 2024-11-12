@@ -1,140 +1,125 @@
-Return-Path: <linux-mmc+bounces-4725-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4720-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E739C60B3
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2024 19:46:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AF209C6357
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2024 22:23:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F8C41F22040
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2024 18:46:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13DDBBA1E82
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2024 18:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54FE219E55;
-	Tue, 12 Nov 2024 18:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28650218D69;
+	Tue, 12 Nov 2024 18:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TNZTecwv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b0/ov5ae"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAB5219E21
-	for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2024 18:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EF9218943
+	for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2024 18:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731437077; cv=none; b=YwbERUMqCmmYTF5mCquRCcOgYjsZMDvrfCCX+gIDPqyKiIjCZzWO0FNAmMUYWcTs9q8qLhw4Rd5rDq4s5FQMwVmHxCc8T4u9j+OyT3SHW5+sn1TRh7xprGEsYMAbJaBKmNI/4dTbWOAtIwYAxmaMKS1XHgCtHgZvzEuwh0ZNzg0=
+	t=1731437058; cv=none; b=BoHwUtAykhxpNvWQ2Rz1bFD8QmK+prugoAnJk4DGlmW+7dUSRvJ9BtQQO/N1f/fsVouJX9sB9X50c0u/THxXhqJVVjAGAH3O5p0LRBZeNs5axlC3whz6sygyNDYnZdUnxqpkPqeNR3cm9i+Hx842Z/gMDYfuu8d1EycE95TRDDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731437077; c=relaxed/simple;
-	bh=Oa/YrficsfeyjH0/jTjfnABLWOfA6T78uM65AF9s+o8=;
+	s=arc-20240116; t=1731437058; c=relaxed/simple;
+	bh=h3lBZ0BUTWnT9gUFIOrJJk3mikd9YNTqYkONtmbLDBs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JuZL0G+QQi+wmQvtZtKh0ejNJyTI5zFJrDbIg41XZ/e/oPp74Gmy2ResR19915oVmKN1gcamZT+MFY2VKZMFFyO+YRVi/x4wlnQtehXyhMgYk5/Gef0vmMkgKvTKUVI66HrpkXwhjdlCvc2OrfCIDcpFk34BgA24PrHCw7kUQfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TNZTecwv; arc=none smtp.client-ip=209.85.128.179
+	 To:Cc:Content-Type; b=iVeADfuFwVQBf5J5ubD1iw4Erh6AxUHat24C5BIJRlTCkj7R8yQ6t2ZTbvL//W+d451SB5frkWevoIbXc1RIy0GUd19frOnMxnKC2BUCRG1C3injFJo+PZjmueD94grvL4Ygug2ZTeO0fWFkCeid0qFSyE9e4ifUwknhT+3g+4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b0/ov5ae; arc=none smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6ea7c9226bbso59411077b3.3
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2024 10:44:35 -0800 (PST)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6ecaa45af7bso9408527b3.3
+        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2024 10:44:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731437073; x=1732041873; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1731437056; x=1732041856; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xGvVgCeLO47x1MsXySaQq6071hjPH/NhHOthZqYhKSQ=;
-        b=TNZTecwvlx2iw0NB+5v5GER1r97bOxENB1eMz5KB28cOyVBciLOVze0vhbmFNskiIt
-         iD/lRXPfodp/5YeLrbpyMMqdOhSkqLdIp80dkqWUST5hc8JwXcCizlA5A9HF3sMMLGQo
-         UanHNml33M3SSmTxkqbFYpfZ5RQd2pe8NrG/bKY6f92RKZ0NrFmnTGu4WtwYXL9ASfAc
-         XVhHDMhDD5YqURN7lFoA8LyFLSeNMOSOeikTz9Zal1LZOFZbBXaW9m3n12Vze65n0Miz
-         m8CyvxWhiaZVQz2fpXkHCwgr0Tz3m+PynHPnL0X292CoDpa2y1+Qj3X/Dpk3hCxPAfLZ
-         QNUQ==
+        bh=k13lmz+TwzCl0v9DduFFPQacpvaM4QVOkiYZEVxVBV8=;
+        b=b0/ov5aecnG3xSkF32oSCIPdmAAaAtXz3wQgNFWXywtxKYj88cbs9UCn1sScEkVSd5
+         JGy9eR2oRhOZ5kEsFzt/uMaJFUv0MkalgNZVbrBn6oORzdPStTjGfh8gyNueTvqpnB+o
+         q7qM1Dr/3/0Z3ZBrhXFfHi8MO+Pec++4eZ4DN5KD+cwa+eJgOiVKrOa17jYixXDWZMbh
+         T1Puq4vUmznwnGCn+Bpgwn2CwWuoRwolg5gwsbsKPodYjCzG6DmjrAGEY/DVmd7jiBIA
+         XxYaD/tvuRMgYrBC1n8bHtQgDvukhYAhq/PiiMKUTRNd6xsDk68TVbQ4wMxg8oM/20Et
+         Mwdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731437073; x=1732041873;
+        d=1e100.net; s=20230601; t=1731437056; x=1732041856;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xGvVgCeLO47x1MsXySaQq6071hjPH/NhHOthZqYhKSQ=;
-        b=keEsj5t8XrkUPMQrNyX+9hWt2JZKuQ4Vbtpu8AiVsX611IVKdBNK+9mLwz9UyuCS1r
-         GknIbpAhf3NVimv5cCx/N/VEuLZnKIh4nAwzC8ABhI+mLTutEKckTFTYhPajAkFC6EZj
-         kW2O6BYthKVDx405kNsNJ8VoUyp7EY/G9QqxYsQ+vXdtigNlQfkk3SDEV7teKbXCBnGx
-         6hoCpqWspIpqJyV1G1LdOxxNNc9+WfmVnsnEEYaO6uQ7ZNufdz8JNVFZYy1xFMVwktDh
-         TGX230QFK4MoMzLK/eW7FKjHbbTaTenEnc6CpqbYX4FcA5QBUes+K0pKAhV5REhl0jN+
-         NtsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUJIEZjegU7bzXeJQSCTdwB8CELvKfeAb5pLaXYPKZkJMEX8GQCiT32Cc5egHp3bvNnrLm33/t+0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVMloSvBcjuZLZ6vYJ/uVQxNvyFsRoTPEf+vmo/0LSik6YXZe/
-	RVWwKlkilhkuT4C5eRtMSRloImNLCNoAegCIafEVi8ii9U2myNxozrIEjL35z/2m/I8ykpCcRZG
-	D8gsB7zdWAh9qsKt+h37oiUHh5+mjIJqrvzG+FQ==
-X-Google-Smtp-Source: AGHT+IEe8csqC3Pg0F21RvUMA9aG223tYNBFweh8Drp5qTSmfQtunv7apTIfO3K79mr2mEtEH9f9z4XcBwW5aOMunNg=
-X-Received: by 2002:a05:690c:2501:b0:6dd:cdd7:ce49 with SMTP id
- 00721157ae682-6eca4640ff7mr44651927b3.6.1731437073569; Tue, 12 Nov 2024
- 10:44:33 -0800 (PST)
+        bh=k13lmz+TwzCl0v9DduFFPQacpvaM4QVOkiYZEVxVBV8=;
+        b=iiDw3hCnmr3EdfDo7k7UJzoMRqdO0KTfvteJdxWPikSDALIOlw5bRAN8tN61Fo9vYf
+         TeJP6dUwcxaSLWae31Bw2B3w9FKHeYd9Aze01twhFgq/gnN3m+BbaOT3cSup465eeCFD
+         SQ6P/ZSA7BiC8hU+Tgr+ZITJVFWmqC/lc0pYvBEyfxKDZ1MclVeoxaPfEZ6nMI1tVDo8
+         bFNBN6Izi/GzT9q5hcISI8q7rcNNzg83TjeVjYVJXj5/i+TmkgbQT5roOJVk3UADgvnE
+         b94JtwqJ5wWtkwzOuc4rnqnXy3+qkedX6oeTsCqx/w/zE2k+CpxMIbHBInPYQRylNlZG
+         dAmw==
+X-Forwarded-Encrypted: i=1; AJvYcCVc/rX71ZHU8l+fxzwYnJX/qorikh+uSGf8Fzvew8dFWM/ocKj2FxVVkl+FH7o2IKuHDBokKARnyrY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2V/1ZiUubOjQnuyDZYCIXaQHoDzcPgqsOA/3pDpZe3PmO98tr
+	c10G5VIPE0zNWfmmdVjJDsZvGZlkr3vLY/+wxg3E2Ocx6C3Z0Mv8gYaPLLWAzWMCwqBUuTb5Jmg
+	NJ10nv4oIDLmLZsyjCVqxxZVHbVG06sOEuO8B2g==
+X-Google-Smtp-Source: AGHT+IGPRAh8w+E+1jxL48F4cfxXMr53Di5HPl6ESL/F1T2+h8ajgC5sB+jl95kU9zsE1PzUcm/RjrfMP4kO/Tqwm88=
+X-Received: by 2002:a81:f912:0:b0:6e2:413:f19 with SMTP id 00721157ae682-6ecb347fa3emr191607b3.27.1731437056184;
+ Tue, 12 Nov 2024 10:44:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241110114700.622372-1-aurelien@aurel32.net>
-In-Reply-To: <20241110114700.622372-1-aurelien@aurel32.net>
+References: <20241105102901.351429-1-victorshihgli@gmail.com>
+In-Reply-To: <20241105102901.351429-1-victorshihgli@gmail.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 12 Nov 2024 19:43:57 +0100
-Message-ID: <CAPDyKFp4t0zHo_sJ3F7D1atwiPK+e38KbhTfcr76Jv+32yUw6w@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mmc: dw_mmc: Fix IDMAC operation with pages
- bigger than 4K"
-To: Aurelien Jarno <aurelien@aurel32.net>
-Cc: linux-kernel@vger.kernel.org, Jaehoon Chung <jh80.chung@samsung.com>, 
-	Sam Protsenko <semen.protsenko@linaro.org>, 
-	"open list:SYNOPSYS DESIGNWARE MMC/SD/SDIO DRIVER" <linux-mmc@vger.kernel.org>, Ron Economos <re@w6rz.net>, Adam Green <greena88@gmail.com>, 
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>, stable@vger.kernel.org
+Date: Tue, 12 Nov 2024 19:43:40 +0100
+Message-ID: <CAPDyKFrXsnOkwEwosddqeQKg5kFM8fWeJF+pcr1aYypUHqC=fg@mail.gmail.com>
+Subject: Re: [PATCH V1] mmc: core: Correction a warning caused by incorrect
+ type in assignment for UHS-II
+To: Victor Shih <victorshihgli@gmail.com>
+Cc: adrian.hunter@intel.com, linux-mmc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, benchuanggli@gmail.com, 
+	HL.Liu@genesyslogic.com.tw, Greg.tu@genesyslogic.com.tw, 
+	kernel test robot <lkp@intel.com>, Ben Chuang <ben.chuang@genesyslogic.com.tw>, 
+	Victor Shih <victor.shih@genesyslogic.com.tw>
 Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 10 Nov 2024 at 12:47, Aurelien Jarno <aurelien@aurel32.net> wrote:
+On Tue, 5 Nov 2024 at 11:29, Victor Shih <victorshihgli@gmail.com> wrote:
 >
-> The commit 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages
-> bigger than 4K") increased the max_req_size, even for 4K pages, causing
-> various issues:
-> - Panic booting the kernel/rootfs from an SD card on Rockchip RK3566
-> - Panic booting the kernel/rootfs from an SD card on StarFive JH7100
-> - "swiotlb buffer is full" and data corruption on StarFive JH7110
+> From: Victor Shih <victor.shih@genesyslogic.com.tw>
 >
-> At this stage no fix have been found, so it's probably better to just
-> revert the change.
+> There is a type issue in the assignment in the sd_uhs2_dev_init()
+> that will generate a warning when building the kernel.
 >
-> This reverts commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890.
->
-> Cc: stable@vger.kernel.org
-> Cc: Sam Protsenko <semen.protsenko@linaro.org>
-> Fixes: 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K")
-> Closes: https://lore.kernel.org/linux-mmc/614692b4-1dbe-31b8-a34d-cb6db1909bb7@w6rz.net/
-> Closes: https://lore.kernel.org/linux-mmc/CAC8uq=Ppnmv98mpa1CrWLawWoPnu5abtU69v-=G-P7ysATQ2Pw@mail.gmail.com/
-> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202411051248.wvjHSFNj-lkp@intel.com/
+> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+> Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-Applied for fixes, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/dw_mmc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/mmc/core/sd_uhs2.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> I have posted a patch to fix the issue, but unfortunately it only fixes
-> the JH7110 case:
-> https://lore.kernel.org/linux-mmc/20241020142931.138277-1-aurelien@aurel32.net/
+> diff --git a/drivers/mmc/core/sd_uhs2.c b/drivers/mmc/core/sd_uhs2.c
+> index c5847a2084d5..1c31d0dfa961 100644
+> --- a/drivers/mmc/core/sd_uhs2.c
+> +++ b/drivers/mmc/core/sd_uhs2.c
+> @@ -181,7 +181,7 @@ static int sd_uhs2_dev_init(struct mmc_host *host)
+>                             UHS2_DEV_INIT_COMPLETE_FLAG |
+>                             ((gd & 0xF) << 4) |
+>                             (gap & 0xF);
+> -               uhs2_cmd.payload[0] = payload0;
+> +               uhs2_cmd.payload[0] = (__force __be32)payload0;
 >
-> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-> index 41e451235f637..e9f6e4e622901 100644
-> --- a/drivers/mmc/host/dw_mmc.c
-> +++ b/drivers/mmc/host/dw_mmc.c
-> @@ -2957,8 +2957,8 @@ static int dw_mci_init_slot(struct dw_mci *host)
->         if (host->use_dma == TRANS_MODE_IDMAC) {
->                 mmc->max_segs = host->ring_size;
->                 mmc->max_blk_size = 65535;
-> -               mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
-> -               mmc->max_seg_size = mmc->max_req_size;
-> +               mmc->max_seg_size = 0x1000;
-> +               mmc->max_req_size = mmc->max_seg_size * host->ring_size;
->                 mmc->max_blk_count = mmc->max_req_size / 512;
->         } else if (host->use_dma == TRANS_MODE_EDMAC) {
->                 mmc->max_segs = 64;
+>                 sd_uhs2_cmd_assemble(&cmd, &uhs2_cmd, UHS2_DEV_INIT_PAYLOAD_LEN,
+>                                      UHS2_DEV_INIT_RESP_LEN);
 > --
-> 2.45.2
+> 2.43.0
 >
 
