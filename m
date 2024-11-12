@@ -1,126 +1,96 @@
-Return-Path: <linux-mmc+bounces-4717-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4726-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88129C646A
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2024 23:43:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C543A9C65A1
+	for <lists+linux-mmc@lfdr.de>; Wed, 13 Nov 2024 01:01:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCE04B33E72
-	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2024 18:44:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1EC6B38630
+	for <lists+linux-mmc@lfdr.de>; Tue, 12 Nov 2024 22:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2103C230994;
-	Tue, 12 Nov 2024 18:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC6721CF94;
+	Tue, 12 Nov 2024 22:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lNauDYvu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q6y6LtGk"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657D6217476
-	for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2024 18:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C15221CF89;
+	Tue, 12 Nov 2024 22:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731437049; cv=none; b=qC7aKJhgRoXylWVqXC/jZPcwCEoyX/1hNlIcO157Kg3u24/Crf2EvU3vKcFnVFPGNRVgkCV8yTh83O02067rKL7RTHyYiNl6yDbFGnDT7o5ZcwWThJJQ24b0t+MplKxGgVDvUNb6bqyibFgwSxpghZlgdXAWutSvWfpCmkKGC0M=
+	t=1731451984; cv=none; b=sVVN7ccOvHzjOiWYIAw5iIzML2Etd0k9OlGNlUPpNiwBlKvR64tiwIyEvPu/1fc05L0Hfi8pQ0Au4/z6VBKEqDCeLL22xSUXW0QDuzrBsPAmFMn4eewj0wxqmNrGKI2k+M/hUf2SFDK5rbR980I1X3KhGcLwQuFutEeE8svHYas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731437049; c=relaxed/simple;
-	bh=0t8sOmwlSOH1o1/6C/3qT6TANEqdqVcQQAurabnYBIo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fk8gDQVosddSBaV981g5K9ZuqOG5yzZe7xN+tnkXA4Rl3922ALgRNAMeWUdv10Id+HFXRl/UsDAAI0Bei6xUf3qBBUlMw3D8CLSA/XrllRvVXxTp3rUIyMZDA1SK1v+kQWROVlUr3gwngslovQYlMbDx2gfSGOFgpnNWxu4iQRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lNauDYvu; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6e3cdbc25a0so60321197b3.2
-        for <linux-mmc@vger.kernel.org>; Tue, 12 Nov 2024 10:44:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731437047; x=1732041847; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=tmlE3ocaQwI744iyoEKb0Mlm8+PfDOrWjfONTieFefw=;
-        b=lNauDYvua2CJ0TotVd6/rHjgkprqjGgJDyWlfthLZpZDRxPNSfMuA15TFxeSVhYBk3
-         VLTx9qs+otuM9ZN0gRGrOKfxTqzqFkN7dL/1zuJ7ID1IYoUm7isx4xYVxhOpN0Hi/3Qn
-         w1yq1Wg8hiqM5l8/ubMHLa4Th8NL7FTcfI8lAwF4sF2GZ5Y9JpNTPmSzNhbaswcbYukq
-         Wg3kR1k9QQcNqkZ74Qd+V/f5hjbFDMnJrMepS94liYs2spuDhGJSx0FaSuO5pNFCg2b1
-         Kfua03yYL/Vwxt3rAl2pP42XLZOA9itxKXA2dFEz7ax2/XeD4mZXSmDu7hoBxQeSHCUC
-         9BAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731437047; x=1732041847;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tmlE3ocaQwI744iyoEKb0Mlm8+PfDOrWjfONTieFefw=;
-        b=qcoMeoDVGXfPJG7ro5NYi8nqaARbABudK+ykVC7lQsbnyv181jNiWBofJEz7vX0tyS
-         4FjESZSYHaSAcZqRelQ1hN8HfUS8jhUh7fCbc2SHqsZH8o/eBe2J6U9dOzDvbtQGL+yG
-         qaeAPXxg6+wjPRkpOgV11O+/wGFCuIGe+wExKsRGV8sw9LB1/bihG9WNiFT6hxlCESQG
-         jj1lFervUUb73IwGfSsuCbViMgdWVlDUMfFQ+E8T3Ggt4ALoho0kclGAw1gdZTozHXc/
-         imUXeQAZYbRoraHvo8vBWXYXJFEHpM8lszQzR3ynXjvhyo9AAdZvzI0CzRMCdtI39av1
-         AOEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZPpLtMjRiYAkbkkJESzLZR8t/WnLSpYHD4TO66V5VTleBSrwMxoH3YQMeLK6bKiCg2UM36kZUYM4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPa05XPTcp+S3ut8cupASQbpB8Hu9oK6MxpzawYffr1VQmUB6e
-	HkEyiJL2E4tqNJKYh/jGyHwZKG0vGrGgTNYySlZLx+g1sVOS9mNTs1KZ4iUFPVLYAKtWOdXRPpR
-	3+5+9nYhlrfuuJUkIViNE+IIkAW2GdP3Atkx6Jw==
-X-Google-Smtp-Source: AGHT+IFh1YSNqJrUyWFeYrySj4puHrtEywEG7OT7qiq8/ABi/USrmbl/pgQBx5lmlFIuZUP2a34Q11eyh0jgarstWi0=
-X-Received: by 2002:a05:690c:998b:b0:6e3:3508:e32e with SMTP id
- 00721157ae682-6eaddfb97a5mr155863057b3.41.1731437047401; Tue, 12 Nov 2024
- 10:44:07 -0800 (PST)
+	s=arc-20240116; t=1731451984; c=relaxed/simple;
+	bh=yQwt2DsCgJNyhwxurxcyAkIppPnQMY1VaVKG7hi5I50=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=kcNNvOcGg9tgFaxcq7ZU/WB9vjQEFflJtSTfAUn3H1c979nlmkEt5qpOY4bCCZeLqk8Jibdoat2BjTa+5Yp/2+qq+HdOiJsr+xwjcPVjnivTSruTeJ5A1Xk4WLt8Nee0lMZEJFPPfx4ct0yA7xyZ0FpfabSQ9fzITRnxgjC0fws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q6y6LtGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F323AC4CECD;
+	Tue, 12 Nov 2024 22:53:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731451984;
+	bh=yQwt2DsCgJNyhwxurxcyAkIppPnQMY1VaVKG7hi5I50=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=q6y6LtGktbgmjw7H7iEjQnUw2HgxVOxdQdc3XvkpzYIwS3B5Bg7247bL18aVlvf6c
+	 HruMzh6Ko1Z6shqY/8X6eMEliFKSNrAGHS4/4Gcijrjs1UEkqkNoEqSTHUaZFrDJEb
+	 gdMrbkSjLDbKB6sAihOeai9Ad4VstoFrf0AAF1cS13kfFvglzDCWVE3PgFXTzsHimE
+	 IVH8dkBDV5m2c3gm2t0Ees/AGJmcOdAt5qLgyZsn1B3WYif5ivyXEdgPMXyqyOvJtb
+	 QbqFFo/TMAivSPSeohmtQmadCT9s+3jD4Qd0eMqU7D/cVZPZxP6YEeSfcQb2sXnRKj
+	 VdxC4cxziwnBA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C503809A80;
+	Tue, 12 Nov 2024 22:53:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241101-imx-emmc-reset-v3-0-184965eed476@solid-run.com>
-In-Reply-To: <20241101-imx-emmc-reset-v3-0-184965eed476@solid-run.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 12 Nov 2024 19:43:31 +0100
-Message-ID: <CAPDyKFq9uQcDsMpYXKe=8f7AGybZaUsvMVU9RDxv2SZpYwbdgA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] mmc: host: sdhci-esdhc-imx: implement emmc
- hardware reset
-To: Josua Mayer <josua@solid-run.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>, Haibo Chen <haibo.chen@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Mikhail Anikin <mikhail.anikin@solid-run.com>, Jon Nettleton <jon@solid-run.com>, 
-	Yazan Shhady <yazan.shhady@solid-run.com>, Rabeeh Khoury <rabeeh@solid-run.com>, imx@lists.linux.dev, 
-	linux-mmc@vger.kernel.org, s32@nxp.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] mmc: core: Only set maximum DMA segment size if DMA is
+ supported
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <173145199424.701548.5612261824540957185.git-patchwork-notify@kernel.org>
+Date: Tue, 12 Nov 2024 22:53:14 +0000
+References: <20240924210123.2288529-1-linux@roeck-us.net>
+In-Reply-To: <20240924210123.2288529-1-linux@roeck-us.net>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-riscv@lists.infradead.org, ulf.hansson@linaro.org,
+ paul.walmsley@sifive.com, samuel.holland@sifive.com,
+ linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, hch@lst.de,
+ robin.murphy@arm.com
 
-On Fri, 1 Nov 2024 at 12:42, Josua Mayer <josua@solid-run.com> wrote:
->
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
-> ---
-> Changes in v3:
-> - reused existing control register definition from sdhci-esdhc.h
->   (Reported-by: Bough Chen <haibo.chen@nxp.com>)
-> - placed both control register mask definitions next to each other
-> - fixed timeout write register name
-> - Link to v2: https://lore.kernel.org/r/20241030-imx-emmc-reset-v2-0-b3a823393974@solid-run.com
->
-> Changes in v2:
-> - replaced udelay with usleep_range
->   (Reported-by: Adrian Hunter <adrian.hunter@intel.com>)
-> - added comments for delay values
->   (Reported-by: Peng Fan <peng.fan@nxp.com>)
-> - delay values based on JEDEC Standard No. 84-B51, 6.15.10 H/W Reset Operation,
->   on page 159
->   (Thanks to Bough Chen <haibo.chen@nxp.com>)
-> - added a second patch demonstrating a cosmetic issue revealed by first
->   patch - it bothered me during development but is not important
-> - Link to v1: https://lore.kernel.org/r/20241027-imx-emmc-reset-v1-1-d5d0c672864a@solid-run.com
->
-> ---
-> Josua Mayer (2):
->       mmc: host: sdhci-esdhc-imx: implement emmc hardware reset
->       mmc: host: sdhci-esdhc-imx: update esdhc sysctl dtocv bitmask
->
->  drivers/mmc/host/sdhci-esdhc-imx.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
+Hello:
+
+This patch was applied to riscv/linux.git (fixes)
+by Ulf Hansson <ulf.hansson@linaro.org>:
+
+On Tue, 24 Sep 2024 14:01:23 -0700 you wrote:
+> Since upstream commit 334304ac2bac ("dma-mapping: don't return errors
+> from dma_set_max_seg_size") calling dma_set_max_seg_size() on a device
+> not supporting DMA results in a warning traceback. This is seen when
+> booting the sifive_u machine from SD. The underlying SPI controller
+> (sifive,spi0 compatible) explicitly sets dma_mask to NULL.
+> 
+> Avoid the backtrace by only calling dma_set_max_seg_size() if DMA is
+> supported.
+> 
+> [...]
+
+Here is the summary with links:
+  - mmc: core: Only set maximum DMA segment size if DMA is supported
+    https://git.kernel.org/riscv/c/c26339faed11
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-The series applied for next, thanks!
-
-Kind regards
-Uffe
 
