@@ -1,214 +1,243 @@
-Return-Path: <linux-mmc+bounces-4798-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4800-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95BE9D61AB
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Nov 2024 16:59:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022CC9D61C8
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Nov 2024 17:15:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 517E7B24E29
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Nov 2024 15:58:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7390C1604A8
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Nov 2024 16:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA7E172BCE;
-	Fri, 22 Nov 2024 15:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447256A009;
+	Fri, 22 Nov 2024 16:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="giw0aLoc"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="p55FwqHi"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B6313AA4E
-	for <linux-mmc@vger.kernel.org>; Fri, 22 Nov 2024 15:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E181DE89D
+	for <linux-mmc@vger.kernel.org>; Fri, 22 Nov 2024 16:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732291134; cv=none; b=LwZ+y6zLK29eoGrmL8lf4NgSQhMBduvy4/LAPDpcpXRzr7757But+ZTEzLSGFXYmwoOxIrYhfCLy56/M2YEqToIn6YLVFm5uPk4bJP6gjoFW5eOe2JQv6tQREdj5I4RhvdA093N7JWD6plw0fOp3XdK3vKWmZYRTYgagJPofr90=
+	t=1732292108; cv=none; b=LP71gZu01tcr9zQvM1B6PHef4wDLVn8ygMxNLPRl1GqJc6D8Uj93YF5eEWVW8TNg9LVF0bVUMBHl2eSkUgtGiY5l5Gy8DqjFNfsVqnUa0wsts3mWFTQJ01YkeTS60Vd0/0qGbKuQkKw4NReZp89plQIqQaHpqNWgRpfcXA1fXVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732291134; c=relaxed/simple;
-	bh=iGGAHueaU7gHOOc094ZgRe6jaE4hvaTK9x6PNgkZBu0=;
+	s=arc-20240116; t=1732292108; c=relaxed/simple;
+	bh=UXHKH+tn2k1sf2pymXA3k1t9baA/88reB+OQUj4zdHo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oonJgxE4rcu6XwrUgBAHDvJmu4UFRXGpRvXDD+Wo27AKRLiCd3uPIkhDTE7qukvkJzPvUJ2xZG4t+vsNTSyS3PsqywEivZhhgXavs+fAsbK0kv5PlX2S1ENSKy9rmEA9n4v5oAZqIgCUUZbOoq84rYhw8VJkpwVEVWl+M4bI0ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=giw0aLoc; arc=none smtp.client-ip=209.85.208.41
+	 To:Cc:Content-Type; b=qA6JVlp07LqeIKQphREgqSPeLyHD7f0BYbJLAXoqwrKgaBkcZTK02u+gQZNSzPBlXhcp07+XYOpeZobwy1VwSGQTi9PurysT7GKBBknrRge8LW6eix7x2UVIxvcL0gIZHOdfbV/4MR3kvvpd4NiD5Lcz0/ntSroQmkLbdv8oals=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=p55FwqHi; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5cf9ef18ae9so6454373a12.1
-        for <linux-mmc@vger.kernel.org>; Fri, 22 Nov 2024 07:58:52 -0800 (PST)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5cf9ef18ae9so6487315a12.1
+        for <linux-mmc@vger.kernel.org>; Fri, 22 Nov 2024 08:15:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732291130; x=1732895930; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=87gqIQer6cH6xwrwYxg5RmnkRz2vDc/aiVC6VYzA348=;
-        b=giw0aLocqPjgT6WXO2tQQYG/tAHg+Fe7IukJOcMQkep/4zI1k8RVjxgwLPLeMWdC7Q
-         P0u8rrBlGYD+wkx4OjA11N6GwKzLq/znKM3xb+TAQTE3UG8AN6OeikYs8J3nQyMvfmbD
-         y1hHTSO5mm7X/amUs9KhvH+aqzPQa/4sbjlkB5OvepzMBb3drCsVANNE7Ghr/UW5UJox
-         J618GT7hEQf8fNLc7cB34YToxeV+d7mbZ+Jr02kxob/W4GpcxGgt6GStda2Koo9pqC2N
-         EOFBh6ebiyLm18dfCBP5HlTqhmpqZjPH80PW71230gDx0vNm/fF139+5G4Dz0dcURcrt
-         mIDQ==
+        d=linaro.org; s=google; t=1732292104; x=1732896904; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IKuaoF5WY6am7cO+jXx2uCjMC60YxcYyklIAVCPFPTE=;
+        b=p55FwqHiYY+5gvWK5BamjrMWtyk48nL/dLiyERGgGD1dt93eljXDwGyR+OEaQnv9ov
+         Cs1XEarMh7iyIDCUoSr5eeVG5DRbzB6/wVCF+P5RKUgROO2C94JgugTxbEjNdvFLD3vM
+         sW5rOxyJDXKxuLSNnpmlxlD8bAMVOKRnNVVfh8P9k7mRnne2F7fzIyPbW3jO0Ck5sewu
+         EnsQxHs4ekiGDwaiobY4Kfunn0AkeJwkxehkRAyn7VOzDP/59rYvhAWR1gI/a6SeFT6W
+         +H5OCeaDIavtjM3D/bknRlPbGpyM1OEOKdzFykUAhZ9sIL72ygKAyESzB5WTNITBv5cR
+         ABpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732291130; x=1732895930;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=87gqIQer6cH6xwrwYxg5RmnkRz2vDc/aiVC6VYzA348=;
-        b=sXPvS5AA8QfKsv/uIXt02OWu/ClQ2fD+fL4uosQYhYzQLGMz4HaQv7ttcs9lGrIq+R
-         Ab67Vc+sL7X3gK9LN81EwW9Vxi9/+pgcjowYbQdnUf43mw4VaYwVbqjOQvhxtxwSN6Qk
-         JoYH8Q4zSMoRP3f5Rcm4bJ2iX8tXTe/hOcadhT8fFw+7hBuRmOpItLLCGtRngA6BedEA
-         8DvVBOGRpym6I+FywXXXkb5297hlw+HmyT+gP30KXbBJiFItAaBvqndVvXi1/A1Vb1ln
-         J/YA4XuQTOMBxRnKpjZamMg/qC6zSEWXwBZSGS22AbR2oT3ntz0mHpAVlzu5jCaTYjbx
-         fYag==
-X-Gm-Message-State: AOJu0YxggMwwrJ4cGa0/YzLLl4ZzUdGjUqV+HVWQ9TCmepl3OeC/r+6l
-	kvFHpiCQ/P1x5t4BSWgjOSSA/Lx9FRfuLkeD3OiU1V4SZqHcDsoKt5vaohFhIy3Ofpb4lc8PpzP
-	krVbuOLPhx/Vaqao3ZRVftTj1TEQcC7uIVFsOJg==
-X-Gm-Gg: ASbGncsr4/BZUbb3blTUJkuGDlmyOgRMiARvtkpVVe+W4OIeCIlfDpy4nauwLF52VDi
-	ASl7aHM7lNyMqNaU46eX/k73gWzHkATdk
-X-Google-Smtp-Source: AGHT+IEjm2UdM3yY92ooZDkWJSsW/ZTWYRr5dWP5Jn03lXQEtE2pedZruPqMaNfr01BeL4CqDZnxREexBJ42PkoEVqo=
-X-Received: by 2002:a17:907:3fa7:b0:a9a:cea7:1294 with SMTP id
- a640c23a62f3a-aa4efe2a359mr773250166b.21.1732291130619; Fri, 22 Nov 2024
- 07:58:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732292104; x=1732896904;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IKuaoF5WY6am7cO+jXx2uCjMC60YxcYyklIAVCPFPTE=;
+        b=sXPse34wtjTQ4Bc6Tet3GGK190bV04TYzq2Olb2JHpgTpz6xNQOPnm3Ivi1qj1TqZd
+         r2qiT0I+dQEwiWI910d1P68p18tgok4XjCJYzlPFEUS+zX7jB0NfodKiQGq/Zwr8Oa+q
+         DkJ+zD4kbDdZn06V1XdZHywBmsnm8rx35kJNpioSOTCNuLodaByYBTuKgbHMhMxl6BVz
+         xRgqmc9RXZq2eKto3Ts6Se8emsuAQSCFZeXeB17q7tH60yn0hP6rTM+ou310xLCchshZ
+         IpTCNY19JTnqt28k6R1JYtIiLxdX743dg16IYUdk2hJs/pjeG5x4MsZAXcNaq+4GeoJg
+         nVXA==
+X-Gm-Message-State: AOJu0YxQgr5rVXYUoE3CPmtnxuhAnngipiVfMcyvIwkgjrhC2WfU44KM
+	Ks3o9kjC6cTsdTbl7PJuPhqe96FoRrGkT3ppVIr6T6CsV0IwrH07pPXEOS+X7tUUyUdnpZMNn0a
+	sTQRmlAu35lbkTYDYwKamanUQTVwpZ7OgEC5XTA==
+X-Gm-Gg: ASbGncsw7NytM6aA4dyRHMYH9QOsV50IhcOZ3pWG9egcX6MMB2Utbz/n9wwX87qtguY
+	+ExLqJQJJkJxbcLJVn3/4s+6LoCgm5c8A
+X-Google-Smtp-Source: AGHT+IFSakD+edGOb7cjWBeASvcWCarbhk3/bGqqxTgW8QTN6VnCuOros7gn3tl8Zs99mMCeBEl7vdhAv7EJRVPLTCY=
+X-Received: by 2002:a17:907:770a:b0:a99:f777:c6ef with SMTP id
+ a640c23a62f3a-aa509985435mr429626166b.3.1732292104288; Fri, 22 Nov 2024
+ 08:15:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <BN0PR08MB695133000AF116F04C3A9FFE83212@BN0PR08MB6951.namprd08.prod.outlook.com>
- <CAPDyKFrmMog-jemQb2-FGogq93+RACkoBXxOFRHUfYSkEsg4cw@mail.gmail.com> <BN0PR08MB695151B49A2CBFF1D293775883222@BN0PR08MB6951.namprd08.prod.outlook.com>
-In-Reply-To: <BN0PR08MB695151B49A2CBFF1D293775883222@BN0PR08MB6951.namprd08.prod.outlook.com>
+References: <CAOdCjQuiLHkX+ZJT6RbG01gxMo-Q9Y80P=FpNnS35rYWWV3eLw@mail.gmail.com>
+ <CAPDyKFrqxO6gSNTx7suYv+2_KZRaBrwnwwXzrAeSERYs3nRDXg@mail.gmail.com> <CAOdCjQsGG5wdsvkkSw9DtcnYGG-4q1Mzpfb=m5EvEtMccX3QLg@mail.gmail.com>
+In-Reply-To: <CAOdCjQsGG5wdsvkkSw9DtcnYGG-4q1Mzpfb=m5EvEtMccX3QLg@mail.gmail.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 22 Nov 2024 16:58:13 +0100
-Message-ID: <CAPDyKFo6BnHRg6G9vj6xiUncowUi59ExE3sCVLk8K+=6wqd1xQ@mail.gmail.com>
-Subject: Re: MMC card detection may trip watchdog if card powered off
-To: "Anthony Pighin (Nokia)" <anthony.pighin@nokia.com>
-Cc: "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Date: Fri, 22 Nov 2024 17:14:26 +0100
+Message-ID: <CAPDyKFo9waTUhFWgZMtgmGzmho7BzxvGCpQp7ikdEF6=LmipVg@mail.gmail.com>
+Subject: Re: SDHCI: linux-6.11: mmc0: Reset 0x2 never completed
+To: Pankaj Pandey <pankaj.embedded@gmail.com>
+Cc: linux-mmc@vger.kernel.org, isheng Zhang <jszhang@kernel.org>, 
+	Shawn Lin <shawn.lin@rock-chips.com>, Liming Sun <limings@nvidia.com>, 
+	Yifeng Zhao <yifeng.zhao@rock-chips.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 21 Nov 2024 at 14:23, Anthony Pighin (Nokia)
-<anthony.pighin@nokia.com> wrote:
->
-> > >
-> > > If card detection is done via polling, due to broken-cd (Freescale LX2160,
-> > etc.), or for other reasons, then the card will be polled asynchronously and
-> > periodically.
-> > >
-> > > If that polling happens after the card has been put in powered off state (i.e.
-> > during system shutdown/reboot), then the polling times out. That timeout is
-> > of a long duration (10s). And it is repeated multiple times (x3). And that is all
-> > done after the watchdogd has been disabled, meaning that system watchdogs
-> > are not being kicked.
-> > >
-> > > If the MMC polling exceeds the watchdog trip time, then the system will be
-> > ungraciously reset. Or in the case of a pretimeout capable watchdog, the
-> > pretimeout will trip unnecessarily.
-> > >
-> > >     [   46.872767] mmc_mrq_pr_debug:274: mmc1: starting CMD6 arg
-> > 03220301 flags 0000049d
-> > >     [   46.880258] sdhci_irq:3558: mmc1: sdhci: IRQ status 0x00000001
-> > >     [   46.886082] sdhci_irq:3558: mmc1: sdhci: IRQ status 0x00000002
-> > >     [   46.891906] mmc_request_done:187: mmc1: req done (CMD6): 0:
-> > 00000800 00000000 00000000 00000000
-> > >     [   46.900606] mmc_set_ios:892: mmc1: clock 0Hz busmode 2
-> > powermode 0 cs 0 Vdd 0 width 1 timing 0
-> > >     [   46.914934] mmc_mrq_pr_debug:274: mmc1: starting CMD13 arg
-> > 00010000 flags 00000195
-> > >     [   57.433351] mmc1: Timeout waiting for hardware cmd interrupt.
-> >
-> > Hmm. How is the polling being done? By using MMC_CAP_NEEDS_POLL?
-> >
->
-> Correct. (At least in my understanding.) 'broken-cd' in the device tree will trigger
-> MMC_CAP_NEEDS_POLL to be set.
->
-> > The above certainly looks weird. The mmc_rescan work should not be
-> > allowed to run at this point, as the work is getting punted to the
-> > system_freezable_wq via mmc_schedule_delayed_work().
-> >
->
-> This is the backtrace I get when the timeout occurs:
->
-> [   46.154348] mmc_mrq_pr_debug:274: mmc1: starting CMD13 arg 00010000 flags 00000195
-> [   46.161917] sdhci_irq:3546: mmc1: sdhci: IRQ status 0x00000001
-> [   46.167743] mmc_request_done:187: mmc1: req done (CMD13): 0: 00000900 00000000 00000000 00000000
-> [   46.176526] mmc_mrq_pr_debug:274: mmc1: starting CMD6 arg 03220301 flags 0000049d
-> [   46.184016] sdhci_irq:3546: mmc1: sdhci: IRQ status 0x00000001
-> [   46.189840] sdhci_irq:3546: mmc1: sdhci: IRQ status 0x00000002
-> [   46.195665] mmc_request_done:187: mmc1: req done (CMD6): 0: 00000800 00000000 00000000 00000000
-> [   46.204362] mmc_set_ios:892: mmc1: clock 0Hz busmode 2 powermode 0 cs 0 Vdd 0 width 1 timing 0
-> [   46.219307] CPU: 6 PID: 153 Comm: kworker/6:1 Tainted: G           O       6.6.59 #1
-> [   46.231988] Hardware name: [Redacted]
-> [   46.238678] Workqueue: events_freezable mmc_rescan
-> [   46.243466] Call trace:
-> [   46.245901]  dump_backtrace+0x9c/0x128
-> [   46.249643]  show_stack+0x20/0x38
-> [   46.252948]  dump_stack_lvl+0x48/0x60
-> [   46.256603]  dump_stack+0x18/0x28
-> [   46.259909]  mmc_alive+0x74/0x88
-> [   46.263128]  _mmc_detect_card_removed+0x3c/0x158
-> [   46.267735]  mmc_detect+0x30/0x98
-> [   46.271040]  mmc_rescan+0x94/0x238
-> [   46.274432]  process_one_work+0x178/0x3d8
-> [   46.278432]  worker_thread+0x2bc/0x3e0
-> [   46.282171]  kthread+0xf8/0x110
-> [   46.285303]  ret_from_fork+0x10/0x20
-> [   46.288878] mmc_mrq_pr_debug:274: mmc1: starting CMD13 arg 00010000 flags 00000195
-> [   56.793379] mmc1: Timeout waiting for hardware cmd interrupt.
-> [   56.799116] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
-> [   56.805545] mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00002202
-> ...
->
++ Shawn, Liming, Yifeng,
 
-Okay. If this is system suspend, it looks like the workqueue didn't
-become frozen as exepcted. I don't know why, but this needs to be
-investigated.
+On Fri, 22 Nov 2024 at 08:09, Pankaj Pandey <pankaj.embedded@gmail.com> wro=
+te:
+>
+> Hi Ulf,
+>
+> Tried in linux-6.12 but observed same issue there also:
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+> devkit-e7 login: mmc0: Timeout waiting for hardware cmd interrupt.
+> mmc0: sdhci: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D SDHCI REGISTER DUMP =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00000005
+> mmc0: sdhci: Blk size:  0x00000000 | Blk cnt:  0x00000000
+> mmc0: sdhci: Argument:  0x00000c00 | Trn mode: 0x00000000
+> mmc0: sdhci: Present:   0x03ff0000 | Host ctl: 0x00000001
+> mmc0: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+> mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x0000fa07
+> mmc0: sdhci: Timeout:   0x00000000 | Int stat: 0x00000000
+> mmc0: sdhci: Int enab:  0x00ff1003 | Sig enab: 0x00ff1003
+> mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+> mmc0: sdhci: Caps:      0x276e648a | Caps_1:   0x08008071
+> mmc0: sdhci: Cmd:       0x0000341a | Max curr: 0x00000000
+> mmc0: sdhci: Resp[0]:   0x00000000 | Resp[1]:  0x00000000
+> mmc0: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+> mmc0: sdhci: Host ctl2: 0x00000000
+> mmc0: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0x00000000
+> mmc0: sdhci: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> mmc0: Reset 0x2 never completed.
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+>
+> Regards,
+> Pankaj Pandey
 
-If this is a shutdown, mmc_host_classdev_shutdown() should be called
-to "disable" the mmc_rescan work from running the code causing the
-above.
+Thanks Pankaj,
 
-What am I missing?
+It's not entirely easy to tell what goes wrong - and a lot of changes
+have happened since v5.4.
+
+I guess a git bisect would help us to narrow down when things got
+screwed up. If you have the time to do that, that would greatly help I
+think.
+
+I have looped in some more of the driver authors to see if someone has
+an idea where to start looking.
+
+In the meantime, it would be useful to get some more information about
+your platform and a pointer to some DTS files.
 
 Kind regards
 Uffe
 
-> > >     ...
-> > >     [   71.031911] [Redacted] 2030000.i2c:[Redacted]@41:watchdog:
-> > Watchdog interrupt received!
-> > >     [   71.039737] Kernel panic - not syncing: watchdog pretimeout event
-> > >     [   71.045820] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G           O
-> > 6.6.59 #1
-> > >     [   71.053207] Hardware name: [Redacted]
-> > >     [   71.059897] Call trace:
-> > >     [   71.062332]  dump_backtrace+0x9c/0x128
-> > >     ...
-> > >
-> > > CMD6 is SWITCH_FUNC and arg 03220301 is POWER_OFF_NOTIFICATION
-> > (bits 16:23 = 0x22 = 34).
-> > > CMD13 is SEND_STATUS, and when it occurs after the
-> > POWER_OFF_NOTIFICATION (as above) bad things happen.
-> > >
-> > > I have made the following change to attempt to work around the issue, and
-> > it seems to hold up, but is also quite brute force:
-> > >
-> > > --- a/drivers/mmc/core/mmc.c
-> > > +++ b/drivers/mmc/core/mmc.c
-> > > @@ -2046,6 +2046,11 @@ static void mmc_remove(struct mmc_host *host)
-> > >   */
-> > >  static int mmc_alive(struct mmc_host *host)  {
-> > > +       if (host->card && mmc_card_suspended(host->card)) {
-> > > +               pr_err("%s: Skip card detection: Card suspended\n",
-> > > +                      mmc_hostname(host));
-> > > +               return -ENOMEDIUM;
-> > > +       }
-> > >         return mmc_send_status(host->card, NULL);  }
+>
+> On Wed, Nov 20, 2024 at 6:34=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.o=
+rg> wrote:
 > >
-> > Yeah, the above isn't really the correct solution in my opinion.
+> > On Wed, 20 Nov 2024 at 09:28, Pankaj Pandey <pankaj.embedded@gmail.com>=
+ wrote:
+> > >
+> > > Hi All,
+> > >
+> > > My target board(ARMv8-A AArch32 processor), supports the "Synopsys DW=
+C
+> > > MSHC controller." I am using the Linux 5.4 kernel and have enabled th=
+e
+> > > following configurations to support the "SDHCI platform driver for
+> > > Synopsys DWC MSHC":
+> > >
+> > > CONFIG_MMC_SDHCI=3Dy
+> > > CONFIG_MMC_SDHCI_PLTFM=3Dy
+> > > CONFIG_MMC_SDHCI_OF_DWCMSHC=3Dy
+> > >
+> > > This setup works perfectly on Linux 5.4, successfully detecting all
+> > > microSD cards. However, when I use the same driver configuration with
+> > > Linux 6.11.0, I encounter the below mentioned error:
+> > >
+> > > sdhci: Secure Digital Host Controller Interface driver
+> > > sdhci: Copyright(c) Pierre Ossman
+> > > sdhci-pltfm: SDHCI platform and OF driver helper
+> > > mmc0: sdhci: Version:   0x00000005 | Present:  0x020f0000
+> > > mmc0: sdhci: Caps:      0x276e648a | Caps_1:   0x08008071
+> > > SMCCC: SOC_ID: ARCH_SOC_ID not implemented, skipping ....
+> > > mmc0: sdhci: Auto-CMD23 available
+> > > mmc0: SDHCI controller on 48102000.sdhci [48102000.sdhci] using ADMA
+> > > mmc0: Timeout waiting for hardware cmd interrupt.
+> > > mmc0: sdhci: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D SDHCI REGISTER DUMP=
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00000005
+> > > mmc0: sdhci: Blk size:  0x00000000 | Blk cnt:  0x00000000
+> > > mmc0: sdhci: Argument:  0x00000c00 | Trn mode: 0x00000000
+> > > mmc0: sdhci: Present:   0x020f0000 | Host ctl: 0x00000001
+> > > mmc0: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+> > > mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x0000fa07
+> > > mmc0: sdhci: Timeout:   0x00000000 | Int stat: 0x00000000
+> > > mmc0: sdhci: Int enab:  0x00ff1083 | Sig enab: 0x00ff1083
+> > > mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+> > > mmc0: sdhci: Caps:      0x276e648a | Caps_1:   0x08008071
+> > > mmc0: sdhci: Cmd:       0x0000341a | Max curr: 0x00000000
+> > > mmc0: sdhci: Resp[0]:   0x00000000 | Resp[1]:  0x00000000
+> > > mmc0: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+> > > mmc0: sdhci: Host ctl2: 0x00000000
+> > > mmc0: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0x00000000
+> > > mmc0: sdhci: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+> > > mmc0: Reset 0x2 never completed.
+> > >
+> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> > >
+> > > Please find mmc debug info and dts file changes for references:-
+> > >
+> > > root@devkit-e7:~# cat /sys/kernel/debug/mmc0/ios
+> > > clock:          400000 Hz
+> > > actual clock:   400000 Hz
+> > > vdd:            21 (3.3 ~ 3.4 V)
+> > > bus mode:       2 (push-pull)
+> > > chip select:    1 (active high)
+> > > power mode:     2 (on)
+> > > bus width:      0 (1 bits)
+> > > timing spec:    0 (legacy)
+> > > signal voltage: 0 (3.30 V)
+> > > driver type:    0 (driver type B)
+> > >
+> > > sdmmc: sdhci@48102000 {
+> > >                         compatible =3D "snps,dwcmshc-sdhci";
+> > >                         reg =3D <0x48102000 0x1000>;
+> > >                         interrupts =3D <GIC_SPI 27 IRQ_TYPE_LEVEL_HIG=
+H>,
+> > >                                      <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>=
+;
+> > >                         clocks =3D <&syst_hclk>, <&syst_hclk>;
+> > >                         clock-names =3D "core", "bus";
+> > >                         bus-width =3D <4>;
+> > > max-frequency =3D <25000000>;
+> > >                         status =3D "okay";
+> > >                 };
+> > >
+> > > Kindly request you to please let me know if I am missing anything.
 > >
-> > We need to prevent the mmc_rescan work from running, which I thought we
-> > already did...
+> > Would it be possible for you to do a "git bisect" to see if we can
+> > find if there is a particular commit causing the problem?
 > >
-> > >
-> > > Anthony
-> > >
-> > >
+> > Moreover, we have v6.12 now, so it seems reasonable to give that a try =
+too.
 > >
 > > Kind regards
 > > Uffe
