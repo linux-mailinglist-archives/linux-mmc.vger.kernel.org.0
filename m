@@ -1,238 +1,153 @@
-Return-Path: <linux-mmc+bounces-4795-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4799-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2829D5B1D
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Nov 2024 09:40:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAA09D61C5
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Nov 2024 17:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CDDD1F22DEC
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Nov 2024 08:40:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 339C4282FAA
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Nov 2024 16:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93A918787D;
-	Fri, 22 Nov 2024 08:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8246D1DE4E4;
+	Fri, 22 Nov 2024 16:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="f9axSdhM"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="bASxYq9W"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mail-m17238.xmail.ntesmail.com (mail-m17238.xmail.ntesmail.com [45.195.17.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4629165EE6;
-	Fri, 22 Nov 2024 08:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D412FC23
+	for <linux-mmc@vger.kernel.org>; Fri, 22 Nov 2024 16:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.195.17.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732264817; cv=none; b=SkjF8E+4k93/iPYZDUOoTGej1WkK8FIa4BVRaYE1KDiv8P4HC/4rpMqyyo6XZrKwCvfHn51Gb1UT9o78sE9Fy8YxJvPaKITKCiDjYFDUpecbK9Fh2vLY7UxKci1sKvsuCaswgkBceV+fF3Eizkwflkg5/iy9BsWSFZo2FUQ+nY0=
+	t=1732292068; cv=none; b=RuS7QLbdarNuQ8D6EjAHVXmynAomhhPeKHUbSv5Zk4T/wsMq+8m19D/jphwUmfSJgFOG9aZGTcriqp9VF+VyuKDzQINLbJzhopYYdHwTXV6Whts+lKDlO14hdqfguJFON6vdH3/dXQkjzjer42K000h+kWtiOppcMD933KnHaSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732264817; c=relaxed/simple;
-	bh=SAAv+IV2q4W/K/mgYgUrQcsuChODGIVW09y4HM6oVDw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e2D7jncWjQcjq4cpEBtOyKkdH065U9kuBFOL9JvsG8gsltVOW4y2L0IA+3Zp3AUkhHXcEF8Pr7DL5j04HVCDsiZayi2uqGJm5LGl+kjmQkJLURkHYBnrX9lTL6zA/tNBrPkOlOV3JpxofoRtZNkfuOa4t2a6BctJKoOxADZ2j28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=f9axSdhM; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ALLpq6r025682;
-	Fri, 22 Nov 2024 08:40:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=haNWgxzgTjDgIowVFWR33CIu
-	WYP1uxTxuQlgVv/OIaY=; b=f9axSdhMsGxumeszge7PRflEbiKvqf3k6tuDUu3p
-	BsGBMNeqoGhmQ83OdS5UDzB8EwNmgZoW81mePdLuDMJrrp5QMOvKiAjFwQz+wSQk
-	XGbRbzBd1db4N5IfZh2IlL+R0Uddl3WsnWOImbI65m9CzFzTOjyxmQKpohCpe9sf
-	jAJGaHN3fNIS9OagA9H8yA8lKa5oXKM5I4PQ78jiK1DEQ+JQIUb2pea57gf7JeT6
-	3Qc83H3J2EWfwzQBqLO0OE75PtHjgaqlUMSF0Mg5zAOA9Kqe7Kqr7FGvXOZplARG
-	2J/HyPvf6/5qiN8dq4Jryar4ZnUcy2CyT1mlB1bjQhyPbA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 432d5b1bk7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Nov 2024 08:40:12 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AM8eBsF010407
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Nov 2024 08:40:11 GMT
-Received: from cse-cd02-lnx.ap.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 22 Nov 2024 00:40:07 -0800
-Date: Fri, 22 Nov 2024 16:40:02 +0800
-From: Yuanjie Yang <quic_yuanjiey@quicinc.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>, <ulf.hansson@linaro.org>,
-        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-        <bhupesh.sharma@linaro.org>, <andersson@kernel.org>,
-        <konradybcio@kernel.org>
-CC: <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <quic_tingweiz@quicinc.com>, <quic_yuanjiey@quicinc.com>
-Subject: Re: [PATCH v3 1/2] arm64: dts: qcom: qcs615: add SDHC1 and SDHC2
-Message-ID: <Z0BDYiVaLQXaMsle@cse-cd02-lnx.ap.qualcomm.com>
-References: <20241122065101.1918470-1-quic_yuanjiey@quicinc.com>
- <20241122065101.1918470-2-quic_yuanjiey@quicinc.com>
- <f9b01690-8940-4f8b-b142-6c2ec4db3e83@kernel.org>
+	s=arc-20240116; t=1732292068; c=relaxed/simple;
+	bh=fqChlzKktpG9hnoM7niFonsAWa05TR6YH43ITDbsX5I=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=b8yolN1ukn5+PJ2DfSasSW4w7PMtwRSZ/vsk/CosZpt3a+STRKktY6J/TwxkE3muW+zAXGYi+83f5bnHdTDGDS2INSVYILifRpwzCYULFAO+E1yWPsMDNdz885aZ6DJdM150Pi5LyimLPfakakGYIWR3v7ljKYdGkFvHc2HHQDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=bASxYq9W; arc=none smtp.client-ip=45.195.17.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 38959665;
+	Fri, 22 Nov 2024 17:24:35 +0800 (GMT+08:00)
+From: Shawn Lin <shawn.lin@rock-chips.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>,
+	YiFeng Zhao <zyf@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	linux-rockchip@lists.infradead.org,
+	linux-mmc@vger.kernel.org,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH] mmc: sdhci-of-dwcmshc: Restore missing regs for RK3576 platform
+Date: Fri, 22 Nov 2024 17:24:08 +0800
+Message-Id: <1732267448-72548-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUlIHlZNSEkdSE5CT0tNSklWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhCSE
+	NVSktLVUpCS0tZBg++
+X-HM-Tid: 0a935330032409cckunm38959665
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6P006Kxw6PjIYGT4JDAE0GEtW
+	Mk4KC0pVSlVKTEhJSU1MT0xNQ0pIVTMWGhIXVQgTGgwVVRcSFTsJFBgQVhgTEgsIVRgUFkVZV1kS
+	C1lBWU5DVUlJVUxVSkpPWVdZCAFZQUhLTkM3Bg++
+DKIM-Signature:a=rsa-sha256;
+	b=bASxYq9W35aKDVpuxQJMSLflCRPg84ZdQsJ+Wzd5Zvksz3OVW2tnipj6qztENdyu2BJ7U/B1Z60DQ9dJyq5WJv5N5VMaiXvzDVJb8oK/tr3+09uMxWEyCuzvmaJ15aofGCRKpm1XobFXVMpDr8ndZFhTWWLAIvgGccjTb7OxQ70=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=ULdm66vH3eysA/Cw8Jg21nq4yfZIlWCcghnT2DeAKqs=;
+	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <f9b01690-8940-4f8b-b142-6c2ec4db3e83@kernel.org>
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: O0RpfHuaPG2PlL20SvBDoP4UBuWkB1MH
-X-Proofpoint-ORIG-GUID: O0RpfHuaPG2PlL20SvBDoP4UBuWkB1MH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 adultscore=0 clxscore=1011 impostorscore=0 suspectscore=0
- spamscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411220072
 
-On Fri, Nov 22, 2024 at 08:04:31AM +0100, Krzysztof Kozlowski wrote:
-> On 22/11/2024 07:51, Yuanjie Yang wrote:
-> > Add SDHC1 and SDHC2 support to the QCS615 Ride platform.
-> > 
-> > Signed-off-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
-> > ---
-> >  arch/arm64/boot/dts/qcom/qcs615.dtsi | 198 +++++++++++++++++++++++++++
-> >  1 file changed, 198 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/qcs615.dtsi b/arch/arm64/boot/dts/qcom/qcs615.dtsi
-> > index 590beb37f441..37c6ab217c96 100644
-> > --- a/arch/arm64/boot/dts/qcom/qcs615.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/qcs615.dtsi
-> > @@ -399,6 +399,65 @@ qfprom: efuse@780000 {
-> >  			#size-cells = <1>;
-> >  		};
-> >  
-> > +		sdhc_1: mmc@7c4000 {
-> > +			compatible = "qcom,qcs615-sdhci", "qcom,sdhci-msm-v5";
-> > +			reg = <0x0 0x007c4000 0x0 0x1000>,
-> > +			      <0x0 0x007c5000 0x0 0x1000>;
-> > +			reg-names = "hc",
-> > +				    "cqhci";
-> > +
-> > +			interrupts = <GIC_SPI 641 IRQ_TYPE_LEVEL_HIGH>,
-> > +				     <GIC_SPI 644 IRQ_TYPE_LEVEL_HIGH>;
-> > +			interrupt-names = "hc_irq",
-> > +					  "pwr_irq";
-> > +
-> > +			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
-> > +				 <&gcc GCC_SDCC1_APPS_CLK>,
-> > +				 <&rpmhcc RPMH_CXO_CLK>,
-> > +				 <&gcc GCC_SDCC1_ICE_CORE_CLK>;
-> > +			clock-names = "iface",
-> > +				      "core",
-> > +				      "xo",
-> > +				      "ice";
-> > +
-> > +			resets = <&gcc GCC_SDCC1_BCR>;
-> > +
-> > +			power-domains = <&rpmhpd RPMHPD_CX>;
-> > +			operating-points-v2 = <&sdhc1_opp_table>;
-> > +			iommus = <&apps_smmu 0x02c0 0x0>;
-> > +			interconnects = <&aggre1_noc MASTER_SDCC_1 QCOM_ICC_TAG_ALWAYS
-> > +					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
-> > +					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
-> > +					 &config_noc SLAVE_SDCC_1 QCOM_ICC_TAG_ALWAYS>;
-> > +			interconnect-names = "sdhc-ddr",
-> > +					     "cpu-sdhc";
-> > +
-> > +			bus-width = <8>;
-> > +			qcom,dll-config = <0x000f642c>;
-> > +			qcom,ddr-config = <0x80040868>;
-> > +			supports-cqe;
-> > +			dma-coherent;
-> > +			mmc-ddr-1_8v;
-> > +			mmc-hs200-1_8v;
-> > +			mmc-hs400-1_8v;
-> > +			mmc-hs400-enhanced-strobe;
-> 
-> These are properties of memory, not SoC. If the node is disabled, means
-> memory is not attached to the SoC, right?
-> 
-> > +			status = "disabled";
-Thanks, I think qcom,dll-config and qcom,ddr-config are properties of Soc,
-they are memory configurations that need to be written to the ioaddr.
-And mmc-ddr-1_8v,mmc-hs200-1_8v,mmc-hs400-1_8v are bus speed config,
-they indicate the bus speed at which the host contoller can operate.
-If the node is disabled, which means Soc don't support these properties.
+DECMSHC_EMMC_MISC_CON is introduced from RK3576 which need to be
+saved and restore after .reset() with SDHCI_RESET_ALL is called,
+because we assert the reset line. Otherwise the entire controller
+is broken anyway.
 
-> 
-> 
-> ...
-> 
-> > +
-> > +		sdhc_2: mmc@8804000 {
-> > +			compatible = "qcom,qcs615-sdhci","qcom,sdhci-msm-v5";
-> > +			reg = <0x0 0x08804000 0x0 0x1000>;
-> > +			reg-names = "hc";
-> > +
-> > +			interrupts = <GIC_SPI 204 IRQ_TYPE_LEVEL_HIGH>,
-> > +				     <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
-> > +			interrupt-names = "hc_irq",
-> > +					  "pwr_irq";
-> > +
-> > +			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
-> > +				 <&gcc GCC_SDCC2_APPS_CLK>,
-> > +				 <&rpmhcc RPMH_CXO_CLK>;
-> > +			clock-names = "iface",
-> > +				      "core",
-> > +				      "xo";
-> > +
-> > +			power-domains = <&rpmhpd RPMHPD_CX>;
-> > +			operating-points-v2 = <&sdhc2_opp_table>;
-> > +			iommus = <&apps_smmu 0x02a0 0x0>;
-> > +			resets = <&gcc GCC_SDCC2_BCR>;
-> > +			interconnects = <&aggre1_noc MASTER_SDCC_2 QCOM_ICC_TAG_ALWAYS
-> > +					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
-> > +					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
-> > +					 &config_noc SLAVE_SDCC_2 QCOM_ICC_TAG_ALWAYS>;
-> > +			interconnect-names = "sdhc-ddr",
-> > +					     "cpu-sdhc";
-> > +
-> > +			bus-width = <4>;
-> 
-> Same comments.
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+---
 
-Thanks, I think qcom,dll-config and qcom,ddr-config are properties of Soc,
-they are memory configurations that need to be written to the ioaddr.
-And mmc-ddr-1_8v,mmc-hs200-1_8v,mmc-hs400-1_8v are bus speed config,
-they indicate the bus speed at which the host controller can operate.
-If the node is disabled, which means Soc don't support these properties.
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index 8999b97..aa46655 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -81,6 +81,8 @@
+ #define DWCMSHC_EMMC_DLL_TXCLK		0x808
+ #define DWCMSHC_EMMC_DLL_STRBIN		0x80c
+ #define DECMSHC_EMMC_DLL_CMDOUT		0x810
++#define MISC_INTCLK_EN			BIT(1)
++#define DECMSHC_EMMC_MISC_CON		0x81c
+ #define DWCMSHC_EMMC_DLL_STATUS0	0x840
+ #define DWCMSHC_EMMC_DLL_START		BIT(0)
+ #define DWCMSHC_EMMC_DLL_LOCKED		BIT(8)
+@@ -213,6 +215,7 @@ enum dwcmshc_rk_type {
+ struct rk35xx_priv {
+ 	struct reset_control *reset;
+ 	enum dwcmshc_rk_type devtype;
++	bool has_misc_con;
+ 	u8 txclk_tapnum;
+ };
+ 
+@@ -720,6 +723,7 @@ static void rk35xx_sdhci_reset(struct sdhci_host *host, u8 mask)
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct dwcmshc_priv *dwc_priv = sdhci_pltfm_priv(pltfm_host);
+ 	struct rk35xx_priv *priv = dwc_priv->priv;
++	int misc_con;
+ 
+ 	if (mask & SDHCI_RESET_ALL && priv->reset) {
+ 		reset_control_assert(priv->reset);
+@@ -728,6 +732,12 @@ static void rk35xx_sdhci_reset(struct sdhci_host *host, u8 mask)
+ 	}
+ 
+ 	sdhci_reset(host, mask);
++
++	/* Restore DECMSHC_EMMC_MISC_CON */
++	if (priv->has_misc_con) {
++		misc_con = sdhci_readl(host, DECMSHC_EMMC_MISC_CON);
++		sdhci_writel(host, misc_con | MISC_INTCLK_EN, DECMSHC_EMMC_MISC_CON);
++	}
+ }
+ 
+ static int dwcmshc_rk35xx_init(struct device *dev, struct sdhci_host *host,
+@@ -735,7 +745,7 @@ static int dwcmshc_rk35xx_init(struct device *dev, struct sdhci_host *host,
+ {
+ 	static const char * const clk_ids[] = {"axi", "block", "timer"};
+ 	struct rk35xx_priv *priv;
+-	int err;
++	int err, misc_con;
+ 
+ 	priv = devm_kzalloc(dev, sizeof(struct rk35xx_priv), GFP_KERNEL);
+ 	if (!priv)
+@@ -746,6 +756,9 @@ static int dwcmshc_rk35xx_init(struct device *dev, struct sdhci_host *host,
+ 	else
+ 		priv->devtype = DWCMSHC_RK3568;
+ 
++	if (of_device_is_compatible(dev->of_node, "rockchip,rk3576-dwcmshc"))
++		priv->has_misc_con = true;
++
+ 	priv->reset = devm_reset_control_array_get_optional_exclusive(mmc_dev(host->mmc));
+ 	if (IS_ERR(priv->reset)) {
+ 		err = PTR_ERR(priv->reset);
+@@ -767,6 +780,10 @@ static int dwcmshc_rk35xx_init(struct device *dev, struct sdhci_host *host,
+ 	/* Reset previous settings */
+ 	sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_TXCLK);
+ 	sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_STRBIN);
++	if (priv->has_misc_con) {
++		misc_con = sdhci_readl(host, DECMSHC_EMMC_MISC_CON);
++		sdhci_writel(host, misc_con | MISC_INTCLK_EN, DECMSHC_EMMC_MISC_CON);
++	}
+ 
+ 	dwc_priv->priv = priv;
+ 
+-- 
+2.7.4
 
-> > +			qcom,dll-config = <0x0007642c>;
-> > +			qcom,ddr-config = <0x80040868>;
-> > +			dma-coherent;
-> > +			status = "disabled";
-> > +
-> > +			sdhc2_opp_table: opp-table {
-> > +				compatible = "operating-points-v2";
-> > +
-> > +				opp-100000000 {
-> > +					opp-hz = /bits/ 64 <100000000>;
-> > +					required-opps = <&rpmhpd_opp_low_svs>;
-> > +				};
-> > +
-> > +				opp-202000000 {
-> > +					opp-hz = /bits/ 64 <202000000>;
-> > +					required-opps = <&rpmhpd_opp_nom>;
-> > +				};
-> > +			};
-> >  		};
-> >  
-> >  		dc_noc: interconnect@9160000 {
-> 
-> 
-> Best regards,
-> Krzysztof
-
-Thanks,
-Yuanjie
 
