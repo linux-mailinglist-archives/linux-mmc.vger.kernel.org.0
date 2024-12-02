@@ -1,122 +1,127 @@
-Return-Path: <linux-mmc+bounces-4887-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4889-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF85F9E06ED
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 16:25:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084469E07E9
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 17:06:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB424280EE4
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 15:25:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0188D16CBE0
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 15:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA094207A35;
-	Mon,  2 Dec 2024 15:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB36F209694;
+	Mon,  2 Dec 2024 15:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ARa3G55m"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="k5Lk6NCL"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5DE204F8D
-	for <linux-mmc@vger.kernel.org>; Mon,  2 Dec 2024 15:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA830209672
+	for <linux-mmc@vger.kernel.org>; Mon,  2 Dec 2024 15:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733153039; cv=none; b=FZ15Yk5UsD7p98HheYfHE9Scix44oI0p75AInV0LsmKm+5V/8wWmZu04t8y3yMs6mMAetxBOd3mJORRFIZy+JdSR0c2OHgO8tbkc+foAJZZQ6mk0TmWy/F6SaXTybGK1RJXSs8HjrD10ng1B2+n2ZJPp6o15hOjXJh4Fsq0pkuY=
+	t=1733153049; cv=none; b=bDYex8N6y41pTScZBbwFWAduKgSqEsF6mU9isDuFiT8Dd0qJ2KP4SJU6WKrcg+Z9lsU3tfIaPz9TBipU+murR1508UUfLw92KKw8Ua+0oopvhGm/kqcF2gvSkhxUtb3ZYHTn+e2gtEzg0mY5YO6Sj81ftlthAbbYUztqXHULvfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733153039; c=relaxed/simple;
-	bh=6CC15jbxUDlJ9BurmHxAUR/muMmumb2p41Z0I6IvNpI=;
+	s=arc-20240116; t=1733153049; c=relaxed/simple;
+	bh=+Xl8s91uz6z0166yhunqPMLThqhGtXNxm6DGP1hGyaY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HZ7ZGbXYUjsxKoXHDjJcKv2Hp21Yh8LyeQI41wt29JYbdJ4o9pWYw1ITqBpYcikNE54hqBu4qENPTrsUOftnJ/+pSCG6S+BPNqh8BLzvqO3BHt4NhUjno9BPL47sJp1wY0Ul8jWosm9+qaQfblhyO+dKj8Dn/OLSfen7ZUaZ7Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ARa3G55m; arc=none smtp.client-ip=209.85.219.176
+	 To:Cc:Content-Type; b=kxOQ11jfRxdh4j+afitkYkW9ItOD/eMNOZr4v4QxXXbbwwk5AERJopoNgSj/el7t8N0501jHdMrDEvBdk/S5yFnlsagHxU+8WyzrVgSZp7L6vwsvAJ1uafbdGAticlR764Vg5YWYdkUDOCvn3rwpGpSqbFweY+nv4VPdj30xh4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=k5Lk6NCL; arc=none smtp.client-ip=209.85.219.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e399f8bb391so1470651276.2
-        for <linux-mmc@vger.kernel.org>; Mon, 02 Dec 2024 07:23:57 -0800 (PST)
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e3985aabf43so2630455276.3
+        for <linux-mmc@vger.kernel.org>; Mon, 02 Dec 2024 07:24:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733153037; x=1733757837; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1733153047; x=1733757847; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=oG32m3QcvgKOONQzZS2q59D3/5WzjOGf+ILtQyx9xHM=;
-        b=ARa3G55mkgUG2shyKe2o2t3hqlgzSpLy5zPhGofEcbMgx2TVgZHHI7TlCnxTYrtyo+
-         b8mZqJJepjlla+PETl2X65kYRCgV8l2BTBp0U61LSC4d+F9+zN5Qjn35i2LTKcRn3e/h
-         4LpdTpiwHarvWTgFlKVBe+yCB1Y1yLitOrqb9d5iUmpVxkreu81CB8i/YMOq25HbDPLk
-         JEQsKln2NINOIKoFEn+uBn51qeidiTmnSznqljrKFVEQJKEAbNt8PMtrzIlY7XzyCzwn
-         E0DLCT48rLfKCWeLM04DckrgnxKaDsfOh/t7cxp+0Zm2CPSwDc1NO0br21zjYS0eWrZY
-         e0IA==
+        bh=XMx9usLc+8H+1O3Ux5r/Qz56sk5GB2iRle+hBCjO6+0=;
+        b=k5Lk6NCL/Q9S2n2SD7XUQy3GgjWsjcXzD2V/+giR9rhAUrOGGCsMQ/r8/8dAPLYGsW
+         ulCSdELHI1aTBluKfiDycsvm82o8sgvRyGtiXYSAGP0/WxrT27xmDDDgbwE+M/CCvKEd
+         0uh4t60+ULG1Ks4uJ4LNZYFklbSa+BPzal9TSB/GfYKX+XXRNKkYMor2pa3wur1kOHlS
+         FwhQtAJpO5o9tSZUZtX+ynvGl4TSVftm5BgyNchSRDtjBsudY0vkHF6+9NmXWz9zclq8
+         x8WgYa44Bx7oS49t0Opu8E+xUy/9ma+sg7UrILv5kSFdznhmNNCq9kHIJbfa2juCgfhX
+         oyJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733153037; x=1733757837;
+        d=1e100.net; s=20230601; t=1733153047; x=1733757847;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oG32m3QcvgKOONQzZS2q59D3/5WzjOGf+ILtQyx9xHM=;
-        b=OcvKfX5rwRaCvYcMN2ZU4AMgN+s4gkV291hc9+E486x+15xjEOQh6wHrLptj7M6qL3
-         bZlVBVOQVgVCjWF78HNsmFRSyI/l+ewEjSx8j0mySpYlbtr8dEOOb63jNcn2RB4Hkpw+
-         E2OiZT35+5CjkbiKzk/YefLw4Pn3kUJwUZ+X4j1dkfFJXq5HHvovNEpHueK9uh1goTPp
-         5/hXAnq4fJKC+8m7u1BlritZLb48CbAmnYQ70DpJzu17upanTJ6ZFPW9ZRPJq2xgB2R3
-         EHjotwV2jXuHxnm/ACdqwVCni+Yz9dqXYf6yIni6xwXTgwNBvc0qveAM7fJiO1BxPXls
-         aVLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqnLxM9w/mGTKTIB/A893cnvJjH7RHN7OmlGgY3+0NxI3KUL+Yma3nh6y0/oOmwmHn02o/wsc0hV8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzpk3+V/9uLfIcgreFzyigINuNgCcYVVDOINQc4LKXvp5dszA3y
-	C6apCykPqOlmuRszlRpTi2Su0C3am69U4TGRlmTB4wKEY+UPWvkhqoP67vJO6Axr28P4b3C47bs
-	HZa02n0A4x4Xa14El/n+VLe0hQcB0kZCKjKy2gQyjGhFGIYSr
-X-Gm-Gg: ASbGncszvRNPC9flmgwGU+GLct9PjgjT4r4vkL1pM1do5qNEUHyxIe0n+MTjH49xt+y
-	EYi3+7G6x7QWflTBET+M6tK/RHD1fdgWh
-X-Google-Smtp-Source: AGHT+IFQBDwWAOqdm0DGv13abYWV94NvjZx0NJ/YgMvqSE6QXGn8i8KFJNAFWT/Bxo1k6U4xwUpR7PjVN/gwuOd9+/Q=
-X-Received: by 2002:a05:6902:2e0d:b0:e39:453c:b081 with SMTP id
- 3f1490d57ef6-e395b9360e8mr19394616276.41.1733153036741; Mon, 02 Dec 2024
- 07:23:56 -0800 (PST)
+        bh=XMx9usLc+8H+1O3Ux5r/Qz56sk5GB2iRle+hBCjO6+0=;
+        b=szAqxp5yp29QT6QJb9spuPWmrwQXOP7/ryoZPLmOa3vYCAOeaXwvhCCGAVQ6j/TYnk
+         PjvYyFTlvTG7eb/TCln4TANS78VPTY7k7mEW5Qfa76jyP6SKyyAq69wjEwiGnatyrcDA
+         jLCSSu6tBbND1JyoKumV81OsanRDYMIKK6JlTWBWO6hkilMxb8ha9fwh1T+jZ2tQrZUK
+         BZUm3NnJz5DHlwr1DB1WlqVKW++5VZuHJuo/tkyErZUEIuxPah7LQCFHc4JIE6S0TrRG
+         e/eUL01EB3hx663e61etnHGoHykdPblPza6HKTwTHNXqLyql2bTtn2J1iUhU2eoB5duQ
+         PhhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXFKHW+KSzGOkE36NkQT3YY/r4YjYc20ubK7oVC8S3LshvqKVyT0f1pBVJ4/rhg4Urv+ed/6Matynk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcTpniw3ap+5BQG4a4yUxaN6zb1yEqLvRpp5vuSslQ9fAT5OT5
+	LL6iqo7kwlbo1CLlLV1ANdRgvOlLj4MJrqMJlzGMcDbBXuXD/skEMcmgTDZQKBLeVQQrNy6NNts
+	P15TzcjPWrR0gv2Y9CPYX1oyuJt9HrOzzsRquJw==
+X-Gm-Gg: ASbGncvIGBXjbSnZvCurzBj5NUDXLJNVg5q+E0zCa5pgiLvyeVYy0ZfyfXOEnPbYsuy
+	p/BhF0r4AVWz/j1AIxaDLaoJ05+g4WCN+
+X-Google-Smtp-Source: AGHT+IEGJdd9IwF7sSUzoqqAWgtWCRY1a0UMhBwb88ErQOHU8BaxnCWHnPMW9+ru+41yFpFYGuJqHhtoLonEK76JtT0=
+X-Received: by 2002:a05:6902:1895:b0:e30:c614:5c3a with SMTP id
+ 3f1490d57ef6-e395b869b78mr21357729276.3.1733153046692; Mon, 02 Dec 2024
+ 07:24:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1732268242-72799-1-git-send-email-shawn.lin@rock-chips.com>
-In-Reply-To: <1732268242-72799-1-git-send-email-shawn.lin@rock-chips.com>
+References: <cover.1732030972.git.Ryan.Wanner@microchip.com> <e9e9e4cf0753422706bdc44fe7d20ca3a686ce7a.1732030972.git.Ryan.Wanner@microchip.com>
+In-Reply-To: <e9e9e4cf0753422706bdc44fe7d20ca3a686ce7a.1732030972.git.Ryan.Wanner@microchip.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 2 Dec 2024 16:23:21 +0100
-Message-ID: <CAPDyKFpyxxpCaNcJuTJ9MnnHU1VXDz3hsCoP4=5nkzdVVFCqsg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: core: sdio: Respect quirk_max_rate for non-UHS mode
-To: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: YiFeng Zhao <zyf@rock-chips.com>, linux-mmc@vger.kernel.org
+Date: Mon, 2 Dec 2024 16:23:30 +0100
+Message-ID: <CAPDyKFpN-2kowdi_eCtbW1WEdc5OKh7tj60GfbPPBR0Hbpyj5Q@mail.gmail.com>
+Subject: Re: [PATCH 04/15] dt-bindings: mmc: atmel,sama5d2-sdhci: add microchip,sama7d65-sdhci
+To: Ryan.Wanner@microchip.com
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com, 
+	claudiu.beznea@tuxon.dev, mturquette@baylibre.com, sboyd@kernel.org, 
+	arnd@arndb.de, dharma.b@microchip.com, mihai.sain@microchip.com, 
+	romain.sioen@microchip.com, varshini.rajendran@microchip.com, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 22 Nov 2024 at 10:37, Shawn Lin <shawn.lin@rock-chips.com> wrote:
+On Tue, 19 Nov 2024 at 17:42, <Ryan.Wanner@microchip.com> wrote:
 >
-> The same limitation was done in UHS mode, so fix it in
-> non-UHS mode.
+> From: Dharma Balasubiramani <dharma.b@microchip.com>
 >
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+> Add mmc binding documentation for SAMA7D65.
+>
+> Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
 
 Applied for next, thanks!
-
-I took the liberty of clarifying the commit message a bit, please let
-me know if my change doesn't make sense to you!
 
 Kind regards
 Uffe
 
 
 > ---
+>  Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 >
->  drivers/mmc/core/sdio.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-> index 4fb247f..b31ca2b 100644
-> --- a/drivers/mmc/core/sdio.c
-> +++ b/drivers/mmc/core/sdio.c
-> @@ -458,6 +458,8 @@ static unsigned mmc_sdio_get_max_clock(struct mmc_card *card)
->         if (mmc_card_sd_combo(card))
->                 max_dtr = min(max_dtr, mmc_sd_get_max_clock(card));
->
-> +       max_dtr = min_not_zero(max_dtr, card->quirk_max_rate);
-> +
->         return max_dtr;
->  }
+> diff --git a/Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml b/Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml
+> index 8c8ade88e8fe..ba75623b7778 100644
+> --- a/Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/atmel,sama5d2-sdhci.yaml
+> @@ -22,6 +22,7 @@ properties:
+>        - items:
+>            - enum:
+>                - microchip,sam9x7-sdhci
+> +              - microchip,sama7d65-sdhci
+>                - microchip,sama7g5-sdhci
+>            - const: microchip,sam9x60-sdhci
 >
 > --
-> 2.7.4
+> 2.43.0
+>
 >
 
