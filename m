@@ -1,118 +1,150 @@
-Return-Path: <linux-mmc+bounces-4894-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4896-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950749E07D4
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 17:01:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433469E0802
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 17:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33908BC3636
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 15:27:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1315B4430D
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 15:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E449520B7E0;
-	Mon,  2 Dec 2024 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31E9208961;
+	Mon,  2 Dec 2024 15:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JAXxGGHG"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nuevsYqr"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398F620C009
-	for <linux-mmc@vger.kernel.org>; Mon,  2 Dec 2024 15:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9CD209F27
+	for <linux-mmc@vger.kernel.org>; Mon,  2 Dec 2024 15:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733153078; cv=none; b=fPZ87F5KvTB3UtfhM1uvr74tV+KI52Eh0YJJPEbC4UoZyemVfLicOEeWjnoJdTZf6qXlViCCz3D9IKwtS3vpIZvL4VVon3negqYvVb06bMu7yu2Ur4+xqM9Xgk/dS6yu77Ytam6CCJ6w3p2D61lgmH/1pDT/6nLGQxlf2lxtEUY=
+	t=1733153100; cv=none; b=tk4IyjblNv5r6er07FxgeJDAk7oKDh3OiNG2Po96G9aGMftvs7Iw8XGD0eBYl/5d8uaUiYKZExEy0Mn82XtDrWxXjpqW+rKo+kJaWJEoKdj8T3LFc2kXS6IBelUwhUQH7dktCd8+0UAOvSBu+qiO/3qVxrTpmCn+HhYhPeCEwlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733153078; c=relaxed/simple;
-	bh=AbvmyFF8iykoSM/f6TneHmi2O0lZAKUhiodIOq/hruA=;
+	s=arc-20240116; t=1733153100; c=relaxed/simple;
+	bh=PMGnihnmxjVfL8xGmQr+urfCilgz+1Wh2VTPRzX2C1Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WWD8XOxdLi3PA8xVcbLF2VP5LHJ7iH3oPm0pjQNnU7aQNwml29KV84q+3dPdVr2eH4ig26DRuk09PKNXxWzuH6u7G/n7Qqy8E5XnNkc2ao7lkmwucCOmisEpTICGITpLzmxFTQNiHE0THllr87oH03Hw8b1ySJ2TyxOCq2ednVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JAXxGGHG; arc=none smtp.client-ip=209.85.219.170
+	 To:Cc:Content-Type; b=HusR3psScSx7eZWY14AAiAgczLxcs2MUR8i9gc58bQrRtbLgRKfJm3KT2okuOQngLBpMzfJZugqfMzwWsYF1dvZwx2G9+fTc4iX+v9Jrt1mu65A1VHW3OtQEXfar+LBwqHkNpLojRiii+BMFnJjUuZ62MZcC5jXqPft56odrSX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nuevsYqr; arc=none smtp.client-ip=209.85.219.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e39779a268bso3126845276.1
-        for <linux-mmc@vger.kernel.org>; Mon, 02 Dec 2024 07:24:37 -0800 (PST)
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e3983f8ff40so2763119276.1
+        for <linux-mmc@vger.kernel.org>; Mon, 02 Dec 2024 07:24:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733153076; x=1733757876; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1733153096; x=1733757896; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=cI2UHD0+iG63sk9WQguvFbtnOatRFiHDDSI6F2s+sic=;
-        b=JAXxGGHGsuc01Aj0jXxfWP3IExpkpjjWnviWdPBffjIAQoOh6/hTPQxXq1PNBFQsbQ
-         9LuR/ADWNK220IhAw0D37MaXEWcRdMtCvIddDNNM/PF7mr95UYDaErclL3O9VGZDPjDM
-         fYy1a17+gjL7jzTGf86eyt3PWI9bWoLncK5L5wSniTk/1odKMfTzzqAj0Am62rMIGr2+
-         xhr4BcrFFJaYawmblp62P7Eu8So3DzGcN/LKKJI9FlxyszcJI5wR1Lke0FH1lxnvXQB1
-         FA1GKOtSp1yU08q9owlA7IjkhxspxNcB6wYzcNdAXjxsVbsxN12hVpulnWEvL0dlaUw9
-         215A==
+        bh=MwrhmBccWW8HQon2HiXiBLIuwsxbffUhpKyBJpHJ5sQ=;
+        b=nuevsYqrwE3thvNPI6swgY5QL0T2yIYi1ZrNCbCvNp04GqTIvDGoOWr2Hkgf2TCTWQ
+         bJ1Hq+C/SzecTlc/x48OPOdnuX2WYvsR3+4ZmbUx7lBkPvUmXevPF7a7Iolo8VOcg7Fx
+         Ry3y3ZMYR61TWjRYmNxdpGhrY+WsT6t1uBSqJjnuFUAm4NiB8wyMqef0yNCWB4xbU4+2
+         WDPyAlHQqUw8Q9Mr50doYLWJBk97dKTyeeZ084Ru9+d1Zn+drkADW+sc2RBczh7DdRaK
+         L+e/5zv6Ys3vT10XEj7dz+VumD+LGs4bWzgozXWRoPtDDf8kUO+5eNj+effIDo/ekdAO
+         deHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733153076; x=1733757876;
+        d=1e100.net; s=20230601; t=1733153096; x=1733757896;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cI2UHD0+iG63sk9WQguvFbtnOatRFiHDDSI6F2s+sic=;
-        b=DQbeQxIL+DwkXA7FHb/6CFZB+1CFawUpEcgzr2QO1o4b0hwjQ/NGg1GJxZ8uVgtVBo
-         hy4iJdIODmbH8WUNIZuoE++fIDX83+YYeJa0X49Un9k5v450U+IodhQC+cg29IP2qqUj
-         g4GseCF8nBKSOS4Nk+KsLg9U5vl5DEf/TFGjAkONcSWcXqJlVm/SvYY5WPgmCzWWaRXc
-         VtYAvcauAi9SLiEXFs6uWna1vbgMilAV9ctcQgVTp4lKB2zJB/jDZKZlpZr6agFvcSfG
-         A/bqHOCBESC77i1xnu+/zq0KHgWvutQ2u8PBb5Y0AF+e9X/BMKFIITsHshZAvOi99bam
-         N/bw==
-X-Forwarded-Encrypted: i=1; AJvYcCXdFA4KPzvR5jUKAf6UESTRT8rj1oxFqGsekyWtmm8ckz6Lfv2yUTnFS3RUlx8xSzccYtLn/NU5tfE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwipqCLI3nYiI0gzeFtYcbJ2+VyZiYmQpIu5ngz5Kg58iZRp4dE
-	bAo7LAl7+wavaqZvCAkwiPd2tmk6wCmA6LloLiRWxQgk2tEWSd8liDfcYD247TSoK6uQFqqMvzR
-	4ydc0bqNBPW1hPWG4T8P4JpLY9Pn1EVc23vfxMw==
-X-Gm-Gg: ASbGncvoLH/ZHnHs6muAZDqpG7Qrqgwmfua1cMiJYfY1VatSFWh+Wvko33s3JWsNA0r
-	XB2OfFtT3izKpyDzNoAAEJBZR0ykvz0/9
-X-Google-Smtp-Source: AGHT+IGyxw199x8a/NjiG9xXny4LctKmTAbUkVdDlG8lJAJId3wfy0XNCoiRv0MlIrGKEJpAZbdNecDuMiCwsnC9has=
-X-Received: by 2002:a25:d690:0:b0:e38:2b99:7f2d with SMTP id
- 3f1490d57ef6-e3971966a52mr17352002276.12.1733153076156; Mon, 02 Dec 2024
- 07:24:36 -0800 (PST)
+        bh=MwrhmBccWW8HQon2HiXiBLIuwsxbffUhpKyBJpHJ5sQ=;
+        b=W/AFt5w4R3SJsrTED78nNL1FiW0klnRv94Xk1l5h/+YsUpZRuI/EW2mHVCL7XizYnp
+         IjfOd1RzhQ3U6XxdMg/P8xMGr6uUhYdZFA/5ykCjbP9h2JZ9ROH4FOwoBICVgonitlJu
+         69EjY6VpwcItp+FJWDGyDMWNLvkBRxhVa1lxd0DYCWKr3gSFgP1WoMIuOFgJVGrSWoeS
+         caeku0XxcB+Wehwy5lLxjoFQNyii/PAROJhFipLw1yykH70b0bu9J/YUcIqCrP3K7FOs
+         AwDWGDZBYNZvPw6DYjw/BeVsXd6JvGxAf96W6Ij5I9GngUy/7dxEyEiBuIRvGVZ4UKiR
+         58gw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYQQJPwe7bUzS3qVRAryKzKa48vq4h97LpOzl23zzLr2cNRN6OfC1zkvVx33F2YHXNDtQIoqZo4z0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyK76+HQaV6Rf96uXCHhbGz5Bgf7AsZvkpFScrhMrlS9E2KwyIc
+	fIF/36YOq9RQW07YR0KRN0wYNBjza2mcrCxgbX7lOm8orpP+WBzMG+EDOm/+S3AJyH+LfqoHAW6
+	R60gv2mavFztK4D89jtyhlSfK3aZOZryPfbn1BA==
+X-Gm-Gg: ASbGnctmhEJY1FOj+VAwF13U/3N5w5t5Nysg6F3Y7m1h+hkpiSMNFATxSJEegTeMETN
+	9IBmnQ77a33FWwePGD9lcisUyv+oMVjZY
+X-Google-Smtp-Source: AGHT+IEcO6Su/9/8KHLlrWOggxXpEUQdnHMKRQYTMnTaorultWTg9WKUXkjBrKviPAwOh+21GGIBZJNGibWrb8sKNA4=
+X-Received: by 2002:a05:6902:248a:b0:e39:8b24:65ee with SMTP id
+ 3f1490d57ef6-e398b24682bmr12197418276.40.1733153095668; Mon, 02 Dec 2024
+ 07:24:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241101101441.3518612-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20241101101441.3518612-1-andriy.shevchenko@linux.intel.com>
+References: <20241202115140.33492-1-wahrenst@gmx.net>
+In-Reply-To: <20241202115140.33492-1-wahrenst@gmx.net>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 2 Dec 2024 16:24:00 +0100
-Message-ID: <CAPDyKFqNKXRPT_QonnJ8frY_OvA6FkEMyj09Ywiqhtu0ZL34Xg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] mmc: sdhci-acpi: A few cleanups
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>, Victor Shih <victor.shih@genesyslogic.com.tw>, 
-	linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 2 Dec 2024 16:24:20 +0100
+Message-ID: <CAPDyKFpX2dcimEVQ8EpOFvbJ6fPybazNLT-j1yf8Uoo79UD=dg@mail.gmail.com>
+Subject: Re: [PATCH V6] mmc: bcm2835: add suspend/resume pm support
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, Lukas Wunner <lukas@wunner.de>, 
+	Peter Robinson <pbrobinson@gmail.com>, "Ivan T . Ivanov" <iivanov@suse.de>, 
+	linux-arm-kernel@lists.infradead.org, bcm-kernel-feedback-list@broadcom.com, 
+	linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 1 Nov 2024 at 11:14, Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Mon, 2 Dec 2024 at 12:51, Stefan Wahren <wahrenst@gmx.net> wrote:
 >
-> A few almost independent cleanups for the driver because of
-> new available APIs.
+> Add a minimalistic suspend/resume PM support.
 >
-> In v2:
-> - added patch 1 to solve compilation error (LKP)
-> - split patch 3 out of (previous version of) patch 4 (Christophe)
-> - added patches 5 and 6
->
-> Andy Shevchenko (6):
->   mmc: sdhci: Use EXPORT_PM_FN_NS_GPL() for exporting PM functions
->   mmc: sdhci-acpi: Switch to SYSTEM_SLEEP_PM_OPS()/RUNTIME_PM_OPS() and
->     pm_ptr()
->   mmc: sdhci-acpi: Remove not so useful error message
->   mmc: sdhci-acpi: Use devm_platform_ioremap_resource()
->   mmc: sdhci-acpi: Tidy up ACPI ID table
->   mmc: sdhci-acpi: Don't use "proxy" headers
->
->  drivers/mmc/host/sdhci-acpi.c | 92 ++++++++++++++---------------------
->  drivers/mmc/host/sdhci.c      | 14 ++----
->  drivers/mmc/host/sdhci.h      |  2 -
->  3 files changed, 40 insertions(+), 68 deletions(-)
->
-> --
+> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
 
-This looks good to me, but deferring to apply it a few more days to
-allow Adrian to share his opinion.
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/mmc/host/bcm2835.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+>
+> Changes in V6:
+> - split out of series because there is no dependency
+> - remove unnecessary complete check
+>
+> diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
+> index 7847f0c8b465..e5f151d092cd 100644
+> --- a/drivers/mmc/host/bcm2835.c
+> +++ b/drivers/mmc/host/bcm2835.c
+> @@ -1343,6 +1343,25 @@ static int bcm2835_add_host(struct bcm2835_host *host)
+>         return 0;
+>  }
+>
+> +static int bcm2835_suspend(struct device *dev)
+> +{
+> +       struct bcm2835_host *host = dev_get_drvdata(dev);
+> +
+> +       clk_disable_unprepare(host->clk);
+> +
+> +       return 0;
+> +}
+> +
+> +static int bcm2835_resume(struct device *dev)
+> +{
+> +       struct bcm2835_host *host = dev_get_drvdata(dev);
+> +
+> +       return clk_prepare_enable(host->clk);
+> +}
+> +
+> +static DEFINE_SIMPLE_DEV_PM_OPS(bcm2835_pm_ops, bcm2835_suspend,
+> +                               bcm2835_resume);
+> +
+>  static int bcm2835_probe(struct platform_device *pdev)
+>  {
+>         struct device *dev = &pdev->dev;
+> @@ -1471,6 +1490,7 @@ static struct platform_driver bcm2835_driver = {
+>                 .name           = "sdhost-bcm2835",
+>                 .probe_type     = PROBE_PREFER_ASYNCHRONOUS,
+>                 .of_match_table = bcm2835_match,
+> +               .pm = pm_ptr(&bcm2835_pm_ops),
+>         },
+>  };
+>  module_platform_driver(bcm2835_driver);
+> --
+> 2.34.1
+>
 
