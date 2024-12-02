@@ -1,176 +1,143 @@
-Return-Path: <linux-mmc+bounces-4895-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4900-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8341D9E0A4A
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 18:42:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDF39E0B28
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 19:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35D2DB4204D
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 15:28:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8549C281B11
+	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 18:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D4420C037;
-	Mon,  2 Dec 2024 15:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC291DE2CD;
+	Mon,  2 Dec 2024 18:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oqVRjmwC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mDXFsGp6"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADFD20A5D9
-	for <linux-mmc@vger.kernel.org>; Mon,  2 Dec 2024 15:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD2D70805;
+	Mon,  2 Dec 2024 18:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733153089; cv=none; b=LfeGu/uLXkWkOYymYhWfRxcw4To06gPa0/e5reACUtnhx6okR60QNtoAG7/pFokFCbjrbTunWX7rCMBXTz2KyzXddV+akwT7JORI4Xk7rDzpRjrooSfoobNMrIfHHKQG6smWop62zH3pVmh6tJMH0PXa4FqxNGTBbEnJp2a7BNg=
+	t=1733164606; cv=none; b=S2PZSqjnv6Ql4keBSjm6fQyRZJ7uzuK6XPFZe1gDs73GI8DTjYczVxkgaaiYGdZwKXi2AGRMxtfaLRvNjwjYjS/d2Qfd9QVo+19+2Qmy6uEmLx4IOYIrj4IugEWXkfgeTi1Oie4W8FxO9DvEic3bgX5NHXH0P69Plx1iaeZhVOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733153089; c=relaxed/simple;
-	bh=goFeMCUVRbDjipThdghVVJLskLf8H473+GNXYnXXrDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ABVj9opwdjRV2wTmutdVNXxWRuLGMtaWicfZr+QUuiACI3aDInSJ0IxHwvVtQJuHIaMUnuqjS9SYUrlUTny/seJeZ77IG3+h9iQZQ+5nS7AbBTLDlHGuTdu2O6WrZBgKkIsOP4swN39e9ToDsr2mxcgmzdNSCOFY3S5r2C8o6eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oqVRjmwC; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6eeba477fcaso39229087b3.0
-        for <linux-mmc@vger.kernel.org>; Mon, 02 Dec 2024 07:24:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733153087; x=1733757887; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=05ZXtxtYDYApb+lIzc95yV2LA74LDricN9fUjzTVsRg=;
-        b=oqVRjmwCPFbp8NX13GQ37Knaf7Js6RruA7JsAME9fKoTUAGL/hAHluYy3hssqDdGck
-         G3h2wgUUsarnvqYTXpdtcC7ex9fmfZah+6CcPrjQHRIdDHm5YYD2ZPWCzPyWLSZX+6Wl
-         Ttd2gF3PJx2LHbFghXgX2dyZmsOzrQOFa0InxUkzTh0xRpguw7ISgu8qgM4B0PL1BYAk
-         u2/lj2VSrRMtL+bSn3omEt6j92wabJzeXdNMRiojvlZWxVN6/j0rB5ZgVKGLX7zgR29U
-         clW/0lGnWXGwEgryAo35SEApnH1tAAyBhCWD6+6ugnSKDsCgkQNwbtXI2HeWI15fYVO/
-         e+tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733153087; x=1733757887;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=05ZXtxtYDYApb+lIzc95yV2LA74LDricN9fUjzTVsRg=;
-        b=mCVUuwshfpmKcH4B0sYNVAkXcWKWNBHRNq6uwKit17Kec1LJrKYfi49SsEoATxjuka
-         84iyRclB5mvt1E2YCNZJaYIzi2XF3aOwnr3aLEs9gkBdQB68s1IBQGyvXNxd2SZgzKCF
-         6+sxlL0Cj57rkrCD5tD3wQhFK0cWFEeKx6cGdo3N5mKedg/u3wbzHuxfvKxsWEli+A18
-         7YG9FTyM8oIqG6UQyAVlpxVwph9q9hEXvAPqA8WXtSnMdekrMTRMCbSlaJHss1ceRzTP
-         twYq+3qqMfO7SdBCH2CyCs32naRiNqLfTHO/PC8TeB0myF2/gPoTFH9PHu8uJsuDgAx8
-         cTwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEdUz/ZcAqlse1kOwQeq7/PffE7htwq4XUn03+XmuAApf3+Mjey2ix1XqNIeP4Ve6zXJlg4X1QXrY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRlXRRu7xaWvO8pdkQYJ4SDnshI5SSZZMYn0kgLm571ZV6RIR4
-	UKsxfi3MF9YM28rHpIJXalYCIjg1F7Z47cOCcKLn4wwwMYD0hAkLu4+x8emgEjyksFNr86RFdY7
-	V658caQrZTibFtA5ujvo81TcRGo0ZSyI2UsLWZg==
-X-Gm-Gg: ASbGncs8Sj5px/kNHyFGIOXq+66+A8Z4hgi6maaj1MraoxpdJFVosAWk/hWBAm8LZTz
-	ZRB/Bc9knqQf3ZPrRx262/o+bqyRuVSZA
-X-Google-Smtp-Source: AGHT+IG1/7GNikn+o7qWaeU6OlA3SHIeQqG6VzX6iFXwmrBOhF0bD/LXd61skcVAWua1i/pv/Z75jusfAxofKt3ImP8=
-X-Received: by 2002:a05:6902:2e0e:b0:e39:9b9f:7f87 with SMTP id
- 3f1490d57ef6-e399b9f830cmr6954354276.29.1733153086437; Mon, 02 Dec 2024
- 07:24:46 -0800 (PST)
+	s=arc-20240116; t=1733164606; c=relaxed/simple;
+	bh=SV0a41+RDhocvfEPEyv80/bq/ZSJlaeMPldbjOpf4GA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a9HJhF4+GIFOjAsVV1EJcYU9Ffk7plVU51R6VUy+X1Z17p5U/q+2XGyHxIF0TJwhP5drNuOsccN6SO1nrX3gJNKG5J67m7oEC5mdgkH37HVLY9H2SMvCO+iNa5MjCfZ7UpWP6vlk6dsTB5EDgnAXK8dsmw/DbHef3XelyzH2wM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mDXFsGp6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98048C4CED2;
+	Mon,  2 Dec 2024 18:36:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733164605;
+	bh=SV0a41+RDhocvfEPEyv80/bq/ZSJlaeMPldbjOpf4GA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mDXFsGp6SVShBJ3Ui0hgJsz5amcbCq/I/bbNbZ2kUyQfWOw2ZS5q9ExO9fJelmJDV
+	 JoTW7+mVoW8JQm4aPfX9GffJUvsXf9CKpTJVs952AAHPXkRtNMzStQxAzUh/Zv0IAM
+	 0fAcJug/ASl+Poqji32qvlgh2ELNQMPdZwK3F2r+xv/iG/DXptEJg9zeHdsn/Jb+Iz
+	 0ftJTTXMZjBNyUB0xZcMDq65RoPvWTKPBxqqHxCCvmsG4BmH9jMW9szDkcIz+t9UOi
+	 mrIcG+VFSZqEP8KKocQ42uPkXDpb8JEBmQ5qSM4KpHB9tjvuVuaI9zpuuXloq4bRbo
+	 YzTBzB4DMLNQw==
+Date: Mon, 2 Dec 2024 10:36:43 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Jens Axboe <axboe@kernel.dk>, Jonathan Corbet <corbet@lwn.net>,
+	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Asutosh Das <quic_asutoshd@quicinc.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Gaurav Kashyap <quic_gaurkash@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Theodore Y. Ts'o" <tytso@mit.edu>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dm-devel@lists.linux.dev,
+	linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Om Prakash Singh <quic_omprsing@quicinc.com>
+Subject: Re: [PATCH RESEND v7 00/17] Hardware wrapped key support for QCom
+ ICE and UFS core
+Message-ID: <20241202183643.GB2037@sol.localdomain>
+References: <20241202-wrapped-keys-v7-0-67c3ca3f3282@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241130094758.15553-1-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20241130094758.15553-1-krzysztof.kozlowski@linaro.org>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 2 Dec 2024 16:24:10 +0100
-Message-ID: <CAPDyKFqiar=EKBHG=PHimjNcdLKsVdx+BRZReEJzHr8_qoayeg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Drop Bhupesh Sharma from maintainers
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	Bhupesh Sharma <bhupesh.linux@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202-wrapped-keys-v7-0-67c3ca3f3282@linaro.org>
 
-On Sat, 30 Nov 2024 at 10:48, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> For more than a year all emails to Bhupesh Sharma's Linaro emails bounce
-> and there were no updates to mailmap.  No reviews from Bhupesh, either,
-> so change the maintainer to Bjorn and Konrad (Qualcomm SoC maintainers).
->
-> Cc: Bhupesh Sharma <bhupesh.linux@gmail.com>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On Mon, Dec 02, 2024 at 01:02:16PM +0100, Bartosz Golaszewski wrote:
+> The previous iteration[1] has been on the list for many weeks without
+> receiving any comments - neither positive nor negative. If there are no
+> objections - could we start discussing how to make these patches go
+> upstream for v6.14?
 
-I have queued this up via my mmc tree for next. If anyone has
-objections to that and wants to funnel this via another tree, please
-let me know!
+The way to do it will be for the block patches to be taken through the block
+tree first.  That will unblock the rest, which can be taken through their
+respective trees in subsequent cycles.
 
-Kind regards
-Uffe
+I'm really hoping to be able to test these patches with upstream myself, which
+I'm not able to do yet.  I'll try to leave some review comments on the parts not
+authored by me the mean time.  Anyway, thanks for continuing to work on this.
 
+> Tested on sm8650-qrd.
+> 
+> How to test:
+> 
+> Use the wip-wrapped-keys branch from https://github.com/ebiggers/fscryptctl
+> to build a custom fscryptctl that supports generating wrapped keys.
+> 
+> Enable the following config options:
+> CONFIG_BLK_INLINE_ENCRYPTION=y
+> CONFIG_QCOM_INLINE_CRYPTO_ENGINE=m
+> CONFIG_FS_ENCRYPTION_INLINE_CRYPT=y
+> CONFIG_SCSI_UFS_CRYPTO=y
+> 
+> $ mkfs.ext4 -F -O encrypt,stable_inodes /dev/disk/by-partlabel/userdata
+> $ mount /dev/disk/by-partlabel/userdata -o inlinecrypt /mnt
+> $ fscryptctl generate_hw_wrapped_key /dev/disk/by-partlabel/userdata > /mnt/key.longterm
+> $ fscryptctl prepare_hw_wrapped_key /dev/disk/by-partlabel/userdata < /mnt/key.longterm > /tmp/key.ephemeral
+> $ KEYID=$(fscryptctl add_key --hw-wrapped-key < /tmp/key.ephemeral /mnt)
+> $ rm -rf /mnt/dir
+> $ mkdir /mnt/dir
+> $ fscryptctl set_policy --hw-wrapped-key --iv-ino-lblk-64 "$KEYID" /mnt/dir
+> $ dmesg > /mnt/dir/test.txt
+> $ sync
+> 
+> Reboot the board
+> 
+> $ mount /dev/disk/by-partlabel/userdata -o inlinecrypt /mnt
+> $ ls /mnt/dir
+> $ fscryptctl prepare_hw_wrapped_key /dev/disk/by-partlabel/userdata < /mnt/key.longterm > /tmp/key.ephemeral
+> $ KEYID=$(fscryptctl add_key --hw-wrapped-key < /tmp/key.ephemeral /mnt)
+> $ fscryptctl set_policy --hw-wrapped-key --iv-ino-lblk-64 "$KEYID" /mnt/dir
+> $ cat /mnt/dir/test.txt # File should now be decrypted
 
-> ---
->  Documentation/devicetree/bindings/crypto/qcom-qce.yaml         | 3 ++-
->  Documentation/devicetree/bindings/mmc/sdhci-msm.yaml           | 3 ++-
->  Documentation/devicetree/bindings/net/qcom,ethqos.yaml         | 3 ++-
->  .../devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml        | 3 ++-
->  4 files changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/crypto/qcom-qce.yaml b/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
-> index c09be97434ac..62310add2e44 100644
-> --- a/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
-> +++ b/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Qualcomm crypto engine driver
->
->  maintainers:
-> -  - Bhupesh Sharma <bhupesh.sharma@linaro.org>
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +  - Konrad Dybcio <konradybcio@kernel.org>
->
->  description:
->    This document defines the binding for the QCE crypto
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> index 8b393e26e025..eed9063e9bb3 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Qualcomm SDHCI controller (sdhci-msm)
->
->  maintainers:
-> -  - Bhupesh Sharma <bhupesh.sharma@linaro.org>
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +  - Konrad Dybcio <konradybcio@kernel.org>
->
->  description:
->    Secure Digital Host Controller Interface (SDHCI) present on
-> diff --git a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-> index 0bcd593a7bd0..f117471fb06f 100644
-> --- a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-> +++ b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Qualcomm Ethernet ETHQOS device
->
->  maintainers:
-> -  - Bhupesh Sharma <bhupesh.sharma@linaro.org>
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +  - Konrad Dybcio <konradybcio@kernel.org>
->
->  description:
->    dwmmac based Qualcomm ethernet devices which support Gigabit
-> diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml
-> index 758adb06c8dd..059cb87b4d6c 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Qualcomm SM6115 Peripheral Authentication Service
->
->  maintainers:
-> -  - Bhupesh Sharma <bhupesh.sharma@linaro.org>
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +  - Konrad Dybcio <konradybcio@kernel.org>
->
->  description:
->    Qualcomm SM6115 SoC Peripheral Authentication Service loads and boots
-> --
-> 2.43.0
->
->
+That doesn't verify that the encryption is being done correctly, which is the
+most important thing to test.  For that we'll need to resurrect the following
+patchset for xfstests:
+https://lore.kernel.org/fstests/20220228074722.77008-1-ebiggers@kernel.org/
+
+- Eric
 
