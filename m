@@ -1,140 +1,124 @@
-Return-Path: <linux-mmc+bounces-4899-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-4902-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C0B9E0BAC
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 20:07:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C82B9E1160
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Dec 2024 03:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB049B2BE49
-	for <lists+linux-mmc@lfdr.de>; Mon,  2 Dec 2024 16:52:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21CD12836C6
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Dec 2024 02:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EC41D935E;
-	Mon,  2 Dec 2024 16:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3035A7AA;
+	Tue,  3 Dec 2024 02:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i7eCKFg1"
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="MNZ/399d"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929521D79BE;
-	Mon,  2 Dec 2024 16:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2E517555
+	for <linux-mmc@vger.kernel.org>; Tue,  3 Dec 2024 02:34:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733158371; cv=none; b=fHcRYolvlz/CwZ6ZlxxpEFiRWUiG39/vCcVMa1oSx4ysA2uMJ/7zF5/iBfrEvGEbhSFj/SgzFBycE4V+RuszMTfJ5zKmDdoPbN5EUcv4xUI51XifixgA574X7mA8WUXA8kfbqCzao3hHR3npJg5ED8FbEBDfg0vqU8fnf29L7b0=
+	t=1733193292; cv=none; b=Z8XA6YYY3I1YRa8og3DxnSx7Y2LnV6MLrpHkD9uEuyySiDRvbmEJ/CJmFx15lchDreFh59gXtqx0cnNwlv056WXtuDVdxMHYsd6enh1XOe7JnHh9FV4fpSrzMd/NHkKy0vwfrz3z68l6kbxAcbJSOS6uyX0LJdmY1mVkJs5IIZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733158371; c=relaxed/simple;
-	bh=Q4lgsKkUPNBCVPx2h6Wla6/xJs8K53Ur7RI1wCNcloo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d/coeqsC6xCKPOq/rbg2rhAvQeAOf7nDC5/BgE3v/EirvbXP+HFciGEqxmVqsoQkJ2YQp16TS16Fbd3y320zlTaitfRqTMXLcwDoVT3l0UIJvfpdR8F6hW+wyQ8G5cL99yDrvlrWY85xjglOMzRurBl42XqX7ai9OuzNqO9EwKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i7eCKFg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0C7C4CED1;
-	Mon,  2 Dec 2024 16:52:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733158371;
-	bh=Q4lgsKkUPNBCVPx2h6Wla6/xJs8K53Ur7RI1wCNcloo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i7eCKFg1KXaaddaBtfqvXEQXCx2za65xSHDAg3p8iOSCWY6ytSNVv12kFL7z7CWvq
-	 0DMDJHotcWDgEDTMj4PylU1/giO6ZMrur/AUevxXMWfJF2QSKA3PdTnFBuglYs9v1l
-	 zCVze3VgoxR4wEK0qEngPtu4l8FdTi7N57nYrhTLhhuUiGnk52yUwNHMtO6TRkLpKD
-	 UO1NIPx7IyPzKssU3ntLNZQ0wOGJoLJEbIu5NOn9z91bBvHGpBiuRqU9SfQfDX5wWr
-	 2rARLFekFQxrlVxy3Fzeu/aF4tQcZku6YYQMY6hDpWKslOmAWnZO0V9FbFOSRigjCM
-	 3xbcYpmeBH+9Q==
-Date: Mon, 2 Dec 2024 22:22:47 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Minas Harutyunyan <hminas@synopsys.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Peter Robinson <pbrobinson@gmail.com>,
-	"Ivan T . Ivanov" <iivanov@suse.de>,
-	linux-arm-kernel@lists.infradead.org, kernel-list@raspberrypi.com,
-	bcm-kernel-feedback-list@broadcom.com, dmaengine@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH V5 2/9] dmaengine: bcm2835-dma: add suspend/resume pm
- support
-Message-ID: <Z03l308ur7xuE1SB@vaman>
-References: <20241025103621.4780-1-wahrenst@gmx.net>
- <20241025103621.4780-3-wahrenst@gmx.net>
+	s=arc-20240116; t=1733193292; c=relaxed/simple;
+	bh=KBno4d8Ri+5bkwhp+O4ZEaiQGH972Po1Uth8RjIikC0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ekr6gyqP3pSnnbzY/2pJ9TuCrXVAjqyA7ol7eL5bUBi7yot72AermbhwbmdjfzzRTJG85LnlwsNS1kdTZiTHsAwBLS7oEuE9Ev/h+pHyK0RjDP7+h+cQW89k5nn2bnt5gCflyFtppNyMvJ8v62Uuk7QQgnUan9oXOqF7wyOZs6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=MNZ/399d; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7251731d2b9so4300696b3a.1
+        for <linux-mmc@vger.kernel.org>; Mon, 02 Dec 2024 18:34:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1733193289; x=1733798089; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EnDwsulVaqZ2+plQwC8BxEf/6u08wgORMIoqPSHcn30=;
+        b=MNZ/399dv6K3x2W+rRHFv/lqlA7r8CZjA3gTW4Q+Kj8fzTvGWQFCa36ZSfqvjX7tWh
+         qRCTGyFfqQzGsBBIQR8XpE1xPm+Sq3oDLWxcUfP4cZjoMsUPVHkSf4/KR1aDb5G03w5E
+         d767LgeIh+J2eJyxv6KTEsYx6XsFxtj5/sDVGOI0HdtDvZBVdXs+J+CK7bgCutlOPluh
+         nAnSG2U86KioZDbVJMHNvuXbzdPYR9FkK5CxLKss1iQ9ZnzEIR7uRJK18r600CuOMDrE
+         1R8UawYXTI/t9X50xDNC95P9CpitjqdzxMj1kcIcAM+bcrQty+1FntX0Zh86nnjj8UUK
+         Mz5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733193289; x=1733798089;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EnDwsulVaqZ2+plQwC8BxEf/6u08wgORMIoqPSHcn30=;
+        b=ttN0xIR6e44wcmJHRcbjtDajb0J2MiU2AjJ9HckDthz5awqj55xrgVbODZgsruKXwl
+         vNRzGGffiT2yrB07bg/H4D43ARQpQjYCdtWCIZ/S85e836vY+aFjApafHSgrFL6l9g3E
+         1ECBscW/nrVnjUiZnoKjRN0YlwH7iG+thB5unH98pjH627c5mI1zpMDKsYc6DlQ2Tdy9
+         4AawslkKqemtWarUQuwZYn16L6p5ozpFbP/KqPXUjkrfMIdS/pXmfHmXvndB1b7OAidc
+         sqec4avH3QzR0qNZx+AjJ7la5lNi9apOJsEVeYnyyOwdfYDbTpEMhSC4XDrIAfM5Zmsk
+         Ss8w==
+X-Gm-Message-State: AOJu0YyP+vuvyVkfbosp0Z5kj6wuN0aXEaMlhKyuvviz9kWDz2r91Bt3
+	5EHCfXh/wzlPkIFcL1+fWCa7weAa2Ti51p9PZgd/zbkPfJtjN/C7W0K1sV1V62VtHpPKLzZIQfY
+	6yJQ=
+X-Gm-Gg: ASbGnculdp4qrXHJs4Xj9A5rBnibgTbQJkJtP+BKk7NyNX1WgXKaN4v66J2Aj2xia5A
+	0U15fw2/kaxGfNsBzuQ1k8upOlWGCAcIVZLlgDnCnoZXCZHHQoj0Tq3AXZ7QePHPE++92x3/eIt
+	LkKkDtfX0z+zcCDLHzHnWAtWQUNciOWGC3S6Cqb2D7fpaE1Nm+Tx4MBxtXKliQVn7zzF377bxA3
+	10W8fjIJvPopY6sHLBQeb7ZJh2D8/djRdu2Yuf/OCnGFGhgWF/uGmDWIYisPpxltPda5VbD
+X-Google-Smtp-Source: AGHT+IH0HNujKfslbwrocINWD/369RBD2eagU2fRKGDXsab0sv89K4a8AuKKpwpSvNia79ScwPzlXA==
+X-Received: by 2002:a17:902:f610:b0:215:bd3e:613b with SMTP id d9443c01a7336-215bd3e62bfmr13633125ad.27.1733193289402;
+        Mon, 02 Dec 2024 18:34:49 -0800 (PST)
+Received: from localhost.localdomain ([2001:f70:39c0:3a00:f2b3:fe35:a658:80a])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2157432818bsm38369785ad.154.2024.12.02.18.34.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 18:34:48 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: chaotian.jing@mediatek.com,
+	ulf.hansson@linaro.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com
+Cc: linux-mmc@vger.kernel.org,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Subject: [PATCH v2] mmc: mtk-sd: disable wakeup in .remove() and in the error path of .probe()
+Date: Tue,  3 Dec 2024 11:34:42 +0900
+Message-Id: <20241203023442.2434018-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241025103621.4780-3-wahrenst@gmx.net>
+Content-Transfer-Encoding: 8bit
 
-On 25-10-24, 12:36, Stefan Wahren wrote:
-> bcm2835-dma provides the service to others, so it should
-> suspend late and resume early.
-> 
-> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-> ---
->  drivers/dma/bcm2835-dma.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
-> 
-> diff --git a/drivers/dma/bcm2835-dma.c b/drivers/dma/bcm2835-dma.c
-> index e1b92b4d7b05..647dda9f3376 100644
-> --- a/drivers/dma/bcm2835-dma.c
-> +++ b/drivers/dma/bcm2835-dma.c
-> @@ -875,6 +875,35 @@ static struct dma_chan *bcm2835_dma_xlate(struct of_phandle_args *spec,
->  	return chan;
->  }
-> 
-> +static int bcm2835_dma_suspend_late(struct device *dev)
-> +{
-> +	struct bcm2835_dmadev *od = dev_get_drvdata(dev);
-> +	struct bcm2835_chan *c, *next;
-> +
-> +	list_for_each_entry_safe(c, next, &od->ddev.channels,
-> +				 vc.chan.device_node) {
-> +		void __iomem *chan_base = c->chan_base;
-> +
-> +		if (readl(chan_base + BCM2835_DMA_ADDR)) {
-> +			dev_warn(dev, "Suspend is prevented by chan %d\n",
-> +				 c->ch);
-> +			return -EBUSY;
-> +		}
+Current implementation leaves pdev->dev as a wakeup source. Add a
+device_init_wakeup(&pdev->dev, false) call in the .remove() function and
+in the error path of the .probe() function.
 
-Can you help understand how this helps by logging... we are not adding
-anything except checking this and resume is NOP as well!
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Fixes: 527f36f5efa4 ("mmc: mediatek: add support for SDIO eint wakup IRQ")
+---
+ drivers/mmc/host/mtk-sd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int bcm2835_dma_resume_early(struct device *dev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static const struct dev_pm_ops bcm2835_dma_pm_ops = {
-> +	SET_LATE_SYSTEM_SLEEP_PM_OPS(bcm2835_dma_suspend_late,
-> +				     bcm2835_dma_resume_early)
-> +};
-> +
->  static int bcm2835_dma_probe(struct platform_device *pdev)
->  {
->  	struct bcm2835_dmadev *od;
-> @@ -1033,6 +1062,7 @@ static struct platform_driver bcm2835_dma_driver = {
->  	.driver = {
->  		.name = "bcm2835-dma",
->  		.of_match_table = of_match_ptr(bcm2835_dma_of_match),
-> +		.pm = pm_ptr(&bcm2835_dma_pm_ops),
->  	},
->  };
-> 
-> --
-> 2.34.1
-
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index efb0d2d5716b..af445d3f8e2a 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -3070,6 +3070,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 	msdc_gate_clock(host);
+ 	platform_set_drvdata(pdev, NULL);
+ release_mem:
++	device_init_wakeup(&pdev->dev, false);
+ 	if (host->dma.gpd)
+ 		dma_free_coherent(&pdev->dev,
+ 			2 * sizeof(struct mt_gpdma_desc),
+@@ -3103,6 +3104,7 @@ static void msdc_drv_remove(struct platform_device *pdev)
+ 			host->dma.gpd, host->dma.gpd_addr);
+ 	dma_free_coherent(&pdev->dev, MAX_BD_NUM * sizeof(struct mt_bdma_desc),
+ 			  host->dma.bd, host->dma.bd_addr);
++	device_init_wakeup(&pdev->dev, false);
+ }
+ 
+ static void msdc_save_reg(struct msdc_host *host)
 -- 
-~Vinod
+2.34.1
+
 
