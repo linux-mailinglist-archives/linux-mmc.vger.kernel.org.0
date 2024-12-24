@@ -1,208 +1,180 @@
-Return-Path: <linux-mmc+bounces-5051-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-5053-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7229FAE68
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 Dec 2024 13:53:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6809FBBBC
+	for <lists+linux-mmc@lfdr.de>; Tue, 24 Dec 2024 10:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4451883782
-	for <lists+linux-mmc@lfdr.de>; Mon, 23 Dec 2024 12:53:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13717168EE2
+	for <lists+linux-mmc@lfdr.de>; Tue, 24 Dec 2024 09:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35861B0F09;
-	Mon, 23 Dec 2024 12:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0B41C3C15;
+	Tue, 24 Dec 2024 09:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQnF78F2"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="B4O+M/Zw"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m32123.qiye.163.com (mail-m32123.qiye.163.com [220.197.32.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775291AF0D7;
-	Mon, 23 Dec 2024 12:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D241B3926;
+	Tue, 24 Dec 2024 09:49:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734958345; cv=none; b=JHYf6wbDkkGJiyQuEU4A8P9IP+M7OTacNrPbto8NrR9wn6QO9lR1RoYE13aHaUCqSNk9xjKZUAOW5j00oY+n/V/JcI4zlMdsqqAuNTN1thFkhA+SeV3X5l8h62doyE3PQ7mz1a7aeB7M6dFPtYny32SHqTIeDZ0cEGtnBFGl7X0=
+	t=1735033777; cv=none; b=CUhpAF/zrPS5rmhXRysRd4mDjC8LDRs99XvSb8CnQbqdbP/zVN6sVaU78ZdIX7yE7/AtAFSxAeI4W1FKVlyCLCrbeDIHtkMSTKrE+Eyjd1Sv5Rsh0buymwP5QqkjjbVMR6aTTaQ0Dc1Qv/4NmjjakIn7NuqYbEXaeng7kYBG2CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734958345; c=relaxed/simple;
-	bh=+8D8SlRfiYR49SiB0XGLOf0ALVRXlm15ZoXTvUHq3ig=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=u0RhK0o50FARq7lDRr4gVEaizbORd3Hs93hH4N8kwhqBC6U2SYqSaEi1kEhf2wY3PKwIPTqsMG+O7TlF595xJ1oqDjyuzbC/Wvi7CaDzSD1bqrckRszMEK7c4JWlZzW54z4e1lkRZu20Z/YXEmmpmoJ+V3TLvXw4srGPOttmzoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQnF78F2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FC5C4CED3;
-	Mon, 23 Dec 2024 12:52:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734958345;
-	bh=+8D8SlRfiYR49SiB0XGLOf0ALVRXlm15ZoXTvUHq3ig=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=IQnF78F2w5JZ8M6A2xVWwZ8aaVMX6GFDiA13MufuH3bT4+wGCt+8UiOrMv30KmDgB
-	 I9P4yg0/LW2q8Mt51cvYq7nlXLJhMwr+uvdMmwHpC4dFRSq88BaYQzeQo0oz7Qjet7
-	 Gxh8klWNmuBQKY96nOmKeD00hHM5Fmt8kZWDRUIP+Fyg5SL3bpvEAxFKRsvEqKNS76
-	 O6TWs6/1/oZmMl5aL1VBhoxNKy2NBYDKoKbQ7dgxUoWshgR7rXA9KxT0E00h7/4EM3
-	 72QaZDMEwMGWYIKlvXKWYtgIongb97h+A8XEdXeLU/xb91LBK/cuHqez2isz/Ynjpo
-	 e0p5fFdS6+7cA==
-Date: Mon, 23 Dec 2024 06:52:23 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1735033777; c=relaxed/simple;
+	bh=FyoNrvG944raOlEcqGIAFdzTG2vSx7b14uZG3/FwDOs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i+47Ithy00snwT4bOIIazkWcKuIPZWnCYXtAwkKuCar0gE0ar8bzyXgnD8z8e9ZUfKd3+j/DmHrRFZOU7oqdVy0mO8sMVBaPwMTuVB6l1L5S7udNzoXHUw4Lu6dNQEEYyBeZXtZ9kKrmNGHE2g23Puou4U4BfklnA1yAZN0Q4VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=B4O+M/Zw; arc=none smtp.client-ip=220.197.32.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 6aad4ed7;
+	Tue, 24 Dec 2024 17:49:21 +0800 (GMT+08:00)
+From: Kever Yang <kever.yang@rock-chips.com>
+To: heiko@sntech.de
+Cc: linux-rockchip@lists.infradead.org,
+	Kever Yang <kever.yang@rock-chips.com>,
+	Simon Xue <xxm@rock-chips.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Mark Brown <broonie@kernel.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Frank Wang <frank.wang@rock-chips.com>,
+	Jamie Iles <jamie@jamieiles.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Johan Jonker <jbx6244@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	linux-i2c@vger.kernel.org,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Elaine Zhang <zhangqing@rock-chips.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Finley Xiao <finley.xiao@rock-chips.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	linux-pwm@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Andy Yan <andyshrk@163.com>,
+	linux-serial@vger.kernel.org,
+	Michael Riesch <michael.riesch@wolfvision.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	devicetree@vger.kernel.org,
+	Diederik de Haas <didi.debian@cknow.org>,
+	linux-watchdog@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Shresth Prasad <shresthprasad7@gmail.com>,
+	Tim Lunn <tim@feathertop.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH v2 00/17] rockchip: Add rk3562 support
+Date: Tue, 24 Dec 2024 17:49:03 +0800
+Message-Id: <20241224094920.3821861-1-kever.yang@rock-chips.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: mturquette@baylibre.com, nicolas.ferre@microchip.com, 
- mihai.sain@microchip.com, linux-kernel@vger.kernel.org, krzk+dt@kernel.org, 
- linux-clk@vger.kernel.org, varshini.rajendran@microchip.com, 
- linux-arm-kernel@lists.infradead.org, dharma.b@microchip.com, 
- linux-spi@vger.kernel.org, linux-serial@vger.kernel.org, 
- claudiu.beznea@tuxon.dev, alexandre.belloni@bootlin.com, 
- romain.sioen@microchip.com, linux-mmc@vger.kernel.org, conor+dt@kernel.org, 
- arnd@arndb.de, devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, 
- sboyd@kernel.org
-To: Ryan.Wanner@microchip.com
-In-Reply-To: <cover.1734723585.git.Ryan.Wanner@microchip.com>
-References: <cover.1734723585.git.Ryan.Wanner@microchip.com>
-Message-Id: <173495825174.503813.17076508226289513016.robh@kernel.org>
-Subject: Re: [PATCH v4 00/13]  Add support for SAMA7D65
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQx1OGFZCHUlLSB0dSx5OTE9WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+X-HM-Tid: 0a93f8122e8303afkunm6aad4ed7
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PxA6ODo6AjIJHEoJS1EdLD8s
+	DxEKCU5VSlVKTEhOS0hITE1PQ0xDVTMWGhIXVRAeDR4JVQIaFRw7CRQYEFYYExILCFUYFBZFWVdZ
+	EgtZQVlOQ1VJSVVMVUpKT1lXWQgBWUFJTUJDNwY+
+DKIM-Signature:a=rsa-sha256;
+	b=B4O+M/Zw24LyURNcEw+WhDYJK29iAHTi0p4dShi0/NhEClO4QvsLlaGzwjfu6wmFcSn5fN5xHurXqhfa05Z/V+HFtpARvcipLUAtfEvn/JVqKw3D5bl5WacGOSbQ9WTLN3PzdpWIg/Xxm3+foqpbqwx3bhj89Wvq4UKSq85Zlys=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=oAXD/EvvyZpJMisxlK2FCVt8jBq9aehKbViTNvrjWK8=;
+	h=date:mime-version:subject:message-id:from;
 
 
-On Fri, 20 Dec 2024 14:07:01 -0700, Ryan.Wanner@microchip.com wrote:
-> From: Ryan Wanner <Ryan.Wanner@microchip.com>
-> 
-> This series adds support for the SAMA7D65 SoC.
-> 
-> V2 of this series [1].
-> V3 of this series [2].
-> 
-> For the pinctrl and pit64 timers those will have DTB warnings due to
-> those bindings not being in the .yaml format.
-> 
-> Changes v1->v2:
-> - V1 set was sent incorrectly as multiple seprate patches v2 took all
->   those patches and put them in 1 thread.
-> 
-> Changes v2->v3:
-> - Correct the patch order to follow correct practice.
-> - Correct flexcom dt-binding commit messge to reflect the changes in the
->   coding style.
-> - Add missing SoB tags to patches.
-> - Moved export clocks to DT patch to be included with the clock binding
->   patch.
-> - Separate Kconfig changes and defconfig changes into different patches
->   and removed unused Kconfig params.
-> - Correct confusing SoB and Co-developed chain.
-> - Removed unsued nodes in DTSI file and sorted includes
->   alphanumerically.
-> - Fix incorrect dts formatting.
-> - Separate dts and pinmux changes into two patches.
-> - Combine PLL and MCK changes into core clock driver patch.
-> - Correct formatting in main clock driver.
-> - MMC dt-binding changes are applied for next so have been removed from
->   the set [3].
-> 
-> Changes v3->v4:
-> - Collect all tags from maintainers.
-> - Correct compile error on 11/13 and correct location of vendor specific
->   properties.
-> - Add USB and UTMI selections to 12/13 to prevent compile errors due to
->   functions in the clock driver that use the USB clock system.
-> - Add "microchip,sama7g5-pinctrl" compatible string as a fall back in
->   9/13.
-> - Add missing kfree() to 8/13 to correctly handle error case.
-> - Replace bad spacing with correct tab formatting on 7/13.
-> 
-> 1) https://lore.kernel.org/linux-arm-kernel/cover.1732030972.git.Ryan.Wanner@microchip.com/T/#m9691b4d58b62f36f6cbac1d06883c985766c2c0d
-> 2) https://lore.kernel.org/linux-arm-kernel/cover.1733505542.git.Ryan.Wanner@microchip.com/T/#m3b52978236907198f727424e69ef21c8898e95c8
-> 3) https://lore.kernel.org/linux-arm-kernel/cover.1732030972.git.Ryan.Wanner@microchip.com/T/#mccf6521c07e74e1c7dc61b09ae0ebdbbdde73a28
-> 
-> 
-> Dharma Balasubiramani (6):
->   dt-bindings: mfd: atmel,sama5d2-flexcom: add
->     microchip,sama7d65-flexcom
->   dt-bindings: atmel-sysreg: add sama7d65 RAM and PIT
->   dt-bindings: serial: atmel,at91-usart: add microchip,sama7d65-usart
->   dt-bindings: pinctrl: at91-pio4: add microchip,sama7d65-pinctrl
->   dt-bindings: clocks: atmel,at91sam9x5-sckc: add sama7d65
->   dt-bindings: clock: Add SAMA7D65 PMC compatible string
-> 
-> Romain Sioen (2):
->   dt-bindings: ARM: at91: Document Microchip SAMA7D65 Curiosity
->   ARM: dts: microchip: add support for sama7d65_curiosity board
-> 
-> Ryan Wanner (5):
->   clk: at91: sama7d65: add sama7d65 pmc driver
->   ARM: dts: microchip: add sama7d65 SoC DT
->   ARM: dts: at91: Add sama7d65 pinmux
->   ARM: configs: at91: sama7: add new SoC config
->   ARM: at91: add new SoC sama7d65
-> 
->  .../devicetree/bindings/arm/atmel-at91.yaml   |    7 +
->  .../devicetree/bindings/arm/atmel-sysregs.txt |   14 +-
->  .../bindings/clock/atmel,at91rm9200-pmc.yaml  |    2 +
->  .../bindings/clock/atmel,at91sam9x5-sckc.yaml |    1 +
->  .../bindings/mfd/atmel,sama5d2-flexcom.yaml   |    9 +-
->  .../pinctrl/atmel,at91-pio4-pinctrl.txt       |    1 +
->  .../bindings/serial/atmel,at91-usart.yaml     |    1 +
->  arch/arm/boot/dts/microchip/Makefile          |    3 +
->  .../dts/microchip/at91-sama7d65_curiosity.dts |   89 ++
->  .../arm/boot/dts/microchip/sama7d65-pinfunc.h |  947 ++++++++++++
->  arch/arm/boot/dts/microchip/sama7d65.dtsi     |  145 ++
->  arch/arm/configs/multi_v7_defconfig           |    1 +
->  arch/arm/configs/sama7_defconfig              |    1 +
->  arch/arm/mach-at91/Kconfig                    |   11 +
->  drivers/clk/at91/Makefile                     |    1 +
->  drivers/clk/at91/clk-master.c                 |    2 +-
->  drivers/clk/at91/clk-sam9x60-pll.c            |    2 +-
->  drivers/clk/at91/pmc.c                        |    1 +
->  drivers/clk/at91/sama7d65.c                   | 1375 +++++++++++++++++
->  include/dt-bindings/clock/at91.h              |    4 +
->  20 files changed, 2604 insertions(+), 13 deletions(-)
->  create mode 100644 arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dts
->  create mode 100644 arch/arm/boot/dts/microchip/sama7d65-pinfunc.h
->  create mode 100644 arch/arm/boot/dts/microchip/sama7d65.dtsi
->  create mode 100644 drivers/clk/at91/sama7d65.c
-> 
-> --
-> 2.43.0
-> 
-> 
-> 
+This patch set adds rk3562 SoC and its evb support.
 
+Split out patches belong to different subsystem.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Test with GMAC, USB, PCIe, EMMC, SD Card.
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+This patch set is base on the patche set for rk3576 evb1 support.
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+Changes in v2:
+- Update in sort order
+- remove grf in cru
+- Update some properties order
 
-  pip3 install dtschema --upgrade
+Finley Xiao (2):
+  arm64: dts: rockchip: add core dtsi for RK3562 Soc
+  arm64: dts: rockchip: Add RK3562 evb2 devicetree
 
+Kever Yang (15):
+  dt-bindings: PCI: dwc: rockchip: Add rk3562 support
+  dt-bindings: mmc: Add support for rk3562 eMMC
+  dt-bindings: mmc: rockchip-dw-mshc: Add rk3562 compatible string
+  dt-bindings: power: rockchip: Add bindings for rk3562
+  dt-bindings: i2c: i2c-rk3x: Add rk3562 compatible
+  dt-bindings: gpu: Add rockchip,rk3562-mali compatible
+  dt-bindings: watchdog: Add rk3562 compatible
+  dt-bindings: spi: Add rockchip,rk3562-spi compatible
+  dt-bindings: serial: snps-dw-apb-uart: Add support for rk3562
+  dt-bindings: usb: dwc3: add compatible for rk3562
+  dt-bindings: pwm: rockchip: Add rockchip,rk3562-pwm
+  dt-bindings: rockchip: pmu: Add rk3562 compatible
+  dt-bindings: soc: rockchip: Add rk3562 syscon compatibles
+  dt-bindings: arm: rockchip: Add rk3562 evb2 board
+  dt-bindings: mfd: syscon: Add rk3562 QoS register compatible
 
-New warnings running 'make CHECK_DTBS=y microchip/at91-sama7d65_curiosity.dtb' for cover.1734723585.git.Ryan.Wanner@microchip.com:
+ .../devicetree/bindings/arm/rockchip.yaml     |    5 +
+ .../devicetree/bindings/arm/rockchip/pmu.yaml |    2 +
+ .../bindings/gpu/arm,mali-bifrost.yaml        |    3 +-
+ .../devicetree/bindings/i2c/i2c-rk3x.yaml     |    1 +
+ .../devicetree/bindings/mfd/syscon.yaml       |    2 +
+ .../bindings/mmc/rockchip-dw-mshc.yaml        |    1 +
+ .../bindings/mmc/snps,dwcmshc-sdhci.yaml      |    9 +-
+ .../bindings/pci/rockchip-dw-pcie.yaml        |    1 +
+ .../power/rockchip,power-controller.yaml      |    1 +
+ .../devicetree/bindings/pwm/pwm-rockchip.yaml |    1 +
+ .../bindings/serial/snps-dw-apb-uart.yaml     |    1 +
+ .../devicetree/bindings/soc/rockchip/grf.yaml |    7 +
+ .../devicetree/bindings/spi/spi-rockchip.yaml |    1 +
+ .../bindings/usb/rockchip,dwc3.yaml           |    3 +
+ .../bindings/watchdog/snps,dw-wdt.yaml        |    1 +
+ arch/arm64/boot/dts/rockchip/Makefile         |    1 +
+ .../boot/dts/rockchip/rk3562-evb2-v10.dts     |  520 ++++
+ .../boot/dts/rockchip/rk3562-pinctrl.dtsi     | 2352 +++++++++++++++++
+ arch/arm64/boot/dts/rockchip/rk3562.dtsi      | 1432 ++++++++++
+ 19 files changed, 4340 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3562-pinctrl.dtsi
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3562.dtsi
 
-arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dtb: /soc/pinctrl@e0014000: failed to match any schema with compatible: ['microchip,sama7d65-pinctrl', 'microchip,sama7g5-pinctrl']
-arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dtb: /soc/pinctrl@e0014000: failed to match any schema with compatible: ['microchip,sama7d65-pinctrl', 'microchip,sama7g5-pinctrl']
-arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dtb: mmc@e1208000: compatible: 'oneOf' conditional failed, one must be fixed:
-	['microchip,sama7d65-sdhci', 'microchip,sam9x60-sdhci'] is too long
-	'microchip,sama7d65-sdhci' is not one of ['atmel,sama5d2-sdhci', 'microchip,sam9x60-sdhci']
-	'microchip,sama7d65-sdhci' is not one of ['microchip,sam9x7-sdhci', 'microchip,sama7g5-sdhci']
-	from schema $id: http://devicetree.org/schemas/mmc/atmel,sama5d2-sdhci.yaml#
-arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dtb: mmc@e1208000: Unevaluated properties are not allowed ('compatible' was unexpected)
-	from schema $id: http://devicetree.org/schemas/mmc/atmel,sama5d2-sdhci.yaml#
-arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dtb: /soc/mmc@e1208000: failed to match any schema with compatible: ['microchip,sama7d65-sdhci', 'microchip,sam9x60-sdhci']
-arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dtb: /soc/timer@e1800000: failed to match any schema with compatible: ['microchip,sama7d65-pit64b', 'microchip,sam9x60-pit64b']
-arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dtb: /soc/timer@e1800000: failed to match any schema with compatible: ['microchip,sama7d65-pit64b', 'microchip,sam9x60-pit64b']
-arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dtb: /soc/timer@e1804000: failed to match any schema with compatible: ['microchip,sama7d65-pit64b', 'microchip,sam9x60-pit64b']
-arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dtb: /soc/timer@e1804000: failed to match any schema with compatible: ['microchip,sama7d65-pit64b', 'microchip,sam9x60-pit64b']
-
-
-
-
+-- 
+2.25.1
 
 
