@@ -1,72 +1,65 @@
-Return-Path: <linux-mmc+bounces-5784-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-5788-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87165A58BD5
-	for <lists+linux-mmc@lfdr.de>; Mon, 10 Mar 2025 06:57:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A914A59104
+	for <lists+linux-mmc@lfdr.de>; Mon, 10 Mar 2025 11:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6626169F86
-	for <lists+linux-mmc@lfdr.de>; Mon, 10 Mar 2025 05:57:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9EF1168E04
+	for <lists+linux-mmc@lfdr.de>; Mon, 10 Mar 2025 10:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7841C84A9;
-	Mon, 10 Mar 2025 05:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sandisk.com header.i=@sandisk.com header.b="XDUmA9HS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF1E227599;
+	Mon, 10 Mar 2025 10:22:37 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21EB1ADC7E
-	for <linux-mmc@vger.kernel.org>; Mon, 10 Mar 2025 05:57:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.143.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE64226533
+	for <linux-mmc@vger.kernel.org>; Mon, 10 Mar 2025 10:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741586256; cv=none; b=eMHiHZWsuT4hkP2h1qF0XDs3sN0BUsiZSJeFIW803mWN0rgx9c9ElDQ2S4O8Vj+XSV9pKrXtIyL4U0tVoH6V3PI6rw4kFUSnDV3903eeWiVASZOgsgYq6dk3kCVqRhOMuRNaDxl424DS1yLktZlAyqdwFBG1jWVY/fQT4PHuVi4=
+	t=1741602156; cv=none; b=Unf0NOo1o72Rjf0jm9ik7zpW8bYDE2bfdSv+vso2hqOWJgReQS8ei7QEMxNDZBzeH6CefMbm+OY15Z9SiZPuLHevOYhbpYQask3ha7n5Mm68GgnhCHsMCXZi05PNQ0YOZo/MvskZbYWpp92uxJLjWP5/w0r31Ru9Y1upPt/k8Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741586256; c=relaxed/simple;
-	bh=O7G+WkwPrecCAI3wecop9Kf4SESvYjPH3muh2jQOBJw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mGZUeG00KVZX6db6j9Lkh3CjGlKvXO1TxnX86H4ztiKRSLr5XTsb/4hTG7TiINgTcXEc/QMX8SDKHHzwnX1b9hOO+ZMQ9I2wTA7zEV3IrDr1PYNvZRp9R77GpjkfeAuNrbCZd2bVgC/zQ5Lj9KLKci1YccpitAlpyItzdt7Hfr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sandisk.com; spf=pass smtp.mailfrom=sandisk.com; dkim=pass (2048-bit key) header.d=sandisk.com header.i=@sandisk.com header.b=XDUmA9HS; arc=none smtp.client-ip=68.232.143.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sandisk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandisk.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=sandisk.com; i=@sandisk.com; q=dns/txt;
-  s=dkim.sandisk.com; t=1741586254; x=1773122254;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=O7G+WkwPrecCAI3wecop9Kf4SESvYjPH3muh2jQOBJw=;
-  b=XDUmA9HSRFwvBojOJKY+7h/IVBbUQk9FCfy2Wk2hltJ9PXYEjJcCuX9t
-   vMQfSIE9OosM5Av60DfGDY8+BMJ6+2pSB15uqrSIUoSHIzOgsP9GYAt7o
-   K6OCnG8x9BB8C+FxeLuF7X2BQE6WntCmFnP/q3ZWNFYm8U/n1GtXFMCyD
-   l250y2MnpT2POGCPNxT/6T23OhT4P7JBbePrjZ7P1/7kzDxA7eH/lL6F+
-   6PBtnXmvuH49ojGQdvB8qswoFNlvHRnwpxagp7ch/N0TW14sElVV+MhQv
-   PkB8YewEGzt2MlFRPsITGT3wKRclAV6EbKnUb2JnMIzjfvzKj7EST6D2o
-   Q==;
-X-CSE-ConnectionGUID: 64mWkJk1SxKLQ3BG5EgoYw==
-X-CSE-MsgGUID: FlINO0pTQsiKBupg9EIguw==
-X-IronPort-AV: E=Sophos;i="6.14,235,1736784000"; 
-   d="scan'208";a="46600016"
-Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 10 Mar 2025 13:56:28 +0800
-IronPort-SDR: 67ce7138_EYlg2Rshwuz+CA759/mlibx7U9y0/xKfA9Z3w06T2CBBb9l
- 4Jpz+HqYHRUY026f/j9vWgYUJ3okE/gQPELISOw==
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Mar 2025 21:57:29 -0700
-WDCIronportException: Internal
-Received: from avri-office.ad.shared (HELO avri-office.sdcorp.global.sandisk.com) ([10.45.31.142])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Mar 2025 22:56:28 -0700
-From: Avri Altman <avri.altman@sandisk.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>,
-	linux-mmc@vger.kernel.org
-Cc: Avri Altman <avri.altman@sandisk.com>
-Subject: [PATCH 7/7] mmc-utils: lsmmc: Update docs to include new options
-Date: Mon, 10 Mar 2025 07:52:31 +0200
-Message-Id: <20250310055231.304728-8-avri.altman@sandisk.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250310055231.304728-1-avri.altman@sandisk.com>
-References: <20250310055231.304728-1-avri.altman@sandisk.com>
+	s=arc-20240116; t=1741602156; c=relaxed/simple;
+	bh=uagfGTk0D0YpVt3HNGvyQPD6kpD8RodQo8BZSAuwS8o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SVpjeKWu0Qqx1hEra7BIt0J9zDwJQ0O1Qa9GlxHZHT86a6YSkw3fdS4HN9uVHJ3h7brSD7I5djpCikMybTKh9L4st/Hq71nbSDurh1EFcDY6+Ba4Muob4yXpcDOKLq3yAXBP63Q1NhaFSjhOerE4m8B9AX1C/nETlmqEdo0AQ2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1traHH-00027H-Sz; Mon, 10 Mar 2025 11:22:31 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1traHG-004yr5-2w;
+	Mon, 10 Mar 2025 11:22:30 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1traHG-001bYN-2h;
+	Mon, 10 Mar 2025 11:22:30 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	=?UTF-8?q?S=C3=B8ren=20Andersen?= <san@skov.dk>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <Avri.Altman@sandisk.com>
+Subject: [PATCH v4 0/4] mmc: handle undervoltage events and prevent eMMC corruption
+Date: Mon, 10 Mar 2025 11:22:25 +0100
+Message-Id: <20250310102229.381887-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -74,83 +67,87 @@ List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
 
-This commit updates the man and HOWTO page entries to include the new
-options for the csd, cid, and scr commands. The updated entries reflect
-the changes allowing the use of bus_type and register content as
-arguments. These updates provide users with clear instructions on how to
-use the new options for the csd, cid, and scr read commands.
+changes v4:
+- drop HPI and SDHCI related patches
 
-Signed-off-by: Avri Altman <avri.altman@sandisk.com>
----
- docs/HOWTO.rst |  8 +++++++-
- mmc.1          | 18 +++++++++++++++---
- 2 files changed, 22 insertions(+), 4 deletions(-)
+This patch set introduces a framework for handling undervoltage events
+in the MMC subsystem. The goal is to improve system reliability by
+ensuring graceful handling of power fluctuations that could otherwise
+lead to metadata corruption, potentially rendering the eMMC chip
+unusable or causing significant data loss.
 
-diff --git a/docs/HOWTO.rst b/docs/HOWTO.rst
-index f4dd5c4..3c308c7 100644
---- a/docs/HOWTO.rst
-+++ b/docs/HOWTO.rst
-@@ -31,14 +31,20 @@ Running mmc-utils
-     ``writeprotect user set <type> <start block> <blocks> <device>``
-         Set user area write protection.
- 
--    ``csd read <device path>``
-+    ``csd read  [-h] [-v] [-b bus_type] [-r register]  <device path>``
-         Print CSD data from <device path>. The device path should specify the csd sysfs file directory.
-+        if [bus_type] is passed (mmc or sd) the [register] content must be passed as well, and no need for device path.
-+        it is useful for cases we are getting the register value without having the actual platform.
- 
-     ``cid read <device path>``
-         Print CID data from <device path>. The device path should specify the cid sysfs file directory.
-+        if [bus_type] is passed (mmc or sd) the [register] content must be passed as well, and no need for device path.
-+        it is useful for cases we are getting the register value without having the actual platform.
- 
-     ``scr read <device path>``
-         Print SCR data from <device path>. The device path should specify the scr sysfs file directory.
-+        if [bus_type] is passed (mmc or sd) the [register] content must be passed as well, and no need for device path.
-+        it is useful for cases we are getting the register value without having the actual platform.
- 
-     ``ffu <image name> <device> [chunk-bytes]``
-       Default mode.  Run Field Firmware Update with `<image name>` on `<device>`. `[chunk-bytes]` is optional and defaults to its max - 512k. Should be in decimal bytes and sector aligned.
-diff --git a/mmc.1 b/mmc.1
-index 543742c..85f8109 100644
---- a/mmc.1
-+++ b/mmc.1
-@@ -173,17 +173,29 @@ Disable the eMMC cache feature on the device.
- .br
- NOTE! The cache is an optional feature on devices >= eMMC4.5.
- .TP
--.BI csd " " read " " \fidevice\-path\fR
-+.BI csd " " read " " \fR[-h] \fR[-v] " " \fR[-b " " \fIbus_type\fR] " "  \fR[-r " " \fIregister\fR] " " \fI<device\-path>\fR
- Print CSD data from \fIdevice\-path\fR.
- The device path should specify the csd sysfs file directory.
-+.br
-+If \fIbus_type\fR is passed (mmc or sd), the \fIregister\fR content must be passed as well, and no need for device path.
-+.br
-+It is useful for cases where we are getting the register value without having the actual platform.
- .TP
--.BI cid " " read " " \fIdevice\-path\fR
-+.BI cid " " read " " \fR[-h] \fR[-v] " " \fR[-b " " \fIbus_type\fR] " "  \fR[-r " " \fIregister\fR] " " \fI<device\-path>\fR
- Print CID data from \fIdevice\-path\fR.
- The device path should specify the cid sysfs file directory.
-+.br
-+If \fIbus_type\fR is passed (mmc or sd), the \fIregister\fR content must be passed as well, and no need for device path.
-+.br
-+It is useful for cases where we are getting the register value without having the actual platform.
- .TP
--.BI scr " " read " " \fIdevice\-path\fR
-+.BI scr " " read " " \fR[-h] \fR[-v] " " \fR[-b " " \fIbus_type\fR] " "  \fR[-r " " \fIregister\fR] " " \fI<device\-path>\fR
- Print SCR data from \fIdevice\-path\fR.
- The device path should specify the scr sysfs file directory.
-+.br
-+If \fIbus_type\fR is passed (mmc or sd), the \fIregister\fR content must be passed as well, and no need for device path.
-+.br
-+It is useful for cases where we are getting the register value without having the actual platform.
- .TP
- .BI ffu " " \fIimage\-file\-name\fR " " \fIdevice\fR " " [\fIchunk\-bytes\fR]
- Run Field Firmware Update with \fIimage\-file\-name\fR on the device.
--- 
-2.25.1
+## Problem Statement
+
+Power fluctuations and sudden losses can leave eMMC devices in an
+undefined state, leading to severe consequences. The worst case can
+result in metadata corruption, making the entire storage inaccessible.
+While some eMMC devices promise to handle such situations internally,
+experience shows that some chip variants are still affected. This has
+led vendors to take a more protective approach, implementing external
+undervoltage handling as a precautionary measure to avoid costly field
+failures and returns.
+
+The existence of the "Power Off Notification" feature in the eMMC
+standard itself serves as indirect evidence that this is a real-world
+issue.  While some projects have already faced the consequences of
+ignoring this problem (often at significant cost), specific cases cannot
+be disclosed due to NDAs.
+
+## Challenges and Implementation Approach
+
+1. **Raising awareness of the problem**: While vendors have used
+   proprietary solutions for years, a unified approach is needed upstream.
+   This patch set is a first step in making that happen.
+
+2. **Finding an acceptable implementation path**: There are multiple
+   ways to handle undervoltage - either in the kernel or in user space,
+   through a global shutdown mechanism, or using the regulator framework.
+   This patch set takes the kernel-based approach but does not prevent
+   future extensions, such as allowing user-space handoff once available.
+
+3. **Preparing for vendor adoption and testing**: By providing a
+   structured solution upstream, this patch set lowers the barrier for
+   vendors to standardize their undervoltage handling instead of relying on
+   fragmented, out-of-tree implementations.
+
+## Current Limitations
+
+This patch set is an initial step and does not yet cover all possible
+design restrictions or edge cases. Future improvements may include
+better coordination with user space and enhancements based on broader
+testing.
+
+## Testing Details
+
+The implementation was tested on an iMX8MP-based system. The board had
+approximately 100ms of available power hold-up time. The Power Off
+Notification was sent ~4ms after the board was detached from the power
+supply, allowing sufficient time for the eMMC to handle the event
+properly.  Tests were conducted under both idle conditions and active
+read/write operations.
+
+Oleksij Rempel (4):
+  mmc: core: Handle undervoltage events and register regulator notifiers
+  mmc: core: refactor _mmc_suspend() for undervoltage handling
+  mmc: core: add undervoltage handler for MMC/eMMC devices
+  mmc: block: abort requests and suppress errors after undervoltage
+    shutdown
+
+ drivers/mmc/core/block.c     |   2 +-
+ drivers/mmc/core/core.c      |  30 +++++++++
+ drivers/mmc/core/core.h      |   2 +
+ drivers/mmc/core/mmc.c       | 127 +++++++++++++++++++++++++++++------
+ drivers/mmc/core/queue.c     |   2 +-
+ drivers/mmc/core/regulator.c | 124 ++++++++++++++++++++++++++++++++++
+ include/linux/mmc/host.h     |   8 +++
+ 7 files changed, 274 insertions(+), 21 deletions(-)
+
+--
+2.39.5
 
 
