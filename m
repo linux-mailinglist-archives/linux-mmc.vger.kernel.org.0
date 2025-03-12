@@ -1,104 +1,96 @@
-Return-Path: <linux-mmc+bounces-5818-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-5821-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0367CA5DBC4
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Mar 2025 12:41:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4068FA5DBE4
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Mar 2025 12:47:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C232118940A8
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Mar 2025 11:41:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FDDE17A1F7
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Mar 2025 11:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A087523F360;
-	Wed, 12 Mar 2025 11:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E5C23F407;
+	Wed, 12 Mar 2025 11:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J3Af76AB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vk0lwBC3"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E596F1D63FF
-	for <linux-mmc@vger.kernel.org>; Wed, 12 Mar 2025 11:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077BE23F385
+	for <linux-mmc@vger.kernel.org>; Wed, 12 Mar 2025 11:47:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741779695; cv=none; b=f0dG+XZO3u2KzGidt4GGqi1NXFKDXXrZMTEyxubKiABd58d6b9JWnMtESyfn6DKFv0Ts2oVQmbW8+OO/OdW+xH+vCFSmtecNBE1eq43ByqvF4zxZjebVkszyeUGt4miOLMokISBBdrOjNCHCjanQF6/dRxQTexHVZ76TKoGJ+6w=
+	t=1741780065; cv=none; b=Q9P7p3S/cTMr6u4Xry9vo78O7bXjQp2BRRRyAOR0f7Aps/ZCVzEtA+K5SiuYbkXPiVOXS8u4jza/QZ8O0lEU7Q+fUC9neBag7yPozXCePhDkflmmE3obodLSlXk1LLp36xGHth6UtbWk1ftEPFqShDfoaYlmUD7Oq50Lu4KIq0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741779695; c=relaxed/simple;
-	bh=Hfr8OMjeRYQrrUoqZYyJ4x09/UOphYrS/PiBPFEdw3o=;
+	s=arc-20240116; t=1741780065; c=relaxed/simple;
+	bh=CsgzFVnTYO9pVnz1WkCA3cY3MwyvM8leR3dck+STYhw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P1I3KbuCfdOY2is1Uzp8mamH4G6n7mdNuI64I+Pqq+WQrKYnaGj9QGRPxY7z/RdjjOz9fohg/c4AyJPAv1FvTN0bDW7BiQYvDSaf0ssDauFjVLAeXftF9CjSAtyUUjkuKCRzeU3drgMbG4E24iWmObRdoBtOP2WuUMK3DYJ01l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J3Af76AB; arc=none smtp.client-ip=209.85.128.173
+	 To:Cc:Content-Type; b=it0XeFV3tHITsBg/OexPrMaVmD/PymUZ8QmW3dEEQpHQR+FaojV1NNpt8BTHVjlo5vrqFpZFLfO1XykA/rw3YBIaFMAVv3Ntdx6fnx8RZYLuOHbLQf0c01uUvRekXJ6naHG9fjSLkxmaMlhu0jis5wbM3VKH+rhbjcAQ/T8GM50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vk0lwBC3; arc=none smtp.client-ip=209.85.222.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6fead015247so49289877b3.2
-        for <linux-mmc@vger.kernel.org>; Wed, 12 Mar 2025 04:41:33 -0700 (PDT)
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c554d7dc2aso482640685a.3
+        for <linux-mmc@vger.kernel.org>; Wed, 12 Mar 2025 04:47:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741779693; x=1742384493; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1741780063; x=1742384863; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9j/U4EQoiHgptz6boB/MjI8ID8/t5hKi1/d0T2PV2gc=;
-        b=J3Af76ABRVnPZ3wiswxq5nwCp0pIU0EhXhfBLyPY9Mrvf9LCH4qYTWwjdvF31GBQbe
-         dRHp2F2EbKmLm1OjGUF+0tYdAWoyxO4vp/X/GCTCtJZIRtLJm8K9MBp50BMjkEjVZKsP
-         HQiZ3T/Lkif1+PfGm652dAaKqrBzWRKv1ozgeeGXd2/H4IZurDuPZSB7yNUUl6cZ+C6p
-         e0s09RovtPuvu2kE5bqwaUjrGOhenZM5nDba3KvK5YeKIkiOLu9EswLK/houJbDtXAtZ
-         9RNdxhg5KRXpIsTeq0sUS6AgEkvbJfLcVrFVIA+U9Y3I8v5RU56UUD4MAj298mKb10to
-         7Sfg==
+        bh=KYhx9DaAOiP6jF5M8Xgcxe4GOKv+W9gmD/EErDso9Us=;
+        b=vk0lwBC3DD9XI7mx25wZLcgdkhmeHsRj9R1hT0lp09BT3SrAG+6LmK77RlrW8G/e1z
+         Ueb5k5FUOcB3aJJGoDrHWAE6S4mpYW5sUsCRQlmtEIFYkp0bMuMaxy5xeH6xRFEZf2Dt
+         rRSBzWCs3VQUu1uT9QbkWSuITqXcRcq+QuL2c9j5UosqJYDqj60EhOjKU34xGZso8wi2
+         HZdJoLNUO7YDRnPDVHZYEL1rCPSptz6UoWvy92kqCP00C/O5AwoW4O55yP1DhlN4r0DE
+         9UyCf6wA6603T0AeMXEudQEetEk8UrqNuSrNbDCoZCxcyLf87+rEHaD8JuIMik4x571A
+         xpwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741779693; x=1742384493;
+        d=1e100.net; s=20230601; t=1741780063; x=1742384863;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9j/U4EQoiHgptz6boB/MjI8ID8/t5hKi1/d0T2PV2gc=;
-        b=RSvARGzzjAoFTCVzreQzHwwv+AX8k3GKM6W1pPAdTd6nWq/eapLjEHpMtlyd6AJh9I
-         /ttfZ9WbTns/LLwVO4YAmMiiW92FOcvt9zvKHtsVU/USmJwYay6+7J+ryUAjBk2oTpwY
-         9wuGvNwBk/+/dItALWg3OQh0j3gArC3AmEXnpYm8P28gPxTEDT9AOC8wG7Oz/QOvaLBC
-         w3HMcDQnINQ4PnQDxxX5TE3hvx3hgpyOKxhL77+2pKYzqC+BC9Jddq2+YBENgjI3bNNb
-         s76Dom4xVVELkMLSvZHTCP7L+daYw5r+to/nDlB9JNQjIK/xP7gNzirld1+94sYQ6ZKn
-         e/bA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+pN8l6W6GMd1Ra80FLE1TWasa9xws4JrgDWgW0zjmyYBrBgP8Xr2cCAZzLH6UNoRQS7zWHpV9tZ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeNVEwCkzbaSkT9QcVQ5Akw+usI4loE9wwdsujeVcZzCtskDhg
-	CNNGqVfa9CPF/MpRGWEN5wPPQGBfKkXkS8DwHdXEdaOi/2WiUAmtNIGyHHeWS/XFsUgAKV8xPSx
-	nlu8syg4Xa/faVf/26fkNsRxCQboSSM8ygvXsbLWFz8jPPKnm
-X-Gm-Gg: ASbGnctMPDRNvR4Zb4HZrtXK9LI6v+YGQ0ulFmRCSQKhSOCEQMHg0jnaaOQbBSeZGTd
-	34MWyI3yfXIhVoGfSJlcyEMSs/ffK74nJQJDdLHoWpxFpEvqkmX8hgnhVJ1eX6/rFiT0x18Qcls
-	UpYJhNbt+tZg+Wo1uHIKTuSzc2wwg=
-X-Google-Smtp-Source: AGHT+IHH7uvA9yNgehQh/WvJpzE1DNm3tApCMv5rqkkOcqny/w/ZhYHeJeGOrtmKDOjQNX4IleJQ5b7Zm4VytQlV/xE=
-X-Received: by 2002:a05:690c:4b83:b0:6fd:2b7d:9a4e with SMTP id
- 00721157ae682-6febf30734bmr319577817b3.18.1741779692875; Wed, 12 Mar 2025
- 04:41:32 -0700 (PDT)
+        bh=KYhx9DaAOiP6jF5M8Xgcxe4GOKv+W9gmD/EErDso9Us=;
+        b=YLpvXzm4TZo1wDNt3mv6TL3dNNg/gfvIa2MdVqcdck08eWJao8b9fnaPIJf2haANN0
+         gd30FDV2VN9knO286/ru09v9aCOQfnAhJRMIThUQwWvXR2VfZINW3+wENnRB+10PSQ8q
+         7tSrsqTM/kSL+eyWB9174F/MzhZuX/HqIkfmwNqBFQF4Hm6WKTBFxioFPX/ra8QNLuOz
+         etm2w33w1zubiQ1azaQqbs5RyBy1kw94n28VF0WBToFG0SoTUrcTllLQuJEYhikWFahr
+         G9Lsqrls38v2z56pDgSBpKgzl3N+HyY3VhjTycvW2t41Ro6o0HtaYflbPRKQiTer7rKV
+         PNLA==
+X-Gm-Message-State: AOJu0Yz21Jp9d4lATBuIW/ioeqfqozOxhS59rZKj3mcSUOVp8IZCNJB4
+	c/K3Ot3vSWkP8NzNpfwxUZk7/M0bfT+2AMLxYP1o5pATEqkXYvQE8BFzNzpYBvFt0PYqwRy8FWT
+	MuB1vDkdn20mKaQRTqssMmVkTcoMxiOzZbZqVs3W1hVWc5wfF
+X-Gm-Gg: ASbGnct6Gk1MHjda69mHpELrftp7YRd6jaV+UDQU8QCmmZ3lotal988tV8GsHHDp0Aq
+	MuVgCR9VJkwIP08YsAkxDP9x236lXgUkXdW723Dp0uJ+4j8RRBb1+3NNy5TLbJGU1bm0Za963hT
+	k8sImI3L8nowcpmRwfQUFXacy+Bfc=
+X-Google-Smtp-Source: AGHT+IF0lO7rB3mWD7blFn7GfkRM4hwdjNq4xOSBHo+r44rM5JWV0KqKVr3xlzCG2Oxa1YaeAce+NSCiX5b1ks8ukWw=
+X-Received: by 2002:a05:690c:45c1:b0:6fb:1f78:d9ee with SMTP id
+ 00721157ae682-6febf2fa005mr289717017b3.15.1741779701874; Wed, 12 Mar 2025
+ 04:41:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250203172905.463629-1-gwendal@chromium.org> <BL0PR04MB656432C4EEB1A9EC3C6BDC0DFCF52@BL0PR04MB6564.namprd04.prod.outlook.com>
-In-Reply-To: <BL0PR04MB656432C4EEB1A9EC3C6BDC0DFCF52@BL0PR04MB6564.namprd04.prod.outlook.com>
+References: <20250214075146.85101-1-avri.altman@wdc.com>
+In-Reply-To: <20250214075146.85101-1-avri.altman@wdc.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 12 Mar 2025 12:40:57 +0100
-X-Gm-Features: AQ5f1JomwgZ8i077_9iFpZbF1ecTQpS7Pplx8R4KSPTSkDekFPV367E5OrYQJ10
-Message-ID: <CAPDyKFpFzBJvx1QxKytAs95_exCwj+HeDD7Pq7uMzqH1s69EwA@mail.gmail.com>
-Subject: Re: [PATCH v2] Makefile: fix conditional around sparse
-To: Avri Altman <Avri.Altman@wdc.com>
-Cc: Gwendal Grignou <gwendal@chromium.org>, 
-	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
+Date: Wed, 12 Mar 2025 12:41:05 +0100
+X-Gm-Features: AQ5f1JpIECkHyMYK3R4gmpSDtP6SlCq8ATdxtlDlD8AmURxYuivfAO_rpMRRtso
+Message-ID: <CAPDyKFqNTp+iv+Okxn4n0qrnOXeuuegxJ4fkAmOoKv__JwqbDQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc-utils: Docs: Fix Sphinx build error
+To: Avri Altman <avri.altman@wdc.com>
+Cc: linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 3 Feb 2025 at 18:40, Avri Altman <Avri.Altman@wdc.com> wrote:
+On Fri, 14 Feb 2025 at 08:54, Avri Altman <avri.altman@wdc.com> wrote:
 >
-> > sparse would always be invoked, since `ifdef C` is always true afet `C ?= xx`.
-> > Instead, use ifeq to check if C is 0 or 1.
-> >
-> > Check that `make C=0` does not invoke sprase.
-> >
-> > Fixes f884bfe684f ("mmc-utils: Make functions static for local scope
-> > enforcement")
-> Nit sha1 should be 12 characters.
+> This patch fixes a Sphinx build error encountered during the
+> `make html-docs` process. Apparently the _static directory was absent
+> and the master document not being set in the Sphinx configuration.
 >
-> >
-> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> Reviewed-by: Avri Altman <avri.altman@wdc.com>
+> Fixes: 1d1b1159ce7a ("mmc-utils: Add documentation section")
+> Signed-off-by: Avri Altman <avri.altman@wdc.com>
 
 Applied to mmc-utils, thanks!
 
@@ -107,35 +99,32 @@ Uffe
 
 
 >
-> > ---
-> > Changes from v1:
-> > - added signature
-> > - add test line to enphasize it is not a revert.
-> >
-> >  Makefile | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/Makefile b/Makefile
-> > index 06ae0f7..c0284bb 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -27,14 +27,14 @@ progs = mmc
-> >
-> >  # make C=1 to enable sparse - default
-> >  C ?= 1
-> > -ifdef C
-> > +ifeq "$(C)" "1"
-> >         check = sparse $(CHECKFLAGS) $(AM_CFLAGS)  endif
-> >
-> >  all: $(progs)
-> >
-> >  .c.o:
-> > -ifdef C
-> > +ifeq "$(C)" "1"
-> >         $(check) $<
-> >  endif
-> >         $(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
-> > --
-> > 2.48.1.362.g079036d154-goog
+> ---
+> Changes in v2:
+>  - Add a fixes tag
+> ---
+>  docs/_static/.gitkeep | 0
+>  docs/conf.py          | 2 ++
+>  2 files changed, 2 insertions(+)
+>  create mode 100644 docs/_static/.gitkeep
+>
+> diff --git a/docs/_static/.gitkeep b/docs/_static/.gitkeep
+> new file mode 100644
+> index 0000000..e69de29
+> diff --git a/docs/conf.py b/docs/conf.py
+> index 9c08a23..9bc69ce 100644
+> --- a/docs/conf.py
+> +++ b/docs/conf.py
+> @@ -39,6 +39,8 @@ templates_path = ['_templates']
+>  # This pattern also affects html_static_path and html_extra_path.
+>  exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+>
+> +# The master toctree document.
+> +master_doc = 'index'
+>
+>  # -- Options for HTML output -------------------------------------------------
+>
+> --
+> 2.25.1
 >
 
