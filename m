@@ -1,95 +1,98 @@
-Return-Path: <linux-mmc+bounces-5821-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-5819-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4068FA5DBE4
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Mar 2025 12:47:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA325A5DBC6
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Mar 2025 12:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FDDE17A1F7
-	for <lists+linux-mmc@lfdr.de>; Wed, 12 Mar 2025 11:47:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A52B918958CD
+	for <lists+linux-mmc@lfdr.de>; Wed, 12 Mar 2025 11:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E5C23F407;
-	Wed, 12 Mar 2025 11:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482F223C8A1;
+	Wed, 12 Mar 2025 11:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vk0lwBC3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bYSMV816"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077BE23F385
-	for <linux-mmc@vger.kernel.org>; Wed, 12 Mar 2025 11:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855901D63FF
+	for <linux-mmc@vger.kernel.org>; Wed, 12 Mar 2025 11:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741780065; cv=none; b=Q9P7p3S/cTMr6u4Xry9vo78O7bXjQp2BRRRyAOR0f7Aps/ZCVzEtA+K5SiuYbkXPiVOXS8u4jza/QZ8O0lEU7Q+fUC9neBag7yPozXCePhDkflmmE3obodLSlXk1LLp36xGHth6UtbWk1ftEPFqShDfoaYlmUD7Oq50Lu4KIq0M=
+	t=1741779708; cv=none; b=NE2yTNn823qxS21H1aAAdt0cf4s9RB4hf/SICu1U53vfP8hLJm5hHkqJjdeYfSUMDlB1YIf/mO+I2JyfYI2LCYbLkIskCw0IWrCZbyEeQjzhS6YfUfnpf141DuK7Cr1AjdtsMo4t3jR02swteMeRi469dztw2va1OtnoZZP4Kd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741780065; c=relaxed/simple;
-	bh=CsgzFVnTYO9pVnz1WkCA3cY3MwyvM8leR3dck+STYhw=;
+	s=arc-20240116; t=1741779708; c=relaxed/simple;
+	bh=7X6sEAaSMthvUSCexSRcw4P0r/3b9gVJHLUMo54hiyg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=it0XeFV3tHITsBg/OexPrMaVmD/PymUZ8QmW3dEEQpHQR+FaojV1NNpt8BTHVjlo5vrqFpZFLfO1XykA/rw3YBIaFMAVv3Ntdx6fnx8RZYLuOHbLQf0c01uUvRekXJ6naHG9fjSLkxmaMlhu0jis5wbM3VKH+rhbjcAQ/T8GM50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vk0lwBC3; arc=none smtp.client-ip=209.85.222.170
+	 To:Cc:Content-Type; b=mbWtzWFBE1DmX1eGouEJFJ3a3H/livqhiqZpGtQS8m39xMPz8uVHa5YPTGmi4q3JRwBQcPMhz1EwK3y5pFYe7B3etHgyJg5f2TQt/egKAvZFezsxTd9BoCWdW+KTVQmqKJMa+fgC0gPZiKmTsaFh9cO/gS1F1OPdx26cDxX3bpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bYSMV816; arc=none smtp.client-ip=209.85.128.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c554d7dc2aso482640685a.3
-        for <linux-mmc@vger.kernel.org>; Wed, 12 Mar 2025 04:47:43 -0700 (PDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6f6ae4846c7so62079027b3.1
+        for <linux-mmc@vger.kernel.org>; Wed, 12 Mar 2025 04:41:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741780063; x=1742384863; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1741779705; x=1742384505; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KYhx9DaAOiP6jF5M8Xgcxe4GOKv+W9gmD/EErDso9Us=;
-        b=vk0lwBC3DD9XI7mx25wZLcgdkhmeHsRj9R1hT0lp09BT3SrAG+6LmK77RlrW8G/e1z
-         Ueb5k5FUOcB3aJJGoDrHWAE6S4mpYW5sUsCRQlmtEIFYkp0bMuMaxy5xeH6xRFEZf2Dt
-         rRSBzWCs3VQUu1uT9QbkWSuITqXcRcq+QuL2c9j5UosqJYDqj60EhOjKU34xGZso8wi2
-         HZdJoLNUO7YDRnPDVHZYEL1rCPSptz6UoWvy92kqCP00C/O5AwoW4O55yP1DhlN4r0DE
-         9UyCf6wA6603T0AeMXEudQEetEk8UrqNuSrNbDCoZCxcyLf87+rEHaD8JuIMik4x571A
-         xpwg==
+        bh=ioGw4y5xwbpIgtHn7hgYihYbHTQjfV1moGfCfOGeOos=;
+        b=bYSMV816QlLFGv6feQ6463knax1Jy0eAQk6jVYYGrQLuBkALk3ltKOC1+Dh46Xfvvd
+         H+5zbe0WxLkT0wAe2JlCIkPo3mvZoL0GNaUpwpXG2gVhLfH1Tx+hZvG7InXd9VVRgrPG
+         oSbtl87DO5GaHor77IzCz5+X/kKvvEZ8kiRsUU6UCnVeROCmX26pKUVi3NPkxM0432PI
+         CPg5765mxiF/XLFTqGR926cs6RuMwnrnqhSV2bMrbkK9gUs7xVACf6w5EkN/9c1S2IPu
+         qk3lr7K4UmDmcvTvMnb892zVvDZwqVimvrKpplTm9quVGPRx6DVtV98o2CnHo1SPUNwC
+         l3Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741780063; x=1742384863;
+        d=1e100.net; s=20230601; t=1741779705; x=1742384505;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KYhx9DaAOiP6jF5M8Xgcxe4GOKv+W9gmD/EErDso9Us=;
-        b=YLpvXzm4TZo1wDNt3mv6TL3dNNg/gfvIa2MdVqcdck08eWJao8b9fnaPIJf2haANN0
-         gd30FDV2VN9knO286/ru09v9aCOQfnAhJRMIThUQwWvXR2VfZINW3+wENnRB+10PSQ8q
-         7tSrsqTM/kSL+eyWB9174F/MzhZuX/HqIkfmwNqBFQF4Hm6WKTBFxioFPX/ra8QNLuOz
-         etm2w33w1zubiQ1azaQqbs5RyBy1kw94n28VF0WBToFG0SoTUrcTllLQuJEYhikWFahr
-         G9Lsqrls38v2z56pDgSBpKgzl3N+HyY3VhjTycvW2t41Ro6o0HtaYflbPRKQiTer7rKV
-         PNLA==
-X-Gm-Message-State: AOJu0Yz21Jp9d4lATBuIW/ioeqfqozOxhS59rZKj3mcSUOVp8IZCNJB4
-	c/K3Ot3vSWkP8NzNpfwxUZk7/M0bfT+2AMLxYP1o5pATEqkXYvQE8BFzNzpYBvFt0PYqwRy8FWT
-	MuB1vDkdn20mKaQRTqssMmVkTcoMxiOzZbZqVs3W1hVWc5wfF
-X-Gm-Gg: ASbGnct6Gk1MHjda69mHpELrftp7YRd6jaV+UDQU8QCmmZ3lotal988tV8GsHHDp0Aq
-	MuVgCR9VJkwIP08YsAkxDP9x236lXgUkXdW723Dp0uJ+4j8RRBb1+3NNy5TLbJGU1bm0Za963hT
-	k8sImI3L8nowcpmRwfQUFXacy+Bfc=
-X-Google-Smtp-Source: AGHT+IF0lO7rB3mWD7blFn7GfkRM4hwdjNq4xOSBHo+r44rM5JWV0KqKVr3xlzCG2Oxa1YaeAce+NSCiX5b1ks8ukWw=
-X-Received: by 2002:a05:690c:45c1:b0:6fb:1f78:d9ee with SMTP id
- 00721157ae682-6febf2fa005mr289717017b3.15.1741779701874; Wed, 12 Mar 2025
- 04:41:41 -0700 (PDT)
+        bh=ioGw4y5xwbpIgtHn7hgYihYbHTQjfV1moGfCfOGeOos=;
+        b=buDmFTXhVlbIh2K8zw4Lg1pZCFYH7yrRon8sK+DgHdCQRgmJU2XfzMKlcg4XyMFu9C
+         j04ZMEHWmi7nqh8Ip7esrj8C8Azz4fzGCHr4CbrejHEmgRahhE8sKF6fw9e7Ln7WNmXH
+         3ZCZGqRsWA6hV53MdetA0StD3ZeUMaibh2jfPCuWAy+5JEvj8UrBpVEqRvYRbbpdb4U5
+         /S97Ts2ByhlZWdLEYGcT9MA0ho8g/YjmKQ/Rysgsyqyz8FhHQFs3rqA8Tf43Ol/42ce7
+         jZa+AH+nqSnK9Q59KuqWdblYhIwSsvWlTQC5qMU2UvcAlFj0oLv5Ep4RjwW+zffvDc1n
+         /dLA==
+X-Gm-Message-State: AOJu0YzqSSjzL3BR8p79hucp+TmsEy1QbKZtOvkubmHSpZ9F+Ofg5uJy
+	Ca1rBdo5ZK9XWSSQLjUQQzoECu7BBoUcMsD4+hv5ZPBlO+LbB/na7j4v6hRRLAGJyTucgWG+0EQ
+	jLc5UuSAmXcNbosFwLxzPfvTPqLmSmiTdCFsUe/ZkkTxzVArk
+X-Gm-Gg: ASbGncu99cNKZh9H0JUVf7rGeBiWswY5QIBqDPYwNoozfpMKuQavJC40JW+q0cTIyWY
+	TEId9Oxybwx3htgw/yF0cmmeqO7oCws84Y6rC1wRl36wguQh330XzJDqDVigBS46rmzJk1twuOa
+	orcoETqwZY6L+0vGF9ft73aGH1yns=
+X-Google-Smtp-Source: AGHT+IHvhWLQUiUWkHV6WopVzGhOdXoPO/sPMWXlvVVZUWs7sHwEx7+uWukZrPHcLwq150ydHhSigNY4wPa8RoKu8CY=
+X-Received: by 2002:a05:690c:a98:b0:6f9:9d40:35cb with SMTP id
+ 00721157ae682-6ff091abebbmr104760167b3.6.1741779705583; Wed, 12 Mar 2025
+ 04:41:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250214075146.85101-1-avri.altman@wdc.com>
-In-Reply-To: <20250214075146.85101-1-avri.altman@wdc.com>
+References: <20250210063947.3298-1-avri.altman@wdc.com>
+In-Reply-To: <20250210063947.3298-1-avri.altman@wdc.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 12 Mar 2025 12:41:05 +0100
-X-Gm-Features: AQ5f1JpIECkHyMYK3R4gmpSDtP6SlCq8ATdxtlDlD8AmURxYuivfAO_rpMRRtso
-Message-ID: <CAPDyKFqNTp+iv+Okxn4n0qrnOXeuuegxJ4fkAmOoKv__JwqbDQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc-utils: Docs: Fix Sphinx build error
+Date: Wed, 12 Mar 2025 12:41:09 +0100
+X-Gm-Features: AQ5f1JoRm_A4xzxoSd1bYJg7afyVUPSMwhBq9YEFZBXqxwJEkt3ADAWn8NBwQSU
+Message-ID: <CAPDyKFpKo3DLECzfhCRnWO=jwo9s6TMaZWkk94_8yPfpg0iOkQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc-utils: Documentation: Add missing entry for
+ "writeprotect user get" command
 To: Avri Altman <avri.altman@wdc.com>
-Cc: linux-mmc@vger.kernel.org
+Cc: linux-mmc@vger.kernel.org, Christian Loehle <christian.loehle@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 14 Feb 2025 at 08:54, Avri Altman <avri.altman@wdc.com> wrote:
+On Mon, 10 Feb 2025 at 07:42, Avri Altman <avri.altman@wdc.com> wrote:
 >
-> This patch fixes a Sphinx build error encountered during the
-> `make html-docs` process. Apparently the _static directory was absent
-> and the master document not being set in the Sphinx configuration.
+> This commit adds missing documentation for the "writeprotect user get"
+> command to both the man page (mmc.1) and the documentation page
+> (docs/HOWTO.rst).
 >
-> Fixes: 1d1b1159ce7a ("mmc-utils: Add documentation section")
+> The "writeprotect user get" command prints the user areas write protect
+> configuration for the specified device.
+>
 > Signed-off-by: Avri Altman <avri.altman@wdc.com>
 
 Applied to mmc-utils, thanks!
@@ -101,29 +104,40 @@ Uffe
 >
 > ---
 > Changes in v2:
->  - Add a fixes tag
+>  - Fix a typo (Christian)
 > ---
->  docs/_static/.gitkeep | 0
->  docs/conf.py          | 2 ++
->  2 files changed, 2 insertions(+)
->  create mode 100644 docs/_static/.gitkeep
+>  docs/HOWTO.rst | 3 +++
+>  mmc.1          | 3 +++
+>  2 files changed, 6 insertions(+)
 >
-> diff --git a/docs/_static/.gitkeep b/docs/_static/.gitkeep
-> new file mode 100644
-> index 0000000..e69de29
-> diff --git a/docs/conf.py b/docs/conf.py
-> index 9c08a23..9bc69ce 100644
-> --- a/docs/conf.py
-> +++ b/docs/conf.py
-> @@ -39,6 +39,8 @@ templates_path = ['_templates']
->  # This pattern also affects html_static_path and html_extra_path.
->  exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+> diff --git a/docs/HOWTO.rst b/docs/HOWTO.rst
+> index 095a9bd..3902fa4 100644
+> --- a/docs/HOWTO.rst
+> +++ b/docs/HOWTO.rst
+> @@ -28,6 +28,9 @@ Running mmc-utils
+>          If <number> is passed (0 or 1), only protect that particular eMMC boot partition, otherwise protect both. It will be write-protected until the next boot.
+>          -p  Protect partition permanently instead. NOTE! -p is a one-time programmable (unreversible) change.
 >
-> +# The master toctree document.
-> +master_doc = 'index'
+> +    ``writeprotect user get <device>``
+> +        Print the user areas write protect configuration for <device>.
+> +
+>      ``writeprotect user set <type> <start block> <blocks> <device>``
+>          Set user area write protection.
 >
->  # -- Options for HTML output -------------------------------------------------
->
+> diff --git a/mmc.1 b/mmc.1
+> index 543742c..2f7209c 100644
+> --- a/mmc.1
+> +++ b/mmc.1
+> @@ -27,6 +27,9 @@ If \fInumber\fR is passed (0 or 1), only protect that specified eMMC boot partit
+>  .br
+>  It will be write-protected until the next boot.
+>  .TP
+> +.BI writeprotect " " user " " get " " \fIdevice\fR
+> +Print the user areas write protect configuration for <device>.
+> +.TP
+>  .BI writeprotect " " user " " set " " \fItype\fR " " \fIstart\-block\fR " " \fIblocks\fR " " \fIdevice\fR
+>  Set the write protect configuration for the specified region of the user area for the device.
+>  .br
 > --
 > 2.25.1
 >
