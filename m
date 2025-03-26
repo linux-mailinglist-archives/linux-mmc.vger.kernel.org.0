@@ -1,79 +1,128 @@
-Return-Path: <linux-mmc+bounces-5917-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-5922-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DC8A7125E
-	for <lists+linux-mmc@lfdr.de>; Wed, 26 Mar 2025 09:15:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4B0A71684
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Mar 2025 13:22:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3C18175B04
-	for <lists+linux-mmc@lfdr.de>; Wed, 26 Mar 2025 08:15:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71CD5189C7C9
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Mar 2025 12:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6351A2632;
-	Wed, 26 Mar 2025 08:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nhssw/C0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D071E51E2;
+	Wed, 26 Mar 2025 12:19:06 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361EC1A23AD;
-	Wed, 26 Mar 2025 08:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219F51EC012
+	for <linux-mmc@vger.kernel.org>; Wed, 26 Mar 2025 12:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742976902; cv=none; b=nV6h0JuofkYSFSoJnIC16OWtKIjxfCuGrQWtDha/HXPrDvR8CA2buwyK+Ic3B0TBSfUk6PBmdtmWvFqoRl9D4EjqUEjlC1mV2/vVtE0P92FmDNixdSnDCFCbQPqAF+7asMd1I/urOQ/1QrTqYmOTCEfuDrepTr05L4ek4Pxx4Vc=
+	t=1742991546; cv=none; b=kLsvOiDctaD+9Jj/vWPNPcz/ikSrBbwCEZx/NYJEjhu5kHDZXgmCrhqsu6xo940xOVArDpHG0d26aHGFpMcxGr+EUj9scthsa7M7i9E4LpD6pF71FFoiLxEK4zJMcR8x5lVwJxcDZw85vE+UjoNeSVu1VpJw5t3lsmvP8U/HKGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742976902; c=relaxed/simple;
-	bh=gAniqJkuUHX0bLXDcqTZVfwYS6QnDyYuQRRlQh3xL/Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qgi6dC/yPOSM35v21fHuFxeK4ABb08Ou6jerf1UA3nuMXKJsJ9Qk3qPzRBPnB+X4rxbEV9H1RtU/WFa82HIZ5ne+qa2ZKNQE6lO8mg5LefUL2VDiWgLLmD5h5GErqf7cq47X9xIRZU3ZSEMs7djynWkh1Zi+nwy+7F0E+UgsYoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nhssw/C0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DE6C4CEE2;
-	Wed, 26 Mar 2025 08:15:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742976901;
-	bh=gAniqJkuUHX0bLXDcqTZVfwYS6QnDyYuQRRlQh3xL/Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Nhssw/C0U+wwnY8xBlcTunqXAO/YAjz2Y0JICwMOInOIIbhtZb32J/if7AZYDjQ/n
-	 +6fQqMVw6e2npjuMDnyK9Uorf/nXu92RWjuaJz9FNIjhIoQ2SQoDNbxgYDgUPydkPd
-	 qEUu1oujj0YCBZqNSFRLIs60GbBf8krWzODE3T9YpPGMYXX2s8NMwYWekc0GvOChw0
-	 fglOKrE3V5hKGwew8mYR6x6jAaeMsTdGvGtEQP6oCM/vybtc7idXH4yLhGE3aCH/pT
-	 NL318W3jc8zV/TamNSVmF9Tetnm/ST6rQBE2tUXFrGbfQKHFNeuyHrmGjgF15WW8+S
-	 m5PW2lQT6BXcw==
-Date: Wed, 26 Mar 2025 09:14:57 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Hu Ziji <huziji@marvell.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-mmc@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: mmc: marvell,xenon-sdhci: Drop
- requiring 2 clocks
-Message-ID: <20250326-light-shellfish-of-aptitude-2e64aa@krzk-bin>
-References: <20250320-dt-marvell-mmc-v1-0-e51002ea0238@kernel.org>
- <20250320-dt-marvell-mmc-v1-3-e51002ea0238@kernel.org>
+	s=arc-20240116; t=1742991546; c=relaxed/simple;
+	bh=XC+qboCsiOOjLMsuFgsRa+8+JW7ckO4azwS4iUwWNS8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uJkSRhYLByQnm7mh/g8Uq7bVZl1GtChEaypq7ok5a2FOvUKitT5imgzq+cJK5W//dvgFB5SvXgZGqPCayw+GDmoKl3o07x7efDF6KE8Mt7BG1AJjTdtE5Oc9ClXCEZMje9RqwspA1McfgZ9dFPQYWMqW2eVS51LqOBt/wMI0R1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1txPiN-0005sh-HM; Wed, 26 Mar 2025 13:18:35 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1txPiM-001kIr-2N;
+	Wed, 26 Mar 2025 13:18:35 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1txPiN-000aOn-0C;
+	Wed, 26 Mar 2025 13:18:35 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH do not merge 0/4] wifi: mwifiex: add iw61x support
+Date: Wed, 26 Mar 2025 13:18:30 +0100
+Message-Id: <20250326-mwifiex-iw61x-v1-0-ff875ed35efc@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250320-dt-marvell-mmc-v1-3-e51002ea0238@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJbw42cC/x2MwQqAIBAFfyX2nGCKRf1KdKhcaw9paKQQ/nvWa
+ ZiB9x4I6AkDDNUDHm8K5GyRpq5g3We7ISNdHAQXikvRsiOSIUyMYtsktvSq44uRvJMKyub0aCj
+ 9fyNo9yXrrg8H+g1hyvkFda0LRXMAAAA=
+To: Brian Norris <briannorris@chromium.org>, 
+ Francesco Dolcini <francesco@dolcini.it>, 
+ Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1742991515; l=1915;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=XC+qboCsiOOjLMsuFgsRa+8+JW7ckO4azwS4iUwWNS8=;
+ b=Pv6fTiWkqhq7BhJ8zpUKkrzmH1XGDqzV5/57BO539EM4DVkMssQAcI6vgtidNdMqxtCR5dUOQ
+ kTWySoIPPBLDdYYCQbladHXHxUSAaIvo9keP7u7bx3YoYsWc58P7Ous
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
 
-On Thu, Mar 20, 2025 at 04:35:48PM -0500, Rob Herring (Arm) wrote:
-> The "axi" clock is optional on at least the "marvell,armada-ap806-sdhci"
-> variant. Not sure what's correct here, so just drop the constraint.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  .../devicetree/bindings/mmc/marvell,xenon-sdhci.yaml | 20 --------------------
->  1 file changed, 20 deletions(-)
+This series adds iw61x support to the mwifiex driver. It works for me,
+but is not yet ready to be merged. Some people showed interest in it, so
+I am sending it here.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+All testing and review feedback appreciated.
+
+During startup I get these messages:
+
+[   12.078010] mwifiex_sdio mmc1:0001:1: Unknown GET_HW_SPEC TLV type: 0xff
+[   12.078018] mwifiex_sdio mmc1:0001:1: Unknown GET_HW_SPEC TLV type: 0xff
+[   12.078024] mwifiex_sdio mmc1:0001:1: Unknown GET_HW_SPEC TLV type: 0x23e
+[   12.078029] mwifiex_sdio mmc1:0001:1: Unknown GET_HW_SPEC TLV type: 0x25c
+
+Not sure what these are about, I can't see these handled in the
+downstream mwifiex driver as well. Could also be there is some parsing
+error. Nevertheless the driver seems to work.
+
+The series applies to v6.14, but should apply to my mwifiex cleanup
+series as well.
+
+Sascha
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+Sascha Hauer (4):
+      wifi: mwifiex: release firmware at remove time
+      wifi: mwifiex: handle VDLL
+      wifi: mwifiex: wait longer for SDIO card status
+      wifi: mwifiex: add iw61x support
+
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c    | 86 ++++++++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/fw.h        | 16 +++++
+ drivers/net/wireless/marvell/mwifiex/main.c      |  9 +--
+ drivers/net/wireless/marvell/mwifiex/main.h      |  4 ++
+ drivers/net/wireless/marvell/mwifiex/sdio.c      | 81 +++++++++++++++++++++-
+ drivers/net/wireless/marvell/mwifiex/sdio.h      |  3 +
+ drivers/net/wireless/marvell/mwifiex/sta_event.c |  4 ++
+ drivers/net/wireless/marvell/mwifiex/uap_event.c |  4 ++
+ include/linux/mmc/sdio_ids.h                     |  3 +
+ 9 files changed, 205 insertions(+), 5 deletions(-)
+---
+base-commit: 1e26c5e28ca5821a824e90dd359556f5e9e7b89f
+change-id: 20250326-mwifiex-iw61x-b9570bf30735
 
 Best regards,
-Krzysztof
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
