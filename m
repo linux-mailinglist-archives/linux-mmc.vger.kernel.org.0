@@ -1,109 +1,116 @@
-Return-Path: <linux-mmc+bounces-6021-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6027-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3553EA776EB
-	for <lists+linux-mmc@lfdr.de>; Tue,  1 Apr 2025 10:52:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14E6A77841
+	for <lists+linux-mmc@lfdr.de>; Tue,  1 Apr 2025 11:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 673AF3AA99C
-	for <lists+linux-mmc@lfdr.de>; Tue,  1 Apr 2025 08:51:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91A316A79E
+	for <lists+linux-mmc@lfdr.de>; Tue,  1 Apr 2025 09:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4049F1EC019;
-	Tue,  1 Apr 2025 08:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2CC1EF38A;
+	Tue,  1 Apr 2025 09:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="RwZLWwp4"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="k2MfVGJw"
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86371EB5F0
-	for <linux-mmc@vger.kernel.org>; Tue,  1 Apr 2025 08:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292191EEA37
+	for <linux-mmc@vger.kernel.org>; Tue,  1 Apr 2025 09:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743497515; cv=none; b=kB2nz26zs6J9PfX27hO5LESGQbPdl8E6XOchhfhEl4Nt7hVUnVl9+xsOdd7L9dQ+/0TfzmZ41yDO76TZB/SXS9uYIrw9ulHwgCXFv81/T6HCwLbogHjzbI1hSQsioKgyjsDeAB6abtnjgiKbPkdwLYscs0uC/5tZcdRphDDShqw=
+	t=1743501538; cv=none; b=cfxaGzxuQg+onFrKpWG/PyCMgZXfJ2UgdpPt4jwvSyitLNbgu3NE6l1vCo0gTakrZe72fQB9uYsIYe5WNhPxNPL65UVPYa72swCSYHLuC7m/9AIEbDzX/ioki/YKfIoEQf3mnyBqJshqG1krV4pcLY0UEPfDxSALfPTCYMyUacA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743497515; c=relaxed/simple;
-	bh=sT/syqU8YMLAnTu43NP8SZRj+CiVHsm9BolDYyoETH0=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RRmeEqXsMgav40VsJDuILtlAYUpxpLcl8JxuCsFPIOjpvy7FyQxKeKcJR6F99JhB8jhqT8tpercM44fYR9U5XkqdFXS2s4NWrKQEEoBdPRvRa26vXuymmG43ZsO6ga2Erzx7Jt0Zmh+8Nd1KRsn7quzA/rBPR6wv2IRnKXuNQHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=RwZLWwp4; arc=none smtp.client-ip=194.117.254.33
+	s=arc-20240116; t=1743501538; c=relaxed/simple;
+	bh=VZCB6lMdZgUbeanxDdcuA3GSgG3/yYkWyW0REnD/9wo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZQgmfpUDs1JKXJg4Jc0hli+6GkBUgiNQ8DYpNpaLT/xniRHXKKKCqzl3+yQ4ts/kE64lf0GYoXjZpOZP9oyP5iDiOHKk5Eem29qVkmv+Y0c+XOoKPm2a8IIatlC/Yh3d2texhx2CwQxNCQKWAuNGAaMXsCQh/Mz3XjX4bvWdqbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=k2MfVGJw; arc=none smtp.client-ip=194.117.254.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=sT/s
-	yqU8YMLAnTu43NP8SZRj+CiVHsm9BolDYyoETH0=; b=RwZLWwp4fkl8Qh9ZeFKx
-	1DPmewsGaNd0TM3IR/d0p/UiJAKysRN/EK0UEFPOnyhe3UWww7VVMzfJmMoOMnYn
-	Ju4+NxOlFvp88sbYxQulLKum24fXtkx6tU28RkXwZE0a2GiVdK1Kfl9sr9lDjBQq
-	Jnbko/bQLIJghrvF8p85FHBFpPlgsAFxfnMGDav0y60+B8/SVNzRgRgT+uJ/Hk4K
-	7WHMs90yqICsCj3h6wpwKwvXs+DTJFD9p+A4EG8RZy1VALl0GC/3MS6+XzzNm6zA
-	FVLydtPJ0Hfsfz5FJnwX+mDnBPUZCx0/trOBcNfAeCzLt+Lmp8zHB4irVTkn+cSy
-	Ng==
-Received: (qmail 1535216 invoked from network); 1 Apr 2025 10:51:49 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 1 Apr 2025 10:51:49 +0200
-X-UD-Smtp-Session: l3s3148p1@4o22pbMxdJYgAwDPXwSgADIEZgbhJYA3
-Date: Tue, 1 Apr 2025 10:51:49 +0200
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:mime-version:content-transfer-encoding; s=k1; bh=Ki1KHWPbKghAO2
+	JBCiO5dC3eupe7DQxN/7UlrojsKls=; b=k2MfVGJwz4HcWu/p8dpSDnMSe9ad1I
+	ji5U1BAgXwsia+Qk5ckdGBp2kQpP2j1FM78HIZRiEBEeHpgoyqawFGE7bAGZWVaF
+	G0Hwws82Rc8O5AEKv6FqHIZ4tAvbiNrVR75isZacrEOzanOcVyUTZ6zEW1LwIq2W
+	iMddt7B6cKbSLFza0pfjX8t7hCdTYRRJRa4YLnpNn2F6ZbfD/kANb8dbKIF/2x4Y
+	kMdSxm4Xb83OT6n01sofQp9xePT1iLej7cEEvoYdWKzaw7MImhIZyp3twpsjON/Y
+	1yJ77EN8TMRDs4HjnDIzdd8MTO8jlyyj8qfcCRLj0N9w3sDZ8dy7Cxbw==
+Received: (qmail 1558637 invoked from network); 1 Apr 2025 11:58:51 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 1 Apr 2025 11:58:51 +0200
+X-UD-Smtp-Session: l3s3148p1@wWFolbQxYq4gAwDPXwSgADIEZgbhJYA3
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] mmc: core: Add support for graceful host removal for
- SD
-Message-ID: <Z-upJTp3ykMqvSAl@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250320140040.162416-1-ulf.hansson@linaro.org>
- <20250320140040.162416-6-ulf.hansson@linaro.org>
- <Z-pSq5e9MXTX3qfe@shikoro>
- <Z-uou73DUQoceMj5@shikoro>
+To: linux-mmc@vger.kernel.org
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [RFC PATCH 00/11] mmc: rename mmc_can_* functions
+Date: Tue,  1 Apr 2025 11:58:36 +0200
+Message-ID: <20250401095847.29271-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="XFNsiknX4j2/k/nI"
-Content-Disposition: inline
-In-Reply-To: <Z-uou73DUQoceMj5@shikoro>
+Content-Transfer-Encoding: 8bit
+
+As mentioned in [1], here is a series which rename mmc_can_* functions
+to names which include 'card' or 'host' in the name. I am only an
+occasional MMC core hacker, and these namings would have made my life
+quite easier in past times. So, here is my proposed change. Have a look
+and let me know if you like it. Plain RFC for now. Notes:
+
+* This series is based on [1] which needs changes. My idea would be to
+  respin the series on rc1 right after it is out.
+* I intentionally left mmc_can_retune() out because it seems more
+  consistent with all the other mmc_*_retune() functions
+* Builds fine locally, tested on a Renesas Salvator-X with R-Car M3-W.
+  buildbots still need to check it, branch is here:
+  git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/mmc/unbind-power-off
+
+What do you think?
 
 
---XFNsiknX4j2/k/nI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[1] https://lore.kernel.org/r/20250320140040.162416-1-ulf.hansson@linaro.org
 
+Wolfram Sang (11):
+  mmc: rename mmc_can_discard() to mmc_card_can_discard()
+  mmc: rename mmc_can_erase() to mmc_card_can_erase()
+  mmc: rename mmc_can_ext_csd() to mmc_card_can_ext_csd()
+  mmc: rename mmc_can_poweroff_notify() to
+    mmc_card_can_poweroff_notify()
+  mmc: rename mmc_can_reset() to mmc_card_can_reset()
+  mmc: rename mmc_can_sanitize() to mmc_card_can_sanitize()
+  mmc: rename mmc_can_secure_erase_trim() to
+    mmc_card_can_secure_erase_trim()
+  mmc: rename mmc_can_sleep() to mmc_card_can_sleep()
+  mmc: rename mmc_can_trim() to mmc_card_can_trim()
+  mmc: rename mmc_can_gpio_cd() to mmc_host_can_gpio_cd()
+  mmc: rename mmc_can_gpio_ro() to mmc_host_can_gpio_ro()
 
-> Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+ drivers/mmc/core/block.c             |  6 ++--
+ drivers/mmc/core/core.c              | 48 ++++++++++++----------------
+ drivers/mmc/core/core.h              | 10 +++---
+ drivers/mmc/core/mmc.c               | 30 ++++++++---------
+ drivers/mmc/core/mmc_ops.c           |  6 ++--
+ drivers/mmc/core/mmc_ops.h           |  2 +-
+ drivers/mmc/core/mmc_test.c          | 12 +++----
+ drivers/mmc/core/queue.c             |  6 ++--
+ drivers/mmc/core/slot-gpio.c         |  8 ++---
+ drivers/mmc/host/dw_mmc.c            |  6 ++--
+ drivers/mmc/host/mtk-sd.c            |  2 +-
+ drivers/mmc/host/renesas_sdhi_core.c |  2 +-
+ drivers/mmc/host/sdhci-omap.c        |  2 +-
+ drivers/mmc/host/sdhci.c             |  6 ++--
+ drivers/mmc/host/sunplus-mmc.c       |  2 +-
+ drivers/mmc/host/tmio_mmc_core.c     |  6 ++--
+ include/linux/mmc/slot-gpio.h        |  4 +--
+ 17 files changed, 74 insertions(+), 84 deletions(-)
 
-Which also means that I tested the whole series on a Renesas Salvator-X
-board with a R-Car M3-W SoC (Gen3).
+-- 
+2.47.2
 
-
---XFNsiknX4j2/k/nI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmfrqSUACgkQFA3kzBSg
-KbZJyw//U676OEICFaV1RZ5E4SCVs1CNM5vAcwGy37jJfaHteR+ivuTgGPvd2uS+
-eVPJkwtrzezzcDf4gYTk3Eg5YpnZ8LQyZJ3vzVvGGmOtdxXrm7wdF43dSln/6Q/N
-v7ia4MIR26kUukCUwLpEUdcJMk14SvMbO2Wm6BsnRpjYFR63DqRaKZXf2GRHCXRK
-TJCaZvXloULd9vTRHDMe215yDqKcmvEV86wcC6lKxtgBwqvhbK46YR/nu5cu4JFB
-6mVOFn0njjJv4TX5g4U6bTBI2hU6eZXsltgJ1jpGm3m8xiu9mOZw/g/WKvjQgb2t
-a5tY49RQKLyG+aLJRYSmEhKGPyALwlJt+16fSaVqjA3D70qd4C4/cjmGWyHBkJqi
-KF8DX5DM0sSOFLsU1KKRPiSZ2VFHPIhBxYq1dlGga6LYFdBrTeNdhIHnFRnfAAsx
-vZlReSzZBQP1bBqYeAtP4K5H4qAguV8YWoCRaCRTOrToZQy+HFWRO8Lzm+Z3MIOJ
-s/AaqsE1DTrEEX/6BCaOsNORlS5Qyh50qPK3m78RMrn5XxUolqMHBxBY+S8DSSvH
-JwqJSVSdxujvAwhhSUJDAZZWUo+33rHqAJeuxBnwDGtJd0b3o2kuCVoVXegN7LlY
-5RzOQ21vt91XyyyWS9N6lFxHIydZqgn3oDatzvJycbWONZej3Rg=
-=0Tb2
------END PGP SIGNATURE-----
-
---XFNsiknX4j2/k/nI--
 
