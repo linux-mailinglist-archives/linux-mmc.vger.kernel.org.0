@@ -1,77 +1,65 @@
-Return-Path: <linux-mmc+bounces-6436-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6439-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C213AAABF50
-	for <lists+linux-mmc@lfdr.de>; Tue,  6 May 2025 11:25:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D67FAAC070
+	for <lists+linux-mmc@lfdr.de>; Tue,  6 May 2025 11:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69F44464382
-	for <lists+linux-mmc@lfdr.de>; Tue,  6 May 2025 09:24:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DDCB3B1846
+	for <lists+linux-mmc@lfdr.de>; Tue,  6 May 2025 09:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F26E266560;
-	Tue,  6 May 2025 09:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="bzbc8dF8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A89C26E158;
+	Tue,  6 May 2025 09:51:32 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67367252906;
-	Tue,  6 May 2025 09:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD74268FF9
+	for <linux-mmc@vger.kernel.org>; Tue,  6 May 2025 09:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746523454; cv=none; b=s4FN4L9N9mTKSzvK305Kxv1iQe93pWkxsDpWH/PEctvWcacP34LR88QqeePJN35Zg3nrLTvXtj/+A4eDb5OLOCobv4pf2hB/5/5lQCcHlvRZeVIOHrd1VBOIVMqgiNDJNuhwxhaE8wNW8AK5Gp5uTFLKYD70ykUd3uOPn+RGIus=
+	t=1746525092; cv=none; b=De8ONYGIfpUVSQBXFJXAdlv5apzSW2N0uPajzzDeBF+kNdqTQ6KIxBbJsQVLo30VZ0xVKjfl/P18d7wJ2B6Y9BfgioT6ggXUqsbM6TMN5yoYAAPPZWS8MqlcmuuVPsjzqybE06ehtBhqMRTN48wipY2VB2/rUl0i1DLKll97Tmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746523454; c=relaxed/simple;
-	bh=6w+tXU7Z8tsTcrJtTb1oifhiSkHhaVbmuA7KCza1/rU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmQUVqTO8YUUxKoSvKlUoiOjlM7rxrZtXRp5/ZShqY71i2xWfg1APzhMbuSRK7b9K3KZ5+L+1aZb9ieW+lQ+Zl7GKxOKRk7zsNPlUAjLjhc337fKTAz/1W6rPHOyBUPcwYqpCqdWh/OzQgOMZ1pVHHg6R4fut3x7qGEdV2z9yY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=bzbc8dF8; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id C4B0D25A88;
-	Tue,  6 May 2025 11:24:11 +0200 (CEST)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id WKdrIXse09H6; Tue,  6 May 2025 11:24:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1746523451; bh=6w+tXU7Z8tsTcrJtTb1oifhiSkHhaVbmuA7KCza1/rU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bzbc8dF8Okg0jQcz0QdqchtwqlD3B9UslylP0fk1n1d5FBGEkvutT0d8W4eJNXQJp
-	 xKFKGRt2BSraG+16zvoDmsfHw/0nFYFq1pifYO5yLZtPuiexBZkYhsJOV56Tdquq18
-	 oWCheiEZx2zZJipHA3i6NoPNS/2OSsQGklUwWl+Ktj4eiRMqhV69WvJbMWaGSbIZJw
-	 mQeKwLFHbrL5e/gEQxW6viSh18SIMd4gae70pV1gJYR5WouacHRjLh0Pf+IDSNpU3G
-	 BRq6s47TGxGF2eY9Nsbk+nFGd0yh0AYoElMHoq+No+E5ytm6IjQxBDOvklbi9J77N0
-	 N8Rnrktmetqug==
-From: Yao Zi <ziyao@disroot.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shresth Prasad <shresthprasad7@gmail.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Chukun Pan <amadeus@jmu.edu.cn>
-Cc: linux-mmc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
+	s=arc-20240116; t=1746525092; c=relaxed/simple;
+	bh=+8hgmQMkMUP7qTpXr+fdL0ZmZlS89PQR8pMDgpeqz6I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q/2zCGKssut6+SG6YOrFhbMzprouLCfwZ3+x+QbiOEuCGqpdnBwBd4FJjdcum+dfPoHArtS0S994y36U92aw0iOGw2UABnoCQS8xdxRJPqvWdpHb00cmHgzrhAi4UirEcok+sH3DO737zh1Bt85i0s6uaxlAWuYLZM2I6usNq+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uCExM-00059y-Qx; Tue, 06 May 2025 11:51:20 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uCExL-001NB0-2U;
+	Tue, 06 May 2025 11:51:19 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uCExL-009Oay-2B;
+	Tue, 06 May 2025 11:51:19 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	Yao Zi <ziyao@disroot.org>
-Subject: [PATCH v5 5/5] arm64: dts: rockchip: Enable SD-card interface on Radxa E20C
-Date: Tue,  6 May 2025 09:22:06 +0000
-Message-ID: <20250506092206.46143-6-ziyao@disroot.org>
-In-Reply-To: <20250506092206.46143-1-ziyao@disroot.org>
-References: <20250506092206.46143-1-ziyao@disroot.org>
+	linux-mmc@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	=?UTF-8?q?S=C3=B8ren=20Andersen?= <san@skov.dk>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <Avri.Altman@sandisk.com>
+Subject: [PATCH v5 0/4] mmc: handle undervoltage events and prevent eMMC corruption
+Date: Tue,  6 May 2025 11:51:14 +0200
+Message-Id: <20250506095118.2239459-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -79,77 +67,92 @@ List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mmc@vger.kernel.org
 
-SD-card is available on Radxa E20C board.
+changes v5:
+- Rebased on top of mmc/next after introduction of enum mmc_poweroff_type
+- Replaced boolean undervoltage parameter with MMC_POWEROFF_UNDERVOLTAGE
+- Dropped unused __mmc_resume() helper
+- Updated commit messages accordingly
+changes v4:
+- drop HPI and SDHCI related patches
 
-Signed-off-by: Yao Zi <ziyao@disroot.org>
----
- .../boot/dts/rockchip/rk3528-radxa-e20c.dts   | 30 +++++++++++++++++++
- 1 file changed, 30 insertions(+)
+This patch set introduces a framework for handling undervoltage events
+in the MMC subsystem. The goal is to improve system reliability by
+ensuring graceful handling of power fluctuations that could otherwise
+lead to metadata corruption, potentially rendering the eMMC chip
+unusable or causing significant data loss.
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts b/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
-index 6e77f7753ff7..d0b194b7e66e 100644
---- a/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
-@@ -17,6 +17,7 @@ / {
- 
- 	aliases {
- 		mmc0 = &sdhci;
-+		mmc1 = &sdmmc;
- 	};
- 
- 	chosen {
-@@ -108,6 +109,18 @@ vcc5v0_sys: regulator-5v0-vcc-sys {
- 		regulator-min-microvolt = <5000000>;
- 		regulator-max-microvolt = <5000000>;
- 	};
-+
-+	vccio_sd: regulator-vccio-sd {
-+		compatible = "regulator-gpio";
-+		gpios = <&gpio4 RK_PB6 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&sdmmc_vol_ctrl_h>;
-+		regulator-name = "vccio_sd";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		states = <1800000 0x0>, <3300000 0x1>;
-+		vin-supply = <&vcc5v0_sys>;
-+	};
- };
- 
- &i2c1 {
-@@ -144,6 +157,12 @@ wan_led_g: wan-led-g {
- 			rockchip,pins = <4 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
- 		};
- 	};
-+
-+	sdmmc {
-+		sdmmc_vol_ctrl_h: sdmmc-vol-ctrl-h {
-+			rockchip,pins = <4 RK_PB6 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+	};
- };
- 
- &saradc {
-@@ -162,6 +181,17 @@ &sdhci {
- 	status = "okay";
- };
- 
-+&sdmmc {
-+	bus-width = <4>;
-+	cap-mmc-highspeed;
-+	cap-sd-highspeed;
-+	disable-wp;
-+	sd-uhs-sdr104;
-+	vmmc-supply = <&vcc_3v3>;
-+	vqmmc-supply = <&vccio_sd>;
-+	status = "okay";
-+};
-+
- &uart0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0m0_xfer>;
--- 
-2.49.0
+## Problem Statement
+
+Power fluctuations and sudden losses can leave eMMC devices in an
+undefined state, leading to severe consequences. The worst case can
+result in metadata corruption, making the entire storage inaccessible.
+While some eMMC devices promise to handle such situations internally,
+experience shows that some chip variants are still affected. This has
+led vendors to take a more protective approach, implementing external
+undervoltage handling as a precautionary measure to avoid costly field
+failures and returns.
+
+The existence of the "Power Off Notification" feature in the eMMC
+standard itself serves as indirect evidence that this is a real-world
+issue.  While some projects have already faced the consequences of
+ignoring this problem (often at significant cost), specific cases cannot
+be disclosed due to NDAs.
+
+## Challenges and Implementation Approach
+
+1. **Raising awareness of the problem**: While vendors have used
+   proprietary solutions for years, a unified approach is needed upstream.
+   This patch set is a first step in making that happen.
+
+2. **Finding an acceptable implementation path**: There are multiple
+   ways to handle undervoltage - either in the kernel or in user space,
+   through a global shutdown mechanism, or using the regulator framework.
+   This patch set takes the kernel-based approach but does not prevent
+   future extensions, such as allowing user-space handoff once available.
+
+3. **Preparing for vendor adoption and testing**: By providing a
+   structured solution upstream, this patch set lowers the barrier for
+   vendors to standardize their undervoltage handling instead of relying on
+   fragmented, out-of-tree implementations.
+
+## Current Limitations
+
+This patch set is an initial step and does not yet cover all possible
+design restrictions or edge cases. Future improvements may include
+better coordination with user space and enhancements based on broader
+testing.
+
+## Testing Details
+
+The implementation was tested on an iMX8MP-based system. The board had
+approximately 100ms of available power hold-up time. The Power Off
+Notification was sent ~4ms after the board was detached from the power
+supply, allowing sufficient time for the eMMC to handle the event
+properly.  Tests were conducted under both idle conditions and active
+read/write operations.
+
+Oleksij Rempel (4):
+  mmc: core: Handle undervoltage events and register regulator notifiers
+  mmc: core: Add MMC_POWEROFF_UNDERVOLTAGE support in _mmc_suspend()
+  mmc: core: add undervoltage handler for MMC/eMMC devices
+  mmc: block: abort requests and suppress errors after undervoltage
+    shutdown
+
+ drivers/mmc/core/block.c     |   2 +-
+ drivers/mmc/core/core.c      |  30 +++++++++
+ drivers/mmc/core/core.h      |   2 +
+ drivers/mmc/core/mmc.c       |  89 +++++++++++++++++++++++--
+ drivers/mmc/core/queue.c     |   2 +-
+ drivers/mmc/core/regulator.c | 124 +++++++++++++++++++++++++++++++++++
+ include/linux/mmc/host.h     |   8 +++
+ 7 files changed, 249 insertions(+), 8 deletions(-)
+
+--
+2.39.5
 
 
