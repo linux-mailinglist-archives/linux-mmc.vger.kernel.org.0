@@ -1,38 +1,38 @@
-Return-Path: <linux-mmc+bounces-6594-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6596-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0A2ABD74F
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 13:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E123ABD751
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 13:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15B751891ED5
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 11:47:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 851001B62107
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 11:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7AB27A47C;
-	Tue, 20 May 2025 11:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B7E2673B5;
+	Tue, 20 May 2025 11:47:13 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A7D2673B5
-	for <linux-mmc@vger.kernel.org>; Tue, 20 May 2025 11:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF9727BF85
+	for <linux-mmc@vger.kernel.org>; Tue, 20 May 2025 11:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747741622; cv=none; b=adO+qycB+xjF862qXeyXVFWSkBOwRFiipy8nQ19vXxoHwdwls2veVxtFqigq5wMtc6NITnfWkCjTy9vYtjzPvUFG4hCO6NSYkJhoZ5dk3RLZIsDF37pyLF1GhS8pcbysXpdUAKJ4rxN0WzQDP09GX2zJqIVNVVXSfDv1Ea6OZrg=
+	t=1747741632; cv=none; b=JF245wCy/6919P5WHnVTlwvxeIaG+1NZ3chL+v8VVJhFZ6LWXgmyzQAgIYZDI2c3Sxnub2ESd/GmnAB24uguklIasP0QMBxLfwGdwCSYQXkuyygR9320WWofY0b9VHLOmxxiApFyWPqWaamLfQB56YSrsbv+8FKtn0jQ6x6bcHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747741622; c=relaxed/simple;
-	bh=xM5kaeDFVOAlNon2doWKQ1K4AdnGPtJb1RHo3AS0yVY=;
+	s=arc-20240116; t=1747741632; c=relaxed/simple;
+	bh=eK7GJM1haStMq3RL+YZ7UU8WfhuFGTFqEeSlp8ksQyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pj/dK2M3TVkxt/7MyTnKoIWLGEJIf6vdnkfUm7KAq+F3OeHngSEzzBVrDuEGgklsk2jW7G3FW8RiaKtDQJoUinOeQbz3TY4jjzCsghX9vpuRTyLLq6pKDSheLXQxJ/wFR+hdaAiC0TwslZ8xhHX9ZEgO40fxTdCmexrKOGAtzbI=
+	 MIME-Version; b=uYn4zcGVUQEYkL9zDYvItjrIZQMk5t2LZWmZF6t+wMuIUCNq5x6VG2vsDGK7gSieU5YVqM2eBivTqm9ByKbc3bvXc8upFpoLwWJrqWkLcXgUwUQYUf/j741onlNVibtFQi0DVekJFXGNSvMLtMkPRBTeyd1j++Qn8hHpIn2nrx8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.69.3])
-	by gateway (Coremail) with SMTP id _____8Ax3eK0ayxoJV7zAA--.27246S3;
-	Tue, 20 May 2025 19:47:00 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8BxYa+9ayxoNF7zAA--.25593S3;
+	Tue, 20 May 2025 19:47:09 +0800 (CST)
 Received: from localhost.localdomain (unknown [223.64.69.3])
-	by front1 (Coremail) with SMTP id qMiowMCxPsewayxoyzvjAA--.60649S3;
-	Tue, 20 May 2025 19:46:59 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowMBxXsW8ayxo3zvjAA--.57954S2;
+	Tue, 20 May 2025 19:47:09 +0800 (CST)
 From: Binbin Zhou <zhoubinbin@loongson.cn>
 To: Binbin Zhou <zhoubb.aaron@gmail.com>,
 	Huacai Chen <chenhuacai@loongson.cn>,
@@ -40,9 +40,9 @@ To: Binbin Zhou <zhoubb.aaron@gmail.com>,
 Cc: Huacai Chen <chenhuacai@kernel.org>,
 	linux-mmc@vger.kernel.org,
 	Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: [PATCH 29/36] mmc: via-sdmmc: Use devm_mmc_alloc_host() helper
-Date: Tue, 20 May 2025 19:46:49 +0800
-Message-ID: <0df41a0bf388dedaab13e474c509d5418b07ac66.1747739323.git.zhoubinbin@loongson.cn>
+Subject: [PATCH 30/36] mmc: vub300: Use devm_mmc_alloc_host() helper
+Date: Tue, 20 May 2025 19:46:57 +0800
+Message-ID: <7d1895781e02b92c78c9157d551f0ce7fb7d7942.1747739323.git.zhoubinbin@loongson.cn>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1747739323.git.zhoubinbin@loongson.cn>
 References: <cover.1747739323.git.zhoubinbin@loongson.cn>
@@ -53,11 +53,11 @@ List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMCxPsewayxoyzvjAA--.60649S3
+X-CM-TRANSID:qMiowMBxXsW8ayxo3zvjAA--.57954S2
 X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7CFW5ZF43Zr15AryxZF4fWFX_yoW8Xw15pF
-	WfXa9rKr4DJFs8u3yDGa1UWryrX3W0y3yfKFyFgws3ZF9IvF1qqr1kuFyFqFZ7AFZ7JF47
-	XF4DJF15u3WDJabCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoWxXr4kWw4UCr18ZFW8uw1Utwc_yoW5Zw1xpF
+	WxGa9rKr4DXF15Xr48Ja1DZa4rWw1xtryUCFyjk395ZwnxKr9FyF12kay0yFyrCFykAa17
+	XFWDJFW5ZayDGFbCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
 	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
 	0xBIdaVrnRJUUU9jb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
 	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
@@ -77,48 +77,89 @@ Use new function devm_mmc_alloc_host() to simplify the code.
 
 Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
 ---
- drivers/mmc/host/via-sdmmc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/mmc/host/vub300.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mmc/host/via-sdmmc.c b/drivers/mmc/host/via-sdmmc.c
-index 909d80a02824..083ab9836311 100644
---- a/drivers/mmc/host/via-sdmmc.c
-+++ b/drivers/mmc/host/via-sdmmc.c
-@@ -1100,7 +1100,7 @@ static int via_sd_probe(struct pci_dev *pcidev,
- 	pci_write_config_byte(pcidev, VIA_CRDR_PCI_WORK_MODE, 0);
- 	pci_write_config_byte(pcidev, VIA_CRDR_PCI_DBG_MODE, 0);
- 
--	mmc = mmc_alloc_host(sizeof(struct via_crdr_mmc_host), &pcidev->dev);
-+	mmc = devm_mmc_alloc_host(&pcidev->dev, sizeof(*sdhost));
- 	if (!mmc) {
- 		ret = -ENOMEM;
- 		goto release;
-@@ -1115,7 +1115,7 @@ static int via_sd_probe(struct pci_dev *pcidev,
- 	sdhost->mmiobase = ioremap(base, len);
- 	if (!sdhost->mmiobase) {
- 		ret = -ENOMEM;
--		goto free_mmc_host;
-+		goto release;
- 	}
- 
- 	sdhost->sdhc_mmiobase =
-@@ -1160,8 +1160,6 @@ static int via_sd_probe(struct pci_dev *pcidev,
- 
- unmap:
- 	iounmap(sdhost->mmiobase);
--free_mmc_host:
+diff --git a/drivers/mmc/host/vub300.c b/drivers/mmc/host/vub300.c
+index dd71e5b8e1a5..5a5eeeaa4321 100644
+--- a/drivers/mmc/host/vub300.c
++++ b/drivers/mmc/host/vub300.c
+@@ -369,13 +369,11 @@ struct vub300_mmc_host {
+ static void vub300_delete(struct kref *kref)
+ {				/* kref callback - softirq */
+ 	struct vub300_mmc_host *vub300 = kref_to_vub300_mmc_host(kref);
+-	struct mmc_host *mmc = vub300->mmc;
+ 	usb_free_urb(vub300->command_out_urb);
+ 	vub300->command_out_urb = NULL;
+ 	usb_free_urb(vub300->command_res_urb);
+ 	vub300->command_res_urb = NULL;
+ 	usb_put_dev(vub300->udev);
 -	mmc_free_host(mmc);
- release:
- 	pci_release_regions(pcidev);
- disable:
-@@ -1212,7 +1210,6 @@ static void via_sd_remove(struct pci_dev *pcidev)
- 	writeb(gatt, sdhost->pcictrl_mmiobase + VIA_CRDR_PCICLKGATT);
- 
- 	iounmap(sdhost->mmiobase);
--	mmc_free_host(sdhost->mmc);
- 	pci_release_regions(pcidev);
- 	pci_disable_device(pcidev);
- 
+ 	/*
+ 	 * and hence also frees vub300
+ 	 * which is contained at the end of struct mmc
+@@ -2114,7 +2112,7 @@ static int vub300_probe(struct usb_interface *interface,
+ 		goto error1;
+ 	}
+ 	/* this also allocates memory for our VUB300 mmc host device */
+-	mmc = mmc_alloc_host(sizeof(struct vub300_mmc_host), &udev->dev);
++	mmc = devm_mmc_alloc_host(&udev->dev, sizeof(*vub300));
+ 	if (!mmc) {
+ 		retval = -ENOMEM;
+ 		dev_err(&udev->dev, "not enough memory for the mmc_host\n");
+@@ -2271,7 +2269,7 @@ static int vub300_probe(struct usb_interface *interface,
+ 		dev_err(&vub300->udev->dev,
+ 		    "Could not find two sets of bulk-in/out endpoint pairs\n");
+ 		retval = -EINVAL;
+-		goto error5;
++		goto error4;
+ 	}
+ 	retval =
+ 		usb_control_msg(vub300->udev, usb_rcvctrlpipe(vub300->udev, 0),
+@@ -2280,14 +2278,14 @@ static int vub300_probe(struct usb_interface *interface,
+ 				0x0000, 0x0000, &vub300->hc_info,
+ 				sizeof(vub300->hc_info), 1000);
+ 	if (retval < 0)
+-		goto error5;
++		goto error4;
+ 	retval =
+ 		usb_control_msg(vub300->udev, usb_sndctrlpipe(vub300->udev, 0),
+ 				SET_ROM_WAIT_STATES,
+ 				USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+ 				firmware_rom_wait_states, 0x0000, NULL, 0, 1000);
+ 	if (retval < 0)
+-		goto error5;
++		goto error4;
+ 	dev_info(&vub300->udev->dev,
+ 		 "operating_mode = %s %s %d MHz %s %d byte USB packets\n",
+ 		 (mmc->caps & MMC_CAP_SDIO_IRQ) ? "IRQs" : "POLL",
+@@ -2302,7 +2300,7 @@ static int vub300_probe(struct usb_interface *interface,
+ 				0x0000, 0x0000, &vub300->system_port_status,
+ 				sizeof(vub300->system_port_status), 1000);
+ 	if (retval < 0) {
+-		goto error5;
++		goto error4;
+ 	} else if (sizeof(vub300->system_port_status) == retval) {
+ 		vub300->card_present =
+ 			(0x0001 & vub300->system_port_status.port_flags) ? 1 : 0;
+@@ -2310,7 +2308,7 @@ static int vub300_probe(struct usb_interface *interface,
+ 			(0x0010 & vub300->system_port_status.port_flags) ? 1 : 0;
+ 	} else {
+ 		retval = -EINVAL;
+-		goto error5;
++		goto error4;
+ 	}
+ 	usb_set_intfdata(interface, vub300);
+ 	INIT_DELAYED_WORK(&vub300->pollwork, vub300_pollwork_thread);
+@@ -2340,8 +2338,6 @@ static int vub300_probe(struct usb_interface *interface,
+ 	return 0;
+ error6:
+ 	timer_delete_sync(&vub300->inactivity_timer);
+-error5:
+-	mmc_free_host(mmc);
+ 	/*
+ 	 * and hence also frees vub300
+ 	 * which is contained at the end of struct mmc
 -- 
 2.47.1
 
