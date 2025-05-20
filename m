@@ -1,38 +1,38 @@
-Return-Path: <linux-mmc+bounces-6595-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6594-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18169ABD74D
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 13:47:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0A2ABD74F
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 13:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F9E57AEBAE
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 11:46:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15B751891ED5
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 11:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E085F27E7E3;
-	Tue, 20 May 2025 11:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7AB27A47C;
+	Tue, 20 May 2025 11:47:02 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F83E27E7F4
-	for <linux-mmc@vger.kernel.org>; Tue, 20 May 2025 11:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A7D2673B5
+	for <linux-mmc@vger.kernel.org>; Tue, 20 May 2025 11:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747741623; cv=none; b=jvFG63PKy2hhFUjacpN1K4m6SZQ8yhBu6djSPM+zS/a1acbtB10VPAYOXD3feB82uMz8k23kryvvvqL/N6aOge5Xg691HR5FSzVM560/BwJB4+goyEVY1/cwaX8Q+z0SOwm5dmcW6Tz84KG23/YWOKiXLp2p4c2XErruTRIEzNI=
+	t=1747741622; cv=none; b=adO+qycB+xjF862qXeyXVFWSkBOwRFiipy8nQ19vXxoHwdwls2veVxtFqigq5wMtc6NITnfWkCjTy9vYtjzPvUFG4hCO6NSYkJhoZ5dk3RLZIsDF37pyLF1GhS8pcbysXpdUAKJ4rxN0WzQDP09GX2zJqIVNVVXSfDv1Ea6OZrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747741623; c=relaxed/simple;
-	bh=4/sz4zPGycuS+pPVnJvav6eibzPsFOAg4byIi/l6NaE=;
+	s=arc-20240116; t=1747741622; c=relaxed/simple;
+	bh=xM5kaeDFVOAlNon2doWKQ1K4AdnGPtJb1RHo3AS0yVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNYhOkdQPadmeyvDWGNFtTK6vAbQWk0ZOWmK+LPv5KzwoUrGp8e2HWVvhkbRDkYCXtG1JhbxReudht6a2zFPPPWdXAPGOmU1AYQQ1nzXJXZBrAMzVSlyHYhTJ011rFsZBojjcembaEOWMCcoqwPr0UqMiZ1pp0NcHlaDQ1Hxi68=
+	 MIME-Version; b=pj/dK2M3TVkxt/7MyTnKoIWLGEJIf6vdnkfUm7KAq+F3OeHngSEzzBVrDuEGgklsk2jW7G3FW8RiaKtDQJoUinOeQbz3TY4jjzCsghX9vpuRTyLLq6pKDSheLXQxJ/wFR+hdaAiC0TwslZ8xhHX9ZEgO40fxTdCmexrKOGAtzbI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.69.3])
-	by gateway (Coremail) with SMTP id _____8CxyuCzayxoIF7zAA--.586S3;
-	Tue, 20 May 2025 19:46:59 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8Ax3eK0ayxoJV7zAA--.27246S3;
+	Tue, 20 May 2025 19:47:00 +0800 (CST)
 Received: from localhost.localdomain (unknown [223.64.69.3])
-	by front1 (Coremail) with SMTP id qMiowMCxPsewayxoyzvjAA--.60649S2;
-	Tue, 20 May 2025 19:46:58 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowMCxPsewayxoyzvjAA--.60649S3;
+	Tue, 20 May 2025 19:46:59 +0800 (CST)
 From: Binbin Zhou <zhoubinbin@loongson.cn>
 To: Binbin Zhou <zhoubb.aaron@gmail.com>,
 	Huacai Chen <chenhuacai@loongson.cn>,
@@ -40,9 +40,9 @@ To: Binbin Zhou <zhoubb.aaron@gmail.com>,
 Cc: Huacai Chen <chenhuacai@kernel.org>,
 	linux-mmc@vger.kernel.org,
 	Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: [PATCH 28/36] mmc: ushc: Use devm_mmc_alloc_host() helper
-Date: Tue, 20 May 2025 19:46:48 +0800
-Message-ID: <e8ae0e905b92adbc93f95654a0508d4c2a82a142.1747739323.git.zhoubinbin@loongson.cn>
+Subject: [PATCH 29/36] mmc: via-sdmmc: Use devm_mmc_alloc_host() helper
+Date: Tue, 20 May 2025 19:46:49 +0800
+Message-ID: <0df41a0bf388dedaab13e474c509d5418b07ac66.1747739323.git.zhoubinbin@loongson.cn>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1747739323.git.zhoubinbin@loongson.cn>
 References: <cover.1747739323.git.zhoubinbin@loongson.cn>
@@ -53,55 +53,72 @@ List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMCxPsewayxoyzvjAA--.60649S2
+X-CM-TRANSID:qMiowMCxPsewayxoyzvjAA--.60649S3
 X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj9xXoW7Jr4kXrW5XF15Gr4UuFy7CFX_yoWDXFX_uF
-	yYqrnrWr1UCr93Wr1kKr4fWrWSyF4qgrn3ZF1SqayYya4vqFs5CF17Zrs5Zr4fZr4xAFZ8
-	uw4rJryS9ry2qosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUb38YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r45tVCq3wAv7VC2z280aVAF
-	wI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7xvrVCFI7
-	AF6II2Y40_Zr0_Gr1UMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
-	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
-	WUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26w1j6s0DMIIF0xvE2Ix0cI8I
-	cVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87
-	Iv67AKxVW8Jr0_Cr1UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73
-	UjIFyTuYvjxUvG-eUUUUU
+X-Coremail-Antispam: 1Uk129KBj93XoW7CFW5ZF43Zr15AryxZF4fWFX_yoW8Xw15pF
+	WfXa9rKr4DJFs8u3yDGa1UWryrX3W0y3yfKFyFgws3ZF9IvF1qqr1kuFyFqFZ7AFZ7JF47
+	XF4DJF15u3WDJabCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9jb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVW8Xw0E3s1lYx0Ex4A2jsIE
+	14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y40E4I
+	xF1VCIxcxG6Fyj6r4UJwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC2
+	0s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI
+	0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWDJVCq3wCI42IY6xIIjxv2
+	0xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z2
+	80aVAFwI0_Gr1j6F4UJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2Kfnx
+	nUUI43ZEXa7IUYfsqJUUUUU==
 
 Use new function devm_mmc_alloc_host() to simplify the code.
 
 Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
 ---
- drivers/mmc/host/ushc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/mmc/host/via-sdmmc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mmc/host/ushc.c b/drivers/mmc/host/ushc.c
-index 9a6358fd9512..2b7456e942f7 100644
---- a/drivers/mmc/host/ushc.c
-+++ b/drivers/mmc/host/ushc.c
-@@ -404,8 +404,6 @@ static void ushc_clean_up(struct ushc_data *ushc)
- 	kfree(ushc->int_data);
- 	kfree(ushc->cbw);
- 	kfree(ushc->csw);
--
--	mmc_free_host(ushc->mmc);
- }
+diff --git a/drivers/mmc/host/via-sdmmc.c b/drivers/mmc/host/via-sdmmc.c
+index 909d80a02824..083ab9836311 100644
+--- a/drivers/mmc/host/via-sdmmc.c
++++ b/drivers/mmc/host/via-sdmmc.c
+@@ -1100,7 +1100,7 @@ static int via_sd_probe(struct pci_dev *pcidev,
+ 	pci_write_config_byte(pcidev, VIA_CRDR_PCI_WORK_MODE, 0);
+ 	pci_write_config_byte(pcidev, VIA_CRDR_PCI_DBG_MODE, 0);
  
- static const struct mmc_host_ops ushc_ops = {
-@@ -425,7 +423,7 @@ static int ushc_probe(struct usb_interface *intf, const struct usb_device_id *id
- 	if (intf->cur_altsetting->desc.bNumEndpoints < 1)
- 		return -ENODEV;
+-	mmc = mmc_alloc_host(sizeof(struct via_crdr_mmc_host), &pcidev->dev);
++	mmc = devm_mmc_alloc_host(&pcidev->dev, sizeof(*sdhost));
+ 	if (!mmc) {
+ 		ret = -ENOMEM;
+ 		goto release;
+@@ -1115,7 +1115,7 @@ static int via_sd_probe(struct pci_dev *pcidev,
+ 	sdhost->mmiobase = ioremap(base, len);
+ 	if (!sdhost->mmiobase) {
+ 		ret = -ENOMEM;
+-		goto free_mmc_host;
++		goto release;
+ 	}
  
--	mmc = mmc_alloc_host(sizeof(struct ushc_data), &intf->dev);
-+	mmc = devm_mmc_alloc_host(&intf->dev, sizeof(*ushc));
- 	if (mmc == NULL)
- 		return -ENOMEM;
- 	ushc = mmc_priv(mmc);
+ 	sdhost->sdhc_mmiobase =
+@@ -1160,8 +1160,6 @@ static int via_sd_probe(struct pci_dev *pcidev,
+ 
+ unmap:
+ 	iounmap(sdhost->mmiobase);
+-free_mmc_host:
+-	mmc_free_host(mmc);
+ release:
+ 	pci_release_regions(pcidev);
+ disable:
+@@ -1212,7 +1210,6 @@ static void via_sd_remove(struct pci_dev *pcidev)
+ 	writeb(gatt, sdhost->pcictrl_mmiobase + VIA_CRDR_PCICLKGATT);
+ 
+ 	iounmap(sdhost->mmiobase);
+-	mmc_free_host(sdhost->mmc);
+ 	pci_release_regions(pcidev);
+ 	pci_disable_device(pcidev);
+ 
 -- 
 2.47.1
 
