@@ -1,50 +1,48 @@
-Return-Path: <linux-mmc+bounces-6593-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6595-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E389ABD749
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 13:46:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18169ABD74D
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 13:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F366A3BEE3E
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 11:46:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F9E57AEBAE
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 May 2025 11:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CA821D3F9;
-	Tue, 20 May 2025 11:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E085F27E7E3;
+	Tue, 20 May 2025 11:47:03 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607DA21C9F2
-	for <linux-mmc@vger.kernel.org>; Tue, 20 May 2025 11:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F83E27E7F4
+	for <linux-mmc@vger.kernel.org>; Tue, 20 May 2025 11:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747741612; cv=none; b=XIc0NWD5bgghKEOwQj36J1UVLHsne5AQmMFB59ayutwqkYrIrtxi0g6V8e7LEuNJtmN4Z5JyLwbUvHE5UlErrcnb04NmfI9/eaQ2HElrJ5GNJppnEJrzAexeLFUBkUUXD/Hdcuhy+ht9dVzaPV8YvK7rJlxHmNM1cE+sb7lY0EM=
+	t=1747741623; cv=none; b=jvFG63PKy2hhFUjacpN1K4m6SZQ8yhBu6djSPM+zS/a1acbtB10VPAYOXD3feB82uMz8k23kryvvvqL/N6aOge5Xg691HR5FSzVM560/BwJB4+goyEVY1/cwaX8Q+z0SOwm5dmcW6Tz84KG23/YWOKiXLp2p4c2XErruTRIEzNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747741612; c=relaxed/simple;
-	bh=INniQ8BXTAMv4PfCtddbeRBRu+Mm1gdi22ITeeOAXTs=;
+	s=arc-20240116; t=1747741623; c=relaxed/simple;
+	bh=4/sz4zPGycuS+pPVnJvav6eibzPsFOAg4byIi/l6NaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1e1DMLuk/O5cnAFUEV7Rml9u/AhDT60T6rKJ17Bmm/0k6cBXoZPzx2c1rKFlWiXwCOjFEkPCK7s8/Em6whcpg3HfH74tQMTr4Wsr2mbORl0PbRBXqlzHT4lzH65r42J7mtOd3cY/QiKrpeDwXt0HdU+Fx848KpxV3MdVXZrUUM=
+	 MIME-Version; b=gNYhOkdQPadmeyvDWGNFtTK6vAbQWk0ZOWmK+LPv5KzwoUrGp8e2HWVvhkbRDkYCXtG1JhbxReudht6a2zFPPPWdXAPGOmU1AYQQ1nzXJXZBrAMzVSlyHYhTJ011rFsZBojjcembaEOWMCcoqwPr0UqMiZ1pp0NcHlaDQ1Hxi68=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.69.3])
-	by gateway (Coremail) with SMTP id _____8AxaeGpayxoFF7zAA--.22235S3;
-	Tue, 20 May 2025 19:46:49 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8CxyuCzayxoIF7zAA--.586S3;
+	Tue, 20 May 2025 19:46:59 +0800 (CST)
 Received: from localhost.localdomain (unknown [223.64.69.3])
-	by front1 (Coremail) with SMTP id qMiowMAxzxuhayxotzvjAA--.5319S5;
-	Tue, 20 May 2025 19:46:47 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowMCxPsewayxoyzvjAA--.60649S2;
+	Tue, 20 May 2025 19:46:58 +0800 (CST)
 From: Binbin Zhou <zhoubinbin@loongson.cn>
 To: Binbin Zhou <zhoubb.aaron@gmail.com>,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	Ulf Hansson <ulf.hansson@linaro.org>
 Cc: Huacai Chen <chenhuacai@kernel.org>,
 	linux-mmc@vger.kernel.org,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Lars Persson <lars.persson@axis.com>
-Subject: [PATCH 27/36] mmc: usdhi6ro10: Use devm_mmc_alloc_host() helper
-Date: Tue, 20 May 2025 19:46:34 +0800
-Message-ID: <0d16c9af84f9b8e31568f409a4eefd5e5ad6d1c8.1747739323.git.zhoubinbin@loongson.cn>
+	Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: [PATCH 28/36] mmc: ushc: Use devm_mmc_alloc_host() helper
+Date: Tue, 20 May 2025 19:46:48 +0800
+Message-ID: <e8ae0e905b92adbc93f95654a0508d4c2a82a142.1747739323.git.zhoubinbin@loongson.cn>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1747739323.git.zhoubinbin@loongson.cn>
 References: <cover.1747739323.git.zhoubinbin@loongson.cn>
@@ -55,117 +53,55 @@ List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMAxzxuhayxotzvjAA--.5319S5
+X-CM-TRANSID:qMiowMCxPsewayxoyzvjAA--.60649S2
 X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJw43Zw47Zry7ZFy7ArWrZwc_yoW5GryrpF
-	s3JrZrKr18Jr4Yg393Gw1DA3WFyr4Sqay7WrWkWwn3Jw15ArWDKwn3CFyFvFs5GFWkJr4a
-	gF4UGF4UCa4UWFcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUm0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
-	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Gryq
-	6s0DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x
-	0EwIxGrwACjcxG6xCI17CEII8vrVW3JVW8Jr1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IY
-	c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxV
-	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q
-	6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_tr0E3s1lIxAIcVC0I7IYx2IY6x
-	kF7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
-	14v26r4UJVWxJr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0x
-	ZFpf9x07bV5rxUUUUU=
+X-Coremail-Antispam: 1Uk129KBj9xXoW7Jr4kXrW5XF15Gr4UuFy7CFX_yoWDXFX_uF
+	yYqrnrWr1UCr93Wr1kKr4fWrWSyF4qgrn3ZF1SqayYya4vqFs5CF17Zrs5Zr4fZr4xAFZ8
+	uw4rJryS9ry2qosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUb38YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r45tVCq3wAv7VC2z280aVAF
+	wI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7xvrVCFI7
+	AF6II2Y40_Zr0_Gr1UMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
+	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
+	WUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26w1j6s0DMIIF0xvE2Ix0cI8I
+	cVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87
+	Iv67AKxVW8Jr0_Cr1UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73
+	UjIFyTuYvjxUvG-eUUUUU
 
 Use new function devm_mmc_alloc_host() to simplify the code.
 
-Cc: Jesper Nilsson <jesper.nilsson@axis.com>
-Cc: Lars Persson <lars.persson@axis.com>
 Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
 ---
- drivers/mmc/host/usdhi6rol0.c | 30 ++++++++++--------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ drivers/mmc/host/ushc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
-index 49efb960a052..85b49c07918b 100644
---- a/drivers/mmc/host/usdhi6rol0.c
-+++ b/drivers/mmc/host/usdhi6rol0.c
-@@ -1762,17 +1762,17 @@ static int usdhi6_probe(struct platform_device *pdev)
- 	if (irq_sdio < 0)
- 		return irq_sdio;
- 
--	mmc = mmc_alloc_host(sizeof(struct usdhi6_host), dev);
-+	mmc = devm_mmc_alloc_host(dev, sizeof(*host));
- 	if (!mmc)
- 		return -ENOMEM;
- 
- 	ret = mmc_regulator_get_supply(mmc);
- 	if (ret)
--		goto e_free_mmc;
-+		return ret;
- 
- 	ret = mmc_of_parse(mmc);
- 	if (ret < 0)
--		goto e_free_mmc;
-+		return ret;
- 
- 	host		= mmc_priv(mmc);
- 	host->mmc	= mmc;
-@@ -1785,30 +1785,24 @@ static int usdhi6_probe(struct platform_device *pdev)
- 	mmc->max_busy_timeout = USDHI6_REQ_TIMEOUT_MS;
- 
- 	host->pinctrl = devm_pinctrl_get(&pdev->dev);
--	if (IS_ERR(host->pinctrl)) {
--		ret = PTR_ERR(host->pinctrl);
--		goto e_free_mmc;
--	}
-+	if (IS_ERR(host->pinctrl))
-+		return PTR_ERR(host->pinctrl);
- 
- 	host->pins_uhs = pinctrl_lookup_state(host->pinctrl, "state_uhs");
- 
- 	host->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
--	if (IS_ERR(host->base)) {
--		ret = PTR_ERR(host->base);
--		goto e_free_mmc;
--	}
-+	if (IS_ERR(host->base))
-+		return PTR_ERR(host->base);
- 
- 	host->clk = devm_clk_get(dev, NULL);
--	if (IS_ERR(host->clk)) {
--		ret = PTR_ERR(host->clk);
--		goto e_free_mmc;
--	}
-+	if (IS_ERR(host->clk))
-+		return PTR_ERR(host->clk);
- 
- 	host->imclk = clk_get_rate(host->clk);
- 
- 	ret = clk_prepare_enable(host->clk);
- 	if (ret < 0)
--		goto e_free_mmc;
-+		return ret;
- 
- 	version = usdhi6_read(host, USDHI6_VERSION);
- 	if ((version & 0xfff) != 0xa0d) {
-@@ -1878,9 +1872,6 @@ static int usdhi6_probe(struct platform_device *pdev)
- 	usdhi6_dma_release(host);
- e_clk_off:
- 	clk_disable_unprepare(host->clk);
--e_free_mmc:
--	mmc_free_host(mmc);
+diff --git a/drivers/mmc/host/ushc.c b/drivers/mmc/host/ushc.c
+index 9a6358fd9512..2b7456e942f7 100644
+--- a/drivers/mmc/host/ushc.c
++++ b/drivers/mmc/host/ushc.c
+@@ -404,8 +404,6 @@ static void ushc_clean_up(struct ushc_data *ushc)
+ 	kfree(ushc->int_data);
+ 	kfree(ushc->cbw);
+ 	kfree(ushc->csw);
 -
- 	return ret;
+-	mmc_free_host(ushc->mmc);
  }
  
-@@ -1894,7 +1885,6 @@ static void usdhi6_remove(struct platform_device *pdev)
- 	cancel_delayed_work_sync(&host->timeout_work);
- 	usdhi6_dma_release(host);
- 	clk_disable_unprepare(host->clk);
--	mmc_free_host(host->mmc);
- }
+ static const struct mmc_host_ops ushc_ops = {
+@@ -425,7 +423,7 @@ static int ushc_probe(struct usb_interface *intf, const struct usb_device_id *id
+ 	if (intf->cur_altsetting->desc.bNumEndpoints < 1)
+ 		return -ENODEV;
  
- static struct platform_driver usdhi6_driver = {
+-	mmc = mmc_alloc_host(sizeof(struct ushc_data), &intf->dev);
++	mmc = devm_mmc_alloc_host(&intf->dev, sizeof(*ushc));
+ 	if (mmc == NULL)
+ 		return -ENOMEM;
+ 	ushc = mmc_priv(mmc);
 -- 
 2.47.1
 
