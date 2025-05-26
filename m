@@ -1,116 +1,165 @@
-Return-Path: <linux-mmc+bounces-6715-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6717-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45173AC2D3B
-	for <lists+linux-mmc@lfdr.de>; Sat, 24 May 2025 05:37:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB25AC3980
+	for <lists+linux-mmc@lfdr.de>; Mon, 26 May 2025 08:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59FB4E4F8D
-	for <lists+linux-mmc@lfdr.de>; Sat, 24 May 2025 03:37:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E15B18919BE
+	for <lists+linux-mmc@lfdr.de>; Mon, 26 May 2025 06:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93EF19AD48;
-	Sat, 24 May 2025 03:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YTbSmGtb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A58F1C8639;
+	Mon, 26 May 2025 06:05:50 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5ACBEC2
-	for <linux-mmc@vger.kernel.org>; Sat, 24 May 2025 03:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24881624C5
+	for <linux-mmc@vger.kernel.org>; Mon, 26 May 2025 06:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748057828; cv=none; b=ZIYJeDbcJpcwp51n+0SQHdjD1XXeMhdNAJhawg0fmSQFZLwmC3LGpouDcDJYld6lVugHZ1eiq2oJO5XjXDw300hMYrB+35youj/xr+NERtRNJZtR+nAZYLmEyjg5FlzFKrGQl5LWvFeFlAkwW7PBW/EX043yTUyP/sSqpwvKvAc=
+	t=1748239550; cv=none; b=d1w5smitaDt6a2OxRYGFxW2jt1e5FuFBTyEOZRQTqamWu/1T9EPIHcVoW/hl8giMq1xJA5b3GmvIeFu95mYJt7Tq9wVOvpTnMqfR6qpuIvnOoep6ldQt4u1hb63qJR3ZI+3mWdNogNBBLHPgR/pTgKlIIy+bnnoMeLj4ZuEq9Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748057828; c=relaxed/simple;
-	bh=HZUjP9DRLExC2MegUevOuNq5YTdWxx60XiFHjOgIso0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FY9R9EXrllViGOVzlQcszTwfrr53IZHJUlAQzdz1Os4PvDtayF0+KWDIGQuSUh59OqH4nvpITpxU+oZYriNTf4Pv2NUB5d50TpnqQcCubCP71QvHzdOMXjl1BcFZdklbYGpNi5AGbwMoLB50TEhnDo1S84T1WquDfEohqXFyy5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YTbSmGtb; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cfe63c592so4966105e9.2
-        for <linux-mmc@vger.kernel.org>; Fri, 23 May 2025 20:37:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748057825; x=1748662625; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HZUjP9DRLExC2MegUevOuNq5YTdWxx60XiFHjOgIso0=;
-        b=YTbSmGtbS7Iz7Cb1TNK6/0131DEhmo6aKwWN1gqDE3Sc8kaI/nXQJ1SEpZ5vq6/7RQ
-         CuHonFZW/+D2yYMoP/WXFaRNpub986sdfjr5T/Fbq7ePUaVeRr3wNfmGbiObpT2ry2zV
-         NbNHXYRGqyy9zHLhdoHdJL5omUkFjLNIPJIDSj0TJJWwwQ39VehtRK6Y39P2D0iCVCcy
-         vE3TTKLO+KwseNQNTZBe20tvAbTmTNYqE3i7SUd/wBYIcIFx4cmr/8KR6z2ATB+42hV8
-         A6BQp7GOzJiC0EdIue5YpaMTWgpR3zmKCSjux+ecIbmWeQMc49rUOE2PrI209lBuqoug
-         mYow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748057825; x=1748662625;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HZUjP9DRLExC2MegUevOuNq5YTdWxx60XiFHjOgIso0=;
-        b=QwyZ+nLwc/61L+KWZoEq7XM6YCWjtsY5xIyvTR87k9eVXbv94OiOGGOKvdOx7k2p/2
-         cNRwtPyMpNZp+3TqA/Us4YRBT6usthwHQ/aI/fZ+Tbg2NcUKRWq1x0aV4gV+ardSeNnj
-         jGZmJm8Hgti/s3SEC/PzXagYyLoiVWD1/2DYkGJTnQyhI6tNAzEiL92+cnUseMhtMk8T
-         rJVXXSvqNJ+bwhoPrzNNJzWzlG3YMFpD+lq3QaoVMo9HpM7ru71lf4KZEt3N+dpCTJVO
-         fG/pFw6RiAmY8sYpqFHv4FOCDjbZiDWg3AyzkUl2BeSyCCwGFvJa5WB/G/aVhH0PHwFZ
-         RsVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVVFm/m+5JsGJ6j87xMORRzYxo+sJTVhcLkc2ZmV5UBLfh4Zr06ZPteUmhNCMIo+2KtwMp5JccZirQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgV7/kbFyUicygKxTy5Mb2qH/xU8yeF20rnQGRncD9fDYawtK9
-	1eTY/ZOVUbqUaUA4Ps2/MGlE8s3RYuhsCJOtaOY38cDX5F5e5vj8djtheKU12LrEDg5VOnhowvG
-	lR4MJQT82o0ehhyqjclblzsShy/xVSBD/Ww==
-X-Gm-Gg: ASbGncv33+vxgiiIupIzSzQWt43/hJRFW70I/zXLWraZLy3o5tDtDOAnK4kL7XX0Cmw
-	jLL/s8bPFO7RkwuVH2sihGpUdyKUlvoV3QZTTMHyTinboeAhlH53+MLefYqo9gUvz2KkmSWCoR4
-	NXyBiCxGDgaEOkALLW3O8ARiI/TGyvrLgx
-X-Google-Smtp-Source: AGHT+IEXK3b1q1v3G2QV1+L7Oguque5944lnL/8BDSJE+mERRf2eU3QheyaJ2iHwkMt6Gy/M5SSYFodRnJqCoJrGcAU=
-X-Received: by 2002:a17:907:6d0c:b0:ad5:3156:2c04 with SMTP id
- a640c23a62f3a-ad85b113991mr130029566b.25.1748057814659; Fri, 23 May 2025
- 20:36:54 -0700 (PDT)
+	s=arc-20240116; t=1748239550; c=relaxed/simple;
+	bh=rcQ0NpORCaM2RDDXj97wNirHqNxjdQP06vJy5T8fs1A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pijDD71n1VCVMy00R9aHQmuB7M6pqywb0J2J5c6N7lxqmsQJ+dCMwAeusaB03KIOFaSCbNXZzMCjl4bjj4/Pk5b0v2fEJIZoXZk01zE2QBAB9YRVoGsIlSWyZpJxzhdaJgBeO+3NNMltpnR+ZbnBk5D98054RSMY+CGhovw7n4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.3])
+	by gateway (Coremail) with SMTP id _____8DxzOK4BDRoEoX8AA--.13789S3;
+	Mon, 26 May 2025 14:05:44 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.3])
+	by front1 (Coremail) with SMTP id qMiowMBxb8e1BDRo2APyAA--.30366S2;
+	Mon, 26 May 2025 14:05:42 +0800 (CST)
+From: Binbin Zhou <zhoubinbin@loongson.cn>
+To: Binbin Zhou <zhoubb.aaron@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	linux-mmc@vger.kernel.org,
+	Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: [PATCH 00/34] mmc: Cleanup sdhci_pltfm_free()/sdhci_free_host() usage
+Date: Mon, 26 May 2025 14:05:29 +0800
+Message-ID: <cover.1747792905.git.zhoubinbin@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250510031945.1004129-1-git@thegavinli.com> <CAPDyKFq8evHyh_0QacZq=d36vXfrs3vFPsAuCyFdv3BKh0SP2A@mail.gmail.com>
-In-Reply-To: <CAPDyKFq8evHyh_0QacZq=d36vXfrs3vFPsAuCyFdv3BKh0SP2A@mail.gmail.com>
-From: Gavin Li <gfl3162@gmail.com>
-Date: Fri, 23 May 2025 23:36:43 -0400
-X-Gm-Features: AX0GCFvSXXIv8uNxbQqCY43CPxNbfkTEexuXRcgQi91Uk6SgW-m3UppWcgPcpzQ
-Message-ID: <CA+GxvY4ByPW4HVJfww2v674f-y5kuqKmY=EB8mD5jnRcy+HmPg@mail.gmail.com>
-Subject: Re: [PATCH v1] mmc: rtsx_usb_sdmmc: add parameter to always poll for
- card presence
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: =?UTF-8?B?5ZCz5piK5r6EIFJpY2t5?= <ricky_wu@realtek.com>, 
-	linux-mmc@vger.kernel.org, Gavin Li <git@thegavinli.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMBxb8e1BDRo2APyAA--.30366S2
+X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxAF1ftryxuFyfWF1Uuw4rWFX_yoWrZw1xpa
+	ySqrWa9r43Cr95WrZxJw1UZw15Xr1rWa9Fgry5tw4FqrW3Ca4UKrsrAFy0qryDX3yxJF48
+	t3Z8Jw1UGr95K3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkUUUUU=
 
-On Mon, May 19, 2025 at 7:50=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.org=
-> wrote:
+Hi all:
 
-> Moving this problem to userspace seems wrong to me. We should be able
-> to do the right thing in the kernel.
+After the first part of the cleanup[1], there are sdhci related
+drivers that need further cleanup.
 
-Unfortunately, I don't have access to the datasheet for the RTS5179 or rela=
-ted
-chips. This is what I could do to get my own hardware working, and it doesn=
-'t
-make sense to revert to polling mode for all users if the interrupt
-mode detection
-works and reduces power consumption.
+This patchset is the second part of the cleanup series, and since sdhci has
+sdhci_alloc_host() as the general interface, our main job is to clean up
+sdhci_pltfm_free() and sdhci_free_host().
 
-> We should be able to detect if we are running the broken HW and in
-> that case, set the flag based on that, right?
+[1]:https://lore.kernel.org/all/cover.1747877175.git.zhoubinbin@loongson.cn/
 
-I don't know of a way to do so, especially since I don't have non-broken HW
-in my possession. On my hardware, once the device enters autosuspend,
-inserting a card does not trigger a wakeup. I'm hoping that there's a way t=
-o
-detect the broken HW via a hardware revision register or something similar.
+Thanks.
 
-Thanks,
-Gavin
+Binbin Zhou (34):
+  mmc: sdhci: Use devm_mmc_alloc_host() helper
+  mmc: sdhci-acpi: Drop the use of sdhci_free_host()
+  mmc: sdhci-milbeaut: Drop the use of sdhci_free_host()
+  mmc: sdhci-pci: Drop the use of sdhci_free_host()
+  mmc: sdhci-s3c: Drop the use of sdhci_free_host()
+  mmc: sdhci-spear: Drop the use of sdhci_free_host()
+  mmc: sdhci-pltfm: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-bcm-kona: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-brcmstb: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-cadence: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-dove: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-esdhc-imx: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-esdhc-mcf: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-iproc: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-msm: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-npcm: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-arasan: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-aspeed: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-at91: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-dwcmshc: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-esdhc: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-k1: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-ma35d1: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-sparx5: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-omap: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-pic32: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-pxav2: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-pxav3: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-sprd: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-st: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-tegra: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-xenon: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci_am654: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci_f_sdh30: Drop the use of sdhci_pltfm_free()
+
+ drivers/mmc/host/sdhci-acpi.c       |  3 ---
+ drivers/mmc/host/sdhci-bcm-kona.c   |  2 --
+ drivers/mmc/host/sdhci-brcmstb.c    |  1 -
+ drivers/mmc/host/sdhci-cadence.c    | 21 ++++++------------
+ drivers/mmc/host/sdhci-dove.c       | 12 ++---------
+ drivers/mmc/host/sdhci-esdhc-imx.c  |  3 ---
+ drivers/mmc/host/sdhci-esdhc-mcf.c  | 25 ++++++----------------
+ drivers/mmc/host/sdhci-iproc.c      | 18 ++++------------
+ drivers/mmc/host/sdhci-milbeaut.c   | 19 ++++++-----------
+ drivers/mmc/host/sdhci-msm.c        | 11 ++++------
+ drivers/mmc/host/sdhci-npcm.c       | 15 +++----------
+ drivers/mmc/host/sdhci-of-arasan.c  | 26 +++++++----------------
+ drivers/mmc/host/sdhci-of-aspeed.c  | 10 ++-------
+ drivers/mmc/host/sdhci-of-at91.c    | 23 +++++++-------------
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 14 +++++-------
+ drivers/mmc/host/sdhci-of-esdhc.c   | 11 ++--------
+ drivers/mmc/host/sdhci-of-k1.c      | 15 ++++---------
+ drivers/mmc/host/sdhci-of-ma35d1.c  | 23 +++++++-------------
+ drivers/mmc/host/sdhci-of-sparx5.c  | 24 +++++++--------------
+ drivers/mmc/host/sdhci-omap.c       | 21 ++++++------------
+ drivers/mmc/host/sdhci-pci-core.c   |  9 ++------
+ drivers/mmc/host/sdhci-pic32.c      |  9 +++-----
+ drivers/mmc/host/sdhci-pltfm.c      | 16 +-------------
+ drivers/mmc/host/sdhci-pltfm.h      |  1 -
+ drivers/mmc/host/sdhci-pxav2.c      | 26 ++++++-----------------
+ drivers/mmc/host/sdhci-pxav3.c      |  7 +-----
+ drivers/mmc/host/sdhci-s3c.c        | 16 ++++----------
+ drivers/mmc/host/sdhci-spear.c      | 11 ++++------
+ drivers/mmc/host/sdhci-sprd.c       | 33 +++++++++--------------------
+ drivers/mmc/host/sdhci-st.c         |  6 ++----
+ drivers/mmc/host/sdhci-tegra.c      |  9 +++-----
+ drivers/mmc/host/sdhci-xenon.c      |  9 ++------
+ drivers/mmc/host/sdhci.c            |  9 +-------
+ drivers/mmc/host/sdhci.h            |  1 -
+ drivers/mmc/host/sdhci_am654.c      | 20 ++++++-----------
+ drivers/mmc/host/sdhci_f_sdh30.c    | 13 ++++--------
+ 36 files changed, 133 insertions(+), 359 deletions(-)
+
+
+base-commit: aee11c5ac9a0949e1af7534e30dda4ffa122eb97
+-- 
+2.47.1
+
 
