@@ -1,216 +1,301 @@
-Return-Path: <linux-mmc+bounces-6774-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6776-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D4FAC6531
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 May 2025 11:07:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B84AC6709
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 May 2025 12:34:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59F101BA44D6
-	for <lists+linux-mmc@lfdr.de>; Wed, 28 May 2025 09:07:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 512E11BC3B67
+	for <lists+linux-mmc@lfdr.de>; Wed, 28 May 2025 10:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AB927465A;
-	Wed, 28 May 2025 09:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA26278145;
+	Wed, 28 May 2025 10:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MKBAKRFR"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E781E0DBA;
-	Wed, 28 May 2025 09:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748423217; cv=none; b=tcnDOcFDvZU5pLL/1bPmfkmiEvBqS8yeMs/YntvMJx1Ihl4gC8IBvRsnkz9xu2vB5qdGTLXyMwGy/jEZTzdAmLjwt+kIsda+vb8qOTt9WWr3zDva5vHpYL8e3m73kFMeYve69WQp2E85eTb1+adEsLpZkMKvwjgy/Um73e8TI24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748423217; c=relaxed/simple;
-	bh=WIrinfMiUyAK0J7pL1G1KsvX4q1r3p0Fe9ePl0u9gtw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lqTj1UL+PpIlSHuva9rg3DE3hwR3yRi2WfUoF7uO23Ykr5lnzLqfDD6pPHLmbLcoX4o0G7xtaVwyEQXg/Y+oB/FjPy7TfxXNwybU2k5xoJC5ackR62gGDsucjzRiNiNdbE0XXxgOkYGqpu10IcUbehMUlmq7JNDsOMA5IP3mAUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-52d9a275c27so2654725e0c.0;
-        Wed, 28 May 2025 02:06:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748423212; x=1749028012;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AYU8Mi90KLdCAAJJaGYDubPex399S/3mu0JP984ggbk=;
-        b=DQc8cR5ylyBmphwLY4m7WQHcYPxnADSQkmwgmZgdwhGYxn/21dZPfTRF+2KxHhfoOw
-         5RYvX1m4Q0lS7k0pq2RvS4FWr9PD36Dkljtl3ltlyQ5/U0XRIdKlOEEMhQzGzdzeNR7o
-         HGZ5x1uq2tNkKLlFSbWbYPlCMyRDWRB0oup7jAtZV+GFP3weErwzXdnkLDB3mDr3dtc7
-         tRy6gKF7jiBQzf2Su2CnFd+mf4IJRSSXpUiSRkIDON4AakqkQNPdhCNqTMBuRgrUewbN
-         lnDjOeliiZHZbAIbsYRLh4O3/02URfWjCfkc6m6EM51ikCb84JXvYJCIoz3y14sMJafQ
-         jvig==
-X-Forwarded-Encrypted: i=1; AJvYcCVWYl73hqtST3XhRU9D5Z57YKpw5mlSK0eKxn2fdo4AgQ/JfiCcHqtjCTp/RI0ACJG779tqmRW4XLSD@vger.kernel.org, AJvYcCW5cGCWXYRusuVd4skgYQEMzjTnTS0Ju/hZZik1JAN5YVskuVUhJAx+wrlVgyNeYcwSui+3WWwbbzkuZGo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaFgXyD0W1325ymVzwJN01g7g6SpvraHedpXo0rgXlgF+3vaLx
-	1Y6BcNqmha1Ue5eRsfSOEgepjg3kjzS6lMFqojh0lyaVP51ZR3ttmz1sPeYsbkUL
-X-Gm-Gg: ASbGncsE90nfoYut1nLYEITbwgBF3iMrMKCp1og/9Mz+QLqq/5CYp5o+dX504dn1oyh
-	xB+4Mt2ppfL20dncKAgUYNMcI68wZcBZbYIHUia+VgAkvIet12cMAc3wc/tj2S5P6ko1yEmSYjH
-	siBpQC37zEXNyvvlzYr+oBXJwji4xOZiV9/hf0tdSKhKGbp+TS+ROQzciN+kDO7zD55IZb2Y+if
-	DyBAAnQibKDwtM+yiL2Cuscy3KcuqmkQ1vaEBFguynKbUOF+1QuHKU1vdTtbCzB8bn3Fk2pENcV
-	r2f/m/T/Km/s2/YCQ8u+DcidBIPZfE2x5EtkbVtLRZPrh/t4+CT8MMg7cVEGM4GgAZUOiiKyOzI
-	MJRU8kwi/0HV7Bg==
-X-Google-Smtp-Source: AGHT+IHfNVkNJvyzuGOXvU2/5E8q4hXCG5ePgdD3cthNXeuQMw3gnVLwTDUf0eI/hRQz3uPM3fzEOw==
-X-Received: by 2002:a05:6122:3d0d:b0:52f:204d:4752 with SMTP id 71dfb90a1353d-52f2c5ca414mr13253504e0c.11.1748423212554;
-        Wed, 28 May 2025 02:06:52 -0700 (PDT)
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com. [209.85.222.53])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-53066972cb4sm592394e0c.39.2025.05.28.02.06.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 May 2025 02:06:52 -0700 (PDT)
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-87e049bb3e4so1401443241.0;
-        Wed, 28 May 2025 02:06:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV3kqi49IImI4GnQDl7JIHcnHyjwjaITAhYfP4IX2mnZgfUQsv57YoYnww0X/14DZHDCCwZzKQQ/ahjczw=@vger.kernel.org, AJvYcCX2lFC5FU0TQ7qawEiEd1sc0vRLneZvNWlfzwvcpHz86spzlCWvDc7IUcK7z4K1MDQshU8wtbZfFKUz@vger.kernel.org
-X-Received: by 2002:a05:6102:8006:b0:4e5:8d09:7b14 with SMTP id
- ada2fe7eead31-4e58d097d83mr5192536137.0.1748423212075; Wed, 28 May 2025
- 02:06:52 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BC81FFC41;
+	Wed, 28 May 2025 10:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748428483; cv=fail; b=toN0VNyYhrkPqz5PyTTqjL/b2u7ijj/P/sNvPe0D4C1nC6qTwW7y7XemTqEpSXAxZ4PKV5yFUbFl5IwcRRjRihqIJBVyqxtVMOrNIIfN+W8aRNwXVsshnnVMoMerIf37UHnyjUQ2KEVn8v8eqnmJwML7DLk1w20uwVeZLvwJI+Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748428483; c=relaxed/simple;
+	bh=0cJiCFRxAp12QhQQ7buvBJiYWLviyldY9uXGEaiqQpo=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=AZtkhVEzERIrebYMshh4aZDIaXB53Zv+lXPUBpCdutbe0JQR05eISBEAzbbmxSmaC40Yph2MZhDgCZ+BrSwCB6wwnGkgQz1apM21kIJ5AZzJp3L1CLHW9987VoN0D9eW0RqFTbMq+EBRNjiha5rErJTwrWpPi6/z60MbVJWgVcE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MKBAKRFR; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748428481; x=1779964481;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=0cJiCFRxAp12QhQQ7buvBJiYWLviyldY9uXGEaiqQpo=;
+  b=MKBAKRFRklxLzSWLhYWYnTzQQT8+SrY5PJxZwQaII/oEIsZOesa8j4E+
+   cHPqS5yMUjMRtu73+GD5Njt1VnNzvZVjw98yvWjcT3tqcnTzoAD21F87I
+   OcP9dWYBuctdbXgfnfj0lLTTwnC87QzKX9uD+qbG5cu64OptGLOZIrk6D
+   x+o2TUC6QptQOfJqyBUwQhSAFowCM0MsNS0J+hl68xlAtUA7SqH/h13Ii
+   l+rIVOq1G3r8BrhnvN4hWlawh4dRw4FvliP9LvA3usfhKNwXznfO6Fqck
+   a7vKWVtgSjTZzZXC4TqgX+20g7zLqaf3OuPM+Js1LFhRU/av6cfxKJEQR
+   Q==;
+X-CSE-ConnectionGUID: uPZetwdKRDymhuofWl3q7Q==
+X-CSE-MsgGUID: S54k8TNxQ3CVh4t/deuXEg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="49695900"
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
+   d="scan'208";a="49695900"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 03:34:40 -0700
+X-CSE-ConnectionGUID: BD7w/KQTTlyDIDe4PAN6yQ==
+X-CSE-MsgGUID: IJ8PDw5PTw6ub/VqusjwMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
+   d="scan'208";a="143235281"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 03:34:40 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 28 May 2025 03:34:39 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Wed, 28 May 2025 03:34:39 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.74)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.55; Wed, 28 May 2025 03:34:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n3WR2mXk6bnKq1eLdOBJ/bRcOaEaa+lwd1e0VYEgFPRv2zwPlIYBf6P+sD1RZB9SYRjvLLI+Y0tBGRF2eEOcHNDegpAdwiJgaU+EkLG6h11WCPMEOu03xcSTLPZOdtRsgmlNPaA5tcIlay/CUbTS3IIeg70OHj41MCG8riE+A7tArzcknHhljrwWsvpr2LxGNcvVFtaXBAngCuwpAaBWLJqhDErZwmFzowualoHWKfkLJTUB4OMlY/AgFCnSQ3tKEmnZtT6RewVyxQNkmHGPtXtvsH9nBumeCH1RMP1xjVGsbDS9N2A9OlH47g37rrC2pWmD60BFtWc5JN0hO77yRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ufb0Ngp376V6g+y/3nGpJCJaYdkATRB/Oe1Dh76cZqU=;
+ b=hM265kaH3K5fC8KmXmekHGo47K3FwJkx1FCXadNvoNlwwlfv9Ljp1FF0Jb2W8SP80KsJEUdrKHMdx5UN+FDMptW2ik5lddk8SU9/H0cbDwPob+73QmjHL5Z73Og0NCdavj3+u3MilE8xVgy3MzwB44qXM2EuPRyueGu1edMJg1xgGZ0DGv/ckpAJ5New1NlZrg/8OZZ5DFDmepa1CQaohje4UcrzqmojDZAuN90dz8eBeAADROUxthsKBGb+JBig3hG6A1GgAsJo4HPwjv2GfvkotYotlCRU1dCbZznfDCGEcnX+VavF+0p2lpwQWIKVssWsW3P/vlBOkA5j45vvrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6054.namprd11.prod.outlook.com (2603:10b6:510:1d2::8)
+ by DM4PR11MB6191.namprd11.prod.outlook.com (2603:10b6:8:ac::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Wed, 28 May
+ 2025 10:34:37 +0000
+Received: from PH7PR11MB6054.namprd11.prod.outlook.com
+ ([fe80::a255:8692:8575:1301]) by PH7PR11MB6054.namprd11.prod.outlook.com
+ ([fe80::a255:8692:8575:1301%6]) with mapi id 15.20.8769.029; Wed, 28 May 2025
+ 10:34:35 +0000
+Message-ID: <6be8a114-7775-415d-a48f-751466cce44d@intel.com>
+Date: Wed, 28 May 2025 13:34:29 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mmc: sdhci-esdhc-imx: refactor clock loopback
+ selection logic
+To: <ziniu.wang_1@nxp.com>, <haibo.chen@nxp.com>, <ulf.hansson@linaro.org>,
+	<linux-mmc@vger.kernel.org>
+CC: <shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+	<festevam@gmail.com>, <imx@lists.linux.dev>, <s32@nxp.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20250521025502.112030-1-ziniu.wang_1@nxp.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20250521025502.112030-1-ziniu.wang_1@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DU2PR04CA0267.eurprd04.prod.outlook.com
+ (2603:10a6:10:28e::32) To PH7PR11MB6054.namprd11.prod.outlook.com
+ (2603:10b6:510:1d2::8)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250528085453.481320-1-yangzh0906@thundersoft.com>
-In-Reply-To: <20250528085453.481320-1-yangzh0906@thundersoft.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 28 May 2025 11:06:40 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVjR0Ki_vLYtvv1HYpZVdLqUtacG=zs4_ooC0yLnK_CvA@mail.gmail.com>
-X-Gm-Features: AX0GCFv2umrJq54Eu_Z7Pa0M5hU7WaTzckrO6UyfF8NfUyYwIvRhoe3M_guovBM
-Message-ID: <CAMuHMdVjR0Ki_vLYtvv1HYpZVdLqUtacG=zs4_ooC0yLnK_CvA@mail.gmail.com>
-Subject: Re: [PATCH v1 5/9] mmc: sdhci: add Black Sesame Technologies BST
- C1200 controller driver
-To: Albert Yang <yangzh0906@thundersoft.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Ge Gordon <gordon.ge@bst.ai>, BST Linux Kernel Upstream Group <bst-upstream@bstai.top>, linux-mmc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Victor Shih <victor.shih@genesyslogic.com.tw>, 
-	Shan-Chun Hung <shanchun1218@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Peter Robinson <pbrobinson@gmail.com>, Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6054:EE_|DM4PR11MB6191:EE_
+X-MS-Office365-Filtering-Correlation-Id: a29c96c7-7048-4f6e-cfaa-08dd9dd33d93
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?T0RoRGZEWjFraUxrcFh3bjZBODdaYzdWWUhHRFRoME9vV3JxM09qTnVjNVBY?=
+ =?utf-8?B?Y09HVk9nS1I0cEJMQ1JCOGR6TVl5TjFjdTg5aGhNaXdYb0xVR2V6V081NGhs?=
+ =?utf-8?B?dTdjMWRkVnd0eGZycUIwODRhTWQrOC9tSFloNDl6OXJNdkVtckpzdGRNLzFx?=
+ =?utf-8?B?ZU9JNjZMUmxYYWZXUXJxUkZMU3NwOVc4cm1GQ3BPM3RmcHdKOW00eWpwYll4?=
+ =?utf-8?B?ZWhhSEcrUEIyUFh2TUwxaE42Z2wzTmVEalZ5aWJDdzE2c1pqRm13YzRrL1pD?=
+ =?utf-8?B?SktLMVNhWUlDcUFpcDhtWGp6TWsySzNDRmxUb3hHVFRSYkRYcDNEWTZES3JU?=
+ =?utf-8?B?YUlrUkNpOXZNODk5SzFYUVpaZkxhMC9KVDhOUndmYzZTaEVFVzU4STNXbzBJ?=
+ =?utf-8?B?Y0k4N1lpUTMxU3NhUkwyR1lnUnJPNHBzTWFpekxDZDFDMkFhRHhiY3RRWTNP?=
+ =?utf-8?B?V0p6RjZROS9OUVJkdEJSUTNPbzg3R1VIUWpqTEtEZ3hMbTNjZFE2NmtQNVdU?=
+ =?utf-8?B?SDY4VHVjWkpjRCtDcy9ueEdSbmdab2RBcG9WMTdsZDJGbnpVT21oMmxKaVUx?=
+ =?utf-8?B?MGo0Y2M3cDBnZDUrbEEwc1pKNTFXNjhJZEI2OFB1SWtRT2cvRWg4bHZvNTV1?=
+ =?utf-8?B?MXJaMXZDbnQ2SnhRalJra0dBbks0VnY3S0hKRlo4TXlMdGl5dzFJM2habGsx?=
+ =?utf-8?B?TXJ6bzljQUQ1dFpjelFqTktzMHlrUkYrRGx6ZXRNWlhNNUtsSW5KdjNiK1Rp?=
+ =?utf-8?B?TnZCKzF4R0JtbTVZS0t5Rms2SWpqY0FEckJ6L0JyZ2lwSWFHYkNMV29JRzd5?=
+ =?utf-8?B?akkxVzVEWk5RT0p2enU5ek8wU2ZhYU5hQno4WVRJejJEZE5rVkQ4cjEyVjFV?=
+ =?utf-8?B?UVpGaUlYL1dCT0VNbXVGeFVHVTZDajd4Q1pQdmk3RG40YWdyZ1JmR1lCbVQx?=
+ =?utf-8?B?K0x0V0UxczRCK0orOFNRQTJXZDhXaHdYd1JmNlAvS1RtNUwvUnFWTVkxU2lz?=
+ =?utf-8?B?R0RpS3FlcFNoYWJnY2N2QlJJWERHMC9wYjhJV2E0MlJoaytRY0VOMDRoV2lq?=
+ =?utf-8?B?RTAycnBMT0RIN3BpRUxONHdMN1VIVy9rYnFHN3hmTWlKZHpqaDl4RjloMDlY?=
+ =?utf-8?B?WmppUjJkQkhjOVgyb1pnaXh2aEE0eEhiejJIZXFjR2dRSm0rdksxdmY4NWJa?=
+ =?utf-8?B?NmZ3Zm5PZ1V1VmdZekZvV29EUHJycGNRUnJHcTZiejFpSTc4L2xGbG10ODFw?=
+ =?utf-8?B?aklSVUFTYy9KVXpuYm9zb0xFK3FKVlRwTlRWQWZhWm90SVVkTzlVR2VKN0or?=
+ =?utf-8?B?bHVxQzM5WDZCOGdhNHhPM3NXQXdyc3F4bHlOU0EyN2QyMHNxTTJUVlBzY0Nv?=
+ =?utf-8?B?Nm1meWFFQi8vSHNZS3h6Q3FLRjFUMUR6bmpLOFdnTG9lZEx3ZHVZOEZXb2VX?=
+ =?utf-8?B?WnJkcm1NUjNlUnJsMytFclVnQzduVDE5OG4ySllrTXI2RDMvS0tRU2R2MWpN?=
+ =?utf-8?B?eDVnekh1RVhmanUvQnMzaUpaeGxvdnNua080ZXpsY0Y0MkVpTUdndE5tMURm?=
+ =?utf-8?B?WXZ6OWhjenNwS2l4UTF6Y0Z4eE1Ga1dUejlxdjNJZUo5NFZOMTRrZEtDN3BE?=
+ =?utf-8?B?TWhteXZDZ3pEK2trdXBpZzZHdkxTTHZDMENOUEc3QTBYSWF4SVcyZG83R1NP?=
+ =?utf-8?B?aU5DK29IVGY0QlNHcmxnZm10dDZzNDJ6QUpxTFM1THVyVEVBOUExWWRCSHdP?=
+ =?utf-8?B?VlBEV1RUTkUyQkpBU0pBbmp1M0EzSDBMTy8vS0I5aGFHcktmZjhXcDl3eUxm?=
+ =?utf-8?B?US9CaDhIMXhwdFhzZXJwR2V6RU9scXVRRjZ0Q25oWFVkUzQxa1JyREZqYU1S?=
+ =?utf-8?B?U3BReHZWM29ETEhSUGZHdEVza1hueEhIeEM2Q1Y0UkpuMjc5T0pDT29jNlIz?=
+ =?utf-8?Q?FYAkYFlpy8E=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6054.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RDYxZkcvNW1ZcUlLOFIwTHl3cHMwRkJjQWNwMmtJS2liUjd5YlMrd1UrbU03?=
+ =?utf-8?B?amdNYXZrV2dXa1I4dFp1QWdIMnpIcSs1WHhLMEdqT0Zac1FlMkMycmIxemxG?=
+ =?utf-8?B?S1ZDc3NoeFdmN0I0NzhqZ0svVmJVSjVqSHd2Z1lIOVBIaXhPTi9IU1FITkNv?=
+ =?utf-8?B?VWcxOXNiQldnQ3pyK2docjVkVWg0ZjhsV1luSUIxSFRaS2pYZmFuWURzVllT?=
+ =?utf-8?B?cW1JcDdqNEhNb3B2Sng4UW9QN2RyMkNpTDlUaGxpdzRaNU04V2ZZaUg1eXl4?=
+ =?utf-8?B?T3pxcW5vTHNoM3JBSjNZZUtEcTBZOW9zUlpkN1FEeXlSVTRycER4a2pCTHpk?=
+ =?utf-8?B?eDRYYWtySysvQXM5VVNFNnliYjRlbEtiZ053SWlaUFcyRHlSbG0vanQrSEM0?=
+ =?utf-8?B?dkRpdkNUVHZFSXpWYmM1RXpOcWh1Tm9yRGk4NUI2dW9YS0FVWXAxNktsSmdI?=
+ =?utf-8?B?MGx2Y1BMOHd6ZVF6NklGcjdUT3g4WjlqbTk5Q0tYdEh0eEFTb2lSNG1hbE5k?=
+ =?utf-8?B?enN1Wk94bGdRdUk0b3A5L093SHh3bEhPeFBqYXdQSTVwajRlZmk4QjlKeHFq?=
+ =?utf-8?B?K293ak1JZWZWRGdKMXZWZW1qRzFtWWVGaHc3WDlQZkNiaEN5ZkpyNkNDSW1J?=
+ =?utf-8?B?K3N5UVdWVDV5MGxiVnVleGJLL3pkbWZxbTRPTndJY04wbjZ0NUFnS05hT1dP?=
+ =?utf-8?B?K2N5aG5GSHFCcllxNXBiUXROeG1nMUlVa003dUNtTHVuakp5SklJbUdrcFV0?=
+ =?utf-8?B?Vkl6ektaSGxmOTJlb040VE9kcW1scloyNUMrVko2QndNUDFsdy9zbnU5cTZ6?=
+ =?utf-8?B?SFRNN25XZWtSL2h0MEJtckhoTFBTMmRmQzlnK2RZOGJuOTAwTWVoWnQzTFFS?=
+ =?utf-8?B?TkhaSTFGdXFzV1hwYjdlV2JLVzd0bmprSVBoWHhLSXFlRVZrMmZDUGQrWnlk?=
+ =?utf-8?B?azNZSUpvcXVUSFg4eGpSbndsQ3ZZNkt2dE5OWUlkL3Z1citUWHp5RHZnbVcz?=
+ =?utf-8?B?Q2Y5Nks3cWZteVBPM3kzdE90QUtaeVg2b1c1UDRIRlAvM1JkYk52cE9DVHAz?=
+ =?utf-8?B?bVVXbDc3T1NTaHA0a2tOTXlOaHFnNlJ0K3V4NldjMEF0SG93M1cyT3NqdExy?=
+ =?utf-8?B?bW9GTlh3L1VXRWEza2dLdnQ4N0JBTlZ0WG4zQ1VGbHFHeGV2MEx0elkxOGYv?=
+ =?utf-8?B?WkVhd3lPWmlSY2o1d3dRQjc3Q2pzcmdiWjl3aEhIQWovWjc1d0pESEhGVDJU?=
+ =?utf-8?B?L3NUTTdOTUYrU2UvWkRlb1djRngwN3NKKzhqM3RJODRuNXRvQzlwNVhXVWp4?=
+ =?utf-8?B?eFpwR2NpcDAvemduMmV1V1U2R2QvVkQ4a2NGcE14Z1lYMlZXbVlwS2NhZVJl?=
+ =?utf-8?B?UHF5K1BDNkErbjBLdnE4alFWR1JaYVg5OHgyQUdLejJMaEpjbmVydW5wOEdn?=
+ =?utf-8?B?NFRra1hrVkpyQTVpaHZZOVkxdmRtS2FsRE5vQ2JDY1o5bGZ2WmNlekkrbEZD?=
+ =?utf-8?B?Zks1cDNHU0tWZ2VJYjVNVnlWNGxoZ3NuUG80NjFkOURDQmExY2hrMVpxWWQx?=
+ =?utf-8?B?L1FMaTRRQVh3SHkvejFEN0N2SXgwczJuZU5lRDJqOEJ0dGVSOUdaM0xmVVZT?=
+ =?utf-8?B?ZzRnMlNRZzA1UFJJd2lSU0c1SGh4UGJKaDZ6V3I3ekJ4OVdVZWIxcWdnUU1Z?=
+ =?utf-8?B?Vm1pSlhGU1VqcWlkU3g3aHM5ZFA0RVlzWWZta0xkNDljWTArSG1hK2JoZitz?=
+ =?utf-8?B?SUk3aUFUQm80aTRoV2dhSlh1UkdxckE1c1h1c29JTTgyN014ZG11Qmg4VEd4?=
+ =?utf-8?B?cW4vRk1pMnFla0RDUUlvbFBOTnJrTWtNWVZ3ZXI0dEcvQWVQaFAvNENlZDV3?=
+ =?utf-8?B?NnkrUEFPblJhY1NsSDBnNUExblhwc21OOHJCV1VWVndzbmtBaXRUNFA3dFRZ?=
+ =?utf-8?B?UUdZZ0RFblJTR0czcnY4SXpaWTFrYzR6QzNQTmF3MVdyQjlPY3JWczFVUU1V?=
+ =?utf-8?B?YldTK3JyU1UvYzlzVXdPYk5xRlBWWW95SWRDOGcxN0JtcFlLMlcrMi84bHN1?=
+ =?utf-8?B?SFRDYnlaWXd2RTlJZHRjU3ZjalNvVHVrS2tGT1UwT2JvNEJDMTNQVEVqZTB4?=
+ =?utf-8?B?OEFTY0U5M1llaFRHanJRd1c4a1pON3BWWVlpZkMrZ01hblVOVGw1MWk0ckZX?=
+ =?utf-8?B?Y1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a29c96c7-7048-4f6e-cfaa-08dd9dd33d93
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6054.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 10:34:35.5593
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nnBIU3FHixVXa80BE490V+nwfO1aca5Hclnoh50oRQ3lg3/ksE11zJgMBKgfBkOZRBxwP7nCRMAv8pqQ9N9ucg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6191
+X-OriginatorOrg: intel.com
 
-Hi Albert,
+On 21/05/2025 05:55, ziniu.wang_1@nxp.com wrote:
+> From: Luke Wang <ziniu.wang_1@nxp.com>
+> 
+> i.MX reference manual specifies that internal clock loopback should be
+> used for SDR104/HS200/HS400 modes. Move ESDHC_MIX_CTRL_FBCLK_SEL
+> configuration into the timing selection function to:
+> 
+> 1. Explicitly set internal loopback path for SDR104/HS200/HS400 modes
+> 2. Avoid redundant bit manipulation across multiple functions
+> 
+> Preserve ESDHC_MIX_CTRL_FBCLK_SEL during system resume for SDIO devices
+> with MMC_PM_KEEP_POWER and MMC_PM_WAKE_SDIO_IRQ flag, as the controller
+> might lose register state during suspend while skipping card
+> re-initialization.
+> 
+> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
 
-On Wed, 28 May 2025 at 10:55, Albert Yang <yangzh0906@thundersoft.com> wrote:
-> Add a driver for the DesignWare Mobile Storage Host Controller (DWCMSHC)
-> SDHCI controller found in Black Sesame Technologies C1200 SoCs.
->
-> The driver provides specialized clock configuration, tuning, voltage
-> switching, and power management for the BST DWCMSHC controller. It also
-> includes support for eMMC boot and memory-mapped I/O for CRM registers.
->
-> Signed-off-by: Ge Gordon <gordon.ge@bst.ai>
-> Signed-off-by: Albert Yang <yangzh0906@thundersoft.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Thanks for your patch!
-
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -1112,3 +1112,14 @@ config MMC_LITEX
->           module will be called litex_mmc.
->
->           If unsure, say N.
+> ---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 27 ++++++++++++++-------------
+>  1 file changed, 14 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 7611682f10c3..c448a53530a5 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -728,23 +728,17 @@ static void esdhc_writew_le(struct sdhci_host *host, u16 val, int reg)
+>  		writel(new_val, host->ioaddr + ESDHC_VENDOR_SPEC);
+>  		if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
+>  			u32 v = readl(host->ioaddr + SDHCI_AUTO_CMD_STATUS);
+> -			u32 m = readl(host->ioaddr + ESDHC_MIX_CTRL);
+> -			if (val & SDHCI_CTRL_TUNED_CLK) {
+> +			if (val & SDHCI_CTRL_TUNED_CLK)
+>  				v |= ESDHC_MIX_CTRL_SMPCLK_SEL;
+> -			} else {
+> +			else
+>  				v &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
+> -				m &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
+> -			}
+>  
+> -			if (val & SDHCI_CTRL_EXEC_TUNING) {
+> +			if (val & SDHCI_CTRL_EXEC_TUNING)
+>  				v |= ESDHC_MIX_CTRL_EXE_TUNE;
+> -				m |= ESDHC_MIX_CTRL_FBCLK_SEL;
+> -			} else {
+> +			else
+>  				v &= ~ESDHC_MIX_CTRL_EXE_TUNE;
+> -			}
+>  
+>  			writel(v, host->ioaddr + SDHCI_AUTO_CMD_STATUS);
+> -			writel(m, host->ioaddr + ESDHC_MIX_CTRL);
+>  		}
+>  		return;
+>  	case SDHCI_TRANSFER_MODE:
+> @@ -1082,7 +1076,6 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
+>  		ctrl &= ~ESDHC_MIX_CTRL_AUTO_TUNE_EN;
+>  		if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING) {
+>  			ctrl &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
+> -			ctrl &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
+>  			writel(ctrl, host->ioaddr + ESDHC_MIX_CTRL);
+>  			writel(0, host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+>  		} else if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
+> @@ -1177,8 +1170,7 @@ static void esdhc_prepare_tuning(struct sdhci_host *host, u32 val)
+>  		"warning! RESET_ALL never complete before sending tuning command\n");
+>  
+>  	reg = readl(host->ioaddr + ESDHC_MIX_CTRL);
+> -	reg |= ESDHC_MIX_CTRL_EXE_TUNE | ESDHC_MIX_CTRL_SMPCLK_SEL |
+> -			ESDHC_MIX_CTRL_FBCLK_SEL;
+> +	reg |= ESDHC_MIX_CTRL_EXE_TUNE | ESDHC_MIX_CTRL_SMPCLK_SEL;
+>  	writel(reg, host->ioaddr + ESDHC_MIX_CTRL);
+>  	writel(FIELD_PREP(ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK, val),
+>  	       host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+> @@ -1432,6 +1424,15 @@ static void esdhc_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
+>  		break;
+>  	}
+>  
+> +	if (timing == MMC_TIMING_UHS_SDR104 ||
+> +	    timing == MMC_TIMING_MMC_HS200 ||
+> +	    timing == MMC_TIMING_MMC_HS400)
+> +		m |= ESDHC_MIX_CTRL_FBCLK_SEL;
+> +	else
+> +		m &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
 > +
-> +config MMC_SDHCI_BST
-> +       tristate "SDHCI OF support for the BST DWC MSHC"
-
-depends on ARCH_BST || COMPILE_TEST
-
-> +       depends on MMC_SDHCI_PLTFM
-> +       depends on OF
-> +       depends on COMMON_CLK
-> +       help
-> +         This selects Synopsys DesignWare Cores Mobile Storage Controller
-> +         support.
-> +         If you have a controller with this interface, say Y or M here.
-> +         If unsure, say N.
-
-> --- /dev/null
-> +++ b/drivers/mmc/host/sdhci-of-bst-c1200.c
-
-> +#define SDEMMC_CRM_BCLK_DIV_CTRL       0x08
-> +#define SDEMMC_CRM_RX_CLK_CTRL         0x14
-> +#define SDEMMC_CRM_TIMER_DIV_CTRL      0x0C
-> +#define SDEMMC_CRM_VOL_CTRL            0x1C
-> +#define DRIVER_NAME                    "sdhci_bst"
-> +#define BST_VOL_STABLE_ON              (0x1 << 7)
-> +#define SDHCI_DUMP_BST(f, x...)                \
-> +       pr_info("%s: " DRIVER_NAME ": " f, mmc_hostname(host->mmc), ##x)
-> +#define SD_3_3V                                0
-> +#define SD_1_8V                                1
-> +#define default_max_freq               200000ul
+> +	writel(m, host->ioaddr + ESDHC_MIX_CTRL);
 > +
-> +void sdhci_bst_print_vendor(struct sdhci_host *host)
-> +{
-> +       SDHCI_DUMP_BST("============ SDHCI VENDOR REGISTER DUMP ===========\n");
-> +
-> +       SDHCI_DUMP_BST("VER_ID:  0x%08x | VER_TPYE:  0x%08x\n",
-> +                      sdhci_readl(host, SDHC_MHSC_VER_ID_R),
-> +                      sdhci_readl(host, SDHC_MHSC_VER_TPYE_R));
-> +       SDHCI_DUMP_BST("MHSC_CTRL:  0x%08x | MBIU_CTRL:  0x%08x\n",
-> +                      sdhci_readw(host, SDHC_MHSC_CTRL_R),
-> +                      sdhci_readw(host, SDHC_MBIU_CTRL_R));
-> +       SDHCI_DUMP_BST("EMMC_CTRL:  0x%08x | BOOT_CTRL: 0x%08x\n",
-> +                      sdhci_readl(host, SDHC_EMMC_CTRL_R),
-> +                      sdhci_readw(host, SDHC_BOOT_CTRL_R));
-> +       SDHCI_DUMP_BST("GP_IN:   0x%08x | GP_OUT: 0x%08x\n",
-> +                      sdhci_readl(host, SDHC_GP_IN_R),
-> +                      sdhci_readb(host, SDHC_GP_OUT_R));
-> +       SDHCI_DUMP_BST("AT_CTRL:     0x%08x | AT_STAT:  0x%08x\n",
-> +                      sdhci_readb(host, SDHC_AT_CTRL_R),
-> +                      sdhci_readb(host, SDHC_AT_STAT_R));
-> +}
-> +EXPORT_SYMBOL_GPL(sdhci_bst_print_vendor);
+>  	esdhc_change_pinstate(host, timing);
+>  }
+>  
 
-Why do you need this?
-
-> +
-> +static u32 bst_read_phys_bst(u32 phys_addr)
-> +{
-> +       u32 phys_addr_page = phys_addr & 0xFFFFE000;
-> +       u32 phys_offset = phys_addr & 0x00001FFF;
-> +       u32 map_size = phys_offset + sizeof(u32);
-> +       u32 ret = 0xDEADBEEF;
-> +       void *mem_mapped = ioremap(phys_addr_page, map_size);
-> +
-> +       if (mem_mapped) {
-> +               ret = (u32)ioread32(((u8 *)mem_mapped) + phys_offset);
-> +               iounmap(mem_mapped);
-> +       }
-
-Please do not ioremap()/iounmap() for each register read...
-
-> +
-> +       return ret;
-> +}
-> +
-> +static void bst_write_phys_bst(u32 phys_addr, u32 value)
-> +{
-> +       u32 phys_addr_page = phys_addr & 0xFFFFE000;
-> +       u32 phys_offset = phys_addr & 0x00001FFF;
-> +       u32 map_size = phys_offset + sizeof(u32);
-> +       void *mem_mapped = ioremap(phys_addr_page, map_size);
-> +
-> +       if (mem_mapped) {
-> +               iowrite32(value, ((u8 *)mem_mapped) + phys_offset);
-> +               iounmap(mem_mapped);
-> +       }
-
-or write...
-
-> +}
-
-Aborting review.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
