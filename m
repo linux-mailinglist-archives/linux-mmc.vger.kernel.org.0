@@ -1,194 +1,189 @@
-Return-Path: <linux-mmc+bounces-6860-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6862-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1969ACC12F
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Jun 2025 09:25:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94A3ACC671
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Jun 2025 14:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F59516B216
-	for <lists+linux-mmc@lfdr.de>; Tue,  3 Jun 2025 07:25:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F74D3A3A9D
+	for <lists+linux-mmc@lfdr.de>; Tue,  3 Jun 2025 12:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37082268FFA;
-	Tue,  3 Jun 2025 07:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WF4RjjG8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DACA1B393C;
+	Tue,  3 Jun 2025 12:25:37 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25124268C49
-	for <linux-mmc@vger.kernel.org>; Tue,  3 Jun 2025 07:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2D222A4E1
+	for <linux-mmc@vger.kernel.org>; Tue,  3 Jun 2025 12:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748935522; cv=none; b=uvMQfTO2at3N/O5dGRjsknbFSdzBvl8wSyXMwP9Cr7bAchDByX8MoHnLXjsfWl/pXsMXeNRnoMglZvLvtNW7BlEY9DOf0QLUiLYhl/yUn8XTzPxrrF8rbOO40EOpvLMos/Q27AXgtN534kvyEe5ZTvxoL2os484rGlj+0iBXOco=
+	t=1748953537; cv=none; b=aFQDi7aPK7Bd0btkjOBskd522q9I2ZZSGrgXu3kQQi3XbNTTtmRVHgdUKjo8/BH0BhqHvZ/9jxKFRalvwF+XFVORi2cWaOM7ErDExzD1GTkyOyrMbVvQG9dvMdmPoLug4glS6G92lLYecQjiA4Fdq3804irQYZqvKcVb0lTGWM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748935522; c=relaxed/simple;
-	bh=c4Ud+MaBtcVCQGpG2BZCx8yeg/YoMvIyeJnW6nbL9vI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mtET0M/Y0/46cqDPPpdOrTOe+Jh9ZkWLBHFBMjcR3d8BqkCsxupiOIKWG0pbc6JWwwcYWCtf209rFn50LaA0jfcYyzmMSV1wXJKbfY4w+TilfunpostTfIh85WixD0/6V0u8zJlY2S86CDXIXogsL9d1c5m2aHyfmbRjvHCX5Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WF4RjjG8; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-acb39c45b4eso839328766b.1
-        for <linux-mmc@vger.kernel.org>; Tue, 03 Jun 2025 00:25:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748935517; x=1749540317; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YZygjW1Ow6Z7940oMzrM6oQz0kZ+KW4RGq7tRBXcHTU=;
-        b=WF4RjjG8KMPzgK8Z0EL/LWEatMQ/2ck1T/iIL/hGUnj9DBdvzVVOTfyJyRab0DBCw1
-         mWpuWgcJnWj5v34ohY3j81TA+UlW/+XZNB+1k+CsDDCL6K9SXXoP4+kB1ksGCgd+fqkm
-         XMLPR8vVWeZPLMFrOd98p3FddcoWnnhGm9eG77JgsemutkDsoLEcJQ+ZHJffs7MICmyW
-         tQt8brXNZI7gyJlxC1cKFIpv/IUJAFk5VUPTXhO3LHjBp12rtjnuOxD+wCIIugYPgwvV
-         nRyQqKsLzRmkaPXhYXDFubLuNwy8AsKGEW3lW/qvo0+u8+f07cbQkeCVhtljk0mQxcO8
-         ISuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748935517; x=1749540317;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YZygjW1Ow6Z7940oMzrM6oQz0kZ+KW4RGq7tRBXcHTU=;
-        b=erblLE/1rrLPZH9VJ6iQ6/xlixMo39QasbhDVxrvCJvdPDQ4tdNoKWOmnTavZ2iQ/O
-         CH/+x5ZinOS2xnmyroFRj4fhpf50+JP0snOUnL5o6xaDwUUOAOaLp6Xz1kKSRo/F83jR
-         G0F5V77lGUQoio60zDdKoRB/QhCOB899Cf5m6f9prAM/VY7Uv5caCl91nBuDRoVMu++h
-         NG9sqHg0Dbiw8+BhhV8fM92a6h6fSGetAfqJrWowHn6E0aWWSip9gjHvVwky50Dtnlhn
-         j2zCC9Le/cGrFgJFBl33wJst5psW6of9YtVmJz84chiwyppdgh6UIreEPyv6JceJijQQ
-         47qA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+nKoJkSufFIsM6FP6SVbzINFIQRC/JyrA3CEx19N0ZxwBKOMOoFdWq43kLVBuei/UJ6GkjYM8LWk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQiQkD3Wh3JHm7LxxaLxzHsy8SJ81rh5lQVcxDUyPHA6VEtWUV
-	/wv3RhhULLAzhG2QAPhs65vSUup3XfDUjUGxLQQ1h289y5bO2me9CaT9zQ6vwWJhj8at5myKPYE
-	5RALJgDCOMACnxZWEQO3oU5grU0ELfJk=
-X-Gm-Gg: ASbGncujhMDzdGKSJ3o91xgNJ9eP03zAu+T/Yo8eBkssO0rXrj2ScW2IrhYeH0yplyV
-	7sbeI/GiYeO0pCwlpu0jiZI+y5QFVvMBD4Dv3MY3ol29PfR2eJm1Lu1B3fsnHOJxs6QpC4ez3Qe
-	Yytm64hgfhcl28BXe8tJvpm7vrOWPZMzIu
-X-Google-Smtp-Source: AGHT+IGQMSy8zLhv5XBeE+VXLzOH9PdJ7pHuxMHeHTthwBpn8XQZR029mieeMBHF3FDoPXo7EXT7vWTa/2EPhsb/ofo=
-X-Received: by 2002:a17:907:944c:b0:ad5:7529:94d with SMTP id
- a640c23a62f3a-adb32431848mr1483726366b.42.1748935517007; Tue, 03 Jun 2025
- 00:25:17 -0700 (PDT)
+	s=arc-20240116; t=1748953537; c=relaxed/simple;
+	bh=88Q3XL8xvdtCjuuVOW61oEaVvabfZpKQTx9AkL1hbM8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EL70uAkSh5iUsMA9W5hdCNQygxQcwTZMBtNIrFKYAXFLlSHuYvLy8c5m6OHckhmSSxJXVAMW6JKWFYinlTUzJk7K0LwFo22jQrPI3W0/HdKr9HBwXpBksC1h/9gD/rb9ki3MkjEHMoK5wvOT6j1m4PvwqEQUhnJrTkYyQ3SR+FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.3])
+	by gateway (Coremail) with SMTP id _____8DxC3K66T5oKzUKAQ--.32986S3;
+	Tue, 03 Jun 2025 20:25:32 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.3])
+	by front1 (Coremail) with SMTP id qMiowMCxLcW36T5ovA0HAQ--.22246S2;
+	Tue, 03 Jun 2025 20:25:29 +0800 (CST)
+From: Binbin Zhou <zhoubinbin@loongson.cn>
+To: Binbin Zhou <zhoubb.aaron@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	linux-mmc@vger.kernel.org,
+	Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: [PATCH v3 00/36] mmc: Cleanup mmc_alloc_host() usage
+Date: Tue,  3 Jun 2025 20:25:12 +0800
+Message-ID: <cover.1748933789.git.zhoubinbin@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1748515612.git.zhoubinbin@loongson.cn> <a1f998ecdae85cc3039cfa30096220d822b616fa.1748515612.git.zhoubinbin@loongson.cn>
- <59dd37bc-f138-4326-a8d6-197a4355bc1d@microchip.com>
-In-Reply-To: <59dd37bc-f138-4326-a8d6-197a4355bc1d@microchip.com>
-From: Binbin Zhou <zhoubb.aaron@gmail.com>
-Date: Tue, 3 Jun 2025 15:25:02 +0800
-X-Gm-Features: AX0GCFuGdzl3CZcDWw_-4hjU3nMZvdEj2Id17zrYb4mdCcVtx3fqdIK9cegO0jM
-Message-ID: <CAMpQs4Lo92Jj-+smAohbqNRz6zyi1C5pdeRK9+PdL_Yi-KJtDQ@mail.gmail.com>
-Subject: Re: [PATCH v2 19/35] mmc: sdhci-of-at91: Drop the use of sdhci_pltfm_free()
-To: Aubin Constans <aubin.constans@microchip.com>
-Cc: Binbin Zhou <zhoubinbin@loongson.cn>, Huacai Chen <chenhuacai@loongson.cn>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, linux-mmc@vger.kernel.org, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Eugen Hristev <eugen.hristev@linaro.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMCxLcW36T5ovA0HAQ--.22246S2
+X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxXry5Cw45uF1rAr17ZF15WrX_yoWrKFyDpF
+	4agryavr4DJr43Wry3Gwn0ka4rXw18WayIgF1Iqw1rZFyjkF1UGrs7uFyIqF98uFy8JFZ3
+	XFs8Gw1UuF1rGacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvKb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17
+	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_
+	JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
+	CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0
+	I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I
+	8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU
+	0xZFpf9x07jepB-UUUUU=
 
-Hi Aubin:
+Hi all:
 
-Thanks for your reply.
+Since the devm_mmc_alloc_host() helper was already available, I tried to
+start cleaning up the use of mmc_alloc_host().
 
-On Tue, Jun 3, 2025 at 12:09=E2=80=AFAM Aubin Constans
-<aubin.constans@microchip.com> wrote:
->
-> Hi Binbin,
->
-> Thank you for the change.
->
-> On 29/05/2025 15:00, Binbin Zhou wrote:
-> > Since the devm_mmc_alloc_host() helper is already in use,
-> > sdhci_pltfm_free() is no longer needed.
-> >
-> > Cc: Aubin Constans <aubin.constans@microchip.com>
-> > Cc: Eugen Hristev <eugen.hristev@linaro.org>
-> > Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-> > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> > Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-> > Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-> > ---
-> >   drivers/mmc/host/sdhci-of-at91.c | 23 ++++++++---------------
-> >   1 file changed, 8 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-=
-of-at91.c
-> > index 97988ed37467..0b7d7db79139 100644
-> > --- a/drivers/mmc/host/sdhci-of-at91.c
-> > +++ b/drivers/mmc/host/sdhci-of-at91.c
-> > @@ -337,28 +337,23 @@ static int sdhci_at91_probe(struct platform_devic=
-e *pdev)
-> >                          priv->mainck =3D NULL;
-> >                  } else {
-> >                          dev_err(&pdev->dev, "failed to get baseclk\n")=
-;
-> > -                       ret =3D PTR_ERR(priv->mainck);
-> > -                       goto sdhci_pltfm_free;
-> > +                       return PTR_ERR(priv->mainck);
-> >                  }
-> >          }
->
-> For consistency with the changes below, please use dev_err_probe() as wel=
-l.
-> Doing so, you can remove the brackets in both if/else blocks. Or preserve=
- these
-> brackets may you wish to keep the changes minimal.
+To make it easier to review the patchset, I decided to split it into two parts.
+As the first part, this patchset contains cleanup for drivers other than sdhci.
 
-I will use dev_err_probe() to cleanup the code.
->
-> Regards
-> Aubin
->
-> >
-> >          priv->hclock =3D devm_clk_get(&pdev->dev, "hclock");
-> > -       if (IS_ERR(priv->hclock)) {
-> > -               dev_err(&pdev->dev, "failed to get hclock\n");
-> > -               ret =3D PTR_ERR(priv->hclock);
-> > -               goto sdhci_pltfm_free;
-> > -       }
-> > +       if (IS_ERR(priv->hclock))
-> > +               return dev_err_probe(&pdev->dev, PTR_ERR(priv->hclock),
-> > +                                    "failed to get hclock\n");
-> >
-> >          priv->gck =3D devm_clk_get(&pdev->dev, "multclk");
-> > -       if (IS_ERR(priv->gck)) {
-> > -               dev_err(&pdev->dev, "failed to get multclk\n");
-> > -               ret =3D PTR_ERR(priv->gck);
-> > -               goto sdhci_pltfm_free;
-> > -       }
-> > +       if (IS_ERR(priv->gck))
-> > +               return dev_err_probe(&pdev->dev, PTR_ERR(priv->gck),
-> > +                                    "failed to get multclk\n");
-> >
-> >          ret =3D sdhci_at91_set_clks_presets(&pdev->dev);
-> >          if (ret)
-> > -               goto sdhci_pltfm_free;
-> > +               return ret;
-> >
-> >          priv->restore_needed =3D false;
-> >
-> > @@ -438,8 +433,6 @@ static int sdhci_at91_probe(struct platform_device =
-*pdev)
-> >          clk_disable_unprepare(priv->gck);
-> >          clk_disable_unprepare(priv->mainck);
-> >          clk_disable_unprepare(priv->hclock);
-> > -sdhci_pltfm_free:
-> > -       sdhci_pltfm_free(pdev);
-> >          return ret;
-> >   }
-> >
-> > --
-> > 2.47.1
-> >
->
+Of course, the sdhci part I have ready in my repository.
 
---=20
 Thanks.
-Binbin
+
+-----
+V3:
+- Collect Reviewed-by and Acked-by tags.
+Patch-18
+  - Fix build warning by lkp:
+	https://lore.kernel.org/all/202505230421.P12fqPfB-lkp@intel.com/
+
+Link to V2:
+https://lore.kernel.org/all/cover.1747877175.git.zhoubinbin@loongson.cn/
+
+V2:
+- Collect Reviewed-by and Acked-by tags.
+Patch-24
+  - Correct subject title: ish_mmicf -> sh_mmicf.
+Patch-34
+  - Fix cheap build error.
+
+Link to V1:
+https://lore.kernel.org/all/cover.1747739323.git.zhoubinbin@loongson.cn/
+
+Binbin Zhou (36):
+  mmc: alcor: Use devm_mmc_alloc_host() helper
+  mmc: atmel: Use devm_mmc_alloc_host() helper
+  mmc: au1xmmc: Use devm_mmc_alloc_host() helper
+  mmc: bcm2835: Use devm_mmc_alloc_host() helper
+  mmc: cavium: Use devm_mmc_alloc_host() helper
+  mmc: cb710: Use devm_mmc_alloc_host() helper
+  mmc: davinci_mmc: Use devm_mmc_alloc_host() helper
+  mmc: dw_mmc: Use devm_mmc_alloc_host() helper
+  mmc: jz4740: Use devm_mmc_alloc_host() helper
+  mmc: litex_mmc: Use devm_mmc_alloc_host() helper
+  mmc: meson-mx-sdhc: Use devm_mmc_alloc_host() helper
+  mmc: mmci: Use devm_mmc_alloc_host() helper
+  mmc: moxart-mmc: Use devm_mmc_alloc_host() helper
+  mmc: mvsdio: Use devm_mmc_alloc_host() helper
+  mmc: mxcmmc: Use devm_mmc_alloc_host() helper
+  mmc: mxs-mmc: Use devm_mmc_alloc_host() helper
+  mmc: omap: Use devm_mmc_alloc_host() helper
+  mmc: omap_hsmmc: Use devm_mmc_alloc_host() helper
+  mmc: owl-mmc: Use devm_mmc_alloc_host() helper
+  mmc: pxamci: Use devm_mmc_alloc_host() helper
+  mmc: rtsx_pci: Use devm_mmc_alloc_host() helper
+  mmc: rtsx_usb_sdmmc: Use devm_mmc_alloc_host() helper
+  mmc: sdricoh_cs: Use devm_mmc_alloc_host() helper
+  mmc: sh_mmicf: Use devm_mmc_alloc_host() helper
+  mmc: tifm_sd: Use devm_mmc_alloc_host() helper
+  mmc: toshsd: Use devm_mmc_alloc_host() helper
+  mmc: usdhi6ro10: Use devm_mmc_alloc_host() helper
+  mmc: ushc: Use devm_mmc_alloc_host() helper
+  mmc: via-sdmmc: Use devm_mmc_alloc_host() helper
+  mmc: vub300: Use devm_mmc_alloc_host() helper
+  mmc: wbsd: Use devm_mmc_alloc_host() helper
+  mmc: wmt-sdmmc: Use devm_mmc_alloc_host() helper
+  mmc: tmio: Use devm_mmc_alloc_host() helper
+  mmc: sunxi: Use devm_mmc_alloc_host() helper
+  mmc: mmc_spi: Use devm_mmc_alloc_host() helper
+  mmc: meson-mx-sdio: Use devm_mmc_alloc_host() helper
+
+ drivers/mmc/host/alcor.c             | 20 ++++---------
+ drivers/mmc/host/atmel-mci.c         |  7 ++---
+ drivers/mmc/host/au1xmmc.c           | 14 +++-------
+ drivers/mmc/host/bcm2835.c           |  5 +---
+ drivers/mmc/host/cavium.c            | 10 ++-----
+ drivers/mmc/host/cb710-mmc.c         |  5 +---
+ drivers/mmc/host/davinci_mmc.c       | 22 +++++----------
+ drivers/mmc/host/dw_mmc.c            | 15 ++++------
+ drivers/mmc/host/jz4740_mmc.c        | 40 +++++++++-----------------
+ drivers/mmc/host/litex_mmc.c         | 12 +-------
+ drivers/mmc/host/meson-mx-sdhc-mmc.c | 13 +--------
+ drivers/mmc/host/meson-mx-sdio.c     | 20 ++++++-------
+ drivers/mmc/host/mmc_spi.c           |  4 +--
+ drivers/mmc/host/mmci.c              | 31 ++++++++------------
+ drivers/mmc/host/moxart-mmc.c        | 40 ++++++++++----------------
+ drivers/mmc/host/mvsdio.c            | 24 +++++-----------
+ drivers/mmc/host/mxcmmc.c            | 31 +++++++-------------
+ drivers/mmc/host/mxs-mmc.c           | 31 ++++++++------------
+ drivers/mmc/host/omap.c              | 25 ++++++-----------
+ drivers/mmc/host/omap_hsmmc.c        | 17 ++++-------
+ drivers/mmc/host/owl-mmc.c           | 37 +++++++++---------------
+ drivers/mmc/host/pxamci.c            | 42 ++++++++++------------------
+ drivers/mmc/host/renesas_sdhi_core.c |  6 +---
+ drivers/mmc/host/rtsx_pci_sdmmc.c    |  5 +---
+ drivers/mmc/host/rtsx_usb_sdmmc.c    |  4 +--
+ drivers/mmc/host/sdricoh_cs.c        | 10 ++-----
+ drivers/mmc/host/sh_mmcif.c          | 17 ++++-------
+ drivers/mmc/host/sunxi-mmc.c         | 22 ++++++---------
+ drivers/mmc/host/tifm_sd.c           |  7 +----
+ drivers/mmc/host/tmio_mmc.h          |  1 -
+ drivers/mmc/host/tmio_mmc_core.c     | 18 ++----------
+ drivers/mmc/host/toshsd.c            |  4 +--
+ drivers/mmc/host/uniphier-sd.c       |  8 ++----
+ drivers/mmc/host/usdhi6rol0.c        | 30 +++++++-------------
+ drivers/mmc/host/ushc.c              |  4 +--
+ drivers/mmc/host/via-sdmmc.c         |  7 ++---
+ drivers/mmc/host/vub300.c            | 16 ++++-------
+ drivers/mmc/host/wbsd.c              |  4 +--
+ drivers/mmc/host/wmt-sdmmc.c         |  8 ++----
+ 39 files changed, 195 insertions(+), 441 deletions(-)
+
+
+base-commit: d2c6acff6386f43ed307822454b970c831c48f1b
+-- 
+2.47.1
+
 
