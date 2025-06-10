@@ -1,145 +1,168 @@
-Return-Path: <linux-mmc+bounces-6990-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6992-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24308AD3832
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Jun 2025 15:07:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B571FAD383F
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Jun 2025 15:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB857A059C
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Jun 2025 12:57:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14D2D1728B2
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Jun 2025 13:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7228D298CD5;
-	Tue, 10 Jun 2025 12:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5ED929C334;
+	Tue, 10 Jun 2025 12:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fgWOMiAc"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Iw+pYu9w"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8A6299933;
-	Tue, 10 Jun 2025 12:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9383D298242
+	for <linux-mmc@vger.kernel.org>; Tue, 10 Jun 2025 12:57:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749559994; cv=none; b=GCqh8P+I+I5kos6uMkjFAaFjHJp4tPegKl3azxMhaPJ9Th+ZYbc8TaoK3xCMTuN6aYtgljEBJOxx7eaG0gLm2AlsgM8tSXZ3KafHWHBTcKgCxHm1MG6HcdTOnc1VhXUAAR+bbRetnLBSLVw4oD/sJivaYw6ASbJftZBLoAPXw08=
+	t=1749560244; cv=none; b=ZECpTeoZsPICwmxu4Z9PSWBXtSb4aIxirti7LorgWY6t5CfFyAZjZ7xZ/vHu8J1JhURoi0WiAQWW9AmjDH/qw5Y/0kTCpTA+VOGDX4mFNCkyTITsfU8RUgQC5VlaaBdAUa+LYHUaL45hiu8T4Em57wOBsFlA4pUOu8skzPIn+Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749559994; c=relaxed/simple;
-	bh=ISYaAhggFyjnVtTWRorHjZCRnq1DLz9VGr6XjpJVG7U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g6GjAuLXvUq+dxQMoMDir02SKqSnHOGaIDfipvf71OQwpqcKdWxf0SOBjIMeppvGGyiVTHJaLwbjliBbqCJ2brkIyhkwrBNNYOfWpZoz5n3SSCPUIZ6ytWElPVjkDHXFyyYk0LCIB5U4BWG/l0q5TrXVurnhVUSNE7j9mIjhnYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fgWOMiAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FBDC4CEED;
-	Tue, 10 Jun 2025 12:53:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749559993;
-	bh=ISYaAhggFyjnVtTWRorHjZCRnq1DLz9VGr6XjpJVG7U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fgWOMiAcTYjMjBVI/Z4s8WvdzFuQ5LLsV3FLWEMo670XZ8buZ8OyjsASrIcMoICvv
-	 ri+y5rf8Fd0oO3DTqf3TIlGOPeWMN3uEVC5cGejHpHgbiPihsaReBiUWLM2k/L6BB1
-	 NXK7SR4smEjC3+tjlGjZ7ew1jxrOUciLQukf5Dehj7exiI0ZI5f0TO2k1ePWhAja7l
-	 Mz9QPWA0QK4kEXcIEBccMRau4e3jrSL8iXExIip8EROw0iQygCM7cr8JahGGGU7QHn
-	 Lmdwkixbvw6TBHsvPwE9Q7CG74fyxEAxW/AgeKAEzJTuPtS3Q+LTPzhyjqD4Q2ZHQL
-	 fERVymuPdEBfQ==
-Message-ID: <18053999-c337-47e5-b6df-72c2be6a72df@kernel.org>
-Date: Tue, 10 Jun 2025 14:53:08 +0200
+	s=arc-20240116; t=1749560244; c=relaxed/simple;
+	bh=qhIVpEZDZOmir5ypQGJPM5AKAogRaLno5vHtbx9uYco=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bm96HV1YrazRhONyXiwTW/HkZxKCRSy+Hr+78RIApTXD+O1YhDEExSchAn8IEw+oFRnwWAc8mqWurjiGPADXyJScG/C7yLoGdX869HfZonsKuDAjQxMBFVRll7a3SAmkeiXTOF52pzKe5A5koo5Rz9n9oPOtUTS/KF804lgPPdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Iw+pYu9w; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ade5ca8bc69so308936666b.0
+        for <linux-mmc@vger.kernel.org>; Tue, 10 Jun 2025 05:57:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749560241; x=1750165041; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CUkJhWRp3L7SGl8YQInLtuEOp8CfW807ly4f8cXAKNg=;
+        b=Iw+pYu9wj8TPnjtMho6jQXgdksId+1akOTNdyrRNkjp//ulZJygzb8PR/ptjfENVEI
+         qug6n8lx5eEN39bQeDG9LdswoQDdg7oM6tPa84afyw/Zwf58Z+Q10R3ezILP38VgBNfO
+         lj/6JHFZTa4kdC0TkJElVfoiBOW8k8tb4UMBiZ3sqPVgh3hjBzsQV8EHramZhcy/pqrF
+         ySDl7jug2TIDUOj/25BZqQOoX3A1qbYbhOeEU1NnnEuVlrqlcmJB9WWlIswr/rUtafI7
+         bIf7a+zyhni8VvJsMj/V+BVS1ivtdMQFmz7M9z5H5COhbIbZgd57LRx8AdVUS7G+MziH
+         W2Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749560241; x=1750165041;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CUkJhWRp3L7SGl8YQInLtuEOp8CfW807ly4f8cXAKNg=;
+        b=kVzvLFotPdnlBgYI9bAqfooeaCEoUFwC19+R+KBArauc+2vIF5SNeqT9iRHix07TlA
+         f2nRG146H7X0BMlc/7tRj8x7ayfrwfFSa6xiPL0E+g+gzy8SsrfAloKNuCurEM+cb2ew
+         TByRW/Z95CxzcUnC23NOKH9TvLrbP3POxcFPdVGuPzYlgSTrHpheGhHJ709LAjth162Y
+         +3b7KwG0eScSfXnqFM0Q/Hn+6nwJ+Fwl/+aGOsjM5p/WqHOWek+qYRFd2G/wRl9q1orz
+         N1Aa+XMqAUTQmLUqwPamQsYAZQbEc0oRJMW3Mmo0Cx26j8415QG+vOeQ8+G2DMhMzx0Y
+         +6mA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpEFa/YnMp6eYWe7D+nNavWRmGerCUfs9pws3nfkYMiwd4AA/DUCqgP2toD7FaH4P2aOK0YWvhGTU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTJnNfLGU6FH3Gu8BmOWMl8zAkfMhKXSoVv8o1RVPOoB+47Nih
+	M4VakSvSF7NJsBya6MCEQrKkR7/Mhuom+gU5kQQ4Isy7uJMCQl75AxFjkGxBfy87i9S8bdBKS2Q
+	PDGwIwyhA8+DLD16nyHGlSEsy6ztPt1sJPCP24z96mw==
+X-Gm-Gg: ASbGnctoNkq+2nWmOzMJBC4CnXH2Qo8GWdPUfsbmDa3Re3wLjTgf1Wouxg2z2Y3rYfB
+	JvLgzZVE29Bi+rRcEZEdA9m25+eat3Lux/1gmV+6CjiOq12KDFTGYw06Yt8OdQDttR+VAum9SD0
+	d6N/X491eUtUiE0vg1lmkKOCSS40BzoN1cwsZIyGF8f+3W
+X-Google-Smtp-Source: AGHT+IFnoTHHifJTlb/W9AH+wSprRlJ6AOhC3m2qBRGlahZc+wsPlXhKLbork72DQJ3HMf/KrBrC0eU+kRMagyP2nkg=
+X-Received: by 2002:a17:907:d644:b0:ad8:8689:2cc6 with SMTP id
+ a640c23a62f3a-ade1ab2216fmr1457025566b.47.1749560240911; Tue, 10 Jun 2025
+ 05:57:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 1/4] dt-bindings: mmc: Add dll-hsr-list for HS400 and
- HS200 modes
-To: Ram Prakash Gupta <quic_rampraka@quicinc.com>,
- Sachin Gupta <quic_sachgupt@quicinc.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>,
- Bhupesh Sharma <bhupesh.sharma@linaro.org>
-Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- quic_cang@quicinc.com, quic_nguyenb@quicinc.com, quic_bhaskarv@quicinc.com,
- quic_mapa@quicinc.com, quic_narepall@quicinc.com, quic_nitirawa@quicinc.com,
- quic_sartgarg@quicinc.com
-References: <20250122094707.24859-1-quic_sachgupt@quicinc.com>
- <20250122094707.24859-2-quic_sachgupt@quicinc.com>
- <72b02fd1-5195-4bb0-b01d-5481b49a5680@kernel.org>
- <e0f43fc7-2f38-335d-1515-c97594a55566@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <e0f43fc7-2f38-335d-1515-c97594a55566@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250606110121.96314-1-victorshihgli@gmail.com>
+In-Reply-To: <20250606110121.96314-1-victorshihgli@gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 10 Jun 2025 14:56:42 +0200
+X-Gm-Features: AX0GCFtz58qEc2pH3XdErcJzGd3l9xp3ByR8YdkuPCCJGBGEv9OQcWr7tPHik30
+Message-ID: <CAPDyKFrpHvrgjG2xOYPoPwUf1NNyBM+fGaO+AgPpZ1CMZYrqgg@mail.gmail.com>
+Subject: Re: [PATCH V3 0/3] Adjust some error messages for SD UHS-II
+ initialization process
+To: Victor Shih <victorshihgli@gmail.com>
+Cc: adrian.hunter@intel.com, linux-mmc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, benchuanggli@gmail.com, 
+	ben.chuang@genesyslogic.com.tw, HL.Liu@genesyslogic.com.tw, 
+	Greg.tu@genesyslogic.com.tw, Victor Shih <victor.shih@genesyslogic.com.tw>
+Content-Type: text/plain; charset="UTF-8"
 
-On 10/06/2025 14:07, Ram Prakash Gupta wrote:
-> Hi Krzysztof,
-> 
-> Thanks for your comment, The Qualcomm Engineer who initiated this work,
-> is no longer working on this and I am taking up the responsibility to continue
-> on this work. I have started to check this and will start with addressing your
-> comment next.
-> 
-> Thanks,
-> Ram
-> 
-> On 1/22/2025 3:56 PM, Krzysztof Kozlowski wrote:
->> On 22/01/2025 10:47, Sachin Gupta wrote:
+On Fri, 6 Jun 2025 at 13:01, Victor Shih <victorshihgli@gmail.com> wrote:
+>
+> From: Victor Shih <victor.shih@genesyslogic.com.tw>
+>
+> Summary
+> =======
+> It is normal that errors will occur when using non-UHS-II card to enter
+> the UHS-II card initialization process. We should not be producing error
+> messages and register dumps. Therefore, switch the error messages to debug
+> mode and register dumps to dynamic debug mode.
+>
+> Patch structure
+> ===============
+> patch#1:    for core
+> patch#2-#3: for sdhci
+>
+> Changes in v3 (June. 06, 2025)
+> * Rebase on latest mmc/next.
+> * Patch#2: Separate the helper function in V2 patch#2 into V3 patch#2.
+>
+> ----------------- original cover letter from v2 -----------------
+> Summary
+> =======
+> It is normal that errors will occur when using non-UHS-II card to enter
+> the UHS-II card initialization process. We should not be producing error
+> messages and register dumps. Therefore, switch the error messages to debug
+> mode and register dumps to dynamic debug mode.
+>
+> Patch structure
+> ===============
+> patch#1: for core
+> patch#2: for sdhci
+>
+> Changes in v2 (May. 23, 2025)
+> * Rebase on latest mmc/next.
+> * Patch#1: Drop the use of DBG macro and use pr_debug() instead.
+> * Patch#2: Drop the use of DBG macro in some function
+>            and use pr_debug() instead.
+>
+> ----------------- original cover letter from v1 -----------------
+> Summary
+> =======
+> It is normal that errors will occur when using non-UHS-II card to enter
+> the UHS-II card initialization process. We should not be producing error
+> messages and register dumps. Therefore, switch the error messages to debug
+> mode and register dumps to dynamic debug mode.
+>
+> Patch structure
+> ===============
+> patch#1: for core
+> patch#2: for sdhci
+>
+> Changes in v1 (May. 16, 2025)
+> * Rebase on latest mmc/next.
+> * Patch#1: Adjust some error messages for SD UHS-II cards.
+> * Patch#2: Adjust some error messages and register dump for SD UHS-II card
+>
+> Victor Shih (3):
+>   mmc: core: Adjust some error messages for SD UHS-II cards
+>   mmc: sdhci: Add a helper function for dump register in dynamic debug
+>     mode
+>   mmc: sdhci-uhs2: Adjust some error messages and register dump for SD
+>     UHS-II card
+>
+>  drivers/mmc/core/sd_uhs2.c    |  4 ++--
+>  drivers/mmc/host/sdhci-uhs2.c | 20 ++++++++++----------
+>  drivers/mmc/host/sdhci.h      | 16 ++++++++++++++++
+>  3 files changed, 28 insertions(+), 12 deletions(-)
+>
+> --
+> 2.43.0
+>
 
-Above timeline is interesting:
-1. Patch sent on 22nd January.
-2. I provided comments few hours later, the same day.
-3. Silence.
-4. Employee changes job.
-5. Five months later...
+The series applied for next, thanks!
 
-Not your fault Ram of course, but above timeline is not a responsible
-way of upstreaming patches.
-
-Best regards,
-Krzysztof
+Kind regards
+Uffe
 
