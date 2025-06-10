@@ -1,37 +1,38 @@
-Return-Path: <linux-mmc+bounces-6971-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-6970-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CF9AD2EAF
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Jun 2025 09:31:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F87AD2EB1
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Jun 2025 09:31:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E7F43A8748
-	for <lists+linux-mmc@lfdr.de>; Tue, 10 Jun 2025 07:30:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A833F7A4660
+	for <lists+linux-mmc@lfdr.de>; Tue, 10 Jun 2025 07:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C4E27F19F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B6527F164;
 	Tue, 10 Jun 2025 07:31:07 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FECB1D5CC7;
-	Tue, 10 Jun 2025 07:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D3625E479;
+	Tue, 10 Jun 2025 07:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749540667; cv=none; b=MBis1/dHTbb45DAUyo0GM7ixTXQHoDSOkXj2VJDcK8GBIrIbWtnB/f2pCqsCGl5YgnPFg7FYhxKllaNs3fNLmgwbeA2OcR4hJ1I2FbxkWkSAaseiVkCZnC9e0+E9N4B05ZWSaDpebzFx7Cf/wJ65/h7cUFK812o1UPxYVjAHTfk=
+	t=1749540667; cv=none; b=ejlQo6GMtWKHHrPl9Q4RY19GXiyH0EkmD6iVAkIORpscOzOeo8hAA3nBq0UU4YYnPbJgpv8OwHcgLfFhHuAKXYcHnJu9V4De75G8/beyzk6RA6PZ6kXQ8zbK6vDMU3v1fzc+u3lCyv4dJG1hvE8VHnjau5hlaf2vaaQuzyaRzVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749540667; c=relaxed/simple;
-	bh=26tVSt8f1MPboWi2tg6Yi62RNxnrigzIO/5t6WjgNCQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BfcE87nUzbUFhwhW0yl1EzPi3seigoGiSTwwoafi2Kh0N2WbYWK0M47LCRwYs+5PI2pRe+yH1Cfg68Tg3r8QJvZp6zjj8gLDF9t6Nq+gHEpvfwCExRCbRT09qg+IdmKWvL6gl8jJRhIyfKXC8yXtpLxxJ+F509XBXfkyYbk/VgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
+	bh=sl/Jer9SlFDqqCrXwL9SyWXcyXuHCXE0oRjjAb8NyN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kY+1pKzsEq7B/VAlDVYTGHybcH/+JVx3p1iTeK04R48LvnvYCY39KNxP20Xkvkd29GxlR7IDuBTZJziRUY1MxOaGwlmqTbKhIaokJP4Ig+lz6ZJr+0aCV4RhZ+kwIjBvYSq8fat/Y+UY0vCjlN8MIE5oXlO8+wmt5CZ1zrPTYzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: HIP4XrZEQhWoRIC3hI4bUQ==
-X-CSE-MsgGUID: e8tAcXgCRFOnvEF+HnXbiA==
+X-CSE-ConnectionGUID: 7DguW4f4QpGi06t6esroBg==
+X-CSE-MsgGUID: q0s7tISTTni3GfV+tG1kPw==
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 10 Jun 2025 16:25:54 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 10 Jun 2025 16:25:54 +0900
 Received: from shimoda-ggear.. (unknown [10.166.13.45])
-	by relmlir6.idc.renesas.com (Postfix) with ESMTP id E37414178CC8;
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id EF6904178CD3;
 	Tue, 10 Jun 2025 16:25:54 +0900 (JST)
 From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 To: wsa+renesas@sang-engineering.com,
@@ -39,10 +40,12 @@ To: wsa+renesas@sang-engineering.com,
 Cc: linux-mmc@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH 0/2] mmc: host: renesas_sdhi: Fix incorrect auto retuning for an SDIO card
-Date: Tue, 10 Jun 2025 16:25:43 +0900
-Message-ID: <20250610072545.2001435-1-yoshihiro.shimoda.uh@renesas.com>
+Subject: [PATCH 1/2] mmc: host: tmio: Add .sdio_irq()
+Date: Tue, 10 Jun 2025 16:25:44 +0900
+Message-ID: <20250610072545.2001435-2-yoshihiro.shimoda.uh@renesas.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250610072545.2001435-1-yoshihiro.shimoda.uh@renesas.com>
+References: <20250610072545.2001435-1-yoshihiro.shimoda.uh@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -51,39 +54,45 @@ List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This host controller is possible to change incorrect tap if an SDIO
-card is used because DAT1 is used for interrupt signal on SDIO standard
-but the contoller doesn't take care of it. So, in the worst case,
-this behavior causes a CRC error.
+Renesas SDHI controller requires vender specific handling when
+an SDIO irq occurs. So, add .sdio_irq() to the tmio core.
 
-To resolve the issue, add some new ops into the tmio core and
-add fixed code into the renesas_sdhi driver.
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+ drivers/mmc/host/tmio_mmc.h      | 1 +
+ drivers/mmc/host/tmio_mmc_core.c | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-This patch set tested on RZ/G2M (r8a774a1-hihope-rzg2m-ex.dtb) with
-EmbeddedArtists 1ZM module.
-
-Before I don't apply this patch set, the RVSCNTL value was changed
-unexpectidly like below.
-
-[  687.103589] renesas_sdhi_internal_dmac ee100000.mmc: renesas_sdhi_auto_correction: rvscntl = 00000701
-...
-[  768.490979] renesas_sdhi_internal_dmac ee100000.mmc: renesas_sdhi_auto_correction: rvscntl = 00000501
-[  768.500307] renesas_sdhi_internal_dmac ee100000.mmc: renesas_sdhi_auto_correction: rvscntl = 00000401
-[  768.509640] renesas_sdhi_internal_dmac ee100000.mmc: renesas_sdhi_auto_correction: rvscntl = 00000501
-[  768.518947] renesas_sdhi_internal_dmac ee100000.mmc: renesas_sdhi_auto_correction: rvscntl = 00000501
-[  768.528217] renesas_sdhi_internal_dmac ee100000.mmc: renesas_sdhi_auto_correction: rvscntl = 00000501
-[  768.537494] renesas_sdhi_internal_dmac ee100000.mmc: renesas_sdhi_auto_correction: rvscntl = 00000601
-
-Yoshihiro Shimoda (2):
-  mmc: host: tmio: Add .sdio_irq()
-  mmc: host: renesas_sdhi: Fix incorrect auto retuning for an SDIO card
-
- drivers/mmc/host/renesas_sdhi.h      |  1 +
- drivers/mmc/host/renesas_sdhi_core.c | 48 ++++++++++++++++++++++++----
- drivers/mmc/host/tmio_mmc.h          |  1 +
- drivers/mmc/host/tmio_mmc_core.c     |  5 ++-
- 4 files changed, 47 insertions(+), 8 deletions(-)
-
+diff --git a/drivers/mmc/host/tmio_mmc.h b/drivers/mmc/host/tmio_mmc.h
+index 41787ea77a134..717594a3dc698 100644
+--- a/drivers/mmc/host/tmio_mmc.h
++++ b/drivers/mmc/host/tmio_mmc.h
+@@ -193,6 +193,7 @@ struct tmio_mmc_host {
+ 	bool (*check_retune)(struct tmio_mmc_host *host, struct mmc_request *mrq);
+ 	void (*fixup_request)(struct tmio_mmc_host *host, struct mmc_request *mrq);
+ 	unsigned int (*get_timeout_cycles)(struct tmio_mmc_host *host);
++	void (*sdio_irq)(struct tmio_mmc_host *host);
+ 
+ 	const struct tmio_mmc_dma_ops *dma_ops;
+ };
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index b71241f55df57..d16aa0017e8c5 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -696,8 +696,11 @@ static bool __tmio_mmc_sdio_irq(struct tmio_mmc_host *host)
+ 
+ 	sd_ctrl_write16(host, CTL_SDIO_STATUS, sdio_status);
+ 
+-	if (mmc->caps & MMC_CAP_SDIO_IRQ && ireg & TMIO_SDIO_STAT_IOIRQ)
++	if (mmc->caps & MMC_CAP_SDIO_IRQ && ireg & TMIO_SDIO_STAT_IOIRQ) {
++		if (host->sdio_irq)
++			host->sdio_irq(host);
+ 		mmc_signal_sdio_irq(mmc);
++	}
+ 
+ 	return ireg;
+ }
 -- 
 2.43.0
 
