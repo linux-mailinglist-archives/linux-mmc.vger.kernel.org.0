@@ -1,157 +1,154 @@
-Return-Path: <linux-mmc+bounces-7104-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7107-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C72ADE4B1
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Jun 2025 09:43:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A169FADE530
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Jun 2025 10:08:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 656283BB536
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Jun 2025 07:43:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53FE116CB37
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Jun 2025 08:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0F327EFE0;
-	Wed, 18 Jun 2025 07:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSUPo4UD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB14275845;
+	Wed, 18 Jun 2025 08:08:03 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A841FC109;
-	Wed, 18 Jun 2025 07:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED1725C6F0
+	for <linux-mmc@vger.kernel.org>; Wed, 18 Jun 2025 08:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750232605; cv=none; b=XuUh+pQIP2JZJ6VWF1Y19rkjrDPviEmhYB1bcNtQTesmeIQ3L3CKoHaeB6FdSQGmD299+q7nNjccVecbWLw7QcOs9Od2B74sezamd0YOQF0uCagrhEgpxtU0oq8QI6ee9nSkgY962oDL4KmzQK1Tw3V0AWoq+OzMFOZbxrdjL9o=
+	t=1750234083; cv=none; b=eH3mAzcmFsi2fJBqm9Poa8J07fgbUwt4wyBju7/bGIFwx2g62OEJGeKIHlks+uTZNgTo2DWIMBrDAJu+eqqXApaAxa/V41B7cqXkYk9jzra46dzaN3MWsgGqWj3l51jn1FzYD1h07fT3pKxYsLt2gCM76EnyWf6txMNjeaeQ6iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750232605; c=relaxed/simple;
-	bh=NaM2HVWfl6halDDBEMD9hYdrjsVh2VQ5bKdbudC+Mh8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KgIYWv7wAoTWquu2pirIX22NkqqgPojgAH+d3VdORB+LZMLyjabSBUR4bPnjCOGptIGodCFe8z01eQi3GcXeAQAJW8YxEQmLQLtpftAB6zM+j38ZIUoA88tHT1RcfGi7L//sr1rVxU340wbvw4xQhDpsTckGeZ/KnpreeXaB0to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSUPo4UD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BECC4CEE7;
-	Wed, 18 Jun 2025 07:43:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750232605;
-	bh=NaM2HVWfl6halDDBEMD9hYdrjsVh2VQ5bKdbudC+Mh8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lSUPo4UDyGKXa8FiN3gAyDi9cOHjXhy7GW9vUYqVLC9RutJ4knZCvpFROcisXMekF
-	 iod1hN4/XhY1My36ZDJ1YQcgL/dU0FsIW5ru+iHdagUZzWrn5ZhBGEo19wc4U+q3Jc
-	 f4qtcm9lY9JevDgVMKOpoydHDMuSxSLSUU+XRB6IT38y+njyUeJxv9OhNLIyh1+k3L
-	 nVhIzNJEOkkeFN2TDuQo8zL25puHJFURpW2GCcYT5j0eCWQ/HJfMuiUE4sHac/CzaZ
-	 stYhiCczF7rWX2m7WLR6t0h/fMTUBtcUOmu/4Z3Gxs/QLBlkQcNdk2D62jCiGsHQam
-	 xjdcM+yoy5HXQ==
-Message-ID: <6040afd9-a2a8-49f0-85e9-95257b938156@kernel.org>
-Date: Wed, 18 Jun 2025 09:43:19 +0200
+	s=arc-20240116; t=1750234083; c=relaxed/simple;
+	bh=xvX4ag3gAmJrZgEy8RbSxOpykRj9bDtqzprzwDWM6LU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FsukkSfsbkp/NfDq3Ii8BdFJZVnmwKB7KrkFSfWFNbf2phcf13REdipN2DgHqfm4NzXWOp+k2AXVQADiUoI6Drs4cTDDLfOmpj/5Y2pGHLp7yZ1QodvfwiIs/FZOvaeM/293nkky+GjX1vhBm8VnsLylojF8Fp8zoflSfIATIkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.149])
+	by gateway (Coremail) with SMTP id _____8Cx_eLRc1JoV_sYAQ--.16654S3;
+	Wed, 18 Jun 2025 16:07:45 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.149])
+	by front1 (Coremail) with SMTP id qMiowMDxH+XIc1JoikkfAQ--.28608S2;
+	Wed, 18 Jun 2025 16:07:37 +0800 (CST)
+From: Binbin Zhou <zhoubinbin@loongson.cn>
+To: Binbin Zhou <zhoubb.aaron@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	loongarch@lists.linux.dev,
+	linux-mmc@vger.kernel.org,
+	wanghongliang@loongson.cn,
+	Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: [PATCH v3 0/4] LoongArch: Introduce the Loongson-2K MMC host controller driver
+Date: Wed, 18 Jun 2025 16:07:24 +0800
+Message-ID: <cover.1750216134.git.zhoubinbin@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 2/4] dt-bindings: mmc: controller: Add
- max-sd-hs-frequency property
-To: Sarthak Garg <quic_sartgarg@quicinc.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Adrian Hunter <adrian.hunter@intel.com>
-Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- quic_cang@quicinc.com, quic_nguyenb@quicinc.com, quic_rampraka@quicinc.com,
- quic_pragalla@quicinc.com, quic_sayalil@quicinc.com,
- quic_nitirawa@quicinc.com, quic_bhaskarv@quicinc.com, kernel@oss.qualcomm.com
-References: <20250618072818.1667097-1-quic_sartgarg@quicinc.com>
- <20250618072818.1667097-3-quic_sartgarg@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250618072818.1667097-3-quic_sartgarg@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMDxH+XIc1JoikkfAQ--.28608S2
+X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxCF13WF4kXFWxJF15uw18Xrc_yoW5Gr45pa
+	98u343Kr4UGr43Crs3GayrAr15u345J3srGanxJw1kWay7ua4UZ3s2kFWYvFW3urW8KrW7
+	ZFyruF4F9a45CrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvKb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17
+	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_
+	JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
+	CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0
+	I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I
+	8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU
+	0xZFpf9x07jepB-UUUUU=
 
-On 18/06/2025 09:28, Sarthak Garg wrote:
-> Introduce a new optional device tree property `max-sd-hs-frequency` to
-> limit the maximum frequency (in Hz) used for SD cards operating in
-> High-Speed (HS) mode.
-> 
-> This property is useful for platforms with vendor-specific hardware
-> constraints, such as the presence of a level shifter that cannot
-> reliably support the default 50 MHz HS frequency. It allows the host
-> driver to cap the HS mode frequency accordingly.
-> 
-> Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
-> ---
->  .../devicetree/bindings/mmc/mmc-controller-common.yaml | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml
-> index 9a7235439759..1976f5f8c401 100644
-> --- a/Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml
-> @@ -93,6 +93,16 @@ properties:
->      minimum: 400000
->      maximum: 384000000
->  
-> +  max-sd-hs-frequency:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Maximum frequency (in Hz) to be used for SD cards operating in
-> +      High-Speed (HS) mode. This is useful for platforms with vendor-specific
-> +      limitations, such as the presence of a level shifter that cannot support
-> +      the default 50 MHz HS frequency or other.
-> +    minimum: 400000
-> +    maximum: 50000000
+Hi all:
 
-This might be fine, but your DTS suggests clearly this is SoC compatible
-deducible, which I already said at v1.
+This patchset introduce the MMC host controller on Loongson-2K series
+CPUs.
 
-So now you send v3 which is the same as v1, so you get the same comments.
+They are similar, except for the interface characteristics and the use of
+DMA engine, specifically, the Loongson-2K0500/Loongson-2K1000 use an
+externally shared APBDMA engine, while the Loongson-2K2000 uses an
+internally exclusive DMA.
 
-Best regards,
-Krzysztof
+Based on this, I'm splitting the driver into two patches.
+
+List of the patchset:
+Patch1: bindings for Loongson-2K0500/Loongson-2K1000;
+Patch2: driver for MMC controller using externally shared APBDMA engine;
+Patch3: bindings for Loongson-2K2000;
+Patch4: driver for MMC controller using internally exclusive DMA.
+
+Thanks.
+
+-------
+V3:
+- Rebase on linux-mmc/next branch.
+patch(1/4):
+ - Rename dt-binding file as loongson,ls2k0500-mmc.yaml.
+patch(2/4):
+ - Fix lkp error;
+    https://lore.kernel.org/all/202505081845.0NQYX2nS-lkp@intel.com/
+    https://lore.kernel.org/all/202505130918.uanOGxju-lkp@intel.com/
+ - Add regulators support for ios ops;
+ - Add ack_sdio_irq() callback;
+ - Add MMC_CAP2_SDIO_IRQ_NOTHREAD flag;
+patch(3/4):
+ - Add Ack-by tag.
+patch(4/4):
+ - Update commit for fix_data_timeout().
+
+Link to V2:
+https://lore.kernel.org/all/cover.1746581751.git.zhoubinbin@loongson.cn/
+
+V2:
+patch(1/4):
+ - Add reg define for each reg entry.
+
+patch(2/4):
+ - Put all code in the c-file;
+ - Use mmc_from_priv() instead of host->mmc;
+ - Use sdio_signal_irq() instead of mmc_signal_sdio_irq();
+ - Use devm_mmc_alloc_host() instead of mmc_alloc_host();
+ - Use mmc_regulator_get_supply();
+
+patch(4/4):
+ - Add fix_cmd_interrupt function which is needed by Loongson-2K2000.
+
+Link to V1:
+https://lore.kernel.org/linux-mmc/cover.1744273956.git.zhoubinbin@loongson.cn/
+
+Binbin Zhou (4):
+  dt-bindings: mmc: Add Loongson-2K SD/SDIO/eMMC controller binding
+  mmc: loongson2: Add Loongson-2K SD/SDIO controller driver
+  dt-bindings: mmc: loongson,ls2k0500-mmc: Add compatible for
+    Loongson-2K2000
+  mmc: loongson2: Add Loongson-2K2000 SD/SDIO/eMMC controller driver
+
+ .../bindings/mmc/loongson,ls2k0500-mmc.yaml   |  112 ++
+ MAINTAINERS                                   |    7 +
+ drivers/mmc/host/Kconfig                      |   13 +
+ drivers/mmc/host/Makefile                     |    1 +
+ drivers/mmc/host/loongson2-mmc.c              | 1032 +++++++++++++++++
+ 5 files changed, 1165 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/loongson,ls2k0500-mmc.yaml
+ create mode 100644 drivers/mmc/host/loongson2-mmc.c
+
+
+base-commit: 187715cfd12932a528ff3a3952648e2b55381d4c
+-- 
+2.47.1
+
 
