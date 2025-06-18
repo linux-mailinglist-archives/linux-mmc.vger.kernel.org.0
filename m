@@ -1,37 +1,38 @@
-Return-Path: <linux-mmc+bounces-7107-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7105-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A169FADE530
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C898DADE531
 	for <lists+linux-mmc@lfdr.de>; Wed, 18 Jun 2025 10:08:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53FE116CB37
-	for <lists+linux-mmc@lfdr.de>; Wed, 18 Jun 2025 08:08:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31D667A6EDF
+	for <lists+linux-mmc@lfdr.de>; Wed, 18 Jun 2025 08:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB14275845;
-	Wed, 18 Jun 2025 08:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F9E27E7EF;
+	Wed, 18 Jun 2025 08:08:02 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED1725C6F0
-	for <linux-mmc@vger.kernel.org>; Wed, 18 Jun 2025 08:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A2B20C000
+	for <linux-mmc@vger.kernel.org>; Wed, 18 Jun 2025 08:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750234083; cv=none; b=eH3mAzcmFsi2fJBqm9Poa8J07fgbUwt4wyBju7/bGIFwx2g62OEJGeKIHlks+uTZNgTo2DWIMBrDAJu+eqqXApaAxa/V41B7cqXkYk9jzra46dzaN3MWsgGqWj3l51jn1FzYD1h07fT3pKxYsLt2gCM76EnyWf6txMNjeaeQ6iI=
+	t=1750234082; cv=none; b=tah3ggGhiylnIwb0yrHBgdSwyj/Gs5aSxlxKYWq1Yt3C+enVR7Ys3ZL4fAMlRXHHWblG05f8jSLozUKFQls5GoEabru0RGweBQEaCaaESCNZo6jwaOfCc1+lsx25LSYHIqSIGUGIYffsmA48wRqyo4jrdNNIEEHuXAZn5XVFjLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750234083; c=relaxed/simple;
-	bh=xvX4ag3gAmJrZgEy8RbSxOpykRj9bDtqzprzwDWM6LU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FsukkSfsbkp/NfDq3Ii8BdFJZVnmwKB7KrkFSfWFNbf2phcf13REdipN2DgHqfm4NzXWOp+k2AXVQADiUoI6Drs4cTDDLfOmpj/5Y2pGHLp7yZ1QodvfwiIs/FZOvaeM/293nkky+GjX1vhBm8VnsLylojF8Fp8zoflSfIATIkg=
+	s=arc-20240116; t=1750234082; c=relaxed/simple;
+	bh=Ub+cz3yiy3gHtq6XGbvDj1ErurX1K2PN+ayXuh4U6I0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bD9n2HxDJIXUD7X94auh4jMWG3BU2V0q7enCPc31cX6O/inBLKkPJKNvkxzIhrUkGgji+d2vpGmFpuj+IbonpzlAq6DgmXf4otRJgeo6JNDb2TRgG+/1418mprxV6fXwp03a/hJcR/q/hUABCu1Yi2MaT7H5A0vGGhNOiYqgu6E=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.68.149])
-	by gateway (Coremail) with SMTP id _____8Cx_eLRc1JoV_sYAQ--.16654S3;
-	Wed, 18 Jun 2025 16:07:45 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8DxzOLYc1JoYPsYAQ--.56871S3;
+	Wed, 18 Jun 2025 16:07:52 +0800 (CST)
 Received: from localhost.localdomain (unknown [223.64.68.149])
-	by front1 (Coremail) with SMTP id qMiowMDxH+XIc1JoikkfAQ--.28608S2;
-	Wed, 18 Jun 2025 16:07:37 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowMDxH+XIc1JoikkfAQ--.28608S3;
+	Wed, 18 Jun 2025 16:07:42 +0800 (CST)
 From: Binbin Zhou <zhoubinbin@loongson.cn>
 To: Binbin Zhou <zhoubb.aaron@gmail.com>,
 	Huacai Chen <chenhuacai@loongson.cn>,
@@ -42,10 +43,12 @@ Cc: Huacai Chen <chenhuacai@kernel.org>,
 	linux-mmc@vger.kernel.org,
 	wanghongliang@loongson.cn,
 	Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: [PATCH v3 0/4] LoongArch: Introduce the Loongson-2K MMC host controller driver
-Date: Wed, 18 Jun 2025 16:07:24 +0800
-Message-ID: <cover.1750216134.git.zhoubinbin@loongson.cn>
+Subject: [PATCH v3 1/4] dt-bindings: mmc: Add Loongson-2K SD/SDIO/eMMC controller binding
+Date: Wed, 18 Jun 2025 16:07:25 +0800
+Message-ID: <9eb07605c1446f4638843a719817a4f92c34181e.1750216134.git.zhoubinbin@loongson.cn>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1750216134.git.zhoubinbin@loongson.cn>
+References: <cover.1750216134.git.zhoubinbin@loongson.cn>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -53,101 +56,128 @@ List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMDxH+XIc1JoikkfAQ--.28608S2
+X-CM-TRANSID:qMiowMDxH+XIc1JoikkfAQ--.28608S3
 X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxCF13WF4kXFWxJF15uw18Xrc_yoW5Gr45pa
-	98u343Kr4UGr43Crs3GayrAr15u345J3srGanxJw1kWay7ua4UZ3s2kFWYvFW3urW8KrW7
-	ZFyruF4F9a45CrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoWxGw1UAr13uF4DWFyfAw4kXwc_yoW5Ary3pa
+	nrCr9rGr40qF13Zws3Ka48Cw1rX3s7CrnrXFsrJw17Gas8Wa4Yqw1akFyrZa43CrW2qFW7
+	ZFyFkr45Ca47ArcCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
 	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvKb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	0xBIdaVrnRJUUUvEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1a6r1DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
 	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
 	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
 	GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
-	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17
-	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5
+	McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
 	1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_
 	JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
-	CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0
-	I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I
-	8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU
-	0xZFpf9x07jepB-UUUUU=
+	CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0
+	I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I
+	8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73
+	UjIFyTuYvjxUFc_-DUUUU
 
-Hi all:
+Add the Loongson-2K SoC's SD/SDIO/eMMC controller binding with DT schema
+format using json-schema.
 
-This patchset introduce the MMC host controller on Loongson-2K series
-CPUs.
-
-They are similar, except for the interface characteristics and the use of
-DMA engine, specifically, the Loongson-2K0500/Loongson-2K1000 use an
-externally shared APBDMA engine, while the Loongson-2K2000 uses an
-internally exclusive DMA.
-
-Based on this, I'm splitting the driver into two patches.
-
-List of the patchset:
-Patch1: bindings for Loongson-2K0500/Loongson-2K1000;
-Patch2: driver for MMC controller using externally shared APBDMA engine;
-Patch3: bindings for Loongson-2K2000;
-Patch4: driver for MMC controller using internally exclusive DMA.
-
-Thanks.
-
--------
-V3:
-- Rebase on linux-mmc/next branch.
-patch(1/4):
- - Rename dt-binding file as loongson,ls2k0500-mmc.yaml.
-patch(2/4):
- - Fix lkp error;
-    https://lore.kernel.org/all/202505081845.0NQYX2nS-lkp@intel.com/
-    https://lore.kernel.org/all/202505130918.uanOGxju-lkp@intel.com/
- - Add regulators support for ios ops;
- - Add ack_sdio_irq() callback;
- - Add MMC_CAP2_SDIO_IRQ_NOTHREAD flag;
-patch(3/4):
- - Add Ack-by tag.
-patch(4/4):
- - Update commit for fix_data_timeout().
-
-Link to V2:
-https://lore.kernel.org/all/cover.1746581751.git.zhoubinbin@loongson.cn/
-
-V2:
-patch(1/4):
- - Add reg define for each reg entry.
-
-patch(2/4):
- - Put all code in the c-file;
- - Use mmc_from_priv() instead of host->mmc;
- - Use sdio_signal_irq() instead of mmc_signal_sdio_irq();
- - Use devm_mmc_alloc_host() instead of mmc_alloc_host();
- - Use mmc_regulator_get_supply();
-
-patch(4/4):
- - Add fix_cmd_interrupt function which is needed by Loongson-2K2000.
-
-Link to V1:
-https://lore.kernel.org/linux-mmc/cover.1744273956.git.zhoubinbin@loongson.cn/
-
-Binbin Zhou (4):
-  dt-bindings: mmc: Add Loongson-2K SD/SDIO/eMMC controller binding
-  mmc: loongson2: Add Loongson-2K SD/SDIO controller driver
-  dt-bindings: mmc: loongson,ls2k0500-mmc: Add compatible for
-    Loongson-2K2000
-  mmc: loongson2: Add Loongson-2K2000 SD/SDIO/eMMC controller driver
-
- .../bindings/mmc/loongson,ls2k0500-mmc.yaml   |  112 ++
- MAINTAINERS                                   |    7 +
- drivers/mmc/host/Kconfig                      |   13 +
- drivers/mmc/host/Makefile                     |    1 +
- drivers/mmc/host/loongson2-mmc.c              | 1032 +++++++++++++++++
- 5 files changed, 1165 insertions(+)
+Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+---
+ .../bindings/mmc/loongson,ls2k0500-mmc.yaml   | 69 +++++++++++++++++++
+ MAINTAINERS                                   |  6 ++
+ 2 files changed, 75 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/mmc/loongson,ls2k0500-mmc.yaml
- create mode 100644 drivers/mmc/host/loongson2-mmc.c
 
-
-base-commit: 187715cfd12932a528ff3a3952648e2b55381d4c
+diff --git a/Documentation/devicetree/bindings/mmc/loongson,ls2k0500-mmc.yaml b/Documentation/devicetree/bindings/mmc/loongson,ls2k0500-mmc.yaml
+new file mode 100644
+index 000000000000..f2f10b2c618c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mmc/loongson,ls2k0500-mmc.yaml
+@@ -0,0 +1,69 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mmc/loongson,ls2k0500-mmc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: The SD/SDIO/eMMC host controller for Loongson-2K family SoCs
++
++description:
++  The MMC host controller on the Loongson-2K0500/2K1000 (using an externally
++  shared apbdma controller) provides the SD and SDIO device interfaces.
++
++maintainers:
++  - Binbin Zhou <zhoubinbin@loongson.cn>
++
++allOf:
++  - $ref: mmc-controller.yaml#
++
++properties:
++  compatible:
++    enum:
++      - loongson,ls2k0500-mmc
++      - loongson,ls2k1000-mmc
++
++  reg:
++    items:
++      - description: Loongson-2K MMC controller registers.
++      - description: APB DMA config register for Loongson-2K MMC controller.
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  dmas:
++    maxItems: 1
++
++  dma-names:
++    const: rx-tx
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - dmas
++  - dma-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/clock/loongson,ls2k-clk.h>
++
++    mmc@1fe2c000 {
++        compatible = "loongson,ls2k1000-mmc";
++        reg = <0x1fe2c000 0x68>,
++              <0x1fe00438 0x8>;
++        interrupt-parent = <&liointc0>;
++        interrupts = <31 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&clk LOONGSON2_APB_CLK>;
++        dmas = <&apbdma1 0>;
++        dma-names = "rx-tx";
++        bus-width = <4>;
++        cd-gpios = <&gpio0 22 GPIO_ACTIVE_LOW>;
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a92290fffa16..2d1cdd2cfc2b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14175,6 +14175,12 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/hwinfo/loongson,ls2k-chipid.yaml
+ F:	drivers/soc/loongson/loongson2_guts.c
+ 
++LOONGSON-2 SOC SERIES MMC/SD/SDIO CONTROLLER DRIVER
++M:	Binbin Zhou <zhoubinbin@loongson.cn>
++L:	linux-mmc@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/mmc/loongson,ls2k0500-mmc.yaml
++
+ LOONGSON-2 SOC SERIES PM DRIVER
+ M:	Yinbo Zhu <zhuyinbo@loongson.cn>
+ L:	linux-pm@vger.kernel.org
 -- 
 2.47.1
 
