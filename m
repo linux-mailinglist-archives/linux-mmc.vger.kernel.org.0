@@ -1,125 +1,109 @@
-Return-Path: <linux-mmc+bounces-7215-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7218-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719C2AE6AF9
-	for <lists+linux-mmc@lfdr.de>; Tue, 24 Jun 2025 17:29:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36D0AE721F
+	for <lists+linux-mmc@lfdr.de>; Wed, 25 Jun 2025 00:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6663F7ADF4D
-	for <lists+linux-mmc@lfdr.de>; Tue, 24 Jun 2025 15:27:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B68981734C0
+	for <lists+linux-mmc@lfdr.de>; Tue, 24 Jun 2025 22:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C6C3074BE;
-	Tue, 24 Jun 2025 15:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D9325BEEA;
+	Tue, 24 Jun 2025 22:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ttm8QQto"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="JgE1WtSN"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03B628BAA6
-	for <linux-mmc@vger.kernel.org>; Tue, 24 Jun 2025 15:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0B325B313;
+	Tue, 24 Jun 2025 22:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750777878; cv=none; b=bKdXF8RE/poYk7IGOL33Nz7A8foUPA6LMlaY6dq5Y1duqgKqZPg6UACPkrqPnTvXLioJ5hsdsFNh9inX8po6leXyAMqsMv8hWDMPtVUD6Ru4WsJL52bkRYb03oJgRYJ8/yIhtiX+VYHEvcLSFemR30pBK4eOWzz+NsRCgr7uk+k=
+	t=1750803168; cv=none; b=OsRuN3Avw6j7isYgEeicvaPHmzy66Gx60ULTQIOLaF9rMn/qrUe3oB0DaHqqMCQpLaxeTv+SErF7KZ5GEIIsQ1xqye7r/RI4GBrnSc8T90s4mBzK6i4VEIULVlvBiFNiCu/HfVjHP40IElZFbGHZHxPUU27Mw0v8KJDWg8103RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750777878; c=relaxed/simple;
-	bh=zM/4jnIerkh7BjJTADhSaTiNt1HHSQSU60svEA3kA8k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K99a0N2FtSL3vPFCVzxYyOH6/Jxjt2aQzraPoZ7lJt083UJ23d1xstim0X4nyFelNun55qlRU4R8OJ+WejuywJZtoj2m9tSu6OoJ+Yv+UrdOKPLvvH/rz3nhP1HugYK22b8v6URcUHUzQOTbebcI75hwEW1wlBvLPwAyS1DQmSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ttm8QQto; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e7b4ba530feso4626826276.1
-        for <linux-mmc@vger.kernel.org>; Tue, 24 Jun 2025 08:11:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750777875; x=1751382675; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=cZyvelbjEQEqEmmuqZpMjpZROwmzP7cZ0+TBAMIzE3c=;
-        b=ttm8QQtoAfImb6IPSHdfoIHB047p/QQ4euFwPDTKS86gxRHUreF4lho6PCKwtGXHCq
-         seqGUuhgvkzKWXAKxRFq/4aJBK5wEQK5IFUndCC333jzpmOAEdmvAgJXEjOUbbmuEr2B
-         lDlWTaao/yz7Qo1Y3WVOSAxJBjT6LGNjUj1lblRfOe2fPmQVKOSl0vFiahNUZiUb7F84
-         HkJGw/ZWuglaVOX4c5z8pJg00sw3sUGioK73cv+NVFct4oInq6pWMAYra+WUsEzWoS7a
-         RqMOVGIs0tbpCgdUuEP1GCDW3YpKPfMDQH1M6ScDRzFRGaiEHuiPKbi8XKMaO2HSVqZ9
-         4SPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750777875; x=1751382675;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cZyvelbjEQEqEmmuqZpMjpZROwmzP7cZ0+TBAMIzE3c=;
-        b=DJPX1+KxyRF0PTlCDXMWpCcMXBnt/sP0ll0mVB2GQh2JnuPKz/6Qvlsd3IKEj6iPMr
-         mJ3uX66hnrWEqSxl+JlGOf0LMGaeJCulsFgZbFWUNO+vOTS/4AeeKIBIOZi5DAlYADne
-         mz/iFZtPW3VJ3slqiqtnrqWHhUcVJuCqR00ukdQ0BbPyfy1yC0qM2V5a9r+ntYqIAVW9
-         P9+2RKfUQjbYosDTYl3IKkhj5cGMRzkGfJJxMtbwkG9p/UH01IXm7J/Had1pGvv2J+4Z
-         cYpxB7NRtFPBS3bJEa6gCo2YKf9DkAUQZztuNNsShBI0CwNxRAlIVaaqfETg92bPrp+V
-         sN3g==
-X-Gm-Message-State: AOJu0Ywgkgh6ZAgsr8AaWOUjpta42wD49hMEv8tv8ugQYCmPjhZT1Vlj
-	Z94EiuCUAxGsYwieomwMKMKykrgNPy0FGAj4vTQsi47UdU36nL2SBme5pF8683kTF+YsHHJRjb3
-	jLkjRI+lqC+LCNLat5+bI4BLukqk3QLRF8tdKbPo2sXWcMa3Nwqoc
-X-Gm-Gg: ASbGncs9CqGDXvjdqtpC7K7yp58uPf0Sf5dbx9z5CrmeZIzdgylPpNph94e5klnyEol
-	dc3IgJU/2MPm5d3zvOhQc/lGI6hGU8ZRgMMIspyZOOYpvDICKzcTpZleNbRotBQKLP74373NCjO
-	ACIA3QdnsaAO9phPJxX9wPW4V9cQAbVXLiJzOcGa85rmqoPjN9xi0tF0E=
-X-Google-Smtp-Source: AGHT+IE2YE2dMSoRUC1FPE3vSTuYpaQnqEVAkIyEcbadurpq23DwVzL6j1/CsQ4NunZ53te+NMSVqJITZAanvE3PsSk=
-X-Received: by 2002:a05:6902:90f:b0:e7d:d162:f15a with SMTP id
- 3f1490d57ef6-e842bcffd85mr21917789276.40.1750777874952; Tue, 24 Jun 2025
- 08:11:14 -0700 (PDT)
+	s=arc-20240116; t=1750803168; c=relaxed/simple;
+	bh=2MjRU/ayQyqD2mx0PyDKDNA6DcuITZbDsRfobVCl/Uc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TZB6Rde4psVrJ3e+RdOzYRenGa3eDC3mkKbJPFniN9ho3+5hwRRnZ4GbdxRjuZ/ydcVXJnl32uJnJ0V3rHrsEFEcTyQ0CbquAwwlH8dyIMmVM5mn4RQaNd4vRPk0i2C6BO69352Nb1nmmCuvumO49IgvxeLQsZYaZwautJ1/V+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=JgE1WtSN; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55OMCV5a1669410;
+	Tue, 24 Jun 2025 17:12:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1750803151;
+	bh=9+TWzMrm54xfZ0RWb5/Dm+shOivo1lObaYOF3smCwj4=;
+	h=From:To:CC:Subject:Date;
+	b=JgE1WtSN9PhyKQdfZ59E1u6JrAuHkGJ40AHaSUh2sgThXcI8Nj5D3lDRwqllD5qn5
+	 +FWUSlWCATUURND5C3RApKRZV7HJssEpXwokEWN0zY/IydEHhXN+6RcN8NtKrfL/mI
+	 EhBy7NBE1iJu0+tbfztgZ4tK9K/FpQNbMuVlcCyg=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55OMCUrk1942543
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 24 Jun 2025 17:12:30 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 24
+ Jun 2025 17:12:30 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 24 Jun 2025 17:12:30 -0500
+Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55OMCU9J2248346;
+	Tue, 24 Jun 2025 17:12:30 -0500
+From: Judith Mendez <jm@ti.com>
+To: Judith Mendez <jm@ti.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian
+ Hunter <adrian.hunter@intel.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+CC: Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
+        Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+Subject: [PATCH 0/3] Workaround for Errata i2312
+Date: Tue, 24 Jun 2025 17:12:27 -0500
+Message-ID: <20250624221230.1952291-1-jm@ti.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250623083300.236198-1-avri.altman@sandisk.com>
-In-Reply-To: <20250623083300.236198-1-avri.altman@sandisk.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 24 Jun 2025 17:10:38 +0200
-X-Gm-Features: Ac12FXzV_soGEtGVuddYArCOoZdvY38aovMRR3EnbzgnCNKc0Cna3LWar9M0LdQ
-Message-ID: <CAPDyKFohJ4CXWWb0cqgTsFH1TRyKdknZ45su8B=wRToDysSRUA@mail.gmail.com>
-Subject: Re: [PATCH] mmc-utils: Pass key_mac buffer to rpmb_get_key()
-To: Avri Altman <avri.altman@sandisk.com>
-Cc: linux-mmc@vger.kernel.org, Simon Lindhorst <s.lindhorst@wut.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Mon, 23 Jun 2025 at 10:40, Avri Altman <avri.altman@sandisk.com> wrote:
->
-> This patch fixes an issue where the key_mac buffer was not passed to
-> rpmb_get_key() in do_rpmb_write_key(), which could result in incorrect
-> key handling during RPMB key programming.
->
-> This is a resend of a patch originally submitted by Simon Lindhorst,
-> which was previously rejected due to formatting issues.
->
-> Fixes: 05051e40351c ("mmc-utils: Refactor RPMB key handling into a separate function")
-> Signed-off-by: Simon Lindhorst <s.lindhorst@wut.de>
-> Signed-off-by: Avri Altman <avri.altman@sandisk.com>
+This patch series includes fix for Errata i2312 [0].
 
-Applied for master (and included in the v1.0 release), thanks!
+Also include fixes for removing eMMC HS DDR support for am62
+SK which has been descoped as per datasheet [1] and enabling internal
+pullups for AM62 SK and AM62SIP SK, as per JESD84 spec recommendations.
 
-Kind regards
-Uffe
+[0] https://www.ti.com/lit/pdf/sprz487
+[1] https://www.ti.com/lit/gpn/am625
 
+Judith Mendez (3):
+  mmc: sdhci_am654: Workaround for Errata i2312
+  arm64: dts: ti: k3-am62-main: Remove eMMC High Speed DDR support
+  arm64: dts: ti: k3-am62*: Move eMMC pinmux to top level board file
 
-> ---
->  mmc_cmds.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mmc_cmds.c b/mmc_cmds.c
-> index b2cc3d6..7994223 100644
-> --- a/mmc_cmds.c
-> +++ b/mmc_cmds.c
-> @@ -2289,7 +2289,7 @@ int do_rpmb_write_key(int nargs, char **argv)
->                 exit(1);
->         }
->
-> -       ret = rpmb_get_key(argv[2], &frame_in, NULL, false);
-> +       ret = rpmb_get_key(argv[2], &frame_in, frame_in.key_mac, false);
->         if (ret)
->                 return ret;
->         /* Execute RPMB op */
-> --
-> 2.25.1
->
+ arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts      | 25 +++++++++++++++++++
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi      |  1 -
+ arch/arm64/boot/dts/ti/k3-am625-sk.dts        | 25 +++++++++++++++++++
+ .../arm64/boot/dts/ti/k3-am62x-sk-common.dtsi | 24 ------------------
+ drivers/mmc/host/sdhci_am654.c                |  9 ++++---
+ 5 files changed, 56 insertions(+), 28 deletions(-)
+
+-- 
+2.49.0
+
 
