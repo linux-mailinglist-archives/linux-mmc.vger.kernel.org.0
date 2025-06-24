@@ -1,234 +1,114 @@
-Return-Path: <linux-mmc+bounces-7216-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7220-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360DBAE721A
-	for <lists+linux-mmc@lfdr.de>; Wed, 25 Jun 2025 00:13:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C6BAE7343
+	for <lists+linux-mmc@lfdr.de>; Wed, 25 Jun 2025 01:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8A016B22F
-	for <lists+linux-mmc@lfdr.de>; Tue, 24 Jun 2025 22:13:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40D381BC2E52
+	for <lists+linux-mmc@lfdr.de>; Tue, 24 Jun 2025 23:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9709325B2F2;
-	Tue, 24 Jun 2025 22:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512AF25A2CE;
+	Tue, 24 Jun 2025 23:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="m0BxnkM8"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="Y6jvrWrI"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F0E259CBB;
-	Tue, 24 Jun 2025 22:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683AC26B0B6;
+	Tue, 24 Jun 2025 23:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750803165; cv=none; b=YEeuHrNuvpwAV8QgIZakRgql5GVJLerV7mclqq5jgsqmzYCh34yb8jCGELp1QmtztiyrXB2HgvoAi/WUio+jwLC2ZpNvrbHoOz7SSjTEQ/7NR5gsVyhrWneG/Xp0QUvbjvrOwY/VWwwsYGbabkyhJiAOVB066nQa8c2RaNpvR8Y=
+	t=1750807909; cv=none; b=lmrvMuKEKLhDcCLKEyJJJNwn4vPgYs+b3xpCvYIL6puiXQjIqD8Xg2sT6QxF88jvDliic5u2+EHpgncIUrTtg342lVCQAZeGJ6CFuXfAAS2/typCxKQnYRVfgh6jpURr+ICFn3toeUocLLoygjMSOGjrNWd8iSK369jr/xZDQIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750803165; c=relaxed/simple;
-	bh=fwP6WJajlbF0dFz8/xjQx+4WKNl5as/lo5yVIQOZl0I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IXOZ2YxENz22UF/n8I641aWCk+0z8j8g8R5Z4kxK4EPuhm2g4ZQMyY8yTcMMpkDFRsnZMyrHLu4puuDWlK6h7nPOnO9fxelt8t1c1r21RFWzdPZitiYU6HfP4HKZwdBYw0wNxAdrwzFHYzt/eIthWp0dxnQ7WFB3KlfnbH05X1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=m0BxnkM8; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55OMCVfg1932977;
-	Tue, 24 Jun 2025 17:12:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1750803151;
-	bh=XXGnLwf/tFwhXvoFqY+YB6Y5NH9zFpUBSbtdZJ0M63U=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=m0BxnkM8LM+4HhzZzajTzUFgpI8hXtNUzfywA98wRIJVa9niUQijywU887GFXeLNR
-	 Agl15SoaWyRajy2tprWQ0sdXNjbZms2muPwu3MrVEYu+UznK2xXkGBvV9tVR70q4Ru
-	 Wv2H+wO4J77+gHwOpGTYbdsuhyRFrHkMc0kVKJ38=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55OMCUg21942544
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Tue, 24 Jun 2025 17:12:30 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 24
- Jun 2025 17:12:30 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Tue, 24 Jun 2025 17:12:30 -0500
-Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55OMCU9M2248346;
-	Tue, 24 Jun 2025 17:12:30 -0500
-From: Judith Mendez <jm@ti.com>
-To: Judith Mendez <jm@ti.com>, Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian
- Hunter <adrian.hunter@intel.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-CC: Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
-        Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
-Subject: [PATCH 3/3] arm64: dts: ti: k3-am62*: Move eMMC pinmux to top level board file
-Date: Tue, 24 Jun 2025 17:12:30 -0500
-Message-ID: <20250624221230.1952291-4-jm@ti.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250624221230.1952291-1-jm@ti.com>
-References: <20250624221230.1952291-1-jm@ti.com>
+	s=arc-20240116; t=1750807909; c=relaxed/simple;
+	bh=wAMDHm88X5DnFfTxjTMlZawEVZqAwKU/UMzX5RRrhEw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qQ5phYTIopve9Q6Md5JE7xgYS6nOjy/DIOdeuVwrmKXy3bF7CCFugbzOWNI454WBrb03LRrZvOiPTI8TWH+nK1Ffxok4UoImdRT6Zk/8GHqTGi8yFIe1BjUQR2zWB6TlH/PFtd5HW7ewYj/q94/spjW5252Otk8Uk5lQu0OehE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=Y6jvrWrI; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1750807905;
+	bh=wAMDHm88X5DnFfTxjTMlZawEVZqAwKU/UMzX5RRrhEw=;
+	h=Subject:From:To:Date:In-Reply-To:References;
+	b=Y6jvrWrI5GNZ8lXWo//Q5UUJUo0iIL68eNHWVPCv70YpSP9TgqLYIqrhLciejhrJ4
+	 sr7IxwJDOYd14/Uvs+JF68Am0yAqaZfy2MqMB36oE1tNHNGmRA/3XoCLPqnM9Mif3O
+	 g8GYNQ1O7JgeKupftTkehLa/o0vmjTAUa30cVSD827oJ3ezXewbD59Go4c7BycZDW2
+	 PENUZQ9mEIVg1qqezl7FA93VIgUQ3gB2899NYCNjre75vK6P1yByCpAtVcCnrYYxJ3
+	 8FsitDufw47hob7JSjlkvJUg23ARqKE8K3Qw44qXdJM7JAk283yaT8sihzjwLfCXyn
+	 54yrE/oJjuR8A==
+Received: from [192.168.68.112] (unknown [180.150.112.166])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 2B1F7640CD;
+	Wed, 25 Jun 2025 07:31:43 +0800 (AWST)
+Message-ID: <c41c3dfc38c1adc5d544e365de355579d42f90b5.camel@codeconstruct.com.au>
+Subject: Re: [PATCH 7/8] mmc: sdhci-of-aspeed: Remove timing phase
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Cool Lee <cool_lee@aspeedtech.com>, "adrian.hunter@intel.com"
+ <adrian.hunter@intel.com>, "ulf.hansson@linaro.org"
+ <ulf.hansson@linaro.org>,  "joel@jms.id.au" <joel@jms.id.au>,
+ "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>, 
+ "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+ "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
+ "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, BMC-SW <BMC-SW@aspeedtech.com>
+Date: Wed, 25 Jun 2025 09:01:42 +0930
+In-Reply-To: <SEYPR06MB7072FC07B4EFC03BB25B537F957CA@SEYPR06MB7072.apcprd06.prod.outlook.com>
+References: <20250615035803.3752235-1-cool_lee@aspeedtech.com>
+	 <20250615035803.3752235-8-cool_lee@aspeedtech.com>
+	 <9c85755a8aff6e6f8a5548f0b5e758dce7d6353e.camel@codeconstruct.com.au>
+	 <SEYPR06MB7072FC07B4EFC03BB25B537F957CA@SEYPR06MB7072.apcprd06.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-This moves pinmux child nodes for sdhci0 node from k3-am62x-sk-common
-to each top level board file. This is needed since we require internal
-pullups for AM62x SK and not for AM62 LP SK since it has external
-pullups on DATA 1-7.
+On Fri, 2025-06-20 at 10:23 +0000, Cool Lee wrote:
+>=20
+> > > The timing phase is no more needed since the auto tuning is
+> > > applied.
+> > >=20
+> >=20
+> > I feel this is unwise: we're now ignoring constraints set in the
+> > devicetree.
+> > Auto-tuning is fine, but I think that should be a feature that new
+> > platforms can
+> > exploit by default. Older platforms that do specify the phase
+> > values via the
+> > devicetree can be converted at the leisure of their maintainers (by
+> > removing
+> > the phase properties).
+> >=20
+> > Support needs to remain in the driver until there are no (aspeed-
+> > based)
+> > devicetrees specifying the phases.
+> The timing phase only works on AST2600 or newer platform which has
+> added a delay cell in the RTL.
+> The older platform AST2500, AST2400 doesn't support the timing phase.
+> It supposed no effect on older platform.=20
+> The old manner that a static timing value customized from devicetree
+> is inconvenient because customer needs to check waveform associated
+> with each delay taps. Once the emmc parts changed, a fixed timing
+> value may not work. That's why auto tune here instead of a static
+> value.
 
-Internal pulls are required for AM62 SK as per JESD84 spec
-recommendation to prevent unconnected lines floating.
+Sure, I understand that auto-tuning is more convenient, but in my view,
+there's no reason to remove support for static phase values for now. On
+the contrary, switching entirely to auto-tuning risks regressions for
+existing platforms that do specify static values.
 
-Signed-off-by: Judith Mendez <jm@ti.com>
----
- arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts      | 25 +++++++++++++++++++
- arch/arm64/boot/dts/ti/k3-am625-sk.dts        | 25 +++++++++++++++++++
- .../arm64/boot/dts/ti/k3-am62x-sk-common.dtsi | 24 ------------------
- 3 files changed, 50 insertions(+), 24 deletions(-)
+Can you please drop the patch for now? We can revisit removing static
+value support in the future.
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts b/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-index aafdb90c0eb7..973b145bb244 100644
---- a/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-@@ -74,6 +74,22 @@ vddshv_sdio: regulator-4 {
- };
- 
- &main_pmx0 {
-+	main_mmc0_pins_default: main-mmc0-default-pins {
-+		bootph-all;
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (V3) MMC0_CMD */
-+			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (Y1) MMC0_CLK */
-+			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (V2) MMC0_DAT0 */
-+			AM62X_IOPAD(0x210, PIN_INPUT, 0) /* (V1) MMC0_DAT1 */
-+			AM62X_IOPAD(0x20c, PIN_INPUT, 0) /* (W2) MMC0_DAT2 */
-+			AM62X_IOPAD(0x208, PIN_INPUT, 0) /* (W1) MMC0_DAT3 */
-+			AM62X_IOPAD(0x204, PIN_INPUT, 0) /* (Y2) MMC0_DAT4 */
-+			AM62X_IOPAD(0x200, PIN_INPUT, 0) /* (W3) MMC0_DAT5 */
-+			AM62X_IOPAD(0x1fc, PIN_INPUT, 0) /* (W4) MMC0_DAT6 */
-+			AM62X_IOPAD(0x1f8, PIN_INPUT, 0) /* (V4) MMC0_DAT7 */
-+		>;
-+	};
-+
- 	vddshv_sdio_pins_default: vddshv-sdio-default-pins {
- 		pinctrl-single,pins = <
- 			AM62X_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
-@@ -144,6 +160,15 @@ exp2: gpio@23 {
- 	};
- };
- 
-+&sdhci0 {
-+	bootph-all;
-+	status = "okay";
-+	non-removable;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_mmc0_pins_default>;
-+	disable-wp;
-+};
-+
- &sdhci1 {
- 	vmmc-supply = <&vdd_mmc1>;
- 	vqmmc-supply = <&vddshv_sdio>;
-diff --git a/arch/arm64/boot/dts/ti/k3-am625-sk.dts b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-index 2fbfa3719345..4fc018174470 100644
---- a/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-@@ -106,6 +106,22 @@ vcc_1v8: regulator-5 {
- };
- 
- &main_pmx0 {
-+	main_mmc0_pins_default: main-mmc0-default-pins {
-+		bootph-all;
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (Y3) MMC0_CMD */
-+			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (AB1) MMC0_CLK */
-+			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (AA2) MMC0_DAT0 */
-+			AM62X_IOPAD(0x210, PIN_INPUT_PULLUP, 0) /* (AA1) MMC0_DAT1 */
-+			AM62X_IOPAD(0x20c, PIN_INPUT_PULLUP, 0) /* (AA3) MMC0_DAT2 */
-+			AM62X_IOPAD(0x208, PIN_INPUT_PULLUP, 0) /* (Y4) MMC0_DAT3 */
-+			AM62X_IOPAD(0x204, PIN_INPUT_PULLUP, 0) /* (AB2) MMC0_DAT4 */
-+			AM62X_IOPAD(0x200, PIN_INPUT_PULLUP, 0) /* (AC1) MMC0_DAT5 */
-+			AM62X_IOPAD(0x1fc, PIN_INPUT_PULLUP, 0) /* (AD2) MMC0_DAT6 */
-+			AM62X_IOPAD(0x1f8, PIN_INPUT_PULLUP, 0) /* (AC2) MMC0_DAT7 */
-+		>;
-+	};
-+
- 	main_rgmii2_pins_default: main-rgmii2-default-pins {
- 		bootph-all;
- 		pinctrl-single,pins = <
-@@ -195,6 +211,15 @@ exp1: gpio@22 {
- 	};
- };
- 
-+&sdhci0 {
-+	bootph-all;
-+	status = "okay";
-+	non-removable;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_mmc0_pins_default>;
-+	disable-wp;
-+};
-+
- &sdhci1 {
- 	vmmc-supply = <&vdd_mmc1>;
- 	vqmmc-supply = <&vdd_sd_dv>;
-diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-index ee8337bfbbfd..13e1d36123d5 100644
---- a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-@@ -203,22 +203,6 @@ AM62X_IOPAD(0x0b4, PIN_INPUT_PULLUP, 1) /* (K24/H19) GPMC0_CSn3.I2C2_SDA */
- 		>;
- 	};
- 
--	main_mmc0_pins_default: main-mmc0-default-pins {
--		bootph-all;
--		pinctrl-single,pins = <
--			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (Y3/V3) MMC0_CMD */
--			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (AB1/Y1) MMC0_CLK */
--			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (AA2/V2) MMC0_DAT0 */
--			AM62X_IOPAD(0x210, PIN_INPUT, 0) /* (AA1/V1) MMC0_DAT1 */
--			AM62X_IOPAD(0x20c, PIN_INPUT, 0) /* (AA3/W2) MMC0_DAT2 */
--			AM62X_IOPAD(0x208, PIN_INPUT, 0) /* (Y4/W1) MMC0_DAT3 */
--			AM62X_IOPAD(0x204, PIN_INPUT, 0) /* (AB2/Y2) MMC0_DAT4 */
--			AM62X_IOPAD(0x200, PIN_INPUT, 0) /* (AC1/W3) MMC0_DAT5 */
--			AM62X_IOPAD(0x1fc, PIN_INPUT, 0) /* (AD2/W4) MMC0_DAT6 */
--			AM62X_IOPAD(0x1f8, PIN_INPUT, 0) /* (AC2/V4) MMC0_DAT7 */
--		>;
--	};
--
- 	main_mmc1_pins_default: main-mmc1-default-pins {
- 		bootph-all;
- 		pinctrl-single,pins = <
-@@ -457,14 +441,6 @@ &main_i2c2 {
- 	clock-frequency = <400000>;
- };
- 
--&sdhci0 {
--	bootph-all;
--	status = "okay";
--	non-removable;
--	pinctrl-names = "default";
--	pinctrl-0 = <&main_mmc0_pins_default>;
--};
--
- &sdhci1 {
- 	/* SD/MMC */
- 	bootph-all;
--- 
-2.49.0
-
+Andrew
 
