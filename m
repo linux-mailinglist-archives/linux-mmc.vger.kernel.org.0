@@ -1,42 +1,43 @@
-Return-Path: <linux-mmc+bounces-7273-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7271-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0C0AEAD15
-	for <lists+linux-mmc@lfdr.de>; Fri, 27 Jun 2025 04:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A777AEACFF
+	for <lists+linux-mmc@lfdr.de>; Fri, 27 Jun 2025 04:50:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFA9417CC1E
-	for <lists+linux-mmc@lfdr.de>; Fri, 27 Jun 2025 02:59:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9264A6E02
+	for <lists+linux-mmc@lfdr.de>; Fri, 27 Jun 2025 02:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569BF194137;
-	Fri, 27 Jun 2025 02:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64455186294;
+	Fri, 27 Jun 2025 02:50:52 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27051362
-	for <linux-mmc@vger.kernel.org>; Fri, 27 Jun 2025 02:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5AD219E8
+	for <linux-mmc@vger.kernel.org>; Fri, 27 Jun 2025 02:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750993149; cv=none; b=IT5vDa6xbyb7d1bCPNetMowraPc1Q9ZH1fTkrZfebo3Yc1RuCakmKohdbD4+uEmw7AIFZHVDqPxE0JnH73ykJSrUDL/Wb7HV7Ny1Atcx1P4szmOJ9f91zIR+J58WnbSDZ53wPZFI3q4b2L5qNnD9IqoEN0LCTrGSJF+4W4bGehM=
+	t=1750992652; cv=none; b=OP+bknS76coUNjKhMwSQGQKHvNlV+E8BqMq1+3XB2QVdsVkKl0zOWE0s/acRfm87fw5B4G5+mZm7itzQUbIDG5+gEBUNl92uz3sFIbof/8BkkVEYhXIbNPo1bUxRWSwHKn4FroqNpPTZIG70rLtLgxl6Nd77L19kI3zgA/ZJYzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750993149; c=relaxed/simple;
-	bh=xhxVcpzUMelrcAwsTvnMzq3dpbFBBmm04hNnfEWbK94=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=li8aA8LpXdiUa0Lxf1++4YAm58zwjcvWJpexyyz26fQxT+VPGA23Hfzf+amsWTpj0xG3mJ2BoFF2LkQOEmVZ3IyVM+WlAbBJUEFn+ATpctpi+/Iy641vYJjf35tyDonxGs+aL1pcKG++aYw+Hg2jwQwoegPD1SgNba2T/MWVoVE=
+	s=arc-20240116; t=1750992652; c=relaxed/simple;
+	bh=sqc/NB2bVD9Hj5p3h7Gdt6Q5U5DFD9Za3XsYrX6SRFs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XdqtPne5qnIQrFl/VNRLa9tS1PZH8F7bzkkznJKdmNGp8D2FDiJ0CWMWNFn9jR+E6taRtYpMLGthPQxoJqNInblHnE+fg57CLMYdkzWyHwD8uGHrkoqV8JtiJzZsyOKeg595LHGsoq7Sslgt1XWfWwYxyGZ4Kfu7OxEAmnlC6Rg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 31DCB20244B;
-	Fri, 27 Jun 2025 04:50:38 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D81D620244E;
+	Fri, 27 Jun 2025 04:50:48 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id ECD90202449;
-	Fri, 27 Jun 2025 04:50:37 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9DFE4202449;
+	Fri, 27 Jun 2025 04:50:48 +0200 (CEST)
 Received: from local (lsvm11u0000469.swis.ap-northeast-2.aws.nxp.com [10.52.9.123])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 23D6F1800079;
-	Fri, 27 Jun 2025 10:50:36 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id D26821800078;
+	Fri, 27 Jun 2025 10:50:46 +0800 (+08)
 From: Rex Chen <rex.chen_1@nxp.com>
 To: ulf.hansson@linaro.org
 Cc: conor.dooley@microchip.com,
@@ -48,10 +49,12 @@ Cc: conor.dooley@microchip.com,
 	adrian.hunter@intel.com,
 	wsa+renesas@sang-engineering.com,
 	rex.chen_1@nxp.com
-Subject: [PATCH 0/2]
-Date: Fri, 27 Jun 2025 11:50:30 +0900
-Message-Id: <20250627025032.1192873-1-rex.chen_1@nxp.com>
+Subject: [PATCH 1/2] mmc: core: SPI mode remove cmd7
+Date: Fri, 27 Jun 2025 11:50:31 +0900
+Message-Id: <20250627025032.1192873-2-rex.chen_1@nxp.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250627025032.1192873-1-rex.chen_1@nxp.com>
+References: <20250627025032.1192873-1-rex.chen_1@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -61,20 +64,34 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-[PATCH 1/2]
-Function mmc_sdio_alive() check if sd device alive by cmd7, but SPI mode
-cmd7 unavailable, so replaced by check if can read CCCR register success.
-[PATCH 2/2]
-SPI multiple read operation doesn't need to read crc ack, so remove it.
+SPI mode doesn't support cmd7, so remove it in mmc_sdio_alive() and
+confirm if sdio is active by checking CCCR register value is available
+or not.
 
-Rex Chen (2):
-  mmc: core: SPI mode remove cmd7
-  mmc: mmc_spi: multiple block read remove read crc ack
+Signed-off-by: Rex Chen <rex.chen_1@nxp.com>
+---
+ drivers/mmc/core/sdio.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
- drivers/mmc/core/sdio.c    | 8 +++++++-
- drivers/mmc/host/mmc_spi.c | 2 +-
- 2 files changed, 8 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+index 0f753367aec1..a5679a0add16 100644
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -945,7 +945,13 @@ static void mmc_sdio_remove(struct mmc_host *host)
+  */
+ static int mmc_sdio_alive(struct mmc_host *host)
+ {
+-	return mmc_select_card(host->card);
++	u8 data;
++
++	if (!mmc_host_is_spi(host))
++		return mmc_select_card(host->card);
++	else
++		return mmc_io_rw_direct(host->card, 0, 0, SDIO_CCCR_CCCR, 0,
++					&data);
+ }
+ 
+ /*
 -- 
 2.25.1
 
