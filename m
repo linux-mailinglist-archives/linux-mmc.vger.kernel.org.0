@@ -1,122 +1,76 @@
-Return-Path: <linux-mmc+bounces-7298-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7301-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10F9AED673
-	for <lists+linux-mmc@lfdr.de>; Mon, 30 Jun 2025 10:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FCADAED6CD
+	for <lists+linux-mmc@lfdr.de>; Mon, 30 Jun 2025 10:13:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 029371899EC3
-	for <lists+linux-mmc@lfdr.de>; Mon, 30 Jun 2025 08:01:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BAAB1899951
+	for <lists+linux-mmc@lfdr.de>; Mon, 30 Jun 2025 08:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F13248F44;
-	Mon, 30 Jun 2025 07:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BnBnVnDr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CD4239E7F;
+	Mon, 30 Jun 2025 08:13:30 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DF82475CB;
-	Mon, 30 Jun 2025 07:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CC9239E82;
+	Mon, 30 Jun 2025 08:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751270342; cv=none; b=IXOZ1bG0pFWbT/FXK5yvGTVSHW2J7GAmlGsQcCPLzovd5RyT6aI0wEkh4B4rSYyzMsV4H6W3n7MfrVLLZ4mXzySxoqHLPbGG4zAke5XEiOURMBrZ89HnKyGdzx6kQ3mcE2fyOPjiQJ9mofhjWgQm0JARe+0p3WmgEpF5mZn+53M=
+	t=1751271210; cv=none; b=FLsicrm7xgOX1ie7ee9oeK18l+elqdB/KJ9+i9+Owq48rnyiK2oDx4L6B0kUzWkhTbkPt8BEhcZ4LZbYXKuJgYQw7Y86YJhsO+5t9PcypGXTJ765r8X+S5ayijKO5ZqL9EBfG8AchrkTgIHnI5qHGtz/IoX+EbD7CrU0EPziApM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751270342; c=relaxed/simple;
-	bh=Olm3v82XfixtpJ3flX0vWtJlr7MwsOBTenIQ1uoHrdg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AwbVUFpV16crh5mnncdvlpd8I4mjI0sLr2EF/AXVfSkUBqTHlG20EAJR0/vRhT32RQ1p4mt17JcSLUmuLmvhtPNMXqFUEZLXSy8xAAdb1sosf7QisyLknYXWsecfP08kPaif9ZC0pZ1fjazzigjCnPnJk3I65Y4ENrvfcjFsjsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BnBnVnDr; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id B09BC584F54;
-	Mon, 30 Jun 2025 07:37:29 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B5AB144505;
-	Mon, 30 Jun 2025 07:37:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751269041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=glwRMX5XIwLAgjf/s/syIRQDA+/DawV/G778ACW1TE8=;
-	b=BnBnVnDrS4mTZbEz8oQRFel1BWwpiF9M0U4Z1zPKZ1xHganlxJ2726FA7JEH5Pxsxy+MQ1
-	5Upc9qMCM3YW8Fbx32dr5mFAX9NrMe0AI+ZXDVYWl/tm7GqxmKv9RQWKBXm/yw0AL8uoVZ
-	NgMq7zmwPisUjpkR//WL1EcI/+j0cjrSvfZBOEZEN3lEf0EZPpqxfFWM0LAgSbDkmN4+h9
-	YSprrTXwxzv4ZpUauSqQ5HfB02Wgpcn2Ixkw9SaevwLs9+FPGEK+KA5vSZxl2qdhW78gTJ
-	PQy4mZqvC/X/mC/6DE0DuV0eoRW5bPyTK8pOo/y1xIyesNi9ZoXIIwcI4n8zpw==
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
-To: =?utf-8?Q?Beno=C3=AEt?= Monin <benoit.monin@bootlin.com>, Ulf Hansson
- <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, =?utf-8?Q?Th?=
- =?utf-8?Q?=C3=A9o?= Lebrun
- <theo.lebrun@bootlin.com>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, Adrian Hunter <adrian.hunter@intel.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: =?utf-8?Q?Beno=C3=AEt?= Monin <benoit.monin@bootlin.com>,
- linux-mmc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 6/6] MIPS: eyeq5_defconfig: add cadence MMC/SDHCI driver
-In-Reply-To: <51dcb9654b88972112f932059b3a52e0057b830a.1750156323.git.benoit.monin@bootlin.com>
-References: <cover.1750156323.git.benoit.monin@bootlin.com>
- <51dcb9654b88972112f932059b3a52e0057b830a.1750156323.git.benoit.monin@bootlin.com>
-Date: Mon, 30 Jun 2025 09:37:20 +0200
-Message-ID: <878ql9issv.fsf@BLaptop.bootlin.com>
+	s=arc-20240116; t=1751271210; c=relaxed/simple;
+	bh=8LCExvnyGXEauHQ75u5swL3gccPi+WXz5xY5SUNv6Q4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=emlZOry6tmB2+YYu4+6t8MWjm8DhX9zleDv87KuvywVqhADnoTfFmH/0NB47ZubJ9FSXZZnpXStA1Wo2vxDrd5DRm2R9Ho91CKrIQWjt3Crgqnc/QdRCDZodSuDc9hTysIAT2OC54eiZ6eOalpxGDj1A1FmhvpoAJav40NjjFnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+X-CSE-ConnectionGUID: KgqNFuYxRKKwAEGOa8b6Eg==
+X-CSE-MsgGUID: h+65nhXGQJOh4DpLPiC2Gw==
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 30 Jun 2025 17:13:20 +0900
+Received: from localhost.localdomain (unknown [10.226.92.44])
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 60F5241BF1FF;
+	Mon, 30 Jun 2025 17:13:18 +0900 (JST)
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>,
+	linux-mmc@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Biju Das <biju.das.au@gmail.com>
+Subject: [PATCH RFC/RFT 0/2] Enable 64-bit polling mode for R-Car Gen3 and
+Date: Mon, 30 Jun 2025 09:13:09 +0100
+Message-ID: <20250630081315.33288-1-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudduvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefujghffffkgggtgfesthhqredttddtjeenucfhrhhomhepifhrvghgohhrhicuvefngffogffpvfcuoehgrhgvghhorhihrdgtlhgvmhgvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefghfegvdehgfdtjedvtefhvdeikefgteeuhfeukeettefgvdeuueettddtkeegveenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeffeekieemsgdvtgdvmegstghfjeemlegurgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeffeekieemsgdvtgdvmegstghfjeemlegurgejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehgrhgvghhorhihrdgtlhgvmhgvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduhedprhgtphhtthhopegsvghnohhithdrmhhonhhinhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehulhhfrdhhrghnshhsohhnsehlihhnrghrohdrohhrghdprhgtphhtthhopehrohgshhesk
- hgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvlhgrughimhhirhdrkhhonhgurhgrthhivghvsehmohgsihhlvgihvgdrtghomhdprhgtphhtthhopehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhssghoghgvnhgusegrlhhphhgrrdhfrhgrnhhkvghnrdguvg
-X-GND-Sasl: gregory.clement@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-Helo Beno=C3=AEt,
+As per the RZ/{G2L,G3E} HW manual SD_BUF0 can be accessed by 16/32/64
+bits. Most of the data transfer in SD/SDIO/eMMC mode is more than 8 bytes.
+During testing it is found that, if the DMA buffer is not aligned to 128
+bit it fallback to PIO mode. In such cases, 64-bit access is much more
+efficient than the current 16-bit.
 
-> Enable MMC support on eyeQ5 platform so it can be used as the root
-> partition.
->
-> Signed-off-by: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
+Biju Das (2):
+  mmc: tmio: Add 64-bit read/write support for SD_BUF0 in polling mode
+  mmc: renesas_sdhi: Enable 64-bit polling mode
 
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c |  3 +-
+ drivers/mmc/host/tmio_mmc.h                   | 12 +++++++
+ drivers/mmc/host/tmio_mmc_core.c              | 32 +++++++++++++++++++
+ include/linux/platform_data/tmio.h            |  3 ++
+ 4 files changed, 49 insertions(+), 1 deletion(-)
 
-Acked-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+-- 
+2.43.0
 
-Thanks,
-
-Gregory
-
-> ---
->  arch/mips/configs/eyeq5_defconfig | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/mips/configs/eyeq5_defconfig b/arch/mips/configs/eyeq5_=
-defconfig
-> index ff7af5dc6d9d..328016c1c6f4 100644
-> --- a/arch/mips/configs/eyeq5_defconfig
-> +++ b/arch/mips/configs/eyeq5_defconfig
-> @@ -79,6 +79,8 @@ CONFIG_HID_MICROSOFT=3Dy
->  CONFIG_HID_MONTEREY=3Dy
->  CONFIG_MMC=3Dy
->  CONFIG_MMC_SDHCI=3Dy
-> +CONFIG_MMC_SDHCI_PLTFM=3Dy
-> +CONFIG_MMC_SDHCI_CADENCE=3Dy
->  # CONFIG_IOMMU_SUPPORT is not set
->  CONFIG_RESET_CONTROLLER=3Dy
->  # CONFIG_NVMEM is not set
-
---=20
-Gr=C3=A9gory CLEMENT, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
