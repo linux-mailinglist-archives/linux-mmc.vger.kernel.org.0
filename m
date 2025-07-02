@@ -1,142 +1,260 @@
-Return-Path: <linux-mmc+bounces-7325-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7327-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2CEAF0DD5
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jul 2025 10:23:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 827E7AF10A2
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jul 2025 11:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3A31C25446
-	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jul 2025 08:24:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3205B522BD4
+	for <lists+linux-mmc@lfdr.de>; Wed,  2 Jul 2025 09:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A39D23816C;
-	Wed,  2 Jul 2025 08:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A10245038;
+	Wed,  2 Jul 2025 09:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="BSaurJJE"
+	dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b="iHKKT1GP"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from mail-m49207.qiye.163.com (mail-m49207.qiye.163.com [45.254.49.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A51238149
-	for <linux-mmc@vger.kernel.org>; Wed,  2 Jul 2025 08:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E501C862E;
+	Wed,  2 Jul 2025 09:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751444622; cv=none; b=s/x+plaHaKO5WmB5ur6BKHyFIsCv+r9UFoeMBKWTRYL5QYVfX79u8lMZTyHmOZQUzzU91jPu35Gt39f93a8fpanbQIFm9SkbhoD9HDbDBqrYqKJH5c3ElUJcUVoK5kzqA0mIqk589MZLvMOaKe7bZIrJDYT1/FFWSOuxs/zMcUY=
+	t=1751449903; cv=none; b=o3Ubg2VlQNfkN1ZROPX3c522m/WSYQcvUu3YoEaDwViO7pqpT3MZZQ1O1aB5WIQJ+SgXg9OLE0uw3Bcc7iR05U98N6mi+umJHmJ0J85I0HbFsMYXVvtBQufwP0mzlFMLEL5/xWPh3zur2DUVlqQxfs9dOwT6AaW6jQ6R4uJryxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751444622; c=relaxed/simple;
-	bh=aBG7MgjOOG3Xa/e5UgKgIfWeFa8i1Ww8PoCPrBNksUY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Y+jE9GLzkAYl78/NcZDvVeL9ZihyREZZdLYLXTiW2+kHka45bPamHSTGeqH6zVcJ02CxhVdT3UzVF82eghxrXpl0yPUUZxiCHWO4TSRNuBnn3c24XB7N+qJ3hulwqNxh6cC4IhcD0Y9cvdE2Gy5znoDfHNfx2akhChlgciFNXLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=BSaurJJE; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1751444616; x=1752049416; i=markus.elfring@web.de;
-	bh=g1XsRcpn+HtHVcfmmFv9n5gsxBqZWLRmdxakcbNjknw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=BSaurJJESfGFcPtihwk3+R6FylZAyyhxL0mgn9VQiLleXXGrAuxyTFkgrRRNNPah
-	 239LT/2cYz0zR1itEjEq4n4e4oMvz5zjPexATafIOi27RI1MFZ61qmPicI4RkZAQA
-	 NX3nClVRiVd5k33e24rrupruOuI8yIQ7WG8yrYY8iu6d6w7ppOAc8K6h7+Ib1W7/a
-	 pFjUYQ3GAAqfTZCLbZV9UaC+6utU2F1hBqFWBG/ICNAKFG1C6Pv1842lrMGmu+zat
-	 z9/bY1wwIrgtVilyKXETzGzK3zelFLmYwxzebQlan5hTJVQEw4qCI6319mplAI+iC
-	 BYKrK0lwUty3Z7rbJw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.250]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MT7WN-1u8IQq3DQ7-00PUYh; Wed, 02
- Jul 2025 10:23:35 +0200
-Message-ID: <a2c129b6-1d40-4dac-a585-097aba30cc67@web.de>
-Date: Wed, 2 Jul 2025 10:23:27 +0200
+	s=arc-20240116; t=1751449903; c=relaxed/simple;
+	bh=DQ4Fbet7w98kyyULmyFDZuR7DJV+8egvEdngnk+ZEec=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rzkOqpANw4iwk402RBPhnhnsJo4CPFaHJNo4LHuzsYOc0MtG6rU/Fk6yAAY2Jz2/sHiYI50vOpe6Y2uh8bHb/2x4Y/toC+7ioiwcy1cZzF/XZEKRiVGGFLO6WYIdCSl99MhKYSrJMCiHNtG1ojD9tKd0PYB/KSyjdJlLyZ8lkK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com; spf=pass smtp.mailfrom=thundersoft.com; dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b=iHKKT1GP; arc=none smtp.client-ip=45.254.49.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thundersoft.com
+Received: from localhost.localdomain (unknown [117.184.129.134])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1aaa9ed20;
+	Wed, 2 Jul 2025 17:46:26 +0800 (GMT+08:00)
+From: Albert Yang <yangzh0906@thundersoft.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	krzk@kernel.org,
+	conor+dt@kernel.org,
+	gordon.ge@bst.ai,
+	catalin.marinas@arm.com,
+	geert.uytterhoeven@gmail.com,
+	will@kernel.org,
+	ulf.hansson@linaro.org,
+	adrian.hunter@intel.com,
+	arnd@arndb.de
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	soc@lists.linux.dev,
+	bst-upstream@bstai.top,
+	neil.armstrong@linaro.org,
+	jonathan.cameron@huawei.com,
+	bigfoot@classfun.cn,
+	kever.yang@rock-chips.com,
+	mani@kernel.org,
+	geert+renesas@glider.be,
+	andersson@kernel.org,
+	nm@ti.com,
+	nfraprado@collabora.com,
+	quic_tdas@quicinc.com,
+	ebiggers@google.com,
+	victor.shih@genesyslogic.com.tw,
+	shanchun1218@gmail.com,
+	ben.chuang@genesyslogic.com.tw,
+	Albert Yang <yangzh0906@thundersoft.com>
+Subject: [PATCH v2 0/8] arm64: Introduce Black Sesame Technologies C1200 SoC and CDCU1.0 board
+Date: Wed,  2 Jul 2025 17:44:36 +0800
+Message-Id: <20250702094444.3523973-1-yangzh0906@thundersoft.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250528085403.481055-1-yangzh0906@thundersoft.com>
+References: <20250528085403.481055-1-yangzh0906@thundersoft.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: mmc-utils: Remove unnecessary null pointer checks
-From: Markus Elfring <Markus.Elfring@web.de>
-To: linux-mmc@vger.kernel.org
-Cc: Avri Altman <avri.altman@sandisk.com>, Avri Altman <avri.altman@wdc.com>,
- Ulf Hansson <ulf.hansson@linaro.org>
-References: <c89ce826-7ff4-4d02-9c15-7f61c157003c@web.de>
-Content-Language: en-GB, de-DE
-In-Reply-To: <c89ce826-7ff4-4d02-9c15-7f61c157003c@web.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZvcpaOW9sF19pcmQWPjKpifdcZ/4Fk7XQih1FuclFr7ydD/8gEu
- 35LcikO2IJ+x+ssw5atr9SWcDZD1Mf5BIUTddKoynY2ZW9VVnpJcz8EA/qzbduITlDcfX44
- ieqEmB288klX/Lx982j7fRlKtPlAcgOMfymXZvW4InGlQFJk3RA5WCC3954xOImHDhLs+qF
- SF+HjYhXT9g+M9v9NPFpQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2gIDd6vwouc=;r8uO0lw9J2Nhi3DTta5XF+rKQLe
- +uHCsek4gTBQUbReSiPlKOVHmsr9yURIY0iLO2MIUpM2fOk5ZBM1Vh6Xh5k00LU4B+DwNk7GB
- C50TOBcsO77CLXhq+IdCx9WX/ooVa5E39w0ZvXNDXoRREQzZctvSP8o2q2I0RB4GwaXRD3Jw1
- POxlF0duC4rSccLqlaLL7COikIm7wkfagOV3vhQSGgnfm/QbOCYK/hUsD6sBe+PSTNR9Wvtso
- aS1TfhkkjD5EjKbqwY50oQqe4vC3z9PhxAwgjOMSRLFNU8WwjwYDUrru0fWm06D7/VUHMdWf3
- 4DhE7/6UAX+LsAx41zrRNyzPz28K1gV6GAZwz2s+3ZcrUnMwmiXz1vZ5y69vKnL1JsLbn16El
- IVVjiXy0HWgf4bWfuRm0q8YUQUoJLe0/xZ3mg8U0m3gBMroIforlAghsfRC+lvXR0OqjQwEFg
- sE6CplCaMBvOSGxGZ2eNK7uaOwSMoCgREOzRoF4PyRhDVEZ40/as/K85qy7/1rD1Y5HcPy088
- l+m8+Q755DBh7N31OxuuLcfGKE34LT3EfmbF8Esi70Lb0vfd9TOnXXN1kZWxi+EJCs1Rpzsat
- G/CLW37/V22/NNGeX7839uYbK5NKlbrpAnDnSfWyVXoPwSXPRQp69m7SjVkL1SGTYeAM8r6QT
- 4bpZe1f+/ePdilVfBdQzzqAP118s85EozKpsM0OPf39Ky+1Woojv8b7hbblH9IgD7hfRP51m8
- nTKFh8LqHo1OFNVhy0opUKM6XzmXCsLCQYovneRl15+qaIVJIUxn6D5z0NxHBZncVUq/Z10bz
- EWloKpv9Tb1r8zee2EhciowhkeuqGpsuwZrQ3/xXjRjonDoFj0tvMU/06uVsvYcI4dF7KmDFf
- hX6HmGWu4s3UshJZSUzmz2PRDOabF2DsWFoCsTKdhuLVPlK480kzTsI0UyD1ketkHLVhSRDvB
- bjzA4Yyxqal+/p5VFQgdTVQQqpU2exy4NNCMdGZkFNbZqwgGOyGa+ac0HRAR65kFFtfckOpxA
- GZemCi0LBBUQdpBfArrAnhANnBHHjL3hy+f7M1XNEbf60zUaAhSK5XGt7qQd6mhfov4AjOWfw
- yagW5DbbIEWqyysBocJd9i/9S4CLMiIX0zHrhc3jIEx6kaCuwrY36yC/NV86X/+PSGy071/Fu
- khe/ZuTrYTQlWkqLcVOnZPn9/GuZSV0HJaf+wKZ69ZyoBxpF8xzTGrTqIFdz4/T1MjjUtY0yW
- OXV2cOt43/glmIoLA9v42yrOXUGtwE2WnzjPJkokzY/FFGgYsYdmd2UNGREU9tbP9Em8Ff4cP
- N7jXwauATUILIMQ57qU/NG9/FR6zFGvWzNARFxM4j1DcJlgAUtziDeF4mhuimq3fMlQFC4QNa
- fTinqday63J4uAt6oWwWI23/Q0/vhEmiskZE08K0uy+AnzahTrIROhd0K9wrpLY8iXy7w21N1
- bAx8lMAnQNOVR7fG8aUuiHdLcyhIZUe0adweFWrvwk4AR128i3x0ipuRBCdbtu3CwpUlUZ2vn
- 1aUJYZyA5i9KNg0MUs798ELmnapZ4kkowgiyomyETRvl2XOWSMfQ2+sOX1F2i4yyP+g+KKvG8
- Al51gml1x+x7BYrM9ZtR8dAqlaaZlzMHLlRTiKX1MVXzsit3CD73WPIT7yhpjK0kAnOZdxSuK
- xjHpP+H3j54EFZE5LGxANuUagS7qe4RwfIvAI7EFHLHTOO9TCiuQpMOOA85bVJ138Y9eS0tXD
- Yd3J4/blCLwS/dMrEFX+WbAr8ooVNq+WV81a0BkHf7cNnI1hJreprfhroThkDvpF1hubWLIVj
- kYOT9XAR9ikNR1Lc5+IZs3GBkh6ZKR94Ag4BpEaOzK+ZNq1sRUMptK0ByiglbbhjH+95pB9Zh
- aujN0FvNZVA7E1HvxQOobon1RceWBsxoR7vKVpENxfpbU1Aki/fpaRs5EvNvnN7//HMmV23Ks
- s4mk3LLFS3tKjosMZnVp6ZhVW43bGTUhnjb4s5mGjRyYXWcjdWbpzKST84eihoUBIu0anRFSI
- XLst+NXrrJEH2eLtYoIB2nOaSogQ5t36AsmafX8XJOkETJhHCys9D45uUIJRwTC3KokqR4Opn
- QPwj04sauB/QvhY0+0RLeykMSTCV4jBYagGve/JyPyxqECRCZVi4ZDv8nMiyeuiTbIABhDPEF
- xp11RPvBbC1V0zaLjhljILdQ8lV5ieGifsgWV2Pm3ss+SgiBKP49ox6AvJZo9qa+Td+uEXVrv
- CkL8siocQH0aOM4Jpc4bcSIzVZXyh4WwkB5D6WCEUUopalIVjPN0MqzY3tdzw4YGAeCiOxmRc
- ch3SJb8HKP5Qk11nOqYtgS0G/DofeWTSnPc1YbmfUWhqOYChvMKbysGdK8F3Q+jdGVATYU1Xu
- +SvZHQMnLW6+ZbFRt7mXI2knVmONDgexr/pLlL9X/jRHrAg8wLljBjwYTqXUogPcK5pU1+RL7
- zpWBObxQ+4KM8HaYJiUo6wsQPansYTiUx5DFoGe25LWb2NT3F9lpb0cYeSseDU/fmeQr9E2mc
- EXvieagS4amlsWv4kQ6GDu+mXRiRWws4oqMERzod1Qxpc6YzTTrNg2V/jjDOPrDgHr6eWhq8m
- ARhBfwYjk1g54wnXCTJOm862tjp3pQNnNKJXnfNsmduKqqCiU9gco5EjqcYCB01Y/IXKIGbu3
- c/9E7XeFwZ4zs8dGm+ACirygKgNydMDez9v/nCk4nk9IKmQi192NUBX5le2UJMjV+EgtQ45bV
- R28NSX4D/8n+kRGwPzil4R8dw98oDBjVW+LVGHFm+LEmutwqWH1KDXsqtSz9m3IwIZ/hABQwh
- HMwPZ/qiq/TXHZmZcIgOeIrKlDJvkvvvn3vru9DdViTpclKQ8m74fZrPVo3bszIo2wye+PVC5
- TjTMbdvjYVanufstUPd737CUpiQ5L0yTQ22weajvPYtAs4lBTrybicWCT2NFkCDHQt+hdTbXx
- GqKtGYOtF2F+oaGO5WEOJN2Ico/8DP/vzJbcPdgy2+fqgHIKVDMwTrW2A55vrMZBORh87FpQB
- kGSH4XXel2jhgJDRI/J11Fz7PUaLRdibfa4wUS/ZMVmhkQn6X8vsvTv3Adqn/JIo5jz+sOK8c
- JDnZNgSZX0FeQb6yO57x/M2G+O7oRYrn72PlAggB+TaUKrIm95M+UlsJK3RdyXrXHRvaJRU/N
- kUb7YBlweAYb5xvcWKL/rY8fy2qF4omNIaNneYQpPne56lCUYylz5vogD7KtQJqelo1HFOjhp
- WhsSYOKXyOLFYpyr6Ihza6Ai2RB5VNG0n3ntM8QagG8kn8xTIG/1aGL3a8C21LRjJ83v1OSra
- mamnV3SekP1EhEKzN6PN+kjZFR03Ni3BJw22NP4ksvatFTICWa2GKltUFll5OqcVCl7VRnm
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZTkhOVksZT0pMGUxKGEgZGFYVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlKSkxVSkNPVUpJQlVKSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUJDQ01VSk
+	tLVUtZBg++
+X-HM-Tid: 0a97ca87cb5509cckunmee1cabff3eba3f
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Ky46Nio4ODE1OE8VDRkCHQIU
+	ChYaFElVSlVKTE5KT09CTkNDQ05CVTMWGhIXVQIaFRwBE0tCS007DxMOFR8eCQgUHQ9VGBQWRVlX
+	WRILWUFZSkpMVUpDT1VKSUJVSkhPWVdZCAFZQUNDS083Bg++
+DKIM-Signature:a=rsa-sha256;
+	b=iHKKT1GP4KttxGichlFKsKKQUX3VlHslxuzfV2b0Stiu7ntwzMlWnzOP5cW8eu8zAHtbo7WhfUtplVfy3Ar52X6zXBBqL5ej3hFi4IvUJu/mRP1HdfO9T9mXowEwW31TrRxMmnZRSLTPL+g+C3vLctZ01FVkgCPt2JFwjf0vebQ=; c=relaxed/relaxed; s=default; d=thundersoft.com; v=1;
+	bh=0IAmHcK+vzj2JRzJWMHVRyNXmp3uUsUGFRVCGAFIqUw=;
+	h=date:mime-version:subject:message-id:from;
 
-> https://stackoverflow.com/questions/18775608/free-a-null-pointer-anyway-=
-or-check-first
+Black Sesame Technologies C1200 is a high-performance Armv8 SoC designed for automotive
+and industrial applications. The CDCU1.0 (Central Domain Control Unit) board is the
+development platform built by Black Sesame Technologies. You can find more information
+about the SoC and related boards at:
+https://bst.ai
 
-I am curious if another software developer (besides me) can get into the m=
-ood
-to apply a corresponding update suggestion which could be generated by the=
- software =E2=80=9CCoccinelle=E2=80=9D.
-https://coccinelle.gitlabpages.inria.fr/website/
+Currently, to run the upstream kernel on the CDCU1.0 board, you need to use the
+bootloader provided by Black Sesame Technologies. The board supports various
+interfaces including MMC/SD card, which is implemented using the BST C1200 DWCMSHC
+SDHCI controller.
 
-@Remove_unnecessary_pointer_checks@
-expression x;
-@@
--if (\(x !=3D 0 \| x !=3D NULL\))
-    free(x);
+In this series, we add initial SoC and board support for kernel building. The series
+includes:
 
+Patch 1: Add Black Sesame Technologies vendor prefix in vendor-prefixes.yaml
+- Adds "bst" vendor prefix for Black Sesame Technologies Co., Ltd.
+- Required for device tree bindings to properly identify BST hardware
 
-Regards,
-Markus
+Patch 2: Add device tree bindings for BST SoC platforms
+- Creates new binding file Documentation/devicetree/bindings/arm/bst.yaml
+- Defines compatible strings for BST C1200 family and C1200 CDCU1.0 board
+- Documents BST's focus on automotive-grade SoCs for ADAS applications
+
+Patch 3: Add ARCH_BST configuration for BST silicon support
+- Adds Kconfig option for BST architecture support
+- Enables building kernel for BST platforms
+
+Patch 4: Add device tree binding for BST DWCMSHC SDHCI controller
+- Documents the BST C1200 SDHCI controller binding
+- Required for MMC/SD card support on BST platforms
+
+Patch 5: Add BST C1200 SDHCI controller driver
+- Implements the MMC host controller driver for BST C1200
+- Enables SD card support on BST platforms
+
+Patch 6: Add device tree support for BST C1200 CDCU1.0 board
+- Adds device tree source files for C1200 SoC and CDCU1.0 board
+- Configures hardware components including MMC controller
+
+Patch 7: Enable BST SoC in arm64 defconfig
+- Adds ARCH_BST configuration to default arm64 config
+
+Patch 8: Enable BST C1200 DWCMSHC controller in defconfig
+- Enables MMC controller driver in default arm64 config
+
+Patch 9: Update MAINTAINERS for BST support
+- Adds maintainer information for BST ARM SoC support
+- Consolidates BST-related entries
+
+Changes for v2:
+- Pass dts build check and mmc driver build check with below commands:
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- O=build_dir CHECK_DTBS=y bst/bstc1200-cdcu1.0-adas_4c2g.dtb W=1
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- drivers/mmc/host/ W=1 O=build_dir
+- Patch 2: 
+  1. Removed unnecessary pipe (`|`) in description
+  2. Dropped invalid `compatible` entry for standalone SoC
+  3. Removed root node (`$nodename: '/'`) definition
+- Patch 3:
+  1. Placed the configuration entry in correct alphabetical order
+  2. Used generic family name (ARCH_BST) instead of SoC-specific naming
+  3. Followed upstream kernel naming and description conventions
+- Patch 4:
+  1. Simplified description, removed redundant paragraphs
+  2. Updated $schema to reference mmc-specific scheme
+  3. Corrected compatible to add soc name
+     (bst,c1200-dwcmshc-sdhci)
+  4. Removed all redundant property descriptions
+  5. Dropped invalid mmc_crm_base/size properties, use reg for all address
+     ranges
+  6. Cleaned up required properties to only essential entries
+  7. Standardized example DTS format, fixed reg syntax and property
+     ordering
+  8. Removed additionalProperties: true
+- Patch 5:
+  1. Dependency Simplification:
+     - Removed COMMON_CLK dependency from Kconfig (MMC_SDHCI_BST)
+     - Add ARCH_BST || COMPILE_TES dependency from Kconfig (MMC_SDHCI_BST)
+
+  2. Resource Management Improvements:
+     - Replaced temporary ioremap with persistent mapping
+       * Mapped CRM registers once during probe instead of per-access
+       * Added proper cleanup in remove callback
+     - Refactored bounce buffer allocation:
+       * Simplified error handling and memory management
+       * Removed unnecessary DMA configuration layers
+
+  3. Code Cleanup & Optimization:
+     - Pruned unused headers and legacy vendor debug code
+     - Removed deprecated sdhci_bst_print_vendor() export
+     - Converted internal functions to static scope
+     - Standardized naming conventions:
+       * Renamed DRIVER_NAME to match kernel standards
+       * Changed default_max_freq to DEFAULT_MAX_FREQ
+     - Optimized clock configuration routines
+
+  4. Hardware Integration Fixes:
+     - Fixed register access macros for EMMC_CTRL
+       * Added proper offset calculation via SDHCI_VENDOR_PTR_R
+     - Corrected device tree compatibility string to:
+       "bst,c1200-dwcmshc-sdhci"
+
+  5. Error Handling Enhancements:
+     - Added robust ioremap error checking
+     - Improved bounce buffer allocation failure handling
+     - Streamlined probe/remove flow
+
+  6. Maintainability:
+     - Updated MODULE_DESCRIPTION and AUTHOR fields
+     - Added explanatory comments for hardware limitations
+     - Removed redundant multi-host setup infrastructure
+  7. fix build warnings from lkp
+    | Reported-by: kernel test robot <lkp@intel.com>
+    | Closes:
+    https://lore.kernel.org/oe-kbuild-all/202505290615.GZzN5rNL-lkp@intel.com/
+
+- Patch 6:
+  1. Reorganized memory map into discrete regions
+  2. Updated MMC controller definition:
+     - Split into core/CRM register regions
+     - Removed deprecated properties
+     - Updated compatible string
+  3. Standardized interrupt definitions and numeric formats
+  4. Removed reserved-memory node (superseded by bounce buffers)
+  5. Added root compatible string for platform identification
+  6. Add soc defconfig
+
+Albert Yang (8):
+  dt-bindings: vendor-prefixes: Add Black Sesame Technologies Co., Ltd.
+  dt-bindings: arm: add Black Sesame Technologies (bst) SoC
+  arm64: Kconfig: add ARCH_BST for bst silicons
+  dt-bindings: mmc: add binding for BST DWCMSHC SDHCI controller
+  mmc: sdhci: add Black Sesame Technologies BST C1200 controller driver
+  arm64: dts: bst: add support for Black Sesame Technologies C1200
+    CDCU1.0 board and defconfig
+  arm64: defconfig: enable BST C1200 DWCMSHC SDHCI controller
+  MAINTAINERS: add and consolidate Black Sesame Technologies (BST) ARM
+    SoC support
+
+ .../devicetree/bindings/arm/bst.yaml          |  30 +
+ .../bindings/mmc/bst,dwcmshc-sdhci.yaml       |  67 +++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |  10 +
+ arch/arm64/Kconfig.platforms                  |  10 +
+ arch/arm64/boot/dts/Makefile                  |   1 +
+ arch/arm64/boot/dts/bst/Makefile              |   2 +
+ .../dts/bst/bstc1200-cdcu1.0-adas_4c2g.dts    |  60 ++
+ arch/arm64/boot/dts/bst/bstc1200.dtsi         | 117 ++++
+ arch/arm64/configs/defconfig                  |   2 +
+ drivers/mmc/host/Kconfig                      |  11 +
+ drivers/mmc/host/Makefile                     |   1 +
+ drivers/mmc/host/sdhci-of-bst-c1200.c         | 557 ++++++++++++++++++
+ 13 files changed, 870 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/arm/bst.yaml
+ create mode 100644 Documentation/devicetree/bindings/mmc/bst,dwcmshc-sdhci.yaml
+ create mode 100644 arch/arm64/boot/dts/bst/Makefile
+ create mode 100644 arch/arm64/boot/dts/bst/bstc1200-cdcu1.0-adas_4c2g.dts
+ create mode 100644 arch/arm64/boot/dts/bst/bstc1200.dtsi
+ create mode 100644 drivers/mmc/host/sdhci-of-bst-c1200.c
+
+-- 
+2.25.1
+
 
