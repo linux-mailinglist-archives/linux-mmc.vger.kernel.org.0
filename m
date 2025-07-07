@@ -1,116 +1,167 @@
-Return-Path: <linux-mmc+bounces-7401-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7403-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E66AFB73D
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Jul 2025 17:25:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09870AFBB00
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Jul 2025 20:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F7C1AA35CA
-	for <lists+linux-mmc@lfdr.de>; Mon,  7 Jul 2025 15:25:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5563A17F289
+	for <lists+linux-mmc@lfdr.de>; Mon,  7 Jul 2025 18:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5902E3384;
-	Mon,  7 Jul 2025 15:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CE52652AC;
+	Mon,  7 Jul 2025 18:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ono6DK67"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I1Gc354h"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9032E266D;
-	Mon,  7 Jul 2025 15:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD67F262FF0;
+	Mon,  7 Jul 2025 18:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751901898; cv=none; b=gj2vaNdJtwNNmgLncf4ivpJvSxcC+m1gM36wrddgsQF86VHVzlom2rnypHB/SXXu7pMSjaD8WzvXv9qWdxC3cGDBilgC2Z9p9Ae/0DyvOn2uL/rOSAvcPGr7z7wpi8NLsb60yHJSFXSjipQcB+f7ris7uJPRR4f11SRtJT1dq+M=
+	t=1751913812; cv=none; b=FE+1iLnT6ekWPO/MEBUcl766mMJmVnWSvPQ6at5tOpjK2FPSN+LU65xnlfeQcGvZOoaj5nGAoMvA1+nlfwCHBFnq5KKlA2elJm7iuvOHZTjc03cTPWKjhy9FVDPcE1xhjjvJnsoqIFiktu6Ru1T6Vo2NiO794rzao3bvL96/0Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751901898; c=relaxed/simple;
-	bh=NxfRsEXjom4ScRJ/zhIsda4QU9wioouFB6Bmwo+evJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q6UkhuMPIHG962Sxig1je5O+VpVDBkkX4InjJ+/OkspDtWvPH5Z0WC7wVS4clALMzuz6kOPiOoUA/CSqY7ig3Vz5w7DkpqMI4E8//fYXAuwwBVWx2UHixMLRJkHBbpeZ0tpvUS5av/68zwC6jTK1uCfGEw50dgUDdoj+ecPuzLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ono6DK67; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 244E04446F;
-	Mon,  7 Jul 2025 15:24:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751901894;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vasRCk+heDQuoeK+7MeJyn1gmxGcI290u/BrgCMWho8=;
-	b=ono6DK67DVwZIz2qDQkMyiWT5r4IO2vHb8D/a70PpABHMtSwFpA+MAkHAD+kTS6S+xMKo6
-	hWoABuyW/o4zFMf989HB8k+7N8v1eO99f0vEFk0nQEIASBhJEYLuVKzXQ8AgAM+2uiJiIp
-	igxqzTvWhrmNl/BrlLE5WN71/Q5ICZx+zs1j/q0y+uTzjUVe3mT7JHswrn6pObfrGbdm6l
-	3EDS8KA2nDJLHLNdCowbPami8zzZ1daiTi33B7q/pABeJsIZ13GdYgYPbmHHI8KaVpTZMK
-	/gDRZ2Dw8QuxTTLLtJhJAp9ABr/WOLOTrvsvYoDBOTiWJfx99OXdbKZSL6EQcA==
-From: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>
-Cc: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>,
-	linux-mmc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	"Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v2 4/4] mmc: block: use mmc_card_can_cmd23
-Date: Mon,  7 Jul 2025 17:24:36 +0200
-Message-ID: <fadea910693438b256841ba41e5e725172eb5198.1751898225.git.benoit.monin@bootlin.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <cover.1751898225.git.benoit.monin@bootlin.com>
-References: <cover.1751898225.git.benoit.monin@bootlin.com>
+	s=arc-20240116; t=1751913812; c=relaxed/simple;
+	bh=hrM7TAUwUzWNU7f4k4yx1Gu9ZxX5m6dymI/e327xOKY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UdH406kFvGLfVRdgv9sRdiXwFre76j8Cm1g9IwyPPjVSqlT1gM35Dxa62cG4UwQ6gjWUs9kJJuXwHVJ7Ch8+RYQANshLK/2aQYXGGEcBb7GidrjKeUfE1l3eX/c6C3wmPbyzcJa3pofG8yRVmUD+hcKrGcd6uWwJA0k9bQzhUvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I1Gc354h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77161C4AF0F;
+	Mon,  7 Jul 2025 18:43:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751913811;
+	bh=hrM7TAUwUzWNU7f4k4yx1Gu9ZxX5m6dymI/e327xOKY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=I1Gc354hwbuJzz57xuHU0adjTwd//JV0gPzmskPDKzgFi0rUipml8X0O2V6LITrXo
+	 3E8TyhoiOVpRorL5Je7NJYQJm7wFgMsRyX73rzrAPpeRq5Y6mKZ/snvPp9NZnIQljo
+	 EJ/Yb7UdKN5WtGgio8YxdoU+yw6/C05cM08V0Q4zjByYzRZFUAg7rdN4loP5CZ0m7N
+	 DSAIL4wUpN9lWI2/2fezfjt8ic6poJ7CHum+6NsaPgJsidjfva1nIMP/bhQLou0fTs
+	 z74T2zsEVCgOebD+jix36p0L6MdL6vdi5pf9RYqMHBP7hnTRoskg4TuCI+hiEinqgi
+	 MQud3uX4AQx2g==
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-61390809a36so956977eaf.1;
+        Mon, 07 Jul 2025 11:43:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUHutvs2AN81vZ6J6Q44DnFjKkFGsfTsMHcGCDetQlgfAE+a3iARkRtgaHwExh0oQKXOXqInpwmGaIa@vger.kernel.org, AJvYcCUo0ZaWXpF053kafWae7MwisDyQ0QlbMGyIEojlRqTWsH/zzJUeuZlDZMDfrevYJcfdo2TjWKJ5CQbL@vger.kernel.org, AJvYcCUwOqRHYxAO9vvknUtTXYhqSAWbZaurZJgn+NEYh+zHE2kW38f5gR3qywEvit0301JGgO9OPe5ce/AEDIjF05AVfA==@vger.kernel.org, AJvYcCV3+1Z22IW6zQmqMbl8WjcjY4zpbRxmlnnsWu0AMqaN4wbXtvSPjJJzFnxyPExWJZytA2r8tkWUJepuONNk@vger.kernel.org, AJvYcCV8JgaoCGEwfMiHrZI9nSaZ6n60BzWuf0DRBxy6tTFSkW7l11jFrnR34rCf/f1Sm72JCA8Y4t6ut8nG@vger.kernel.org, AJvYcCVAjpxXZce9ThTnKCtLFdNDBQJ6dFkbn4E1lYjAjfDgOhxZnbF/BdocT3/7/Xx72aeJrrLnR8FzoqmWAIJ6@vger.kernel.org, AJvYcCVgSUnObPlYLwb1yKcxjJ6OtcDsOYjJv8GIJNvHCYWyU9NYVqL0+ibanlbx80WuXgNgecQz/KhWc8qq@vger.kernel.org, AJvYcCVwzyL4hvT+Ci/bldHrMMZ9+H09l9AT17O5r31rmOXV15IztHMs8HrgsQVTID8q/ieBVikSVCnE2l55gEOZSN9dlYo=@vger.kernel.org, AJvYcCWlv+YsG3nt98nHkqFtTTWakByeRqg32/XeY6IA7Pu5cuU4C6uGVF3b4zLWtJtp74SU7eXQcPIOBuVSfiE=@vger.kernel.org, AJvYcCWtB2OrmkOS
+ bK0Vu1CHes+E3pkuD5poesbhjL3HEtVYLVtu4+yn+eOawr5CY21GsbnY2mjbZM5xGzBb@vger.kernel.org, AJvYcCWxW6EtxI1dpYAYx59v5ff2MrnQUsU3u2e+GCDu/FYhc1sWB3lIXnJC2r5lNGqTCeFGSvrgYrVIJkg=@vger.kernel.org, AJvYcCXfL4M0d21XFlYxz9O0xXWGcCpQVj0YtD7X5IBJ7DcmnSDnjD7zrrcwBqRJgWJ992l2yxT/RJNTZmcuOb6i@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4hAwDnHt3HYo7wiMB+zRmQf8Sg4F2mN7dks+B1034Qjsfrx5G
+	1LZ/VxRskxHsyYVoNLwEdExgiATxzrjleqOwKFoUxo6WcMLXhIuIXgLVmlYYohmWqlJFUla1Smw
+	lZT7gDMfj47W4I/CtgAVjjATrj+5zIW0=
+X-Google-Smtp-Source: AGHT+IGWFo0UcD4MojnRdJcVhqk/giYu4pxqlIjmLkAJEnDd4MWXJ9qI/qzV8bVwGlXxOpEoErWIuer/la1NZ2vHba8=
+X-Received: by 2002:a05:6820:c8d:b0:611:e30a:f9c7 with SMTP id
+ 006d021491bc7-613c0292e6amr496213eaf.7.1751913810559; Mon, 07 Jul 2025
+ 11:43:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefvdduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeeuvghnohpfthcuofhonhhinhcuoegsvghnohhithdrmhhonhhinhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdfffeeiieejkeevuefhvdeggeefudffueeuffehffehffevjedugfdtueegtddvnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemudehfeejmehffeehmeelfeeiugemvgelvdehnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeduheefjeemfhefheemleefiegumegvledvhedphhgvlhhopehfrhgrmhgvfihorhhkpdhmrghilhhfrhhomhepsggvnhhoihhtrdhmohhnihhnsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeelpdhrtghpthhtohepuhhlfhdrhhgrnhhsshhonheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprggurhhirghnrdhhuhhnthgvrhesihhnthgvlhdrtghomhdprhgtphhtthhopegsvghnohhithdrmhhonhhinhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehlihhnuhigq
- dhmmhgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhhlrgguihhmihhrrdhkohhnughrrghtihgvvhesmhhosghilhgvhigvrdgtohhmpdhrtghpthhtohepthgrfihfihhkrdgsrgihohhukhesmhhosghilhgvhigvrdgtohhmpdhrtghpthhtohepghhrvghgohhrhidrtghlvghmvghnthessghoohhtlhhinhdrtghomh
-X-GND-Sasl: benoit.monin@bootlin.com
+References: <20250703112708.1621607-1-claudiu.beznea.uj@bp.renesas.com>
+ <CAPDyKFoznqfdX7Dvu3VPa5Me10VHGphnRRHrU17w-fie7HrQ5g@mail.gmail.com> <CAJZ5v0gH9ZAK9br58KB0VEtG+4VdwO7vEKtrKbpcYOKnZPf7bg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gH9ZAK9br58KB0VEtG+4VdwO7vEKtrKbpcYOKnZPf7bg@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 7 Jul 2025 20:43:18 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gZK_JYgXYdbJ9pOBgrMO9sBa=VWP8HGOVV4C2mCOSSWg@mail.gmail.com>
+X-Gm-Features: Ac12FXx21d9hRiF0Pqe_4V96M5MioxLeGCoj8OSAh6lGgwSlfReCuBO8e1tghsQ
+Message-ID: <CAJZ5v0gZK_JYgXYdbJ9pOBgrMO9sBa=VWP8HGOVV4C2mCOSSWg@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] PM: domains: Detach on device_unbind_cleanup()
+To: Ulf Hansson <ulf.hansson@linaro.org>, Claudiu <claudiu.beznea@tuxon.dev>
+Cc: linux@armlinux.org.uk, gregkh@linuxfoundation.org, 
+	david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org, 
+	dakr@kernel.org, len.brown@intel.com, pavel@kernel.org, andersson@kernel.org, 
+	mturquette@baylibre.com, sboyd@kernel.org, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
+	wsa+renesas@sang-engineering.com, mathieu.poirier@linaro.org, 
+	vkoul@kernel.org, yung-chuan.liao@linux.intel.com, 
+	pierre-louis.bossart@linux.dev, broonie@kernel.org, robh@kernel.org, 
+	jirislaby@kernel.org, saravanak@google.com, jic23@kernel.org, 
+	dmitry.torokhov@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-serial@vger.kernel.org, bhelgaas@google.com, geert@linux-m68k.org, 
+	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	fabrizio.castro.jz@renesas.com, 
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use the helper to test for CMD23 card support. Remove the check on the
-NO_CMD23 quirk as it is already done in the helper.
+On Fri, Jul 4, 2025 at 9:53=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.org=
+> wrote:
+>
+> On Fri, Jul 4, 2025 at 1:16=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.or=
+g> wrote:
+> >
+> > On Thu, 3 Jul 2025 at 13:27, Claudiu <claudiu.beznea@tuxon.dev> wrote:
+> > >
+> > > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > >
+> > > Hi,
+> > >
+> > > Series drops the dev_pm_domain_detach() from platform bus remove and
+> > > adds it in device_unbind_cleanup() to avoid runtime resumming the dev=
+ice
+> > > after it was detached from its PM domain.
+> > >
+> > > Please provide your feedback.
+> > >
+> > > Thank you,
+> > > Claudiu
+> > >
+> > > Changes in v5:
+> > > - added PD_FLAG_ATTACH_POWER_ON, PD_FLAG_DETACH_POWER_OFF;
+> > >   due to this a new patch was introduced
+> > >   "PM: domains: Add flags to specify power on attach/detach"
+> > >
+> > > Changes in v4:
+> > > - added a flag in dev_pm_info that is saved in dev_pm_domain_attach()
+> > >   and used in device_unbind_cleanup()
+> > >
+> > > Changes in v3:
+> > > - add devm_pm_domain_attach()
+> > >
+> > > Changes in v2:
+> > > - dropped the devres group open/close approach and use
+> > >   devm_pm_domain_attach()
+> > > - adjusted patch description to reflect the new approach
+> > >
+> > >
+> > > Claudiu Beznea (3):
+> > >   PM: domains: Add flags to specify power on attach/detach
+> > >   PM: domains: Detach on device_unbind_cleanup()
+> > >   driver core: platform: Drop dev_pm_domain_detach() call
+> > >
+> > >  drivers/amba/bus.c                       |  4 ++--
+> > >  drivers/base/auxiliary.c                 |  2 +-
+> > >  drivers/base/dd.c                        |  2 ++
+> > >  drivers/base/platform.c                  |  9 +++------
+> > >  drivers/base/power/common.c              |  9 ++++++---
+> > >  drivers/clk/qcom/apcs-sdx55.c            |  2 +-
+> > >  drivers/gpu/drm/display/drm_dp_aux_bus.c |  2 +-
+> > >  drivers/i2c/i2c-core-base.c              |  2 +-
+> > >  drivers/mmc/core/sdio_bus.c              |  2 +-
+> > >  drivers/rpmsg/rpmsg_core.c               |  2 +-
+> > >  drivers/soundwire/bus_type.c             |  2 +-
+> > >  drivers/spi/spi.c                        |  2 +-
+> > >  drivers/tty/serdev/core.c                |  2 +-
+> > >  include/linux/pm.h                       |  1 +
+> > >  include/linux/pm_domain.h                | 10 ++++++++--
+> > >  15 files changed, 31 insertions(+), 22 deletions(-)
+> > >
+> > > --
+> > > 2.43.0
+> > >
+> >
+> > The series looks good to me, please add:
+> > Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+> >
+> > Rafael, do you intend to pick this via your tree?
+>
+> I do in general, but I haven't looked at this version yet.  I'll get
+> to it early next week.
 
-Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
----
- drivers/mmc/core/block.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 9cc47bf94804b..f67f5ff97f896 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1768,8 +1768,7 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
- 	 * these, while retaining features like reliable writes.
- 	 */
- 	if ((md->flags & MMC_BLK_CMD23) && mmc_op_multi(brq->cmd.opcode) &&
--	    (do_rel_wr || !(card->quirks & MMC_QUIRK_BLK_NO_CMD23) ||
--	     do_data_tag)) {
-+	    (do_rel_wr || do_data_tag)) {
- 		brq->sbc.opcode = MMC_SET_BLOCK_COUNT;
- 		brq->sbc.arg = brq->data.blocks |
- 			(do_rel_wr ? (1 << 31) : 0) |
-@@ -2618,13 +2617,8 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
- 	 */
- 	md->read_only = mmc_blk_readonly(card);
- 
--	if (mmc_host_can_cmd23(card->host)) {
--		if ((mmc_card_mmc(card) &&
--		     card->csd.mmca_vsn >= CSD_SPEC_VER_3) ||
--		    (mmc_card_sd(card) && !mmc_card_ult_capacity(card) &&
--		     card->scr.cmds & SD_SCR_CMD23_SUPPORT))
--			md->flags |= MMC_BLK_CMD23;
--	}
-+	if (mmc_host_can_cmd23(card->host) && mmc_card_can_cmd23(card))
-+		md->flags |= MMC_BLK_CMD23;
- 
- 	if (md->flags & MMC_BLK_CMD23 &&
- 	    ((card->ext_csd.rel_param & EXT_CSD_WR_REL_PARAM_EN) ||
+Now applied as 6.17 material, thanks!
 
