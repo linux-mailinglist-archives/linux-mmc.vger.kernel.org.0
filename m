@@ -1,241 +1,283 @@
-Return-Path: <linux-mmc+bounces-7413-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7415-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8717DAFCFA4
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Jul 2025 17:49:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20047AFD4E0
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Jul 2025 19:12:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E10963B53A9
-	for <lists+linux-mmc@lfdr.de>; Tue,  8 Jul 2025 15:48:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6362B1AA1E2D
+	for <lists+linux-mmc@lfdr.de>; Tue,  8 Jul 2025 17:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2C22DEA67;
-	Tue,  8 Jul 2025 15:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530852E613A;
+	Tue,  8 Jul 2025 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IC/Rfehh"
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="DLL+xhY1"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mx.olsak.net (unknown [37.205.8.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EA22E2672
-	for <linux-mmc@vger.kernel.org>; Tue,  8 Jul 2025 15:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C02A2E540D;
+	Tue,  8 Jul 2025 17:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751989699; cv=none; b=ug3Bp2+k45yFllovsxLY3F9GD+hw41nOvNpfHXW0lUHjhOLYIMdOVg+P4zywCtXNky6+iza/zQpqtjiP1azv5+JxB+kM382l8oJygYwnIYc9It+zszCR93GGNDbw/8q8tauqEu54uJYz84USRC0HzKS3kccbQe9lL/3LwXZgZzg=
+	t=1751994710; cv=none; b=r8y1U+sLeo5bCBe89k3qWIi88vlvLoGyA6XcT803sxc33w0d7muFW8Jk/vnr7zNMBsnEviWooqeGLihpsij4C/jDRW7KfVNW/AhWRN5nMOD3OQJyFBrkwGX0GRrfHNFunuyGJ0O7maQuvx7hHLJvLSj3pk+q1a4+3lchYUVdaoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751989699; c=relaxed/simple;
-	bh=qLeCx9x+NE4hX1j+RsHDuyZScHbN7BgjRSqpoIdYf8A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=doMg5oMpf2MTsoHS/2j6cib6MG8TUMxKVoboIWK91r4GGbbIzItO5kH7jtDoEOaS8zx69mOp94tgQiKKohTB2HV3quowZmjNkD+bgV5Ly/CyACse+dKdY3/Yn2uKhH+B9i3fF/PJcdL9UBoSFxZgTdVfPaiQd1pTECae3NCO0Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IC/Rfehh; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e81749142b3so3644505276.3
-        for <linux-mmc@vger.kernel.org>; Tue, 08 Jul 2025 08:48:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751989695; x=1752594495; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qklr2Zh9X6SWAjWGlHUWEDH7pWFNNuYHKmbm1Kh1Thw=;
-        b=IC/Rfehhi+SosD9kD7BkGwF6gPPPb3pXHP53sX+YQiwKHHXfeiUv1Z87j5HjKXafbs
-         cOqezQIjTCEyGRMBNL9mzqRxjWwePYCe2haOmJVQPBnczndDXTkoccbGLT9YWP1tmsng
-         sZEkF4iToiRtghmAKW4EiC0JLsR7JOrmYAYgyL+MjyldILJfVJKxuDummQ+sS5CDCkGW
-         XJIJaDm3FcUVbiF5sVTj+Vybkb/+UxN6nXu842nGfzhQ9mTwRyWi+hdcdCDi4nACycH8
-         Xcn65054lFHX9PqWbD48uqxeb++PvEZqTN9WsKiXUUFcj8BFCYqxTYPPv436c27RCAfV
-         ZYTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751989695; x=1752594495;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qklr2Zh9X6SWAjWGlHUWEDH7pWFNNuYHKmbm1Kh1Thw=;
-        b=u95JGqVqmsM0j9DZkEOWFjFdhiaaE3ougnekYq4FiA8iCmhSPop5yZdptmIrcIZUhU
-         7lJoTHOoDl/PYOFvIdaGSs7p+a+boEhq4I4Nn+ruaVKLfy1W3Fq7Y/NVVmb3gh4PXiWK
-         U1rNOSG9jiUBazxGfkYL5ZSjZL24Kdwze/dr1FGLVQ0zaCxCZm8Y01EizKNAXZ98zInn
-         m2Z4aflOpe7DZUp6qVJ8uTmzm870J8SI3Tk740CFk4mIAu9n3Eb558HkQasKy4EslyQu
-         q8pOQDWzCdhLYMfHGp/V9KPiS4BTUKbtpUSWDvo+tzwcyDzDo737mrJSDTddtpRDtIhP
-         4DMw==
-X-Gm-Message-State: AOJu0Yzj4lz59mTFG7tt7vY8/9wbXnmNsG8OrOCsAmpW9EgGsNEguatj
-	SGkx9lEiwgHGiZbnvX0xjVwPoPP+pcGjaYP4PVR3+MG+YFMvACwFvvILru6HtWuGFpD+QT89JJV
-	xeFMO8Y14rWFfVY4xVNd30XpajzCWiZtZK+GNW2/vdQ==
-X-Gm-Gg: ASbGncvnbqt1PYwApX5OfhKPcxoDSztDRxwr3SoGeEgMPQIBRm84w9DqefEHTDKuUeI
-	3diYNv2x5A+CptdgVBZRYd5+DJqHu2KWk8fl9ovOhM2eXdT2WGcVADcOJl4LeHnvquQOM8gnbEp
-	Cg7karysuodjPYh8FTo1wdHnwNQSqOsyR2fSDsn/Q25oe7
-X-Google-Smtp-Source: AGHT+IHJ2JkBw4MdhgfhWWpTJS7l5p/VVWxebh/7WdPM4CubB1PhaFX2QqFAvYyIyeBV9Ktbf1AL6CIhe/kWfcGR0aY=
-X-Received: by 2002:a05:690c:4809:b0:710:d950:e70c with SMTP id
- 00721157ae682-717ae118174mr4373687b3.28.1751989695308; Tue, 08 Jul 2025
- 08:48:15 -0700 (PDT)
+	s=arc-20240116; t=1751994710; c=relaxed/simple;
+	bh=JFTT8bq/bZbMEFb8Wo1H7sbnNlTM94hswdG5zFgN+TY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gF0YI2eg58eLEvMPN1llNBjJy8ggcZVyQHow8Am7DfDELZFCIgp3jpKuEOTdmj3jla4ug+ddL/XT+jcg3fzhJi2Lv6Fg2kiojwT+8xInyP5MM4GhH60J7yCW8Foa0rynxLUeT+akSpBJqyHGPxbi4f3Pt7DehNxH302mnxlb+Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=DLL+xhY1; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+DKIM-Signature: a=rsa-sha256; bh=PaMuZUADww5bxGzycsmsAnLaEiuKISbhlNb/kMRK5ZA=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:Message-Id:Message-Id:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1751994597; v=1; x=1752426597;
+ b=DLL+xhY1DElFkYnJVvBD0aGFXx/tl3CPwPLaPWF0lZ5cL8gLfp79vXOojRWLR3JH8toKqxag
+ yM/5ROeFw3B3xLjz2GWXBrTLDYK36dFVcWVWQnxPI762ji/oxApwLTfuJLUjTAcKEt7caGa8djL
+ 5omTIr6IYN4ntfPTEogPORTMI4YbxtVg4VMORshjky8D9V4wQ0zy+MZcqFBPto6akvr/fSTbjZw
+ dRRkfBuaRUFG90X7dQRwYkJuzLPpLMn840L5zQxbQLYAxH6AgBVDqcKp741Hhiwal1P3QOAdAv9
+ 4JdKEHTBbP157zfuMESgX1CbuKlUo5HWXnMkPljP1OF0w==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id 7737eb4b; Tue, 08 Jul 2025 19:09:57 +0200
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Subject: [PATCH v16 0/5] Initial Marvell PXA1908 support
+Date: Tue, 08 Jul 2025 19:09:45 +0200
+Message-Id: <20250708-pxa1908-lkml-v16-0-b4392c484180@dujemihanovic.xyz>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250619085620.144181-1-avri.altman@sandisk.com> <20250619085620.144181-3-avri.altman@sandisk.com>
-In-Reply-To: <20250619085620.144181-3-avri.altman@sandisk.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 8 Jul 2025 17:47:39 +0200
-X-Gm-Features: Ac12FXwRMrIVw2pdRW8837eWb3r5j98xDjpQaNeZIC9Tx-bcKNq3RiBG5K7tzR8
-Message-ID: <CAPDyKFrbjCi4VdEdeUoVG7wbgwXS2BcOZV4yzh8PiTc_V+rxug@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mmc: core: sd: Fix and simplify SD card current limit handling
-To: Avri Altman <avri.altman@sandisk.com>
-Cc: linux-mmc@vger.kernel.org, Sarthak Garg <quic_sartgarg@quicinc.com>, 
-	Abraham Bachrach <abe@skydio.com>, Prathamesh Shete <pshete@nvidia.com>, Bibek Basu <bbasu@nvidia.com>, 
-	Sagiv Aharonoff <saharonoff@nvidia.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANlQbWgC/4XSzU7cMBAH8FdBOder+fIXJ94D9eDEdjdlYVECE
+ RXad69D1U0YDhxt6Tczmvm/d3OZxjJ3tzfv3VSWcR7PT+2B7sdNNxzT069ixtw+OgJiCMDm+S1
+ hhGBOD48n4wJDCTmJHXzXyPNU6vj2Ue/+Z3sfx/nlPP35KL/g+vuvkCckBBA6EFq2Bk1+/V0Oj
+ 2NreV7G4W5+OJ/K4Th1a5WF9tKjowjx4IDxO8gbDCCfZ1/YgAlFQh0Se4hRWdlbr6w0O/QcfPb
+ ciyVl7c4iKWubTTZbjOxLYVHWXS0CgrKu2Z5qgUgCQw3Khv9WAL/Y0GwtybuQbBSv+8bNCuiZY
+ 7NkEwCXwIOryiLsMOlFt0nAsBty7W0QrHrTiJv2rMdGXHtj7nsuFHxkrWnTgVhrWi81cMrJYl9
+ 60PoaEWmBRK3XjLg+Jl+d1JiK1teQ2LZwq/WakiA+k1R2ziat7ablS8RwzUnbdqktBzXK/l6Xy
+ +UvRhGB1LsDAAA=
+X-Change-ID: 20230803-pxa1908-lkml-6830e8da45c7
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+ Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Cc: David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ soc@lists.linux.dev, linux-mmc@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7967;
+ i=duje@dujemihanovic.xyz; s=20240706; h=from:subject:message-id;
+ bh=JFTT8bq/bZbMEFb8Wo1H7sbnNlTM94hswdG5zFgN+TY=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDBm5AY9Dzy9RE7ZzWbtflDui3f2Pj/5t2QufS1jrck7nr
+ VQ5o3a1o5SFQYyLQVZMkSX3v+M13s8iW7dnLzOAmcPKBDKEgYtTACai5MDIsOuRtFut5PzgLVHJ
+ Xn0LucxKPE7Z1026JTSz7yHDk8ye84wMzVe72/kPSSXXFdzKb/Nik+TP/8e4g/d7ZOdUhwePPjz
+ hBgA=
+X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
+ fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
-On Thu, 19 Jun 2025 at 11:04, Avri Altman <avri.altman@sandisk.com> wrote:
->
-> The SD spec says: "In UHS-I mode, after selecting one of SDR50, SDR104,
-> or DDR50 mode by Function Group 1, host needs to change the Power Limit
-> to enable the card to operate in higher performance".
->
-> The driver previously determined SD card current limits incorrectly by
-> checking capability bits before bus speed was established, and by using
-> support bits in function group 4 (bytes 6 & 7) rather than the actual
-> current requirement (bytes 0 & 1). This is wrong because the card
-> responds for a given bus speed.
->
-> This patch queries the card's current requirement after setting the bus
-> speed, and uses the reported value to select the appropriate current
-> limit.
->
-> while at it, remove some unused constants and the misleading comment in
-> the code.
->
-> Fixes: d9812780a020 ("mmc: sd: limit SD card power limit according to cards capabilities")
-> Signed-off-by: Avri Altman <avri.altman@sandisk.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/mmc/core/sd.c    | 36 +++++++++++++-----------------------
->  include/linux/mmc/card.h |  6 ------
->  2 files changed, 13 insertions(+), 29 deletions(-)
->
-> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-> index cf92c5b2059a..357edfb910df 100644
-> --- a/drivers/mmc/core/sd.c
-> +++ b/drivers/mmc/core/sd.c
-> @@ -365,7 +365,6 @@ static int mmc_read_switch(struct mmc_card *card)
->                 card->sw_caps.sd3_bus_mode = status[13];
->                 /* Driver Strengths supported by the card */
->                 card->sw_caps.sd3_drv_type = status[9];
-> -               card->sw_caps.sd3_curr_limit = status[7] | status[6] << 8;
->         }
->
->  out:
-> @@ -556,7 +555,7 @@ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
->  {
->         int current_limit = SD_SET_CURRENT_LIMIT_200;
->         int err;
-> -       u32 max_current;
-> +       u32 max_current, card_needs;
+Hello,
 
-Please clarify this by renaming "card_needs" to "card_max_current".
+This series adds initial support for the Marvell PXA1908 SoC and
+"samsung,coreprimevelte", a smartphone using the SoC.
 
->
->         /*
->          * Current limit switch is only defined for SDR50, SDR104, and DDR50
-> @@ -575,33 +574,24 @@ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
->         max_current = sd_get_host_max_current(card->host);
+*Important note*: There is a regression on all of the v6.16 RCs where
+the board does not boot unrelated to the patches in this set. See:
+https://lore.kernel.org/regressions/3367665.aeNJFYEL58@radijator/
 
-Looking at the implementation of sd_get_host_max_current(), it's very limiting.
+USB works and the phone can boot a rootfs from an SD card, but there are
+some warnings in the dmesg:
 
-For example, if we are using MMC_VDD_34_35 or MMC_VDD_35_36, the
-function returns 0. Maybe this is good enough based upon those host
-drivers that actually sets host->max_current_180|300|330, but it kind
-of looks wrong to me.
+During SMP initialization:
+[    0.006519] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU1: 0x00000000000000
+[    0.006542] CPU features: Unsupported CPU feature variation detected.
+[    0.006589] CPU1: Booted secondary processor 0x0000000001 [0x410fd032]
+[    0.010710] Detected VIPT I-cache on CPU2
+[    0.010716] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU2: 0x00000000000000
+[    0.010758] CPU2: Booted secondary processor 0x0000000002 [0x410fd032]
+[    0.014849] Detected VIPT I-cache on CPU3
+[    0.014855] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU3: 0x00000000000000
+[    0.014895] CPU3: Booted secondary processor 0x0000000003 [0x410fd032]
 
-I think we should re-work this interface to let us retrieve the
-maximum current from the host in a more flexible way. What we are
-really looking for is a value in Watt instead, I think. Don't get me
-wrong, this deserved it's own standalone patch on top of $subject
-patch.
+SMMU probing fails:
+[    0.101798] arm-smmu c0010000.iommu: probing hardware configuration...
+[    0.101809] arm-smmu c0010000.iommu: SMMUv1 with:
+[    0.101816] arm-smmu c0010000.iommu:         no translation support!
 
->
->         /*
-> -        * We only check host's capability here, if we set a limit that is
-> -        * higher than the card's maximum current, the card will be using its
-> -        * maximum current, e.g. if the card's maximum current is 300ma, and
-> -        * when we set current limit to 200ma, the card will draw 200ma, and
-> -        * when we set current limit to 400/600/800ma, the card will draw its
-> -        * maximum 300ma from the host.
-> -        *
-> -        * The above is incorrect: if we try to set a current limit that is
-> -        * not supported by the card, the card can rightfully error out the
-> -        * attempt, and remain at the default current limit.  This results
-> -        * in a 300mA card being limited to 200mA even though the host
-> -        * supports 800mA. Failures seen with SanDisk 8GB UHS cards with
-> -        * an iMX6 host. --rmk
+A 3.14 based Marvell tree is available on GitHub
+acorn-marvell/brillo_pxa_kernel, and a Samsung one on GitHub
+CoderCharmander/g361f-kernel.
 
-I think it's important to keep some of the information from above, as
-it still stands, if I understand correctly.
+Andreas Färber attempted to upstream support for this SoC in 2017:
+https://lore.kernel.org/lkml/20170222022929.10540-1-afaerber@suse.de/
 
-> +        * query the card of its maximun current/power consumption given the
-> +        * bus speed mode
->          */
-> -       if (max_current >= 800 &&
-> -           card->sw_caps.sd3_curr_limit & SD_MAX_CURRENT_800)
-> +       err = mmc_sd_switch(card, 0, 0, card->sd_bus_speed, status);
-> +       if (err)
-> +               return err;
-> +
-> +       card_needs = status[1] | status[0] << 8;
+Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+---
+Changes in v16:
+- Small device tree cleanups (warnings, hardcoded initrd)
+- Fix device tree path in MAINTAINERS
+- Update my email address
+- Rebase on v6.16-rc5
+- Link to v15: https://lore.kernel.org/r/20250407-pxa1908-lkml-v15-0-e83ef101f944@skole.hr
 
-Please add a comment on what bits/fields we are parsing for. This
-looks like magic to me. :-)
+Changes in v15:
+- Update trailers
+- Move device trees to mmp/ subdirectory
+- Remove excess newline in board dts
+- Add soc@ to Cc list
+- Drop tree from MAINTAINERS
+- Rebase to v6.15-rc1
+- Link to v14: https://lore.kernel.org/r/20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr
 
-> +
-> +       if (max_current >= 800 && card_needs > 600)
->                 current_limit = SD_SET_CURRENT_LIMIT_800;
-> -       else if (max_current >= 600 &&
-> -                card->sw_caps.sd3_curr_limit & SD_MAX_CURRENT_600)
-> +       else if (max_current >= 600 && card_needs > 400)
->                 current_limit = SD_SET_CURRENT_LIMIT_600;
-> -       else if (max_current >= 400 &&
-> -                card->sw_caps.sd3_curr_limit & SD_MAX_CURRENT_400)
-> +       else if (max_current >= 400 && card_needs > 200)
->                 current_limit = SD_SET_CURRENT_LIMIT_400;
->
->         if (current_limit != SD_SET_CURRENT_LIMIT_200) {
-> -               err = mmc_sd_switch(card, SD_SWITCH_SET, 3,
-> -                               current_limit, status);
-> +               err = mmc_sd_switch(card, SD_SWITCH_SET, 3, current_limit, status);
->                 if (err)
->                         return err;
->
-> diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-> index e9e964c20e53..67c1386ca574 100644
-> --- a/include/linux/mmc/card.h
-> +++ b/include/linux/mmc/card.h
-> @@ -177,17 +177,11 @@ struct sd_switch_caps {
->  #define SD_DRIVER_TYPE_A       0x02
->  #define SD_DRIVER_TYPE_C       0x04
->  #define SD_DRIVER_TYPE_D       0x08
-> -       unsigned int            sd3_curr_limit;
->  #define SD_SET_CURRENT_LIMIT_200       0
->  #define SD_SET_CURRENT_LIMIT_400       1
->  #define SD_SET_CURRENT_LIMIT_600       2
->  #define SD_SET_CURRENT_LIMIT_800       3
->
-> -#define SD_MAX_CURRENT_200     (1 << SD_SET_CURRENT_LIMIT_200)
-> -#define SD_MAX_CURRENT_400     (1 << SD_SET_CURRENT_LIMIT_400)
-> -#define SD_MAX_CURRENT_600     (1 << SD_SET_CURRENT_LIMIT_600)
-> -#define SD_MAX_CURRENT_800     (1 << SD_SET_CURRENT_LIMIT_800)
-> -
->  #define SD4_SET_POWER_LIMIT_0_72W      0
->  #define SD4_SET_POWER_LIMIT_1_44W      1
->  #define SD4_SET_POWER_LIMIT_2_16W      2
-> --
-> 2.25.1
->
+Changes in v14:
+- Rebase on v6.13-rc7, dropping everything except DT
+- Link to v13: https://lore.kernel.org/r/20241001-pxa1908-lkml-v13-0-6b9a7f64f9ae@skole.hr
 
-Finally, it would be nice to have some more information about the test
-you have done to verify this. The performance numbers are very
-interesting, as it seems like some cards/platforms could really
-benefit from this a lot. Would you mind extending the commit message
-with some more information about this?
+Changes in v13:
+- Better describe the hardware in bindings/arm commit message
+- Rebase on v6.12-rc1
+- Link to v12: https://lore.kernel.org/r/20240823-pxa1908-lkml-v12-0-cc3ada51beb0@skole.hr
 
-Kind regards
-Uffe
+Changes in v12:
+- Rebase on v6.11-rc4
+- Fix schmitt properties in accordance with 78d8815031fb ("dt-bindings: pinctrl: pinctrl-single: fix schmitt related properties")
+- Drop a few redundant includes in clock drivers
+- Link to v11: https://lore.kernel.org/r/20240730-pxa1908-lkml-v11-0-21dbb3e28793@skole.hr
+
+Changes in v11:
+- Rebase on v6.11-rc1 (conflict with DTS Makefile), no changes
+- Link to v10: https://lore.kernel.org/r/20240424-pxa1908-lkml-v10-0-36cdfb5841f9@skole.hr
+
+Changes in v10:
+- Update trailers
+- Rebase on v6.9-rc5
+- Clock driver changes:
+  - Add a couple of forgotten clocks in APBC
+    - The clocks are thermal_clk, ipc_clk, ssp0_clk, ssp2_clk and swjtag
+    - The IDs and register offsets were already present, but I forgot to
+      actually register them
+  - Split each controller block into own file
+  - Drop unneeded -of in clock driver filenames
+  - Simplify struct pxa1908_clk_unit
+  - Convert to platform driver
+  - Add module metadata
+- DTS changes:
+  - Properly name pinctrl nodes
+  - Drop pinctrl #size-cells, #address-cells, ranges and #gpio-size-cells
+  - Fix pinctrl input-schmitt configuration
+- Link to v9: https://lore.kernel.org/20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr
+
+Changes in v9:
+- Update trailers and rebase on v6.9-rc2, no changes
+- Link to v8: https://lore.kernel.org/20240110-pxa1908-lkml-v8-0-fea768a59474@skole.hr
+
+Changes in v8:
+- Drop SSPA patch
+- Drop broken-cd from eMMC node
+- Specify S-Boot hardcoded initramfs location in device tree
+- Add ARM PMU node
+- Correct inverted modem memory base and size
+- Update trailers
+- Rebase on next-20240110
+- Link to v7: https://lore.kernel.org/20231102-pxa1908-lkml-v7-0-cabb1a0cb52b@skole.hr
+  and https://lore.kernel.org/20231102152033.5511-1-duje.mihanovic@skole.hr
+
+Changes in v7:
+- Suppress SND_MMP_SOC_SSPA on ARM64
+- Update trailers
+- Rebase on v6.6-rc7
+- Link to v6: https://lore.kernel.org/r/20231010-pxa1908-lkml-v6-0-b2fe09240cf8@skole.hr
+
+Changes in v6:
+- Address maintainer comments:
+  - Add "marvell,pxa1908-padconf" binding to pinctrl-single driver
+- Drop GPIO patch as it's been pulled
+- Update trailers
+- Rebase on v6.6-rc5
+- Link to v5: https://lore.kernel.org/r/20230812-pxa1908-lkml-v5-0-a5d51937ee34@skole.hr
+
+Changes in v5:
+- Address maintainer comments:
+  - Move *_NR_CLKS to clock driver from dt binding file
+- Allocate correct number of clocks for each block instead of blindly
+  allocating 50 for each
+- Link to v4: https://lore.kernel.org/r/20230807-pxa1908-lkml-v4-0-cb387d73b452@skole.hr
+
+Changes in v4:
+- Address maintainer comments:
+  - Relicense clock binding file to BSD-2
+- Add pinctrl-names to SD card node
+- Add vgic registers to GIC node
+- Rebase on v6.5-rc5
+- Link to v3: https://lore.kernel.org/r/20230804-pxa1908-lkml-v3-0-8e48fca37099@skole.hr
+
+Changes in v3:
+- Address maintainer comments:
+  - Drop GPIO dynamic allocation patch
+  - Move clock register offsets into driver (instead of bindings file)
+  - Add missing Tested-by trailer to u32_fract patch
+  - Move SoC binding to arm/mrvl/mrvl.yaml
+- Add serial0 alias and stdout-path to board dts to enable UART
+  debugging
+- Rebase on v6.5-rc4
+- Link to v2: https://lore.kernel.org/r/20230727162909.6031-1-duje.mihanovic@skole.hr
+
+Changes in v2:
+- Remove earlycon patch as it's been merged into tty-next
+- Address maintainer comments:
+  - Clarify GPIO regressions on older PXA platforms
+  - Add Fixes tag to commit disabling GPIO pinctrl calls for this SoC
+  - Add missing includes to clock driver
+  - Clock driver uses HZ_PER_MHZ, u32_fract and GENMASK
+  - Dual license clock bindings
+  - Change clock IDs to decimal
+  - Fix underscores in dt node names
+  - Move chosen node to top of board dts
+  - Clean up documentation
+  - Reorder commits
+  - Drop pxa,rev-id
+- Rename muic-i2c to i2c-muic
+- Reword some commits
+- Move framebuffer node to chosen
+- Add aliases for mmc nodes
+- Rebase on v6.5-rc3
+- Link to v1: https://lore.kernel.org/r/20230721210042.21535-1-duje.mihanovic@skole.hr
+
+---
+Duje Mihanović (5):
+      dt-bindings: mmc: sdhci-pxa: restrict pinctrl to pxav1
+      dt-bindings: marvell: Document PXA1908 SoC and samsung,coreprimevelte
+      arm64: Kconfig.platforms: Add config for Marvell PXA1908 platform
+      arm64: dts: Add DTS for Marvell PXA1908 and samsung,coreprimevelte
+      MAINTAINERS: add myself as Marvell PXA1908 maintainer
+
+ .../devicetree/bindings/arm/mrvl/mrvl.yaml         |   5 +
+ .../devicetree/bindings/mmc/sdhci-pxa.yaml         |  36 ++-
+ MAINTAINERS                                        |   8 +
+ arch/arm64/Kconfig.platforms                       |   8 +
+ arch/arm64/boot/dts/marvell/Makefile               |   2 +
+ arch/arm64/boot/dts/marvell/mmp/Makefile           |   2 +
+ .../marvell/mmp/pxa1908-samsung-coreprimevelte.dts | 331 +++++++++++++++++++++
+ arch/arm64/boot/dts/marvell/mmp/pxa1908.dtsi       | 300 +++++++++++++++++++
+ 8 files changed, 676 insertions(+), 16 deletions(-)
+---
+base-commit: d7b8f8e20813f0179d8ef519541a3527e7661d3a
+change-id: 20230803-pxa1908-lkml-6830e8da45c7
+
+Best regards,
+-- 
+Duje Mihanović <duje@dujemihanovic.xyz>
+
 
