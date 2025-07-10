@@ -1,85 +1,86 @@
-Return-Path: <linux-mmc+bounces-7447-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7449-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6E9B000E4
-	for <lists+linux-mmc@lfdr.de>; Thu, 10 Jul 2025 13:57:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99ABFB000E6
+	for <lists+linux-mmc@lfdr.de>; Thu, 10 Jul 2025 13:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E001F1C86D35
-	for <lists+linux-mmc@lfdr.de>; Thu, 10 Jul 2025 11:57:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E49B3581D93
+	for <lists+linux-mmc@lfdr.de>; Thu, 10 Jul 2025 11:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F3B2550D4;
-	Thu, 10 Jul 2025 11:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794832561D9;
+	Thu, 10 Jul 2025 11:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jnE+d+1C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dtZzSYHu"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2E02550D8
-	for <linux-mmc@vger.kernel.org>; Thu, 10 Jul 2025 11:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5873524E4C4
+	for <linux-mmc@vger.kernel.org>; Thu, 10 Jul 2025 11:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752148640; cv=none; b=IWvLMlHpdLEW58/ycaTCvnHfRBuR1R5jhf1kg+FhWD3ESnYX3tJs0N8+R1wTkvTJ0Ed8AXBi2BUJOm8XqkrGMuEmmkEhI4+Oa0mhuKd0whO44X2XB82Dx9GxDJGtTVAJZZn6PRqu/uedKqLlCEf4KBmHMQAsY8CinddJe9IYOp8=
+	t=1752148642; cv=none; b=km9mzV1/FvPM7cAifVI0mQPxOFS43rrnrqRAY9b/m6EHYphpnmWTClPVkbR+w8yt/WTKPjxRprfQ6eK25EEmGPFh0xbRp2taoz9xkz+r9tPxRwmV+SNunT5g1hbbRSTcYvGI4uLIccvBDRV4ddoVTzmie3Uzb6sBun496oyDNA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752148640; c=relaxed/simple;
-	bh=hC+I/qxnsicGhBSjNc6oecVaLe+pdSOSn9hwoAhWqNE=;
+	s=arc-20240116; t=1752148642; c=relaxed/simple;
+	bh=am8oNNKDPx+xbCYXKkbMtTBhe4se0uMt0JG3qQiFk/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBlp1/RU71yuHL8A7bnZMN0lMW2zPZGZm3cC8hB2s9Wy1xrV2JQauLzB3EvUPkS8vCp+cD5o9sD7BGjroei9C1XH/nCA7ycGUbg0nEZ7ueazoohBm42Dfv4hPzh1+2NYMpVDpCLZb0QoXgpMd+NFy+i2CErS0BQjne8Z2yb5Rx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jnE+d+1C; arc=none smtp.client-ip=209.85.221.44
+	 MIME-Version; b=pF8j6wfUePn8Be86s67rhZpXAy2nrtunCHYVIkeWQycfAvLI/EpDSTJ2x+GoeNPt2RTZUqxJ0dyRbEvxPEBa9wlgMkPpslOasxX+eIzTlXYM1FMrp0nU4nJtR/5VnriANNYriDkAs6p08vUEFSjLrQBxowZFb6OaRygoH+MFeVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dtZzSYHu; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a54700a463so526708f8f.1
-        for <linux-mmc@vger.kernel.org>; Thu, 10 Jul 2025 04:57:18 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4537deebb01so4835475e9.0
+        for <linux-mmc@vger.kernel.org>; Thu, 10 Jul 2025 04:57:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752148637; x=1752753437; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752148638; x=1752753438; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SeK52PiS/yxpaDzArE+1uChD/RqPmmTZ71OWYsGexe4=;
-        b=jnE+d+1CS+AkUvXNl/yc4GoeyPzBhSkrIwCQv+5wvRYD7Jv4J+WhSGReRDR71nIwTI
-         vzS4ctdERQbWPQLSWB3V0tX9gxN0EHNwB7yNxrJnep1TdP1j8irInKomLrYx3+pIIL1W
-         oRSMGljAIZu7e4EPDQdDnUyY/1irpiaFB39++0SR0TDJ8g8wDuoogfubPjj1mNvdcTIA
-         2HEaO5xOmRhzKU458EEOLC91zYuTBURG2lpTRt7PFV3uIOYzN5W8u9Jc4+WRJPAQ+qru
-         feKU2p3h/XgUYbU5LQlLWVcTbB9dlu9xhAIQLCcJl3fDgOLLCDNZJgN3+uv5TgfhMYRR
-         owfw==
+        bh=sRYWfNUM1qQAOt3GkNcMgRTTBVEpw64ARB6Pr45uhbw=;
+        b=dtZzSYHuUSyNT6cCjEqMRwxZnB97HiZN0NyrtxnOqgnH5foXPWNX4Rzxe+czd1ySXq
+         UkVNkiXAsndmNfWAV9otoWSS20TFFhV+3MWysCpSHTY5eisURlfCRRxx9zfv0RGF8Pfi
+         TKzwXLV8i+/5RLDAb+3DTIwiX2IdHDSxxW81asK1WTuNlKMuBG6uHTumGdy/kV03sTA1
+         18FcRg1rT/VgbmsAk/e0ZJZaF6APO50KGX/kbEp/YB08PLpJLxUZTv9ZBrTwyO7E2mCd
+         YG/e0tx4terirPetPVLP45mr1K5pmy016+rvh9rUy8BJlCm4dKZ6T7J5hOO3hMx/HTUb
+         ZiiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752148637; x=1752753437;
+        d=1e100.net; s=20230601; t=1752148638; x=1752753438;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SeK52PiS/yxpaDzArE+1uChD/RqPmmTZ71OWYsGexe4=;
-        b=dMnqKCdU7LmUwX1UnK506CkCsfWwGjfl3mSP2yCD6YquIESg20xYzP6fP/mBVC5nbu
-         8DjbiWmGEgRDgHBimJM6/s/DOa3lk7V6hVPGMkz25piM33cJeuG3Yx1RB5018uJ+CUEl
-         DBnpi3JqU4Tz0RUVywLvapzT8S1qZVhRfA3iuWBy3VgJ8uory01cHc7+j2D31/wp/lfZ
-         JJZBlRQ0Qvp7DPgP0N56PrO9vQvnGH0UYfSW+l+NSBU0eXAOYlUzMj89zC5qaKKFrAVE
-         i5vxLXFT0VbLb3fed1QYoRKYsveEQKk+3OEtLVDu4PDEVXOnb2CBetEFCtkCzxrKI1FU
-         mnng==
-X-Gm-Message-State: AOJu0YxmRFOvLc7UR7TL2dMB6+zAil58DuQMoS7WvCKiO8+FUEdyQ/Pr
-	G4e++3m5om53C3wUwOvM3L0zV7jrJhlpbqL3ujT/d2/FpVR8HnslDawu7XyfYg==
-X-Gm-Gg: ASbGncvi0ogjGQvPEPEySEEbZSIGC87eJBBIqDKZusWWqBPbHlXOiGbQW00K2weTT0N
-	cKU9+ck/9XZVn41efYfd2NVaRFwR9VXhQsHBLB5jMw8Xw5GqYbKvOdsafL4jGU/3UcPp9sehg4x
-	Rz/JrahXmysvCPpiGQdX/E7vx8PBAoZSVd1YxzSYOY3bN/VkSJkDnodR8gUtOaf73AKZ7CRl+N5
-	QMLOXDrItehTg8roNL/7gQE+MkxXYca8N/Xfjs8pu8WFHBxJMSpSSnAVbbNPNrpQXs+uR3VCWEB
-	2+vpFFpMJEBXBbbGUEHlk12k5Y0iFXbDQeiqe4iiokPIr6qp9ydkerb39svHbFv+f66B5LLhGBJ
-	NtWSCf3akbB1xYhL958j3K1CUFvp8gRGBmhL35q93bzY=
-X-Google-Smtp-Source: AGHT+IHzFOB0Dx2xQdTOBBrJF4gY1ac50whH9AMWiMQW5GFZmmNRoFzyRZY3EUYhHTRLi0ypZNMTKA==
-X-Received: by 2002:a05:6000:4703:b0:3a6:d95e:f37c with SMTP id ffacd0b85a97d-3b5e7f0fb1amr2706494f8f.2.1752148637107;
-        Thu, 10 Jul 2025 04:57:17 -0700 (PDT)
+        bh=sRYWfNUM1qQAOt3GkNcMgRTTBVEpw64ARB6Pr45uhbw=;
+        b=WFYuRvePn4zccEpF6QnUsUhr/0yrUF4VMpAw92j0t8gNQyru8kqX7pk1seGiTQRtUk
+         v+TrMv20eDegDBmoh0hG7un0tsnRYf2JnFsVV/T9MGlWcS+xiesAcDOKfD2Cct/w0qP1
+         3QDFC6A42qweKNHFBP3+NeRllIUaoVVzV15d3/ezaPl1Qrh4Ga38fU2c91svbzrB2/f7
+         0oa7c1C+06UPZ8FkJMl3jXMCqjq/PZnUdvA3mEiGnMsmu20+QTqEIgcvttR7brrsoyxs
+         nSk2oKTnB9ON/7MGo8YJNnkViPYO9U9cIoqxKk2l07YIxSBWzdbmnyvKau8LA9alsrM2
+         TFdg==
+X-Gm-Message-State: AOJu0YzSz1EoQV5DrVmNKGxhwhOQ8SB4+lODQNXA1x0hBOM8emj9IS1h
+	T57N3mJcXELCb+hP2jc60ZiLgJkGWihPS7BNmbq60mU3JHC/vT25/uy1fPgGgA==
+X-Gm-Gg: ASbGncvD7hi3yQzEIpYNpZgZprgi6IylZDM4pKoBax1RTdCOB2q5AZEyzH1PUJbQHNJ
+	wK9vBhWipnTeDuYELb9cRTCMpL0RZx+scipUXypCqjQlWSTK3OAY7mCk4CcYkqFnzYort7mW2ao
+	5hHsW0MhN3sMgItiaMe5rmuH/1uAqwOULKB8ugLUoMWZLuXtq9wK9Ixeth1wbWCRQ+TPCCUBIlC
+	PD6LR36H4gv/DcV8l9yztkWpNosO0B5JbugSq3zTRI+0GWejTCqXFHdgYtE8nIx3WdOF25x1t6/
+	uO+ZkK3WLNhHvXk+NG2HhfmDjksI8EkkLGdt5M6nAbKXey2W7lh7Eo0GWrzXFIO/cvRfkemCrma
+	hec0mGmHNLLFqtzyoR3k1i1FrcLztRhu2T/HhLMuRwe8=
+X-Google-Smtp-Source: AGHT+IHWunL/++yFYClg0eKjgEgZab9xZtvL9h5CW1RMwmkab+GulFtpd+hFScFcF182CqCQErRYag==
+X-Received: by 2002:a05:600c:a08c:b0:440:61eb:2ce5 with SMTP id 5b1f17b1804b1-454dd2929a0mr27808495e9.17.1752148638255;
+        Thu, 10 Jul 2025 04:57:18 -0700 (PDT)
 Received: from mdionisio-OptiPlex-7070.powersoft.it (srvsp.powersoft.it. [93.146.228.90])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e2747fsm1652622f8f.100.2025.07.10.04.57.16
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e2747fsm1652622f8f.100.2025.07.10.04.57.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 04:57:16 -0700 (PDT)
+        Thu, 10 Jul 2025 04:57:17 -0700 (PDT)
 From: Michele Dionisio <michele.dionisio@gmail.com>
 To: linux-mmc@vger.kernel.org
 Cc: avri.altman@wdc.com,
 	ulf.hansson@linaro.org,
+	Michele Dionisio <michele.dionisio@powersoft.com>,
 	Michele Dionisio <michele.dionisio@gmail.com>
-Subject: [PATCH 2/3] mmc-utils: 1 parameter is the required number not the minimum
-Date: Thu, 10 Jul 2025 13:56:33 +0200
-Message-ID: <20250710115653.2808619-3-michele.dionisio@gmail.com>
+Subject: [PATCH 3/3] mmc-utils: add ability to flush optional eMMC cache
+Date: Thu, 10 Jul 2025 13:56:34 +0200
+Message-ID: <20250710115653.2808619-4-michele.dionisio@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250710115653.2808619-1-michele.dionisio@gmail.com>
 References: <PH7PR16MB6196D50A37E3A318ED6B98BEE54EA@PH7PR16MB6196.namprd16.prod.outlook.com>
@@ -92,30 +93,171 @@ List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+From: Michele Dionisio <michele.dionisio@powersoft.com>
+
+The MMC 5.0 instroduce command to flush cache. This feature can be use on
+embedded device there power is not stable.
+
+
 Signed-off-by: Michele Dionisio <michele.dionisio@gmail.com>
 ---
- mmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ docs/HOWTO.rst |  4 ++++
+ man/mmc.1      |  4 ++++
+ mmc.c          |  5 ++++
+ mmc.h          |  1 +
+ mmc_cmds.c     | 64 +++++++++++++++++++++++++++++++++++++++++++++-----
+ mmc_cmds.h     |  1 +
+ 6 files changed, 73 insertions(+), 6 deletions(-)
 
+diff --git a/docs/HOWTO.rst b/docs/HOWTO.rst
+index 9b1f1a8..ab2e255 100644
+--- a/docs/HOWTO.rst
++++ b/docs/HOWTO.rst
+@@ -117,3 +117,7 @@ Running mmc-utils
+     ``mmc cache disable <device>``
+         Disable the eMMC cache feature on <device>.
+         Applicable only if device version >= eMMC4.5.
++
++    ``mmc cache flush <device>``
++        Flush the eMMC cache for <device>.
++        Applicable only if device version >= eMMC5.0.
+diff --git a/man/mmc.1 b/man/mmc.1
+index bccabf3..665fe6d 100644
+--- a/man/mmc.1
++++ b/man/mmc.1
+@@ -109,6 +109,10 @@ NOTE! The cache is an optional feature on devices >= eMMC4.5.
+ Disable the eMMC cache feature on <device>.
+ NOTE! The cache is an optional feature on devices >= eMMC4.5.
+ .TP
++.BR "cache flush <device>"
++Flush the eMMC cache on <device>.
++NOTE! The cache is an optional feature on devices >= eMMC5.0.
++.TP
+ .BR "<cmd> --help"
+ Show detailed help for a command or subset of commands.
+ 
 diff --git a/mmc.c b/mmc.c
-index 6770a45..7433755 100644
+index 7433755..bd9d498 100644
 --- a/mmc.c
 +++ b/mmc.c
-@@ -221,12 +221,12 @@ static struct Command commands[] = {
- 		  "or read without verification\n"
- 		  "  $ mmc rpmb secure-wp-en-read /dev/mmcblk0 /dev/mmcblk0rpmb",
- 	},
--	{ do_cache_en, -1,
-+	{ do_cache_en, 1,
- 	  "cache enable", "<device>\n"
- 		"Enable the eMMC cache feature on <device>.\n"
- 		"NOTE! The cache is an optional feature on devices >= eMMC4.5.",
- 	},
--	{ do_cache_dis, -1,
-+	{ do_cache_dis, 1,
- 	  "cache disable", "<device>\n"
+@@ -231,6 +231,11 @@ static struct Command commands[] = {
  		"Disable the eMMC cache feature on <device>.\n"
  		"NOTE! The cache is an optional feature on devices >= eMMC4.5.",
+ 	},
++	{ do_cache_flush, 1,
++	  "cache flush", "<device>\n"
++		"flush the eMMC cache <device>.\n"
++		"NOTE! The cache is an optional feature on devices >= eMMC5.0.",
++	},
+ 	{ do_read_csd, -1,
+ 	  "csd read", "<device path>\n"
+ 		  "Print CSD data from <device path>.\n"
+diff --git a/mmc.h b/mmc.h
+index 9fc22ec..2bb346b 100644
+--- a/mmc.h
++++ b/mmc.h
+@@ -152,6 +152,7 @@
+ #define EXT_CSD_DATA_SECTOR_SIZE	61 /* R */
+ #define EXT_CSD_EXT_PARTITIONS_ATTRIBUTE_1	53
+ #define EXT_CSD_EXT_PARTITIONS_ATTRIBUTE_0	52
++#define EXT_CSD_FLUSH_CACHE     32
+ #define EXT_CSD_CACHE_CTRL		33
+ #define EXT_CSD_MODE_CONFIG		30
+ #define EXT_CSD_MODE_OPERATION_CODES	29	/* W */
+diff --git a/mmc_cmds.c b/mmc_cmds.c
+index b16ac69..eb9924e 100644
+--- a/mmc_cmds.c
++++ b/mmc_cmds.c
+@@ -2838,12 +2838,14 @@ static int do_cache_ctrl(int value, int nargs, char **argv)
+ 			device);
+ 		exit(1);
+ 	}
+-	ret = write_extcsd_value(fd, EXT_CSD_CACHE_CTRL, value, 0);
+-	if (ret) {
+-		fprintf(stderr,
+-			"Could not write 0x%02x to EXT_CSD[%d] in %s\n",
+-			value, EXT_CSD_CACHE_CTRL, device);
+-		exit(1);
++	if (ext_csd[EXT_CSD_CACHE_CTRL]) {
++		ret = write_extcsd_value(fd, EXT_CSD_CACHE_CTRL, value, 0);
++		if (ret) {
++			fprintf(stderr,
++				"Could not write 0x%02x to EXT_CSD[%d] in %s\n",
++				value, EXT_CSD_CACHE_CTRL, device);
++			exit(1);
++		}
+ 	}
+ 
+ 	close(fd);
+@@ -2870,6 +2872,56 @@ int do_cache_dis(int nargs, char **argv)
+ 	return do_cache_ctrl(0, nargs, argv);
+ }
+ 
++int do_cache_flush(int nargs, char **argv)
++{
++	__u8 ext_csd[512];
++	int fd, ret;
++	char *device;
++
++	device = argv[1];
++
++	fd = open(device, O_RDWR);
++	if (fd < 0) {
++		perror("open");
++		exit(1);
++	}
++
++	ret = read_extcsd(fd, ext_csd);
++	if (ret) {
++		fprintf(stderr, "Could not read EXT_CSD from %s\n", device);
++		exit(1);
++	}
++
++	if (ext_csd[EXT_CSD_REV] < EXT_CSD_REV_V5_0) {
++		fprintf(stderr,
++			"The CACHE FLUSH option is only availabe on devices >= "
++			"MMC 5.0 %s\n", device);
++		exit(1);
++	}
++
++	/* If the cache size is zero, this device does not have a cache */
++	if (!(ext_csd[EXT_CSD_CACHE_SIZE_3] ||
++			ext_csd[EXT_CSD_CACHE_SIZE_2] ||
++			ext_csd[EXT_CSD_CACHE_SIZE_1] ||
++			ext_csd[EXT_CSD_CACHE_SIZE_0])) {
++		fprintf(stderr,
++			"The CACHE option is not available on %s\n",
++			device);
++		exit(1);
++	}
++
++	ret = write_extcsd_value(fd, EXT_CSD_FLUSH_CACHE, 1, 0);
++	if (ret) {
++		fprintf(stderr,
++			"Could not write 0x%02x to EXT_CSD[%d] in %s\n",
++			EXT_CSD_FLUSH_CACHE, EXT_CSD_FLUSH_CACHE, device);
++		exit(1);
++	}
++
++	close(fd);
++	return 0;
++}
++
+ static int erase(int dev_fd, __u32 argin, __u32 start, __u32 end)
+ {
+ 	int ret = 0;
+diff --git a/mmc_cmds.h b/mmc_cmds.h
+index ce35d3e..f767deb 100644
+--- a/mmc_cmds.h
++++ b/mmc_cmds.h
+@@ -50,6 +50,7 @@ int do_rpmb_sec_wp_mode_clear(int nargs, char **argv);
+ int do_rpmb_sec_wp_en_read(int nargs, char **argv);
+ int do_cache_en(int nargs, char **argv);
+ int do_cache_dis(int nargs, char **argv);
++int do_cache_flush(int nargs, char **argv);
+ int do_ffu(int nargs, char **argv);
+ int do_opt_ffu1(int nargs, char **argv);
+ int do_opt_ffu2(int nargs, char **argv);
 -- 
 2.43.0
 
