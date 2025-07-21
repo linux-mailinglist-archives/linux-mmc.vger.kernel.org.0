@@ -1,189 +1,221 @@
-Return-Path: <linux-mmc+bounces-7546-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7548-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B55B0C08B
-	for <lists+linux-mmc@lfdr.de>; Mon, 21 Jul 2025 11:44:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42ACB0C0B7
+	for <lists+linux-mmc@lfdr.de>; Mon, 21 Jul 2025 11:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73197189E8E1
-	for <lists+linux-mmc@lfdr.de>; Mon, 21 Jul 2025 09:44:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15E37164283
+	for <lists+linux-mmc@lfdr.de>; Mon, 21 Jul 2025 09:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6F528D840;
-	Mon, 21 Jul 2025 09:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A69A28C84B;
+	Mon, 21 Jul 2025 09:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QAKYi2oi"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WRwvfsGm"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2054.outbound.protection.outlook.com [40.107.237.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F82C28D82E;
-	Mon, 21 Jul 2025 09:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753091042; cv=none; b=pHTp9axwYkDdurQXMgKXrVFWxlV3xepApJriXpeR0j7/yttoVX8l11OSvWBxe4MPCUFprJxSOxVQdylH8T7mDKHvnpOGzy2s3wKskDSP9H7ZHyIfEDZi4lztmzi0FcTSSpr1DmF9ubIi4EVx1A3ybjZuVwMOV4D2/bVXT2jOo5Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753091042; c=relaxed/simple;
-	bh=Yj7n7qknWPM7BD0ZFzNtOrfnM8ikFkSvHBGsIgH3dEk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iwpNR6I4YAGFEZRH7Nl6MwEt36he+5aIA8f7Hdz5Q3clhOaO32KjXj6mIdTJ2Sh08riHsPIc+KlIDY6kl9s+taP8KgBzSmayhZ1pJxD9ihjJzs5XCay64SCz4vjQus3mjLs3hmCtIrI7dmgOnVgC7eBwMCObS+IGeC5S5Xa2WyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QAKYi2oi; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56L8XXrr010702;
-	Mon, 21 Jul 2025 09:43:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=HQJyOZQMk8Nf+fLZm4IHsZMO
-	oGvKxY1SXVjhV8RqIOA=; b=QAKYi2oiSf3Ov/eo1nIPdecyygAebtHaUc0UkYUC
-	XNlSvpqLrg+j0PC7XMShE+3jRFLmMloMbjibJgqQsjtOLz0Lwkd9kgEbS/i49Er5
-	SsN0vA0T0l1UL9KZZhM+VkJzXfOCGdRbIonQSGanrxuAQehGad5d0aFQgm0X/FUo
-	QyXB/THwWaxxAWZ49Y3dl8LufzIZWuEtHy9xLm244RWqxCgOwtBC/UNNgvQOW2nb
-	ty4O5HmwSvo2RgP5+jqHqaE8VJdRPZMAG0zv+tAo5265dYe5KtzJvM2Oz2ecXpxw
-	nhZU8NQkaXe3m1dfO7WYmoK1PHSxZYELz/KEmtuA1NzAtQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 481j500cq3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Jul 2025 09:43:52 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56L9hpXq005870
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Jul 2025 09:43:51 GMT
-Received: from hu-sayalil-hyd.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 21 Jul 2025 02:43:49 -0700
-From: Sayali Lokhande <quic_sayalil@quicinc.com>
-To: <ulf.hansson@linaro.org>, <wsa+renesas@sang-engineering.com>,
-        <avri.altman@wdc.com>, <adrian.hunter@intel.com>,
-        <shawn.lin@rock-chips.com>
-CC: <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH V1 1/1] mmc: sdio: Export an API to reinit the SDIO card
-Date: Mon, 21 Jul 2025 15:13:28 +0530
-Message-ID: <20250721094328.6556-2-quic_sayalil@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250721094328.6556-1-quic_sayalil@quicinc.com>
-References: <20250721094328.6556-1-quic_sayalil@quicinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D000128C5B6;
+	Mon, 21 Jul 2025 09:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753091673; cv=fail; b=HbFh3VQd/+pHiDK1f2gSEFcPx0OmUcHJr99eQgIEuhy1Tauivh9WAQhZK9k7zZTlK0x+RLxNyyVr69So9rUq1/fBnhbspKujTdlJNR2b+MtPxSDIkWfXIoODC65CobZFh43wl+HubE4RLpRFJSlPEejYOHwdOz6PQ3nElvHshmc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753091673; c=relaxed/simple;
+	bh=sHJOVklfJuyZGrPOM8imW5MboKPz3pcbPKP02gb5E6U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TItoy1gu1sKbi9urj59keQ+W0HobRgJ5T4BROxGV029iGC4A+AL3QCS+3Eg5vcR8lpccHYNliPY/yDVlOCZcIAYA+1y4gw/yJbV4bQLpTKUQjnV3PkaWXFiZCv5Zxw60YJ4V6DaCWAoM9nu1usHUH4AN4wFWH51oxirtRcGLN9s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WRwvfsGm; arc=fail smtp.client-ip=40.107.237.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xra1FOsEWCBuB2wx30+lPH26WTbcAnEQNgG4mH/yB8pFnzZzX5vCb8hRoUvrflKGw44CR9WljxUu3EgYL1TqR1wy3ZcvWeXV7TqogihGPIT9TQUxDSjxehJUVGjS2PhPo5yMpIhATSXgANKWO9YZ891/H0/Yo19Kx0aP7+5QW4fbnFq2YRyvYIlTr+piRiNVESOlSOBpkwrvBWUrk9ioXA12FIk43TQwZVqeshnCveyHVQzC/bkTcdqq7sCPfnPabXgz9uZb1IG0CHStZ1E1Sppr4jZ6H3GXvrpoe7mhs+HaoQmfTqI28r2SUXswEsTazmqw0P7nPg+VU8vrqdlI6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lawGmDdTh4PjP4bEM50BqsTt70z6b7WCYBt8JDwh/Ws=;
+ b=wDlz7G1RYpu1Ve9evl/lLfVWEJaZeF8T0GWgQI35v7qnSJpVAmIeDmfy8jaZl38pyQdDzngbi6whDfJ9eOCrj0NktSnFKDkJxWGAIIe+VS8bNJrVSMEkYb9k5DhX4hQZVRE5YPfXza0zXWGIpqTcdDS6vgbu8yTwqq5snwc4uH/4P1bjEuhTfjY4CSnH2TsIfet0HZpJrK+GFkI9x6ScguJZYsptaT8YF1tw5Fdid60hCayLYAnbGovyieR+CtCd6rD1OtT2J5r8NskLlcwhWdbs86HK3iYbWORR5BFy4Ez/k+btfjctotYgBP6jRu9oaK9ej+oQYL5nqpq+hLHYtg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lawGmDdTh4PjP4bEM50BqsTt70z6b7WCYBt8JDwh/Ws=;
+ b=WRwvfsGmkUN3Tg2hYEkpl4EowyQdnHIh5hrdVuj0EYhmrkt4VzaB1kgXolPZSn6EMDCQxoJIMGDQqy6ESUpwXqJTn3JNwsLEIgKlQLXImjkNTW4hu+rn328gS6BwzSYaPo0ARhcZ25DLti8cgI3se4VUfOYdlNCq+2gOUsNrkOs=
+Received: from MW4PR04CA0119.namprd04.prod.outlook.com (2603:10b6:303:83::34)
+ by MN2PR12MB4158.namprd12.prod.outlook.com (2603:10b6:208:15f::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Mon, 21 Jul
+ 2025 09:54:28 +0000
+Received: from SJ5PEPF000001F7.namprd05.prod.outlook.com
+ (2603:10b6:303:83:cafe::35) by MW4PR04CA0119.outlook.office365.com
+ (2603:10b6:303:83::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.23 via Frontend Transport; Mon,
+ 21 Jul 2025 09:54:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ SJ5PEPF000001F7.mail.protection.outlook.com (10.167.242.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8964.20 via Frontend Transport; Mon, 21 Jul 2025 09:54:27 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Jul
+ 2025 04:54:26 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Jul
+ 2025 04:54:25 -0500
+Received: from xhdlakshmis40.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Mon, 21 Jul 2025 04:54:23 -0500
+From: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
+To: Adrian Hunter <adrian.hunter@intel.com>, Michal Simek
+	<michal.simek@amd.com>, Ulf Hansson <ulf.hansson@linaro.org>
+CC: <linux-mmc@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <git@amd.com>, <saikrishna12468@gmail.com>,
+	Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
+Subject: [PATCH] mmc: sdhci-of-arasan: Ensure CD logic stabilization before power-up
+Date: Mon, 21 Jul 2025 15:23:57 +0530
+Message-ID: <20250721095357.3783222-1-sai.krishna.potthuri@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: oeTcVZk2DMp1L93nbVooq7WEK2-UAz8H
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIxMDA4NiBTYWx0ZWRfX81a8vYMzLeVY
- LwXkvHQ9EP0C4UK5+GYjfzK1guK5n2KYTifTW4jNRzYllhQBLKfY8m63oFIVrsSnCb/3EEziDPp
- Bol3/E0XLubKITCFc6SMrVQdDTqJCEQlmWISC6x4f6IgYNY9sr1iHgTvFx/ec7cBTcz29mwkEFE
- V3MF5qhLGWkazwim3+q8gjONMBImafEfGbidqqi1YiF1FSs0hYdbKnh/aOoVghaFDvAyQI8z9Tf
- NMguNevZPfs3eJN/BBGTN3WZwFvE8KMTCorjolU08Z4qXye/i60vw+eJcdboWMaYbCZDpcDQFwM
- M3XxY+qTbRzBTh/m5JjG0tFQ5neqlDSEqX378v8qOr8ttINoNv8Pfp2CPZCwVWo+zY8rEIa4mWc
- ZG2fXI4noRbXXug6o1cOkrM1tRFjhil7JkjXqkPnIWRHTkD1XTEDeB5plmrQthy+NvayNCY7
-X-Authority-Analysis: v=2.4 cv=CPMqXQrD c=1 sm=1 tr=0 ts=687e0bd8 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8 a=flt_t2ij4EmPrG0qTdAA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: oeTcVZk2DMp1L93nbVooq7WEK2-UAz8H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-21_02,2025-07-21_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 mlxlogscore=999 bulkscore=0 impostorscore=0
- spamscore=0 adultscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
- mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507210086
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F7:EE_|MN2PR12MB4158:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0cab4684-c9a4-4260-e350-08ddc83c94e5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?vDZQjHBtnnE9N9Cbr6znhF5lPiLh7F8BDFR4La+iMuvMDatmW0pB7p0rwEwe?=
+ =?us-ascii?Q?dDE9JuXQPYcOtaluttJv6QxEX/54HuI5j9ulH0EChBhfgiTQMEHsAgrVfawM?=
+ =?us-ascii?Q?d5Ot8ARfbzavv6HKKTrJceVELFfY/GrUZ/qUlinKwOjOYmg1A3peK82vDMZi?=
+ =?us-ascii?Q?CelWyk0zUoqmYRZxLbXsB3jFzztg/SVEmY+/yhiN8RJR0zQNP4E94Y0yB2Lm?=
+ =?us-ascii?Q?fdYT6DayH4M2B+miiPFO95DnMr3z95H6vDVcJhNflAYcq+OmwGKLFj+VxPQM?=
+ =?us-ascii?Q?rSaNVCrFFpNuBjZEB6EIyHR9fCJ+zYamodhivtupUa70TWdprng0n925wdzW?=
+ =?us-ascii?Q?Khb5QYnLh1W9ATy5D7yFRxN8IOUEpBm8QnTx973D7UxHBYia+n1v6TyQ4mC1?=
+ =?us-ascii?Q?ds0e9WkDX1g76rNOzy5WV08Ki4/bVIUVgR6O8rnAIzowF4iWiCQkAgg15Ofc?=
+ =?us-ascii?Q?p66pWQDh+/W52GgG2hG7FQ6wXM/Rn1+KPK8RCabOtX7nEf0Un0QhrWe0EZlj?=
+ =?us-ascii?Q?1mJLsSDJTHg6STmMZjW8JyG1X67X5cDcJ2y85BqbkVwVvDDXsmg0O3GOON2F?=
+ =?us-ascii?Q?xQRkee2Qjj6gmGhKtCiJu2lyYc6pt42eYFSWMxuUlxYsNWGPCQ0GQIYne6oB?=
+ =?us-ascii?Q?D5ZcAW/dPB7Zgm7NaRAzAVJmrXNOU5Pk0V76SDVam6gJo4eX2seeB2ABju2n?=
+ =?us-ascii?Q?G4fZonJtVq5b4uhZniIzyytVAVmNw3AZdbtOGbZrDThwfYxxsmDeKHCttXdI?=
+ =?us-ascii?Q?iUXFwSWAvrC+7xOjrYKcujUyZbRFOe5646NyWlgrFSP2VA9zsPSov2gudZOV?=
+ =?us-ascii?Q?IlsSN5VNZrgCTrRM+IjfxkHNO+cQS35j+EuzL0Onnd+CcLFWj4OFqdPG9aVt?=
+ =?us-ascii?Q?CJg+onYRwqIUDMhoqCLM0lwiChnaNefDLwXJh8hQH6CRXvZUQP8tsFciPXDr?=
+ =?us-ascii?Q?0z4XnO0mSaYT7SVyv3JBbsq5ilHV/lgGa97WcKn4c3YQrviCEtBzeCffw4F6?=
+ =?us-ascii?Q?TH6HRYJbEIPAp1y4tiPzPUW+SQA0cxnMQPEQYcH2Llx65s4asbQDUvvo1AcJ?=
+ =?us-ascii?Q?Er9ksDdZUqB+4EZcNqlJ3HiuSPOgx3ANVoMex/C++4tNAjLsVnRBUGc6dzq7?=
+ =?us-ascii?Q?HXXJ/8Gh8qdjnANbnmRDVdzrCVDhjRaywEBTT+RRbZVAEmr6rAAth1ttTOL5?=
+ =?us-ascii?Q?Tc3aDuuFn2uIUs2xDA4XvVSHYIrwQmD3O5Ma+h7C+8s076FTW1bGkIGXocGr?=
+ =?us-ascii?Q?oksp84wN+csjlc9ALv/TooXpHwo5HTQZJZcFr+l3YJOcmk8Mv7c1J1LVc7MN?=
+ =?us-ascii?Q?5FcgQqAPcOxsOfyMRzwkhYOGfLrAI+HrLuoSd7glpZwxebDAO5plEQGYMMK5?=
+ =?us-ascii?Q?NY1vu7X8bJNr6T+mr5b1dwybhAbbl7FDDJSo6tdAJrzUZKMuX4WNmwO1zNi0?=
+ =?us-ascii?Q?Ev38mZPUH76Fr3cw7FYaLR47OzJ7DK/0uzy3ZlEd7sfTm3Szl3ScIpiJ4juz?=
+ =?us-ascii?Q?l7oj7/HkVNk/DVfTIh4pxstJFrjZeeKPi1tB?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2025 09:54:27.6819
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0cab4684-c9a4-4260-e350-08ddc83c94e5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001F7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4158
 
-Some SDIO client drivers, manage external power to the SDIO card.
-In such cases, the card may be power-cycled independently of the
-MMC core's runtime PM state.
-Currently, reinitialization of the SDIO card is tied to the runtime
-PM resume path. However, if the card is powered off and on again before
-the autosuspend delay expires, the runtime suspend/resume callbacks are
-not triggered, leaving the card in an uninitialized state.
+During SD suspend/resume without a full card rescan (when using
+non-removable SD cards for rootfs), the SD card initialization may fail
+after resume. This occurs because, after a host controller reset, the
+card detect logic may take time to stabilize due to debounce logic.
+Without waiting for stabilization, the host may attempt powering up the
+card prematurely, leading to command timeouts during resume flow.
+Add sdhci_arasan_set_power_and_bus_voltage() to wait for the card detect
+stable bit before power up the card. Since the stabilization time
+is not fixed, a maximum timeout of one second is used to ensure
+sufficient wait time for the card detect signal to stabilize.
 
-To address this, export sdio_reinit_card() so that client drivers can
-explicitly trigger reinitialization after powering the card back on,
-ensuring proper device state regardless of runtime PM behavior.
-
-This change enables more robust handling of power-managed SDIO devices
-in scenarios where runtime PM is disabled or insufficient.
-
-Signed-off-by: Sayali Lokhande <quic_sayalil@quicinc.com>
+Signed-off-by: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
 ---
- drivers/mmc/core/core.h       | 1 +
- drivers/mmc/core/sdio.c       | 2 +-
- drivers/mmc/core/sdio_io.c    | 6 ++++++
- include/linux/mmc/sdio_func.h | 2 ++
- 4 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-of-arasan.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/core/core.h b/drivers/mmc/core/core.h
-index 622085cd766f..737584fafd7a 100644
---- a/drivers/mmc/core/core.h
-+++ b/drivers/mmc/core/core.h
-@@ -147,6 +147,7 @@ static inline void mmc_claim_host(struct mmc_host *host)
- 	__mmc_claim_host(host, NULL, NULL);
- }
+diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
+index 42878474e56e..3ce55009ba4a 100644
+--- a/drivers/mmc/host/sdhci-of-arasan.c
++++ b/drivers/mmc/host/sdhci-of-arasan.c
+@@ -99,6 +99,9 @@
+ #define HIWORD_UPDATE(val, mask, shift) \
+ 		((val) << (shift) | (mask) << ((shift) + 16))
  
-+int mmc_sdio_reinit_card(struct mmc_host *host);
- int mmc_cqe_start_req(struct mmc_host *host, struct mmc_request *mrq);
- void mmc_cqe_post_req(struct mmc_host *host, struct mmc_request *mrq);
- int mmc_cqe_recovery(struct mmc_host *host);
-diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index 0f753367aec1..fc3dda1a67c8 100644
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -911,7 +911,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
- 	return err;
- }
- 
--static int mmc_sdio_reinit_card(struct mmc_host *host)
-+int mmc_sdio_reinit_card(struct mmc_host *host)
- {
- 	int ret;
- 
-diff --git a/drivers/mmc/core/sdio_io.c b/drivers/mmc/core/sdio_io.c
-index b774bf51981d..eae2fb361ec2 100644
---- a/drivers/mmc/core/sdio_io.c
-+++ b/drivers/mmc/core/sdio_io.c
-@@ -812,3 +812,9 @@ void sdio_retune_release(struct sdio_func *func)
- 	mmc_retune_release(func->card->host);
- }
- EXPORT_SYMBOL_GPL(sdio_retune_release);
++#define CD_STABLE_TIMEOUT_US		1000000
++#define CD_STABLE_MAX_SLEEP_US		10
 +
-+int sdio_reinit_card(struct mmc_host *host)
+ /**
+  * struct sdhci_arasan_soc_ctl_field - Field used in sdhci_arasan_soc_ctl_map
+  *
+@@ -514,6 +517,23 @@ static int sdhci_arasan_voltage_switch(struct mmc_host *mmc,
+ 	return -EINVAL;
+ }
+ 
++static void sdhci_arasan_set_power_and_bus_voltage(struct sdhci_host *host, unsigned char mode,
++						   unsigned short vdd)
 +{
-+	return mmc_sdio_reinit_card(host);
++	u32 reg;
++
++	/*
++	 * Ensure that the card detect logic has stabilized before powering up, this is
++	 * necessary after a host controller reset.
++	 */
++	if (mode == MMC_POWER_UP) {
++		readl_poll_timeout(host->ioaddr + SDHCI_PRESENT_STATE, reg, reg & SDHCI_CD_STABLE,
++				   CD_STABLE_MAX_SLEEP_US, CD_STABLE_TIMEOUT_US);
++	}
++
++	sdhci_set_power_and_bus_voltage(host, mode, vdd);
 +}
-+EXPORT_SYMBOL_GPL(sdio_reinit_card);
-diff --git a/include/linux/mmc/sdio_func.h b/include/linux/mmc/sdio_func.h
-index fed1f5f4a8d3..f33d0512b6a6 100644
---- a/include/linux/mmc/sdio_func.h
-+++ b/include/linux/mmc/sdio_func.h
-@@ -12,6 +12,7 @@
- #include <linux/mod_devicetable.h>
++
+ static const struct sdhci_ops sdhci_arasan_ops = {
+ 	.set_clock = sdhci_arasan_set_clock,
+ 	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
+@@ -521,7 +541,7 @@ static const struct sdhci_ops sdhci_arasan_ops = {
+ 	.set_bus_width = sdhci_set_bus_width,
+ 	.reset = sdhci_arasan_reset,
+ 	.set_uhs_signaling = sdhci_set_uhs_signaling,
+-	.set_power = sdhci_set_power_and_bus_voltage,
++	.set_power = sdhci_arasan_set_power_and_bus_voltage,
+ 	.hw_reset = sdhci_arasan_hw_reset,
+ };
  
- #include <linux/mmc/pm.h>
-+#include <linux/mmc/host.h>
- 
- struct mmc_card;
- struct sdio_func;
-@@ -132,6 +133,7 @@ extern void sdio_release_host(struct sdio_func *func);
- 
- extern int sdio_enable_func(struct sdio_func *func);
- extern int sdio_disable_func(struct sdio_func *func);
-+extern int sdio_reinit_card(struct mmc_host *host);
- 
- extern int sdio_set_block_size(struct sdio_func *func, unsigned blksz);
+@@ -570,7 +590,7 @@ static const struct sdhci_ops sdhci_arasan_cqe_ops = {
+ 	.set_bus_width = sdhci_set_bus_width,
+ 	.reset = sdhci_arasan_reset,
+ 	.set_uhs_signaling = sdhci_set_uhs_signaling,
+-	.set_power = sdhci_set_power_and_bus_voltage,
++	.set_power = sdhci_arasan_set_power_and_bus_voltage,
+ 	.irq = sdhci_arasan_cqhci_irq,
+ };
  
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+2.25.1
 
 
