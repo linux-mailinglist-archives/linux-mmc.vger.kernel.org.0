@@ -1,98 +1,127 @@
-Return-Path: <linux-mmc+bounces-7670-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7673-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D9AB1821A
-	for <lists+linux-mmc@lfdr.de>; Fri,  1 Aug 2025 15:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3FBB1837E
+	for <lists+linux-mmc@lfdr.de>; Fri,  1 Aug 2025 16:15:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DE09172AF5
-	for <lists+linux-mmc@lfdr.de>; Fri,  1 Aug 2025 13:04:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41A6F5819FB
+	for <lists+linux-mmc@lfdr.de>; Fri,  1 Aug 2025 14:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED6923B61E;
-	Fri,  1 Aug 2025 13:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7694626CE0F;
+	Fri,  1 Aug 2025 14:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HXbUItXc"
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="Y3PbJk9Y"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15895236457;
-	Fri,  1 Aug 2025 13:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD3726A095;
+	Fri,  1 Aug 2025 14:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754053431; cv=none; b=K32cRbno+DcilwQfvKhj4iOhdP5AGDf/VXzS/wFpvc4n9DMqSZpxD/ElcmJA2lsDtc1aXI6J8/8iTPjdQAAnhK3QSlUslytws9W/e3qJrZMt8WOCTZ5zraUID6g5W9ymDWm0+PHGXda00FmiBJOrmuH+TrseVDWaTNhYrUzZZYw=
+	t=1754057690; cv=none; b=SVX6sB67d7iwHuhUztJqaaryCcSivrUKW+jUxOwEumbq6vaSAFXuq+hOy2W7L8zTvVO1Xjd3tmDEN3fVGnqoWVwZdG8ldlV1gSEHJQlUzrDQL1yWnL/DmD7ZV3u7mKeNcxYZ4cElTsb9Td/ExtY5ACJdL+06NZiwZBbxOCSeaZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754053431; c=relaxed/simple;
-	bh=nLmqkVS9iQjauEy4rNIt9xm6IznauJc6LTLgt+KT0/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p866id5XfedQ0ntmnCdJwPEHZ7ghaRHC77A5Tlk3aucQD9VIsQ7wQzUufrVZXOV0uJjMCp8W3er07Trjm7G9yPbz0/buu97lk+rQRd/SmU2TCWUU9yOaKwHlxLUcHEygJgcLxzLvkL4IcQJzgxmLeJfG0MmlcPSopXAksIlwIVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HXbUItXc; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.79.129.131] (unknown [4.194.122.136])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 3AF0E2018F0C;
-	Fri,  1 Aug 2025 06:03:46 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3AF0E2018F0C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1754053429;
-	bh=k47eOFDtblZTXzV626qQ8FC8NdB08Nl0iHc9y8piA/g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HXbUItXcptdZ0a55CSqNyeflST4IwBaAaATj+QdjdEiskHAWN6qxBeiU+Q0Vo3Rsn
-	 CMWWlnB4ubqKeRLqNfrJWa9icwyvZzfyX4gvJwyhdW8l9c7lV1nrsGFuwHkPgG3+u/
-	 OpHZSRpEAtopRXQg1v2wXggorwfrvJzEq5pzxhh0=
-Message-ID: <300b5c01-33bc-4ce6-942c-e32b6e55e5c7@linux.microsoft.com>
-Date: Fri, 1 Aug 2025 18:33:44 +0530
+	s=arc-20240116; t=1754057690; c=relaxed/simple;
+	bh=5LSakXMhRgZECB7vEp/4cohPbSrDyK93lA3vWzIivaY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Uyb8aAJ4Umj3yGBwAiU+3ghZEK2QEures9yl/MC6BuYc8Iu0DRW+fwGYx52qRPd2N/Smmfd21sI3t6MDoBtCAW5p5jBnDgmN9eaeBSU2zS20/C9NM5pPHNEG7FhGpfZ5FIsDgJJiXuo1CK0gHYHWNR6p4+Txu5IWgH9XPH45ZfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=Y3PbJk9Y; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+DKIM-Signature: a=rsa-sha256; bh=y6QtmCaO8/r48Kdfs8oIgYVHptog7txRzNSieCu7rZA=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:Message-Id:Message-Id:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1754057669; v=1; x=1754489669;
+ b=Y3PbJk9YGG3iEuwuu41fZDrB+wNpuy7p105l8d5Dv31akuCKvpFAlobvI0VQhqbeXqychovA
+ ydUO3ebLmXzynQnRcD+OiyR3Z6saB+uljNpmVo2P9s6hbBZp6do2UNzy1W4QG7yavWnPPtn6FgW
+ 0k9+7hMq4I5OFzOllwAzWhiskZ8U0GhHbP1t7ONTzkKfHYySMaC6IYiD9eXUg3NSdu5t/E57sPw
+ McY9endaen6QR+cNLOboWU8HfsTSO8KfgS8L5lPVK3WArEr25TJQFCEXYMEMqPNdO5PJNa9ANqH
+ coAo5ErnqdCA8FJNIy0s483wdiC+9Lu2l52KteHIUSvuw==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id 0cca0676; Fri, 01 Aug 2025 16:14:29 +0200
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Subject: [PATCH RFC v2 0/2] mmc: sdhci-pxav3: pinctrl setting for fast bus
+ clocks
+Date: Fri, 01 Aug 2025 16:14:14 +0200
+Message-Id: <20250801-pxav3-uhs-v2-0-afc1c428c776@dujemihanovic.xyz>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mmc: sdhci-of-arasan: Ensure CD logic stabilization
- before power-up
-To: "Potthuri, Sai Krishna" <sai.krishna.potthuri@amd.com>,
- Adrian Hunter <adrian.hunter@intel.com>, "Simek, Michal"
- <michal.simek@amd.com>, Ulf Hansson <ulf.hansson@linaro.org>
-Cc: "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "git (AMD-Xilinx)" <git@amd.com>,
- "saikrishna12468@gmail.com" <saikrishna12468@gmail.com>
-References: <20250721095357.3783222-1-sai.krishna.potthuri@amd.com>
- <cf04326b-4de4-4637-aa3b-fa1c358b9ae4@intel.com>
- <BY5PR12MB425804611D4B29ADDCC82906DB59A@BY5PR12MB4258.namprd12.prod.outlook.com>
-Content-Language: en-US
-From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-In-Reply-To: <BY5PR12MB425804611D4B29ADDCC82906DB59A@BY5PR12MB4258.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIALbLjGgC/22Oyw7CIBREf6W5azFABR8rExM/wK3popaLXBNLA
+ 5a0Nv13CWuXZ2ZyMgtEDIQRTtUCARNF8n0Guamgc23/REYmM0guFd+LAxumNtVsdJGZo9IPi0b
+ UlkPeDwEtTcV1h9v1Ak0OHcWPD3PxJ1GqP6okGGcSd0pIpa2w+mzGF74pP/CJuu00f6FZ1/UHl
+ cVdXq8AAAA=
+X-Change-ID: 20250718-pxav3-uhs-d956bfed13f0
+To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>
+Cc: Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, 
+ linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1840;
+ i=duje@dujemihanovic.xyz; s=20240706; h=from:subject:message-id;
+ bh=5LSakXMhRgZECB7vEp/4cohPbSrDyK93lA3vWzIivaY=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDBk9p4/M5VkVv8TwRoDlv4WP/76S8siJ/V39Y4+Xt8g/x
+ orzKRYVHaUsDGJcDLJiiiy5/x2v8X4W2bo9e5kBzBxWJpAhDFycAjAR2WUM/50V3y1adrH+t7ND
+ p2z9mY//pHiD+L+7TXA13FLRPMGzMYvhn1IP15T3s6V1V8n6H0k88fYCy/lStaqfTydcV7VUqvo
+ rzAQA
+X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
+ fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
-Hi Sai Krishna,
+Hello,
 
-On 25-07-2025 11:19, Potthuri, Sai Krishna wrote:
->> Will this work with all Arasan variants?
-> Yes, this is expected to work across all Arasan variants that comply with the standard
-> SDHCI register definitions. The SDHCI_CD_STABLE bit is defined in both the
-> standard SDHCI specification and Arasan's user guide.
+This small series adds a pinctrl setting for fast MMC bus clocks to the
+pxav3 driver. On bus clocks above 100 MHz, driving the data pins at a
+higher current helps maintain signal quality.
 
-As SDHCI_CD_STABLE bit is defined in SDHCI specification, why are you 
-making a driver specific fix? Is this problem specific to Arasan eMMC? 
-If not, does it make sense to make this a framework level change instead 
-of a driver specific change?
+This series is related to Marvell PXA1908 SoC support; the latest
+version of that patchset (v16 as of now) can be found at
+https://lore.kernel.org/20250708-pxa1908-lkml-v16-0-b4392c484180@dujemihanovic.xyz
 
-Given that you are planning to add a quirk, doing this in common code 
-would be better.
+The series is RFC because of the following:
+* I'm unsure whether setting pinctrl-{names,1} to true in the top level
+  of the binding is correct.
+* Other mainline MMC drivers select between default and UHS states based
+  on the signal voltage. The PXA1908 vendor kernel does it based on the
+  bus clock. I followed the vendor kernel, but do not know whether this
+  is bad practice and therefore the other mainline drivers should be
+  followed instead.
 
-> On Xilinx/AMD Versal and ZynqMP platforms, the CD stable bit is typically set within
-> a few milliseconds. However, to be on the safer side and ensure compatibility across
-> all Arasan variants, a timeout of 1 second is added.
-> Please let me know if you prefer to increase the timeout or if this logic should be
-> enabled by a platform specific quirk.
+Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+---
+Changes in v2:
+- Address maintainer comments:
+  - Newline between properties in if:
+  - Don't try to lookup pinstates if pinctrl is NULL
+  - Only change pinstates if both are valid
+  - Replace dev_warn() with dev_dbg()
+- Link to v1: https://lore.kernel.org/r/20250718-pxav3-uhs-v1-0-2e451256f1f6@dujemihanovic.xyz
 
-Thanks,
+---
+Duje Mihanović (2):
+      dt-bindings: mmc: sdhci-pxa: add state_uhs pinctrl
+      mmc: sdhci-pxav3: add state_uhs pinctrl setting
 
-Prasanna Kumar
+ .../devicetree/bindings/mmc/sdhci-pxa.yaml         | 47 +++++++++++++++++-----
+ drivers/mmc/host/sdhci-pxav3.c                     | 31 +++++++++++++-
+ include/linux/platform_data/pxa_sdhci.h            |  7 ++++
+ 3 files changed, 74 insertions(+), 11 deletions(-)
+---
+base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
+change-id: 20250718-pxav3-uhs-d956bfed13f0
+
+Best regards,
+-- 
+Duje Mihanović <duje@dujemihanovic.xyz>
 
 
