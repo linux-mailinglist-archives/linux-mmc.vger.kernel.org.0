@@ -1,90 +1,114 @@
-Return-Path: <linux-mmc+bounces-7695-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7698-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C13B1B76D
-	for <lists+linux-mmc@lfdr.de>; Tue,  5 Aug 2025 17:24:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DFDB1BD8E
+	for <lists+linux-mmc@lfdr.de>; Wed,  6 Aug 2025 01:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 215491889A0E
-	for <lists+linux-mmc@lfdr.de>; Tue,  5 Aug 2025 15:25:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2AA818A4B97
+	for <lists+linux-mmc@lfdr.de>; Tue,  5 Aug 2025 23:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A00279DD3;
-	Tue,  5 Aug 2025 15:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516A223C8AA;
+	Tue,  5 Aug 2025 23:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U2gQZZkB"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="w2Qiwep7"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2E02777F9;
-	Tue,  5 Aug 2025 15:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994DA29C344;
+	Tue,  5 Aug 2025 23:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754407490; cv=none; b=IFrBSmGnbKZakKIHXEIO/ViytwZvx+1jkCRuRevaNaiYZ6N7GEtyIO3YazMlxYnyIIURGIrO7YSYOACjQjVbMLemrjLsXT+3kpAZ6SCqKCD0n8jmpwj+1fhzsE3PBXqJns++MvwUR/qW9ykT6w3ZLW0fowpB9RkkvJ77RagvL8M=
+	t=1754437809; cv=none; b=fuxqqIzPkF4LZgDGH/F0i9Jdrd+IJ/yAZNQRSLsA1saFnkXZVEOe8HaDoVnIir7tnsRYdKWDnNUXaWvp5rj9i6Ui4KtzacGPVH/9C7zvBLmiXAk+l7UU7MlPgBRMOTIlXuLhF+IScCcigebP65rlvvkeDMkF4a3C0ATLE8rS/mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754407490; c=relaxed/simple;
-	bh=97kct6PPabBUrzu7qy+1m0OjpYO0JiszZ63BiWMDoY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qufa2CdPNizQJv4Nc7eWVusnFjFHusv2w349hYsiAa/zALk1enLjvB+kxN1b90Zhj99ws3Ns1Y8ktsi4mi8/pITR46tnHal0fD/spkaXJ12wWKQbrgmQX/45uylPB3grX3V0Qe7OEJ91/El1QAs5+bbZOC6tScMnN6SafC8nXzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U2gQZZkB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983ACC4CEF0;
-	Tue,  5 Aug 2025 15:24:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754407490;
-	bh=97kct6PPabBUrzu7qy+1m0OjpYO0JiszZ63BiWMDoY0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U2gQZZkBnklYg5klw9G8DgA4Iy/DzU85xwb99UpA/sTfAenk4gwUnfsTMZJTCmnk1
-	 Cce5UdMPsItPZFpY0k8wcsRQ+cKc2sfgJ2kCMNLC3qw9ENMd8q3WQvMENz57gshMcI
-	 9tPtWZwsu4WjlWEo/3foJhUZKWbAzyjgMEZSNTToJOOpu8MxMIFYGuF60g5oMbkIbS
-	 GkWzgyyeaiQqfqmGY7dPufob8tp+hIxTy5hEdBCTEhKwerdY+gujgBJpUBsV8dHSzf
-	 +vautmgSaFZ6bsTi/IpHKkcvJvzqBy3C/f1gjtF0WuaaAUqE20H/jOQ77e95oGSU/H
-	 APLbkGIS0dd+A==
-Date: Tue, 5 Aug 2025 10:24:47 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Karel Balej <balejk@matfyz.cz>,
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-	phone-devel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	David Wronek <david@mainlining.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC v2 1/2] dt-bindings: mmc: sdhci-pxa: add state_uhs
- pinctrl
-Message-ID: <175440748721.1807566.14795455362522050804.robh@kernel.org>
-References: <20250801-pxav3-uhs-v2-0-afc1c428c776@dujemihanovic.xyz>
- <20250801-pxav3-uhs-v2-1-afc1c428c776@dujemihanovic.xyz>
+	s=arc-20240116; t=1754437809; c=relaxed/simple;
+	bh=QoFut0sNVspIKBsVRbd5bf7YRdyQU5XMw1QWasF1wJY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ij2QrvObLEqKGBHwDeTvXQZzTTiTWZOwqIX24QeBn6jfcD12ZNlhse7Oy1l5kdiZpKbHrIR7DsRQ7wta9Jj0TlCahFBHByvqJVl7ni87isKq6f6njH9iXGIZgRbe4cqp2lit8hhg5ROHxnenl71KJufItm0phRYVSEXsPqUXDxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=w2Qiwep7; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 575NnpKh4185345;
+	Tue, 5 Aug 2025 18:49:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1754437791;
+	bh=++94R41tQyeJMdud8WPd0oi+7jsV3EpN/nsCDMPrqME=;
+	h=From:To:CC:Subject:Date;
+	b=w2Qiwep7h4n2O+tFZMAhFUwlz/41MguqHiKzfPVXbZcznSLPSmM/1qapo2t2ePHRd
+	 q2sEw508wmFZD0lmkDHgNuumaqBp0ChVC9QYUn3o4x30f+mL9tmz2y3K6HLs8FMJwi
+	 K2hQnxAtXhioMzZMH9bM4wmlOx5Jn+xbGXVNqo/s=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 575NnpPu3796004
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 5 Aug 2025 18:49:51 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 5
+ Aug 2025 18:49:50 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 5 Aug 2025 18:49:50 -0500
+Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 575Nno6m2624898;
+	Tue, 5 Aug 2025 18:49:50 -0500
+From: Judith Mendez <jm@ti.com>
+To: Judith Mendez <jm@ti.com>, Nishanth Menon <nm@ti.com>,
+        Tero Kristo
+	<kristo@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Adrian Hunter
+	<adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+CC: Vignesh Raghavendra <vigneshr@ti.com>,
+        Santosh Shilimkar
+	<ssantosh@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>
+Subject: [PATCH 0/4] Add support for AM62P SR1.2
+Date: Tue, 5 Aug 2025 18:49:46 -0500
+Message-ID: <20250805234950.3781367-1-jm@ti.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250801-pxav3-uhs-v2-1-afc1c428c776@dujemihanovic.xyz>
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
+This patch series adds support for the AM62P SR1.2 silicon revision by
+adding logic in k3-socinfo to detect AM62P variants. Also update binding
+doc to account for second register range GP_SW.
 
-On Fri, 01 Aug 2025 16:14:15 +0200, Duje Mihanović wrote:
-> On the pxav3 controller, increasing the drive strength of the data pins
-> might be required to maintain stability on fast bus clocks (above 100
-> MHz). Add a state_uhs pinctrl to allow this.
-> 
-> The existing state_cmd_gpio pinctrl is changed to apply only on pxav1 as
-> it's unneeded on the other controllers.
-> 
-> Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
-> ---
-> Changes in v2:
-> - Newlines between properties in if:
-> ---
->  .../devicetree/bindings/mmc/sdhci-pxa.yaml         | 47 +++++++++++++++++-----
->  1 file changed, 37 insertions(+), 10 deletions(-)
-> 
+This also disables HS400 support for AM62P SR1.0 and SR1.1 in sdhci host
+driver and enable by default for AM62P SR1.2.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Tested against AM62P SR1.2, SR1.1, SR1.0 and AM62X SK.
+Log for AM62P SR1.2:
+https://gist.github.com/jmenti/5d06c60a94104a476eda9371ab6c7f37
+
+Judith Mendez (4):
+  dt-bindings: hwinfo: Add second register range for GP_SW
+  soc: ti: k3-socinfo: Add support for AM62P variants
+  mmc: sdhci_am654: Disable HS400 for AM62P SR1.0 and SR1.1
+  arm64: dts: ti: k3-am62p-j722s-common-wakeup: Add GP_SW reg range to
+    chipid node
+
+ .../bindings/hwinfo/ti,k3-socinfo.yaml        |  9 +-
+ .../dts/ti/k3-am62p-j722s-common-wakeup.dtsi  |  3 +-
+ drivers/mmc/host/sdhci_am654.c                | 16 ++++
+ drivers/soc/ti/k3-socinfo.c                   | 82 +++++++++++++++++--
+ 4 files changed, 98 insertions(+), 12 deletions(-)
+
+-- 
+2.49.0
 
 
