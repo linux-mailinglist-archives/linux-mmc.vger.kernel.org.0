@@ -1,151 +1,259 @@
-Return-Path: <linux-mmc+bounces-7840-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7842-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322CEB2A151
-	for <lists+linux-mmc@lfdr.de>; Mon, 18 Aug 2025 14:18:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C452DB2A1A5
+	for <lists+linux-mmc@lfdr.de>; Mon, 18 Aug 2025 14:34:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31029172AEA
-	for <lists+linux-mmc@lfdr.de>; Mon, 18 Aug 2025 12:08:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ECFE7B1729
+	for <lists+linux-mmc@lfdr.de>; Mon, 18 Aug 2025 12:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C809130EF60;
-	Mon, 18 Aug 2025 12:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4837B3218C3;
+	Mon, 18 Aug 2025 12:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="PZFmpJE1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QlsHi7Pm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sNKP/cEL"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76B5189;
-	Mon, 18 Aug 2025 12:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038613218A0;
+	Mon, 18 Aug 2025 12:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755518925; cv=none; b=SXePj0vC8MB4aMgvKDUUca1GzhgRVTcGvybx4dOa5+Yo/fHETBaHIc1SvmxJHuczkzY0wY08YoXQRmGQWx4RypwhivU6qh5uQzpqjN6tjaEbcdO36Asgx7vJWe5YnwawDreLcYzQdcZnyBx3fvWCokGVgX05Ytx92VhQR1wgCuY=
+	t=1755520362; cv=none; b=HLYYCWigbpUiIZMt4aclnYFCrnndrk9yuSlpEzDhFB0Ls+tptwuHgRvRJpj5NpTMNlmYDRQgX5Pywxjk3Bem7uJ+HqEQdt/lCNL04moU3EQQQYoy4EF3mXePnx+jRKen3ZSiKKm8a9KXwwEDgpZ7PAQT+g3NaKH4a4bYdukI3qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755518925; c=relaxed/simple;
-	bh=bh6OIfO4EELLg333GBIihIzx8g8wZEEARzEm1lA1wgA=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=GcnTPGJC44wviaev5x/0RPefkTUD9U5cizGOKm6OnJesHPuEjS7lHAEkOkYt7M9b1pCyUYTX3r2qnSOjfhD/pb7UKRuSDGcj5jKZTyExeUCyKKr8u+9IURZsg1hdvngwpsnr2zS2oUCXpLdHrGlmQ4pudW8V/5D/WBWjbDNPoXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=PZFmpJE1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QlsHi7Pm; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 0BFA61400177;
-	Mon, 18 Aug 2025 08:08:43 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Mon, 18 Aug 2025 08:08:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1755518923;
-	 x=1755605323; bh=xQdgyGA5COaCrzWAChLbDJ+k+lzLu0z9z0SAOXUT6IU=; b=
-	PZFmpJE1SIC0ikjX2oHaqNM6DnBCadXASQTuhYXCsK+w7Y5zL8DAAQR6ob3dDUqe
-	jwLZnpxKI6/IibAOqlxOoGneXquxM0rCvsL+CaaJhGSeb465FVt7EC4Jz6N8bTjh
-	atf3fbws0BCfEqZJ4nQGhOZSmDGKZ98PThJ7u65IraJQIsA0RsnuJXhGxQBXsee5
-	AShi0wFgrQYfo2OkZpMXJ+Tnz1693FY8rIkQxWh41pEaPzcy8/5aTAXRUqIrz8nI
-	gnps6evmvxVP8d12IchRmVa2m5XGkGn5Ilm171BSI1QaTlfC7BaiWnOmmQIz89DG
-	uvzNw7vsaevQAabV7cgyLg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1755518923; x=
-	1755605323; bh=xQdgyGA5COaCrzWAChLbDJ+k+lzLu0z9z0SAOXUT6IU=; b=Q
-	lsHi7Pm1rZLZHQJtksrghMt0VUT9jNPcm3xovM5rJ/CCW7qxyh9loEB/g8EO6Ajp
-	8TRXN6BIWUjvtzN0isKS+bO4l0fdXqQWA2csTPSuwbRIIwKPYiYUNvHg2IEcQbEo
-	XdwwRqUZ66MCPb5WIvvSPUP1/GOaoqHWVwtg2JfkioPnqNSKxeu2/uOh368n9+GQ
-	YGycwqlzmA8c+c74gCW7DPHY1Stb6FHkmi5D5IVbxDiEtTxPbY9KuN0NEQgHx4oS
-	GgdlZr9hcpksMzjDaB/BJWvGV1e/c83HkAR915BdEEYnobWKsTRSToeyPB+eyPzK
-	url7v9zbKtder0cz6B0lg==
-X-ME-Sender: <xms:yRejaCqIZ3AGCURGRIlytMnCHfErMm7O_syE0cyNe-2YuKo50f-OCA>
-    <xme:yRejaArSGBva9y0cZZZ4lTFsL4VtQI3dW-1yB_FTQHtmWAA7rOJJBSjlSK7rCmUob
-    MtBeHreYZw0lPd1dpE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduhedvheejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtg
-    hpthhtoheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthhtohepughi
-    nhhgrdifrghnghessghsthdrrghipdhrtghpthhtohepghhorhguohhnrdhgvgessghsth
-    drrghipdhrtghpthhtohepsghsthdquhhpshhtrhgvrghmsegsshhtrghirdhtohhppdhr
-    tghpthhtoheprggurhhirghnrdhhuhhnthgvrhesihhnthgvlhdrtghomhdprhgtphhtth
-    hopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgu
-    theskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihksehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:yRejaF6BKJ9KbL9B2ut29tSL58MeD3qPX_I_sQ3FXIg2oS7mws-kbw>
-    <xmx:yRejaJeSxwQ2DaDjOy7Yp2mOZ20MbZ9bT8d1Lu-05voCl9vG9NIl_A>
-    <xmx:yRejaOJxxIDgpIHsMGO_c8hSSz_LiLB1-QwXCuyLAcPu5gbq73CdNg>
-    <xmx:yRejaHnbPPwLJ82TxrvKEU3-LqT0cm8Cpn8rPVdHvfWRuTILLcW2sw>
-    <xmx:yxejaDqi-zXF_mMXhoi3J-UJkoYExW_yqvxdzr2z3myvYYWDiKMWXgo9>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1E17D700068; Mon, 18 Aug 2025 08:08:41 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1755520362; c=relaxed/simple;
+	bh=7eSRICr9B26HKAoDMxNcGLfCteb0eI2rm+hgRBUQyog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A4+L74HFFcIS6R0W/tS4Wkl9K8haYkm2mPPQl6undlb1feWUpt4472PjwKxSRih7Oz0Ov7vlbebw3ygplqDqhlba1RUqDb+EEQ2d455qZkKw/bz9VUF3zmvcUJenMz5mQr5XBmAIxvgj9vdbgB6aB+yaCx0rsfDxkKVZWUnIIPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sNKP/cEL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8CFC4CEEB;
+	Mon, 18 Aug 2025 12:32:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755520361;
+	bh=7eSRICr9B26HKAoDMxNcGLfCteb0eI2rm+hgRBUQyog=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sNKP/cELaKAbUtQPchxOJzytvkwlPDmBv0FHejwEq0xutUvJa9PgG1kOQRW+hkeEk
+	 N8RI6C43cKmceMYq1elsIzRZ8h+Y16HamueVb08NXa9pqYZSrAus+iRuE9t0t0Fb8j
+	 8gtwgTC/u0f1U7KgZcHL0freAyXOHB8RU2wwsGfUhxoKqdiO0jDaFjvMZYunIbmUqn
+	 TZtXI7geAxzyaLgYPgqg/EsK3CSdTXtyQTCDUUJNAvjOa81MAAYJV6PlEUY/lviivG
+	 AU6dYoyNwBiZh1huZ8hqX4eosMYgJAWbr/WQbkuIS9FqmB0bcftkkWO1LRmySEFpOb
+	 3kWslGyysVDGw==
+Date: Mon, 18 Aug 2025 20:15:22 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+	Aubin Constans <aubin.constans@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Manuel Lauss <manuel.lauss@gmail.com>,
+	=?utf-8?B?TWljaGHvv73vv70gTWlyb3Pvv73vv71hdw==?= <mirq-linux@rere.qmqm.pl>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Russell King <linux@armlinux.org.uk>,
+	Chaotian Jing <chaotian.jing@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Al Cooper <alcooperx@gmail.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Ben Dooks <ben-linux@fluff.org>, Viresh Kumar <vireshk@kernel.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Alexey Charkov <alchark@gmail.com>,
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 18/38] mmc: sdhci-esdhc-imx: use modern PM macros
+Message-ID: <aKMZWjM536EOHDn9@xhacker>
+References: <20250815013413.28641-1-jszhang@kernel.org>
+ <20250815013413.28641-19-jszhang@kernel.org>
+ <DU0PR04MB94962993C99F922CCF93FB6F9034A@DU0PR04MB9496.eurprd04.prod.outlook.com>
+ <aKAfRFPJQM_EtAKF@xhacker>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AXmPW4ZJGxVF
-Date: Mon, 18 Aug 2025 14:08:20 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Ulf Hansson" <ulf.hansson@linaro.org>,
- "yangzh0906@thundersoft.com" <yangzh0906@thundersoft.com>
-Cc: "Krzysztof Kozlowski" <krzk@kernel.org>, "Rob Herring" <robh@kernel.org>,
- krzk+dt@kernel.org, "Conor Dooley" <conor+dt@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
- "Adrian Hunter" <adrian.hunter@intel.com>,
- "Robin Murphy" <robin.murphy@arm.com>, ding.wang@bst.ai,
- "gordon.ge" <gordon.ge@bst.ai>, bst-upstream <bst-upstream@bstai.top>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
- soc@lists.linux.dev, linux-kernel@vger.kernel.org
-Message-Id: <689f58fe-6339-4a3e-9aad-175bff7681f8@app.fastmail.com>
-In-Reply-To: 
- <CAPDyKFon7Q2UHOJbbVtPTHvqxYeOJr8HK5BOk6TAJaph8FcwvQ@mail.gmail.com>
-References: <20250812123110.2090460-1-yangzh0906@thundersoft.com>
- <20250812123110.2090460-6-yangzh0906@thundersoft.com>
- <CAPDyKFon7Q2UHOJbbVtPTHvqxYeOJr8HK5BOk6TAJaph8FcwvQ@mail.gmail.com>
-Subject: Re: [PATCH v3 5/8] mmc: sdhci: add Black Sesame Technologies BST C1200
- controller driver
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aKAfRFPJQM_EtAKF@xhacker>
 
-On Mon, Aug 18, 2025, at 12:48, Ulf Hansson wrote:
-> On Tue, 12 Aug 2025 at 14:31, Albert Yang <yangzh0906@thundersoft.com> wrote:
+On Sat, Aug 16, 2025 at 02:03:48PM +0800, Jisheng Zhang wrote:
+> On Fri, Aug 15, 2025 at 03:23:56AM +0000, Bough Chen wrote:
+> > > -----Original Message-----
+> > > From: Jisheng Zhang <jszhang@kernel.org>
+> > > Sent: 2025Ҵ8??15?? 9:34
+> > > To: Ulf Hansson <ulf.hansson@linaro.org>; Aubin Constans
+> > > <aubin.constans@microchip.com>; Nicolas Ferre
+> > > <nicolas.ferre@microchip.com>; Alexandre Belloni
+> > > <alexandre.belloni@bootlin.com>; Claudiu Beznea
+> > > <claudiu.beznea@tuxon.dev>; Manuel Lauss <manuel.lauss@gmail.com>;
+> > > Micha?? Miros??aw <mirq-linux@rere.qmqm.pl>; Jaehoon Chung
+> > > <jh80.chung@samsung.com>; Krzysztof Kozlowski <krzk@kernel.org>; Alim
+> > > Akhtar <alim.akhtar@samsung.com>; Heiko Stuebner <heiko@sntech.de>;
+> > > Russell King <linux@armlinux.org.uk>; Chaotian Jing
+> > > <chaotian.jing@mediatek.com>; Matthias Brugger <matthias.bgg@gmail.com>;
+> > > AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>;
+> > > Shawn Guo <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>;
+> > > Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> > > <festevam@gmail.com>; Adrian Hunter <adrian.hunter@intel.com>; Kamal
+> > > Dasu <kamal.dasu@broadcom.com>; Al Cooper <alcooperx@gmail.com>;
+> > > Broadcom internal kernel review list
+> > > <bcm-kernel-feedback-list@broadcom.com>; Florian Fainelli
+> > > <florian.fainelli@broadcom.com>; Bough Chen <haibo.chen@nxp.com>; Michal
+> > > Simek <michal.simek@amd.com>; Eugen Hristev <eugen.hristev@linaro.org>;
+> > > Vignesh Raghavendra <vigneshr@ti.com>; Ben Dooks <ben-linux@fluff.org>;
+> > > Viresh Kumar <vireshk@kernel.org>; Orson Zhai <orsonzhai@gmail.com>;
+> > > Baolin Wang <baolin.wang@linux.alibaba.com>; Chunyan Zhang
+> > > <zhang.lyra@gmail.com>; Patrice Chotard <patrice.chotard@foss.st.com>;
+> > > Thierry Reding <thierry.reding@gmail.com>; Jonathan Hunter
+> > > <jonathanh@nvidia.com>; Chen-Yu Tsai <wens@csie.org>; Jernej Skrabec
+> > > <jernej.skrabec@gmail.com>; Samuel Holland <samuel@sholland.org>; Alexey
+> > > Charkov <alchark@gmail.com>
+> > > Cc: linux-mmc@vger.kernel.org; linux-kernel@vger.kernel.org
+> > > Subject: [PATCH 18/38] mmc: sdhci-esdhc-imx: use modern PM macros
+> > > 
+> > > Use the modern PM macros for the suspend and resume functions to be
+> > > automatically dropped by the compiler when CONFIG_PM or
+> > > CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+> > > 
+> > > This has the advantage of always compiling these functions in, independently of
+> > > any Kconfig option. Thanks to that, bugs and other regressions are subsequently
+> > > easier to catch.
+> > 
+> > Hi Jisheng,
+> 
+> Hi,
+> 
+> > 
+> > When I remove all the configs under Power management options I got the following build warning:
+> > 
+> > drivers/mmc/host/sdhci-esdhc-imx.c:2079:12: warning: ??sdhci_esdhc_resume?? defined but not used [-Wunused-function]
+> >  2079 | static int sdhci_esdhc_resume(struct device *dev)
+> >       |            ^~~~~~~~~~~~~~~~~~
+> >   CC      drivers/mmc/host/cqhci-core.o
+> > drivers/mmc/host/sdhci-esdhc-imx.c:2017:12: warning: ??sdhci_esdhc_suspend?? defined but not used [-Wunused-function]
+> >  2017 | static int sdhci_esdhc_suspend(struct device *dev)
+> >       |            ^~~~~~~~~~~~~~~~~~~
+> 
+> Hmm interesting, what's test toolchain? I tested this patch with gcc14
+> with below three combinations before sending out, no warnings at all:
+> PM + PM_SLEEP
+> PM only
+> !PM + ! PM_SLEEP
+> 
+> The sdhci_esdhc_suspend|resume are referenced by SYSTEM_SLEEP_PM_OPS.
+> The pm_sleep_ptr() macro does the tricky, when both PM and PM_SLEEP are
+> disabled, they are optimized out.
 
->> +       /*
->> +        * Silicon constraints for BST C1200:
->> +        * - System RAM base is 0x800000000 (above 32-bit addressable range)
->> +        * - The eMMC controller DMA engine is limited to 32-bit addressing
->> +        * - SMMU cannot be used on this path due to hardware design flaws
->> +        * - These are fixed in silicon and cannot be changed in software
->> +        *
->> +        * Bus/controller mapping:
->> +        * - No registers are available to reprogram the address mapping
->> +        * - The 32-bit DMA limit is a hard constraint of the controller IP
->> +        *
->> +        * Given these constraints, an SRAM-based bounce buffer in the 32-bit
->> +        * address space is required to enable eMMC DMA on this platform.
->> +        */
->> +       err = bst_sdhci_reallocate_bounce_buffer(host);
->> +       if (err) {
->> +               dev_err(&pdev->dev, "Failed to allocate bounce buffer: %d\n", err);
->> +               goto err_remove_host;
->> +       }
->
-> FYI, I will be awaiting a confirmation from Arnd to be with the above
-> hack, before I queue this up.
+Hi Haibo,
 
-The explanations here are clear enough to me,
+Could you plz share your toolchain information? And FYI, today I tested
+clang with the above three combinations, also no warnings. So I'm really
+interested how to reproduce your warnings.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+And the kernel CI build robot hasn't sent out warning email so far.
+
+Thanks
+> 
+> So can you plz kindly show your toolchain? I will check
+> 
+> Thanks
+> > 
+> > Regards
+> > Haibo Chen
+> > > 
+> > > Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+> > > ---
+> > >  drivers/mmc/host/sdhci-esdhc-imx.c | 13 +++----------
+> > >  1 file changed, 3 insertions(+), 10 deletions(-)
+> > > 
+> > > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > index a040c0896a7b..a7a5df673b0f 100644
+> > > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > > @@ -1650,7 +1650,6 @@ static void sdhci_esdhc_imx_hwinit(struct sdhci_host
+> > > *host)
+> > >  	}
+> > >  }
+> > > 
+> > > -#ifdef CONFIG_PM_SLEEP
+> > >  static void sdhc_esdhc_tuning_save(struct sdhci_host *host)  {
+> > >  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host); @@ -1707,7
+> > > +1706,6 @@ static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
+> > >  		       host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+> > >  	}
+> > >  }
+> > > -#endif
+> > > 
+> > >  static void esdhc_cqe_enable(struct mmc_host *mmc)  { @@ -2016,7
+> > > +2014,6 @@ static void sdhci_esdhc_imx_remove(struct platform_device
+> > > *pdev)
+> > >  		cpu_latency_qos_remove_request(&imx_data->pm_qos_req);
+> > >  }
+> > > 
+> > > -#ifdef CONFIG_PM_SLEEP
+> > >  static int sdhci_esdhc_suspend(struct device *dev)  {
+> > >  	struct sdhci_host *host = dev_get_drvdata(dev); @@ -2112,9 +2109,7 @@
+> > > static int sdhci_esdhc_resume(struct device *dev)
+> > > 
+> > >  	return ret;
+> > >  }
+> > > -#endif
+> > > 
+> > > -#ifdef CONFIG_PM
+> > >  static int sdhci_esdhc_runtime_suspend(struct device *dev)  {
+> > >  	struct sdhci_host *host = dev_get_drvdata(dev); @@ -2188,12 +2183,10
+> > > @@ static int sdhci_esdhc_runtime_resume(struct device *dev)
+> > >  		cpu_latency_qos_remove_request(&imx_data->pm_qos_req);
+> > >  	return err;
+> > >  }
+> > > -#endif
+> > > 
+> > >  static const struct dev_pm_ops sdhci_esdhc_pmops = {
+> > > -	SET_SYSTEM_SLEEP_PM_OPS(sdhci_esdhc_suspend, sdhci_esdhc_resume)
+> > > -	SET_RUNTIME_PM_OPS(sdhci_esdhc_runtime_suspend,
+> > > -				sdhci_esdhc_runtime_resume, NULL)
+> > > +	SYSTEM_SLEEP_PM_OPS(sdhci_esdhc_suspend, sdhci_esdhc_resume)
+> > > +	RUNTIME_PM_OPS(sdhci_esdhc_runtime_suspend,
+> > > +sdhci_esdhc_runtime_resume, NULL)
+> > >  };
+> > > 
+> > >  static struct platform_driver sdhci_esdhc_imx_driver = { @@ -2201,7 +2194,7
+> > > @@ static struct platform_driver sdhci_esdhc_imx_driver = {
+> > >  		.name	= "sdhci-esdhc-imx",
+> > >  		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+> > >  		.of_match_table = imx_esdhc_dt_ids,
+> > > -		.pm	= &sdhci_esdhc_pmops,
+> > > +		.pm	= pm_ptr(&sdhci_esdhc_pmops),
+> > >  	},
+> > >  	.probe		= sdhci_esdhc_imx_probe,
+> > >  	.remove		= sdhci_esdhc_imx_remove,
+> > > --
+> > > 2.50.0
+> > 
 
