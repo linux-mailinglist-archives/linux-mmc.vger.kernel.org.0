@@ -1,109 +1,129 @@
-Return-Path: <linux-mmc+bounces-7888-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7890-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D037B2F486
-	for <lists+linux-mmc@lfdr.de>; Thu, 21 Aug 2025 11:49:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7527AB2F684
+	for <lists+linux-mmc@lfdr.de>; Thu, 21 Aug 2025 13:26:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C7B91CE1249
-	for <lists+linux-mmc@lfdr.de>; Thu, 21 Aug 2025 09:50:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EA783A3CD3
+	for <lists+linux-mmc@lfdr.de>; Thu, 21 Aug 2025 11:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CB4287519;
-	Thu, 21 Aug 2025 09:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C3430EF71;
+	Thu, 21 Aug 2025 11:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="J2bWGm7x"
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="j5PPxBiT"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F117D27FD78
-	for <linux-mmc@vger.kernel.org>; Thu, 21 Aug 2025 09:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E8830DD1C;
+	Thu, 21 Aug 2025 11:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755769783; cv=none; b=F3ad7PD/8k5XwBPm9K3BE+LVRV9ynBzfFObiV9xijwh3B7/+wFAtm8ouDyAYqWMK+sFp9rMVCxHQGpL/lRdYLz358cujx8FsXFOWSpc3CNTaH+z/B632nN313G3Mo36w1u6K6oAhZXvguBlZCz05N0EJypA7scbcPN9dXo1NjyI=
+	t=1755775253; cv=none; b=U3D2oFDjIXssHdCMwDZqnXBQ8/WLWCPR/3gOBksM+X5CiVKc0YSczn0jiK6NGD3rx4nR1mbH/ctTYSpgj2DjFVXt9RgwH5BjOijF+bl/xTGd5tAxhC2O2PlwnqowYWUpf+OZsUqt1fY1zY32Rw+CS4JaPVT1oBDCB39PQyySStU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755769783; c=relaxed/simple;
-	bh=KGnr7mlsNJ9SOoLjBMKZob7b5N+Dnsa+6ff9WZFvsvw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T+3Qf9eGaQkbjVFWLK4RAzTT65HuROQYGKx6zvRFC2fzNEKJFAnebnWK/iIpgBPhH4iMFjje+oNLuslgQCTeUpVCogFppe2gJMW1Xdhx39Ftfz7/xDwCQzWjhRHOM18fqXBdopYphLMY0sU4vaeL3piR+eP1lQ9JyljnM36PbfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=J2bWGm7x; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=KGnr
-	7mlsNJ9SOoLjBMKZob7b5N+Dnsa+6ff9WZFvsvw=; b=J2bWGm7xe/lVqqk2bJKM
-	aZQikBKT7zuo+QvCFnXTTSzE5Kl5pfFiv0e5KMDm38B/TGWW19vpBGUcgTkjd48K
-	LuVQm6XrxNLNKKbyffFnEEaw87qlVIpwbvaQtObZrfkClPFlb5DBJujxMqKmbkcS
-	aEjZN0Uej4KiAig7HTG8adMGqjrl5lMpSwpi2mSlXkbX3QZuB5hi+zV8pe69UPkT
-	Vtcdx45HX7pUUqUmQCeQXpZGaRLZRB3WzKAyg7dXuHKq5N+aSEMB6cJWak7cESMl
-	HVJgKb3cZNDWL5BYLst5nI2XAYEGbJ8Wcg6Uoqu0yNSpIwIlSTVzVrHXLkdYM+mn
-	wg==
-Received: (qmail 3463395 invoked from network); 21 Aug 2025 11:49:38 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 21 Aug 2025 11:49:38 +0200
-X-UD-Smtp-Session: l3s3148p1@aojxAd080rbUtcd1
-Date: Thu, 21 Aug 2025 11:49:35 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Biju <biju.das.au@gmail.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>, linux-mmc@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: Re: [PATCH] mmc: host: renesas_sdhi: Replace magic number '0xff' in
- renesas_sdhi_set_clock()
-Message-ID: <aKbrr0I7KuTeYdNY@shikoro>
-References: <20250820104808.94562-1-biju.das.jz@bp.renesas.com>
+	s=arc-20240116; t=1755775253; c=relaxed/simple;
+	bh=cIC7s5NmpQyvXwv7gG+89a1BknGeLYatlzWDzXINP2k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bdo3Iax4pnyn3KubkA2HNic9SIZmqgbcqOL5MbD2GB9fh9WHpVlYmiZpjBgSvauSvyousDqD45myLw9TICZ1NZnJdkDEPpQGSBHghmLfJMzxNjYqmX41hliIoz/Xcqj6zK5gP9KJNutnwhakFHVXh5Vq+tz1mNy2nhvNdWCawX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=j5PPxBiT; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+DKIM-Signature: a=rsa-sha256; bh=b5NI1TT88MTAqiLI8nYID5mlHscCtsllJzEYglqt6qE=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:Message-Id:Message-Id:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1755775244; v=1; x=1756207244;
+ b=j5PPxBiTvDOwFSaeA6BirgHVzTLFljn+kg/Yp0fmSaLTbb7hWNS0gSQ/zoFItiTdnUh0on6B
+ r6TskX44OIyqecm+C4KPRrkvYhHnfQx6Jpj89dCXknB4RqC6qNlGDADHLZ0FEcZirV13uKit+uW
+ cxA/RGCM+CS/o2HUgw1NITrcuiVBux9jOwCUqlGa1G3ewBJWq9D7nmczcxw4+e4JslYjbXvSPzK
+ 7uOXC4KSP28ONaWWh7cKWey61eYwQHxbHFMRS4JloIB10y5hC1qdIP857X/cec+/huGJwrSziTC
+ kMgSX3Uy7piMEjQBOWE0p4epRS5ETH2L0aVgRo8n52xjA==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id 95b49b87; Thu, 21 Aug 2025 13:20:44 +0200
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Subject: [PATCH v4 0/2] mmc: sdhci-pxav3: pinctrl setting for fast bus
+ clocks
+Date: Thu, 21 Aug 2025 13:20:34 +0200
+Message-Id: <20250821-pxav3-uhs-v4-0-bb588314f3c3@dujemihanovic.xyz>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Okd/WNIiif9UVfeC"
-Content-Disposition: inline
-In-Reply-To: <20250820104808.94562-1-biju.das.jz@bp.renesas.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAIBp2gC/3XOwQ6CMAyA4VcxOzuzbmygJ9/DeICtk5kIZJMFJ
+ Ly7g4sc8Pg3zddOJKB3GMjlMBGP0QXXNimy44HoumweSJ1JTTjjkuVQ0G4oo6B9Hag5S1VZNCA
+ sI2m/82jdsFq3e+rahXfrx5WOsEz3lAiUUY6ZBC6VBauupn/iy6XjbXT6NIwfsmiR/4SCwVbgS
+ SitBp3xQuf5X0FsBbUVxPKDZcIiioJVbE+Y5/kLLnA3Ty4BAAA=
+X-Change-ID: 20250718-pxav3-uhs-d956bfed13f0
+To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>
+Cc: Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, 
+ linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1603;
+ i=duje@dujemihanovic.xyz; s=20240706; h=from:subject:message-id;
+ bh=cIC7s5NmpQyvXwv7gG+89a1BknGeLYatlzWDzXINP2k=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDBnLGbl5y9n6WA8cuWx1O+DC1KXfWFpO3Y5UE+bg3KU8y
+ 1ZuQnlyRykLgxgXg6yYIkvuf8drvJ9Ftm7PXmYAM4eVCWQIAxenAEzE9R4jw9R6U/s87228rjZb
+ PbcY26sujd90bDuTTqfR1VtPzvoeMmdkWL3/eeqWiLyFM2Ya1GubvjgcKnYz9P70kkOX33IkdAf
+ XsgMA
+X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
+ fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
+Hello,
 
---Okd/WNIiif9UVfeC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This small series adds a pinctrl setting for fast MMC bus clocks to the
+pxav3 driver. On bus clocks above 100 MHz, driving the data pins at a
+higher current helps maintain signal quality.
 
-On Wed, Aug 20, 2025 at 11:48:01AM +0100, Biju wrote:
-> From: Biju Das <biju.das.jz@bp.renesas.com>
->=20
-> Replace the magic number '0xff' with CLK_CTL_DIV_MASK macro for finding
-> actual clock in renesas_sdhi_set_clock().
->=20
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+This series is related to Marvell PXA1908 SoC support merged into v6.17.
 
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+---
+Changes in v4:
+- Address maintainer comments:
+  - Fix if-else braces
+- Rebase on v6.17-rc2
+- Update trailers
+- Link to v3: https://lore.kernel.org/r/20250806-pxav3-uhs-v3-0-2f03fee380b0@dujemihanovic.xyz
 
+Changes in v3:
+- Address maintainer comments:
+  - Refactor driver patch
+- Remove RFC tag
+- Update trailers
+- Link to v2: https://lore.kernel.org/r/20250801-pxav3-uhs-v2-0-afc1c428c776@dujemihanovic.xyz
 
---Okd/WNIiif9UVfeC
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes in v2:
+- Address maintainer comments:
+  - Newline between properties in if:
+  - Don't try to lookup pinstates if pinctrl is NULL
+  - Only change pinstates if both are valid
+  - Replace dev_warn() with dev_dbg()
+- Link to v1: https://lore.kernel.org/r/20250718-pxav3-uhs-v1-0-2e451256f1f6@dujemihanovic.xyz
 
------BEGIN PGP SIGNATURE-----
+---
+Duje Mihanović (2):
+      dt-bindings: mmc: sdhci-pxa: add state_uhs pinctrl
+      mmc: sdhci-pxav3: add state_uhs pinctrl setting
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmim668ACgkQFA3kzBSg
-Kbbu6A/9HUajXMEY4wIt4hhluNYp7gc887lMKQ4NzKrOqXU+X9xgPsXvOzEPZdmy
-3Hwdi+Kkae35ycVwRTL/pR5AAE9oTRmBw8TMgM4Ogyg5uNZjRhmEUPkzgF8Av7MZ
-hvtHTz49//7CHQ6UB+hnNpKHOJsqQ3m5oiWwkkSkl3cv774HzItfldwf88hjW6Fi
-4m/YQ7QjuRJ+n3wBuGWZ1ZhV2RihHGeHPtYQwC/T22GsqUiq9GcAKd2wFCfnuA6N
-kr+suzGtbKPymRfYm4+O6lmCSDH6Vdxip7JSB4+NFjAkIvAcGt8e4rMjs43ri/d0
-93I8chudB6hVD9rV3TPfGvbrYhcS/JQFQNTuwWrSrFs3jt3SyLeENSe1VyQwH0Dp
-YLVKTcOVXx6fpIMB2O/eml4+egDKge8OirOnDdVXehsi1WfkXDF1CETFrG2TybYv
-XHvxHGy4SpOScOe4Msmg/KsY1T+7mx7DdgqTi3BltjDxa6hd+0AcxDqsnJIeDtPB
-i96xsnm9Y76I1F6WgnKKkVCQB211xtYT5AtL0mxFqGMYoA1+SnQmdmHdQ7Yy5XUA
-iUKShltmESTVEIum622avla6OnfN6ZW6IcNjZ8X4nOKON1M6hLpz0zeKbvrlbqDf
-N9Wu+9uqIRW3vtRRICRrw1Sq6e7lSMDueM0dbNkJ+xVYTHTMc9k=
-=llvT
------END PGP SIGNATURE-----
+ .../devicetree/bindings/mmc/sdhci-pxa.yaml         | 29 +++++++++++++--
+ drivers/mmc/host/sdhci-pxav3.c                     | 41 +++++++++++++++++++++-
+ 2 files changed, 66 insertions(+), 4 deletions(-)
+---
+base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
+change-id: 20250718-pxav3-uhs-d956bfed13f0
 
---Okd/WNIiif9UVfeC--
+Best regards,
+-- 
+Duje Mihanović <duje@dujemihanovic.xyz>
+
 
