@@ -1,219 +1,145 @@
-Return-Path: <linux-mmc+bounces-7963-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-7965-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B39B31528
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Aug 2025 12:22:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5DEB3158C
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Aug 2025 12:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6085A0507E
-	for <lists+linux-mmc@lfdr.de>; Fri, 22 Aug 2025 10:18:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92F2AA0815A
+	for <lists+linux-mmc@lfdr.de>; Fri, 22 Aug 2025 10:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35032D47F5;
-	Fri, 22 Aug 2025 10:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CE22F49F8;
+	Fri, 22 Aug 2025 10:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nWwkuL0F"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mB2DyV3O"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD20323A564
-	for <linux-mmc@vger.kernel.org>; Fri, 22 Aug 2025 10:18:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAD5393DD0
+	for <linux-mmc@vger.kernel.org>; Fri, 22 Aug 2025 10:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755857882; cv=none; b=KHSP2Vp4L9BWJFs9JKNwNcdcWfhMZ9q9MSYJhJHjDYKPEOEVVe3N6e1OLUP13POQjkJ1KZy23y736XShsoL9YSjFLQWgUp9JECSBqpRrnCh8Ov2SJLgstaa8BIvrYWVX5A2rfZMm4xdM59g/YGn9Kwq82gkqtF3luGwvWsFCyms=
+	t=1755858767; cv=none; b=ePx+UTzWUAyn9ax1eLwv++boaG4beCmaIcnqeNDhBJXYGoISkQZWVoguXcuB1NpAXN1/djIelMt7hJvq+9AYDCkg0fzSZfFU1MQsPwQ6TFDX4JEsFgXU40KdzjFO+XuAaZ/qH8zq/5/0JtGfHFhYglcB2qa78uNKnLSVEb0q/aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755857882; c=relaxed/simple;
-	bh=rMOg2gvZ18O8ML3ZWRnRUP0AXccfSxiSrtww5bto3CY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hdhqjVfSJjPvnWtauhWVJLOuAfe5L3NmXq7h+PsDi7+1Mq2sIvGjQSRCm5Qzy2YY4JwPo5k457LsRJeUTBp+Ejk8DvgSTbRImkem10ZxWnvnTy4Oou11cpdt+4wQ7hixvO0L+SUIEmEJ/NthfdTl4uClO8q1mSfysC694i/kNt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nWwkuL0F; arc=none smtp.client-ip=209.85.128.173
+	s=arc-20240116; t=1755858767; c=relaxed/simple;
+	bh=C+zsZu4ASzUxYNM1E/wunERm/ktyPq4e1wNF8H5dgLU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cy/OoskUQ64yQlnSKSiGCZZq1O64d8SUl5A+E2d//pdMwkbPgBUc+D56lRXF1SnkRR9ye6EEdpy2PvdI1rorp9WZEurR4rzJuScPW9d7ezSmq+eTU0h8xx1KHPY5hI3K6kbk6P2oUm/Xe1Xo/iFlEM23neCpT4r4R9oV2FsxSyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mB2DyV3O; arc=none smtp.client-ip=209.85.167.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-71d60150590so16022277b3.0
-        for <linux-mmc@vger.kernel.org>; Fri, 22 Aug 2025 03:18:00 -0700 (PDT)
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55ce5090b1cso2005369e87.0
+        for <linux-mmc@vger.kernel.org>; Fri, 22 Aug 2025 03:32:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755857880; x=1756462680; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VMaJzA26Jp/KHypl7yi6sQJZmbGhp8+CxAAR+uR0Jss=;
-        b=nWwkuL0Fe2Z7bWlrR9ttK3R0K9ScyVtrzn+1/mDedH7f0XZXnY3ivxvGVdhpvPfSXN
-         Fodmwy4YTWefSVjeSLhCNnn4dRukL5GAq7t0PL7YKSVF4Vk8+gaQ20dqlbNWrspYXLvh
-         jTxAhTYKTmb2iV06IgBPFcsrXUgQkNV/cL99guoLen2TZubBkUeajql1+313LYpLDrI9
-         c8JyNqY7L4oOaGcHdCvDmuxwLAAF77gTqlfZAUEwPW54ef0OZUp4uvk+uo9NppPPVleJ
-         DmEmiqlEuBwfHDok9tF8xPuWXuK/Up6pRYyvVSQnolZZzGIGYCleEtI0Oq20tg/eJQUj
-         Ggfg==
+        d=linaro.org; s=google; t=1755858764; x=1756463564; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TcrSsBfi1X9ytpuB1Fnncyd7JcBMvewJj4CXcTWp5oc=;
+        b=mB2DyV3O9ITwwDmwWu8/VG315EpIw6iR/Vk+8CXg2OZj+Tp8EJVm2DbZ6V8O8x2e3T
+         bJOn2YWthYBgTo/OI6lkwOnbOGzUAuyV1aPGqSHA8XRvYxiEyOuHf1hucsKTTCTS6+1P
+         D+UbH4vBrkk4G8l8K5po1VzpzZLwnjDAmizMnyfBrLRGvf6on8moD8s1I9MJUR4r/uMn
+         jHPeMeT2SK5miI33wrUFtAoGJMX2SESltbaJefzg8ocL7mtZkS2niI40zZ0wdQEMOP3u
+         0/3vulS1E2nphAet5UXZvkxpnSVoXAzQebcTwz42IW5N9jM3HMhs1CxQQgFmVK8fCKiy
+         SXNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755857880; x=1756462680;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1755858764; x=1756463564;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VMaJzA26Jp/KHypl7yi6sQJZmbGhp8+CxAAR+uR0Jss=;
-        b=KS4skcyxe29MUDU/PulDlK+mmraNQW6edunFvPfge8AXL7/xi5zE6yIPUhUnFF+4XZ
-         eziLKTDGTjgToHgGNqX6p7qczkdrc8PhSGmhxa3FXTbFZMXjEEckVJIw2l32cHF9byhi
-         zeu3pOmBR1+bmP41pxLTJqfmIoJ4tyIFZ7L6JaOHuEaOy4dQtY/t5CsRl74vRWpru3iY
-         k/6CpAhbFXp5cqhpoVs3vdGRB/EU4YBozZJTimu1LCHWVSHAbZckG1WiGUW3nlR02kkS
-         7VJmHuw3A7MmwEMRdjq3tdAIm5MKYZfXWwTFirC1SRiYYLX9ApSqMT1zYW3WHbaxlMsJ
-         nXRw==
-X-Forwarded-Encrypted: i=1; AJvYcCXaDRoB7HREL02bRdRFZfluOB4dexiVwrtN4tShZ2fZSAXJovNT5WsB6cEUV8YbFQh355Kxmx4QWoI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlbrcrwC8qokn9qfcNGWrf3yntki/v/eY30zAcnh/HK7HaILl0
-	5v66Xz1dbTrxkj+fmZn2V4w0m0svAytvIC4uMOAYYYfi/7HhX6tFMW9PxZyDxEwS5fD9+3Vt/Jd
-	SB/A52Ma3jwoQI7mqWfFa5tJDpp7qK3hjIkMf4CsIsOxgw+XLJ41S
-X-Gm-Gg: ASbGncvVqvqDbcS/gwopkXKsKKV2I7s1/FWIR2N9RbLgFrvCFecYMT3ShHUaRyCOusa
-	GkvTTSh8SBALpwmK4UIP7lETKJFIoPw5s9PQR4EMMYvGHL9iSdpfyXC+cPcEIZ1zxvFoW5VWMZf
-	arNpcewild/1GQTZxw5/aK5VVIMOwI/RkMJrHf27RJOorQmuu361MZs0xoJBZYM/4zg6B0D5Cr+
-	MVWFZvE
-X-Google-Smtp-Source: AGHT+IGE3siUxQjopG9rHtwkuRpjA9/N+RV6hg5NCeOK0qVB5EPCNDlzWHD9g5dDC2y+88YaLX7Q6Ekh9mh+SfmJpxQ=
-X-Received: by 2002:a05:690c:6892:b0:71f:b944:1050 with SMTP id
- 00721157ae682-71fdc5669d4mr24856077b3.51.1755857879487; Fri, 22 Aug 2025
- 03:17:59 -0700 (PDT)
+        bh=TcrSsBfi1X9ytpuB1Fnncyd7JcBMvewJj4CXcTWp5oc=;
+        b=C9w/+Jqr1jSecPUMjV9CqIKNZczxgaerI7plnIppndEFvkflDXiuZShblsiy8KW83r
+         v+79d5MnWOaGmJmXJI5qVByCv6BF0CYK8TDcp2whZD+UCQJJqaJZTXSTXb6dZoAb58ms
+         12r8W5Esa100StZcILS7M4ugHu2UyF4zOX18lGNOFo+kNHS27Yn0BuYcG3SootDfY6f5
+         YxgHBQsxgNjvSeil8pVWte8qqv/nn66rZJoIiqCJQQvrqDBAhrzE1g9IJYXmqFQMIEN7
+         sEHJA8gMJfO6ihI7k8L1Hq7/rgdfk/asC52SiPiN3dXYom0kgZqx1jIyubgCvbKw0x0y
+         KZ6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUkkFz+G2Q65mtpUv4Rv8CDntgyw8qZJbyx6AnyAosfQmWLDFQWGo3vLXsnF6pZVB38D1ECy+QpeMo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypdhKNxOGuD/tV0d4vd6yg/jl4nJy54l4EIKyxAxX7fXPw41aH
+	lfAxYWpVp1Fshqf0kgapv8EFou1D+wupta1y7ZYVX14qnbryBcORlNzIyjzms0lgOcA=
+X-Gm-Gg: ASbGncty4Mc3Y3MPl/E+CZyRz0511W5va6GAnOF/7HKy29OIQvOeQ5Yb9NsxlbWYZE/
+	u5+cOvwatRMC4ApcV41WggdsVIRhNngyJ7uhRZhJ7GQSVySZxeIph0NGzLhcjCUuhGI7DMufROy
+	2Xw7/ByfWTwoulzyqgUwKi7KvNRJ59M4yBrucQrXXXQ2P45S3QcYhKNBge3FwTbsq4SvWQnVQl+
+	b/4qfIUdiu+pl7kiK4IWQb/oPpRKtGLNslx4pGPMJ7YNXlvNQpNMKz6T8mGdFyQ0Jt9wLiBWwXK
+	TBbTCIJUojc1Zx0RuDtD/7IO+4+LWjgz4Zriv7VpALRR8IkU4HSQzZGJnD2mUqwuw9voCL1BhU2
+	Rgmnt2oO5WqJ8sGXmanKC4ztrPJWAasfWBw1fC7gFma6yAQ7eRF2sp0vMUBSjjKdoRh+ht4Rvhh
+	bFteo1Yhs=
+X-Google-Smtp-Source: AGHT+IHmry9V5hqggIjjZLl+SeABlj7N8wME5pR6S67IB0Ra/Bt+W+RyKtx74VidCQRMNlEydf/5nw==
+X-Received: by 2002:a05:6512:3c8a:b0:553:3314:adcf with SMTP id 2adb3069b0e04-55f0c6a0ca9mr881718e87.5.1755858763846;
+        Fri, 22 Aug 2025 03:32:43 -0700 (PDT)
+Received: from uffe-tuxpro14.. (h-178-174-189-39.A498.priv.bahnhof.se. [178.174.189.39])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55cef35a621sm3456452e87.44.2025.08.22.03.32.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Aug 2025 03:32:43 -0700 (PDT)
+From: Ulf Hansson <ulf.hansson@linaro.org>
+To: Linus <torvalds@linux-foundation.org>,
+	linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [GIT PULL] MMC fixes for v6.17-rc3
+Date: Fri, 22 Aug 2025 12:32:41 +0200
+Message-ID: <20250822103241.233113-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250821130751.2089587-1-o.rempel@pengutronix.de>
-In-Reply-To: <20250821130751.2089587-1-o.rempel@pengutronix.de>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 22 Aug 2025 12:17:23 +0200
-X-Gm-Features: Ac12FXzATkOB53kBFLymCe1Lpp3t7gUcUKPJOqU-WWPxNMENT_1oR3lo3uUI80U
-Message-ID: <CAPDyKFo5tJHEb8o892vg9DoMsLTq+715gotqnP26hMWenvjg8A@mail.gmail.com>
-Subject: Re: [PATCH v9 0/2] mmc: handle undervoltage events and prevent eMMC corruption
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Mark Brown <broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, =?UTF-8?Q?S=C3=B8ren_Andersen?= <san@skov.dk>, 
-	Christian Loehle <christian.loehle@arm.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Avri Altman <Avri.Altman@sandisk.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, 21 Aug 2025 at 15:07, Oleksij Rempel <o.rempel@pengutronix.de> wrote:
->
-> changes v9:
-> - Drop stray whitespace after mmc_claim_host() in mmc_attach_mmc()
-> - Remove unnecessary #include <linux/workqueue.h> from host.h,
->   add forward declarations instead
-> - Move internal prototypes for undervoltage helpers
->   (mmc_regulator_register/unregister_undervoltage_notifier(),
->    mmc_undervoltage_workfn()) from host.h to core.h
-> - remove host->card check
-> changes v8:
-> - fix compile warning
-> changes v7:
-> - Remove all usage of the redundant undervoltage_notify_registered flag
-> - Register undervoltage notifier in mmc_add_card() after setting card as
->   present, for all supported cards.
-> - Unregister undervoltage notifier in mmc_remove_card() based on card presence
-> - Remove all unnecessary EXPORT_SYMBOL_GPL for functions only used within MMC
->   core.
-> - Move all host claiming and releasing responsibility for undervoltage events
->   into the bus_ops callback;
-> - add comment for host->undervoltage
-> - Squash undervoltage suspend preparation and handler into one patch.
-> - Use mmc_card_removed() in shutdown path instead of host->undervoltage.
-> - Remove redundant card presence check in undervoltage handler.
-> changes v6:
-> - Rewrite commit message to be more technical per reviewer feedback.
-> - Address race conditions by using __mmc_stop_host() instead of only
->   claiming the host in the undervoltage handler.
-> - Move notifier registration from mmc_regulator_get_supply() to the end of
->   a successful card initialization in mmc_attach_mmc(), ensuring it only
->   runs for capable cards.
-> - Centralize notifier unregistration in mmc_remove_card() to correctly
->   handle all card removal and error paths.
-> - Add 'undervoltage_notify_registered' flag to struct mmc_host to
->   reliably track the notifier state.
-> - Consolidate multiple notifier callbacks into a single, generic handler.
-> - Remove premature notifier support for vqmmc and vqmmc2 regulators.
-> - Move INIT_WORK() for the undervoltage workqueue to mmc_alloc_host().
-> changes v5:
-> - Rebased on top of mmc/next after introduction of enum mmc_poweroff_type
-> - Replaced boolean undervoltage parameter with MMC_POWEROFF_UNDERVOLTAGE
-> - Dropped unused __mmc_resume() helper
-> - Updated commit messages accordingly
-> changes v4:
-> - drop HPI and SDHCI related patches
->
-> This patch set introduces a framework for handling undervoltage events
-> in the MMC subsystem. The goal is to improve system reliability by
-> ensuring graceful handling of power fluctuations that could otherwise
-> lead to metadata corruption, potentially rendering the eMMC chip
-> unusable or causing significant data loss.
->
-> ## Problem Statement
->
-> Power fluctuations and sudden losses can leave eMMC devices in an
-> undefined state, leading to severe consequences. The worst case can
-> result in metadata corruption, making the entire storage inaccessible.
-> While some eMMC devices promise to handle such situations internally,
-> experience shows that some chip variants are still affected. This has
-> led vendors to take a more protective approach, implementing external
-> undervoltage handling as a precautionary measure to avoid costly field
-> failures and returns.
->
-> The existence of the "Power Off Notification" feature in the eMMC
-> standard itself serves as indirect evidence that this is a real-world
-> issue.  While some projects have already faced the consequences of
-> ignoring this problem (often at significant cost), specific cases cannot
-> be disclosed due to NDAs.
->
-> ## Challenges and Implementation Approach
->
-> 1. **Raising awareness of the problem**: While vendors have used
->    proprietary solutions for years, a unified approach is needed upstream.
->    This patch set is a first step in making that happen.
->
-> 2. **Finding an acceptable implementation path**: There are multiple
->    ways to handle undervoltage - either in the kernel or in user space,
->    through a global shutdown mechanism, or using the regulator framework.
->    This patch set takes the kernel-based approach but does not prevent
->    future extensions, such as allowing user-space handoff once available.
->
-> 3. **Preparing for vendor adoption and testing**: By providing a
->    structured solution upstream, this patch set lowers the barrier for
->    vendors to standardize their undervoltage handling instead of relying on
->    fragmented, out-of-tree implementations.
->
-> ## Current Limitations
->
-> This patch set is an initial step and does not yet cover all possible
-> design restrictions or edge cases. Future improvements may include
-> better coordination with user space and enhancements based on broader
-> testing.
->
-> ## Testing Details
->
-> The implementation was tested on an iMX8MP-based system. The board had
-> approximately 100ms of available power hold-up time. The Power Off
-> Notification was sent ~4ms after the board was detached from the power
-> supply, allowing sufficient time for the eMMC to handle the event
-> properly.  Tests were conducted under both idle conditions and active
-> read/write operations.
->
-> Oleksij Rempel (2):
->   mmc: core: Add infrastructure for undervoltage handling
->   mmc: core: add undervoltage handler for MMC/eMMC devices
->
->  drivers/mmc/core/bus.c       | 12 ++++++
->  drivers/mmc/core/core.c      | 23 +++++++++++
->  drivers/mmc/core/core.h      |  5 +++
->  drivers/mmc/core/host.c      |  2 +
->  drivers/mmc/core/mmc.c       | 70 ++++++++++++++++++++++++++++++--
->  drivers/mmc/core/regulator.c | 77 ++++++++++++++++++++++++++++++++++++
->  include/linux/mmc/host.h     | 11 ++++++
->  7 files changed, 197 insertions(+), 3 deletions(-)
->
-> --
-> 2.39.5
->
+Hi Linus,
 
-This is nice work - and I appreciated all your efforts you have put in
-to get this done!
+Here's a PR with a couple of MMC fixes intended for v6.17-rc3. Details about the
+highlights are as usual found in the signed tag.
 
-The series applied for next, thanks!
+Please pull this in!
 
 Kind regards
-Uffe
+Ulf Hansson
+
+
+The following changes since commit c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9:
+
+  Linux 6.17-rc2 (2025-08-17 15:22:10 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git tags/mmc-v6.17-rc2
+
+for you to fetch changes up to d2d7a96b29ea6ab093973a1a37d26126db70c79f:
+
+  mmc: sdhci_am654: Disable HS400 for AM62P SR1.0 and SR1.1 (2025-08-21 11:07:16 +0200)
+
+----------------------------------------------------------------
+MMC host:
+ - sdhci_am654: Disable HS400 for AM62P SR1.0 and SR1.1
+ - sdhci-of-arasan: Ensure CD logic stabilization before power-up
+ - sdhci-pci-gli: Mask the replay timer timeout of AER for GL9763e
+
+MEMSTICK:
+ - Fix deadlock by moving removing flag earlier
+
+----------------------------------------------------------------
+Jiayi Li (1):
+      memstick: Fix deadlock by moving removing flag earlier
+
+Judith Mendez (1):
+      mmc: sdhci_am654: Disable HS400 for AM62P SR1.0 and SR1.1
+
+Sai Krishna Potthuri (1):
+      mmc: sdhci-of-arasan: Ensure CD logic stabilization before power-up
+
+Victor Shih (3):
+      mmc: sdhci-pci-gli: Add a new function to simplify the code
+      mmc: sdhci-pci-gli: GL9763e: Rename the gli_set_gl9763e() for consistency
+      mmc: sdhci-pci-gli: GL9763e: Mask the replay timer timeout of AER
+
+ drivers/memstick/core/memstick.c    |  1 -
+ drivers/memstick/host/rtsx_usb_ms.c |  1 +
+ drivers/mmc/host/sdhci-of-arasan.c  | 33 +++++++++++++++++++++++++++++++--
+ drivers/mmc/host/sdhci-pci-gli.c    | 37 +++++++++++++++++++++----------------
+ drivers/mmc/host/sdhci_am654.c      | 18 ++++++++++++++++++
+ 5 files changed, 71 insertions(+), 19 deletions(-)
 
