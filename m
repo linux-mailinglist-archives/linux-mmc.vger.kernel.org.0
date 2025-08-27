@@ -1,67 +1,71 @@
-Return-Path: <linux-mmc+bounces-8103-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-8102-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4515EB38DBF
-	for <lists+linux-mmc@lfdr.de>; Thu, 28 Aug 2025 00:18:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F442B38DB5
+	for <lists+linux-mmc@lfdr.de>; Thu, 28 Aug 2025 00:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2A093AA45F
-	for <lists+linux-mmc@lfdr.de>; Wed, 27 Aug 2025 22:16:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4B0C18921F7
+	for <lists+linux-mmc@lfdr.de>; Wed, 27 Aug 2025 22:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9857C31984C;
-	Wed, 27 Aug 2025 22:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FE2313E07;
+	Wed, 27 Aug 2025 22:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CwLL/wbH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hKzGHx2a"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA96313E1B
-	for <linux-mmc@vger.kernel.org>; Wed, 27 Aug 2025 22:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CA8317717
+	for <linux-mmc@vger.kernel.org>; Wed, 27 Aug 2025 22:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756332575; cv=none; b=b9fIWxLITZBvghBfZKVl/f9xyxTvPMJYrFUzHWlvEgVslkQy6wsGfLHQdKoHC3cfen8ERjlASY8POLor3k+6jxb1ON/VvsXITf5h0ACK8Mmy5zMUqSsC2JFJTfqEeKU9JW6JzItT/U0YXNrLqrzBkMG2G04MMUwc7KaAsLoea1Y=
+	t=1756332567; cv=none; b=AWJBm1smo2IeZ/Tmqd2nBc6Pl+uNxgg657V3zLpwYyriP/87+zKIIYTfRJp5ArXNuI5/BeeZKZyeVLJOsv0cSwbkX9YxttMCGiTSoesdVDnbAOz92ZuikpazYBVYoEDZgtBE7BG882M6kVClRlXSUiLEPqJFhp3JpfA3c4+3MgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756332575; c=relaxed/simple;
-	bh=0EqTpHeJd4fPIAuJrAXq8sz5wRlvPXL4UnkaBkaTEBI=;
+	s=arc-20240116; t=1756332567; c=relaxed/simple;
+	bh=r9aVOOwiYkYkJ2XxN3c4oDiixJCUuv2T31t2h3Fc0ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSUHfZkmXzp/uVKwg27/C5rKH70wkBwtjFURDQRnIN2RIDHLFmaoSTVU9d2EgHhRGK+qepmqB5xTs+qRzwcmcJ8bUJOfasMVju+m9jqFk+pZSvIyR+QZB7GMh2LUAo3FcN1Vcr5UPlHiZi1ehJgGCG3UHtWQZWrwftygNWbJvQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CwLL/wbH; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=KYmhoib5jU1D/X/5BIL+MYQti6BeYImQ5LTZPdmS/bK5KIgyJjuLFBKb4KElfUejWQpspF4uvpPh1oWbHl/NN3224kTDfGFHsmBxijMadZLVhejjq8lg6aZIV+5gEqphC+bqkUvJIkORBNSjBXC3/jjEoijx9oxXXXkswyug8xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hKzGHx2a; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332573;
+	s=mimecast20190719; t=1756332564;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fRSpRx9RRStIQ38BNC0jYyDlyXN9Nb6MMvlgPC7q7iI=;
-	b=CwLL/wbHHqhVyvWoUP+EhbLqHIB4MkF4G0XP6q5ZyfVwwhxIWFDCAWmH+9XobVuTljszo8
-	C89x+in2BIB+06fFAIdazDfTrBQA1VtvGJqpf9ugnjNy3IiIoDeltxjJykqNMazCHpmC+/
-	asu6tYYY0CuGER+8LGB3uuJQVVICbsw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=5INZuVEW8ZoCVRVHt0CSLhpT4h786L9PUsnD4NVlnkc=;
+	b=hKzGHx2a113C4ilxVbZoPIZe8NOxX/6WDsZaNeiflelIv4RYct2k0UHU/H5tfv9hvl1+wk
+	C01g/oZA0B1TEmcMYl0UcbAz/gdSDfg8WN895Kt8ESC4xxbYsNxnMDZ4hIT4u0iXujUeJ5
+	9LQXUQWbXeSC4Zm1U3vg91S1IYccyiA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-125-8rLG3SX1N-GJeE1zdspl2w-1; Wed,
- 27 Aug 2025 18:09:03 -0400
-X-MC-Unique: 8rLG3SX1N-GJeE1zdspl2w-1
-X-Mimecast-MFC-AGG-ID: 8rLG3SX1N-GJeE1zdspl2w_1756332538
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-452-xy2DE7SVOeOfWFxJcT2kQA-1; Wed,
+ 27 Aug 2025 18:09:22 -0400
+X-MC-Unique: xy2DE7SVOeOfWFxJcT2kQA-1
+X-Mimecast-MFC-AGG-ID: xy2DE7SVOeOfWFxJcT2kQA_1756332556
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F35E7195608A;
-	Wed, 27 Aug 2025 22:08:57 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3265C1956087;
+	Wed, 27 Aug 2025 22:09:16 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A36C230001A1;
-	Wed, 27 Aug 2025 22:08:41 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8A03F30001A1;
+	Wed, 27 Aug 2025 22:08:58 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -108,9 +112,9 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 24/36] ata: libata-eh: drop nth_page() usage within SG entry
-Date: Thu, 28 Aug 2025 00:01:28 +0200
-Message-ID: <20250827220141.262669-25-david@redhat.com>
+Subject: [PATCH v1 25/36] drm/i915/gem: drop nth_page() usage within SG entry
+Date: Thu, 28 Aug 2025 00:01:29 +0200
+Message-ID: <20250827220141.262669-26-david@redhat.com>
 In-Reply-To: <20250827220141.262669-1-david@redhat.com>
 References: <20250827220141.262669-1-david@redhat.com>
 Precedence: bulk
@@ -125,44 +129,30 @@ X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 It's no longer required to use nth_page() when iterating pages within a
 single SG entry, so let's drop the nth_page() usage.
 
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Niklas Cassel <cassel@kernel.org>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/ata/libata-sff.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_pages.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-index 7fc407255eb46..1e2a2c33cdc80 100644
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -614,7 +614,7 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
- 	offset = qc->cursg->offset + qc->cursg_ofs;
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_pages.c b/drivers/gpu/drm/i915/gem/i915_gem_pages.c
+index c16a57160b262..031d7acc16142 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_pages.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_pages.c
+@@ -779,7 +779,7 @@ __i915_gem_object_get_page(struct drm_i915_gem_object *obj, pgoff_t n)
+ 	GEM_BUG_ON(!i915_gem_object_has_struct_page(obj));
  
- 	/* get the current page and offset */
--	page = nth_page(page, (offset >> PAGE_SHIFT));
-+	page += offset >> PAGE_SHIFT;
- 	offset %= PAGE_SIZE;
+ 	sg = i915_gem_object_get_sg(obj, n, &offset);
+-	return nth_page(sg_page(sg), offset);
++	return sg_page(sg) + offset;
+ }
  
- 	/* don't overrun current sg */
-@@ -631,7 +631,7 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
- 		unsigned int split_len = PAGE_SIZE - offset;
- 
- 		ata_pio_xfer(qc, page, offset, split_len);
--		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
-+		ata_pio_xfer(qc, page + 1, 0, count - split_len);
- 	} else {
- 		ata_pio_xfer(qc, page, offset, count);
- 	}
-@@ -751,7 +751,7 @@ static int __atapi_pio_bytes(struct ata_queued_cmd *qc, unsigned int bytes)
- 	offset = sg->offset + qc->cursg_ofs;
- 
- 	/* get the current page and offset */
--	page = nth_page(page, (offset >> PAGE_SHIFT));
-+	page += offset >> PAGE_SHIFT;
- 	offset %= PAGE_SIZE;
- 
- 	/* don't overrun current sg */
+ /* Like i915_gem_object_get_page(), but mark the returned page dirty */
 -- 
 2.50.1
 
