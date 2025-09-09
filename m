@@ -1,78 +1,82 @@
-Return-Path: <linux-mmc+bounces-8489-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-8491-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCABB507EF
-	for <lists+linux-mmc@lfdr.de>; Tue,  9 Sep 2025 23:14:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D64B507F3
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Sep 2025 23:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783F34E693A
-	for <lists+linux-mmc@lfdr.de>; Tue,  9 Sep 2025 21:14:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE3F7174A00
+	for <lists+linux-mmc@lfdr.de>; Tue,  9 Sep 2025 21:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B571C3C11;
-	Tue,  9 Sep 2025 21:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F672571C5;
+	Tue,  9 Sep 2025 21:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="JS9Jflq3";
-	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="m7T8ZIBY"
+	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="HDxRSs1x";
+	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="zLe9kR6G"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.25])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497072566D2
-	for <linux-mmc@vger.kernel.org>; Tue,  9 Sep 2025 21:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68A81C68F
+	for <linux-mmc@vger.kernel.org>; Tue,  9 Sep 2025 21:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.165
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757452418; cv=pass; b=mSpCrdBXpJHaU9NRM5f3Qy1K08xEx9ikkX4SbyX2L2bCfBZaKLpghpHVdD6+kGNObnnAV27y7f8o6tQmiIKMJeEt1QHTekoLAUxi1yED85xxSFkQimfeTdAssPItGkBEJ/yE3z7ysVRJhNBXhj7qtNOjGMO+7D7GKVw06B5fQ7A=
+	t=1757452600; cv=pass; b=TI0Pup+RMEPmD3IFrymwK7Emf2z43hUulJOQfYFfT7YDdT/Uo5rF4N8agFdMUpHexx6OnLdK/Diqr0wvaxLNNnMKqX6Ip7PBaIizJia+iMEY0YCMht8/aD7H1J49TxbVLifWuQ3TuvoT5NnnUP35m7SIbVkVkVVeCv28crhrapY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757452418; c=relaxed/simple;
-	bh=nQ/JRUbf6h8oL3chjOuEaLCemxAqI8x4hpY+7rDjGuo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=PO+O+sNp5KbQa/hNYOfwmmX3tkUkfqevxVdxsDnWCveCLYY6to+orgs1owVdXE9Zdk1g3F3NNpy24dOH3TgZ7vqM0kJ3BdpKWtZjON7lgQH1LQ3Cb//8Yqy33VPvW06AQMTC97+qJk5cFl4JfGId2MtnL7NRG6lQoOn/gGFRcTE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=JS9Jflq3; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=m7T8ZIBY; arc=pass smtp.client-ip=85.215.255.25
+	s=arc-20240116; t=1757452600; c=relaxed/simple;
+	bh=3mSbGyEhe+MJb5L1VfUQl/K2t5pRp12eJJeSGx/4les=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nv8rlNHAUAAHjCViCo3GRG1sAIGBi8kJLEU3KH8IRMharQgkCD2YlOCEMAQjnQkijPtAvfx6Gtbe0/CLFn19fNnX6nTbiOQUWst+5Ba57QoBwp9Y3QUICHZxl7jhjablykp17wQ2t7vOOI1UaWPwi6lQQP/ZJHrHGiQNL0W+F9E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=HDxRSs1x; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=zLe9kR6G; arc=pass smtp.client-ip=81.169.146.165
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iokpp.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=iokpp.de
 ARC-Seal: i=1; a=rsa-sha256; t=1757452407; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=AtRY555j5AoKiFCkM/Y2u2ATRpG8aaiBrj70sh2uyZlk7r9Cw+0suWUpzoaVkN6/MQ
-    YJNCCGjDI3k0sFzEUt2rqBGpNq10k7Y0LyxQARuL7Y00jJ0+Z3Mes/1A+kKsCxQwaHAJ
-    x3AxfkIlNLsW8ww6+XFTjKdRHyYmsxSsDlooxsYEvblMJrub14m+8VXfq37kMfb7Ivo6
-    BfiPPJPJIFsWwVYFabMqQ4gJZZ1dq+kzLz3SDGuXzLW2w6d7zJdmcuCjReaiF8b29ULs
-    0YTE5bo8mX4vsyiQlbLSl6uZytZw3oVYw5sjKZ64WIUhE2fWrMn/L2KV25krPKM38VnX
-    rg4A==
+    b=sx2Bnv+5+c5t85J3Sog0tL4AqsZBK6OTrEuJng8KkzjGQg8Qk8bsXKlgOXpv8rxiXZ
+    q6H5Cmc4UJ9Ku9kVw2VjEtEw8rxMtGDznn7ounoRAnp+xXaD/fnGz/0mVZEah2LuVXHW
+    r8wFJbcEjcZd0ZtHsJxttKLWMqCWSFiYbiExrOs3igj5weF2CJ1RRgJmupRmCMj4uj5V
+    Mh+vByoDfYVMRv+/WDxRpwDTdlO8m3j5/tFAphfyzeGKJBpswWD9Mdxf4cNYQGlOXDUZ
+    DYWombDmHW86QYvVAvX9j+MA+ofiDjXaLhVN2+3AAlCmC1Z5zlV2bEQti0zp25Wf+XQb
+    TpGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1757452407;
     s=strato-dkim-0002; d=strato.com;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=acCecQhyw7Im6i+frAVEchQ+6cRnT28+ASwquTzU1N8=;
-    b=LBGtGCDwmeuG9OkL+GBcx0UV7wLX+n6vFVPQuNQBm2/dmD9F7AlZjJz/3bUtqs1+hr
-    oqvGSwMW3BJkcanlHnUrVtySYUeONQSMkq2eDgBG9KHFWuWHeJ1R3BeVWih4Retdes/7
-    hQQEZ6dSLZ1i6KjM7eMJq/ShF57/c5hgvDOTobb6oyFTHuQNG4jQHWIEkFnmCLiw6BcJ
-    OWG3U22zJ1a5IzgRFDtWOmUJPIuyACPzJnfTpdAyfSBhp0ngrFWZtTBqfMYGDOMXL8nr
-    hcW6DLNuxhnKuKp2RZaQgOrERw+cuFiNWuYOyzg5p0AuEKeewGYJCsq1DlhcifVkvsa9
-    mc0Q==
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=glYq/Vo1u5gdz/zyG7jCzkaVwuPr0szmEZG2wFYLGGk=;
+    b=WjXUSSGWqklvhzTDbVlj/cs7qNHz6TasftFmLfkpwdrUwjO+04J2jQ6+Yx3hmLoyN0
+    +S6ZHv4s1uXG7RMRHubUR+uPdXqNHngjeGPb1Z+EBV0IxRVsY/BywQv5+U/o0zMvLtBo
+    HWi28Zm6956fCVnE+hzKcZmdJU6dY9ikg2pKBhvjqbn+amZeuW8O0UiU6f2hWPpEHO4H
+    1fipoytTQY0kjnCVvFxXy0XETYfwbhbAZv2m4bR2bqfLDGdM7mU+y2SJIcv1o5FSj3o8
+    njOXYR+2PtKQg6vUFMYpq69FWrG1+MYUsF8V0Ul62rt4c1AVb0hjLeY5AMcxrPCO66m1
+    yL8Q==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
-X-RZG-CLASS-ID: mo00
+X-RZG-CLASS-ID: mo01
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1757452407;
     s=strato-dkim-0002; d=iokpp.de;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=acCecQhyw7Im6i+frAVEchQ+6cRnT28+ASwquTzU1N8=;
-    b=JS9Jflq3rhaPUFtApZpKcJXuatQARUrkmi8BkGo87O1vnNkUN+Gn1K2eYxdj2OXHQr
-    vRn44GYLJb6l3R6M6qO7zldhKWtvbJxKeA32NL65W0/3rxwK6FuQwLYgOC3VDD5nvnDN
-    4lQ6a/jFqi1u57N6qSeOL7ar7ZFupIJ6YuTpzvzqt+vIeq3A0vCZSaxlUXNaQU+zYdsr
-    ku4Z2+uD/Ws+YFHDvHJ584L9iY7ZbbUlra85hb2j0nyHVzUFGv3ruUkmBZHBAWav8PGU
-    H24BSuXsmPM3GsfT58sjm8MYfffE19O34LUw6E039XFAEFS0ococyAcmrKCt4FrduKgi
-    urHw==
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=glYq/Vo1u5gdz/zyG7jCzkaVwuPr0szmEZG2wFYLGGk=;
+    b=HDxRSs1xm/WLn/CwBppVusaDZSaaaPAmbl/TC8eDTjpEC/fhumYwT98T6mxRM9JxGz
+    qgKNJA/6PKhNhO2ZYCN8iS8fTwVLIDPsjWTIEvnIYxz/Sn698uam4/vZbC4dJ38/ut2/
+    4PO4N8xNrNMbseClWn7WRquVV8ogiOL1yLToWt6ptoKPyv27zrxhXO5VqIS/eOKUhtUD
+    TAQhPcPWD6t8bkEkZoOYK6oBlU2NT9/p0+Vn65LJ398lpP3SKG2Gyw4YCXCesBuDQhRF
+    3IMXo7wTUU8jrxACSo9q7+e68ptFZyXYYnuG22j+oOiSKS5eXgpnJ+m1Mo77v/UxZc+j
+    hHWQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1757452407;
     s=strato-dkim-0003; d=iokpp.de;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=acCecQhyw7Im6i+frAVEchQ+6cRnT28+ASwquTzU1N8=;
-    b=m7T8ZIBY753Mva1g+tbpIqsr9rS60oU6+ObsxvzlQQGEJeRG9p+Ezc9tkXxdOpHEAn
-    qGZizXJ3orMePGu4WgBA==
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=glYq/Vo1u5gdz/zyG7jCzkaVwuPr0szmEZG2wFYLGGk=;
+    b=zLe9kR6Gm53Vyv9nt3E6uA/3uiKrvD7WOYtfpuizarsoF5Bo2jSo8QV4TDt5naRPWl
+    p8nEOTLpe1v+u+eMV4Cg==
 X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSfNuhhDSDt3O256fJ4HnWXON1RCg6IWQL4pZWJy0MjKRoF1oCKjjkm13AGu0+zY="
 Received: from Munilab01-lab.speedport.ip
     by smtp.strato.de (RZmta 52.1.2 AUTH)
-    with ESMTPSA id z612c9189LDRXSI
+    with ESMTPSA id z612c9189LDRXSJ
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
     Tue, 9 Sep 2025 23:13:27 +0200 (CEST)
@@ -80,11 +84,13 @@ From: Bean Huo <beanhuo@iokpp.de>
 To: ulf.hansson@linaro.org,
 	linux-mmc@vger.kernel.org,
 	jens.wiklander@linaro.org
-Cc: Bean Huo <beanhuo@iokpp.de>
-Subject: [PATCH v1 0/2] mmc: core: RPMB code improvements
-Date: Tue,  9 Sep 2025 23:13:14 +0200
-Message-Id: <20250909211316.1857198-1-beanhuo@iokpp.de>
+Cc: Bean Huo <beanhuo@micron.com>
+Subject: [PATCH v1 1/2] mmc: core: Fix variable shadowing in mmc_route_rpmb_frames()
+Date: Tue,  9 Sep 2025 23:13:15 +0200
+Message-Id: <20250909211316.1857198-2-beanhuo@iokpp.de>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250909211316.1857198-1-beanhuo@iokpp.de>
+References: <20250909211316.1857198-1-beanhuo@iokpp.de>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -94,16 +100,47 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="us-ascii"
 
-This patch series improves the RPMB frame handling code in the MMC block
-driver with several code quality enhancements.
+From: Bean Huo <beanhuo@micron.com>
 
-Bean Huo (2):
-  mmc: core: Fix variable shadowing in mmc_route_rpmb_frames()
-  mmc: core: Improve RPMB frame handling code
+Rename the inner 'frm' variable to 'resp_frm' in the write path of
+mmc_route_rpmb_frames() to avoid shadowing the outer 'frm' variable.
 
- drivers/mmc/core/block.c | 39 +++++++++++++++++----------------------
- 1 file changed, 17 insertions(+), 22 deletions(-)
+The function declares 'frm' at function scope pointing to the request
+frame, but then redeclares another 'frm' variable inside the write
+block pointing to the response frame. This shadowing makes the code
+confusing and error-prone.
 
+Using 'resp_frm' for the response frame makes the distinction clear
+and improves code readability.
+
+Signed-off-by: Bean Huo <beanhuo@micron.com>
+---
+ drivers/mmc/core/block.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 9cc47bf94804..dd6cffc0df72 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -2936,15 +2936,15 @@ static int mmc_route_rpmb_frames(struct device *dev, u8 *req,
+ 		return -ENOMEM;
+ 
+ 	if (write) {
+-		struct rpmb_frame *frm = (struct rpmb_frame *)resp;
++		struct rpmb_frame *resp_frm = (struct rpmb_frame *)resp;
+ 
+ 		/* Send write request frame(s) */
+ 		set_idata(idata[0], MMC_WRITE_MULTIPLE_BLOCK,
+ 			  1 | MMC_CMD23_ARG_REL_WR, req, req_len);
+ 
+ 		/* Send result request frame */
+-		memset(frm, 0, sizeof(*frm));
+-		frm->req_resp = cpu_to_be16(RPMB_RESULT_READ);
++		memset(resp_frm, 0, sizeof(*resp_frm));
++		resp_frm->req_resp = cpu_to_be16(RPMB_RESULT_READ);
+ 		set_idata(idata[1], MMC_WRITE_MULTIPLE_BLOCK, 1, resp,
+ 			  resp_len);
+ 
 -- 
 2.34.1
 
