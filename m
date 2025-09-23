@@ -1,240 +1,250 @@
-Return-Path: <linux-mmc+bounces-8693-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-8695-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C62A5B94783
-	for <lists+linux-mmc@lfdr.de>; Tue, 23 Sep 2025 07:46:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B20B94859
+	for <lists+linux-mmc@lfdr.de>; Tue, 23 Sep 2025 08:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 690F57B1273
-	for <lists+linux-mmc@lfdr.de>; Tue, 23 Sep 2025 05:44:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A176C442428
+	for <lists+linux-mmc@lfdr.de>; Tue, 23 Sep 2025 06:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEFD2571C7;
-	Tue, 23 Sep 2025 05:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741F82D3720;
+	Tue, 23 Sep 2025 06:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b="SYy6zj8r"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from zg8tmty1ljiyny4xntuumtyw.icoremail.net (zg8tmty1ljiyny4xntuumtyw.icoremail.net [165.227.155.160])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C8EBA34;
-	Tue, 23 Sep 2025 05:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=165.227.155.160
+Received: from mail-m49206.qiye.163.com (mail-m49206.qiye.163.com [45.254.49.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2203261B83;
+	Tue, 23 Sep 2025 06:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758606368; cv=none; b=YouMLCfxwrMnFy/LN2YByxkuv97YTPpmD8TxP/B8fl2NysOOjNxElQML12nB6tyCGFzk4OlI1jle+ScLXQHKwViczOSL/W8o2Ey7vZNvSekVIqlCbxRz+zP2FJDQQPWkyWI36TC4Dh1IP/E14WbQQYGmSCn23RRuV4HZBleS0TY=
+	t=1758608144; cv=none; b=NWRbxKks8E18z8oLbA944y9eN/1ziIXZ+joj8yRSrbJOTG5stn6LaIxm0emB2WG2623NSJaT6DgBf3KI7jsYfUfMiWp1LQJsCd/w5xtgiKtC+IW47+GQstMvuLVx6w+2Y5dr8WiQTq8K1oNbyEun7O/n9Q/Tgo9PWYiMJzRpke8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758606368; c=relaxed/simple;
-	bh=twxCLS8nfFTFbhOMEsqpMGsC1tHQmSpmkPMHwAnghqE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=JLepc2Y7hgO3gi8Eyuj5GXst+7g/frexSDae38Vir3S1FwtJ//fElI8SzJfKsjRR4XqQhOoAzrvAI2YwUjPBa6NZGQEzzFkj5BhidvF2OQfr/bib3OLTzija0JY5gdqWnFQIzi4J/iX0IFaYENdGRZ/vzcy80ZXgrhnnbvNnMQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=165.227.155.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
-Received: from hehuan1$eswincomputing.com ( [10.12.96.103] ) by
- ajax-webmail-app2 (Coremail) ; Tue, 23 Sep 2025 13:45:46 +0800 (GMT+08:00)
-Date: Tue, 23 Sep 2025 13:45:46 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?5L2V5qyi?= <hehuan1@eswincomputing.com>
-To: "Conor Dooley" <conor@kernel.org>
-Cc: ulf.hansson@linaro.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, jszhang@kernel.org, adrian.hunter@intel.com,
-	p.zabel@pengutronix.de, linux-mmc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ningyu@eswincomputing.com, linmin@eswincomputing.com,
-	pinkesh.vaghela@einfochips.com, xuxiang@eswincomputing.com,
-	luyulin@eswincomputing.com, dongxuyang@eswincomputing.com,
-	zhangsenchuan@eswincomputing.com, weishangjuan@eswincomputing.com,
-	lizhi2@eswincomputing.com, caohang@eswincomputing.com
-Subject: Re: Re: [PATCH v2 1/2] dt-bindings: mmc: sdhci-of-dwcmshc: Add
- Eswin EIC7700
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.2-cmXT6 build
- 20241203(6b039d88) Copyright (c) 2002-2025 www.mailtech.cn
- mispb-72143050-eaf5-4703-89e0-86624513b4ce-eswincomputing.com
-In-Reply-To: <20250912-pork-oaf-3480d3d0ef67@spud>
-References: <20250912093451.125-1-hehuan1@eswincomputing.com>
- <20250912093713.142-1-hehuan1@eswincomputing.com>
- <20250912-pork-oaf-3480d3d0ef67@spud>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1758608144; c=relaxed/simple;
+	bh=mSj2WCLDiPXpaIZH40IfbgFImD3OHx7gQZfx8yjYYTw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sApSWtBQzriEUrAjSq1fS9DrGZ8E3l4F1wk0n0Z79QKUmaDXnkF6nJtTMUCMYehnDc9s5v3p2sjf3yXg0ocdLthChNQTAlku1JEXsouHghqJwRrcodSdc/AAzScRheu9twWAeshvDpXdpZa+yKPkwD0poMB8ryoPZKjv1z34QR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com; spf=pass smtp.mailfrom=thundersoft.com; dkim=pass (1024-bit key) header.d=thundersoft.com header.i=@thundersoft.com header.b=SYy6zj8r; arc=none smtp.client-ip=45.254.49.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thundersoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thundersoft.com
+Received: from [127.0.1.1] (unknown [117.184.129.134])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 23bdebfbe;
+	Tue, 23 Sep 2025 14:10:28 +0800 (GMT+08:00)
+From: Albert Yang <yangzh0906@thundersoft.com>
+Subject: [PATCH 0/9] arm64: introduce Black Sesame Technologies C1200 SoC
+ and CDCU1.0 board
+Date: Tue, 23 Sep 2025 14:10:06 +0800
+Message-Id: <20250923-v4-patch-final-v1-0-2283ad7cbf88@thundersoft.com>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <674372d7.16fd.199751b489c.Coremail.hehuan1@eswincomputing.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:TQJkCgDHZpUKNNJo9unXAA--.26049W
-X-CM-SenderInfo: 5khk3tzqr6v25zlqu0xpsx3x1qjou0bp/1tbiAgEOCmjRelQYmAAA
-	sQ
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWDJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL450mgC/x2MQQqAIBAAvxJ7bqGspPpKdBBdayEsNCQI/97Sc
+ RhmXkgUmRLM1QuRMic+g0BbV2B3EzZCdsKgGjU0k+ow93iZ2+7oOZgDnbVO+9FrkSDRFcnz8w+
+ XtZQPscQLrWAAAAA=
+X-Change-ID: 20250923-v4-patch-final-dccd6f8f6092
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Ge Gordon <gordon.ge@bst.ai>, 
+ BST Linux Kernel Upstream Group <bst-upstream@bstai.top>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, 
+ Adrian Hunter <adrian.hunter@intel.com>, Arnd Bergmann <arnd@arndb.de>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org, 
+ soc@lists.linux.dev, Albert Yang <yangzh0906@thundersoft.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758607828; l=9111;
+ i=yangzh0906@thundersoft.com; s=20250814; h=from:subject:message-id;
+ bh=mSj2WCLDiPXpaIZH40IfbgFImD3OHx7gQZfx8yjYYTw=;
+ b=QbXwM+/QkULWaoRTEjiB2SFAGGHhK05AV3eE3cGqksU3ZIe4ntfM4DdPuXzaJW8BACGb3ukGc
+ P5MrBqyrPTvAB72VmgNllpXXNvPCtoF7Ba9EVGP2qgandpHXzRVVG8B
+X-Developer-Key: i=yangzh0906@thundersoft.com; a=ed25519;
+ pk=bEcgALL9KpUg/m7zH44r50xa/re91dI9SA0vGV1/bu4=
+X-HM-Tid: 0a997531e40109cckunmfc27e25b4e01c3
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaGk5OVk5DT01CSxpNQklOT1YVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlKSkxVSkNPVUpJQlVKSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0hVSk
+	tLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=SYy6zj8rca17RJOuW4vA+kX7iL6G8V4+OykeS8g+1iGIr8L0Gb/pxUocTz7WbpgU0MMbKV1iP+BmsHA5KyJO38OiHw4f0NE5JOyi3q4ThCDYb3vczxy0blNJcer66lPvZDdmf+5wGjPm1wXHn/ljsXgKWYo/udEdBafGO9qVKnc=; c=relaxed/relaxed; s=default; d=thundersoft.com; v=1;
+	bh=e7JXaXPfRHuobwQOQcVJlT2z1Yhiyju5p3cQ3WcHFhM=;
+	h=date:mime-version:subject:message-id:from;
 
-RGVhciBDb25vciwKVGhhbmsgeW91IGZvciB5b3VyIHZhbHVhYmxlIGFuZCBwcm9mZXNzaW9uYWwg
-c3VnZ2VzdGlvbnMuClBsZWFzZSBmaW5kIG91ciBleHBsYW5hdGlvbnMgZW1iZWRkZWQgYmVsb3cg
-eW91ciBjb21tZW50cyBpbiB0aGUKb3JpZ2luYWwgZW1haWwuCgpCZXN0IHJlZ2FyZHMsCgpIZSBI
-dWFuCkVzd2luIENvbXB1dGluZwoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6
-OiAiQ29ub3IgRG9vbGV5IiA8Y29ub3JAa2VybmVsLm9yZz4KPiDlj5HpgIHml7bpl7Q6MjAyNS0w
-OS0xMyAwMzoxMDowNCAo5pif5pyf5YWtKQo+IOaUtuS7tuS6ujogaGVodWFuMUBlc3dpbmNvbXB1
-dGluZy5jb20KPiDmioTpgIE6IHVsZi5oYW5zc29uQGxpbmFyby5vcmcsIHJvYmhAa2VybmVsLm9y
-Zywga3J6aytkdEBrZXJuZWwub3JnLCBjb25vcitkdEBrZXJuZWwub3JnLCBqc3poYW5nQGtlcm5l
-bC5vcmcsIGFkcmlhbi5odW50ZXJAaW50ZWwuY29tLCBwLnphYmVsQHBlbmd1dHJvbml4LmRlLCBs
-aW51eC1tbWNAdmdlci5rZXJuZWwub3JnLCBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZywgbGlu
-dXgta2VybmVsQHZnZXIua2VybmVsLm9yZywgbmluZ3l1QGVzd2luY29tcHV0aW5nLmNvbSwgbGlu
-bWluQGVzd2luY29tcHV0aW5nLmNvbSwgcGlua2VzaC52YWdoZWxhQGVpbmZvY2hpcHMuY29tLCB4
-dXhpYW5nQGVzd2luY29tcHV0aW5nLmNvbSwgbHV5dWxpbkBlc3dpbmNvbXB1dGluZy5jb20sIGRv
-bmd4dXlhbmdAZXN3aW5jb21wdXRpbmcuY29tLCB6aGFuZ3NlbmNodWFuQGVzd2luY29tcHV0aW5n
-LmNvbSwgd2Vpc2hhbmdqdWFuQGVzd2luY29tcHV0aW5nLmNvbSwgbGl6aGkyQGVzd2luY29tcHV0
-aW5nLmNvbSwgY2FvaGFuZ0Blc3dpbmNvbXB1dGluZy5jb20KPiDkuLvpopg6IFJlOiBbUEFUQ0gg
-djIgMS8yXSBkdC1iaW5kaW5nczogbW1jOiBzZGhjaS1vZi1kd2Ntc2hjOiBBZGQgRXN3aW4gRUlD
-NzcwMAo+IAo+IE9uIEZyaSwgU2VwIDEyLCAyMDI1IGF0IDA1OjM3OjEzUE0gKzA4MDAsIGhlaHVh
-bjFAZXN3aW5jb21wdXRpbmcuY29tIHdyb3RlOgo+ID4gRnJvbTogSHVhbiBIZSA8aGVodWFuMUBl
-c3dpbmNvbXB1dGluZy5jb20+Cj4gPiAKPiA+IEVJQzc3MDAgdXNlIFN5bm9wc3lzIGR3Y21zaGMg
-SVAgZm9yIFNEL2VNTUMgY29udHJvbGxlcnMuCj4gPiBBZGQgRXN3aW4gRUlDNzcwMCBzdXBwb3J0
-IGluIHNkaGNpLW9mLWR3Y21zaGMueWFtbC4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogSHVhbiBI
-ZSA8aGVodWFuMUBlc3dpbmNvbXB1dGluZy5jb20+Cj4gPiAtLS0KPiA+ICAuLi4vYmluZGluZ3Mv
-bW1jL3NucHMsZHdjbXNoYy1zZGhjaS55YW1sICAgICAgfCA4MSArKysrKysrKysrKysrKysrKy0t
-Cj4gPiAgMSBmaWxlIGNoYW5nZWQsIDc1IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCj4g
-PiAKPiA+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbW1j
-L3NucHMsZHdjbXNoYy1zZGhjaS55YW1sIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRp
-bmdzL21tYy9zbnBzLGR3Y21zaGMtc2RoY2kueWFtbAo+ID4gaW5kZXggZjg4MjIxOWEwYTI2Li5l
-MGYzNGJjMjhlMGMgMTAwNjQ0Cj4gPiAtLS0gYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmlu
-ZGluZ3MvbW1jL3NucHMsZHdjbXNoYy1zZGhjaS55YW1sCj4gPiArKysgYi9Eb2N1bWVudGF0aW9u
-L2RldmljZXRyZWUvYmluZGluZ3MvbW1jL3NucHMsZHdjbXNoYy1zZGhjaS55YW1sCj4gPiBAQCAt
-MzAsNiArMzAsNyBAQCBwcm9wZXJ0aWVzOgo+ID4gICAgICAgICAgICAtIHNvcGhnbyxzZzIwMDIt
-ZHdjbXNoYwo+ID4gICAgICAgICAgICAtIHNvcGhnbyxzZzIwNDItZHdjbXNoYwo+ID4gICAgICAg
-ICAgICAtIHRoZWFkLHRoMTUyMC1kd2Ntc2hjCj4gPiArICAgICAgICAgIC0gZXN3aW4sZWljNzcw
-MC1kd2Ntc2hjCj4gPiAgCj4gPiAgICByZWc6Cj4gPiAgICAgIG1heEl0ZW1zOiAxCj4gPiBAQCAt
-NTIsMTcgKzUzLDUxIEBAIHByb3BlcnRpZXM6Cj4gPiAgICAgIG1heEl0ZW1zOiA1Cj4gPiAgCj4g
-PiAgICByZXNldC1uYW1lczoKPiA+IC0gICAgaXRlbXM6Cj4gPiAtICAgICAgLSBjb25zdDogY29y
-ZQo+ID4gLSAgICAgIC0gY29uc3Q6IGJ1cwo+ID4gLSAgICAgIC0gY29uc3Q6IGF4aQo+ID4gLSAg
-ICAgIC0gY29uc3Q6IGJsb2NrCj4gPiAtICAgICAgLSBjb25zdDogdGltZXIKPiA+ICsgICAgbWF4
-SXRlbXM6IDUKPiA+ICAKPiA+ICAgIHJvY2tjaGlwLHR4Y2xrLXRhcG51bToKPiA+ICAgICAgZGVz
-Y3JpcHRpb246IFNwZWNpZnkgdGhlIG51bWJlciBvZiBkZWxheSBmb3IgdHggc2FtcGxpbmcuCj4g
-PiAgICAgICRyZWY6IC9zY2hlbWFzL3R5cGVzLnlhbWwjL2RlZmluaXRpb25zL3VpbnQ4Cj4gPiAg
-Cj4gPiArICBjbG9jay1vdXRwdXQtbmFtZXM6Cj4gPiArICAgIG1heEl0ZW1zOiAxCj4gPiArICAg
-IGRlc2NyaXB0aW9uOgo+ID4gKyAgICAgIFRoZSBuYW1lIG9mIHRoZSBjbG9jayBvdXRwdXQgcmVw
-cmVzZW50aW5nIHRoZSBjYXJkIGNsb2NrLAo+ID4gKyAgICAgIGNvbnN1bWVkIGJ5IHRoZSBQSFku
-Cj4gCj4gWW91IGhhdmUgb25lIGNsb2NrLCB3aHkgZG8geW91IG5lZWQgdGhpcz8KClRoYW5rIHlv
-dSBmb3IgdGhlIGZlZWRiYWNrLsKgSSB3aWxsIHJlbW92ZSBpdCBpbiB0aGUgbmV4dCB2ZXJzaW9u
-LgoKPiAKPiA+ICsKPiA+ICsgICcjY2xvY2stY2VsbHMnOgo+ID4gKyAgICBlbnVtOiBbMF0KPiAK
-PiBjb25zdDogMAo+IAo+ID4gKyAgICBkZXNjcmlwdGlvbjoKPiA+ICsgICAgICBTcGVjaWZpZXMg
-aG93IG1hbnkgY2VsbHMgYXJlIHVzZWQgd2hlbiByZWZlcmVuY2luZyB0aGUKPiA+ICsgICAgICBl
-eHBvcnRlZCBjbG9jayBmcm9tIGFub3RoZXIgbm9kZS4gVGhpcyBwcm9wZXJ0eSBpbmRpY2F0ZXMK
-PiA+ICsgICAgICB0aGF0IHRoZSBjbG9jayBvdXRwdXQgaGFzIG5vIGV4dHJhIHBhcmFtZXRlcnMg
-YW5kIHJlcHJlc2VudHMKPiA+ICsgICAgICB0aGUgY2FyZCBjbG9jay4KPiAKPiBUaGlzIGRlc2Ny
-aXB0aW9uIGlzIG5vdCBuZWVkZWQuCj4gCj4gPiArCj4gPiArICBlc3dpbixoc3Atc3AtY3NyOgo+
-ID4gKyAgICAkcmVmOiAvc2NoZW1hcy90eXBlcy55YW1sIy9kZWZpbml0aW9ucy9waGFuZGxlLWFy
-cmF5Cj4gPiArICAgIGl0ZW1zOgo+ID4gKyAgICAgIC0gZGVzY3JpcHRpb246IFBoYW5kbGUgdG8g
-SFNQKEhpZ2gtU3BlZWQgUGVyaXBoZXJhbCkgZGV2aWNlCj4gPiArICAgICAgLSBkZXNjcmlwdGlv
-bjogT2Zmc2V0IG9mIHRoZSBzdGFiaWxpdHkgc3RhdHVzIHJlZ2lzdGVyIGZvcgo+ID4gKyAgICAg
-ICAgICAgICAgICAgICAgIGludGVybmFsIGNsb2NrCj4gPiArICAgICAgLSBkZXNjcmlwdGlvbjog
-T2Zmc2V0IG9mIHRoZSBzdGFiaWxpdHkgcmVnaXN0ZXIgZm9yIGhvc3QKPiA+ICsgICAgICAgICAg
-ICAgICAgICAgICByZWd1bGF0b3Igdm9sdGFnZS4KPiA+ICsgICAgZGVzY3JpcHRpb246IHwKPiA+
-ICsgICAgICBIaWdoLVNwZWVkIFBlcmlwaGVyYWwgZGV2aWNlIG5lZWRlZCB0byBjb25maWd1cmUg
-aW50ZXJuYWwKPiA+ICsgICAgICBjbG9ja3MsIGFuZCB0aGUgcG93ZXIuCj4gPiArCj4gPiArICBl
-c3dpbixzeXNjcmctY3NyOgo+ID4gKyAgICAkcmVmOiAvc2NoZW1hcy90eXBlcy55YW1sIy9kZWZp
-bml0aW9ucy9waGFuZGxlLWFycmF5Cj4gPiArICAgIGl0ZW1zOgo+ID4gKyAgICAgIC0gZGVzY3Jp
-cHRpb246IFBoYW5kbGUgdG8gc3lzdGVtIENSRyhTeXN0ZW0gQ2xvY2sgYW5kIFJlc2V0Cj4gPiAr
-ICAgICAgICAgICAgICAgICAgICAgR2VuZXJhdG9yKSBkZXZpY2UKPiA+ICsgICAgICAtIGRlc2Ny
-aXB0aW9uOiBPZmZzZXQgb2YgY29yZSBjbG9jayBjb250cm9sIHJlZ2lzdGVyCj4gPiArICAgIGRl
-c2NyaXB0aW9uOiB8Cj4gPiArICAgICAgU3lzdGVtIENsb2NrIGFuZCBSZXNldCBHZW5lcmF0b3Ig
-ZGV2aWNlIG5lZWRlZCB0byBjb25maWd1cmUKPiA+ICsgICAgICBjb3JlIGNsb2NrLgo+IAo+IFRo
-aXMgcmVla3Mgb2YgaW1wcm9wZXIgY2xvY2sgdHJlZSBkZXNjcmlwdGlvbi4gV2h5IGNhbiB5b3Ug
-bm90IGp1c3QKPiByZXF1ZXN0IHRoZSByYXRlIHRoYXQgeW91IG5lZWQgdmlhIHRoZSBjb21tb24g
-Y2xrIGZyYW1ld29yaz8gTGlrZXdpc2UKPiBmb3IgcmVzZXQuIFlvdSBhbHJlYWR5IGhhdmUgYSBj
-bG9ja3MgcHJvcGVydHkgdGhhdCBoYXMgdG8gaW5jbHVkZSB0aGUKPiBjb3JlIGNsb2NrLCBzbyBJ
-IGRvbid0IHNlZSB3aHkgeW91IG5lZWQgYW5vdGhlciBwcm9wZXJ0eSB0byBnZXQgYXJvdW5kCj4g
-aXQuCgpUaGFuayB5b3UgZm9yIHRoZSBmZWVkYmFjay4gWW91IGFyZSBhYnNvbHV0ZWx5IHJpZ2h0
-OyBXZSd2ZSB0YWtlbiB5b3VyCmFkdmljZS4gSW4gdjMgb2YgdGhlIHBhdGNoc2V0LCB3ZSBoYXZl
-IGNvbXBsZXRlbHkgcmVtb3ZlZCB0aGXCoAplc3dpbixzeXNjcmctY3NywqBwcm9wZXJ0eS4gVGhl
-IGRldmljZSB0cmVlIGJpbmRpbmcgbm93IHJlbGllcyBzb2xlbHkKb24gdGhlIHN0YW5kYXJkwqBj
-bG9ja3PCoGFuZCBjbG9jay1uYW1lc8KgcHJvcGVydGllcyB0byBhY3F1aXJlIHRoZQpuZWNlc3Nh
-cnkgY2xvY2suCgo+IAo+IEFzIGEgcmVzdWx0LCBJJ20gYWxzbyBzdXNwaWNpb3VzIG9mIHlvdXIg
-aHNwLXNwLWNzciwgYnV0IHRoZXNlIGF0IGxlYXN0Cj4gYXBwZWFyIHRvIGJlIGludGVybmFsIGNs
-b2NrcyBpZiB5b3VyIGRlc2NyaXB0aW9uIGlzIHRvIGJlIGJlbGlldmVkLgo+IEknZCBsaWtlIHlv
-dSB0byBleHBsYWluIGV4YWN0bHkgd2hhdCB0aG9zZSBjbG9ja3MgZG8gYW5kIHdoYXQgdGhlICJI
-U1AiCj4gYWN0dWFsbHkgaXMuIFdoYXQgb3RoZXIgcGVyaXBoZXJhbHMgdXNlIGl0PwoKVGhhbmsg
-eW91IGZvciByYWlzaW5nIHRoaXMuIFlvdXIgY29uY2VybnMgcmVnYXJkaW5nIHRoZSBoc3Atc3At
-Y3NyCmNsb2NrcyBhcmUgdmFsaWQuClRoZSBmdW5jdGlvbmFsaXR5IGFuZCBwdXJwb3NlIG9mIHRo
-ZSBIU1AgKGhzcC1zcC1jc3IpIHdlcmUgZXhwbGFpbmVkCmluIG91ciBwcmV2aW91cyBwYXRjaCBz
-ZXJpZXMgZm9yIHRoZSBVU0IgbW9kdWxlLiBUaGUgcmVsZXZhbnQKZGlzY3Vzc2lvbiBjYW4gYmUg
-Zm91bmQgaGVyZToKaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtdXNiLzE3NzMxYTEzLjFj
-Y2UuMTk5NzRkZmM2NGQuQ29yZW1haWwuY2FvaGFuZ0Blc3dpbmNvbXB1dGluZy5jb20vClBsZWFz
-ZSBsZXQgdXMga25vdyB0aGlzIGV4cGxhbmF0aW9uIGhhcyBhZGRyZXNzZWQgeW91ciBkb3VidHMu
-IFdlJ3JlCmhhcHB5IHRvIHByb3ZpZGUgZnVydGhlciBkZXRhaWxzIGlmIG5lZWRlZC4KCj4gCj4g
-QWxzbywgeW91ciBkcml2ZXIgdHVybnMgb24gdGhpcyBoc3AgY2xvY2sgYnV0IG5ldmVyIHR1cm5z
-IGl0IG9mZi4gU2FtZQo+IGZvciB0aGUgcG93ZXIuCgpUaGUgd3JpdGVzIHRvIGhzcF9pbnRfc3Rh
-dHVzIGFuZCBoc3BfcHdyX2N0cmwgYXJlIG5vdCBlbmFibGluZyBjbG9ja3MKb3IgcG93ZXIgcmFp
-bHMuVGhleSBhcmUgc3RhYmlsaXR5IGFzc2VydGlvbnMuCkFzc2VydCBjbG9jayBzdGFiaWxpdHk6
-IFdyaXRlIGEgdmFsdWUgdG8gdGhlIGhzcF9pbnRfc3RhdHVzIHJlZ2lzdGVyLgpUaGlzIHNpZ25h
-bHMgdG8gdGhlIGVNTUMgY29udHJvbGxlciB0aGF0IHBsYXRmb3JtIGNsb2NrcyAoYXhpIG1hc3Rl
-cgpidXMgY2xvY2ssIGludGVybmFsIGNvcmUgYmFzZSBjbG9jaywgdGltZXIgY2xvY2spIGFyZSBl
-bmFibGVkIGFuZApzdGFibGUuCkFzc2VydCB2b2x0YWdlIHN0YWJpbGl0eTogV3JpdGUgYSB2YWx1
-ZSB0byBoc3BfcHdyX2N0cmwuIFRoaXMgc2lnbmFscwp0aGF0IFZERCBpcyBzdGFibGUgYW5kIHBl
-cm1pdHMgdHJhbnNpdGlvbiB0byBoaWdoLXNwZWVkIG1vZGVzIChlLmcuLApVSFMtSSkuCgo+IAo+
-IEkgd2FudCB0byBzZWUgdGhlIGZ1bGwgZHRzIGZvciB3aGF0IHlvdSdyZSBkb2luZyBoZXJlIGJl
-Zm9yZSBJIGFwcHJvdmUKPiB0aGlzLCB0aGVyZSdzIHRvbyBtdWNoIGhlcmUgdGhhdCBsb29rcyB3
-cm9uZy4KClRoZSBmdWxsIGR0cyBpcyBhcyBmb2xsb3dzOsKgCnNkaGNpX2VtbWM6IG1tY0A1MDQ1
-MDAwMCB7CsKgIMKgIGNvbXBhdGlibGUgPSAiZXN3aW4sZWljNzcwMC1kd2Ntc2hjIjsKwqAgwqAg
-cmVnID0gPDB4MCAweDUwNDUwMDAwIDB4MCAweDEwMDAwPjsKwqAgwqAgY2xvY2tzID0gPCZjbG9j
-ayAyNjQ+LCA8JmNsb2NrIDU0Nj47CsKgIMKgIGNsb2NrLW5hbWVzID0gImNvcmUiLCAiYnVzIjsK
-wqAgwqAgYXNzaWduZWQtY2xvY2tzID0gPCZjbG9jayAyNjQ+OwrCoCDCoCBhc3NpZ25lZC1jbG9j
-ay1yYXRlcyA9IDwyMDAwMDAwMDA+OwrCoCDCoCByZXNldHMgPSA8JnJlc2V0IDc1PiwgPCZyZXNl
-dCA3Mj4sIDwmcmVzZXQgODg+LCA8JnJlc2V0IDkyPjsKwqAgwqAgcmVzZXQtbmFtZXMgPSAidHhy
-eCIsICJwaHkiLCAiYnVzIiwgImF4aSI7CsKgIMKgIGludGVycnVwdC1wYXJlbnQgPSA8JnBsaWM+
-OwrCoCDCoCBpbnRlcnJ1cHRzID0gPDc5PjsKwqAgwqAgYnVzLXdpZHRoID0gPDg+OwrCoCDCoCBu
-b24tcmVtb3ZhYmxlOwrCoCDCoCBtbWMtaHM0MDAtMV84djsKwqAgwqAgbWF4LWZyZXF1ZW5jeSA9
-IDwyMDAwMDAwMDA+OwrCoCDCoCAjc2l6ZS1jZWxscyA9IDwyPjsKwqAgwqAgbm8tc2RpbzsKwqAg
-wqAgbm8tc2Q7CsKgIMKgIGVzd2luLGhzcC1zcC1jc3IgPSA8JmhzcF9zcF9jc3IgMHg1MDggMHg1
-MGM+OwrCoCDCoCBlc3dpbixkcml2ZS1pbXBlZGFuY2Utb2htcyA9IDw1MD47Cn07CgpzZGlvOiBt
-bWNAMHg1MDQ2MDAwMHsKwqAgwqAgY29tcGF0aWJsZSA9ICJlc3dpbixlaWM3NzAwLWR3Y21zaGMi
-OwrCoCDCoCByZWcgPSA8MHgwIDB4NTA0NjAwMDAgMHgwIDB4MTAwMDA+OwrCoCDCoCBjbG9ja3Mg
-PSA8JmNsb2NrIDI2NT4sIDwmY2xvY2sgNTQ2PjsKwqAgwqAgY2xvY2stbmFtZXMgPSJjb3JlIiwi
-YnVzIjsKwqAgwqAgcmVzZXRzID0gPCZyZXNldCA3Nj4sIDwmcmVzZXQgNzM+LCA8JnJlc2V0IDg3
-PiwgPCZyZXNldCA5MT47CsKgIMKgIHJlc2V0LW5hbWVzID0gInR4cngiLCJwaHkiLCAiYnVzIiwg
-ImF4aSI7CsKgIMKgIGludGVycnVwdC1wYXJlbnQgPSA8JnBsaWM+OwrCoCDCoCBpbnRlcnJ1cHRz
-ID0gPDgxPjsKwqAgwqAgY2xvY2stZnJlcXVlbmN5ID0gPDIwODAwMDAwMD47CsKgIMKgIG1heC1m
-cmVxdWVuY3kgPSA8MjA4MDAwMDAwPjsKwqAgwqAgI2FkZHJlc3MtY2VsbHMgPSA8MT47CsKgIMKg
-ICNzaXplLWNlbGxzID0gPDA+OwrCoCDCoCBidXMtd2lkdGggPSA8ND47CsKgIMKgIG5vLXNkaW87
-CsKgIMKgIG5vLW1tYzsKwqAgwqAgZXN3aW4saHNwLXNwLWNzciA9IDwmaHNwX3NwX2NzciAweDYw
-OCAweDYwYz47CsKgIMKgIGVzd2luLGRyaXZlLWltcGVkYW5jZS1vaG1zID0gPDMzPjsKfTsKCj4g
-Cj4gPiArCj4gPiArICBkcml2ZS1pbXBlZGFuY2Utb2htOgo+IAo+IEhvdyBjb21lIHRoaXMgb25l
-IGhhcyBubyBlc3dpbiBwcmVmaXg/IEFsc28sIHRoZSB1bml0IGlzICJPaG1zIiwgbm90Cj4gIk9o
-bSIuCgpJbiB2ZXJzaW9uIDMsIHdlIHJlbmFtZWQgdGhlIHByb3BlcnR5IGZyb20gZHJpdmUtaW1w
-ZWRhbmNlLW9obSB0bwplc3dpbixkcml2ZS1pbXBlZGFuY2Utb2htcy4KCj4gCj4gQWRkaXRpb25h
-bGx5LCBhbnkgZXN3aW4gcHJvcGVydGllcyBzaG91bGQgYmUgcmVzdHJpY3RlZCB0byBlc3dpbiBk
-ZXZpY2VzCj4gb25seS4KPiAKPiA+ICsgICAgZGVzY3JpcHRpb246IFNwZWNpZmllcyB0aGUgZHJp
-dmUgaW1wZWRhbmNlIGluIE9obS4KPiA+ICsgICAgZW51bTogWzMzLCA0MCwgNTAsIDY2LCAxMDBd
-Cj4gPiArCj4gPiAgcmVxdWlyZWQ6Cj4gPiAgICAtIGNvbXBhdGlibGUKPiA+ICAgIC0gcmVnCj4g
-PiBAQCAtMTEwLDYgKzE0NSw0MCBAQCBhbGxPZjoKPiA+ICAgICAgICAgICAgICAtIGNvbnN0OiBi
-bG9jawo+ID4gICAgICAgICAgICAgIC0gY29uc3Q6IHRpbWVyCj4gPiAgCj4gPiArICAtIGlmOgo+
-ID4gKyAgICAgIHByb3BlcnRpZXM6Cj4gPiArICAgICAgICBjb21wYXRpYmxlOgo+ID4gKyAgICAg
-ICAgICBjb250YWluczoKPiA+ICsgICAgICAgICAgICBjb25zdDogZXN3aW4sZWljNzcwMC1kd2Nt
-c2hjCj4gPiArICAgIHRoZW46Cj4gPiArICAgICAgcHJvcGVydGllczoKPiA+ICsgICAgICAgIHJl
-c2V0czoKPiA+ICsgICAgICAgICAgbWluSXRlbXM6IDQKPiA+ICsgICAgICAgICAgbWF4SXRlbXM6
-IDQKPiA+ICsgICAgICAgIHJlc2V0LW5hbWVzOgo+ID4gKyAgICAgICAgICBpdGVtczoKPiA+ICsg
-ICAgICAgICAgICAtIGNvbnN0OiBhcnN0bgo+ID4gKyAgICAgICAgICAgIC0gY29uc3Q6IHBoeV9y
-c3QKPiA+ICsgICAgICAgICAgICAtIGNvbnN0OiBwcnN0bgo+ID4gKyAgICAgICAgICAgIC0gY29u
-c3Q6IHR4cnhfcnN0Cj4gCj4gSG93IGNvbWUgeW91J3JlIHNvIGRyYXN0aWNhbGx5IGRpZmZlcmVu
-dCB0byB0aGUgb3RoZXIgZGV2aWNlcz8KPiBBbHNvLCBwdXR0aW5nICJfcnN0IiBpbiBhIHJlc2V0
-IG5hbWUgaXMgcG9pbnRsZXNzLiBUaGVzZSBhcmUgYWxsIHJlc2V0cwo+IGFmdGVyIGFsbCBieSBu
-YXR1cmUuCgpXZSBoYXZlIHNpbXBsaWZpZWQgdGhlIG5hbWVzIGFzIGZvbGxvd3M6CnJlc2V0LW5h
-bWVzOgrCoCBpdGVtczoKwqAgwqAgLSBjb25zdDogYXhpCsKgIMKgIC0gY29uc3Q6IHBoeQrCoCDC
-oCAtIGNvbnN0OiBidXMKwqAgwqAgLSBjb25zdDogdHhyeApSZWdhcmRpbmcgdGhlIGZ1bmN0aW9u
-YWxpdHkgb2YgdGhlc2UgcmVzZXRzOgpwcnN0IGFuZCBhcnN0OiBjb3JyZXNwb25kIHRvIHRoZSBy
-ZXNldHMgZm9yIHRoZSBidXMgYW5kIEFYSSBkb21haW5zLgp0eHJ4OiBpcyB1c2VkIGZvciB0aGUg
-cmVzZXQgb2YgdGhlIGludGVybmFsIHRyYW5zbWl0IGFuZCByZWNlaXZlIGNsb2NrCmRvbWFpbnMu
-CnBoeTogaXMgdXNlZCBmb3IgdGhlIHJlc2V0IG9mIHRoZSBpbnRlcm5hbCBQSFkuClRoaXMgd2ls
-bCBiZSBjb3JyZWN0ZWQgaW4gdGhlIG5leHQgcGF0Y2guIElzIHRoaXMgY29ycmVjdD8KCj4gCj4g
-Q2hlZXJzLAo+IENvbm9yLgo+IAo+ID4gKyAgICAgIHJlcXVpcmVkOgo+ID4gKyAgICAgICAgLSBj
-bG9jay1vdXRwdXQtbmFtZXMKPiA+ICsgICAgICAgIC0gJyNjbG9jay1jZWxscycKPiA+ICsgICAg
-ICAgIC0gZXN3aW4saHNwLXNwLWNzcgo+ID4gKyAgICAgICAgLSBlc3dpbixzeXNjcmctY3NyCj4g
-PiArICAgICAgICAtIGRyaXZlLWltcGVkYW5jZS1vaG0KPiA+ICsgICAgZWxzZToKPiA+ICsgICAg
-ICBwcm9wZXJ0aWVzOgo+ID4gKyAgICAgICAgcmVzZXRzOgo+ID4gKyAgICAgICAgICBtYXhJdGVt
-czogNQo+ID4gKyAgICAgICAgcmVzZXQtbmFtZXM6Cj4gPiArICAgICAgICAgIGl0ZW1zOgo+ID4g
-KyAgICAgICAgICAgIC0gY29uc3Q6IGNvcmUKPiA+ICsgICAgICAgICAgICAtIGNvbnN0OiBidXMK
-PiA+ICsgICAgICAgICAgICAtIGNvbnN0OiBheGkKPiA+ICsgICAgICAgICAgICAtIGNvbnN0OiBi
-bG9jawo+ID4gKyAgICAgICAgICAgIC0gY29uc3Q6IHRpbWVyCj4gPiArCj4gPiAgICAtIGlmOgo+
-ID4gICAgICAgIHByb3BlcnRpZXM6Cj4gPiAgICAgICAgICBjb21wYXRpYmxlOgo+ID4gLS0gCj4g
-PiAyLjI1LjEKPiA+IAo=
+This patch series introduces comprehensive support for Black Sesame Technologies
+(BST) C1200 SoC and CDCU1.0 ADAS 4C2G board. BST is a leading automotive-grade
+computing SoC provider focusing on intelligent driving, computer vision, and AI
+capabilities for ADAS and autonomous driving applications. You can find more information
+about the SoC and related boards at: https://bst.ai
+
+The series includes complete platform enablement from device tree bindings to
+drivers and board-level support:
+
+Patch 1: dt-bindings: vendor-prefixes: Add Black Sesame Technologies Co., Ltd.
+- Adds BST vendor prefix to device tree vendor prefixes
+- Provides company information and website link
+
+Patch 2: dt-bindings: arm: add Black Sesame Technologies (bst) SoC
+- Adds device tree bindings for BST ARM SoC family
+- Defines compatible strings for C1200 SoC and CDCU1.0 board
+
+Patch 3: arm64: Kconfig: add ARCH_BST for Black Sesame Technologies SoCs
+- Adds ARCH_BST configuration option for BST SoC family
+- Enables platform-specific features and driver dependencies
+
+Patch 4: dt-bindings: mmc: add binding for BST DWCMSHC SDHCI controller
+- Adds device tree binding for BST's DWCMSHC SDHCI controller
+- Defines register layout, clocks, and controller-specific properties
+
+Patch 5: mmc: sdhci: add Black Sesame Technologies BST C1200 controller driver
+- Comprehensive SDHCI driver for BST C1200 SoC
+- Addresses specific hardware constraints with 32-bit DMA limitations
+- Implements custom clock management, power management, and tuning
+- Uses SRAM-based bounce buffer for DMA operations
+
+Patch 6: mmc: sdhci: allow drivers to pre-allocate bounce buffer
+- SDHCI core enhancement to support driver-allocated bounce buffers
+- Enables platforms with specific DMA constraints to pre-allocate buffers
+- Suggested by Adrian Hunter for better platform integration
+
+Patch 7: arm64: dts: bst: add support for Black Sesame Technologies C1200 CDCU1.0 board
+- Complete device tree support for BST C1200 CDCU1.0 ADAS 4C2G board
+- Includes SoC dtsi and board-specific dts files
+- Defines CPU, memory, peripherals, and platform-specific configurations
+
+Patch 8: arm64: defconfig: enable BST platform and SDHCI controller support
+- Enables ARCH_BST and MMC_SDHCI_BST in ARM64 defconfig
+- Provides out-of-box support for BST platforms
+
+Patch 9: MAINTAINERS: add Black Sesame Technologies (BST) ARM SoC support
+- Adds maintainer entry for BST ARM SoC support
+- Covers device tree bindings, drivers, and board files
+
+Changes for v4:
+- rebase to 6.17-rc5
+- Patch 1 (dt-bindings: vendor-prefixes):
+	- Adjust ^bst to the correct alphabetical order
+	- Adjust Acked-by order
+- Patch 2 (dt-bindings: arm):
+	- Remove Signed-off-by: Ge Gordon
+	- Add Reviewed-by Krzysztof Kozlowski info
+- Patch 3 (arm64: Kconfig):
+	- Remove Signed-off-by: Ge Gordon
+- Patch 4 (dt-bindings: mmc):
+	- Remove Signed-off-by line for Ge Gordon
+	- Change `$ref: mmc-controller.yaml#` to `$ref: sdhci-common.yaml#`
+	- Change compatible string from `bst,c1200-dwcmshc-sdhci` to `bst,c1200-sdhci`
+- Patch 5 (mmc: sdhci driver):
+	- Rename all functions from bst_* to sdhci_bst_* for better namespace consistency
+	- Rename driver file from sdhci-of-bst-c1200.c to sdhci-of-bst.c
+	- Rename dwcmshc_priv structure to sdhci_bst_priv for clarity
+	- Update driver name from "sdhci-dwcmshc" to "sdhci-bst" throughout
+	- Add comprehensive register bit mask definitions and named constants
+	- Replace manual polling loops with read_poll_timeout() for clock stability
+	- Add dedicated sdhci_bst_wait_int_clk() function for internal clock management
+	- Completely rewrite power management with proper power-off handling
+	- Enhance clock control with read-modify-write operations to avoid clobbering
+	- Add MBIU burst mode configuration based on power state
+	- Improve error handling and cleanup in probe/remove functions
+	- Simplify bounce buffer allocation and remove redundant MMC parameter adjustments
+	- Add SDHCI_QUIRK_BROKEN_ADMA quirk for hardware limitation
+	- Replace ioread32/iowrite32 with readl/writel for consistency
+	- Update copyright year and simplify license text
+	- Improve tuning algorithm with clearer variable naming
+	- Enhance register access patterns with proper bit field manipulation
+	- Add power-off clock management to reduce idle power consumption
+	- Add Acked-by: Arnd Bergmann
+- Patch 6 (mmc: sdhci bounce buffer):
+	- Add new patch by suggestion from Adrian Hunter
+- Patch 7 (arm64: dts):
+	- Remove Signed-off-by line for Ge Gordon
+	- Reorder device tree node properties for better consistency
+	- CPU nodes: move `device_type` before `compatible`, add explicit `reg` values
+	- MMC node: change compatible from `bst,c1200-dwcmshc-sdhci` to `bst,c1200-sdhci`
+	- MMC node: remove `bus-width` and `non-removable` from SoC dtsi, move to board dts
+	- SoC node: reorder properties (`ranges` before address/size cells)
+	- UART node: reorder properties (clock-frequency before interrupts)
+	- GIC node: reorder properties for better readability
+	- Timer node: reorder properties (always-on before interrupt-parent)
+	- Board DTS: add `bus-width = <8>` and `non-removable` to MMC node
+	- Board DTS: reorder MMC and UART node references
+- Patch 8 (arm64: defconfig):
+	- move CONFIG_MMC_SDHCI_BST before CONFIG_MMC_SDHCI_F_SDH30
+	- Remove Signed-off-by line for Ge Gordon
+	- Simplify commit message (remove detailed description about eMMC/SD functionality)
+- Patch 9 (MAINTAINERS):
+	- Changed file name: sdhci-of-bst-c1200.c to sdhci-of-bst.c
+	- Change title from "add and consolidate" to just "add"
+	- Simplify commit message description
+	- Remove Signed-off-by line for Ge Gordon
+
+Changes for v3:
+- Patch 2: Add Signed-off-by: Ge Gordon
+- Patch 3: Reword subject from "for bst silicons" to "for Black Sesame Technologies SoCs"
+	and drop unrelated whitespace hunk
+- Patch 4: Switch reg schema from maxItems to explicit items with per-entry descriptions,
+	improve example with irq.h include and bus node wrapper, add Signed-off-by: Ge Gordon
+- Patch 5: Simplify dwcmshc_priv structure, improve helper functions, use
+	devm_platform_ioremap_resource(), clarify hardware limitations documentation
+- Patch 6: Split defconfig enablement out into dedicated patch, refine memory description,
+	adjust node ordering, remove gic mask
+- Patch 7: Also enable CONFIG_ARCH_BST in arm64 defconfig
+
+Changes for v2:
+- Patch 2: Remove unnecessary pipe in description, drop invalid compatible entry,
+	remove root node definition
+- Patch 3: Place configuration entry in correct alphabetical order, use generic family name,
+	follow upstream naming conventions
+- Patch 4: Simplify description, update $schema reference, correct compatible string,
+	remove redundant properties, clean up required properties, standardize example format
+- Patch 5: Remove COMMON_CLK dependency, add ARCH_BST || COMPILE_TEST dependency,
+	replace temporary ioremap with persistent mapping, refactor bounce buffer allocation,
+	prune unused headers, fix register access macros, improve error handling
+- Patch 6: Reorganize memory map, update MMC controller definition, remove deprecated
+	properties, standardize interrupt definitions, add root compatible string
+
+Signed-off-by: Albert Yang <yangzh0906@thundersoft.com>
+---
+Albert Yang (9):
+      dt-bindings: vendor-prefixes: Add Black Sesame Technologies Co., Ltd.
+      dt-bindings: arm: add Black Sesame Technologies (bst) SoC
+      arm64: Kconfig: add ARCH_BST for Black Sesame Technologies SoCs
+      dt-bindings: mmc: add binding for BST DWCMSHC SDHCI controller
+      mmc: sdhci: add Black Sesame Technologies BST C1200 controller driver
+      mmc: sdhci: allow drivers to pre-allocate bounce buffer
+      arm64: dts: bst: add support for Black Sesame Technologies C1200 CDCU1.0 board
+      arm64: defconfig: enable BST platform and SDHCI controller support
+      MAINTAINERS: add Black Sesame Technologies (BST) ARM SoC support
+
+ Documentation/devicetree/bindings/arm/bst.yaml     |  31 ++
+ .../devicetree/bindings/mmc/bst,dwcmshc-sdhci.yaml |  70 +++
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ MAINTAINERS                                        |  10 +
+ arch/arm64/Kconfig.platforms                       |   8 +
+ arch/arm64/boot/dts/Makefile                       |   1 +
+ arch/arm64/boot/dts/bst/Makefile                   |   2 +
+ .../boot/dts/bst/bstc1200-cdcu1.0-adas_4c2g.dts    |  43 ++
+ arch/arm64/boot/dts/bst/bstc1200.dtsi              | 115 +++++
+ arch/arm64/configs/defconfig                       |   2 +
+ drivers/mmc/host/Kconfig                           |  14 +
+ drivers/mmc/host/Makefile                          |   1 +
+ drivers/mmc/host/sdhci-of-bst.c                    | 544 +++++++++++++++++++++
+ drivers/mmc/host/sdhci.c                           |   7 +
+ 14 files changed, 850 insertions(+)
+---
+base-commit: 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c
+change-id: 20250923-v4-patch-final-dccd6f8f6092
+
+Best regards,
+-- 
+Albert Yang <yangzh0906@thundersoft.com>
+
 
