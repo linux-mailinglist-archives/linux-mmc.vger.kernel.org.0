@@ -1,132 +1,97 @@
-Return-Path: <linux-mmc+bounces-9052-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9054-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38476C3013F
-	for <lists+linux-mmc@lfdr.de>; Tue, 04 Nov 2025 09:55:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 322F9C32DE8
+	for <lists+linux-mmc@lfdr.de>; Tue, 04 Nov 2025 21:04:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8C3194FD04A
-	for <lists+linux-mmc@lfdr.de>; Tue,  4 Nov 2025 08:47:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5422A4ED459
+	for <lists+linux-mmc@lfdr.de>; Tue,  4 Nov 2025 20:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBCC1A26B;
-	Tue,  4 Nov 2025 08:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484152E8B73;
+	Tue,  4 Nov 2025 20:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="hC9kP7Yj"
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="JzDcIHW6"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m49202.qiye.163.com (mail-m49202.qiye.163.com [45.254.49.202])
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB497262E
-	for <linux-mmc@vger.kernel.org>; Tue,  4 Nov 2025 08:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8AA2E8B9E
+	for <linux-mmc@vger.kernel.org>; Tue,  4 Nov 2025 20:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762246042; cv=none; b=Tab0kGa5zt/C19g+szO5virW6ceQTTVsSMQPzvkrcUsWuBHSRs47ZL9kj8qGl/GLXMlJ0zva2CFQ8mHVcPJqTwiW7LKXt98m3Yl46gNOJrfYBk2AGVcv7TJd8BHShoDDhNo9BRcrw/4OayDnvlofhEVXY/2Euu76czGkNKppKnA=
+	t=1762286442; cv=none; b=QQMG+7/+iV/jZln46TaYBnPn+52iKgsfO/IkO9W0dKthEF/8n2rFOadUe3Exur7ppM+hvq1+DioRZVbh5veuh6IPy6wqcErKQtbKmGN6j95CQ0hkOWg7djXIjzT1fNKeICJT770ET3L02efE20OSOiNioYPPPyZkTQ0LftxUxs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762246042; c=relaxed/simple;
-	bh=Qoi1RgYlj927wgOQDd54dm6lKU6/V8egXR9tWtWv9fI=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=adL/i599TFqRGVmVyz236JUeI5XwIp45FoeHJ5K4VUh2kLDrLtERyGBJ6Nls8WB5jqggDM+QH+NvuJeodDsXAnXjZpsUFDn7j/g/KlV/dSqg6jQe/7YWRDRKRQi/KDSqzR4Y5m5+RwHJDbmsSS5Huef0goCDgPAz8NIxnRSdxxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=hC9kP7Yj; arc=none smtp.client-ip=45.254.49.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2851c98a1;
-	Tue, 4 Nov 2025 16:42:00 +0800 (GMT+08:00)
-From: Shawn Lin <shawn.lin@rock-chips.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: linux-mmc@vger.kernel.org,
-	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH] mmc: debugfs: Allow more host caps to be moodified
-Date: Tue,  4 Nov 2025 16:41:53 +0800
-Message-Id: <1762245713-68815-1-git-send-email-shawn.lin@rock-chips.com>
-X-Mailer: git-send-email 2.7.4
-X-HM-Tid: 0a9a4e07b6d409cckunmfa83a355b6c975
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGkxLQ1ZCGUweSEIdSU5CSBpWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=hC9kP7YjJv6iw5sGpF/6DYPfuZkc34aWRlXFaPN1qiYrb1aajhOSP5lw2/V5pScLpyI+jykoqa9L53k4kRAbwFE0rTg8uXx7+D++2fP6e/eZ7bvrQdph9n/HIeRxasE8xj853H9oKd9jvvcAaSP55vfbKVxennUTiLsz7oS0j9A=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=a/IB2P+vaWj6lg/qBzYBZ4QsfztaGYiLIK9g5oWaLd0=;
-	h=date:mime-version:subject:message-id:from;
+	s=arc-20240116; t=1762286442; c=relaxed/simple;
+	bh=3qTAnNVoQqtYdxF0p0eXWGODlgYTinAY/C87s3jsGpA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=LexZB/uPkG3TSWO4Xd5X1/A2E3Ch6HPlsag05h1R2Iv+bRY0lM1QNSncchwLyxPf//h38P3GuE+CcgSbc5H53Z6ZLW5HZ0lsGUw6bhQOSPwdDkfqDUUMxqINDHIn4FDEf/wpZHM/noYO+a9SGg/ixc+Ru85+m5XmQ+Mr2x2DVSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com; spf=pass smtp.mailfrom=korsgaard.com; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=JzDcIHW6; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korsgaard.com
+Authentication-Results: purelymail.com; auth=pass
+DKIM-Signature: a=rsa-sha256; b=JzDcIHW6o+WliAe8kjgpTqnw6baVGZf7YOVAkiLxLXW0rkh1bVog2s3YV+MADqb15Cchje3fPYhX1E62TKHSAG7HT4ZwhCLaOltPiHY0diyIa6/lrIsDUliUzozolEyNnxHWY1BgE6vwvdYiefJ9XgJHRjV54vLgIx2OsEBKp6g3uZtdRRxrdUPpPvNX10XBU/AAqhpP/ELWYOhsuOblUAgGYnpzeaqtMaVRr5O6Lr/LGk9Ev2KUNoRJxcXoBmW4gjAv27E+gs3DfZBntmCY1P9IvfKfVFdA5hzYisWKlBsH0UPLnc7QMdlKsN1RbzCfHlpjCeyPU64SKB1/ckKFbw==; s=purelymail1; d=purelymail.com; v=1; bh=3qTAnNVoQqtYdxF0p0eXWGODlgYTinAY/C87s3jsGpA=; h=Feedback-ID:Received:Received:From:To:Subject:Date;
+Feedback-ID: 21632:4007:null:purelymail
+X-Pm-Original-To: linux-mmc@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -883964821;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Tue, 04 Nov 2025 20:00:32 +0000 (UTC)
+Received: from peko by dell.be.48ers.dk with local (Exim 4.96)
+	(envelope-from <peko@dell.be.48ers.dk>)
+	id 1vGNCh-003wZP-1q;
+	Tue, 04 Nov 2025 21:00:31 +0100
+From: Peter Korsgaard <peter@korsgaard.com>
+To: linux-mmc@vger.kernel.org,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Peter Korsgaard <peter@korsgaard.com>
+Subject: [PATCH 1/2] mmc-utils: lsmmc.c: print_mmc_cid(): correct year/month parsing
+Date: Tue,  4 Nov 2025 21:00:07 +0100
+Message-Id: <20251104200008.940057-1-peter@korsgaard.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
 
-This makes various signal and function tests more convenient
-without the need to modify the DTB.
+The parsing logic for the MMC manufacturing date had the year and month
+swapped.  From JESD84:
 
-/sys/kernel/debug/mmc0# echo $(($(cat caps) | (1 << 7))) > caps
-/sys/kernel/debug/mmc0# echo on > /sys/bus/mmc/devices/mmc0\:0001/power/control
-/sys/kernel/debug/mmc0# echo auto > /sys/bus/mmc/devices/mmc0\:0001/power/control
+The manufacturing date, MDT, is composed of two hexadecimal digits, four
+bits each, representing a two digits date code m/y; The =E2=80=9Cm=E2=80=9D=
+ field, most
+significant nibble, is the month code.  1 =3D January.  The =E2=80=9Cy=E2=
+=80=9D field, least
+significant nibble, is the year code.
 
-// Disable 8-bit support
-echo $(($(cat caps) & ~(1 << 6))) > caps
-// Enable 8-bit support
-echo $(($(cat caps) | (1 << 6))) > caps
-// Disable 4-bit support
-echo $(($(cat caps) & ~(1 << 0))) > caps
-// Enable 4-bit support
-echo $(($(cat caps) | (1 << 0))) > caps
-// Disable CMD23 support
-echo $(($(cat caps) & ~(1 << 30))) > caps
-// Enable CMD23 support
-echo $(($(cat caps) | (1 << 30))) > caps
-// Disable CMD23 support
-echo $(($(cat caps) & ~(1 << 30))) > caps
-// Enable CMD23 support
-echo $(($(cat caps) | (1 << 30))) > caps
-// Disable CQE support
-echo $(($(cat caps2) & ~(1 << 23))) > caps2
-// Enable CQE support
-echo $(($(cat caps2) | (1 << 23))) > caps2
-// Disable CQE DCMD support
-echo $(($(cat caps2) & ~(1 << 24))) > caps2
-// Enable CQE DCMD support
-echo $(($(cat caps2) | (1 << 24))) > caps2
+Notice that this is the opposite of the SD bit ordering.
 
-/sys/kernel/debug/mmc0# echo on > /sys/bus/mmc/devices/mmc0\:0001/power/control
-/sys/kernel/debug/mmc0# cat ios
-
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
+ lsmmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/mmc/core/debugfs.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mmc/core/debugfs.c b/drivers/mmc/core/debugfs.c
-index f10a4dc..91ea00a 100644
---- a/drivers/mmc/core/debugfs.c
-+++ b/drivers/mmc/core/debugfs.c
-@@ -315,7 +315,10 @@ static int mmc_caps_set(void *data, u64 val)
- 		      MMC_CAP_SD_HIGHSPEED |
- 		      MMC_CAP_MMC_HIGHSPEED |
- 		      MMC_CAP_UHS |
--		      MMC_CAP_DDR;
-+		      MMC_CAP_DDR |
-+		      MMC_CAP_4_BIT_DATA |
-+		      MMC_CAP_8_BIT_DATA |
-+		      MMC_CAP_CMD23;
- 
- 	if (diff & ~allowed)
- 		return -EINVAL;
-@@ -327,7 +330,10 @@ static int mmc_caps_set(void *data, u64 val)
- 
- static int mmc_caps2_set(void *data, u64 val)
- {
--	u32 allowed = MMC_CAP2_HSX00_1_8V | MMC_CAP2_HSX00_1_2V;
-+	u32 allowed = MMC_CAP2_HSX00_1_8V |
-+		      MMC_CAP2_HSX00_1_2V |
-+		      MMC_CAP2_CQE |
-+		      MMC_CAP2_CQE_DCMD;
- 	u32 *caps = data;
- 	u32 diff = *caps ^ val;
- 
--- 
-2.7.4
+diff --git a/lsmmc.c b/lsmmc.c
+index 799e1ea..7331c1b 100644
+--- a/lsmmc.c
++++ b/lsmmc.c
+@@ -589,7 +589,7 @@ static void print_mmc_cid(struct config *config, char *=
+cid)
+=20
+ =09parse_bin(cid, "8u6r2u8u48a4u4u32u4u4u7u1r",
+ =09=09&mid, &cbx, &oid, &pnm[0], &prv_major, &prv_minor, &psn,
+-=09=09&mdt_year, &mdt_month, &crc);
++=09=09&mdt_month, &mdt_year, &crc);
+=20
+ =09pnm[6] =3D '\0';
+=20
+--=20
+2.39.5
 
 
