@@ -1,58 +1,58 @@
-Return-Path: <linux-mmc+bounces-9299-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9305-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E13C7376D
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Nov 2025 11:31:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F51C737C9
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Nov 2025 11:37:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C686A4E4739
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Nov 2025 10:31:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id BED072A63B
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Nov 2025 10:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B06327146A;
-	Thu, 20 Nov 2025 10:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5E032D0FA;
+	Thu, 20 Nov 2025 10:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="j/4pPRrq"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="HzFe51NL"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m19731100.qiye.163.com (mail-m19731100.qiye.163.com [220.197.31.100])
+Received: from mail-m3297.qiye.163.com (mail-m3297.qiye.163.com [220.197.32.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3682F3C02
-	for <linux-mmc@vger.kernel.org>; Thu, 20 Nov 2025 10:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70FA2ECEAE
+	for <linux-mmc@vger.kernel.org>; Thu, 20 Nov 2025 10:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763634698; cv=none; b=EOrOErEYZBPQVc0OJvdxIyJEveTYC09A5MSYJLJSl/nkWhvfyWmFDNZlIAJ/jcPuLzCVZMDr+C4T/WRynMsIdTyAx/fIlyAPbGkmOQrNZwg8iBFrUEXZ2auBOiHVd+i6G7sPe91mbeQYcS/V8B9wxMocM+FtcsOrfzeQS5hNrfA=
+	t=1763635032; cv=none; b=i3c6PWtiayMvcr8A8owQ73DYStsdJ0dvPs7Xy/vkF6BbdR9xYmHY0E0Cgl5ESl+pT2bJL2PyEmvkc/Rdd/7L3YJaJ3gGC0zzKovXXsLAT3pTLEbRIqtwnnNUObxRH9guG0Pk2V9lu6TjIyXEH3kgnExuNZkahUZne0Ye39vS3uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763634698; c=relaxed/simple;
-	bh=UPc5sxmCd1SOjaE7Eq4nMMXlKdzZDIBWS4Gk4kABTUg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=DIfHiDRULz4++53voXQaGHM7cXt4OlKHNz0wkh519AaOWrHq0epPNDQFm9H3aHta2SBShEksa4536d74ACjaMmuVbYFvzA2P2VRCAj33I1iEcI+ukbqdLGUzX4sYHOx4h49zlgyXBDPkPmjAHW3Un8Y41lx23tFFnkbgeT8ra0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=j/4pPRrq; arc=none smtp.client-ip=220.197.31.100
+	s=arc-20240116; t=1763635032; c=relaxed/simple;
+	bh=BI8YAfzVSOChbbroZEuJN1HvQCOi/V2m/HAokrNsP0Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=CGSoQevtbEMKkB/HMLiUd2N1Lb0XGK9UD69YLpWTKVJzAeilB80ztMM9Zh3Pr0dsYF7DBW2UCzbUotrQfn06kZ0MfqaswooLGr4MUt8jEAX+ZqyJ0+zkP+7yZdbrtMb8jEsF/sX1tFcxd2T/WX1AsiUrSB/UoaMGTVcFyweImJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=HzFe51NL; arc=none smtp.client-ip=220.197.32.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2a4959ac5;
-	Thu, 20 Nov 2025 18:31:32 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2a4959af4;
+	Thu, 20 Nov 2025 18:31:56 +0800 (GMT+08:00)
 From: Shawn Lin <shawn.lin@rock-chips.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-mmc@vger.kernel.org,
 	Jaehoon Chung <jh80.chung@samsung.com>,
 	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 07/13] mmc: dw_mmc: Move flags from struct dw_mci_slot to struct dw_mci
-Date: Thu, 20 Nov 2025 18:29:19 +0800
-Message-Id: <1763634565-183891-8-git-send-email-shawn.lin@rock-chips.com>
+Subject: [PATCH 08/13] mmc: dw_mmc: Remove id from dw_mci_slot
+Date: Thu, 20 Nov 2025 18:29:20 +0800
+Message-Id: <1763634565-183891-9-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1763634565-183891-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1763634565-183891-1-git-send-email-shawn.lin@rock-chips.com>
-X-HM-Tid: 0a9aa0d1bfc409cckunma871e903175418
+X-HM-Tid: 0a9aa0d2203909cckunma871e9031754d1
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQh9LSlZNQk8eS01PSE1JHUpWFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ0waSlYfQx5ITUpOS05NQhlWFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
 	hVSktLVUpCS0tZBg++
 DKIM-Signature: a=rsa-sha256;
-	b=j/4pPRrqizsIfAR/KV46h69nz1+/VYxr2nNkr2SG45fk/vvlRym9YBzGgIgj5hX+5Fmd2ug0nRtwKBxO4Ji9nQHame1ddENmdCtqfevNe9NZNU6lVrv8RhrHgaB1YXwmnD2McRHOfnhUaoY3V0Z4JXiCUefVie3NgrH1infSbqE=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=HJ7sPi4DuCmIV2wPfa4k43D652ejXjHqXv+JZoH06HE=;
+	b=HzFe51NLcTvR/UraMb1akSlD+X7GG4Q/C0zpTvXJ7XVZNuxr1N7eol2uQrxcCGFRg8u94MVjj0IZXUb2PZvmVRfZzwBeYuwWpVMfRTGYY25ZnqVN7V2GqlZ2HvrZIH0BknDIp7ghxvcwNGQ3wTXIt/hnhPUyWphjW0nOeux8qEY=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=NizCecQ12xH8lhrjcYFqLevP/l0sOcSqGvgLdOdz7dA=;
 	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
@@ -60,190 +60,218 @@ List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 
-With this, dw_mmc-exynos.c will not need to access slot.
-BTW, the host->slot is always present when calling
-dw_mci_exynos_set_clksel_timing(), so remove it together.
+There is only one slot support, id should be zero. So no need
+to keep it in track.
 
 Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 ---
 
- drivers/mmc/host/dw_mmc-exynos.c |  4 ++--
- drivers/mmc/host/dw_mmc.c        | 26 +++++++++++++-------------
- drivers/mmc/host/dw_mmc.h        | 14 +++++++-------
- 3 files changed, 22 insertions(+), 22 deletions(-)
+ drivers/mmc/host/dw_mmc.c | 41 ++++++++++++++++++++---------------------
+ drivers/mmc/host/dw_mmc.h |  7 ++-----
+ 2 files changed, 22 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/mmc/host/dw_mmc-exynos.c b/drivers/mmc/host/dw_mmc-exynos.c
-index 4106985..261344d 100644
---- a/drivers/mmc/host/dw_mmc-exynos.c
-+++ b/drivers/mmc/host/dw_mmc-exynos.c
-@@ -185,8 +185,8 @@ static void dw_mci_exynos_set_clksel_timing(struct dw_mci *host, u32 timing)
- 	 * HOLD register should be bypassed in case there is no phase shift
- 	 * applied on CMD/DATA that is sent to the card.
- 	 */
--	if (!SDMMC_CLKSEL_GET_DRV_WD3(clksel) && host->slot)
--		set_bit(DW_MMC_CARD_NO_USE_HOLD, &host->slot->flags);
-+	if (!SDMMC_CLKSEL_GET_DRV_WD3(clksel))
-+		set_bit(DW_MMC_CARD_NO_USE_HOLD, &host->flags);
- }
- 
- static int dw_mci_exynos_runtime_resume(struct device *dev)
 diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-index c2c4ac6..3dc816e 100644
+index 3dc816e..83f213c 100644
 --- a/drivers/mmc/host/dw_mmc.c
 +++ b/drivers/mmc/host/dw_mmc.c
-@@ -304,7 +304,7 @@ static u32 dw_mci_prepare_command(struct mmc_host *mmc, struct mmc_command *cmd)
- 			cmdr |= SDMMC_CMD_DAT_WR;
- 	}
- 
--	if (!test_bit(DW_MMC_CARD_NO_USE_HOLD, &slot->flags))
-+	if (!test_bit(DW_MMC_CARD_NO_USE_HOLD, &host->flags))
- 		cmdr |= SDMMC_CMD_USE_HOLD_REG;
- 
- 	return cmdr;
-@@ -343,7 +343,7 @@ static u32 dw_mci_prep_stop_abort(struct dw_mci *host, struct mmc_command *cmd)
- 	cmdr = stop->opcode | SDMMC_CMD_STOP |
- 		SDMMC_CMD_RESP_CRC | SDMMC_CMD_RESP_EXP;
- 
--	if (!test_bit(DW_MMC_CARD_NO_USE_HOLD, &host->slot->flags))
-+	if (!test_bit(DW_MMC_CARD_NO_USE_HOLD, &host->flags))
- 		cmdr |= SDMMC_CMD_USE_HOLD_REG;
- 
- 	return cmdr;
-@@ -889,7 +889,7 @@ static int dw_mci_get_cd(struct mmc_host *mmc)
- 				|| !mmc_card_is_removable(mmc))) {
- 		present = 1;
- 
--		if (!test_bit(DW_MMC_CARD_PRESENT, &slot->flags)) {
-+		if (!test_bit(DW_MMC_CARD_PRESENT, &host->flags)) {
- 			if (mmc->caps & MMC_CAP_NEEDS_POLL) {
- 				dev_info(&mmc->class_dev,
- 					"card is polling.\n");
-@@ -897,7 +897,7 @@ static int dw_mci_get_cd(struct mmc_host *mmc)
- 				dev_info(&mmc->class_dev,
- 					"card is non-removable.\n");
- 			}
--			set_bit(DW_MMC_CARD_PRESENT, &slot->flags);
-+			set_bit(DW_MMC_CARD_PRESENT, &host->flags);
- 		}
- 
- 		return present;
-@@ -908,10 +908,10 @@ static int dw_mci_get_cd(struct mmc_host *mmc)
+@@ -282,7 +282,7 @@ static u32 dw_mci_prepare_command(struct mmc_host *mmc, struct mmc_command *cmd)
+ 		 * until the voltage change is all done.
+ 		 */
+ 		clk_en_a = mci_readl(host, CLKENA);
+-		clk_en_a &= ~(SDMMC_CLKEN_LOW_PWR << slot->id);
++		clk_en_a &= ~SDMMC_CLKEN_LOW_PWR;
+ 		mci_writel(host, CLKENA, clk_en_a);
+ 		mci_send_cmd(slot, SDMMC_CMD_UPD_CLK |
+ 			     SDMMC_CMD_PRV_DAT_WAIT, 0);
+@@ -904,7 +904,7 @@ static int dw_mci_get_cd(struct mmc_host *mmc)
+ 	} else if (gpio_cd >= 0)
+ 		present = gpio_cd;
+ 	else
+-		present = (mci_readl(slot->host, CDETECT) & (1 << slot->id))
++		present = (mci_readl(slot->host, CDETECT) & BIT(0))
  			== 0 ? 1 : 0;
  
  	spin_lock_bh(&host->lock);
--	if (present && !test_and_set_bit(DW_MMC_CARD_PRESENT, &slot->flags))
-+	if (present && !test_and_set_bit(DW_MMC_CARD_PRESENT, &host->flags))
- 		dev_dbg(&mmc->class_dev, "card is present\n");
- 	else if (!present &&
--			!test_and_clear_bit(DW_MMC_CARD_PRESENT, &slot->flags))
-+			!test_and_clear_bit(DW_MMC_CARD_PRESENT, &host->flags))
- 		dev_dbg(&mmc->class_dev, "card is not present\n");
- 	spin_unlock_bh(&host->lock);
- 
-@@ -1161,7 +1161,7 @@ static void dw_mci_setup_bus(struct dw_mci_slot *slot, bool force_clkinit)
- 		div = (host->bus_hz != clock) ? DIV_ROUND_UP(div, 2) : 0;
- 
- 		if ((clock != slot->__clk_old &&
--			!test_bit(DW_MMC_CARD_NEEDS_POLL, &slot->flags)) ||
-+			!test_bit(DW_MMC_CARD_NEEDS_POLL, &host->flags)) ||
- 			force_clkinit) {
+@@ -1166,8 +1166,8 @@ static void dw_mci_setup_bus(struct dw_mci_slot *slot, bool force_clkinit)
  			/* Silent the verbose log if calling from PM context */
  			if (!force_clkinit)
-@@ -1177,7 +1177,7 @@ static void dw_mci_setup_bus(struct dw_mci_slot *slot, bool force_clkinit)
- 			 */
- 			if (host->mmc->caps & MMC_CAP_NEEDS_POLL &&
- 					host->mmc->f_min == clock)
--				set_bit(DW_MMC_CARD_NEEDS_POLL, &slot->flags);
-+				set_bit(DW_MMC_CARD_NEEDS_POLL, &host->flags);
- 		}
+ 				dev_info(&host->mmc->class_dev,
+-					 "Bus speed (slot %d) = %dHz (slot req %dHz, actual %dHZ div = %d)\n",
+-					 slot->id, host->bus_hz, clock,
++					 "Bus speed = %dHz (slot req %dHz, actual %dHZ div = %d)\n",
++					 host->bus_hz, clock,
+ 					 div ? ((host->bus_hz / div) >> 1) :
+ 					 host->bus_hz, div);
  
- 		/* disable clock */
-@@ -1195,7 +1195,7 @@ static void dw_mci_setup_bus(struct dw_mci_slot *slot, bool force_clkinit)
+@@ -1194,9 +1194,9 @@ static void dw_mci_setup_bus(struct dw_mci_slot *slot, bool force_clkinit)
+ 		mci_send_cmd(slot, sdmmc_cmd_bits, 0);
  
  		/* enable clock; only low power if no SDIO */
- 		clk_en_a = SDMMC_CLKEN_ENABLE << slot->id;
--		if (!test_bit(DW_MMC_CARD_NO_LOW_PWR, &slot->flags))
-+		if (!test_bit(DW_MMC_CARD_NO_LOW_PWR, &host->flags))
- 			clk_en_a |= SDMMC_CLKEN_LOW_PWR << slot->id;
+-		clk_en_a = SDMMC_CLKEN_ENABLE << slot->id;
++		clk_en_a = SDMMC_CLKEN_ENABLE;
+ 		if (!test_bit(DW_MMC_CARD_NO_LOW_PWR, &host->flags))
+-			clk_en_a |= SDMMC_CLKEN_LOW_PWR << slot->id;
++			clk_en_a |= SDMMC_CLKEN_LOW_PWR;
  		mci_writel(host, CLKENA, clk_en_a);
  
-@@ -1273,7 +1273,7 @@ static void __dw_mci_start_request(struct dw_mci *host,
- 	cmdflags = dw_mci_prepare_command(host->mmc, cmd);
+ 		/* inform CIU */
+@@ -1211,7 +1211,7 @@ static void dw_mci_setup_bus(struct dw_mci_slot *slot, bool force_clkinit)
+ 	host->current_speed = clock;
  
- 	/* this is the first command, send the initialization clock */
--	if (test_and_clear_bit(DW_MMC_CARD_NEED_INIT, &slot->flags))
-+	if (test_and_clear_bit(DW_MMC_CARD_NEED_INIT, &host->flags))
- 		cmdflags |= SDMMC_CMD_INIT;
+ 	/* Set the current slot bus width */
+-	mci_writel(host, CTYPE, (slot->ctype << slot->id));
++	mci_writel(host, CTYPE, host->ctype);
+ }
  
- 	if (data) {
-@@ -1423,7 +1423,7 @@ static void dw_mci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
- 				return;
- 			}
- 		}
--		set_bit(DW_MMC_CARD_NEED_INIT, &slot->flags);
-+		set_bit(DW_MMC_CARD_NEED_INIT, &slot->host->flags);
- 		regs = mci_readl(slot->host, PWREN);
- 		regs |= (1 << slot->id);
- 		mci_writel(slot->host, PWREN, regs);
-@@ -1582,10 +1582,10 @@ static void dw_mci_prepare_sdio_irq(struct dw_mci_slot *slot, bool prepare)
+ static void dw_mci_set_data_timeout(struct dw_mci *host,
+@@ -1379,14 +1379,14 @@ static void dw_mci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
  
- 	clk_en_a_old = mci_readl(host, CLKENA);
- 	if (prepare) {
--		set_bit(DW_MMC_CARD_NO_LOW_PWR, &slot->flags);
-+		set_bit(DW_MMC_CARD_NO_LOW_PWR, &host->flags);
- 		clk_en_a = clk_en_a_old & ~clken_low_pwr;
- 	} else {
--		clear_bit(DW_MMC_CARD_NO_LOW_PWR, &slot->flags);
-+		clear_bit(DW_MMC_CARD_NO_LOW_PWR, &host->flags);
- 		clk_en_a = clk_en_a_old | clken_low_pwr;
+ 	switch (ios->bus_width) {
+ 	case MMC_BUS_WIDTH_4:
+-		slot->ctype = SDMMC_CTYPE_4BIT;
++		slot->host->ctype = SDMMC_CTYPE_4BIT;
+ 		break;
+ 	case MMC_BUS_WIDTH_8:
+-		slot->ctype = SDMMC_CTYPE_8BIT;
++		slot->host->ctype = SDMMC_CTYPE_8BIT;
+ 		break;
+ 	default:
+ 		/* set default 1 bit mode */
+-		slot->ctype = SDMMC_CTYPE_1BIT;
++		slot->host->ctype = SDMMC_CTYPE_1BIT;
  	}
  
+ 	regs = mci_readl(slot->host, UHS_REG);
+@@ -1395,9 +1395,9 @@ static void dw_mci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ 	if (ios->timing == MMC_TIMING_MMC_DDR52 ||
+ 	    ios->timing == MMC_TIMING_UHS_DDR50 ||
+ 	    ios->timing == MMC_TIMING_MMC_HS400)
+-		regs |= ((0x1 << slot->id) << 16);
++		regs |= BIT(16);
+ 	else
+-		regs &= ~((0x1 << slot->id) << 16);
++		regs &= ~BIT(16);
+ 
+ 	mci_writel(slot->host, UHS_REG, regs);
+ 	slot->host->timing = ios->timing;
+@@ -1425,7 +1425,7 @@ static void dw_mci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ 		}
+ 		set_bit(DW_MMC_CARD_NEED_INIT, &slot->host->flags);
+ 		regs = mci_readl(slot->host, PWREN);
+-		regs |= (1 << slot->id);
++		regs |= BIT(0);
+ 		mci_writel(slot->host, PWREN, regs);
+ 		break;
+ 	case MMC_POWER_ON:
+@@ -1450,7 +1450,7 @@ static void dw_mci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ 			regulator_disable(mmc->supply.vqmmc);
+ 
+ 		regs = mci_readl(slot->host, PWREN);
+-		regs &= ~(1 << slot->id);
++		regs &= ~BIT(0);
+ 		mci_writel(slot->host, PWREN, regs);
+ 		/* Reset our state machine after powering off */
+ 		dw_mci_ctrl_reset(slot->host, SDMMC_CTRL_ALL_RESET_FLAGS);
+@@ -1483,7 +1483,7 @@ static int dw_mci_switch_voltage(struct mmc_host *mmc, struct mmc_ios *ios)
+ 	struct dw_mci *host = slot->host;
+ 	const struct dw_mci_drv_data *drv_data = host->drv_data;
+ 	u32 uhs;
+-	u32 v18 = SDMMC_UHS_18V << slot->id;
++	u32 v18 = SDMMC_UHS_18V;
+ 	int ret;
+ 
+ 	if (drv_data && drv_data->switch_voltage)
+@@ -1525,7 +1525,7 @@ static int dw_mci_get_ro(struct mmc_host *mmc)
+ 		read_only = gpio_ro;
+ 	else
+ 		read_only =
+-			mci_readl(slot->host, WRTPRT) & (1 << slot->id) ? 1 : 0;
++			mci_readl(slot->host, WRTPRT) & BIT(0) ? 1 : 0;
+ 
+ 	dev_dbg(&mmc->class_dev, "card is %s\n",
+ 		read_only ? "read-only" : "read-write");
+@@ -1559,10 +1559,10 @@ static void dw_mci_hw_reset(struct mmc_host *mmc)
+ 	 * tRSTH >= 1us:   RST_n high period
+ 	 */
+ 	reset = mci_readl(host, RST_N);
+-	reset &= ~(SDMMC_RST_HWACTIVE << slot->id);
++	reset &= ~SDMMC_RST_HWACTIVE;
+ 	mci_writel(host, RST_N, reset);
+ 	usleep_range(1, 2);
+-	reset |= SDMMC_RST_HWACTIVE << slot->id;
++	reset |= SDMMC_RST_HWACTIVE;
+ 	mci_writel(host, RST_N, reset);
+ 	usleep_range(200, 300);
+ }
+@@ -1570,7 +1570,7 @@ static void dw_mci_hw_reset(struct mmc_host *mmc)
+ static void dw_mci_prepare_sdio_irq(struct dw_mci_slot *slot, bool prepare)
+ {
+ 	struct dw_mci *host = slot->host;
+-	const u32 clken_low_pwr = SDMMC_CLKEN_LOW_PWR << slot->id;
++	const u32 clken_low_pwr = SDMMC_CLKEN_LOW_PWR;
+ 	u32 clk_en_a_old;
+ 	u32 clk_en_a;
+ 
+@@ -2931,8 +2931,7 @@ static int dw_mci_init_slot(struct dw_mci *host)
+ 		return -ENOMEM;
+ 
+ 	slot = mmc_priv(mmc);
+-	slot->id = 0;
+-	slot->sdio_id = host->sdio_id0 + slot->id;
++	slot->sdio_id = host->sdio_id0;
+ 	host->mmc = mmc;
+ 	slot->host = host;
+ 	host->slot = slot;
 diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
-index 594c8f7..933d0a37 100644
+index 933d0a37..7f6efb6 100644
 --- a/drivers/mmc/host/dw_mmc.h
 +++ b/drivers/mmc/host/dw_mmc.h
-@@ -128,6 +128,7 @@ struct dw_mci_dma_slave {
-  * @cto_timer: Timer for broken command transfer over scheme.
+@@ -129,6 +129,7 @@ struct dw_mci_dma_slave {
   * @dto_timer: Timer for broken data transfer over scheme.
   * @mmc: The mmc_host representing this dw_mci.
-+ * @flags: Random state bits associated with the host.
+  * @flags: Random state bits associated with the host.
++ * @ctype: Card type for this host.
   *
   * Locking
   * =======
-@@ -242,6 +243,12 @@ struct dw_mci {
- 	struct hrtimer		fault_timer;
- #endif
- 	struct mmc_host		*mmc;
-+	unsigned long		flags;
-+#define DW_MMC_CARD_PRESENT	0
-+#define DW_MMC_CARD_NEED_INIT	1
-+#define DW_MMC_CARD_NO_LOW_PWR	2
-+#define DW_MMC_CARD_NO_USE_HOLD 3
-+#define DW_MMC_CARD_NEEDS_POLL	4
+@@ -249,6 +250,7 @@ struct dw_mci {
+ #define DW_MMC_CARD_NO_LOW_PWR	2
+ #define DW_MMC_CARD_NO_USE_HOLD 3
+ #define DW_MMC_CARD_NEEDS_POLL	4
++	u32			ctype;
  };
  
  /* DMA ops for Internal/External DMAC interface */
-@@ -554,7 +561,6 @@ static inline int dw_mci_runtime_resume(struct device *device) { return -EOPNOTS
+@@ -553,7 +555,6 @@ static inline int dw_mci_runtime_resume(struct device *device) { return -EOPNOTS
+ /**
+  * struct dw_mci_slot - MMC slot state
+  * @host: The MMC controller this slot is using.
+- * @ctype: Card type for this slot.
+  * @mrq: mmc_request currently being processed or waiting to be
+  *	processed, or NULL when the slot is idle.
+  * @queue_node: List node for placing this node in the @queue list of
+@@ -561,21 +562,17 @@ static inline int dw_mci_runtime_resume(struct device *device) { return -EOPNOTS
   * @clock: Clock rate configured by set_ios(). Protected by host->lock.
   * @__clk_old: The last clock value that was requested from core.
   *	Keeping track of this helps us to avoid spamming the console.
-- * @flags: Random state bits associated with the slot.
-  * @id: Number of this slot.
+- * @id: Number of this slot.
   * @sdio_id: Number of this slot in the SDIO interrupt registers.
   */
-@@ -569,12 +575,6 @@ struct dw_mci_slot {
+ struct dw_mci_slot {
+ 	struct dw_mci		*host;
+ 
+-	u32			ctype;
+-
+ 	struct mmc_request	*mrq;
+ 	struct list_head	queue_node;
+ 
  	unsigned int		clock;
  	unsigned int		__clk_old;
  
--	unsigned long		flags;
--#define DW_MMC_CARD_PRESENT	0
--#define DW_MMC_CARD_NEED_INIT	1
--#define DW_MMC_CARD_NO_LOW_PWR	2
--#define DW_MMC_CARD_NO_USE_HOLD 3
--#define DW_MMC_CARD_NEEDS_POLL	4
- 	int			id;
+-	int			id;
  	int			sdio_id;
  };
+ 
 -- 
 2.7.4
 
