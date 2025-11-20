@@ -1,114 +1,92 @@
-Return-Path: <linux-mmc+bounces-9296-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9307-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A5EC73743
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Nov 2025 11:29:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC113C73A08
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Nov 2025 12:09:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6DBD54E2DC7
-	for <lists+linux-mmc@lfdr.de>; Thu, 20 Nov 2025 10:29:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B6294ED1B2
+	for <lists+linux-mmc@lfdr.de>; Thu, 20 Nov 2025 11:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8DE2EFD8A;
-	Thu, 20 Nov 2025 10:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C3032F756;
+	Thu, 20 Nov 2025 11:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="calz9+X0"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="C2O1GeoJ"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m3295.qiye.163.com (mail-m3295.qiye.163.com [220.197.32.95])
+Received: from mail-m1973174.qiye.163.com (mail-m1973174.qiye.163.com [220.197.31.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FF21547E7
-	for <linux-mmc@vger.kernel.org>; Thu, 20 Nov 2025 10:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1812FE583
+	for <linux-mmc@vger.kernel.org>; Thu, 20 Nov 2025 11:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763634583; cv=none; b=jtJ5IGK2upZwzLZ6NXk9yEhtk9PM8GQQVCFse+iFpTKmlC/yHj9WJBb6OtyBNu2Rpb795IgtWhKdsDGSdBMTMcVvHP8s7vSAzHX+RdnICnizsqBb/XFPLt3Gnodox67ymVkHMsh13i+QhCYf+PVg4/J5FYDddnTHiiLqvO5fk4s=
+	t=1763636728; cv=none; b=nMTzn9sadCkeeTJM5pDzFi2+LxtsI0BLLxZxboDRQ+sB3vc4Q77+ueZi4+DGZog9NOcV/lM8dKbSRP/UYhMhvp62Ox4aCTDkZpMvGEOubYMKYu8R1x242LDGMYRGw3dSGh0VPGFDC4KFqpY0R7xNgSTa+57E2AupQSGW7p1IcW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763634583; c=relaxed/simple;
-	bh=ckjGkipDjs15YcK7PIRq4g1iNEmI5Guipe+z4CGTWws=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=TqMvB5vsnhSIgxqhJkLVeYjF8lHom4ZQoYBCfm9nXBsV2eRWeWeuahj9U10rbNbzuXi0AReLC/xmDka/nkrQy4byXyPgr0woA7nU2sjIWPGiATVLpYSDe2SHtV61L9w4CIPcWdL8S7kfzxkZk0NfgyUS9yScti9cA3qFr3VwNFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=calz9+X0; arc=none smtp.client-ip=220.197.32.95
+	s=arc-20240116; t=1763636728; c=relaxed/simple;
+	bh=6TGZlfdtbqzxdIZ9stPPR0IkjqvPadypq9DAKGgp2Nw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=hgXEDOzhs+iatePK999dEpPAyx9QdPN+TeXsLb93mc2KWtrDkl0xQDtCfPsFo/sXIQLNGz0HXRaqf9xVgLDD0xd6oSp0x/rcjJ5XShpi1FLwKSIWUJI7ZMZ/ggSHyoHRrGatizbXdrGYrSw6vCxfP+fw9zCTV76Aj60YL+9gSos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=C2O1GeoJ; arc=none smtp.client-ip=220.197.31.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2a495998e;
-	Thu, 20 Nov 2025 18:29:35 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2a49599a9;
+	Thu, 20 Nov 2025 18:29:50 +0800 (GMT+08:00)
 From: Shawn Lin <shawn.lin@rock-chips.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-mmc@vger.kernel.org,
 	Jaehoon Chung <jh80.chung@samsung.com>,
 	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 0/13] dw_mmc cleanup 
-Date: Thu, 20 Nov 2025 18:29:12 +0800
-Message-Id: <1763634565-183891-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: [PATCH 01/13] mmc: dw_mmc: Remove unused struct dma_pdata
+Date: Thu, 20 Nov 2025 18:29:13 +0800
+Message-Id: <1763634565-183891-2-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1763634565-183891-1-git-send-email-shawn.lin@rock-chips.com>
+References: <1763634565-183891-1-git-send-email-shawn.lin@rock-chips.com>
+X-HM-Tid: 0a9aa0d0348509cckunma871e903175099
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUMfTlYaSUhITUlDSh8fTk1WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=C2O1GeoJsvXGhhMDJMlOta9Ak+5YUB9GCzH6lPl0ffiyviX/WMLmqSlp+VX/wUvWIkkvjL0OXm7eAIwIkkZL+X+Wd6AqzgDhvfXnPcWwD1yhnxX73MRBVeT7llim722qPyTsQi5G4nYmdH4xRkd/K6Ez+wtmlkANva8Aa0qU2Hw=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=IC39oXDrZvtwm/c+t0O3c0/6ZUWMXbfTaoIexwvzyhc=;
+	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9aa0cff83109cckunma871e903175036
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGU8fGlZKHkpMQh5NT0wfGh9WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=calz9+X01Eh9pLUjwRUazEj4Wt4rFLNEQajagQOxhTZlsNWBw59u4mRjhjjTAlfodWFJjx37tb2hp5kpJ+FSF8fVefFYktnAfT81BEsro8tt1VhxUYkj3JnF/h9AH9kTGioCmBefbujMUODLK8hbg/LFvgSalVGwl1wCTAVgGdY=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=KY8RbojBWVhkmKn4VKrp63aa376THU4GkZ2aDp03GwY=;
-	h=date:mime-version:subject:message-id:from;
 
-Hi Ulf & Jaehoon
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+---
 
-As you can see, dw_mmc is likely one of the most complex and difficult-to-read
-host driver at present. It maintains various states and bottom-half scheduling,
-containing a significant amount of redundant code—including a multi-slot mechanism
-that has been unsupported for over a decade.
+ drivers/mmc/host/dw_mmc.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Jaehoon attempted to remove cur_slot more than ten years ago, but the driver still
-retains the slot structure and the associated queue mechanism designed to support
-multiple slots. This has made the already complex code even harder to read and maintain.
-
-The first four patches aim to eliminate some of the redundant code, while the remaining
-patches are intended to ultimately remove the dw_mci_slot variable. To facilitate review
-and minimize the risk of regression, each patch is designed to accomplish a single,
-clear objective.
-
-This series have been tested on the RK3588S EVB1 platform.
-
-
-
-Shawn Lin (13):
-  mmc: dw_mmc: Remove unused struct dma_pdata
-  mmc: dw_mmc: add dw_mci_prepare_desc() for both of 32bit and 64bit DMA
-  mmc: dw_mmc: Remove vqmmc_enabled from struct dw_mci
-  mmc: dw_mmc: Remove unused header files and keep alphabetical order
-  mmc: dw_mmc: Move struct mmc_host from struct dw_mci_slot to struct
-    dw_mci
-  mmc: dw_mmc: Let glue drivers to use struct dw_mci as possible
-  mmc: dw_mmc: Move flags from struct dw_mci_slot to struct dw_mci
-  mmc: dw_mmc: Remove id from dw_mci_slot
-  mmc: dw_mmc: Remove sdio_id from struct dw_mci_slot
-  mmc: dw_mmc: Move clock rate stuff from struct dw_mci_slot to struct
-    dw_mci
-  mmc: dw_mmc: Remove mrq from struct dw_mci_slot
-  mmc: dw_mmc: Remove queue from dw_mci
-  mmc: dw_mmc: Remove struct dw_mci_slot
-
- drivers/mmc/host/dw_mmc-exynos.c      |   9 +-
- drivers/mmc/host/dw_mmc-hi3798cv200.c |   6 +-
- drivers/mmc/host/dw_mmc-hi3798mv200.c |  17 +-
- drivers/mmc/host/dw_mmc-k3.c          |  21 +-
- drivers/mmc/host/dw_mmc-pltfm.c       |   2 +-
- drivers/mmc/host/dw_mmc-rockchip.c    |   9 +-
- drivers/mmc/host/dw_mmc-starfive.c    |   5 +-
- drivers/mmc/host/dw_mmc.c             | 606 ++++++++++++++--------------------
- drivers/mmc/host/dw_mmc.h             |  83 ++---
- 9 files changed, 297 insertions(+), 461 deletions(-)
-
+diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
+index 648b4a5..b4ceca0 100644
+--- a/drivers/mmc/host/dw_mmc.h
++++ b/drivers/mmc/host/dw_mmc.h
+@@ -255,8 +255,6 @@ struct dw_mci_dma_ops {
+ 	void (*exit)(struct dw_mci *host);
+ };
+ 
+-struct dma_pdata;
+-
+ /* Board platform data */
+ struct dw_mci_board {
+ 	unsigned int bus_hz; /* Clock speed at the cclk_in pad */
+@@ -276,7 +274,6 @@ struct dw_mci_board {
+ 
+ 	struct reset_control *rstc;
+ 	struct dw_mci_dma_ops *dma_ops;
+-	struct dma_pdata *data;
+ };
+ 
+ /* Support for longer data read timeout */
 -- 
 2.7.4
 
