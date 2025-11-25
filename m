@@ -1,57 +1,59 @@
-Return-Path: <linux-mmc+bounces-9357-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9356-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C2EC877FC
-	for <lists+linux-mmc@lfdr.de>; Wed, 26 Nov 2025 00:43:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2719DC87772
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Nov 2025 00:32:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 290A83B57AB
-	for <lists+linux-mmc@lfdr.de>; Tue, 25 Nov 2025 23:43:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 22C474E78D7
+	for <lists+linux-mmc@lfdr.de>; Tue, 25 Nov 2025 23:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3862ED869;
-	Tue, 25 Nov 2025 23:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575C52E06D2;
+	Tue, 25 Nov 2025 23:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="QKUl8hy2"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="ZFCilqXL"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m1973182.qiye.163.com (mail-m1973182.qiye.163.com [220.197.31.82])
+Received: from mail-m21468.qiye.163.com (mail-m21468.qiye.163.com [117.135.214.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764AB2F12C6
-	for <linux-mmc@vger.kernel.org>; Tue, 25 Nov 2025 23:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BAF2586C2
+	for <linux-mmc@vger.kernel.org>; Tue, 25 Nov 2025 23:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.214.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764114147; cv=none; b=bR+L8mNc3JLwkCHzFojfJQwRCZUnv8GAGRRiFYAM8alhXtLGXwBN1lt+nkTBzT41j47JH2b++7slOE2s/guynPfS27Eea61DluMnWoO/2jX1f1JvGKbCJi8ZMe/bvxtrv9E7bUS4XemzlvlghzsSsOD61Ong6+fja1N7QsKmMUE=
+	t=1764113539; cv=none; b=gkhg/yCjYpYM7w7FW43g3Q3gO00z4XKhOJe9/jRqv3c4LTcTUithIXCdu59mrzklvj+iLS52IsP0lXVhxgzAwhse6/P2+AY+EF0dHmOFr6rM3H1QgIOsWH/1jIjtkb65d0sBXHdpAU+Xm1iL+EZf9raXJ7MMrO3n7d+fWPNoft0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764114147; c=relaxed/simple;
-	bh=9FR35gERsFWdpFU+IaEkUEJwyb2ILvEvPLhzM75KUbY=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=qRDZp6yZk3s9TE2uNt65SF3to5kH0YEYY4IBWsbToBUQktmx52h4GjTkKlJEqf0Dkhd6F6HaV4/5eN+gbifmET+PHTwPN5ndbWg8iHKHlDlXLI/lLEUVPHBzvMxpBhD7U7EtKIR+L2d0nARHnED2zKnZFee3Mp21SAjEcLqMbpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=QKUl8hy2; arc=none smtp.client-ip=220.197.31.82
+	s=arc-20240116; t=1764113539; c=relaxed/simple;
+	bh=BMy0E/YLdVJPZQrFrBq0fSj7SDFrN/gvcfTnrjuJnOY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Msc5jmXfKDtXln9xby8xdoult5eG5R9XVbVY8jbKeizuf4p1TvuvcGoczL3EpfeeQ2yMYnZePasl74+YPUo3bUF9NbOF+2Ic8ZyCzYjOBVYE+uAisAIomVY30K/AEPrBuYXJ3A9VNhga6gcVwb5Jk5093m8I9Nj6yvsnhdPcfbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=ZFCilqXL; arc=none smtp.client-ip=117.135.214.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2ae234a15;
-	Wed, 26 Nov 2025 07:26:56 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2ae234a18;
+	Wed, 26 Nov 2025 07:26:58 +0800 (GMT+08:00)
 From: Shawn Lin <shawn.lin@rock-chips.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-rockchip@lists.infradead.org,
 	linux-mmc@vger.kernel.org,
 	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH v2 0/2] sdhci-of-dwcmshc improvement and fix for Rockchip SoCs
-Date: Wed, 26 Nov 2025 07:26:38 +0800
-Message-Id: <1764113200-237279-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: [PATCH v2 1/2] mmc: sdhci-of-dwcmshc: Disable internal clock auto gate for Rockchip SOCs
+Date: Wed, 26 Nov 2025 07:26:39 +0800
+Message-Id: <1764113200-237279-2-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 2.7.4
-X-HM-Tid: 0a9abd57746f09cckunm0d7ff06b4d7bf9
+In-Reply-To: <1764113200-237279-1-git-send-email-shawn.lin@rock-chips.com>
+References: <1764113200-237279-1-git-send-email-shawn.lin@rock-chips.com>
+X-HM-Tid: 0a9abd577d1209cckunm0d7ff06b4d7c0c
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQh5OTVZKH09OGhgZSEsZTxpWFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGR8fTFYeGkwfSxhPSklLS0xWFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
 	hVSktLVUpCS0tZBg++
 DKIM-Signature: a=rsa-sha256;
-	b=QKUl8hy2l1gEYZ3Vb0kP1lUImclzr+mnPtZUWs2txZyv2Rt0+Cq7a987iHwLdRpmAxgLhGxaChBQrHNPhrx/cYamnmR1waqt/uZHDlrScDEfC7Y5XgVaVKzXk6BiMxtTOj/QsLTBcGKXr9Mv6ZhoY3QA2KX2AGACIAR0WVzGt8k=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=sYABF2vZsyG5tO/eVEdXik09oQ3ruKdaNaX4VN3Q0As=;
+	b=ZFCilqXL7q2AKpn7Cuo0ibtnmG7LmIqPV6FA4Wd3b5JSg+Z+xCtXr5aRRv3Q+gXi9EEpBO96T0EXZ+UUUPNWBYhYOnG7hYVXfZI5VOsCu1JQ4178+F19ckA4XXz5lJAQNK3CTpWfbkAIjxIN4lUiHOATGwl2oY5V0PByOirp8U4=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=01MlGEe//G6BpeQK9BiOoMGUGr3i1N9jpoYUzNG2dho=;
 	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
@@ -59,25 +61,46 @@ List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 
-This's v2 of these two patches which adds ack-by tags collected and
-rebase on top of linux-next.
+Enabling CMDQ support can lead to random occurrences of the error log when
+there are RPMB access and data flush executed:
 
-The first patch fixes the auto-gating problem of dwc IP when using CQE.
-The second one improves the performance of CQE by reducing CIT.
+"mmc2: Timeout waiting for hardware interrupt."
 
+Enabling CMDQ and then issuing a DCMD as the final command before disabling
+it causes the eMMC controller to auto-gate its internal clock. Chip simulation
+shows this results in a state machine mismatch after CMDQ mode exit, triggering
+data-timeout errors for all subsequent read and write operations.
+
+Therefore, the auto-clock-gate function must be disabled whenever CMDQ is
+enabled.
+
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+---
 
 Changes in v2:
 - rebase and add acked-by tag
 
-Shawn Lin (2):
-  mmc: sdhci-of-dwcmshc: Disable internal clock auto gate for Rockchip
-    SOCs
-  mmc: sdhci-of-dwcmshc: reduce CIT for better performance
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- drivers/mmc/host/cqhci.h            | 1 +
- drivers/mmc/host/sdhci-of-dwcmshc.c | 8 +++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index c66a8df..e276a4e 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -713,10 +713,11 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 
+ 	sdhci_set_clock(host, clock);
+ 
+-	/* Disable cmd conflict check */
++	/* Disable cmd conflict check and internal clock gate */
+ 	reg = dwc_priv->vendor_specific_area1 + DWCMSHC_HOST_CTRL3;
+ 	extra = sdhci_readl(host, reg);
+ 	extra &= ~BIT(0);
++	extra |= BIT(4);
+ 	sdhci_writel(host, extra, reg);
+ 
+ 	if (clock <= 52000000) {
 -- 
 2.7.4
 
