@@ -1,148 +1,125 @@
-Return-Path: <linux-mmc+bounces-9372-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9358-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29C1C87A0A
-	for <lists+linux-mmc@lfdr.de>; Wed, 26 Nov 2025 01:51:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B61C878F5
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Nov 2025 01:15:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C33384E142F
-	for <lists+linux-mmc@lfdr.de>; Wed, 26 Nov 2025 00:51:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9E7B24E0694
+	for <lists+linux-mmc@lfdr.de>; Wed, 26 Nov 2025 00:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25B52F3623;
-	Wed, 26 Nov 2025 00:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67533502BE;
+	Wed, 26 Nov 2025 00:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="MunjuvEo"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="ILH7Gvr0"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m32115.qiye.163.com (mail-m32115.qiye.163.com [220.197.32.115])
+Received: from mail-m155110.qiye.163.com (mail-m155110.qiye.163.com [101.71.155.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0BC2F361B
-	for <linux-mmc@vger.kernel.org>; Wed, 26 Nov 2025 00:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B985147A6B
+	for <linux-mmc@vger.kernel.org>; Wed, 26 Nov 2025 00:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764118272; cv=none; b=FxzlQzUmSMqG/qYtqyCi8MRCy1yqnbIJbFy942mRI6VSxnXaICM5d0bo1EzOeqELFkFMixQMNiFogKSRciJl+NN/YJvcq/3qhiF/Akoo2cEOaknV0ANW9b8laDpBpvg7rrEVXTVEHaLbUM5dpOkzk7h72W11+37cCPVSTQ0sFek=
+	t=1764116120; cv=none; b=ezcoYb1qu0w6PZ9tnNl2QJ3HmXfXqSnGzPIf/RWk+97cZvBKuaDwTB3kqlnVKceN7qi+iQ2p9G1riAYnvEE5e3KUYEPlEyeKPOus3pIwNkwa1jAziH5iahb0xLoy+a3AC+7tn+EoT8X28J+gFKPzM2sV1QpGb/zzLMhSzrDhYZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764118272; c=relaxed/simple;
-	bh=TP9KUTd3Y46P75KFW3KLhfpIKyefyiOwq9PDMc0FJG0=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=XWICA8xqvjhZNLItMuonDfSVKNuns/N4KV9OLEibzH89XyfypDTikxL+tJ+tPaAyYyVouoiNKzEmtFgyIJsPjGMst8Byr3ni5z1GV7qDDmH/PN1L8sYp78HW6J9l7j+fbKJZfNm1NVWv69UOracFjDrkIfjHSb51V/3pTlxUUoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=MunjuvEo; arc=none smtp.client-ip=220.197.32.115
+	s=arc-20240116; t=1764116120; c=relaxed/simple;
+	bh=F8+v028UCoq5aZX1OGiYjyI0AIUBOxAcizCNiTummPw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=V06+0NaTytjMZrUFb2DhKaKkjfEYKWhWn0n1pDDUj/z0MVCUNfMHvQXQnBr5GtAGMc0dFEBhfMK1TBLIrL/JrNQOeh2y5w8/vRrMD5zVkkU0e2eIzaDofewgIYOd/9AbQtbnPjL7OXaOZLWztBCQ8YdN2/Z1WO7AEUH3WkU4wBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=ILH7Gvr0; arc=none smtp.client-ip=101.71.155.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.14] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2ae2864cd;
-	Wed, 26 Nov 2025 07:35:32 +0800 (GMT+08:00)
-Message-ID: <ac6e55f4-faa6-4c41-a141-976fe0b15507@rock-chips.com>
-Date: Wed, 26 Nov 2025 07:35:29 +0800
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2ae34126c;
+	Wed, 26 Nov 2025 08:15:05 +0800 (GMT+08:00)
+From: Shawn Lin <shawn.lin@rock-chips.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-mmc@vger.kernel.org,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH v2 0/13] dwmmc cleanup
+Date: Wed, 26 Nov 2025 08:14:40 +0800
+Message-Id: <1764116093-5430-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: shawn.lin@rock-chips.com, linux-rockchip@lists.infradead.org,
- linux-mmc@vger.kernel.org,
- Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH 2/2] mmc: sdhci-of-dwcmshc: reduce CIT for better
- performance
-To: Ulf Hansson <ulf.hansson@linaro.org>
-References: <1762933460-204066-1-git-send-email-shawn.lin@rock-chips.com>
- <1762933460-204066-2-git-send-email-shawn.lin@rock-chips.com>
- <7b05327d-fc76-471e-9148-3dfc0cd17623@rock-chips.com>
- <CAPDyKFrx_5cnyFeLRhoia2aHK9Cxo+fp_kKhyQ526xE02_+vSA@mail.gmail.com>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-In-Reply-To: <CAPDyKFrx_5cnyFeLRhoia2aHK9Cxo+fp_kKhyQ526xE02_+vSA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9abd5f52fe09cckunmf13488f44d8cf7
+X-HM-Tid: 0a9abd8388af09cckunme6f559504dcdf2
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUJOQlZLHRgZSh8YHxkfH0xWFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGR5MT1ZNQxkaHkpJQ0saTh1WFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
 	hVSktLVUpCS0tZBg++
 DKIM-Signature: a=rsa-sha256;
-	b=MunjuvEo0wMP3WyIy2lDC+tzeWxHZrTG2ZQO3a6ttnyC2xRrZS1oNf9M++wXlUbPnaOfl/hdV/z2sM7//4vwZnGearFIdY9kZk4RqgKZnjndJtZBDWNXU5/5vCWC5SBUTfZ5WNFWkxBG+IFH5C03xP9YB6xEhbCsyVfeKipt4Zo=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=1fMDqlNLtATTA3YPhw1Ncna3hJAtBCXlyyomumBazcY=;
+	b=ILH7Gvr0oy/aeGjEQWLtvrBkupthL9dhkK8ggpeOFpaADaolKQa6v8T+BGcNyXBWnwsDMAfDHtPJhC7FAmXrEZ4Wu9pJA5J3L8tSS6t+NSeVWD8OU3+3aqS+1YzDvin73gwrbjLyHH1K1L98JwchKrIH/63p++Y32SUaR+1+vjQ=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=TsLjNukJ732glSglDtSdw28EVVb4S7q8R0ckWFxFx4U=;
 	h=date:mime-version:subject:message-id:from;
 
 
+Hi Ulf & Jaehoon
 
-在 2025/11/26 星期三 0:02, Ulf Hansson 写道:
-> On Tue, 25 Nov 2025 at 14:58, Shawn Lin <shawn.lin@rock-chips.com> wrote:
->>
->> 在 2025/11/12 星期三 15:44, Shawn Lin 写道:
->>> CQHCI_SSC1.CIT indicates to the CQE the polling period to use for
->>> periodic SEND_QUEUE_STATUS (CMD13) polling. Some eMMCs have only one
->>> hardware queue, and CMD13 can only query one slot at a time for data
->>> transmission, which cannot be processed in parallel. Modifying the
->>> CMD13 query interval can increase the query frequency and improve
->>> random write performance.
->>>
->>
->> Ping...
->>
->> Adrain acked these two patches, so will them be candidates for 6.19
->> given the merge windows is coming soon?
-> 
-> Looks like I simply failed to see them. Possibly because there was
-> cover-letter, which makes it harder for me to follow all the different
-> series.
-> 
-> Anyway, I tried to apply them, but there are conflicts that I am not
-> sure I can resolve easily by myself. Would you mind doing a re-base
-> and post a new version, then I can apply them asap.
-> 
+As you can see, dw_mmc is likely one of the most complex and difficult-to-read
+host driver at present. It maintains various states and bottom-half scheduling,
+containing a significant amount of redundant code—including a multi-slot mechanism
+that has been unsupported for over a decade.
 
-Thanks Ulf. I just did a rebase on top of linux-next and posted a new
-version[1].
+Jaehoon attempted to remove cur_slot more than ten years ago, but the driver still
+retains the slot structure and the associated queue mechanism designed to support
+multiple slots. This has made the already complex code even harder to read and maintain.
 
-[1] 
-https://lore.kernel.org/all/1764113200-237279-1-git-send-email-shawn.lin@rock-chips.com/
+The first four patches aim to eliminate some of the redundant code, while the remaining
+patches are intended to ultimately remove the dw_mci_slot variable. To facilitate review
+and minimize the risk of regression, each patch is designed to accomplish a single,
+clear objective.
+
+This series have been tested on the RK3588S EVB1 platform.
 
 
-> Kind regards
-> Uffe
-> 
->>
->>> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
->>> ---
->>>
->>>    drivers/mmc/host/cqhci.h            | 1 +
->>>    drivers/mmc/host/sdhci-of-dwcmshc.c | 5 +++++
->>>    2 files changed, 6 insertions(+)
->>>
->>> diff --git a/drivers/mmc/host/cqhci.h b/drivers/mmc/host/cqhci.h
->>> index ce189a1..3668856 100644
->>> --- a/drivers/mmc/host/cqhci.h
->>> +++ b/drivers/mmc/host/cqhci.h
->>> @@ -93,6 +93,7 @@
->>>    /* send status config 1 */
->>>    #define CQHCI_SSC1                  0x40
->>>    #define CQHCI_SSC1_CBC_MASK         GENMASK(19, 16)
->>> +#define CQHCI_SSC1_CIT_MASK          GENMASK(15, 0)
->>>
->>>    /* send status config 2 */
->>>    #define CQHCI_SSC2                  0x44
->>> diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
->>> index e276a4e..cad5165 100644
->>> --- a/drivers/mmc/host/sdhci-of-dwcmshc.c
->>> +++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
->>> @@ -631,6 +631,11 @@ static void rk35xx_sdhci_cqe_pre_enable(struct mmc_host *mmc)
->>>        struct dwcmshc_priv *dwc_priv = sdhci_pltfm_priv(pltfm_host);
->>>        u32 reg;
->>>
->>> +     /* Set Send Status Command Idle Timer to 10.66us (256 * 1 / 24) */
->>> +     reg = sdhci_readl(host, dwc_priv->vendor_specific_area2 + CQHCI_SSC1);
->>> +     reg = (reg & ~CQHCI_SSC1_CIT_MASK) | 0x0100;
->>> +     sdhci_writel(host, reg, dwc_priv->vendor_specific_area2 + CQHCI_SSC1);
->>> +
->>>        reg = sdhci_readl(host, dwc_priv->vendor_specific_area2 + CQHCI_CFG);
->>>        reg |= CQHCI_ENABLE;
->>>        sdhci_writel(host, reg, dwc_priv->vendor_specific_area2 + CQHCI_CFG);
->>
-> 
+Changes in v2:
+- Fix sparse warning
+- Use helpers from regulator.c and remove check for mmc_regulator_set_ocr.
+- add commit message
+- make commit message clear that we remove two things
+- remove a unused code
+- Fix dma_set_mask_and_coherent mistake by code rebase
+- fix compile warning
+
+Shawn Lin (13):
+  mmc: dw_mmc: Remove unused struct dma_pdata
+  mmc: dw_mmc: add dw_mci_prepare_desc() for both of 32bit and 64bit DMA
+  mmc: dw_mmc: Remove vqmmc_enabled from struct dw_mci and user helpers
+    from core
+  mmc: dw_mmc: Remove unused header files and keep alphabetical order
+  mmc: dw_mmc: Move struct mmc_host from struct dw_mci_slot to struct
+    dw_mci
+  mmc: dw_mmc: Let glue drivers to use struct dw_mci as possible
+  mmc: dw_mmc: Move flags from struct dw_mci_slot to struct dw_mci
+  mmc: dw_mmc: Remove id and ctype from dw_mci_slot
+  mmc: dw_mmc: Remove sdio_id from struct dw_mci_slot
+  mmc: dw_mmc: Move clock rate stuff from struct dw_mci_slot to struct
+    dw_mci
+  mmc: dw_mmc: Remove mrq from struct dw_mci_slot
+  mmc: dw_mmc: Remove queue from dw_mci
+  mmc: dw_mmc: Remove struct dw_mci_slot
+
+ drivers/mmc/host/dw_mmc-exynos.c      |   9 +-
+ drivers/mmc/host/dw_mmc-hi3798cv200.c |   6 +-
+ drivers/mmc/host/dw_mmc-hi3798mv200.c |  17 +-
+ drivers/mmc/host/dw_mmc-k3.c          |  21 +-
+ drivers/mmc/host/dw_mmc-pltfm.c       |   2 +-
+ drivers/mmc/host/dw_mmc-rockchip.c    |   9 +-
+ drivers/mmc/host/dw_mmc-starfive.c    |   5 +-
+ drivers/mmc/host/dw_mmc.c             | 621 ++++++++++++++--------------------
+ drivers/mmc/host/dw_mmc.h             |  83 ++---
+ 9 files changed, 302 insertions(+), 471 deletions(-)
+
+-- 
+2.7.4
 
 
