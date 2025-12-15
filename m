@@ -1,85 +1,135 @@
-Return-Path: <linux-mmc+bounces-9519-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9522-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078E7CBEB6E
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Dec 2025 16:43:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E903CCBEC1F
+	for <lists+linux-mmc@lfdr.de>; Mon, 15 Dec 2025 16:51:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 71B1930019E1
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Dec 2025 15:43:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EBC330612BA
+	for <lists+linux-mmc@lfdr.de>; Mon, 15 Dec 2025 15:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECBA33373E;
-	Mon, 15 Dec 2025 15:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4088130F932;
+	Mon, 15 Dec 2025 15:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NWiy+rQ/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r7DOTqze"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0AC3328FA;
-	Mon, 15 Dec 2025 15:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571DF223336
+	for <linux-mmc@vger.kernel.org>; Mon, 15 Dec 2025 15:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765813398; cv=none; b=ej9HvkwVaOMKRTpeKdtSg6knTiMdEiWh6xejD8FfpXRAcxSwLDuKUFZubiwJ3994SOsyOwuCVojkGAzaJJRt3IqhFHRoXvt9Ur5mbY0fe/3vUIyokMp6vUl0sCHmquO2U/oCIQz9DpzCRGdE+IzmvG7p10EakQSEkIm092AyKLs=
+	t=1765813458; cv=none; b=FwOaD4oORVXYD5wB/oyeII6Hs/T/+FksUqWO+2mFi48YRufaof0y/ygWMDy5vbXtDte7ngvO2uMh3zRh9SJdpwNCtlbSECJIU7XCOYLtlHMvaGxB4+o7jJkpez4DXZ8631uMBLG8vTdZaa0UF7Yi1XoVr0Rk6/z+d0wBj8evtn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765813398; c=relaxed/simple;
-	bh=JvbatoQUBtJcTnBqtpzr8mf8zwmJJ8Ov1yuQ+MrMFC0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rKxEGM+OCjA+FleiFOGhdyOl8eCEANjTglg24aJcjOQY/S9noP57UXO8KzWSMY8UwqEqlUd2tYBoKV98Zbp0C2VhMaVlWOqDHcR493UzOgb7jLXbRcdhR+pmIUTCHaQm9I5cyN8ViRt+vBlg6oHOm9e5WTFH27fqKA4feJsjVlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=NWiy+rQ/; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=OcTvdwQfx6qYBtSHRI6fL2bQMSfRDHV5QuxA7QFMLjM=; b=NWiy+rQ/OjmtFhyFbnqKbcVNCI
-	Ts8H8GD35Gbhv+6TrLbD8JOCKzRHpjNjnGcTIWxphf3dSh3qP55nyKv38xRXkAeptOAppeoPHNbTj
-	nGVSIAKHnfdnuHU8v+/w5+3Ksm9lLOb/N++3ryUKNc7/+PuLgItsHZhFq0BkOmyrUlwLlki9QaCBk
-	IrsOuFhjFfILtcy51eGUbbLwGzvvZ7s2yUNNqEHIPFK4qBV9NrPW1oUx/UDJhAg50ptoQ2+YkPD5J
-	Qa4/iPavQmfAF8BKX5y4zWGiReBMefRsPzUjm7Po0jzolZnV5vLYBS/uD2hZgTodFeCNCyo7VMd1t
-	4LU3Kbrw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vVAjA-00000003uZZ-0hcP;
-	Mon, 15 Dec 2025 15:43:12 +0000
-Date: Mon, 15 Dec 2025 07:43:12 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: ziniu.wang_1@nxp.com
-Cc: axboe@kernel.dk, ulf.hansson@linaro.org, linux-block@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/2] block: decouple secure erase size limit from
- discard size limit
-Message-ID: <aUAskIkCHiVmKs87@infradead.org>
-References: <20251215102010.608421-1-ziniu.wang_1@nxp.com>
- <20251215102010.608421-2-ziniu.wang_1@nxp.com>
+	s=arc-20240116; t=1765813458; c=relaxed/simple;
+	bh=OPA+fxuief7E2SBlAHatD0kmyRya8xhOrAuKA0YWco4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TGmxL81WJDxanPv1QkqSJ7jydf61XZfQ3PVtZSbF45rJdBQi1dGGR1kKvxtjo4LiCpBkroNJ5/6uvQ15usmuYIrb099eQrteu5fc65QpXQdsGr4jdyMq07863XZLIGRKq8gAVslCBwL651K8mQ+Ev/uR91oHt4milFTGSQRdlNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r7DOTqze; arc=none smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6446c1a7a1cso3164977d50.3
+        for <linux-mmc@vger.kernel.org>; Mon, 15 Dec 2025 07:44:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1765813455; x=1766418255; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=HxLO4eXVEbQkA9BtFI3B3Xjfx5jZwIu/7GRR4IzCyHo=;
+        b=r7DOTqzeObSkHf+sg/lGcHd5gPkdSbljTGLex51kN5xgmjmv3LR7AcyBsJKXUbFcLC
+         cdg/MTruMWdHoc4x2YCvFZSg6HEknSENopsZPmWo6kqz/FRbibuSYR5GT5J4fKQlrqia
+         LgN4b9USM7YKiWS4aQtqqLYaSwgxT3Umn38mL2GfLxX0SjmeT6mshRsVeQPScmrvUVPR
+         sVOLA6Nr3Q/Q70CiUtdPRpN6K6fSc7CpXKd0m1Dd0KEzDOHaUn/0BIMnAdXC5NaiH+WO
+         9ArPMt400c7dRys8WIx6oCwUDJhGEjx3rZMbIu04WKc3c2DUv+LDlwXtOusibUi0E6zX
+         nXqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765813455; x=1766418255;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HxLO4eXVEbQkA9BtFI3B3Xjfx5jZwIu/7GRR4IzCyHo=;
+        b=FgxH52j6RqqfQkYMEAGwe65uH88Oi8VvcRnv0v44bbZKTl5XVPX1QMtDx2jBS9BYN1
+         Tc8nB4nUA8oR0YJPyVHtIFJJVQPJpcM4PLMOzCc6IpzQoznFNQqgbIItfhH39PaxSgZN
+         2vAy0wL/+GOLx4O6zbJC1TB68G/wfvm2jLZd0pQBgaWGUVezjZ83WVg/HiEpf+7DKkFf
+         0v3PBOeVXS738CoTH/U2+p+VWiUx5G3MvSfHkX4YlwWlhLveKtNOxG2wIN9KzmZ0BCIf
+         CWfKJCl7gS8Lf5Zr8Xzx9aL9gJ2Y8SsFyehMlp/GTfYfh8w4QUEdbtElUq9soDQRGfi3
+         Q+Og==
+X-Gm-Message-State: AOJu0YxJHOgmEVUJemVKfzeAgnnW41F7mHZMJRWEC++S6A1m1Nd9ANgN
+	iJOd60CyouNYvN63TWpzcvNAFWMNIhU0UGMslq8LLDgYcqU4SEWlxVv+TzY7TE5kidQwvs06tQa
+	PcNlQYa5s52JR27093ixvXjWMjCpUpnbDrkc6cNtrHSbstKFyve7K
+X-Gm-Gg: AY/fxX5Vw3mYzlwAIQCExkVtkdfFW8WEoEn3t4sRwlWhNt03dhLAl151CWXVo8TJOYu
+	mmDwkQHwu+cc2nP8/rXg8o1mEkvAZQyEWwcFN655NVwyvIschK8Q8qOhZfwoVUcfKrK0ApEgo5h
+	naNt1JHX9iq2AXFvWNcyFYVHO6WbtKINds0aHNan7iGtl/U43KN58JcyvYy4wQ2omQlDGY0QNcX
+	mZIbcod56pyepzPQVD79CNbNMEXXPZ8NRD0c9zV87iFyk+FoojCfWP4zmye5ccW4BYMTKFl
+X-Google-Smtp-Source: AGHT+IG1uK5T0BBOLdAKplctlgz9+htwXet9zUm1yTzPSsHNKNaIyYhluNQ20EMsH/tIllKmvytz7L4txNlac1Ca14I=
+X-Received: by 2002:a53:b205:0:b0:644:6520:eadc with SMTP id
+ 956f58d0204a3-6455564e8a4mr5823439d50.50.1765813455238; Mon, 15 Dec 2025
+ 07:44:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215102010.608421-2-ziniu.wang_1@nxp.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <20251128052011.204735-1-avri.altman@sandisk.com>
+In-Reply-To: <20251128052011.204735-1-avri.altman@sandisk.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 15 Dec 2025 16:43:34 +0100
+X-Gm-Features: AQt7F2qn-ts1UtRQg5C9q5KFtRNe8QQGyZlUWTb20p_ylXQQmaJqR_8VpbxJ9Pg
+Message-ID: <CAPDyKFpshnLSa+GNOpFdQ6_Kc2ov_jofq56eq7WsqZMRVYs-NQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mmc: core: Extend manufacturing date beyond 2025
+To: Avri Altman <avri.altman@gmail.com>
+Cc: linux-mmc@vger.kernel.org, Avri Altman <avri.altman@sandisk.com>
+Content-Type: text/plain; charset="UTF-8"
 
-> --- a/block/blk-merge.c
-> +++ b/block/blk-merge.c
-> @@ -169,8 +169,13 @@ struct bio *bio_split_discard(struct bio *bio, const struct queue_limits *lim,
->  
->  	granularity = max(lim->discard_granularity >> 9, 1U);
->  
-> -	max_discard_sectors =
-> -		min(lim->max_discard_sectors, bio_allowed_max_sectors(lim));
-> +	if (bio_op(bio) == REQ_OP_SECURE_ERASE)
-> +		max_discard_sectors = min(lim->max_secure_erase_sectors,
-> +					  bio_allowed_max_sectors(lim));
-> +	else
-> +		max_discard_sectors = min(lim->max_discard_sectors,
-> +					  bio_allowed_max_sectors(lim));
+On Fri, 28 Nov 2025 at 06:20, Avri Altman <avri.altman@gmail.com> wrote:
+>
+> Hi Ulf,
+>
+> This patch series addresses the upcoming exhaustion of the eMMC
+> manufacturing date (MDT) year field, which is limited to a 4-bit value
+> in the CID register. Under the current standard (EXT_CSD_REV=8), the
+> representable years end in 2025.
+>
+> The first patch implements the recently approved JEDEC standard update
+> for EXT_CSD_REV=9. This update rolls over the 4-bit year codes to cover
+> a new 16-year period, extending the range up to 2038.
+>
+> The second patch introduces a quirk to handle vendor-specific behavior.
+> Some eMMC vendors are not yet updating their devices to EXT_CSD_REV=9
+> but still need to report manufacturing dates for 2026 and beyond. These
+> devices re-purpose the year codes for 2010-2012 to represent 2026-2028.
+>
+> Thanks,
+> Avri
+>
+> ---
+> Changes in v2:
+> - move the fixup to `mmc_ext_csd_fixups`
+> - State the correct spec release
+> - Fixed a typo in the commit message of the second patch.
+> ---
+>
+> Avri Altman (2):
+>   mmc: core: Adjust MDT beyond 2025
+>   mmc: core: Add quirk for incorrect manufacturing date
+>
+>  drivers/mmc/core/card.h   |  6 ++++++
+>  drivers/mmc/core/mmc.c    | 12 ++++++++++++
+>  drivers/mmc/core/quirks.h |  3 +++
+>  include/linux/mmc/card.h  |  1 +
+>  4 files changed, 22 insertions(+)
+>
+> --
+> 2.34.1
+>
 
-Please factor our a low-level helper and pass the max_sectors
-as argument.
+I have applied the series for next, thanks!
 
+However, I noticed that the author of the patch has your gmail-address
+and the sob has your sandisk-address. I guess we should change to your
+sandisk-address to be in both places, no?
+
+Kind regards
+Uffe
 
