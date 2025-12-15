@@ -1,138 +1,167 @@
-Return-Path: <linux-mmc+bounces-9518-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9520-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BE4CBEB2C
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Dec 2025 16:39:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD55CBEB7A
+	for <lists+linux-mmc@lfdr.de>; Mon, 15 Dec 2025 16:44:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3167300AFED
-	for <lists+linux-mmc@lfdr.de>; Mon, 15 Dec 2025 15:38:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2ADC2300353E
+	for <lists+linux-mmc@lfdr.de>; Mon, 15 Dec 2025 15:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51742332ED0;
-	Mon, 15 Dec 2025 15:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B273346BD;
+	Mon, 15 Dec 2025 15:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="muNPlqz+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NXc4uQy4"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4E9335BAA
-	for <linux-mmc@vger.kernel.org>; Mon, 15 Dec 2025 15:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2960C223336
+	for <linux-mmc@vger.kernel.org>; Mon, 15 Dec 2025 15:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765813116; cv=none; b=iTMlCV8T6NpT2Giuoa/UiMswQSzZSGgn73NPw53a89RVSz3K32YGnj3YrbOuFVSqmbTjjZgioAT1epnD0zxZZHPbQiORZnYK+lWbw6a3B+X0m6ZWkULoDOt+kxAZXvpAQW6FRVJgQ46p70h6WbK5omGSNl8o2W/LXHNgL/7YQlI=
+	t=1765813422; cv=none; b=hp1gZQaGPk50P7c3sL4ZrIcRgT5TCkRcNmEqrKZsEGj4RiEt4wDWSRbayPgEnY9xdHoH79+DpbRhGEcgR32uT11Oe4hKuFuhspYnZm6piOk9cllBT3aPdkcBHqvAQXcAaJdhP+9hv430tLz+IAVC2wT87sCI+En5sVycwIefF7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765813116; c=relaxed/simple;
-	bh=JTYMLvI4lDVZi60pNDdfZc568ZhAd5KMAoHJpV53U7M=;
+	s=arc-20240116; t=1765813422; c=relaxed/simple;
+	bh=Z2a3M2ESMF9WTEfcsdmwWJPI9ukauQttx4Dfbf44t+c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A6YAPWLahJAmPhepudnatporNTdfqHMpzVvnRd19qjX57Px39dW3Jkh9h4HB3/ffUz7/odeloWXIGJpszjgQetuzIsOxc4gAkufKLR92iwhN4OhguIGJ5ZYDpSoaqKQViL2NnAzdzwo3uJ00nNZXECkxYSdyShM5QXJz0872jeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=muNPlqz+; arc=none smtp.client-ip=209.85.167.50
+	 To:Cc:Content-Type; b=awUL/Ou5RQ32eyYZM+dFVM85ThF0+CAkV08QKdCLcxkimC25k9qQP587/H8RMupyBngSXKEzL3yEo72qoO47wA+ho1nyI2TqU3pFdBoTQh7S8leuqqg1nR0+sF50npthppbhiFkkHrsv4FbymiV8q4yTAaZ0GiGgnWuiCe2Nv/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NXc4uQy4; arc=none smtp.client-ip=209.85.167.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-597d57d8bb3so3198709e87.3
-        for <linux-mmc@vger.kernel.org>; Mon, 15 Dec 2025 07:38:32 -0800 (PST)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-598eaafa587so4249015e87.3
+        for <linux-mmc@vger.kernel.org>; Mon, 15 Dec 2025 07:43:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765813110; x=1766417910; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=eSwy3gowjltzcyphb4214OlyhjdppYeuXISkRTiuQCs=;
-        b=muNPlqz+Zp6dGCpRumonskdMv6nGg7IOd5+jxyihCErumlanwnQ+l183ihvkmaIhLl
-         HxckshAp7OhvXYRIJk2TqvA0rddp4qPgh4Bisobub491KrsxaZdlAfxjK2hkUpWrbhX0
-         zTg4+eNsggnarpvTsM81IAHFG19z9qjVHzrw6uDQoJY0q6K9ldRPGvObp6eQ8p3uweJR
-         R8y0mittmXrEWcy/SH+0tCKmf/uFeNxMR2fkpfFD/hmy/bifKI51yUI3/OQ2JmV0lz0C
-         JGRaKpPgAc/S0P9GTCyUZCjPKdkNrD1Vq4Zk9eiNA09DlX6kDddx7MbZurI9vwA1sw7J
-         7diQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765813110; x=1766417910;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1765813416; x=1766418216; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eSwy3gowjltzcyphb4214OlyhjdppYeuXISkRTiuQCs=;
-        b=tzBPbV8zCeEH5yuGukuXE+btB4ce/mzjsKbCxecdzj/H9X03Pbe3VpsP0YFColqB69
-         omRFvusGTEDp9qCbtSM9/IJRhHoZ4/uGmxm1ko2JbWTlBb95w7VDEFMxF+P172hac61c
-         UluPK5l+cKVOMnpc+AQhV7vqsM51XV2+tjKG9ey+UR0DonVDTsf1jW+EDSfbPm0xbGj9
-         3idv4TRF/sVOqQCHJMfZsAhCi05orTHPJoB+t4gWfj9lo6o6xJfPPakGU2GtUKG4FxOe
-         RWvlt1lR5mH8JEHbdTEhz9vPSS2V4Fd5JcqKmgXq4R5Uhj1mFfqkIsOB766ke6pz+OR9
-         2Bhw==
-X-Forwarded-Encrypted: i=1; AJvYcCVdkvm/nHqikkSw8eqIjgqx9JSKKtGh48lj7gtVS8nbnX9RSIAl5kicf2lxCVkT8FhRdZ85Bt+W11I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqIZL0aklHDXLcKoJvYy1a4u0bSJJ4PiQdhT/n0fbqsXVxSwwW
-	jkOXvD8/9/W9ujHL/tHydtkDphC3cCBGV4KvTFDkOD9yi1tRDzW8y10NKsRwem2hbLasaw1F6yI
-	ElTeFAlii9nM1fC9nUymuMVGzjqxru8RGYyeblYNZqg==
-X-Gm-Gg: AY/fxX7dVQR82NyEunST98aDEob6uLeUuKTjWAtBvMizy+vA212b1xE2oxqzoP/J33v
-	ku/P7AIAXE5JMPBwIh+ItW+1agAPakiXfkFGAKdlnn91FEWIVXjAEFriw/qfbORdHZ5HPlEs32M
-	+dB+X+M37SsL+OeHQHixmCfN1NUu+qVijQ2sOR1YH+2EkBL/EEsJ759ZdWkJRt6YL6wru08Uq4K
-	y6w8bvNDVKcPug/DnLY5Ox2D4l+FpAhiADpmD40f/Rq+7o41PGZ6pr9aAd0ywND0HUbPH24
-X-Google-Smtp-Source: AGHT+IFKTvH2UfCK5w9sAwfCQuEQbWmLk1A+0vBn+uZZJXSHxR0e15Tqwz9KJoHJBnQOLz6m42UioL9EMQ8sboz7KhA=
-X-Received: by 2002:a05:651c:1a08:b0:37f:c5ca:749a with SMTP id
- 38308e7fff4ca-37fd071a3c5mr37413191fa.1.1765813110403; Mon, 15 Dec 2025
- 07:38:30 -0800 (PST)
+        bh=Ag1xTdS2WJOy6gmYcvslytrIx/tnDCnR7K3JJNqwY/g=;
+        b=NXc4uQy4/E+ZGjRfZNeVKTLpjaE7lvusQn4Og1Aq0T0kMpGiyifE8oUKokqGB53ft8
+         5cDhneVkhQDBH/QOD6kRaldRnbQmobtmSklk35XrTNS/sb5Rsp9q/b4CNt/CY4aUqKqq
+         3YA0HlUR9d0SmZGd46omIGI2a2rd9wpocVe8bpi5PNoQefp4ioX2WgjMhNqAMAJrJI+T
+         OlB9dJZxfHu1zPyZ6M9aQYgSNPUmPmPD8u6+JRkJWndxMmNDt8Wf6RmYSt2WSEOqPU5E
+         +lubBJ+4xJRO1+c/qL2yqVyn7uZaHig+Veac3zQ9XfeSvVc568wo1NDo+mGSJEzXCp55
+         lAtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765813416; x=1766418216;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Ag1xTdS2WJOy6gmYcvslytrIx/tnDCnR7K3JJNqwY/g=;
+        b=SFxVsVz83491O5/rbCNSovn55AMl8SrPlDrlWlGWNU0a7gMg9sxnTCW0QEuTHOwPdV
+         yJ6l/llXIUDPDm42R8qSNqutluXLUrxMSYcIO9QcxSwXSjS33hfQyB+2srBbkNSQ4LSp
+         DqHxYFswwHm8zMX1yAc1B5SgQ7jNWA+EQECMqElzgkc5yYn+OjvHy65qZHCJqgiLGMZM
+         Ke+/Wq5DJogL78QbzQixFr5IgTqjqHP3LuG8V5EsS1rtTaL+zAh3VAprLI1CHuphAIfP
+         kSIcVKFZWiAhsu93y293qLvq0Yw04Q2SJh0JZ+KUCWNDrdvvBhln/nfQTzZqrInMN2jM
+         I4ug==
+X-Gm-Message-State: AOJu0YxhsRrK+gunWSa+3NsSzGowMxdTKwZxx5Dqtul0nTWWTnKu/3g1
+	Yz/aP2ZmWI9SbrM+7K13cRusm7Ig58l2jlqRlRt55Vk4qUVSv3xZV/TLixbth/1DwpSF3b8riEy
+	osGGW/K3ZS1j/RfVmCywshsuBC6tdtNCJph+0ADcVTn6GG2p0NWN4
+X-Gm-Gg: AY/fxX65hVmos6Wg5MdEFZUHcW4Hp8Tc2PS9T2bwqrkBedHwNCAtUVyTL0c5mQBm81l
+	4YRPd+jySE1hB20XhkP8TTbnNyLKuPV3OhmDEd344pjNzMs4aBvZjBjJGN9rEC9QmunzOsOq3FI
+	Hz35Mk++Jm7MO0JsRnxjCCIjM69XsnuCKLB9URQUdnDVV9Ew7cN+5k2xfeZiJnETskqEgb0uaeM
+	736mX5zjN9I66SYAN1arj+OUpTW+5kMorSS2hD57r/kU7xxew7+BuPwtrrpC2ZKgzBTWDUf
+X-Google-Smtp-Source: AGHT+IGlko49bLIENZg6n4zO73WrzVUzwZ/ZU90v8N3nyr9+/wMisbhjaL/Kqq+4fWLgzHJwKAujEw7R9BlKLplpNig=
+X-Received: by 2002:a05:6512:230e:b0:577:3ccf:cdee with SMTP id
+ 2adb3069b0e04-598faa8f00emr3892543e87.41.1765813416206; Mon, 15 Dec 2025
+ 07:43:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251215102010.608421-1-ziniu.wang_1@nxp.com>
-In-Reply-To: <20251215102010.608421-1-ziniu.wang_1@nxp.com>
+References: <1764116093-5430-1-git-send-email-shawn.lin@rock-chips.com>
+In-Reply-To: <1764116093-5430-1-git-send-email-shawn.lin@rock-chips.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 15 Dec 2025 16:37:54 +0100
-X-Gm-Features: AQt7F2qN24rvjd1F8j2ygBPZqZUhdStl6C5Dtd7mmY8Ik9glfcE5mBkVsUP7kyE
-Message-ID: <CAPDyKFoLmo=qDru67rj63gQwMjLqVKS+wEQecukuC+3Pz_CjDA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Optimize secure erase performance for certain
- Kingston eMMC devices
-To: ziniu.wang_1@nxp.com
-Cc: axboe@kernel.dk, linux-block@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Date: Mon, 15 Dec 2025 16:42:59 +0100
+X-Gm-Features: AQt7F2pOv_kN5nsxWphWt4nBKY1sFeWRHUzNlBtC3vQ98ZHVhSqtCgQpxOClmDY
+Message-ID: <CAPDyKFoc87upieLFZ81f4o5xRPHnuP_-xFHVqe8Y=CgjNnUiLw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/13] dwmmc cleanup
+To: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: linux-mmc@vger.kernel.org, Jaehoon Chung <jh80.chung@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 15 Dec 2025 at 11:18, <ziniu.wang_1@nxp.com> wrote:
+On Wed, 26 Nov 2025 at 01:15, Shawn Lin <shawn.lin@rock-chips.com> wrote:
 >
-> From: Luke Wang <ziniu.wang_1@nxp.com>
 >
-> This patch series optimize secure erase performance for certain Kingston
-> eMMC devices (IY2964 and IB2932) that take a fixed ~2 seconds per secure
-> erase operation regardless of size.
-
-Well, that sounds to me like the eMMC isn't really erasing the blocks.
-I wonder how "secure" this is in practice.
-
+> Hi Ulf & Jaehoon
 >
-> Currently, a 1GB secure erase requires ~300 operations (limited by max
-> discard size), taking ~10 minutes. With these changes, the same secure
-> erase completes in a single operation, reducing time to just 2 seconds.
+> As you can see, dw_mmc is likely one of the most complex and difficult-to=
+-read
+> host driver at present. It maintains various states and bottom-half sched=
+uling,
+> containing a significant amount of redundant code=E2=80=94including a mul=
+ti-slot mechanism
+> that has been unsupported for over a decade.
+>
+> Jaehoon attempted to remove cur_slot more than ten years ago, but the dri=
+ver still
+> retains the slot structure and the associated queue mechanism designed to=
+ support
+> multiple slots. This has made the already complex code even harder to rea=
+d and maintain.
+>
+> The first four patches aim to eliminate some of the redundant code, while=
+ the remaining
+> patches are intended to ultimately remove the dw_mci_slot variable. To fa=
+cilitate review
+> and minimize the risk of regression, each patch is designed to accomplish=
+ a single,
+> clear objective.
+>
+> This series have been tested on the RK3588S EVB1 platform.
+>
+>
+> Changes in v2:
+> - Fix sparse warning
+> - Use helpers from regulator.c and remove check for mmc_regulator_set_ocr=
+.
+> - add commit message
+> - make commit message clear that we remove two things
+> - remove a unused code
+> - Fix dma_set_mask_and_coherent mistake by code rebase
+> - fix compile warning
+>
+> Shawn Lin (13):
+>   mmc: dw_mmc: Remove unused struct dma_pdata
+>   mmc: dw_mmc: add dw_mci_prepare_desc() for both of 32bit and 64bit DMA
+>   mmc: dw_mmc: Remove vqmmc_enabled from struct dw_mci and user helpers
+>     from core
+>   mmc: dw_mmc: Remove unused header files and keep alphabetical order
+>   mmc: dw_mmc: Move struct mmc_host from struct dw_mci_slot to struct
+>     dw_mci
+>   mmc: dw_mmc: Let glue drivers to use struct dw_mci as possible
+>   mmc: dw_mmc: Move flags from struct dw_mci_slot to struct dw_mci
+>   mmc: dw_mmc: Remove id and ctype from dw_mci_slot
+>   mmc: dw_mmc: Remove sdio_id from struct dw_mci_slot
+>   mmc: dw_mmc: Move clock rate stuff from struct dw_mci_slot to struct
+>     dw_mci
+>   mmc: dw_mmc: Remove mrq from struct dw_mci_slot
+>   mmc: dw_mmc: Remove queue from dw_mci
+>   mmc: dw_mmc: Remove struct dw_mci_slot
+>
+>  drivers/mmc/host/dw_mmc-exynos.c      |   9 +-
+>  drivers/mmc/host/dw_mmc-hi3798cv200.c |   6 +-
+>  drivers/mmc/host/dw_mmc-hi3798mv200.c |  17 +-
+>  drivers/mmc/host/dw_mmc-k3.c          |  21 +-
+>  drivers/mmc/host/dw_mmc-pltfm.c       |   2 +-
+>  drivers/mmc/host/dw_mmc-rockchip.c    |   9 +-
+>  drivers/mmc/host/dw_mmc-starfive.c    |   5 +-
+>  drivers/mmc/host/dw_mmc.c             | 621 ++++++++++++++--------------=
+------
+>  drivers/mmc/host/dw_mmc.h             |  83 ++---
+>  9 files changed, 302 insertions(+), 471 deletions(-)
+>
+> --
+> 2.7.4
+>
 
-Hmm, is the problem really the size or is it the timeout? Why does 300
-operations to erase 1GB take ~10 minutes?
-
-Can you please elaborate what happens on the mmc host driver level for
-each operation. What mmc host driver/controller is being used? Does it
-support MMC_CAP_WAIT_WHILE_BUSY or do we end up polling for
-busy-completion in-between each command?
+To start moving forward, I decided to apply patch1 and patch2 for next, tha=
+nks!
 
 Kind regards
 Uffe
-
->
-> ---
-> Changes in v2:
-> - Rebased on v6.19-rc1 as requested
-> - Cover letter: terminology fix (command -> operation)
-> ---
->
-> Luke Wang (2):
->   block: decouple secure erase size limit from discard size limit
->   mmc: add quirk to optimize certain Kingston eMMC secure erase/trim
->     performance
->
->  block/blk-merge.c         | 9 +++++++--
->  block/blk.h               | 6 +++++-
->  drivers/mmc/core/card.h   | 5 +++++
->  drivers/mmc/core/queue.c  | 9 +++++++--
->  drivers/mmc/core/quirks.h | 9 +++++++++
->  include/linux/mmc/card.h  | 1 +
->  6 files changed, 34 insertions(+), 5 deletions(-)
->
-> --
-> 2.34.1
->
 
