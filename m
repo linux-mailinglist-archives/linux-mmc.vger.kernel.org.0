@@ -1,213 +1,186 @@
-Return-Path: <linux-mmc+bounces-9544-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9547-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C37CC3E85
-	for <lists+linux-mmc@lfdr.de>; Tue, 16 Dec 2025 16:26:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC11ECC392F
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Dec 2025 15:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E0673032FF5
-	for <lists+linux-mmc@lfdr.de>; Tue, 16 Dec 2025 15:19:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF23D30BF237
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Dec 2025 14:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6417D366DAA;
-	Tue, 16 Dec 2025 12:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AF5CA4E;
+	Tue, 16 Dec 2025 12:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="spCzNCAf"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="iTAMUgB2"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1367A36656A
-	for <linux-mmc@vger.kernel.org>; Tue, 16 Dec 2025 12:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56364389F47;
+	Tue, 16 Dec 2025 12:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887370; cv=none; b=VgXeI+neNwv8//qWpKpdHe6HvGfWBSrsRP0wxEHAOM3OJn0myjixAvfvxSOz8bAfttK8CgRZ3hydcdPRTFAc4q6HXl6EEhYT02QytigHQnf+AhgmfgqfFUFPzoIjzKHE0apxnVadLE/pehZpswxOAlk9Wyu7QKJnFjkNuHc2/qY=
+	t=1765888912; cv=none; b=XZKRJnBtllgZS+nosXeRidvAd2hL4/DE+mP6FlV6YCwAHCSmEWR0vaZXVtRVtIKTLlTvvyYYxYzWa3J7tUMOu/Qbhiw8BTtfSFK13P0GBiCm5CYuymvm5MpSkQ+RIhzjSConJk8PTsMzvR8ODMvRbVX9nBI69eKinAI4EADR8Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887370; c=relaxed/simple;
-	bh=ygM6iPCH2TydP0HkxyKip8E+b6Ls9AqBqncVC7h+DLg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QLJ/Y7dssHBiH7XcoX2gbweZz9DxVCOVUhYGkkr5VHBEdyVpGunNqfPzCB0gzRgRuScpmUBMkRtvTweZojUOCAVAIHHMrSKKo7ldb/MHzH76NOnsdV/velDhaXs4O1fhxQobXwswQnuqazu1K0Cs0lFl5C3y/s6m2LZPVHl65+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=spCzNCAf; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-37b97e59520so35669611fa.2
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Dec 2025 04:16:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765887366; x=1766492166; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5bBHT5GO4OwWFNFQ9+2hmY0RqEYQdKcZYHd8MT27q6k=;
-        b=spCzNCAfU6diO0rVR89Z7huXTIT1rPDVEjDuzwPwACYmuoEddq1o5nyZ6Al28HUY02
-         wFa2GEXvd08ONKMrTIucd2DaAuqSw5gRD4W349C8w+hQQindK+0VkQD4AnQNf5etRfMS
-         uaac1IgHT8kHg3ljn1ZsVfxRGiMH1pY7w0dXPuQP0xvYa0mPpeeRm4S511wuYS9Uuki5
-         ng/Lw7TH8XbEW8dr7ZtnyHpuaRtX1N+5N+Yk3gBD2Pgu22MsOJkP+n8eGTdxgKk8cZvn
-         oX5Kq6HV8rY1A4Fsf7MVq/eoGJaf6AOxrK9Lkzwgu2dXmZXLSunxGvFZF1K9MMEJ2LhL
-         9Gww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765887366; x=1766492166;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5bBHT5GO4OwWFNFQ9+2hmY0RqEYQdKcZYHd8MT27q6k=;
-        b=k5xBYRx/tpbs1mHfAq4sVC6SIhmY14KZmWrivk2xtBce153f1itXAqJ4IaBAN2Scor
-         9WYfXM0cyWwXEByFw3pxVYBpgndyQpU4zcSjKf5HQzAiiOAOPLauFAwNYgruDNz76OTY
-         rIJ4mQ4bPJ9B2uPyzQeMONTmpGfv9P0Y0UphlIxH7J/fc2qrooX4tbBKca9jFxZBJBkg
-         S7/zeDKT++GeXGQrnzFfWYDaADb6CSTh1tOMFHynJTsJmG9i+zULrHFeGPN4/GILFX2i
-         gdZfiws0AeTvxiL42cGC0Fl9oWGE9l9KzHLzZOSQh8fsgDWr0KQ+gJwXyZVEwz+TY+kk
-         SG/A==
-X-Forwarded-Encrypted: i=1; AJvYcCU5cjrIBYiB8QbJZvtnvWKW+j6x1tg0A0nOOYEkTbYm2JA+5AJ74fNDBqpGGKbRdCUPqUadeoOrGy8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw39tVrUajUwbVuBP6L5m7PGvLxvYh8whMHCWKzNleX2PvCxLPh
-	H8g0pajsXXaX1nnafm46ey7O1QRnazOfo1C5VtB0wKv1wb5PCN1homHkme+KMryO2+G3cfoGFDf
-	8xxHsKKKpAHTWo5vIPlpWpjTOUUY63hOYOPOwV40SVg==
-X-Gm-Gg: AY/fxX4rFeiB2zZAVUx9GNx0VggGwiIRSHNlfcmzR6UARw6z+vvELh+dUOS9UJMrcNk
-	0sd/bip7kBii5yg/TjKIcSySuDTKH5C0b/+AY1zvjPyxHePMCWGcRVGNXLrF94PAsXBDOVIMk3n
-	EwtXdnu8J2vbvMHZykvjbcgW2yfCOe/7ojlLx/USATc93exgsrr2HA3CY15As5y8YDrWiwfPN1u
-	CI1brrZCTokTmLl2dDPamsG+OHmedksxKxZo/UaKCGYms1ldFMfhvVGjCqhe2pi9if/7sh5
-X-Google-Smtp-Source: AGHT+IHSOzKJUAD0VWoqMbAG9/IlbO2ZSE7puMKuCAi60z6RaWldMe2JJwlbhcYrPz8NDWuyAEiNqo14NocbJW/sTAU=
-X-Received: by 2002:a2e:b8c4:0:b0:37f:b5c8:7cc0 with SMTP id
- 38308e7fff4ca-37fd08c7ae4mr55985981fa.33.1765887365959; Tue, 16 Dec 2025
- 04:16:05 -0800 (PST)
+	s=arc-20240116; t=1765888912; c=relaxed/simple;
+	bh=igrJz5IinChEf0Wu0wHbZqglxEYnsfwu7dVCfo/cw+8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=O8pM6M1Ot7pS6gFbLuIJtZStDPs4/jrT8QJ8/lgiIuLqoRRca3gqcK54JfwwXxoI1wMSDncM3EeUa3lAl3oZ5//la9AChjTwPAWjh5Omf1EMbuHoHQQc4kM+04G2j/sR7sLB/BSGv851trPgYIo8BOuMQYderq1rPvsTteZi/gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=iTAMUgB2; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BG8JWcU2573384;
+	Tue, 16 Dec 2025 12:41:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0FTGuXM3b9FxQwSObO8nfqIcI9r4fRozBYs52eN1tbI=; b=iTAMUgB2kPMXvM4o
+	zUgYfEdZHtqD4q4RxYT9bz7XArGGrZoiOFt9k7flAHe6TXhscbDQ9uiKdVvfyONc
+	Zy53QnADPXtoAFV382hXxhoyc66ssjsCCadJn2YKbeP70Dd7jOrDasSTAf6tsg4E
+	hjqbBg0dK6LEkIC7AKKe74LeCnlZgxHnOM1qiaxkj6jphnxPm4UNhyycpkH4upFo
+	U7i5VK+/s2Iak6s71JLilcftqbo1AD9C65OO66WuwT2mN69FtwpDbAUoE4oYArSS
+	5jg/oStWcfxSfNY96Rci5xvfWVnt4bqBYV3nf+6OVvnuomXjVWCDPUKrH6KjOxqz
+	UjDMHg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b33ths2ta-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Dec 2025 12:41:45 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5BGCfie7012514
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Dec 2025 12:41:44 GMT
+Received: from [10.217.216.18] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 16 Dec
+ 2025 04:41:37 -0800
+Message-ID: <b98eb114-6967-4ac4-8b4d-936966a58171@quicinc.com>
+Date: Tue, 16 Dec 2025 18:11:32 +0530
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251215102010.608421-1-ziniu.wang_1@nxp.com> <CAPDyKFoLmo=qDru67rj63gQwMjLqVKS+wEQecukuC+3Pz_CjDA@mail.gmail.com>
- <DU2PR04MB8567C09C52C66C59C9CA6607EDAAA@DU2PR04MB8567.eurprd04.prod.outlook.com>
-In-Reply-To: <DU2PR04MB8567C09C52C66C59C9CA6607EDAAA@DU2PR04MB8567.eurprd04.prod.outlook.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 16 Dec 2025 13:15:28 +0100
-X-Gm-Features: AQt7F2qlgonHE1u8usoQ1ApRhJuG8Mj0nOYZGlZ59wEK9NLeswsioWiDble_0qg
-Message-ID: <CAPDyKFoH+B363wiPi6HoKg1VJXvJVNPoYaRTGXzEDgSTEg9TyA@mail.gmail.com>
-Subject: Re: [EXT] Re: [PATCH v2 0/2] Optimize secure erase performance for
- certain Kingston eMMC devices
-To: Luke Wang <ziniu.wang_1@nxp.com>
-Cc: "axboe@kernel.dk" <axboe@kernel.dk>, 
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, 
-	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/5] arm64: dts: qcom: Add sdhc dll-presets
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+        Ulf Hansson
+	<ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Adrian Hunter
+	<adrian.hunter@intel.com>
+CC: <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <dmitry.baryshkov@oss.qualcomm.com>, <quic_pragalla@quicinc.com>,
+        <quic_sayalil@quicinc.com>, <quic_nitirawa@quicinc.com>,
+        <quic_bhaskarv@quicinc.com>, <kernel@oss.qualcomm.com>
+References: <20251215120009.3877889-1-quic_rampraka@quicinc.com>
+ <20251215120009.3877889-3-quic_rampraka@quicinc.com>
+ <0f7c0d5c-7f77-4669-9648-62d008f15b1c@kernel.org>
+ <9f5fcce3-b9c0-4aae-b4e0-10475eb5ec9e@kernel.org>
+Content-Language: en-US
+From: Ram Prakash Gupta <quic_rampraka@quicinc.com>
+In-Reply-To: <9f5fcce3-b9c0-4aae-b4e0-10475eb5ec9e@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=ZIPaWH7b c=1 sm=1 tr=0 ts=69415389 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
+ a=uJt1xlEP9UPP1VlBNB4A:9 a=QEXdDO2ut3YA:10 a=i6qsmYmKKdoA:10
+ a=csto0wWSG80A:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: yyXCEZaQFimc34Z3ujFBiZdvSLQhaT16
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDEwNiBTYWx0ZWRfX2W5aRin6k0T/
+ 7IkLVpV9Ts9v7/1bPWsJFR1c10WCAzizp5RaQGR+xVaRzx0dr9TAQFtYmbz4s76e+e1HhvBO1vq
+ H/E1FLiaG/2cuwKiw6hmVz9Ooqds/uxxcIotFApYOE5I319D4mYyEb+Ip/s9CbG+J2aFibaGWKm
+ 8HkWo9ACVCF2ooWXXxl5HsgvftY6orv3zZY6Hpm56EWeW5wPw6JQAaPVNTm72+BzZUrkwG7jaD/
+ KVTptmeaCwHHEE8B/apP90NuabO6KrKfspPwOw9eELaphq9t8fzsWfPbjj/Qll15rbYUhQdnoPu
+ uivBEFkWPjurujMqhBDMi8vRDw98lVfDB0BgQNBdoVMhml7nZV6PGRt0DwwHbGhCjO8tIrz5odZ
+ 6TDUjjmFz4MN5OFqOHVpr1wUEa2WMw==
+X-Proofpoint-ORIG-GUID: yyXCEZaQFimc34Z3ujFBiZdvSLQhaT16
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-16_02,2025-12-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0 phishscore=0
+ spamscore=0 priorityscore=1501 adultscore=0 clxscore=1015 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512160106
 
-On Tue, 16 Dec 2025 at 11:02, Luke Wang <ziniu.wang_1@nxp.com> wrote:
->
->
->
-> > -----Original Message-----
-> > From: Ulf Hansson <ulf.hansson@linaro.org>
-> > Sent: Monday, December 15, 2025 11:38 PM
-> > To: Luke Wang <ziniu.wang_1@nxp.com>
-> > Cc: axboe@kernel.dk; linux-block@vger.kernel.org; linux-
-> > mmc@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
-> > Subject: [EXT] Re: [PATCH v2 0/2] Optimize secure erase performance for
-> > certain Kingston eMMC devices
-> >
-> > Caution: This is an external email. Please take care when clicking links or
-> > opening attachments. When in doubt, report the message using the 'Report
-> > this email' button
-> >
-> >
-> > On Mon, 15 Dec 2025 at 11:18, <ziniu.wang_1@nxp.com> wrote:
-> > >
-> > > From: Luke Wang <ziniu.wang_1@nxp.com>
-> > >
-> > > This patch series optimize secure erase performance for certain Kingston
-> > > eMMC devices (IY2964 and IB2932) that take a fixed ~2 seconds per secure
-> > > erase operation regardless of size.
-> >
-> > Well, that sounds to me like the eMMC isn't really erasing the blocks.
-> > I wonder how "secure" this is in practice.
->
-> Compared to other eMMC, 2 second secure erase time for 1GB is reasonable.
->
-> Using the default 3.5MB secure erase chunk, the total time spent secure erasing 1GB:
-> Sandisk SDINBDG4-32G-I 0.8s
-> Micron MTFC32GAKAEEF-AIT 4.7s
-> Longsys FEMDNN032G-C9A55 0.6s
->
-> In fact, secure erase does not guarantee that data is physically erased. We previously encountered
-> an issue with long secure trim times on the MTFC32GAKAEEF-AIT eMMC, and got confirmation
-> from Micron:
-> "Secure Erase (0x80000000) is treated as a simple Erase (0x00000000), while Secure
-> Trim (0x80000001 + 0x80008000) and Trim (0x00000001) are treated differently. So, it is
-> possible that Secure Trim really is the heaviest possible erase operation for the FW to execute. "
->
-> And the eMMC 5.1 Spec:
-> "NOTE Secure Erase is included for backwards compatibility. New system level implementations
-> (based on v4.51 devices and beyond) should use Erase combined with Sanitize instead of secure erase."
 
-Right, thanks for clarifying this! I do recall the complexity around this now.
+On 12/15/2025 5:37 PM, Krzysztof Kozlowski wrote:
+> On 15/12/2025 13:05, Krzysztof Kozlowski wrote:
+>> On 15/12/2025 13:00, Ram Prakash Gupta wrote:
+>>> Add sdhc dll-presets for qdu1000 target.
+>>>
+>>> Signed-off-by: Ram Prakash Gupta <quic_rampraka@quicinc.com>
+>>> ---
+>>>  arch/arm64/boot/dts/qcom/qdu1000.dtsi | 4 ++--
+>>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>> Please use subject prefixes matching the subsystem. You can get them for
+>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+>> your patch is touching. For bindings, the preferred subjects are
+>> explained here:
+>> https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
 
->
-> >
-> > >
-> > > Currently, a 1GB secure erase requires ~300 operations (limited by max
-> > > discard size), taking ~10 minutes. With these changes, the same secure
-> > > erase completes in a single operation, reducing time to just 2 seconds.
-> >
-> > Hmm, is the problem really the size or is it the timeout? Why does 300
-> > operations to erase 1GB take ~10 minutes?
->
-> I think the problem is caused by the fact that this Kingston eMMC secure erase
-> small chunk need ~2 second. In contrast, other eMMC secure erase small chunk
-> only take tens of milliseconds.
+sure I missed to add qdu1000:, will add in subject.
 
-Okay! So it looks like using a card quirk, something along what you
-propose in patch2 could make sense. I will have a closer look.
+>>> diff --git a/arch/arm64/boot/dts/qcom/qdu1000.dtsi b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+>>> index 846e5e5899aa..bc31504d5c8c 100644
+>>> --- a/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+>>> +++ b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+>>> @@ -912,8 +912,8 @@ sdhc: mmc@8804000 {
+>>>  
+>>>  			bus-width = <8>;
+>>>  
+>>> -			qcom,dll-config = <0x0007642c>;
+>>> -			qcom,ddr-config = <0x80040868>;
+>>> +			qcom,dll-presets = <0x000F64EC 0x0 0x01	0x2C010800 0x80040868>,
+>>> +					   <0x0007642C 0x0 0x10 0x2C010800 0x80040868>;
+>>
+>> That's non-bisectable. You just broke the users of this DTS. Also, case
+>> change is not explained and your binding said nothing about deprecating
+>> other properties.
+
+right I will update the sequence of dt as last change in the series.
+
+I couldn't get "case change is not explained" but I guess ask is for
+explanation why is this change needed. As the soc is using artanis
+dll, it needs to have 3 more register values as presets. So in total
+2 arrays, for HS400 and HS200, are passed each having 5 elements,
+DLL_CONFIG, DLL_CONFIG_2, DLL_CONFIG_3, DLL_USER_CTRL & DDR_CONFIG.
+Without these sampling of data would not be optimal and might lead
+to CRC errors.
+
+The existing qcom,dll-config or qcom-ddr-config are not deprecated,
+as upcoming soc could still be non-artanis and only dll-config and
+ddr-config might be needed. But since it was added earlier in qdu1000,
+removing it now as the code change is pushed into driver to support
+dll-presets.
+
+with QDU1000 there were instance of CRC errors and to fix dll-presets
+is used instead of qcom,dll-config & qcom,ddr-config.
+
+I will update the binding as well with more details.
 
 >
-> Also, the calculated max discard is too small. For the I.MX8MN USBHC controller,
-> host->max_busy_timeout is 2684ms, and the calculated max discard is always
-> card->pref_erase - 1, which is 3.5MB.
-
-I see, so regular REQ_OP_DISCARDs are suffering from similar problems
-that are taking a very long time to complete?
-
-Are you planning to make a similar card quirk for discards or what do
-you have in mind?
-
+> Also, your binding said 10 items, not two.
 >
-> >
-> > Can you please elaborate what happens on the mmc host driver level for
-> > each operation. What mmc host driver/controller is being used? Does it
-> > support MMC_CAP_WAIT_WHILE_BUSY or do we end up polling for
-> > busy-completion in-between each command?
 >
-> This issue is found on IMX8MN-EVK, uSDHC controller. We end up polling for
-> busy-completion in-between each command.
->
-> I print some log during secure erasing:
-> Without this patch
-> [  126.760429] mmc2: starting CMD35 arg 01294000 flags 00000095
-> [  126.766530] mmc2: starting CMD36 arg 01295bff flags 00000095
-> [  126.772246] mmc2: starting CMD38 arg 80000000 flags 00000095
-> [  126.777988] mmc2: mmc_poll_for_busy
-> [  128.616245] mmc2: erase operation completes
-> [  128.628511] mmc2: starting CMD35 arg 01295c00 flags 00000095
-> [  128.634293] mmc2: starting CMD36 arg 012977ff flags 00000095
-> [  128.640089] mmc2: starting CMD38 arg 80000000 flags 00000095
-> [  128.645811] mmc2: mmc_poll_for_busy
-> [  130.456184] mmc2: erase operation completes
-> [  130.468390] mmc2: starting CMD35 arg 01297800 flags 00000095
-> [  130.474160] mmc2: starting CMD36 arg 012993ff flags 00000095
-> [  130.479928] mmc2: starting CMD38 arg 80000000 flags 00000095
-> [  130.485798] mmc2: mmc_poll_for_busy
-> [  132.192309] mmc2: erase operation completes
-> ...
->
-> Apply this patch
-> [  296.480818] mmc2: starting CMD35 arg 01294000 flags 00000095
-> [  296.487219] mmc2: starting CMD36 arg 01493fff flags 00000095
-> [  296.492995] mmc2: starting CMD38 arg 80000000 flags 00000095
-> [  296.498999] mmc2: mmc_poll_for_busy
-> [  298.712865] mmc2: erase operation completes
+> Best regards,
+> Krzysztof
 
-Thanks for sharing the log, much appreciated!
+Sorry I mistook the elements of array with Items. Will update in binding
+to 2 items.
 
-Just to double check, I assume that you have verified that the
-busy-polling works as expected on your HW? The reason for asking is
-that we have seen problems with this several times in the past, on
-other HWs.
-
-Kind regards
-Uffe
 
