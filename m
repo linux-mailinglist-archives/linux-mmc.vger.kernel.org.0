@@ -1,142 +1,124 @@
-Return-Path: <linux-mmc+bounces-9532-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9545-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED32CC206E
-	for <lists+linux-mmc@lfdr.de>; Tue, 16 Dec 2025 11:52:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB30CC2FD7
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Dec 2025 13:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 484DE3017F20
-	for <lists+linux-mmc@lfdr.de>; Tue, 16 Dec 2025 10:52:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 45D2F300887E
+	for <lists+linux-mmc@lfdr.de>; Tue, 16 Dec 2025 12:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAD3314D10;
-	Tue, 16 Dec 2025 10:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D80261B9C;
+	Tue, 16 Dec 2025 12:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ciZdazry"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="Mlgbb7wD"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m3284.qiye.163.com (mail-m3284.qiye.163.com [220.197.32.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967C9314B88
-	for <linux-mmc@vger.kernel.org>; Tue, 16 Dec 2025 10:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297B934253B
+	for <linux-mmc@vger.kernel.org>; Tue, 16 Dec 2025 12:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765882328; cv=none; b=DSnbvtNHa7No9cqOhti3jQotMjwhoR+ShJn7DI27Mvp/WtqAxC54E3eNHKeltsrgQdIahON3No20BEERAMOWF+bb8xNXSSkf3KKPdSUzco6PW7vLln1fOEBuCtFVMQDHfLMXDQXkhyxFPA22xZi3ctUBgds4Ewv3BHCHLePn5Vg=
+	t=1765887956; cv=none; b=DD1znZSCiSLtwffVpo3PZ6zoMsyZAW+pXqwqzIctvvTZNbwEBLSdSUerEFhp/1Y4Scyk4f4JkfKW1r5EL83sFcujQcJ2vihqPZP0rNBLhpmj8tAk0Yfh6Q3dPB3EsEx1hdo94AUp566Sh9UfPYgkQ26G90CEB4xaTQKhaue8GoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765882328; c=relaxed/simple;
-	bh=9RwL1faQbmlJESW8RAJFvcyjSb1ZwezdCA7kXrXHCpA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BQBe1JzBOpB2vpIo0BLbwkT8slIs1AhY83UONqRZKhPsZJUfi7H7RH369uNunIUVTe/S2Q7R7EfI9Ifp8DjxCoNqxgb8PoYfgCYRPqKu7PzYHVjYpSCAtyLWAHbO+2RAnDtOIhBXc9Vhf6AoARLOHkUm5+Ic+CeBcjlw52Or4xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ciZdazry; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-37fcec29834so29990441fa.0
-        for <linux-mmc@vger.kernel.org>; Tue, 16 Dec 2025 02:52:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765882325; x=1766487125; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LCs/0sMJfdLtClv1sLaBzDGDutxadjV3WitQnISizfQ=;
-        b=ciZdazryGk590CrCO/mhtv2ZRmfP6k7r1TSDoVwSBNMfZGVV5yP1V2SCgs6fzibJ1+
-         GJgOcrHR3yHwlnGfoKQCte/NkpPtspSzwmvnP6tC4DjqgCRaEUGH+E53tUi3R5Lpkobv
-         Q4T3REWS8PhOsciumyBuPr0HKXaZCaHP1V++ZPTNlEmncU1U86YHMWUS40Vps9crLwjO
-         aK/P31Qko2/9kfJbb3TTrJewpiC3UpMSU6+zrdEV4WbYwa59DJefNDRrhdlDDihNIJS7
-         APTZ+l9P69sxd8YlI4XD9X6vjWDilrggaLGbTbhbowIsQTY6BaGW0s47ENr5kgb5Prom
-         lskA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765882325; x=1766487125;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LCs/0sMJfdLtClv1sLaBzDGDutxadjV3WitQnISizfQ=;
-        b=vgxAMJ5V7681qaR8TKMaiFlWNR6A/mUuEFS7BHKkGVz7Cb1mfAm6wNWnn7ModBljWn
-         aZVejEN5SyI8oHDjJ1Qa6v4IMgKDVIfsYaPOrpbf+KRU34iS1oYkX8eOO2aXOmvZXEaE
-         38PyY9OuksKLKuto0/u2FbEGmVT4bLMagf1QbcZ0gwWZIr0xbx2gkAJ+eEja2rMaX2NO
-         LXOVKA6sTkaS+vTmQP6CQdZAASugxd4wmNy/+v/M7aP3Mn9BQJqpyaxJWq0oYKAKiwzo
-         kVpSGhuzbVp6mGNgra74gP8DmEk6D6Uc3dxXM5S1w5eaWk6JnlOxiMNquZpiDxZlxh2s
-         xgCQ==
-X-Gm-Message-State: AOJu0YwWbXXccnJLGKYAsbtdT4ZsRZkse/A4PFmp3MjYriBiUhRJOGK/
-	jlqSRdx2IoMNHzbvh9VH1GWKET6/lWHx5iX+5EzgzbelQkU0bicd+6Kq93chqGwNuG68gRiZLIN
-	MjYlIIctA3We1yR3WeKPLTL7XXSjdsjAySFAyXMG0Rw==
-X-Gm-Gg: AY/fxX4Z87Q+/7YmJOGHTzz7VxO5t+pq97cjKuvM7aEGSS/B1pzCBr8CrDObe3GXdUX
-	gEQ51c4ioPaH7SOQIMXum2TrS41fODbKCEzhMhTh6wT0W1IuX3mbrQuYb1dS0FpHYMPXsaIo6Kq
-	KmDWywYoxzPXVsZWLwuPsIeg6lxC5Hgfy16or4nYKpCB80Q+I7fPoM8o2wii9p11W4yNo8M8Hvz
-	cDLsXGxC6X85kP9H1irfGYs91faLf/2B8IwEVpMKg5r0r8IQVatA/c8uQaPOYafm4WmzYBx
-X-Google-Smtp-Source: AGHT+IEOJgP4PAm4tekaM4pWXVSKGBcYFWY5/8/owR84JmeF8X2CLWoLYgy9hhV2c+BOwvIiDkwOVTyKIR00FoRLeqA=
-X-Received: by 2002:a2e:a585:0:b0:37a:3d3c:3161 with SMTP id
- 38308e7fff4ca-37fd079dfa5mr44442691fa.15.1765882324528; Tue, 16 Dec 2025
- 02:52:04 -0800 (PST)
+	s=arc-20240116; t=1765887956; c=relaxed/simple;
+	bh=5RJcnVG38eumMLWtam/LoAgoNEDitoSORTIg3Q6pRto=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=MNN7pOQXZKf7R+4a0iIEtywIaeVAGEAKGs2BNlIEhPAUxG3Aoz6jQi3juuHWRGeScFrDsQ93Ri59Uwa90SedFji8gZCEWt3QYeKueo6J4Nira6/Sm0WkRCDu4wOy14fI+FHLhT5f95xlcj1cWwwAhqmNs9hHKw0lP4tlQc8VfQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=Mlgbb7wD; arc=none smtp.client-ip=220.197.32.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2d6f8a7f0;
+	Tue, 16 Dec 2025 19:50:24 +0800 (GMT+08:00)
+From: Shawn Lin <shawn.lin@rock-chips.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-mmc@vger.kernel.org,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH v3 0/12] dwmmc cleanup
+Date: Tue, 16 Dec 2025 19:49:55 +0800
+Message-Id: <1765885807-186577-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1764116093-5430-1-git-send-email-shawn.lin@rock-chips.com>
- <1764116093-5430-4-git-send-email-shawn.lin@rock-chips.com>
- <CAPDyKFq8EzMtCVnmXvwMuH9f46ii9HN8wFurMRAYMzpMa+Cyxw@mail.gmail.com> <f3b2252c-45c4-4dd2-a211-5a720c59fd5c@rock-chips.com>
-In-Reply-To: <f3b2252c-45c4-4dd2-a211-5a720c59fd5c@rock-chips.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 16 Dec 2025 11:51:28 +0100
-X-Gm-Features: AQt7F2pUe8dR75apWPF-drNgEer0o8FvaUFC8dbnxbTSgoCPB2tzXDleVEOm7MU
-Message-ID: <CAPDyKFqLtvDhzUJziNzA7u7_EWXp0KDgUiTS+=m-m2o91xR9+Q@mail.gmail.com>
-Subject: Re: [PATCH v2 03/13] mmc: dw_mmc: Remove vqmmc_enabled from struct
- dw_mci and user helpers from core
-To: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: linux-mmc@vger.kernel.org, Jaehoon Chung <jh80.chung@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9b26ff4aee09cckunmc1d96abd3f991a
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUsfS1ZNTxgeSh5JT0kdSUhWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=Mlgbb7wDRAngJJmbAx2s6Ix5Q/J64pBbrjhx+PytMB+V632Epe2hQWaDPFPmbg6EtVanllsgkf/Q2FPyljPoEAuTPQTaOhMqL+xbXZpF/SkpMCgtt93zhP/LbR+bsHMp43oNi+wht9IdQthC4xdsEs+c2EuVEEy67M29dL4Ms+0=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=v79W/NmrVCv7dsd4iynR6rrSoZM39WeJSP0l50DCl5g=;
+	h=date:mime-version:subject:message-id:from;
 
-[...]
+Hi Ulf & Jaehoon
 
-> >>
-> >> @@ -1470,13 +1449,13 @@ static void dw_mci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
-> >>                  if (!IS_ERR(mmc->supply.vmmc))
-> >>                          mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, 0);
-> >>
-> >> -               if (!IS_ERR(mmc->supply.vqmmc) && slot->host->vqmmc_enabled)
-> >> -                       regulator_disable(mmc->supply.vqmmc);
-> >> -               slot->host->vqmmc_enabled = false;
-> >> +               mmc_regulator_disable_vqmmc(mmc);
-> >>
-> >>                  regs = mci_readl(slot->host, PWREN);
-> >>                  regs &= ~(1 << slot->id);
-> >>                  mci_writel(slot->host, PWREN, regs);
-> >> +               /* Reset our state machine after powering off */
-> >> +               dw_mci_ctrl_reset(slot->host, SDMMC_CTRL_ALL_RESET_FLAGS);
-> >
-> > Previously this was done together with enabling the vqmmc, a few lines
-> > above. The corresponding code was introduced in commit d1f1dd86006c
-> > "mmc: dw_mmc: Give a good reset after we give power". It's not exactly
-> > clear why the reset is needed at this particular point though.
-> >
-> > That said, at least we need to mention that we are moving the reset to
-> > the power-off phase and explain why in the commit message. Perhaps
-> > even better would be to preserve the old behaviour in the first step
-> > and then make this change being separate on top? Not sure if that
-> > makes sense though.
->
-> That doesn't work once we remove tracking of vqmmc status, because it
-> will reset several times when enumerating, which mess up the IP status
-> machine. That said, preserving the old behaviour breaks the bisectable.
->
-> The commit introduced this, is to slove failures on rk3288. The commit
-> message said "vqmmc may actually be connected to the IP block in the SoC
-> vqmmc may actually be connected to the IP block in the SoC" which
-> doesn't clearly point out the fact is vqmmc is used for IO block
-> associated with dw controller only . The reason is probably that when SD
-> is removed during I/O, cutting off vqmmc in MMC_POWER_OFF phase will
-> confuse the controller as its status machine refers to several IO
-> status, such as MC busy, so the controller could run into an unexpected
-> state and could not enumerate cards correctly the next time. I vaguely
-> remember there was a gap between Doug upstreamed it and Rockchip
-> downstream kernel reset it on card-removal path. So I think either to
-> reset it on MMC_POWER_ON phase or to reset it on MMC_POWER_OFF phase
-> should work. I would keep it and explain that in commit message. Does
-> this approach sound good to you?
+As you can see, dw_mmc is likely one of the most complex and difficult-to-read
+host driver at present. It maintains various states and bottom-half scheduling,
+containing a significant amount of redundant code—including a multi-slot mechanism
+that has been unsupported for over a decade.
 
-Yes, this works for me, thanks for clarifying!
+Jaehoon attempted to remove cur_slot more than ten years ago, but the driver still
+retains the slot structure and the associated queue mechanism designed to support
+multiple slots. This has made the already complex code even harder to read and maintain.
 
-[...]
+The first four patches aim to eliminate some of the redundant code, while the remaining
+patches are intended to ultimately remove the dw_mci_slot variable. To facilitate review
+and minimize the risk of regression, each patch is designed to accomplish a single,
+clear objective.
 
-Kind regards
-Uffe
+This series have been tested on the RK3588S/RK3399/RK3576 EVB platform.
+
+
+Changes in v3:
+- Separate a patch for mmc_regulator_set_ocr changes
+- Elaborate more on reset changes
+
+Changes in v2:
+- Use helpers from regulator.c and remove check for mmc_regulator_set_ocr.
+- add commit message
+- make commit message clear that we remove two things
+- remove a unused code
+- Fix dma_set_mask_and_coherent mistake by code rebase
+- fix compile warning
+
+Shawn Lin (12):
+  mmc: dw_mmc: Remove vqmmc_enabled from struct dw_mci and user helpers
+    from core
+  mmc: dw_mmc: Remove check before calling mmc_regulator_set_ocr()
+  mmc: dw_mmc: Remove unused header files and keep alphabetical order
+  mmc: dw_mmc: Move struct mmc_host from struct dw_mci_slot to struct
+    dw_mci
+  mmc: dw_mmc: Let glue drivers to use struct dw_mci as possible
+  mmc: dw_mmc: Move flags from struct dw_mci_slot to struct dw_mci
+  mmc: dw_mmc: Remove id and ctype from dw_mci_slot
+  mmc: dw_mmc: Remove sdio_id from struct dw_mci_slot
+  mmc: dw_mmc: Move clock rate stuff from struct dw_mci_slot to struct
+    dw_mci
+  mmc: dw_mmc: Remove mrq from struct dw_mci_slot
+  mmc: dw_mmc: Remove queue from dw_mci
+  mmc: dw_mmc: Remove struct dw_mci_slot
+
+ drivers/mmc/host/dw_mmc-exynos.c      |   9 +-
+ drivers/mmc/host/dw_mmc-hi3798cv200.c |   6 +-
+ drivers/mmc/host/dw_mmc-hi3798mv200.c |  17 +-
+ drivers/mmc/host/dw_mmc-k3.c          |  21 +-
+ drivers/mmc/host/dw_mmc-pltfm.c       |   2 +-
+ drivers/mmc/host/dw_mmc-rockchip.c    |   9 +-
+ drivers/mmc/host/dw_mmc-starfive.c    |   5 +-
+ drivers/mmc/host/dw_mmc.c             | 464 +++++++++++++++-------------------
+ drivers/mmc/host/dw_mmc.h             |  80 ++----
+ 9 files changed, 251 insertions(+), 362 deletions(-)
+
+-- 
+2.7.4
+
 
