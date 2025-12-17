@@ -1,142 +1,105 @@
-Return-Path: <linux-mmc+bounces-9573-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9575-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5982CCC807D
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Dec 2025 14:59:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E4CCC893C
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Dec 2025 16:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D19030509B5
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Dec 2025 13:58:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34758302F92C
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Dec 2025 15:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21CA338926;
-	Wed, 17 Dec 2025 13:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D79533BBA9;
+	Wed, 17 Dec 2025 15:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uiyTxbhi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMNPbQfH"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C0A33B6F8
-	for <linux-mmc@vger.kernel.org>; Wed, 17 Dec 2025 13:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11766338F35
+	for <linux-mmc@vger.kernel.org>; Wed, 17 Dec 2025 15:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765979159; cv=none; b=fff3bxvWTM96wkDYiVtEHy6t7qhesJWrnp1VEHjBSJwPHLorRbP+wIqkthXriNPDEnHYa4frhTNLRtL/6ysxVHmXmHVEnhzS/fqeDjyBeZL8ew0hXDwb+S06UBIVsO4etqzMUvaOEiKyprf5o3pXwgFqyM6Xvyz85BWnlSa208A=
+	t=1765985862; cv=none; b=MhaR0d5G6I8uzW6zwlNwXfHB3MRNKWM/J2aS7rczvV0+rzER5P2Jk8jjIPpAHbTi7AvywbqO1aT/1gwj1flHbHAv4sLxmKFMy48aShL9estHO8O+atBLmwBx7g1f7HkfKocm3Je8rmu5/knDnOnTl22xRS9WShte6vzNTW64yIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765979159; c=relaxed/simple;
-	bh=RulmqSaiOURezsD4cu1+MRR95cud3v1lRvrkSGGSSZs=;
+	s=arc-20240116; t=1765985862; c=relaxed/simple;
+	bh=3zWGgAak/FBm7Vkk94ZrLytELeHbedaeePRas4C5o5A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yes2liAAdArjcTvlJpmTeaKIEQINl/kvHs9gLrRwPa9ASEwt1P2hF8QiqYlK/Sy5LZm3sVJ/9LhwMPQjJm2ee0CgEANz31s3BqlA8srGhZQZej2L7/FCX+WCQRWzA32xtdNr96Qjn5gM2FotqZ7WapL8RIKoppync6oYgethaZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uiyTxbhi; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59445ee9738so4650652e87.3
-        for <linux-mmc@vger.kernel.org>; Wed, 17 Dec 2025 05:45:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765979156; x=1766583956; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HeFvcwPuMBzJwPtY2IZ75UX9BR5Ij/OppFp2JBnCGZk=;
-        b=uiyTxbhiQyHzir4bKqxNeNYkACmL+PZwUPT16pK3yrfxtY0Mug+oXPSbw8WGQT2ccP
-         msL+8aSjDHG1Oi5Tp9DC1CimmwRnmVNoZGwCIQmTh1BXLpUnBCX0lyVffcwuJPxVRVzY
-         7f3RYhYn0pd8gWwr/iOfqo8pHd02iiAoRj+pwzQC28Hvh+CqWmlPiNDnRdelZOe2qYI4
-         cyV98j9ErJWu7Y/IblFawyCzldxbN8D1tbfzk57L++eR5pDLcllQU9jyY0ZmNv227UZ1
-         E7tW4Le4KCB8zEGaE5EFcs1QD8npN84sMiW1Hy2d/ZRT+yYylHypACBpIMudMzKJpVna
-         PO3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765979156; x=1766583956;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HeFvcwPuMBzJwPtY2IZ75UX9BR5Ij/OppFp2JBnCGZk=;
-        b=rBxW5c9zQ7zWOHYB/isZR+9wlhbrA1cYT0XkPdfnF+0EwbeZsdLMjJ9qr9u9NeN7Az
-         c3KDdZ8flm2Kgyp30K8A6sbmWPeui5ShF+kAvw+KGk3gw5suU0EJ9DFfimww2KqK7Sty
-         f4S69yUs1Dd6Se5upMPgv85KOfeAGkWF9/3FSgePlaP94bWwGsv+yMdmeuudUAsfj+t6
-         8j6HUZc9kvETEPW2O+hKxhnW3/ZqWwsnHpKHEu7u3pG0tRI7V0+3BAljpU28iGMUCBkj
-         yGyiRx0C9xGshCw6MOq4H1nN174ukpb6/nWsYI+QxuvszPkhZm4A0d+iuXjFg5Ycjidi
-         jK+A==
-X-Forwarded-Encrypted: i=1; AJvYcCXes+vx0PfMkFxj1Tsw4kQcXNoXR7JPd2+X7hF9N5vL0WTdELbqiEsgbfuWU8/32iEbGtUDEtvEjYQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLRVXeE44IGHoqbTOEYLl00UKIGIOcAgj2DM8SfCA03Yf8DsWH
-	ioBxb6iu4qWRZ3La38oPpLvtjW0iyLkfy7OMIln7oMlGaiPGhjiX2BjRlz3QpwYkZ3CvAhudQG7
-	UefNrvuL95LxzqThtSJJsdLNAvUOKvp0LqdYeC2a0Kg==
-X-Gm-Gg: AY/fxX6R3VyjlDSYy9Zr81PIIbX6t5W0ukLELfth2XgUARUOPVf67ugs2uJkHO3uQCf
-	W4zI1Ahp3S+WPC1I+tHqtaogUICRVJC0KhuFK9ya5xM5KBFz0jfmrBZBbWLxeWxg5/5cl2LmDjJ
-	fXwZFbZGBrA9AkrufGTlmWaX0VYk6Hir0vmZJt69VuBrQdqWXn0GarCKF5fGq4jx3K3I6on3PmZ
-	oEr6CGkdKIMCaoSuuUTdd178VLq/TVWjphv3nMPQEmWwg716Sp6ZbzkQobvAG5NSg5Nexs=
-X-Google-Smtp-Source: AGHT+IF8DUR3iFEJEHIZVoppRZ2LJ1i16lHQ3Olhnesdn9YtIYVJQ/fNEdH4vIoS5b8Lw4dMFXsWFN+VTySF0wVdcVI=
-X-Received: by 2002:a05:6512:3b86:b0:597:d7dc:b7ce with SMTP id
- 2adb3069b0e04-598faa3bd8amr6408543e87.30.1765979156040; Wed, 17 Dec 2025
- 05:45:56 -0800 (PST)
+	 To:Cc:Content-Type; b=ATUwgId1BZmtG3uAIjtwkijS/45DrljwzfBPHbskp9WHy4kszOyexDZdrHtAm8h/37psUFj3uboi60g2/lzUI+ubETlsVN720wI+zhfwl1/Gd/YZvkx6miRtiJOLra3RF3EH12m3DFwmvO75PuIDkDqwmBvpRBfuwoTMuP5AU2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMNPbQfH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B93C116B1
+	for <linux-mmc@vger.kernel.org>; Wed, 17 Dec 2025 15:37:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765985861;
+	bh=3zWGgAak/FBm7Vkk94ZrLytELeHbedaeePRas4C5o5A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hMNPbQfHkiOGVqJHw5AtuOCvRV0FWKVO23ESw20F2cpxcqWTBIOhlBqGNkwequi0i
+	 3oeUmzcEgHgSCtPoeLi5W9KvVXmE1VGX7UUnHrN1mtR68GvWl08uXF7HTsH54i7ZE9
+	 KfYRP9/8MnbbeqwSYkqRzywXs1Oee8xupqaf+a3s5LDAgTLnveEoDXptQ80gqAbzq5
+	 bjMNZezJ7p4GnTY2AwYJ0eq5AHSinGdYScOtbFN/Adxv8qepgBFrnvzwv9d+LJGjra
+	 iG70B1IeKSjTYdQQgNkT1NrvCLmUQmuqa9VxS8bv5ivZq+pOTD21TTRtZYR98YCKkC
+	 GNKlOB4AN3+tA==
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b7ce5d6627dso491671566b.2
+        for <linux-mmc@vger.kernel.org>; Wed, 17 Dec 2025 07:37:41 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWs4ueYglvKZpanF13yxaaX4vlBCJ1FhUInDsxQ/WSAZuNZ61c3jnZ91IyR3/udOKPy1BK3RhuQrvk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFny3w8oUyljXvvZpZ1rrKAwq/daOM1vQxzdSf+fyjchIYbZjt
+	DTxgYzDw+kEVtolc/7Mf8p6Zo2yw1vyDtmiKCdEW2wBkVXNl4Z01JTtL9qTArJI8/kgfQi3JfpE
+	W0cCtmWYL7Q4IV0kdjr48rlm83XucvA==
+X-Google-Smtp-Source: AGHT+IE+MbpVy0D9cI7vtayEcuAQ5BpKDVDav3dQlj552I/4svzEpwf9VDtWU/NeRoVokGuFNkCPT8ATPD0NU91eNy8=
+X-Received: by 2002:a17:907:3cca:b0:b72:c261:3ad2 with SMTP id
+ a640c23a62f3a-b7d23af00e6mr1859042566b.50.1765985860268; Wed, 17 Dec 2025
+ 07:37:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251212-s32g-sdhci-kconfig-v1-1-8e278c8d7f78@redhat.com>
-In-Reply-To: <20251212-s32g-sdhci-kconfig-v1-1-8e278c8d7f78@redhat.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 17 Dec 2025 14:45:17 +0100
-X-Gm-Features: AQt7F2p99M9efU4Kabtz6odZdNhny0sq2J-1crHyiipLb65xYIkOxCPnes_s36Q
-Message-ID: <CAPDyKFp++OQFxkY_zqkZSJz2R0sqxBnd-6U+VLsyZYDQ4H9MeA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: add alternate ARCH_S32 dependency
- to Kconfig
-To: Jared Kangas <jkangas@redhat.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Chester Lin <chester62515@gmail.com>, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, s32@nxp.com, 
-	linux-arm-kernel@lists.infradead.org
+References: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
+ <20251211-dev-dt-warnings-all-v1-1-21b18b9ada77@codeconstruct.com.au>
+In-Reply-To: <20251211-dev-dt-warnings-all-v1-1-21b18b9ada77@codeconstruct.com.au>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 17 Dec 2025 09:37:28 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJUaKKsJ8BCNbVXe4vLVsQ2Av7VuWqf9DnUKHeLzLb8NQ@mail.gmail.com>
+X-Gm-Features: AQt7F2q-nb9Xy6ZmXCdkQqrO-_0mpnqJ_RWJ9ZzKv3sOBl98lQ-TH7L8rvtaBLo
+Message-ID: <CAL_JsqJUaKKsJ8BCNbVXe4vLVsQ2Av7VuWqf9DnUKHeLzLb8NQ@mail.gmail.com>
+Subject: Re: [PATCH RFC 01/16] dt-bindings: hwmon: Convert aspeed,ast2400-pwm-tacho
+ to DT schema
+To: Andrew Jeffery <andrew@codeconstruct.com.au>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Linus Walleij <linusw@kernel.org>, Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-iio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 12 Dec 2025 at 16:04, Jared Kangas <jkangas@redhat.com> wrote:
+On Thu, Dec 11, 2025 at 2:46=E2=80=AFAM Andrew Jeffery
+<andrew@codeconstruct.com.au> wrote:
 >
-> MMC_SDHCI_ESDHC_IMX requires ARCH_MXC despite also being used on
-> ARCH_S32, which results in unmet dependencies when compiling strictly
-> for ARCH_S32. Resolve this by adding ARCH_S32 as an alternative to
-> ARCH_MXC in the driver's dependencies.
+> From: "Rob Herring (Arm)" <robh@kernel.org>
 >
-> Fixes: 5c4f00627c9a ("mmc: sdhci-esdhc-imx: add NXP S32G2 support")
-> Signed-off-by: Jared Kangas <jkangas@redhat.com>
+> Convert the ASpeed fan controller binding to DT schema format.
+>
+> The '#cooling-cells' value used is 1 rather than 2. '#size-cells' is 0
+> rather 1.
 
-Applied for fixes and by adding a stable-tag, thanks!
+Okay, I can't figure out why I thought '#cooling-cells' needed to be 1
+here. I don't see that anywhere in the tree. The driver for sure only
+supports 2, so anything that's not is an error in any case.
 
-Kind regards
-Uffe
-
-
+> Some users define more that 8 fan nodes where 2 fans share a PWM. The
+> driver seems to let the 2nd fan just overwrite the 1st one. That also
+> creates some addressing errors in the DT (duplicate addresses and wrong
+> unit-addresses).
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 > ---
->  drivers/mmc/host/Kconfig | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 10d0ef58ef493102d3586d7a31d755543297999a..c94ae4794545de1c818ad50be7f91331862b6acf 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -315,14 +315,14 @@ config MMC_SDHCI_ESDHC_MCF
->
->  config MMC_SDHCI_ESDHC_IMX
->         tristate "SDHCI support for the Freescale eSDHC/uSDHC i.MX controller"
-> -       depends on ARCH_MXC || COMPILE_TEST
-> +       depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
->         depends on MMC_SDHCI_PLTFM
->         depends on OF
->         select MMC_SDHCI_IO_ACCESSORS
->         select MMC_CQHCI
->         help
->           This selects the Freescale eSDHC/uSDHC controller support
-> -         found on i.MX25, i.MX35 i.MX5x and i.MX6x.
-> +         found on i.MX25, i.MX35, i.MX5x, i.MX6x, and S32G.
->
->           If you have a controller with this interface, say Y or M here.
->
->
-> ---
-> base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
-> change-id: 20251211-s32g-sdhci-kconfig-585b6909f7b4
->
-> Best regards,
-> --
-> Jared Kangas <jkangas@redhat.com>
->
+>  .../bindings/hwmon/aspeed,ast2400-pwm-tacho.yaml   | 106 +++++++++++++++=
+++++++
+>  .../devicetree/bindings/hwmon/aspeed-pwm-tacho.txt |  73 --------------
+>  2 files changed, 106 insertions(+), 73 deletions(-)
 
