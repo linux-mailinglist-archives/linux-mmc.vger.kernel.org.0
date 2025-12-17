@@ -1,186 +1,143 @@
-Return-Path: <linux-mmc+bounces-9558-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9560-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CD1CC690F
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Dec 2025 09:28:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F3BCC7496
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Dec 2025 12:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEE8D3143DB2
-	for <lists+linux-mmc@lfdr.de>; Wed, 17 Dec 2025 08:21:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2217B3087D60
+	for <lists+linux-mmc@lfdr.de>; Wed, 17 Dec 2025 11:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEB61E511;
-	Wed, 17 Dec 2025 08:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9DF341050;
+	Wed, 17 Dec 2025 11:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="gW8pL3+8"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XFea7ZlQ"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m32113.qiye.163.com (mail-m32113.qiye.163.com [220.197.32.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638752EA731
-	for <linux-mmc@vger.kernel.org>; Wed, 17 Dec 2025 08:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73ECB33B6D7
+	for <linux-mmc@vger.kernel.org>; Wed, 17 Dec 2025 11:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765959452; cv=none; b=UPs6PDxPXG7nwor64x2dWK/JCI2H0u4riW5UFJBe05SbFQx1/i+GcF0rHDww+0DM8NKHEJjcUf2sPmNohxYIczWP1nsxbeO5jIZhSMYijWUTD+4mHK4wEmOS+wk103EA4MIjO9ucsIpGA6yowW0ftq9KLDuVyaXUSPauVVLQz2U=
+	t=1765969785; cv=none; b=tMqH66b3Yk4w1Vn/HMxnM1MkPtE0jH5eWeCgu954ydFMumK8pbyyJEy8LuHB2AeOQ7oFupL+I2pZhQYyc4E9ifB2HpI98ljunOa0CJm2+u/nMwLpw4+np8Z0BSAG9rNwUeIHsm/yqhna3xGwKv2G1UpOcC0vWPYyo0PSMP0SuTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765959452; c=relaxed/simple;
-	bh=FUM5iwXi28r29aBFqoKpbCp6ptcrc1ZuZDz2w63VMYc=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=tCeio/XGzC9GY1qW/pP2rk1oBkZOcfmFzSmdDHmuwq2tU236lFlqzXrr+6+uKcbBbidU/3YZW7lwSYPNa6EdVWsHhdU1w7BEyhnU6UE954qqUuKJFSNa4yazyO3f5syA6D8EJxhGUC9kTr8xOKsUglwZc3Ea7SwdSoBmWXZhXCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=gW8pL3+8; arc=none smtp.client-ip=220.197.32.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.14] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2d8f4751c;
-	Wed, 17 Dec 2025 16:12:15 +0800 (GMT+08:00)
-Message-ID: <93579df3-a91d-4dc6-b460-89cb5c6fdaf3@rock-chips.com>
-Date: Wed, 17 Dec 2025 16:12:14 +0800
+	s=arc-20240116; t=1765969785; c=relaxed/simple;
+	bh=u6SSU7AEZcgA49olidngU6vW2SbxvDPL4yoP3splUH0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uBCA7fhWp+SoWsVlzTch2RWh94V+/eIxx2egAYN1K+BgXzs9N3QtgQpLh9dufA0Mv8GcOOZBRVjU6BjVNkdjcBWvgCnUMf2R+uaxy1RtRudJQCHX7x2279AIp8jJhaJVjI4aC18kGoI60TYWno8No0lonLow5MvgR7VIHwA/rck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XFea7ZlQ; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b7a72874af1so863645866b.3
+        for <linux-mmc@vger.kernel.org>; Wed, 17 Dec 2025 03:09:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765969781; x=1766574581; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UmBYT20UNic55FlAL2fCJm3PAjnMYU3LNhn2MV64R3w=;
+        b=XFea7ZlQ+MGmHaY80ClAa+FcCl4G2sA851o27Gur42/lWLCYKRXXXmmRcUbK2YcGlI
+         N5U4aU60v4I1NNl9FcRUJrLv7tgjY4p6nAa89/VR58mnGCXyymMAzqB4o1SPJX+WCFC5
+         6Jcsz2cWGpxxW69JaKwvBRPqvGB7rRx7m3/05Wt+JgTLLW/R/UcRw9K9sZC+XK0pLUXb
+         8uceXQVRVQ4baSOxNhH5AX43jyOuvSCL0Y/fsxITzm3HaJq9XX/tdqEXg8qq1LSX4oKW
+         3VerMfo8+f4sK21RrTfuOV18GJWBt7BaieyP1b+4tSUYci64jWKUjL5bk1pc2iypi4Gu
+         eAoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765969781; x=1766574581;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UmBYT20UNic55FlAL2fCJm3PAjnMYU3LNhn2MV64R3w=;
+        b=Z5oppxFGfkXjgtPgHEZ6/iMFWKIfVCroW2tagjBQJEtXkhVBn0PWY2UoZO/WpJeZar
+         0SJAkP5uX49fVWu0hoE2skJv3cRelyjMGQhgDBUSTGCAG3OevQWT1b2jWO0KmXV95NbW
+         ro8+f3gwu2JENPZgxRJ7PFHNBunAZo7uestKjrXeIdeogF/hwDMKKgWMVY7qiQop2xe1
+         r3NFCckBJpw+KEMiYpdwtq/Npa+pW7w4DQalULiJUI3ZHliOw//MwnQ4kLbUOlcbLkWi
+         QoqHnkkSPk3bMX3WasK+C437yo/xAS6lNfeeiFdUyUjgijFzKXoprNXFwWXz8Y3kpyXf
+         MRFA==
+X-Gm-Message-State: AOJu0Yy6gaeVqbWEC6t3HzMUbNg7H7vfrCDfD51xkc6oZpfGMJfYXUya
+	1fBAmPZ9VK+6zBG93N+8EeEyyKpE1jxfZxAeBAandZndCQ9weHzCMZTjgv2cNTdrZ5I=
+X-Gm-Gg: AY/fxX7vV4uWJDyU+z9x51hAvGaeqox1f72arAJgIpI7FWWOB7VAHlxRK3QnF6oBeRs
+	gCakPlDLHQt0wg2vzoTcEJC9/OA94/oOhGqJiY2kA4mSN++5EH51Zf7fgLlbxcEclySKxOKwE83
+	wIZRWd6vjE+uJ7jbc8y/tiflhxyBJ6CFt0JB/biHyFdcOzJVD2BI7TKdUSlf0Ok04uYHshnwm9c
+	h71jvdjj+x8u6Sb9/QdYhhVGBmD27uadrKsoyyk8fgJsXCHsJ7HKmDe5z/SHMeYtJDxWUG5pcy3
+	sTSkbvKvwzHi2aWk0ppLcN2veNSNLGdY2nCe9psiiJtoAkFZN8MNbFpUMoQEUzvZaq1qQxQLgDq
+	wxZsm8RzDC1Q6tBlddio44QvzYvbho9EmnbxKntGjs984KytNu/dEM2YR+MeK1c05prqeqsCq95
+	o3a68qtUq2xjbnApImpeyafPGDE48=
+X-Google-Smtp-Source: AGHT+IHP2lwM0eOAwU4kuW/KeIcjt+T420AcrYZOAyvIMPTw9kL3NmQQjHrM6H02cP3JMUpfKqbH4w==
+X-Received: by 2002:a17:907:94c7:b0:b73:6d2f:4bb8 with SMTP id a640c23a62f3a-b7d235cfe56mr1708920066b.2.1765969780669;
+        Wed, 17 Dec 2025 03:09:40 -0800 (PST)
+Received: from localhost ([2a02:8071:b783:6940:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b8003cb349csm275897866b.68.2025.12.17.03.09.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 03:09:40 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Karun Eagalapati <karun256@gmail.com>,
+	Amitkumar Karwar <amit.karwar@redpinesignals.com>,
+	Kalle Valo <kvalo@codeaurora.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH v1 0/4] sdio: Use bus type function for shutdown
+Date: Wed, 17 Dec 2025 12:09:22 +0100
+Message-ID: <cover.1765968841.git.ukleinek@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: shawn.lin@rock-chips.com, linux-mmc@vger.kernel.org
-Subject: Re: [bug report] mmc: dw_mmc: add dw_mci_prepare_desc() for both of
- 32bit and 64bit DMA
-To: Dan Carpenter <dan.carpenter@linaro.org>,
- Ulf Hansson <ulf.hansson@linaro.org>
-References: <aUJatHzP5fr1zvRF@stanley.mountain>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-In-Reply-To: <aUJatHzP5fr1zvRF@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1986; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=u6SSU7AEZcgA49olidngU6vW2SbxvDPL4yoP3splUH0=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpQo9ib112h/BhHIrfTmZ5VWzXjLnsL9JWjTpQo mrqmMZ/LP6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaUKPYgAKCRCPgPtYfRL+ Tl7YB/9Vn+Y2f3Z8YdGuQ65byD3ZWTOMOczcQE8Gx7I9v++2bvbkOJ631lOYny2IVlIr51DZbFU nMobGRUitR21SYE50Kdp103W4AIhPxqlNi+gYlUguo3JH+zt7gaYbBJU3GJgJEakR2XHPUrYAgh zbMETOeBSbu/ieH4JtJ+0x3R1Ep3uOXdDpg+MpH9yGxc8qzTb81AbV24kPJetG71cD+5RfV3TW6 UzcA48HqTO+/VZyt7HJ+qZI4RfQmy7LrvUUAtPOgIIp+zs8dVXwUL/CJveZq3ihaywKYKQwzR/q ptYyCmXlcmZ+qjKeRpx1BFNnSnN+4PtAatHBTJv9bu4pLWdW
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9b2b5df12109cckunm5d400dae490a36
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGRoeSVYYTE1CGENLTRpMHU5WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=gW8pL3+8D44R31kDtvy4ZPCVVz9tuy+e8+aRj/vtDE/PvwFnhEbVNbjXa1QqH502aBuxkgBjZ0nJjRgNHxdPGNqGwRSGgX1KsJN2HuPMRHr5vI8y0OWIV9TmRZxQfqMGBOTqwlW41z09Zn2b9nFZGnZz+zLwxIAvbbqwsi+pkTo=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=Yh4K2JAarAA1F1+HWjrjgST79G2bF2eTryD8gG/rVBc=;
-	h=date:mime-version:subject:message-id:from;
 
-Hi Dan,
+Hello,
 
-在 2025/12/17 星期三 15:24, Dan Carpenter 写道:
-> Hello Shawn Lin,
-> 
-> Commit af7dde31afcc ("mmc: dw_mmc: add dw_mci_prepare_desc() for both
-> of 32bit and 64bit DMA") from Nov 26, 2025 (linux-next), leads to the
-> following Smatch static checker warning:
-> 
-> 	drivers/mmc/host/dw_mmc.c:597 dw_mci_prepare_desc()
-> 	error: uninitialized symbol 'desc'.
-> 
+this series is part of an effort to get rid of the .shutdown() callback
+(and .probe() and .remove()) in struct device_driver. Preparing that,
+all sdio drivers that up to now use this callback are converted to a new
+sdio specific shutdown callback.
 
-Thanks for pointing out this issue. I've sent an incremental patch.
+Patch #2 is just a cleanup I noticed while working on
+drivers/net/wireless/rsi/rsi_91x_sdio.c. Note that it's uncommon to have
+the shutdown callback conditionalized by #ifdef CONFIG_PM. I guess this
+dependency was introduced by mistake in commit 063848c3e155 ("rsi: sdio:
+Add WOWLAN support for S5 shutdown state"), but I didn't address it
+here.
 
-Ulf, could you please help fold it into the offending patch? Sorry for
-the inconvenience.
+Patches #3 and #4 depend on the first patch, and with just the first
+patch applied there is a runtime warning (emitted by the driver core in
+driver_register()) for each unconverted driver. So it would be nice to
+get the whole series in during a single merge window to not let users
+face the warning.
 
+This series was build tested on amd64 and arm64 using allmodconfig.
 
-> drivers/mmc/host/dw_mmc.c
->      578 static inline int dw_mci_prepare_desc(struct dw_mci *host, struct mmc_data *data,
->      579                                       unsigned int sg_len, bool is_64bit)
->      580 {
->      581         unsigned int desc_len;
->      582         struct idmac_desc *desc_first, *desc_last, *desc;
->      583         struct idmac_desc_64addr *desc64_first, *desc64_last, *desc64;
->      584         u32 val, des0;
->      585         int i, err;
->      586
->      587         if (is_64bit)
->      588                 desc64_first = desc64_last = desc64 = host->sg_cpu;
->      589         else
->      590                 desc_first = desc_last = desc = host->sg_cpu;
->                                                   ^^^^
-> 
->      591
->      592         for (i = 0; i < sg_len; i++) {
->      593                 unsigned int length = sg_dma_len(&data->sg[i]);
->      594
->      595                 u64 mem_addr = sg_dma_address(&data->sg[i]);
->      596
-> --> 597                 for ( ; length ; desc++) {
-> 
-> desc is only initialized for 32bit.
-> 
->      598                         desc_len = (length <= DW_MCI_DESC_DATA_LENGTH) ?
->      599                                    length : DW_MCI_DESC_DATA_LENGTH;
->      600
->      601                         length -= desc_len;
->      602
->      603                         /*
->      604                          * Wait for the former clear OWN bit operation
->      605                          * of IDMAC to make sure that this descriptor
->      606                          * isn't still owned by IDMAC as IDMAC's write
->      607                          * ops and CPU's read ops are asynchronous.
->      608                          */
->      609                         if (is_64bit)
->      610                                 err = readl_poll_timeout_atomic(&desc64->des0, val,
->      611                                         IDMAC_OWN_CLR64(val), 10, 100 * USEC_PER_MSEC);
->      612                         else
->      613                                 err = readl_poll_timeout_atomic(&desc->des0, val,
->      614                                         IDMAC_OWN_CLR64(val), 10, 100 * USEC_PER_MSEC);
->      615                         if (err)
->      616                                 goto err_own_bit;
->      617
->      618                         des0 = IDMAC_DES0_OWN | IDMAC_DES0_DIC | IDMAC_DES0_CH;
->      619                         if (is_64bit)
->      620                                 desc64->des0 = des0;
->      621                         else
->      622                                 desc->des0 = cpu_to_le32(des0);
->      623
->      624                         /*
->      625                          * 1. Set OWN bit and disable interrupts for this descriptor
->      626                          * 2. Set Buffer length
->      627                          * Set physical address to DMA to/from
->      628                          */
->      629                         if (is_64bit) {
->      630                                 desc64->des0 = IDMAC_DES0_OWN | IDMAC_DES0_DIC | IDMAC_DES0_CH;
->      631                                 IDMAC_64ADDR_SET_BUFFER1_SIZE(desc64, desc_len);
->      632                                 desc64->des4 = mem_addr & 0xffffffff;
->      633                                 desc64->des5 = mem_addr >> 32;
->      634                         } else {
->      635                                 IDMAC_SET_BUFFER1_SIZE(desc, desc_len);
->      636                                 desc->des2 = cpu_to_le32(mem_addr);
->      637                         }
->      638
->      639                         /* Update physical address for the next desc */
->      640                         mem_addr += desc_len;
->      641
->      642                         /* Save pointer to the last descriptor */
->      643                         if (is_64bit)
->      644                                 desc64_last = desc64;
->      645                         else
->      646                                 desc_last = desc;
->      647                 }
->      648         }
->      649
->      650         /* Set the first descriptor and the last descriptor */
->      651         if (is_64bit) {
->      652                 desc64_first->des0 |= IDMAC_DES0_FD;
->      653                 desc64_last->des0 &= ~(IDMAC_DES0_CH | IDMAC_DES0_DIC);
->      654                 desc64_last->des0 |= IDMAC_DES0_LD;
->      655         } else {
->      656                 desc_first->des0 |= cpu_to_le32(IDMAC_DES0_FD);
->      657                 desc_last->des0 &= cpu_to_le32(~(IDMAC_DES0_CH | IDMAC_DES0_DIC));
->      658                 desc_last->des0 |= cpu_to_le32(IDMAC_DES0_LD);
->      659         }
->      660
->      661         return 0;
->      662 err_own_bit:
->      663         /* restore the descriptor chain as it's polluted */
->      664         dev_dbg(host->dev, "descriptor is still owned by IDMAC.\n");
->      665         memset(host->sg_cpu, 0, DESC_RING_BUF_SZ);
->      666         dw_mci_idmac_init(host);
->      667         return -EINVAL;
->      668 }
-> 
-> regards,
-> dan carpenter
-> 
+Best regards
+Uwe
+
+Uwe Kleine-König (4):
+  sdio: Provide a bustype shutdown function
+  wifi: rsi: sdio: Reduce use of #ifdef for CONFIG_PM
+  wifi: rsi: sdio: Migrate to use sdio specific shutdown function
+  wifi: rtw88: sdio: Migrate to use sdio specific shutdown function
+
+ drivers/mmc/core/sdio_bus.c                   | 25 +++++++++++++++++++
+ .../net/wireless/realtek/rtw88/rtw8723cs.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8723ds.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8821cs.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8822bs.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8822cs.c    |  2 +-
+ drivers/net/wireless/realtek/rtw88/sdio.c     |  3 +--
+ drivers/net/wireless/realtek/rtw88/sdio.h     |  2 +-
+ drivers/net/wireless/rsi/rsi_91x_sdio.c       | 11 +++-----
+ include/linux/mmc/sdio_func.h                 |  1 +
+ 10 files changed, 36 insertions(+), 16 deletions(-)
+
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+-- 
+2.47.3
 
 
