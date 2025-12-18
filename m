@@ -1,56 +1,56 @@
-Return-Path: <linux-mmc+bounces-9587-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9597-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51495CCC387
-	for <lists+linux-mmc@lfdr.de>; Thu, 18 Dec 2025 15:16:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB527CCC327
+	for <lists+linux-mmc@lfdr.de>; Thu, 18 Dec 2025 15:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2918230CBE62
-	for <lists+linux-mmc@lfdr.de>; Thu, 18 Dec 2025 14:12:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB5AB3012DED
+	for <lists+linux-mmc@lfdr.de>; Thu, 18 Dec 2025 14:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1A23491FB;
-	Thu, 18 Dec 2025 14:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF5B33A9F3;
+	Thu, 18 Dec 2025 14:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="L+xjAzL2"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="Y97ML2on"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m49204.qiye.163.com (mail-m49204.qiye.163.com [45.254.49.204])
+Received: from mail-m1973195.qiye.163.com (mail-m1973195.qiye.163.com [220.197.31.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA07D30DEA6
-	for <linux-mmc@vger.kernel.org>; Thu, 18 Dec 2025 14:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468CE33A6EE
+	for <linux-mmc@vger.kernel.org>; Thu, 18 Dec 2025 14:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766066611; cv=none; b=PfhMYI+969JFfyc6Yvgm6DO4tfVsf2gjhwxxDQTQP5fjdyanOrCAwfhjUT8FD0fycgltypHnpbr1SsTZfAVGsUJG2ODHPgTVfbiwFynC6sL37MRqNLKcmZ5Oi9YP5tt2ZXdnPZHus0rFi06TGcjDU0r47OU8D0xbiUiHs3HCyzQ=
+	t=1766066933; cv=none; b=cFAX5esS3CvwZSYQJG+26Y3945Zwk4M3dTVMIcs+c0runFGRh74iSBD4nyoQdy/SnmZZAJTnx1BF0NoloVAhNw71jMJGqcUSUf+IA0TUWjRPDjglIQ5WwjUpA7iQyZyt0YzRpLhJ6viMkhN1MdocW7kOTg1xq50opcCiCOasAeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766066611; c=relaxed/simple;
-	bh=9EggsUITJ+KFUi+nWETECtbzoscBS8ocD3JNpwE0zUw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=WlIs64lsF2U9N0BNwoSbkK5MXv1MwGkOD3qN05AyFIcMKG5PMXAV07zfVrnt7WTm1MjPzd4PLvIW3QxtpknbhOkDyh6sG6xMEeDSJRxyri+aDJCngbwdg6Hs6raCEBdg4UhZL8C/9UtSHxXpp50FSDxJPxeiUtpb9v9Lj0gYKwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=L+xjAzL2; arc=none smtp.client-ip=45.254.49.204
+	s=arc-20240116; t=1766066933; c=relaxed/simple;
+	bh=S37bgVkLfiwnFb5MPN29VqbHFJoAKTnO/0I3AJpES4w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=hf/0OWTQeRwlpSfugpakkyjqFHRMIJkSwQ/iZiZiRJcXstyU+GS1aW1AJe98ZczPxDK7xgz3KGoDqe3n/usOUYKllzsUygzDAv7B7qShJydDk6kbHWGPxihr7Q+hHs2upJnz8m9xV48dvNsXSJ6VZptG17PnwIUX6Q1CCEPQgI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=Y97ML2on; arc=none smtp.client-ip=220.197.31.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2dc3bb346;
-	Thu, 18 Dec 2025 22:03:18 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2dc3bb35a;
+	Thu, 18 Dec 2025 22:03:36 +0800 (GMT+08:00)
 From: Shawn Lin <shawn.lin@rock-chips.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-mmc@vger.kernel.org,
 	Jaehoon Chung <jh80.chung@samsung.com>,
 	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 06/18] mmc: dw_mmc: Move rstc from struct dw_mci_board to struct dw_mci
-Date: Thu, 18 Dec 2025 22:00:33 +0800
-Message-Id: <1766066445-14144-7-git-send-email-shawn.lin@rock-chips.com>
+Subject: [PATCH 07/18] mmc: dw_mmc: Remove fifo_depth from struct dw_mci_board
+Date: Thu, 18 Dec 2025 22:00:34 +0800
+Message-Id: <1766066445-14144-8-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1766066445-14144-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1766066445-14144-1-git-send-email-shawn.lin@rock-chips.com>
-X-HM-Tid: 0a9b31c5b1ae09cckunm1f354c4b73c5
+X-HM-Tid: 0a9b31c5f90f09cckunm1f354c4b742e
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGRhLGVZPTUhPGhgdGhhOSEhWFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQk1OGFYaHUgYT0MZHUhLSRlWFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
 	hVSktLVUpCS0tZBg++
 DKIM-Signature: a=rsa-sha256;
-	b=L+xjAzL2LMYzvjMpWTBA7o2LCQJTP44zxexnXRX+46E7ffdsh8hEqPxr4CBIfCGzjSYFPb4QWRhbezIO5DHnmwWkni4ef0CvCS+WfOJ2DP/8pL6ukLYUmWSjdoBE7eXoN03XTFfPB5aYYimtWmPeY5odwW1x8niyfVBiAYU+NUk=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=lEXBjQg+LSIKuq7C4x9ipNBcti3wc5J3uyFMCk+IK1I=;
+	b=Y97ML2onyblg2AWQbKt00q/4uhwH7BvpuOJhmt/+MA+asHGK8CzSAWtNq3CdKDQrHfypywWV3ps3aInUx0dnFDjSJlztNiU95iww9K6DZjRyuZOjUPB2kuu9lB9u8p7fkMdyNgMpAxzLypc9elHf9P1KjYtR7di/eeWGL2wVLU4=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=d6osbAhulOriDsYpLmc6wI9YH/C7vL555dH4dhmyAcM=;
 	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
@@ -58,94 +58,86 @@ List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 
-Nobody using dw_mci_board passes in rstc, move it to the common struct
-dw_mci needed by all users.
+struct dw_mci already keep one, so remove it from struct dw_mci_board.
+Now, as dw_mmc-pci still provide struct dw_mci_board, so host->fifo_depth
+will not be overwritten.
 
 Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 ---
 
- drivers/mmc/host/dw_mmc.c | 16 ++++++++--------
- drivers/mmc/host/dw_mmc.h |  4 ++--
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/mmc/host/dw_mmc-pci.c | 2 +-
+ drivers/mmc/host/dw_mmc.c     | 6 +++---
+ drivers/mmc/host/dw_mmc.h     | 6 ------
+ 3 files changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-index 650f84a..133da87 100644
---- a/drivers/mmc/host/dw_mmc.c
-+++ b/drivers/mmc/host/dw_mmc.c
-@@ -3178,9 +3178,9 @@ static struct dw_mci_board *dw_mci_parse_dt(struct dw_mci *host)
- 		return ERR_PTR(-ENOMEM);
- 
- 	/* find reset controller when exist */
--	pdata->rstc = devm_reset_control_get_optional_exclusive(dev, "reset");
--	if (IS_ERR(pdata->rstc))
--		return ERR_CAST(pdata->rstc);
-+	host->rstc = devm_reset_control_get_optional_exclusive(dev, "reset");
-+	if (IS_ERR(host->rstc))
-+		return ERR_CAST(host->rstc);
- 
- 	if (device_property_read_u32(dev, "fifo-depth", &pdata->fifo_depth))
- 		dev_info(dev,
-@@ -3295,10 +3295,10 @@ int dw_mci_probe(struct dw_mci *host)
- 		goto err_clk_ciu;
- 	}
- 
--	if (host->pdata->rstc) {
--		reset_control_assert(host->pdata->rstc);
-+	if (host->rstc) {
-+		reset_control_assert(host->rstc);
- 		usleep_range(10, 50);
--		reset_control_deassert(host->pdata->rstc);
-+		reset_control_deassert(host->rstc);
- 	}
- 
- 	if (drv_data && drv_data->init) {
-@@ -3439,7 +3439,7 @@ int dw_mci_probe(struct dw_mci *host)
- 	if (host->use_dma && host->dma_ops->exit)
- 		host->dma_ops->exit(host);
- 
--	reset_control_assert(host->pdata->rstc);
-+	reset_control_assert(host->rstc);
- 
- err_clk_ciu:
- 	clk_disable_unprepare(host->ciu_clk);
-@@ -3467,7 +3467,7 @@ void dw_mci_remove(struct dw_mci *host)
- 	if (host->use_dma && host->dma_ops->exit)
- 		host->dma_ops->exit(host);
- 
--	reset_control_assert(host->pdata->rstc);
-+	reset_control_assert(host->rstc);
- 
- 	clk_disable_unprepare(host->ciu_clk);
- 	clk_disable_unprepare(host->biu_clk);
-diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
-index 206c2a4..96fe923 100644
---- a/drivers/mmc/host/dw_mmc.h
-+++ b/drivers/mmc/host/dw_mmc.h
-@@ -131,6 +131,7 @@ struct dw_mci_dma_slave {
-  * @clock: Clock rate configured by set_ios(). Protected by host->lock.
-  * @clk_old: The last clock value that was requested from core.
-  * @pdev: platform_device registered
-+ * @rstc: Reset controller for this host.
-  *
-  * Locking
-  * =======
-@@ -250,6 +251,7 @@ struct dw_mci {
- 	unsigned int		clock;
- 	unsigned int		clk_old;
- 	struct platform_device	*pdev;
-+	struct reset_control *rstc;
+diff --git a/drivers/mmc/host/dw_mmc-pci.c b/drivers/mmc/host/dw_mmc-pci.c
+index 092cc99..f5ef872 100644
+--- a/drivers/mmc/host/dw_mmc-pci.c
++++ b/drivers/mmc/host/dw_mmc-pci.c
+@@ -28,7 +28,6 @@ static struct dw_mci_board pci_board_data = {
+ 	.caps				= DW_MCI_CAPABILITIES,
+ 	.bus_hz				= 33 * 1000 * 1000,
+ 	.detect_delay_ms		= 200,
+-	.fifo_depth			= 32,
  };
  
- /* DMA ops for Internal/External DMAC interface */
-@@ -277,8 +279,6 @@ struct dw_mci_board {
+ static int dw_mci_pci_probe(struct pci_dev *pdev,
+@@ -49,6 +48,7 @@ static int dw_mci_pci_probe(struct pci_dev *pdev,
+ 	host->irq_flags = IRQF_SHARED;
+ 	host->dev = &pdev->dev;
+ 	host->pdata = &pci_board_data;
++	host->fifo_depth = 32;
+ 
+ 	ret = pcim_iomap_regions(pdev, 1 << PCI_BAR_NO, pci_name(pdev));
+ 	if (ret)
+diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+index 133da87..84e1b07 100644
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -3182,7 +3182,7 @@ static struct dw_mci_board *dw_mci_parse_dt(struct dw_mci *host)
+ 	if (IS_ERR(host->rstc))
+ 		return ERR_CAST(host->rstc);
+ 
+-	if (device_property_read_u32(dev, "fifo-depth", &pdata->fifo_depth))
++	if (device_property_read_u32(dev, "fifo-depth", &host->fifo_depth))
+ 		dev_info(dev,
+ 			 "fifo-depth property not found, using value of FIFOTH register as default\n");
+ 
+@@ -3369,7 +3369,7 @@ int dw_mci_probe(struct dw_mci *host)
+ 	 * FIFO threshold settings  RxMark  = fifo_size / 2 - 1,
+ 	 *                          Tx Mark = fifo_size / 2 DMA Size = 8
+ 	 */
+-	if (!host->pdata->fifo_depth) {
++	if (!host->fifo_depth) {
+ 		/*
+ 		 * Power-on value of RX_WMark is FIFO_DEPTH-1, but this may
+ 		 * have been overwritten by the bootloader, just like we're
+@@ -3379,7 +3379,7 @@ int dw_mci_probe(struct dw_mci *host)
+ 		fifo_size = mci_readl(host, FIFOTH);
+ 		fifo_size = 1 + ((fifo_size >> 16) & 0xfff);
+ 	} else {
+-		fifo_size = host->pdata->fifo_depth;
++		fifo_size = host->fifo_depth;
+ 	}
+ 	host->fifo_depth = fifo_size;
+ 	host->fifoth_val =
+diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
+index 96fe923..dd4a8b0 100644
+--- a/drivers/mmc/host/dw_mmc.h
++++ b/drivers/mmc/host/dw_mmc.h
+@@ -270,12 +270,6 @@ struct dw_mci_board {
+ 	unsigned int bus_hz; /* Clock speed at the cclk_in pad */
+ 
+ 	u32 caps;	/* Capabilities */
+-	/*
+-	 * Override fifo depth. If 0, autodetect it from the FIFOTH register,
+-	 * but note that this may not be reliable after a bootloader has used
+-	 * it.
+-	 */
+-	unsigned int fifo_depth;
  
  	/* delay in mS before detecting cards after interrupt */
  	u32 detect_delay_ms;
--
--	struct reset_control *rstc;
- };
- 
- /* Support for longer data read timeout */
 -- 
 2.7.4
 
