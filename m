@@ -1,56 +1,56 @@
-Return-Path: <linux-mmc+bounces-9595-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9601-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B48FCCC3AF
-	for <lists+linux-mmc@lfdr.de>; Thu, 18 Dec 2025 15:17:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45806CCC40C
+	for <lists+linux-mmc@lfdr.de>; Thu, 18 Dec 2025 15:22:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 53EB0302A7B1
-	for <lists+linux-mmc@lfdr.de>; Thu, 18 Dec 2025 14:17:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 33CBD3022A71
+	for <lists+linux-mmc@lfdr.de>; Thu, 18 Dec 2025 14:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D16D26B74A;
-	Thu, 18 Dec 2025 14:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D10725CC6C;
+	Thu, 18 Dec 2025 14:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="Zlq1QX1U"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="DTIEuGLB"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m49228.qiye.163.com (mail-m49228.qiye.163.com [45.254.49.228])
+Received: from mail-m1973180.qiye.163.com (mail-m1973180.qiye.163.com [220.197.31.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3202425A640
-	for <linux-mmc@vger.kernel.org>; Thu, 18 Dec 2025 14:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3412828134F
+	for <linux-mmc@vger.kernel.org>; Thu, 18 Dec 2025 14:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766066822; cv=none; b=e6A5CoFipkLCayC6ze1PvU0TL20UkhUst0wauBPbDKRMpcyRquq3/Cp8DUkUwUL280Dya+lL7CJylkdr5zOmfB/fq2e89JHLTqbOFKlUZUyVJ2DrfUvPEMc1WD3Ba6cCI5mGw8TrdwaDKZlJ7nbS76MthmM3Sx0b/L2RQfebrxU=
+	t=1766067760; cv=none; b=n/N/FTlUMiZcebSMWkO+wJAWbNen1HoL1jXBDS4qIFfSigBRCuFpCu3T/UhetwDCDylq8XqdHU25z6zPEs42tjJx+0Vlk9uYpPnmpKp0xG7/qBvVly5t/ooELHOly/N9XftCRDyBvotqVhQGL0NdJvsPgkrRQiZpHsNbkewO3EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766066822; c=relaxed/simple;
-	bh=y/9jSmUPWoB6Pg/lLP93spxgs3GgF0mq0hpbLP9/roY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=cxTYNIpr++edt6Hw5exp5oMFWcB45S7l8XpFp74s1fLiKOiTeLhNNrDxjjqk6A5hzte5TnYNmCwr1hw4OSZ+LLvRWjKbzroqlZjfxeKSmdAjxs1o0v0A8yP/o6kIoNG47uxPxE/TiufRivbfBcbMLTZUeYBEmdsQiMWZnFV3JXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=Zlq1QX1U; arc=none smtp.client-ip=45.254.49.228
+	s=arc-20240116; t=1766067760; c=relaxed/simple;
+	bh=Pl4E8ccCPR0l1mDlkFLWVGiekcFR1yfgw4TfY5IAMAk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=DgpGkw8zBuCXu4VUcwXlf8fpclaChpfOzC63CKRd7Gs+YSRk6EKKD0OYBVSGGC+l7i+WtEyPmh8WhUj7+u/KyfGXDm2cfKneiulHlyaSu9t7BhZC2dA9PPBZxZ4OlWFAvJjXzzscFUZ4LSWlBjGpO0UMscESiiJGlIylDyfh9+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=DTIEuGLB; arc=none smtp.client-ip=220.197.31.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2dc3bb498;
-	Thu, 18 Dec 2025 22:06:50 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2dc3bb4ab;
+	Thu, 18 Dec 2025 22:07:07 +0800 (GMT+08:00)
 From: Shawn Lin <shawn.lin@rock-chips.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-mmc@vger.kernel.org,
 	Jaehoon Chung <jh80.chung@samsung.com>,
 	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 16/18] mmc: dw_mmc-pci: Use BAR_2 and pcim_iomap_region()
-Date: Thu, 18 Dec 2025 22:00:43 +0800
-Message-Id: <1766066445-14144-17-git-send-email-shawn.lin@rock-chips.com>
+Subject: [PATCH 17/18] mmc: dw_mmc-pltfm: use modern PM macros
+Date: Thu, 18 Dec 2025 22:00:44 +0800
+Message-Id: <1766066445-14144-18-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1766066445-14144-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1766066445-14144-1-git-send-email-shawn.lin@rock-chips.com>
-X-HM-Tid: 0a9b31c8ed5809cckunm1f354c4b7886
+X-HM-Tid: 0a9b31c9317309cckunm1f354c4b78d0
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ0pKSFYZGkNKH0odTEseTxlWFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGh5MTVYYGUhDSU1IHUhKTU9WFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
 	hVSktLVUpCS0tZBg++
 DKIM-Signature: a=rsa-sha256;
-	b=Zlq1QX1Ut4Wc9ii8EhBAqWxPVCe0VpE+aj6JFE1yt//hyzvAo/V6JO7uTbEPPrEXpV1SnsfGIsYcohbDJE+pY95GGs963b2Ch6zNcSLqNb5Ntd5brGSepaQLe+P7EylUilf64i8BaqHJ5ph6Yg8RkQap0VIUOzMGdPm0QyfbXo0=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=xySTpWMRodOIl9kkXoWAcGfZnXCh5zVUzTcSDJbC2xw=;
+	b=DTIEuGLBWZhKmKdVgKJvZkZpP7aof6BrMZviqxekQnegI3YYy8Ii8uXc03HLDKdPOj43IYUOHdcHcBRMnYhvQGBxnZFZo2L3OLUk/iJlpOJL+6sXDEMgfHngpOmz6PZUiGL4OZpQGLodrrWLde4e5qEZIhSyRgWp7ebwLvmU47I=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=AG/bm+pIuOM6zhmpCI7CBxuZfaVdCPgC/UlV4UE+Vw4=;
 	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
@@ -58,52 +58,148 @@ List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 
-PCIe endpoint framework defines standard BAR enum for EP drivers
-to use, so remove PCI_BAR_NO here.
+Use the modern PM macros for the suspend and resume functions to be
+automatically dropped by the compiler when CONFIG_PM or CONFIG_PM_SLEEP
+are disabled, without having to use #ifdef guards.
 
-Then, pcim_iomap_regions has been deprecated for a long time, replace
-it with pcim_iomap_region();
+When this's done, remove all variant drivers' local pm definition and
+replace it with dw_mci_pltfm_pmops.
 
 Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 ---
 
- drivers/mmc/host/dw_mmc-pci.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/mmc/host/dw_mmc-bluefield.c | 2 +-
+ drivers/mmc/host/dw_mmc-k3.c        | 7 +------
+ drivers/mmc/host/dw_mmc-pci.c       | 7 +------
+ drivers/mmc/host/dw_mmc-pltfm.c     | 4 ++--
+ drivers/mmc/host/dw_mmc-rockchip.c  | 7 +------
+ drivers/mmc/host/dw_mmc.c           | 2 --
+ 6 files changed, 6 insertions(+), 23 deletions(-)
 
+diff --git a/drivers/mmc/host/dw_mmc-bluefield.c b/drivers/mmc/host/dw_mmc-bluefield.c
+index 3cf526a..ed6dea4 100644
+--- a/drivers/mmc/host/dw_mmc-bluefield.c
++++ b/drivers/mmc/host/dw_mmc-bluefield.c
+@@ -73,7 +73,7 @@ static struct platform_driver dw_mci_bluefield_pltfm_driver = {
+ 		.name		= "dwmmc_bluefield",
+ 		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
+ 		.of_match_table	= dw_mci_bluefield_match,
+-		.pm		= &dw_mci_pltfm_pmops,
++		.pm		= pm_ptr(&dw_mci_pltfm_pmops),
+ 	},
+ };
+ 
+diff --git a/drivers/mmc/host/dw_mmc-k3.c b/drivers/mmc/host/dw_mmc-k3.c
+index 4c313fc..6836710 100644
+--- a/drivers/mmc/host/dw_mmc-k3.c
++++ b/drivers/mmc/host/dw_mmc-k3.c
+@@ -453,11 +453,6 @@ static int dw_mci_k3_probe(struct platform_device *pdev)
+ 	return dw_mci_pltfm_register(pdev, drv_data);
+ }
+ 
+-static const struct dev_pm_ops dw_mci_k3_dev_pm_ops = {
+-	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
+-	RUNTIME_PM_OPS(dw_mci_runtime_suspend, dw_mci_runtime_resume, NULL)
+-};
+-
+ static struct platform_driver dw_mci_k3_pltfm_driver = {
+ 	.probe		= dw_mci_k3_probe,
+ 	.remove		= dw_mci_pltfm_remove,
+@@ -465,7 +460,7 @@ static struct platform_driver dw_mci_k3_pltfm_driver = {
+ 		.name		= "dwmmc_k3",
+ 		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
+ 		.of_match_table	= dw_mci_k3_match,
+-		.pm		= pm_ptr(&dw_mci_k3_dev_pm_ops),
++		.pm		= pm_ptr(&dw_mci_pltfm_pmops),
+ 	},
+ };
+ 
 diff --git a/drivers/mmc/host/dw_mmc-pci.c b/drivers/mmc/host/dw_mmc-pci.c
-index a0c788b..096f5b5 100644
+index 096f5b5..a81bbd0 100644
 --- a/drivers/mmc/host/dw_mmc-pci.c
 +++ b/drivers/mmc/host/dw_mmc-pci.c
-@@ -10,13 +10,13 @@
- #include <linux/io.h>
- #include <linux/irq.h>
- #include <linux/pci.h>
-+#include <linux/pci-epf.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
- #include <linux/mmc/host.h>
- #include <linux/mmc/mmc.h>
- #include "dw_mmc.h"
+@@ -72,11 +72,6 @@ static void dw_mci_pci_remove(struct pci_dev *pdev)
+ 	dw_mci_remove(host);
+ }
  
--#define PCI_BAR_NO 2
- #define SYNOPSYS_DW_MCI_VENDOR_ID 0x700
- #define SYNOPSYS_DW_MCI_DEVICE_ID 0x1107
- /* Defining the Capabilities */
-@@ -50,11 +50,9 @@ static int dw_mci_pci_probe(struct pci_dev *pdev,
- 	host->bus_hz = 33 * 1000 * 1000;
- 	host->drv_data = &pci_drv_data;
- 
--	ret = pcim_iomap_regions(pdev, 1 << PCI_BAR_NO, pci_name(pdev));
--	if (ret)
--		return ret;
+-static const struct dev_pm_ops dw_mci_pci_dev_pm_ops = {
+-	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
+-	RUNTIME_PM_OPS(dw_mci_runtime_suspend, dw_mci_runtime_resume, NULL)
+-};
 -
--	host->regs = pcim_iomap_table(pdev)[PCI_BAR_NO];
-+	host->regs = pcim_iomap_region(pdev, BAR_2, pci_name(pdev));
-+	if (IS_ERR(host->regs))
-+		return PTR_ERR(host->regs);
+ static const struct pci_device_id dw_mci_pci_id[] = {
+ 	{ PCI_DEVICE(SYNOPSYS_DW_MCI_VENDOR_ID, SYNOPSYS_DW_MCI_DEVICE_ID) },
+ 	{}
+@@ -89,7 +84,7 @@ static struct pci_driver dw_mci_pci_driver = {
+ 	.probe		= dw_mci_pci_probe,
+ 	.remove		= dw_mci_pci_remove,
+ 	.driver		=	{
+-		.pm =   pm_ptr(&dw_mci_pci_dev_pm_ops),
++		.pm =   pm_ptr(&dw_mci_pltfm_pmops),
+ 	},
+ };
  
- 	pci_set_master(pdev);
+diff --git a/drivers/mmc/host/dw_mmc-pltfm.c b/drivers/mmc/host/dw_mmc-pltfm.c
+index a927f5ba..bc76b0d 100644
+--- a/drivers/mmc/host/dw_mmc-pltfm.c
++++ b/drivers/mmc/host/dw_mmc-pltfm.c
+@@ -58,9 +58,9 @@ int dw_mci_pltfm_register(struct platform_device *pdev,
+ EXPORT_SYMBOL_GPL(dw_mci_pltfm_register);
  
+ const struct dev_pm_ops dw_mci_pltfm_pmops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
++	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+ 				pm_runtime_force_resume)
+-	SET_RUNTIME_PM_OPS(dw_mci_runtime_suspend,
++	RUNTIME_PM_OPS(dw_mci_runtime_suspend,
+ 			   dw_mci_runtime_resume,
+ 			   NULL)
+ };
+diff --git a/drivers/mmc/host/dw_mmc-rockchip.c b/drivers/mmc/host/dw_mmc-rockchip.c
+index 879188f..c75bb5d1 100644
+--- a/drivers/mmc/host/dw_mmc-rockchip.c
++++ b/drivers/mmc/host/dw_mmc-rockchip.c
+@@ -573,11 +573,6 @@ static void dw_mci_rockchip_remove(struct platform_device *pdev)
+ 	dw_mci_pltfm_remove(pdev);
+ }
+ 
+-static const struct dev_pm_ops dw_mci_rockchip_dev_pm_ops = {
+-	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
+-	RUNTIME_PM_OPS(dw_mci_runtime_suspend, dw_mci_runtime_resume, NULL)
+-};
+-
+ static struct platform_driver dw_mci_rockchip_pltfm_driver = {
+ 	.probe		= dw_mci_rockchip_probe,
+ 	.remove		= dw_mci_rockchip_remove,
+@@ -585,7 +580,7 @@ static struct platform_driver dw_mci_rockchip_pltfm_driver = {
+ 		.name		= "dwmmc_rockchip",
+ 		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
+ 		.of_match_table	= dw_mci_rockchip_match,
+-		.pm		= pm_ptr(&dw_mci_rockchip_dev_pm_ops),
++		.pm		= pm_ptr(&dw_mci_pltfm_pmops),
+ 	},
+ };
+ 
+diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+index 9ba12e0..d2b895b 100644
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -3435,7 +3435,6 @@ void dw_mci_remove(struct dw_mci *host)
+ }
+ EXPORT_SYMBOL(dw_mci_remove);
+ 
+-#ifdef CONFIG_PM
+ int dw_mci_runtime_suspend(struct device *dev)
+ {
+ 	struct dw_mci *host = dev_get_drvdata(dev);
+@@ -3524,7 +3523,6 @@ int dw_mci_runtime_resume(struct device *dev)
+ 	return ret;
+ }
+ EXPORT_SYMBOL(dw_mci_runtime_resume);
+-#endif /* CONFIG_PM */
+ 
+ static int __init dw_mci_init(void)
+ {
 -- 
 2.7.4
 
