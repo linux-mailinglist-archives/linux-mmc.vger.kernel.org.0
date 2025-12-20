@@ -1,136 +1,152 @@
-Return-Path: <linux-mmc+bounces-9615-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9617-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D81CD282D
-	for <lists+linux-mmc@lfdr.de>; Sat, 20 Dec 2025 06:41:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D41CD3371
+	for <lists+linux-mmc@lfdr.de>; Sat, 20 Dec 2025 17:21:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 522BD301739A
-	for <lists+linux-mmc@lfdr.de>; Sat, 20 Dec 2025 05:41:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C960C3009F38
+	for <lists+linux-mmc@lfdr.de>; Sat, 20 Dec 2025 16:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C1F2F3638;
-	Sat, 20 Dec 2025 05:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C6830C36D;
+	Sat, 20 Dec 2025 16:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="DX0Jp296"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fuetCjue"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m15599.qiye.163.com (mail-m15599.qiye.163.com [101.71.155.99])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96D72E7F27;
-	Sat, 20 Dec 2025 05:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52C230B52B;
+	Sat, 20 Dec 2025 16:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766209282; cv=none; b=fapdwIzB06t6nt53oSnIegM+IqIAX1YOWFKN0Pbv3soUKUUHZmlG76iP6Kdd8ezlsn0joadrRWXKTAX5kHlKtNa3qe25EWi35n9db9hYl1uyTv4lMNHLYD/zGZIix5WI0aQy7vtaQGE/fqTdWjHe0UAwnXuPcFUXiRO8c9hndf0=
+	t=1766247688; cv=none; b=BG6QyY/xKbvXvWlnABTlhJKZnAH77458+wkGVqpCLtcu8FoTevo2SVArmhyrPpD/5x/qjU7/H2Q1P5gB5z0qH8fiAdmXnF43u1YGwasazeePnl5WCqeH1AsXxgMiZLMd91JB4Y4ioWKgNRmUHhOo0yLM8OCNDfPwLdlUQwBLuc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766209282; c=relaxed/simple;
-	bh=CSZMIKdNKpJx7QhONJLdsYbKl4leLT99pSR/IH8/lFk=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=nP9GX1borM9WeIsCpJ7u39hHVxsaeQh4nULjII+WOT/JRYJxjwcLB2CeQvb0OP+WmRONVqMzh9m27T5MNbxvOllCYGiuZPeCP2I+9CQ5wxY/ouzfSRFzrhwRb8xSPdIjBrir5KHNQc6wYcOOWb8ow0eeKoMHkgA2ZyfFTaHh970=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=DX0Jp296; arc=none smtp.client-ip=101.71.155.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.14] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2df48b62d;
-	Sat, 20 Dec 2025 13:41:06 +0800 (GMT+08:00)
-Message-ID: <f7dde976-6377-4abd-a42b-61209228cda3@rock-chips.com>
-Date: Sat, 20 Dec 2025 13:41:05 +0800
+	s=arc-20240116; t=1766247688; c=relaxed/simple;
+	bh=M6OKeqRYm4T/gTgflSPXWGhNilkyUfsYAEKOPTK/+hQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UBenmW5IgNh047dzQGHmguJjckuQgYJvxD4SAjJnCyYhMA6joZla8nulFvdBCID2IJ6Twfd4OTzadYs+zgwNuByYXK68rszTBQtN5GShY+n2nsXYUnQK6SGhXyDfqa59UUd7aJx+F9mNDxiUqQ3y0jfQw+ImkhDLACbkQWWMDNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fuetCjue; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766247687; x=1797783687;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=M6OKeqRYm4T/gTgflSPXWGhNilkyUfsYAEKOPTK/+hQ=;
+  b=fuetCjueunv/G4jbaa+IYUknlFR4Pi7ijyYVWT3gmvqQcvqA2YdsS1BR
+   cCPcBLVleftaFndf3JRqy+q6EJdnqJa78QdYuMVeuhsj4Nff5zcL2kkvQ
+   fkgMLBdjWEzaBHqocHJ0xkOPnuqU342zUpXwdx3rv6NyPuDLQ7EqAVxwr
+   qmlhk93zLqVlID+BgBBnzm+i9IqVAxMjh+aioCHSL/ng6s/7dXK8xV7eF
+   o9/DA01yLBT02hKMrgGtWWGmQAJ5dzX9BTb+lAnv6jYkqFh4W8kgH7shC
+   +Q/E4tGB1kUxuhb3u+tYaw3/lJvskp2wJZC8BSOPziSimTZ0s36p2MlND
+   A==;
+X-CSE-ConnectionGUID: baiKQzCJTGKkesroxBSwVA==
+X-CSE-MsgGUID: y9UanKXfR7qJwQchKF7EXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="67375373"
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="67375373"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 08:21:26 -0800
+X-CSE-ConnectionGUID: Y8quD3aHQxS9TPQlAtiCUg==
+X-CSE-MsgGUID: oz11ZpJOSYOZ0X6FSje0Tg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="222604687"
+Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 20 Dec 2025 08:21:24 -0800
+Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vWzhq-000000004rn-2PVx;
+	Sat, 20 Dec 2025 16:21:22 +0000
+Date: Sun, 21 Dec 2025 00:20:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-mmc@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/4] wifi: rsi: sdio: Reduce use of #ifdef for
+ CONFIG_PM
+Message-ID: <202512210032.6Skz9prt-lkp@intel.com>
+References: <f291cca2741f6ac994b2bde1fb9d21194fec4d3e.1765968841.git.ukleinek@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: shawn.lin@rock-chips.com, linux-mmc@vger.kernel.org,
- Jaehoon Chung <jh80.chung@samsung.com>,
- 'Linux Samsung SOC' <linux-samsung-soc@vger.kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v3 12/12] mmc: dw_mmc: Remove struct dw_mci_slot
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-References: <1765885807-186577-1-git-send-email-shawn.lin@rock-chips.com>
- <1765885807-186577-13-git-send-email-shawn.lin@rock-chips.com>
- <CGME20251218182343eucas1p2d8e8c97da2f3abdecd0a2f54b06c10cf@eucas1p2.samsung.com>
- <75e28c6b-c62c-4c84-9b88-6bc8902b8c5b@samsung.com>
- <dbee3e27-d158-43d3-88ca-a9f3a3264af7@rock-chips.com>
- <9af391bb-b607-481e-9d12-35b892469a06@samsung.com>
- <85c3ab2e-e948-440f-847a-74b006b1a0b2@rock-chips.com>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-In-Reply-To: <85c3ab2e-e948-440f-847a-74b006b1a0b2@rock-chips.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9b3a46a47a09cckunmd3cd05c811583a
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQksZSlZKHR5KQx0eQ09MSkhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=DX0Jp296y3HzpVq1uBEZhmJJE6W/vV+Fp3j9O+1CpzQHvmmbAupeOP0cF/zi0SSxixRGpBW8D24vyHqnAHcG8vS2wCCNug771hcuyRQhHoh21Q2UNar4XOuuSx5JX2Skvi796gDAh0SqOy5+waGodD8D1WTJAvTqI2bpkrffzzQ=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=x+2yG2/aRYOlG9/xDN/JquR8moFGd8cpbqGvp046SN0=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f291cca2741f6ac994b2bde1fb9d21194fec4d3e.1765968841.git.ukleinek@kernel.org>
 
-Hi Marek
+Hi Uwe,
 
-在 2025/12/19 星期五 20:25, Shawn Lin 写道:
-> 
-> 在 2025/12/19 星期五 19:59, Marek Szyprowski 写道:
->> On 19.12.2025 02:47, Shawn Lin wrote:
->>> 在 2025/12/19 星期五 2:23, Marek Szyprowski 写道:
->>>> On 16.12.2025 12:50, Shawn Lin wrote:
->>>>> This patch sets struct dw_mci as mmc_host's private data by
->>>>> copying struct dw_mci passing to dw_mci_probe() in order to
->>>>> achieve with mminimal changes. Then we remove slot everywhere.
->>>>>
->>>>> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
->>>>
->>>> This patch landed in today's linux-next as commit 926311cf3361 ("mmc:
->>>> dw_mmc: Remove struct dw_mci_slot"). In my tests I found that it breaks
->>>> DW-MMC driver operation on Hardkernel's Odroid-HC1 board. This is a bit
->>>> strange, as it works fine on other, similar, Exynos5422 based Odroid
->>>> boards. On Odroid-HC1 no MMC card is detected at all after this 
->>>> patch. I
->>>
->>> Sorry for breaking Odroid-HC1 board. Indeed, it's strange other
->>> Exynos5422-based bards work fine, as this patch wasn't supposed to be
->>> board depend, even SoC depend. Looking closely again, still have no
->>> idea what is happening on Odroid-HC1. I have no Odroid-HC1 board to
->>> debug, could you kindly help applied the attached debug patch and
->>> share the log?  Thanks.
->>
->> I've played a bit with that code and the $subject patch breaks
->> propagating -EPROBE_DEFER from mmc_regulator_get_supply(). This fixes
->> the problem:
->>
->> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
->> index 8a0362257a2c..6be95a440ee9 100644
->> --- a/drivers/mmc/host/dw_mmc.c
->> +++ b/drivers/mmc/host/dw_mmc.c
->> @@ -3428,6 +3428,7 @@ int dw_mci_probe(struct dw_mci *host)
->>           local_host = dw_mci_init_host(host);
->>           if (IS_ERR(local_host)) {
->>                   dev_dbg(host->dev, "host init failed\n");
->> +               ret = PTR_ERR(local_host);
->>                   goto err_dmaunmap;
->>           }
->>
->> BTW, the $subject patch also lacks fixing drvdata in dw_mmc-pci.c.
->>
->> I think it would make a bit sense to simply pass dev, pdata, regs, irq
->> and flags as parameters to dw_mci_probe() instead of the second copy of
->> the dw_mci structure. Or alternatively move these to the additional
->> structure and pass a pointer to it.
->>
-> 
-> Thanks for debugging, really appreciate!
-> I am going to rework it according to your and Ulf's suggestion.
+kernel test robot noticed the following build errors:
 
-I just sent out a simpler version(you was CCed) which introuces
-dw_mci_alloc_host() to help get rid of dw_mci_slot. Much appreciate it
-if you could help test/review it on your boards. :)
+[auto build test ERROR on 8f0b4cce4481fb22653697cced8d0d04027cb1e8]
 
-> 
->> Best regards
-> 
-> 
+url:    https://github.com/intel-lab-lkp/linux/commits/Uwe-Kleine-K-nig/sdio-Provide-a-bustype-shutdown-function/20251217-191920
+base:   8f0b4cce4481fb22653697cced8d0d04027cb1e8
+patch link:    https://lore.kernel.org/r/f291cca2741f6ac994b2bde1fb9d21194fec4d3e.1765968841.git.ukleinek%40kernel.org
+patch subject: [PATCH v1 2/4] wifi: rsi: sdio: Reduce use of #ifdef for CONFIG_PM
+config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20251221/202512210032.6Skz9prt-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251221/202512210032.6Skz9prt-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512210032.6Skz9prt-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/net/wireless/rsi/rsi_91x_sdio.c: In function 'rsi_shutdown':
+>> drivers/net/wireless/rsi/rsi_91x_sdio.c:1454:41: error: 'struct wiphy' has no member named 'wowlan_config'
+    1454 |         if (hw && hw->wiphy && hw->wiphy->wowlan_config) {
+         |                                         ^~
+>> drivers/net/wireless/rsi/rsi_91x_sdio.c:1455:21: error: implicit declaration of function 'rsi_config_wowlan' [-Werror=implicit-function-declaration]
+    1455 |                 if (rsi_config_wowlan(adapter, hw->wiphy->wowlan_config))
+         |                     ^~~~~~~~~~~~~~~~~
+   drivers/net/wireless/rsi/rsi_91x_sdio.c:1455:57: error: 'struct wiphy' has no member named 'wowlan_config'
+    1455 |                 if (rsi_config_wowlan(adapter, hw->wiphy->wowlan_config))
+         |                                                         ^~
+   cc1: some warnings being treated as errors
+
+
+vim +1454 drivers/net/wireless/rsi/rsi_91x_sdio.c
+
+b6c8d06c8a6465 Karun Eagalapati  2017-10-27  1444  
+063848c3e1558e Karun Eagalapati  2017-10-27  1445  static void rsi_shutdown(struct device *dev)
+063848c3e1558e Karun Eagalapati  2017-10-27  1446  {
+063848c3e1558e Karun Eagalapati  2017-10-27  1447  	struct sdio_func *pfunction = dev_to_sdio_func(dev);
+063848c3e1558e Karun Eagalapati  2017-10-27  1448  	struct rsi_hw *adapter = sdio_get_drvdata(pfunction);
+f9bf6e729f4ebc Wu Yunchuan       2023-08-03  1449  	struct rsi_91x_sdiodev *sdev = adapter->rsi_dev;
+063848c3e1558e Karun Eagalapati  2017-10-27  1450  	struct ieee80211_hw *hw = adapter->hw;
+063848c3e1558e Karun Eagalapati  2017-10-27  1451  
+063848c3e1558e Karun Eagalapati  2017-10-27  1452  	rsi_dbg(ERR_ZONE, "SDIO Bus shutdown =====>\n");
+063848c3e1558e Karun Eagalapati  2017-10-27  1453  
+b241e260820b68 Marek Vasut       2023-05-28 @1454  	if (hw && hw->wiphy && hw->wiphy->wowlan_config) {
+b241e260820b68 Marek Vasut       2023-05-28 @1455  		if (rsi_config_wowlan(adapter, hw->wiphy->wowlan_config))
+063848c3e1558e Karun Eagalapati  2017-10-27  1456  			rsi_dbg(ERR_ZONE, "Failed to configure WoWLAN\n");
+16bbc3eb83728c Martin Kepplinger 2020-01-29  1457  	}
+063848c3e1558e Karun Eagalapati  2017-10-27  1458  
+cbde979b33fa16 Siva Rebbagondla  2019-02-04  1459  	if (IS_ENABLED(CONFIG_RSI_COEX) && adapter->priv->coex_mode > 1 &&
+cbde979b33fa16 Siva Rebbagondla  2019-02-04  1460  	    adapter->priv->bt_adapter) {
+cbde979b33fa16 Siva Rebbagondla  2019-02-04  1461  		rsi_bt_ops.detach(adapter->priv->bt_adapter);
+cbde979b33fa16 Siva Rebbagondla  2019-02-04  1462  		adapter->priv->bt_adapter = NULL;
+cbde979b33fa16 Siva Rebbagondla  2019-02-04  1463  	}
+cbde979b33fa16 Siva Rebbagondla  2019-02-04  1464  
+063848c3e1558e Karun Eagalapati  2017-10-27  1465  	rsi_sdio_disable_interrupts(sdev->pfunction);
+063848c3e1558e Karun Eagalapati  2017-10-27  1466  
+063848c3e1558e Karun Eagalapati  2017-10-27  1467  	if (sdev->write_fail)
+063848c3e1558e Karun Eagalapati  2017-10-27  1468  		rsi_dbg(INFO_ZONE, "###### Device is not ready #######\n");
+063848c3e1558e Karun Eagalapati  2017-10-27  1469  
+063848c3e1558e Karun Eagalapati  2017-10-27  1470  	rsi_dbg(INFO_ZONE, "***** RSI module shut down *****\n");
+063848c3e1558e Karun Eagalapati  2017-10-27  1471  }
+063848c3e1558e Karun Eagalapati  2017-10-27  1472  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
