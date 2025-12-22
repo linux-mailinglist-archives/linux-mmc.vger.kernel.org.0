@@ -1,147 +1,109 @@
-Return-Path: <linux-mmc+bounces-9650-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9652-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCA1CD5B00
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Dec 2025 11:58:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCA8CD5B7C
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Dec 2025 12:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9DE423011EAE
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Dec 2025 10:58:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 470343012C8A
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Dec 2025 11:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916093148D8;
-	Mon, 22 Dec 2025 10:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46370295DB8;
+	Mon, 22 Dec 2025 11:05:38 +0000 (UTC)
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ua1-f67.google.com (mail-ua1-f67.google.com [209.85.222.67])
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92909281341
-	for <linux-mmc@vger.kernel.org>; Mon, 22 Dec 2025 10:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15A21FC0EA
+	for <linux-mmc@vger.kernel.org>; Mon, 22 Dec 2025 11:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766401119; cv=none; b=FUZwuy647qHIObegHrjDpj6T5viHtkBl79rUDLlacepSuOjBYCv6GOl3MGD2xz04aj8hw5S/fQQsw1maTD4jPCZHWbD4pxD2KG90Y/F3MZh/wFJ4og3mj2ASFB6xTMngEalru2WJsMQhCr/lxeYM/d0TVodXAdMZqMrnFF5+Wi0=
+	t=1766401538; cv=none; b=h8fvyRV3GoR4U4Tdy1sTX+rdjt0o1FsQvOEraX8scqXfla+rG5kRdjIxS8/R3v+av5BmPcyZ9K6O+uvfqCflndyY1rF1G6vjdWqbTRS89n06ziqg2m/lKg9u2XAPcUf6gMrYQLcNpcoXbZS3Wjd6qie/StonKejD0lnEQZlBQg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766401119; c=relaxed/simple;
-	bh=2RMd8TOLVHxevxDxNC2hXQNvxO8qy7FJKq0tM4xFWDg=;
+	s=arc-20240116; t=1766401538; c=relaxed/simple;
+	bh=hQz8inePYy4z7kE2ZTh8btcX7ZL/LHM5S3zx3idHlV0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K5gT+rR6WXxeHwHRtXN3cJll1/NkgPi2R2LvYlI1MQuBehZ7KcUcpdR7OkVO7aMJfjIlKoWzKcPBgX4j0P4Z3vwAu7pGzyEuzmV3+uaiqAwdeUSwrHbbVFo1rJJ5/12AlKI99H3s3qM/sS4iVCbbQpQT6bz2c8XkwFEs1tUXNk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.67
+	 To:Cc:Content-Type; b=sN+rq+cjOAbihOFhl2NzqYQfLIzI0q5zIahXJwNoDnZpSIZTmLLpPlok0zXPmiKRz+OaH7Vu+0r4Is82MGOsn2Q8e84DHblBPtTgQ8yWuyHVqBh8KKgOc6h+WV+UFsZ6nWF1OSVaRdz5nmfjeOOohvmDzbtMHIiWQ6404Ga1+O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f67.google.com with SMTP id a1e0cc1a2514c-9371f6f2813so907304241.0
-        for <linux-mmc@vger.kernel.org>; Mon, 22 Dec 2025 02:58:37 -0800 (PST)
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-55b0d4b560aso3191354e0c.0
+        for <linux-mmc@vger.kernel.org>; Mon, 22 Dec 2025 03:05:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766401116; x=1767005916;
+        d=1e100.net; s=20230601; t=1766401535; x=1767006335;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sZvGT0H4XrwC6oZYNGXDbHChZKorQ8JtBsqLTAqv8b0=;
-        b=qnAAjdv/fmkEvzxGAwRH2Ysl7N/hv9JZXMLrKt2ncRUnOmASA4HILEpnLPSiaTsIzu
-         9FRSYX4wl6KHu27cNGoa4t8/ZjK7ft5Dt+HOLOX3x/h/n2SSrQwX+RLvIvaL2PilJt8D
-         nPvmzBpNGakXo+SO5emOxMH57yQeuQjzt04eEGyD4/roi524kmsS2w9m//myTDhISDtx
-         Q9zTiN89h2kDhiIiG4lY/iFzCq8DYLdC6PG6gDTT3R5IazRhpfbM9LDt8DjXJhZY3Snr
-         AM9Q7yxc9K6c1oUoAle+clZ4G5v8JyLSVCPjna0W1Sbc+cf0dvQ8JpfMM2VePHOMqCcg
-         8bjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXiTovHDAYUapcgzE5W7bZeq8dceY4d2hXoduk7ugEO39Cr4vk8Hu2xPVpV/Qcel9hVyx5TiWmNVKU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwH2ID0g01FmkYnt6zrgQ8O1GQMviX4Hwjv3DiV8ZvW44FecKZb
-	BaAUIGpd7nD+w96mY/lUigmalBBT6Hlmdiu4ETaWAf8U+0FxKy9zgWCgrMMCeJDt9Zc=
-X-Gm-Gg: AY/fxX6irpUv2y44V74/tpok4wa12BF1kyuFt86XfqTSbsfXE8tsl7ZtUAamIOxl3zr
-	UXcGk7hA5yxrTUFe1vBcOych8Zu5kRB9bsDIlyWxOev0c4lX7qEIq7QJxRia/xm8ZpQ+Cn5V7vQ
-	9Z8K2I9B0iwoopWcNStCzIwjpgjX7Z7IiPEdNS4TDICJeklBtkQVRVcs36oA/I4Vp1a44k9BsJ8
-	Y1c/nTq9422gGwhHdkANr7KTUumPpLeLpD01HHWxZhNRa0BQ9HzvKDC8dEudrk6CzBCLKlNKKqs
-	RcIyGVMo/rUyWTztUZREuESMvjYYDMlfSA6LnR310Mt7fy2L9rqsShyhgL6pDz9Ithj+nPn13VW
-	kpzNoS+lxgF1/3A855E+ZvaPqPSqMQpEi3JXq9sXu53f7+GVA6td/KSKsou3r450Gfy2GF30udF
-	QtTYChb70S4vqOgfphgSHGNrL37pHPv+g/YiBogf1LBdIyZDlHxW46KujF+AY=
-X-Google-Smtp-Source: AGHT+IGM4wgjMJXx4QlC8BwSf5yTZAYnOr22ZCVuU3AdIxs+qGCMbHJUyh9xbwK8EC7xa/hFcbKxeg==
-X-Received: by 2002:a05:6102:5493:b0:5db:fb4c:3a89 with SMTP id ada2fe7eead31-5eb1a6b77ecmr3297751137.19.1766401116260;
-        Mon, 22 Dec 2025 02:58:36 -0800 (PST)
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com. [209.85.222.48])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-943415169cdsm2907364241.0.2025.12.22.02.58.35
+        bh=iVlS5J1HzuVScBDeCBX0VxoypelfY5sXHRtDOTQInFQ=;
+        b=ZL/PGlfhjLqmgVdxpZCl22rZoXOWAU0nxV2UlaX+k2actCde7ZurILcWV7iYWkzVXx
+         cU8j2RCpfhrfOEw0kgF0qI5+ESXVn7//XXvI3KaJXjr3E/cvPMEus+X8yfvu0mvRg8QU
+         EIbPtl2pJFfNOpq81J8AGfErlHbNzbLlPmpUdqGfZr1y0LVIIVjVfj3rRVIMZQniEKXp
+         CadTgdIslxL/EOg5KQU5mvhfwJircTNS+D1zo+94iy2XbW7rIHhxaC6iW6ViO9S3f2Rx
+         3xRa4nA9Y2qElRSmz0nEUCOF6oxK88tKsyQ0ZzkmYYbBUddCL8OQVpyv0ZAkF+/Qy4sC
+         veqg==
+X-Forwarded-Encrypted: i=1; AJvYcCXDL0p+FC8XAZlA3ODUWKh9DSDKt1kmsHJtABhMRU5GWoAg4UkwEOX9KGhs7E0T9rP9+nAuS3FALIs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxd7Bub3Q8VXp4gTdvtxAdiFeBOmHqpAGryL7NPbYh5aCQk7vl2
+	TOLDP+Dhl3g5VsGp0+0cseZOcdgCjGQAQMt9GYaT0pXTOQ+nS2bbWgPgbjcYF7K9
+X-Gm-Gg: AY/fxX5uBxWm8GWlmybjMUjIZeRz486BRgfDIuhOsozBO7TDXQsHfmKadP6hsHklnNA
+	6Zt5NKceUZRtPgV5Fu6by1X/uQt2KyTfcMwbEr8ZEvDVsiiLS8skfY/xjdp4eLpnKtWWwfEkoEf
+	rMn6Oywhq0r/L6kc6qeP9KLXMDpPMiVChYfMWwlzC5HutgNWxe5qxhRu7fSRdM6XHlzAUhPPLgf
+	bq3OE/wn1zAj/kRGhzY+6jxSI8DoO6GjSddwraBlyxrjcSSq9uz+vYLzv92mj2AY6EXSPo4tLY+
+	ikWG6yT76eGJKMFHGwibeF3jiUYpYEzUgS/90bW4He2LNGGQ/s3R50C9KHowjyYUVNtL1aUtNKK
+	4dWFLlc9ZUwu/AFhnncEQKpYIZnpwJXQuVwHVgi4mEx4NdhU29wunY4k7yKhoO1SazCO7Fn5agi
+	8g0IFmOjXeHraACn+7beYjdc4kTg5JD39+mqOmFKGCRdPcI9Zm
+X-Google-Smtp-Source: AGHT+IFDNTUWVJwZJFBS0sGnnXsT/ohNVADCw3dUASQkgDwggmVolA0ETBW7LGR6cK3k6Weh7/9pGQ==
+X-Received: by 2002:a05:6102:5681:b0:5db:f031:84e5 with SMTP id ada2fe7eead31-5eb1874196cmr3807160137.21.1766401535616;
+        Mon, 22 Dec 2025 03:05:35 -0800 (PST)
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5eb1aad0b7bsm3280169137.8.2025.12.22.03.05.35
         for <linux-mmc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Dec 2025 02:58:35 -0800 (PST)
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-9371f6f2813so907299241.0
-        for <linux-mmc@vger.kernel.org>; Mon, 22 Dec 2025 02:58:35 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXDv4UHDZBs6f8lvK3yB52SN3mfLQejH6ip7nOJ8ZMOnLiRemGeLmUGorvVkGQufkDUCUDuRNhaZYU=@vger.kernel.org
-X-Received: by 2002:a05:6102:fa3:b0:5dd:b318:8a6 with SMTP id
- ada2fe7eead31-5eb1a656bf6mr3126682137.12.1766401115588; Mon, 22 Dec 2025
- 02:58:35 -0800 (PST)
+        Mon, 22 Dec 2025 03:05:35 -0800 (PST)
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-93f523bba52so2259672241.1
+        for <linux-mmc@vger.kernel.org>; Mon, 22 Dec 2025 03:05:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUzoWIM0HaPw9WHIqEE/MhW0ypRQg07fWCnQuWuyupulgU7acmCGiisplTZRxGDIPUqbdg4TTkL7j4=@vger.kernel.org
+X-Received: by 2002:a05:6122:6790:b0:559:7faf:a276 with SMTP id
+ 71dfb90a1353d-5614f7ae2d0mr3069797e0c.7.1766401194470; Mon, 22 Dec 2025
+ 02:59:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251201-rz-sdio-mux-v2-0-bcb581b88dd7@solid-run.com>
- <20251201-rz-sdio-mux-v2-1-bcb581b88dd7@solid-run.com> <TY3PR01MB113465581E5F8BD6C45FB7DCB86DBA@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-In-Reply-To: <TY3PR01MB113465581E5F8BD6C45FB7DCB86DBA@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+References: <20251210-rz-sdio-mux-v3-0-ca628db56d60@solid-run.com> <20251210-rz-sdio-mux-v3-1-ca628db56d60@solid-run.com>
+In-Reply-To: <20251210-rz-sdio-mux-v3-1-ca628db56d60@solid-run.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 22 Dec 2025 11:58:24 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdV52FEGdW3Jqtn_=yhZ8h1hf5h9nn8d15Pkgmq7VJwnSA@mail.gmail.com>
-X-Gm-Features: AQt7F2q0YOJcyHYc-yKCfd0Zxy7zMhTJdHjRwxfC8lQ_tc7MS1WxbilS5iTx4Xs
-Message-ID: <CAMuHMdV52FEGdW3Jqtn_=yhZ8h1hf5h9nn8d15Pkgmq7VJwnSA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: mmc: renesas,sdhi: Add mux-states property
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Josua Mayer <josua@solid-run.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, "magnus.damm" <magnus.damm@gmail.com>, 
-	"wsa+renesas" <wsa+renesas@sang-engineering.com>, 
+Date: Mon, 22 Dec 2025 11:59:43 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVqSPQ_rCY1mPxyAw1=WwK2VX9bxMKQQuVEe75u5hTvsg@mail.gmail.com>
+X-Gm-Features: AQt7F2qvtAFJTZWBdh_71wFZZJPHL2v6ti7TTVpa1qQd7XzzszUS-LtvxMifYms
+Message-ID: <CAMuHMdVqSPQ_rCY1mPxyAw1=WwK2VX9bxMKQQuVEe75u5hTvsg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] phy: can-transceiver: rename temporary helper
+ function to avoid conflict
+To: Josua Mayer <josua@solid-run.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Magnus Damm <magnus.damm@gmail.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Marc Kleine-Budde <mkl@pengutronix.de>, Vincent Mailhol <mailhol@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Peter Rosin <peda@axentia.se>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Vignesh R <vigneshr@ti.com>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Andi Shyti <andi.shyti@kernel.org>, 
 	Mikhail Anikin <mikhail.anikin@solid-run.com>, Yazan Shhady <yazan.shhady@solid-run.com>, 
-	Jon Nettleton <jon@solid-run.com>, "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>
+	Jon Nettleton <jon@solid-run.com>, linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-can@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Biju,
-
-On Mon, 1 Dec 2025 at 14:03, Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> > -----Original Message-----
-> > From: Josua Mayer <josua@solid-run.com>
-> > Add mux controller support for when sdio lines are muxed between a host and multiple cards.
-> >
-> > There are several devices supporting a choice of eMMC or SD on a single board by both dip switch and
-> > gpio, e.g. Renesas RZ/G2L SMARC SoM and SolidRun RZ/G2L SoM.
-> >
-> > In-tree dts for the Renesas boards currently rely on preprocessor macros to hog gpios and define the
-> > card.
-> >
-> > By adding mux-states property to sdio controller description, boards can correctly describe the mux
-> > that already exists in hardware - and drivers can coordinate between mux selection and probing for
-> > cards.
-> >
-> > Signed-off-by: Josua Mayer <josua@solid-run.com>
-
-> > --- a/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
-> > +++ b/Documentation/devicetree/bindings/mmc/renesas,sdhi.yaml
-> > @@ -106,6 +106,11 @@ properties:
-> >    iommus:
-> >      maxItems: 1
-> >
-> > +  mux-states:
-> > +    description:
-> > +      mux controller node to route the SDIO signals from SoC to cards.
+On Wed, 10 Dec 2025 at 18:39, Josua Mayer <josua@solid-run.com> wrote:
+> Rename the temporary devm_mux_state_get_optional function to avoid
+> conflict with upcoming implementation in multiplexer subsystem.
 >
-> Maybe describe 0 - state for SD and 1 - state for eMMC ??
->
-> > +    maxItems: 1
->
-> > +
-> >    power-domains:
-> >      maxItems: 1
-> >
-> > @@ -275,6 +280,7 @@ examples:
-> >          max-frequency = <195000000>;
-> >          power-domains = <&sysc R8A7790_PD_ALWAYS_ON>;
-> >          resets = <&cpg 314>;
-> > +        mux-states = <&mux 0>;
->
-> On R-Car mmc/sd mux available only on SD2/SD3, so I guess you picked wrong node SD0??
+> Signed-off-by: Josua Mayer <josua@solid-run.com>
 
-What do you mean by this comment?
-AFAIUI, this muxing is board-specific, and not related to the on-SoC
-SDHI controller instance?
-
-Thanks!
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
 Gr{oetje,eeting}s,
 
