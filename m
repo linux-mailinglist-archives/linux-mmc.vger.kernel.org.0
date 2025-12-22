@@ -1,237 +1,273 @@
-Return-Path: <linux-mmc+bounces-9651-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9654-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F99CD5B70
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Dec 2025 12:04:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3CFCD6604
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Dec 2025 15:34:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C42E300C164
-	for <lists+linux-mmc@lfdr.de>; Mon, 22 Dec 2025 11:04:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB5623038963
+	for <lists+linux-mmc@lfdr.de>; Mon, 22 Dec 2025 14:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA93319619;
-	Mon, 22 Dec 2025 11:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0692A2F5A28;
+	Mon, 22 Dec 2025 14:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="EJx632KM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CfQDxQ3V"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010020.outbound.protection.outlook.com [52.101.228.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26745226CF6;
-	Mon, 22 Dec 2025 11:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766401472; cv=fail; b=bBse2rdNwO243uqTQ1pR0lUQme41qDrfp8n0KFoGSpS1RV3PnI8cpp83JKF9Hl86xAxr3VGaxa8ylKFZF2KDaHMSMSBrBTEa31dqR24j7d+dea/YzD3uhtHJoBH06yGg2XksqPUdXljSzeRFpjHEyJPpSnZsE8FMWQBKO32LRlI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766401472; c=relaxed/simple;
-	bh=s9d6k/D3gKPSGY8b2WO0Czh+9EhYxmi5egP5TwlzvRA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=r0unkZZviq/raUkMV3kSa5NSjFWj/AjuC+Yr4SBPr1E2q2W48pXoKlpWLPCyPlVAwx6s6QStd6dr3YfeR6AKbxV8jLsqs2LQbQMK03Peg//wOx/T6yX7KgZPerneW+3hNwSAu8AJPi1OZNlydBNf3GBs+794Uavk1OFQQoSu8KM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=EJx632KM; arc=fail smtp.client-ip=52.101.228.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PrDLGf6Za9UIgknVLhoILuUYGGEty3Ja5WIOfMCv+y/YVyR/3G1FB+WhMqArg0vPpZaBDUsFJpgwMHzwnTfa+QzF3jgGwG1cxPlaRddLvAk9tCG0rCalxJGbFg5boyjQahkgUoPs+/58WnKoL7w2lKT64RmyT28z5kWwhB4gpDoFXW67gr90evIqz3G3mUvBzXcLbXsg2TQI73BjmhOzJahpLVrCb24YJdMHauiMGTe8opzisxdzkcsKeEiBpX2k8SyFGWMChwdQzs89DhhKPLPfvWzUViWsmAY42ejM5vQGo/1K4GjslB/4XLDBw/+04uMgeqT/7wEMNIZjq/r8Kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s9d6k/D3gKPSGY8b2WO0Czh+9EhYxmi5egP5TwlzvRA=;
- b=iO68zLpyqLWoSmEBsBdgW9U15dLG5EZOv7RDACg5toVmKDjMT+yTWkvUZUh3er+dh6JKCg8X6/79k+m1J72hVLv9rloG5ANnJzSf/ZheMcDWAhCFi62xVPBgGjWypNCRostTv1TU3c3DUNsTOmR8OBt2bLEijLXX9zvSfPsXdWeAh6/T0LR4b+YSUIDV5Wj7/i0w3vyxY+eqK4tgh0AKJh/055DrVtqsfWMJEjyH5KuAoq+Rt+7ozJx7Ro1v4/ZeuUVVdfeORI2JExD+zYvqY9fbfl8vstBbpodgJj6a9q0Ty5Mdd06i0I1FweU0vN59S6nWEVod2oAhYhRIaQA89Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s9d6k/D3gKPSGY8b2WO0Czh+9EhYxmi5egP5TwlzvRA=;
- b=EJx632KMtHCAK20D0LTVN98XYFI6iQdQnpgS+YlyVpnWJ+yF/nsCb/A4ja4iJ77+mzOLw8bwOB+AdekWx0hHNj9VyZ9VeoqYg+EH+0ZTdABQZCb3p3d9LXEvtb4ap1NpELEhgrgi6bQlT5NAwlsBJ1OAyuay6qusQ9SfODWgjr0=
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com (2603:1096:400:3d0::7)
- by TYCPR01MB10728.jpnprd01.prod.outlook.com (2603:1096:400:294::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.10; Mon, 22 Dec
- 2025 11:04:24 +0000
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::86ef:ca98:234d:60e1]) by TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::86ef:ca98:234d:60e1%6]) with mapi id 15.20.9456.008; Mon, 22 Dec 2025
- 11:04:24 +0000
-From: Biju Das <biju.das.jz@bp.renesas.com>
-To: geert <geert@linux-m68k.org>
-CC: Josua Mayer <josua@solid-run.com>, Ulf Hansson <ulf.hansson@linaro.org>,
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven
-	<geert+renesas@glider.be>, magnus.damm <magnus.damm@gmail.com>, wsa+renesas
-	<wsa+renesas@sang-engineering.com>, Mikhail Anikin
-	<mikhail.anikin@solid-run.com>, Yazan Shhady <yazan.shhady@solid-run.com>,
-	Jon Nettleton <jon@solid-run.com>, "linux-mmc@vger.kernel.org"
-	<linux-mmc@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
-	<linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH v2 1/2] dt-bindings: mmc: renesas,sdhi: Add mux-states
- property
-Thread-Topic: [PATCH v2 1/2] dt-bindings: mmc: renesas,sdhi: Add mux-states
- property
-Thread-Index: AQHcYr6fMjaP0/3KT0Wqx+rUGWyUpLUMuQqggCDlQQCAAABUoA==
-Date: Mon, 22 Dec 2025 11:04:24 +0000
-Message-ID:
- <TY3PR01MB11346909D4DE29AFE7D229B0786B4A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-References: <20251201-rz-sdio-mux-v2-0-bcb581b88dd7@solid-run.com>
- <20251201-rz-sdio-mux-v2-1-bcb581b88dd7@solid-run.com>
- <TY3PR01MB113465581E5F8BD6C45FB7DCB86DBA@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <CAMuHMdV52FEGdW3Jqtn_=yhZ8h1hf5h9nn8d15Pkgmq7VJwnSA@mail.gmail.com>
-In-Reply-To:
- <CAMuHMdV52FEGdW3Jqtn_=yhZ8h1hf5h9nn8d15Pkgmq7VJwnSA@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY3PR01MB11346:EE_|TYCPR01MB10728:EE_
-x-ms-office365-filtering-correlation-id: 30c930fa-f11d-4e22-fd1b-08de4149ddd5
-x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?QnVMYjdLTkMwYmxnR2xJa09DalA0bVFncXM3OUs0RFpqY01jTmdiVDl6aWhj?=
- =?utf-8?B?V1FGOVFLak95WWhpclF4eU5vbG5NOFV5OUVwN1piSkZZb1pVQXRYMmVvTGlo?=
- =?utf-8?B?VHhmWlE5Q2VBaitvZ1lHSG5xRzFRUnczUW9GT3lsQkN4blY4R3VNOE1MZXBz?=
- =?utf-8?B?MGMrNnVoUmpMNVI4MzI4M1hrQ3ZYNThlRXBidmQwWVZXa0J0R09pRGhwSzVX?=
- =?utf-8?B?eDdlc0Y4Z3Fsa3N2dmlDeVhNZ0pDZUFaQU1QNVM5SDFPbm1yWTZpei9DOUNp?=
- =?utf-8?B?L2ppaXFJQXRGQXJBcnJmVGg2c1dNeHBzeDQ0VHNFYkxVNUpSdkxZVjlWSEtu?=
- =?utf-8?B?Wk5hM0c0VXpndDFhS2xRRnI5QXF3WlNXL2NJVkIzeVk1bVlydWFPMzUrditE?=
- =?utf-8?B?Rk5qczJYalBxK2swNWxmdGpwbXJRaTlUQmp3NmtaaitULzFqTlozZ0d2UkVn?=
- =?utf-8?B?dGp3R0FPcW1QLzdHQlZkWm1SZ29JWGdwZXlwODVra012R2s0Y1R6NVhPU2h1?=
- =?utf-8?B?UUNQWVZ0Q2x0OXptRWVzZDRTdGdiNXNrTmtzVWlMRnVZdFRmUHlQdmRXRjMw?=
- =?utf-8?B?Vlk3RFh2RElNU2NXUzhETmQ1citTdG9tZE81RkRnUHlHYnpFU0lPb0dyOFVK?=
- =?utf-8?B?MXJVWkRYbE43cForYkdBekdtZG93Ry8zYXYvelo5anNkTW01NnFvRHNaK29F?=
- =?utf-8?B?ZURIM3JBeVFGZUtFb05HMDhRWVVLbVUxemRPNmExYUJUV2w5Tm9peUNYbGt0?=
- =?utf-8?B?WkRLYXN5bjJrQ0NOUHVoNndocHIwOWY0MHNJOUtsRXRzWHY4Ui91Uy9XVldZ?=
- =?utf-8?B?d1pzTnRKL2VVVitwTytYMEN0Y25LcFFmbmE1UDJ4UnBvR2o0bHZqeUxnNUlr?=
- =?utf-8?B?SDVJWHRFTER6RCs3QnRLcENCWmR6QnVhSTZSeXJrcGlXaFNkeXVTeDdJN1dH?=
- =?utf-8?B?OHR5NUl2NFQ0dXBNM0YrY2Vhc1ZnV3pIWG5pZEdSeUEvMEZjMlduaWNDcDJk?=
- =?utf-8?B?UkpTejZkNWtZWW8rSHRXVFNNVUdyZmY2bi9waUMyNXlKWWZibUIyMUJBN0hR?=
- =?utf-8?B?VmJCTFlIeUhBaHM1THM2cVNUUHBsQkdXd0phQnREcWxIc25sRk5QWEJLa01y?=
- =?utf-8?B?eXkvTXlGMEQ3NjJNcXM0b1M5MXVkVHQyR1QzUnh1ajNZMEtUOGsvYzlyOGZu?=
- =?utf-8?B?UnBSNUV0UHJjNG42Y3pqVlZmdmRMdFY0aXBRV3I3WWJ5OEhEc1J1VjlQYkIv?=
- =?utf-8?B?RmtFcnIwK3ZSUG9xNHNIRFpabEtUVlYwU0RBLzNuZHZ4NXlDTC9ZUVhWTnI5?=
- =?utf-8?B?OWJsczREZ1ZsdGJ1Y0t0N2I3KzZET1NmQVJUTmNiSHVIU3BFN1h6TzJDdThR?=
- =?utf-8?B?SnJBMkxtemFiOWhHa1J3WkV4ZTA5anlLNjVxM0dmZUlDNUtqQXNTL2l5N2RT?=
- =?utf-8?B?c2Fod3A5ZWJCbzVVMFBxZmRYSUdrWGErWEJwWGVva3FqdWhIYkFkMGRzdFdZ?=
- =?utf-8?B?S0VERmlPMGtCZDl3SEdzazcxS2pKYTlrN09vQUI4U1l6M3o0cVVGd3ZYWTFY?=
- =?utf-8?B?NWtJM1lJeno1MHp4aXMvU05IK29ya1RRdDVlVllqNFNGMExkb2lwQThDak1y?=
- =?utf-8?B?Q2pMcDM5K2VoOVpzMlJwMSt0VU5rR2tUYTFEM1dIcFQ4Tyt5aS9GZjhKb3JW?=
- =?utf-8?B?ZERWUm1mUkdhdEUzVHpZczY5cjRsR3VnOHYrT2J0SDNtbXNQRXgzRDgwOGg3?=
- =?utf-8?B?eWdVRlZPNndPbEJpc3pJWUtqTWRtVElvZVpJUzRFSTdQajcvT3Z0S2prYUdT?=
- =?utf-8?B?NWR0TUhiWXlqamp1c1lwM09pbXBYTU1HbUFYQzEvOTJweXRycE5WdG9WUlQy?=
- =?utf-8?B?NGd4dkpKRXVhTlN5bDZqWXFHTFVJclF4N2Q0YTB6bTcxb1FjRGI3ckkyeTBv?=
- =?utf-8?B?SHlaZVAzemxSQzNmZVp6TnZ6TVhzcDYyVUx0YklpeUJkTkhuSmZQYlBFK0tF?=
- =?utf-8?B?K21SNGxMT2k3YU1BQnpCSTFOclRHTHJBL05xNjNFWmZJQlFZenYvV3VaOWFK?=
- =?utf-8?Q?SC8oIs?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11346.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?Z3BwUTJjZk81Wld3OHdYYWFqcTdLcWtMbVpOOHdudEtxc3lMbDB4aGwwd3dH?=
- =?utf-8?B?eE05QWNSSW13UkdYSTJlbmVYWVIxYnlRbDIxK0V2Y1BaQ3J1Ti9HWnp1T2NP?=
- =?utf-8?B?VjMvdXVnYU8ycUJWZEl4UG9OWTVHQmtETm5KRXhMZVQyV3pkejI0cUhCZ1cx?=
- =?utf-8?B?SXorRVZyMENPOGlwRWRiWDQrWHpEMUlQOC9aaUd1eW5OK0Z2Zm9LRHBIWTFo?=
- =?utf-8?B?V2MvK1RoUnZXeVNLNXgxZW9UQmI4b1QrVkp0QmhuRTJ2a2NQR3NUTmJUWDJs?=
- =?utf-8?B?WldMRmRoN292Z1BCNFRxeENDV3B2RnJKVzB4VnYyZkhlRDdiZG94cjlaZE11?=
- =?utf-8?B?QzdCa2owLzhXQ29VTE91NzNyM2dvZmNCMW9iS1g2OGwwZjlxTVdnR3IyN0dK?=
- =?utf-8?B?YzBtK0NVbEF2UGFRUGdGOE9jbjJwTVNLQnpUZDVCeXRlVWNCOWkveDJOSWxN?=
- =?utf-8?B?eng2Rnk4R1ZHd2oyZTc3U3FQZ3FLQ2ZicDFyVHpmOEtUbVU5MjZGZFFOTU9k?=
- =?utf-8?B?L3Y5VkNNZDZFQ3Y2QVBGN1B5YjVpL21SNUhCc3RjYUFudmVuVVFUMW5EdndB?=
- =?utf-8?B?MGJDNEs0TEp5WkIyRTBpTmltU1E5RklpRjBVSndOYkNWbFlGZ3BaL3NSRWd5?=
- =?utf-8?B?ekRkRkpaczRBcnlkcXV6ayt1SDFqUDdzYXZtNmM0QXdNd2F5UW1wZ0NqNWNK?=
- =?utf-8?B?VWZDRUwwaTB0NVNsTkZmc3dMWWJlOXpybmZyWnV3S0VPZ1R1MXoyMEhMcjRt?=
- =?utf-8?B?WXhlMlZlcGFvRURtbmpXSzZ2OVI3TDdrWS9ZWm9Pdk9xOHpoTDg1UzJ1U3ZN?=
- =?utf-8?B?MVZLQkdFYzBEUklFV3lDMm41Z0pTQlVEUEJSYVJSTjdudTRJSHFDc1d3Q212?=
- =?utf-8?B?ODQwVUFxOTUrYlN6NzBIM0RWbkFYTHhNUGo5Y3Mva0xJMHFKQVlaU1FkRkpK?=
- =?utf-8?B?UWE2MlpIMmM2MGp6V3pkWmw4QXk1YnhuVnJXNWg3OHBLM3U0MjJuWmQwRWRa?=
- =?utf-8?B?YzlqcTJFYytLemNxdWtLZ1JtVUdDdUJLUlNQNnk5bmFiRzA4WVdsSlpPYll5?=
- =?utf-8?B?VFhlUEFFRFRBclhGaXlLNnJWblZxNlhWa3FNS1F0MWJxOVZZS0xmSVByS3o3?=
- =?utf-8?B?OFJhbDlOTm53dHVQcVFESTUybC9KZC9iNGRWa0JBRGptZ2ZJd0ZJWnNKQVNo?=
- =?utf-8?B?SU1aTTJkNjNZNXB3QkVac0dqUUpGWDJuTE9oclc4NEZka2hpeVFrNzd4YUZD?=
- =?utf-8?B?WUMyY0pXR0tGWmp6ZjJ1S3c3eFB2emJZUlRUQTBiZGNIanppL0wvNVFHbXhJ?=
- =?utf-8?B?WGRyZmtIaWUzbzNURHZyNGZhb2lxUlVLVHNZMmpkVkVZUTNQVXo4WUhmM0wz?=
- =?utf-8?B?blg1dE9EWmh3N0lpVklHdk1nbHNwZVpHQnVJczQ4WE9NY3gvRlFPS3BvQ2R3?=
- =?utf-8?B?Uk1sOThwUEN1WGpmc25iM0ZTaUJPUXhZWFhFSjFDRDFMOVBLNmxyN0tod3JI?=
- =?utf-8?B?NjJIcERYSGhEQnNGcldXYnJkVEx0a01nb241SFF2N1N6dVdhV2NWUkx0NWYr?=
- =?utf-8?B?c213VjZHWXZST2VqN2dHUWU2dzBYcU0vdGZBQlVyQUlTekQ3M2V0ZTRNYk9r?=
- =?utf-8?B?cnZBdFNjOU1uamJ3NUNoK3dhUCtKT1QzM1BkVzBmZVJ5ei8xNjlWYk1EWG5j?=
- =?utf-8?B?YktZSnlKbEFIMHZSai8zK2VMMGJaYW9rdm5sZ01NeEUrR25JL0JveUd3S2pi?=
- =?utf-8?B?OFgzZi9scXEzdWx2Y1NoNVJUcS9kcDdKSmFSdWl1TjNIRFlqMkdlV3czenhi?=
- =?utf-8?B?OFN0Z1l1c09Za2lpL2ppQ05qVDhRcm4wcnFNNGs5RTlyLzk1bFZtb0NiMDJN?=
- =?utf-8?B?T1RRTUZTNW5WWFZ4Y08zSUU2MGdOaDA3WHFRN29mM1JvOSsyQkpnY0FDVmZ1?=
- =?utf-8?B?OXo1cE80Sm5nZzlxemU3Vkt2bzZhQVVHa3VXNVcyTSswQ29DUzhHL1Q1dVhr?=
- =?utf-8?B?UlJjUTlodUkybCtsSHh2L043UGE2TVB2bTV3aTRQdDlqa2M5Mk12NSs1cDhP?=
- =?utf-8?B?TisrbVlvN0Z1RVZkUmNDVERkQ1B1blF0WXFTM0dNeVVyRU1xYTZPb0RVYVJK?=
- =?utf-8?B?UWhUSU1OUkxHa1VUdFlBVW1La0VGK0gvd2VSZGdLUVNsZXZINGhwSFE5T1Zx?=
- =?utf-8?B?QkVkOHB3NDRFWHdVcU1MRTBkNWxKNXBjanhsRDBhbUVxSlRrUUxSdVhDYVds?=
- =?utf-8?B?UlNRSzNsczIyWTZxSHlSK29MeXp3SWJHSlFrd2dXVENtaS9tbkFsMmI4M1Vy?=
- =?utf-8?B?QnQwbzA3UlRNYjFXcHB3R2hHemYyU0M1SHZRR3M4dTdlNUZSOVplZz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7992F3C22
+	for <linux-mmc@vger.kernel.org>; Mon, 22 Dec 2025 14:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766414053; cv=none; b=LeNYdqHQBux8fqJHg40X+Tg6pPTeCjtDR9ugvA21ME8ecwKRRKjrWf7jV7m0bJPPygnlsDnTnz41vYRKbOhQKBN/PAcT0MF8eXE1v4zd6L5fX88iHXHtXeSnl+ZRBJHn9C0DFNDT8SdnhvhvdFbC6RnscL8ZicEmurz9KGn18H0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766414053; c=relaxed/simple;
+	bh=lQy+mZKi5UggTVO+Sm8J/mQBT4hp+xc7B/gNeXEWEno=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j1pe2ObLYwhk4eXJDowkiRP2pbhEOZM0pd4Ee3dvjbsapB/RmPqTD7nb1EIwTjPP1IQoVkjTOvlnO/pxaq5zUgdHl9OvsePZKKnDBzc4dvtY4ueU7BKsyroTuh3VV5Kydc27Apf64Ua8WitNhng/cwwSIO/VfpnuFAiofIjGW6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CfQDxQ3V; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-37fccf7035aso32643851fa.1
+        for <linux-mmc@vger.kernel.org>; Mon, 22 Dec 2025 06:34:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1766414049; x=1767018849; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sgxY+6gEj9UygqLRNsiMXRwa1dAq3NfGydbYraAyFIg=;
+        b=CfQDxQ3VJ2rhE5+S9FABAC7tWaJL8aHWPQOtJE6rHvqphgM3lNR6TtJmAV7LC7NtIs
+         aAbG2ZtZJin9L+4iTHKfvegdxpepvq9Gro3HHWB5JzNqrD8JmFn2ulFZXCZyfsjGsqRe
+         o5mJ2DSQCNYnIVGHcc/LtYTQE5lPM9deYbLrgCLQGfHNKzyNcuk5THfbWcyCXQ+fQZ6R
+         8RlfXL9Z3PWU7NlLuzla4bjp4RYK/p3M86k3XI+AoI/h8vXbkMa9qIk0XNSWE2yV8K/l
+         9aLyyLMIyLZQ+CaGEbSJxtpAO5wYanjoSzo4h5bN5MfdKfv6Yh3nPnMNkHyxxJlkAwHE
+         jJXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766414049; x=1767018849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sgxY+6gEj9UygqLRNsiMXRwa1dAq3NfGydbYraAyFIg=;
+        b=MKDHbrjHU6aCTmxn9VM31CwqSECzvdJWWTSiKII8YegYOiT9a/1Y7gGzTxUDUAl9OG
+         K4PNhahaFU1COAkcpldqjMl81xbRKFXhljNm9OGzRMEInQ9eCPRq//WNzKxBxaEI/6f+
+         TVEYQcq6+FCapZHMRPrs6Mzwa8EnI3ojHz1MZzGTQDWCaNFGx0hd5dkkpLYV67E32jFP
+         uIw6qx+H+jZzsll5CrskwfF99XQpp23XHUtrjvIb+CyHvnXE1ySSmklmZp5kDfgk7ird
+         tVoMjZvZl9hFZfjZONwU8Tl1/pUiVN7Ek/Gufa16eRRE+2zRLHU1OAQfhJsl/g78SyFN
+         EP+w==
+X-Gm-Message-State: AOJu0YxQhZ9GnFRrQmY2BWivGJ34wRNCbLOUldSz3xFQawmpfNcHo7NX
+	oWv20d33MK7aC3scwy7r+b/WYyKLYuK8xkveOwkvx0UOL8TB5z+7Y7NqM0nDsnGqW4kWti33kks
+	2Nft5jBdSNAmf5agLnnEIeIkU0kZgqM3TumLEx/wi7Q==
+X-Gm-Gg: AY/fxX7N5EQLhWfqshWq6ti5cmb2+8i4nUB6StKxacpJflUGnjJ0xmW5ReXhmkymVt6
+	q3+dKuK2m3N8p9UwTFP4sQF9vDvVr4MzoFtdQcpI8vAEcv+degfeSvak8q7YO9eucCfuFDf+ajO
+	SX2VEaP2sqapZwBrmomP1YLT8H9atAsRxtEccbSEwVQKle2Ld9tPtG1OUmW/FFbSleXUsck3YmL
+	HJKqgUFr21RLRS3lPHEZQzbDddWHUXcTj36tPveTwvgBwa8qBu9CkhWdNZWw7MTm+KOnNsf
+X-Google-Smtp-Source: AGHT+IGIPsRxALBUVnYOYWNLB0WNW65j6NC13aWbk1SAhBORoZX4/yL+g8ZSROEA5Dom8QWAKwN/DPnOMa/o/SUXpp0=
+X-Received: by 2002:a05:651c:210c:b0:37f:cd21:6ad2 with SMTP id
+ 38308e7fff4ca-3812162165cmr37841061fa.20.1766414049184; Mon, 22 Dec 2025
+ 06:34:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11346.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30c930fa-f11d-4e22-fd1b-08de4149ddd5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Dec 2025 11:04:24.3307
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uUIe5PErFDJRckHhaMdrFkZg0Qzjv7mqk7NoHGz6J81r67XmH0T2FWMV0O0l7cqt8SlF0g622BeVcMywY3SlGupdypD2Fkr8RvlucOH4LTU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB10728
+References: <CAH1aAjJbA08ErU_NMhNDGcNfWgap+G0Fk-Ba-AgfpZcc8zHd=Q@mail.gmail.com>
+ <CAPDyKFrzzLTCYZnr0RFDc0NnPbeUMZzb-2NjXJZa3Q1qQ+OpTg@mail.gmail.com> <ME6PR01MB10557F6B9C1FAF3760C56A2A6AAB7A@ME6PR01MB10557.ausprd01.prod.outlook.com>
+In-Reply-To: <ME6PR01MB10557F6B9C1FAF3760C56A2A6AAB7A@ME6PR01MB10557.ausprd01.prod.outlook.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 22 Dec 2025 15:33:32 +0100
+X-Gm-Features: AQt7F2qP8ilrhBMmLj2emHB8eNHp8DzUto03N9FSiaG1_5NcZ-DVtthR66GKtV4
+Message-ID: <CAPDyKFo0ZbEnpA0A8Qv+FEXctyM=UEak_vaD7_NFaw44oz3zoQ@mail.gmail.com>
+Subject: Re: Issue with Realtek PCI SD card driver
+To: JP Dehollain <jpdehollain@gmail.com>
+Cc: "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, =?UTF-8?B?5ZCz5piK5r6EIFJpY2t5?= <ricky_wu@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGkgR2VlcnQsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogR2VlcnQg
-VXl0dGVyaG9ldmVuIDxnZWVydEBsaW51eC1tNjhrLm9yZz4NCj4gU2VudDogMjIgRGVjZW1iZXIg
-MjAyNSAxMDo1OA0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDEvMl0gZHQtYmluZGluZ3M6IG1t
-YzogcmVuZXNhcyxzZGhpOiBBZGQgbXV4LXN0YXRlcyBwcm9wZXJ0eQ0KPiANCj4gSGkgQmlqdSwN
-Cj4gDQo+IE9uIE1vbiwgMSBEZWMgMjAyNSBhdCAxNDowMywgQmlqdSBEYXMgPGJpanUuZGFzLmp6
-QGJwLnJlbmVzYXMuY29tPiB3cm90ZToNCj4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0t
-DQo+ID4gPiBGcm9tOiBKb3N1YSBNYXllciA8am9zdWFAc29saWQtcnVuLmNvbT4gQWRkIG11eCBj
-b250cm9sbGVyIHN1cHBvcnQNCj4gPiA+IGZvciB3aGVuIHNkaW8gbGluZXMgYXJlIG11eGVkIGJl
-dHdlZW4gYSBob3N0IGFuZCBtdWx0aXBsZSBjYXJkcy4NCj4gPiA+DQo+ID4gPiBUaGVyZSBhcmUg
-c2V2ZXJhbCBkZXZpY2VzIHN1cHBvcnRpbmcgYSBjaG9pY2Ugb2YgZU1NQyBvciBTRCBvbiBhDQo+
-ID4gPiBzaW5nbGUgYm9hcmQgYnkgYm90aCBkaXAgc3dpdGNoIGFuZCBncGlvLCBlLmcuIFJlbmVz
-YXMgUlovRzJMIFNNQVJDIFNvTSBhbmQgU29saWRSdW4gUlovRzJMIFNvTS4NCj4gPiA+DQo+ID4g
-PiBJbi10cmVlIGR0cyBmb3IgdGhlIFJlbmVzYXMgYm9hcmRzIGN1cnJlbnRseSByZWx5IG9uIHBy
-ZXByb2Nlc3Nvcg0KPiA+ID4gbWFjcm9zIHRvIGhvZyBncGlvcyBhbmQgZGVmaW5lIHRoZSBjYXJk
-Lg0KPiA+ID4NCj4gPiA+IEJ5IGFkZGluZyBtdXgtc3RhdGVzIHByb3BlcnR5IHRvIHNkaW8gY29u
-dHJvbGxlciBkZXNjcmlwdGlvbiwgYm9hcmRzDQo+ID4gPiBjYW4gY29ycmVjdGx5IGRlc2NyaWJl
-IHRoZSBtdXggdGhhdCBhbHJlYWR5IGV4aXN0cyBpbiBoYXJkd2FyZSAtIGFuZA0KPiA+ID4gZHJp
-dmVycyBjYW4gY29vcmRpbmF0ZSBiZXR3ZWVuIG11eCBzZWxlY3Rpb24gYW5kIHByb2JpbmcgZm9y
-IGNhcmRzLg0KPiA+ID4NCj4gPiA+IFNpZ25lZC1vZmYtYnk6IEpvc3VhIE1heWVyIDxqb3N1YUBz
-b2xpZC1ydW4uY29tPg0KPiANCj4gPiA+IC0tLSBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9i
-aW5kaW5ncy9tbWMvcmVuZXNhcyxzZGhpLnlhbWwNCj4gPiA+ICsrKyBiL0RvY3VtZW50YXRpb24v
-ZGV2aWNldHJlZS9iaW5kaW5ncy9tbWMvcmVuZXNhcyxzZGhpLnlhbWwNCj4gPiA+IEBAIC0xMDYs
-NiArMTA2LDExIEBAIHByb3BlcnRpZXM6DQo+ID4gPiAgICBpb21tdXM6DQo+ID4gPiAgICAgIG1h
-eEl0ZW1zOiAxDQo+ID4gPg0KPiA+ID4gKyAgbXV4LXN0YXRlczoNCj4gPiA+ICsgICAgZGVzY3Jp
-cHRpb246DQo+ID4gPiArICAgICAgbXV4IGNvbnRyb2xsZXIgbm9kZSB0byByb3V0ZSB0aGUgU0RJ
-TyBzaWduYWxzIGZyb20gU29DIHRvIGNhcmRzLg0KPiA+DQo+ID4gTWF5YmUgZGVzY3JpYmUgMCAt
-IHN0YXRlIGZvciBTRCBhbmQgMSAtIHN0YXRlIGZvciBlTU1DID8/DQo+ID4NCj4gPiA+ICsgICAg
-bWF4SXRlbXM6IDENCj4gPg0KPiA+ID4gKw0KPiA+ID4gICAgcG93ZXItZG9tYWluczoNCj4gPiA+
-ICAgICAgbWF4SXRlbXM6IDENCj4gPiA+DQo+ID4gPiBAQCAtMjc1LDYgKzI4MCw3IEBAIGV4YW1w
-bGVzOg0KPiA+ID4gICAgICAgICAgbWF4LWZyZXF1ZW5jeSA9IDwxOTUwMDAwMDA+Ow0KPiA+ID4g
-ICAgICAgICAgcG93ZXItZG9tYWlucyA9IDwmc3lzYyBSOEE3NzkwX1BEX0FMV0FZU19PTj47DQo+
-ID4gPiAgICAgICAgICByZXNldHMgPSA8JmNwZyAzMTQ+Ow0KPiA+ID4gKyAgICAgICAgbXV4LXN0
-YXRlcyA9IDwmbXV4IDA+Ow0KPiA+DQo+ID4gT24gUi1DYXIgbW1jL3NkIG11eCBhdmFpbGFibGUg
-b25seSBvbiBTRDIvU0QzLCBzbyBJIGd1ZXNzIHlvdSBwaWNrZWQgd3Jvbmcgbm9kZSBTRDA/Pw0K
-PiANCj4gV2hhdCBkbyB5b3UgbWVhbiBieSB0aGlzIGNvbW1lbnQ/DQo+IEFGQUlVSSwgdGhpcyBt
-dXhpbmcgaXMgYm9hcmQtc3BlY2lmaWMsIGFuZCBub3QgcmVsYXRlZCB0byB0aGUgb24tU29DIFNE
-SEkgY29udHJvbGxlciBpbnN0YW5jZT8NCg0KQXMgcGVyIFJaL0cyTSBoYXJkd2FyZSBtYW51YWwo
-Ui1DYXIgTTMtVykgU29DIGhhcyBtbWMvc2RoaSBzdXBwb3J0IG9ubHkgZm9yIFNEMiBhbmQgU0Qz
-LiANClNEMCBhbmQgU0QxLCBTb0MgZG9uJ3QgcHJvdmlkZSAgOCBkYXRhIHBpbnMgdG8gc3VwcG9y
-dCBNTUMgbW9kZS4NCg0KNTcuMS4yIEJsb2NrIERpYWdyYW0gbWVudGlvbnMgIk5vdGU6ICogTU1D
-IGludGVyZmFjZSBpcyBvbmx5IENIMiBhbmQgQ0gzLiINCg0KQ2hlZXJzLA0KQmlqdQ0K
+On Sun, 21 Dec 2025 at 04:19, JP Dehollain <jpdehollain@gmail.com> wrote:
+>
+> Thanks Uffe!
+>
+> It took me some effort to figure out how to make and load the patched dri=
+ver properly in my system, but it seems to be working fine now!
+
+That's great news! So we should probably send the corresponding patch
+to stable kernels too, as currently it's included from v6.18 and
+onwards.
+
+Is it something that you want to look into? Otherwise I can certainly
+do it, but it may take some time before I get to it.
+
+>
+> Thanks to all of you for all the maintaining work =E2=9D=A4=EF=B8=8F
+>
+> Cheers,
+> JP
+
+Thanks and kind regards
+Uffe
+
+> ________________________________
+> From: Ulf Hansson <ulf.hansson@linaro.org>
+> Sent: Thursday, December 11, 2025 9:56:49 PM
+> To: JP Dehollain <jpdehollain@gmail.com>
+> Cc: linux-mmc@vger.kernel.org <linux-mmc@vger.kernel.org>; =E5=90=B3=E6=
+=98=8A=E6=BE=84 Ricky <ricky_wu@realtek.com>
+> Subject: Re: Issue with Realtek PCI SD card driver
+>
+> + Ricky Wu (the main developer of the driver)
+>
+> On Thu, 11 Dec 2025 at 10:05, JP Dehollain <jpdehollain@gmail.com> wrote:
+> >
+> > Dear mmc kernel driver mantainers,
+> >
+> > When I insert an SD card in the integrated card reader in my laptop, mo=
+st of the time the card gets recognised as read-only, even though the physi=
+cal switch is in the unlocked position. If I remove and reinsert the card s=
+everal times without unmounting it in the OS, I can eventually get it to lo=
+ad in rw mode.
+> >
+> > I am using Zorin 18, with linux kernel 6.14.
+> > Attached below is the output of dmesg showing several attempts to remov=
+e and reload, until it reloads in rw in line [10281.365508].
+> >
+> > Please let me know if there any other logs and tests I can send or perf=
+orm to help resolve the issue.
+>
+> I found one interesting commit that may be worth trying:
+>
+> commit 807221d3c5ff ("misc: rtsx_pci: Add separate CD/WP pin polarity
+> reversal support").
+>
+> Not sure if it applies on v6.14 kernel, but I suggest giving it a try.
+> Or try the latest kernel, v6.18. I have also looped in Ricky Wu, to
+> see if he is able to help out.
+>
+> Kind regards
+> Uffe
+>
+> >
+> > Best regards,
+> > JP
+> > jpdehollain
+> >
+> >  [ 9367.567443] Generic FE-GE Realtek PHY r8169-0-201:00: attached PHY =
+driver (mii_bus:phy_addr=3Dr8169-0-201:00, irq=3DMAC)
+> > [ 9367.568438] Bluetooth: MGMT ver 1.23
+> > [ 9367.738206] r8169 0000:02:00.1 enp2s0f1: Link is Down
+> > [ 9375.195026] wlp3s0: authenticate with c0:fd:84:c2:04:ac (local addre=
+ss=3D40:b8:9a:b9:34:e1)
+> > [ 9375.195036] wlp3s0: send auth to c0:fd:84:c2:04:ac (try 1/3)
+> > [ 9375.195935] wlp3s0: authenticated
+> > [ 9375.196946] wlp3s0: associate with c0:fd:84:c2:04:ac (try 1/3)
+> > [ 9375.198285] wlp3s0: RX AssocResp from c0:fd:84:c2:04:ac (capab=3D0x1=
+011 status=3D0 aid=3D6)
+> > [ 9375.200886] wlp3s0: associated
+> > [ 9377.256424] rfkill: input handler enabled
+> > [ 9377.260100] rfkill: input handler disabled
+> > [ 9378.855243] lockdown_is_locked_down: 2 callbacks suppressed
+> > [ 9378.855248] Lockdown: systemd-logind: hibernation is restricted; see=
+ man kernel_lockdown.7
+> > [ 9842.321650] mmc0: cannot verify signal voltage switch
+> > [ 9842.474907] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [ 9842.475878] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [ 9842.478394]  mmcblk0: p1
+> > [ 9842.672905] /dev/mmcblk0p1: Can't open blockdev
+> > [ 9884.098398] mmc0: card 0001 removed
+> > [ 9898.560801] mmc0: cannot verify signal voltage switch
+> > [ 9898.716638] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [ 9898.717583] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [ 9898.720430]  mmcblk0: p1
+> > [ 9898.901398] /dev/mmcblk0p1: Can't open blockdev
+> > [ 9926.650920] mmc0: card 0001 removed
+> > [ 9932.079104] mmc0: cannot verify signal voltage switch
+> > [ 9932.233022] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [ 9932.233814] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [ 9932.236526]  mmcblk0: p1
+> > [ 9932.417077] /dev/mmcblk0p1: Can't open blockdev
+> > [ 9945.675206] mmc0: card 0001 removed
+> > [ 9954.348559] mmc0: cannot verify signal voltage switch
+> > [ 9954.505148] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [ 9954.505892] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [ 9954.508907]  mmcblk0: p1
+> > [ 9954.688774] /dev/mmcblk0p1: Can't open blockdev
+> > [ 9969.099540] mmc0: card 0001 removed
+> > [ 9975.967776] mmc0: cannot verify signal voltage switch
+> > [ 9976.123568] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [ 9976.124400] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [ 9976.127501]  mmcblk0: p1
+> > [ 9976.308274] /dev/mmcblk0p1: Can't open blockdev
+> > [ 9989.339754] mmc0: card 0001 removed
+> > [ 9998.751059] mmc0: cannot verify signal voltage switch
+> > [ 9998.908154] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [ 9998.909036] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [ 9998.911611]  mmcblk0: p1
+> > [ 9999.088417] /dev/mmcblk0p1: Can't open blockdev
+> > [10039.268493] mmc0: card 0001 removed
+> > [10046.108371] perf: interrupt took too long (3167 > 3166), lowering ke=
+rnel.perf_event_max_sample_rate to 63000
+> > [10049.398057] mmc0: cannot verify signal voltage switch
+> > [10049.554751] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [10049.555751] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [10049.558524]  mmcblk0: p1
+> > [10049.735565] /dev/mmcblk0p1: Can't open blockdev
+> > [10069.188896] mmc0: card 0001 removed
+> > [10076.400515] mmc0: cannot verify signal voltage switch
+> > [10076.556156] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [10076.556990] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [10076.559495]  mmcblk0: p1
+> > [10076.744822] /dev/mmcblk0p1: Can't open blockdev
+> > [10097.512910] capability: warning: `gvfsd-admin' uses 32-bit capabilit=
+ies (legacy support in use)
+> > [10160.142113] mmc0: card 0001 removed
+> > [10166.327484] mmc0: cannot verify signal voltage switch
+> > [10166.483689] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [10166.484452] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [10166.486831]  mmcblk0: p1
+> > [10166.673519] /dev/mmcblk0p1: Can't open blockdev
+> > [10209.382671] mmc0: card 0001 removed
+> > [10213.541830] mmc0: cannot verify signal voltage switch
+> > [10213.698167] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [10213.698682] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [10213.701071]  mmcblk0: p1
+> > [10213.879510] /dev/mmcblk0p1: Can't open blockdev
+> > [10233.767001] mmc0: card 0001 removed
+> > [10241.604535] mmc0: cannot verify signal voltage switch
+> > [10241.760000] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [10241.760727] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [10241.763414]  mmcblk0: p1
+> > [10241.942084] /dev/mmcblk0p1: Can't open blockdev
+> > [10253.143302] mmc0: card 0001 removed
+> > [10257.346355] mmc0: cannot verify signal voltage switch
+> > [10257.501510] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [10257.502301] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [10257.504889]  mmcblk0: p1
+> > [10257.685511] /dev/mmcblk0p1: Can't open blockdev
+> > [10262.447439] mmc0: card 0001 removed
+> > [10281.209724] mmc0: cannot verify signal voltage switch
+> > [10281.365508] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [10281.366289] mmcblk0: mmc0:0001 SD32G 29.1 GiB
+> > [10281.369004]  mmcblk0: p1
+> > [10281.589067] FAT-fs (mmcblk0p1): Volume was not properly unmounted. S=
+ome data may be corrupt. Please run fsck.
+> > [10345.088596] mmc0: cannot verify signal voltage switch
+> > [10346.904393] mmcblk0: recovery failed!
+> > [10346.904422] I/O error, dev mmcblk0, sector 2049 op 0x1:(WRITE) flags=
+ 0x100000 phys_seg 1 prio class 2
+> > [10346.904438] Buffer I/O error on dev mmcblk0p1, logical block 1, lost=
+ async page write
+> > [10366.548533] mmc0: tuning execution failed: -22
+> > [10366.548618] mmc0: card 0001 removed
+> > [10370.618162] mmc0: cannot verify signal voltage switch
+> > [10370.773816] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [10370.774592] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [10370.777138]  mmcblk0: p1
+> > [10370.967092] /dev/mmcblk0p1: Can't open blockdev
+> > [10397.449106] mmc0: card 0001 removed
+> > [10401.424032] mmc0: cannot verify signal voltage switch
+> > [10401.580344] mmc0: new UHS-I speed SDR104 SDHC card at address 0001
+> > [10401.581107] mmcblk0: mmc0:0001 SD32G 29.1 GiB (ro)
+> > [10401.583533]  mmcblk0: p1
+> > [10401.758441] /dev/mmcblk0p1: Can't open blockdev
 
