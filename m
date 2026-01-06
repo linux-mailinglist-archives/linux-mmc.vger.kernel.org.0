@@ -1,56 +1,56 @@
-Return-Path: <linux-mmc+bounces-9763-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9759-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56083CF6896
-	for <lists+linux-mmc@lfdr.de>; Tue, 06 Jan 2026 03:59:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F05CF67DD
+	for <lists+linux-mmc@lfdr.de>; Tue, 06 Jan 2026 03:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C41763007534
-	for <lists+linux-mmc@lfdr.de>; Tue,  6 Jan 2026 02:59:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 82C273017ED6
+	for <lists+linux-mmc@lfdr.de>; Tue,  6 Jan 2026 02:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C0C2253EC;
-	Tue,  6 Jan 2026 02:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E214238159;
+	Tue,  6 Jan 2026 02:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="ZFjvNBSa"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="gVHOjJ8j"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-m15599.qiye.163.com (mail-m15599.qiye.163.com [101.71.155.99])
+Received: from mail-m128121.netease.com (mail-m128121.netease.com [103.209.128.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D37224B15
-	for <linux-mmc@vger.kernel.org>; Tue,  6 Jan 2026 02:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA31A22A4E1
+	for <linux-mmc@vger.kernel.org>; Tue,  6 Jan 2026 02:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.209.128.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767668352; cv=none; b=AySYxxxg+R3EeGkmDWcP0dGWxsJzD9a3dbFlNvBzHep/ojhPqoNJSlwj0jamyCkC4NyFeI6Xnf3p/5O1h8e/tR+2305OfeIbv9NAHLV9eK2ZrXlf8PVZpyp2yZVdgFZCKw9b1YQ+EDRBUyPmGsoH1zhFttyUf7dUqUeKABoaT/E=
+	t=1767667163; cv=none; b=C8B2E2s9LuoMfDxnkUXLuP0H8yywZTNgh1MQ31sIll8IWtdtajRKESkJi+IIQ9B/Q/ZytxuI61aM1B8McJ8fAoJgdY0suIiBdI3E0NJsZfzIzGdHKKoLIOFxd7Im3xf60CzsczJUSo9Nr9sBDxGPmhZ9ckmnUeJ3saIbR8x57hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767668352; c=relaxed/simple;
-	bh=kk5eBHGNJ4UyPBiqsUZXDV2hIpkfnjC3xaXI46pBChk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qe7ZhNqbbkZQBQYiyXTvxqA9dK7Euxkvz2sR2s9t676kSfggiG1gVqmss3vtNK6gVZnzjUwq9kAjZbL4fa/VpiNRJX2gHOU/SPxjC571xOxdBRFPrXedPUnog0tiJUBWGr29UtI6LSPX5dxsm+WdBuwjtnteu5IqmDT6yxp5fCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=ZFjvNBSa; arc=none smtp.client-ip=101.71.155.99
+	s=arc-20240116; t=1767667163; c=relaxed/simple;
+	bh=uj9XvzDRXnCcOTHs3OUQ06H+zcvTcTX6QqNQKNpI3JM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=OoV3w4Fcavlr8vyWygf9xXSA3f+HDR6xsWNpVYw6mn3yh7/wyMpHzyyzd3fe2HrpdnxXJrLKnjK4q4RGUIcTQpvNyh6ydL2N1LAWzBYGFixxJoSnK8SGCBokBxD/XEKXZFuFUMMXO23Jz8BaJbd/jAuVHYqtzbhonoCZdhJek04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=gVHOjJ8j; arc=none smtp.client-ip=103.209.128.121
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2f9c4acbc;
-	Tue, 6 Jan 2026 10:23:37 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2f9c4ad42;
+	Tue, 6 Jan 2026 10:23:58 +0800 (GMT+08:00)
 From: Shawn Lin <shawn.lin@rock-chips.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-mmc@vger.kernel.org,
 	Jaehoon Chung <jh80.chung@samsung.com>,
 	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH v2 13/18] mmc: dw_mmc: Improve dw_mci_get_cd()
-Date: Tue,  6 Jan 2026 10:17:04 +0800
-Message-Id: <1767665829-183001-14-git-send-email-shawn.lin@rock-chips.com>
+Subject: [PATCH v2 14/18] mmc: dw_mmc: Remove unused register access macros
+Date: Tue,  6 Jan 2026 10:17:05 +0800
+Message-Id: <1767665829-183001-15-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1767665829-183001-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1767665829-183001-1-git-send-email-shawn.lin@rock-chips.com>
-X-HM-Tid: 0a9b911df10c09cckunmc69ba49b79cd75
+X-HM-Tid: 0a9b911e43f909cckunmc69ba49b79ce99
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGU8aHlYZGRoYTEpKS0NJT0pWFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUhPH1YdTBpKGEkeS0NMGk9WFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
 	hVSktLVUpCS0tZBg++
 DKIM-Signature: a=rsa-sha256;
-	b=ZFjvNBSaU/eHNxc4HEvuhaA/K7KKDDcJW67Nr/XAEBLpRbsXIFkoCTF+Gb6OShs6ggj0PjpaGG55yJCr83hFgHfTQxwQAy1OpyEvqEfm3BfNuxqTByifyy35QRrouOUPXofiE4RZ1ZZR7TbifWdXnHqhXikQUSKtbhDQLeDVUzM=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=jGuBRvWM7xxA7/dr7ydzR/LKV0IsTwt5sd2wOx4aFYc=;
+	b=gVHOjJ8joDLGxaUsFoRs+DQfI6q9s1JVhC6Yx+LGTMzbeND3JdcHT0RqC8g/dGo0B/ILpN7Amz8u4QPfcOlot2lfmay8yaeAgSdsUSSKUgPH1zah5/pmZfAnJOyN0jsjSReKauwhFGkwSOxgar4diL1VRHF2AtyRwzoaYchrUSw=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=iG/yN2ChWi0Xi71qbUbdZP2GuzB7Qftc5s23LkU6j9o=;
 	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
@@ -58,116 +58,57 @@ List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 
-The current dw_mci_get_cd() implementation maintains a DW_MMC_CARD_PRESENT
-flag primarily for logging purposes, which adds unnecessary complexity.
-Additionally, the if-else-elif control flow does not align with the Linux
-kernel coding style.
-
-This commit simplifies the function by:
-- Removing the redundant card presence flag
-- Replacing the conditional chain with a cleaner implementation
-- Improving code readability while maintaining functionality
-
-The change reduces code complexity without affecting the actual card
-detection behavior.
+The mci_readw/mci_writew/mci_readq/mci_writeq macros were added
+to provide 16-bit and 64-bit register access operations, but they
+have remained unused since their introduction. Remove these dead code.
 
 Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 ---
 
-Changes in v2: None
+Changes in v2:
+- fix compile error
 
- drivers/mmc/host/dw_mmc.c | 44 ++++++++++++++------------------------------
- drivers/mmc/host/dw_mmc.h |  9 ++++-----
- 2 files changed, 18 insertions(+), 35 deletions(-)
+ drivers/mmc/host/dw_mmc.h | 27 +--------------------------
+ 1 file changed, 1 insertion(+), 26 deletions(-)
 
-diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-index 00b3e7e..2ad7d74 100644
---- a/drivers/mmc/host/dw_mmc.c
-+++ b/drivers/mmc/host/dw_mmc.c
-@@ -881,42 +881,21 @@ static void dw_mci_post_req(struct mmc_host *mmc,
- 
- static int dw_mci_get_cd(struct mmc_host *mmc)
- {
--	int present;
- 	struct dw_mci *host = mmc_priv(mmc);
- 	int gpio_cd = mmc_gpio_get_cd(mmc);
- 
--	/* Use platform get_cd function, else try onboard card detect */
--	if (((mmc->caps & MMC_CAP_NEEDS_POLL)
--				|| !mmc_card_is_removable(mmc))) {
--		present = 1;
-+	if (mmc->caps & MMC_CAP_NEEDS_POLL)
-+		return 1;
- 
--		if (!test_bit(DW_MMC_CARD_PRESENT, &host->flags)) {
--			if (mmc->caps & MMC_CAP_NEEDS_POLL) {
--				dev_info(&mmc->class_dev,
--					"card is polling.\n");
--			} else {
--				dev_info(&mmc->class_dev,
--					"card is non-removable.\n");
--			}
--			set_bit(DW_MMC_CARD_PRESENT, &host->flags);
--		}
--
--		return present;
--	} else if (gpio_cd >= 0)
--		present = gpio_cd;
--	else
--		present = (mci_readl(host, CDETECT) & BIT(0))
--			== 0 ? 1 : 0;
-+	if (!mmc_card_is_removable(mmc))
-+		return 1;
- 
--	spin_lock_bh(&host->lock);
--	if (present && !test_and_set_bit(DW_MMC_CARD_PRESENT, &host->flags))
--		dev_dbg(&mmc->class_dev, "card is present\n");
--	else if (!present &&
--			!test_and_clear_bit(DW_MMC_CARD_PRESENT, &host->flags))
--		dev_dbg(&mmc->class_dev, "card is not present\n");
--	spin_unlock_bh(&host->lock);
-+	/* Try slot gpio detection */
-+	if (gpio_cd >= 0)
-+		return !!gpio_cd;
- 
--	return present;
-+	/* Host native card detect */
-+	return !(mci_readl(host, CDETECT) & BIT(0));
- }
- 
- static void dw_mci_adjust_fifoth(struct dw_mci *host, struct mmc_data *data)
-@@ -2918,6 +2897,11 @@ static int dw_mci_init_host(struct dw_mci *host)
- 		mmc->max_seg_size = mmc->max_req_size;
- 	}
- 
-+	if (mmc->caps & MMC_CAP_NEEDS_POLL)
-+		dev_info(&mmc->class_dev, "card is polling.\n");
-+	else if (!mmc_card_is_removable(mmc))
-+		dev_info(&mmc->class_dev, "card is non-removable.\n");
-+
- 	dw_mci_get_cd(mmc);
- 
- 	ret = mmc_add_host(mmc);
 diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
-index 5c17bcc..6800e7c 100644
+index 6800e7c..a4d5f4f 100644
 --- a/drivers/mmc/host/dw_mmc.h
 +++ b/drivers/mmc/host/dw_mmc.h
-@@ -240,11 +240,10 @@ struct dw_mci {
- #endif
- 	struct mmc_host		*mmc;
- 	unsigned long		flags;
--#define DW_MMC_CARD_PRESENT	0
--#define DW_MMC_CARD_NEED_INIT	1
--#define DW_MMC_CARD_NO_LOW_PWR	2
--#define DW_MMC_CARD_NO_USE_HOLD 3
--#define DW_MMC_CARD_NEEDS_POLL	4
-+#define DW_MMC_CARD_NEED_INIT	0
-+#define DW_MMC_CARD_NO_LOW_PWR	1
-+#define DW_MMC_CARD_NO_USE_HOLD 2
-+#define DW_MMC_CARD_NEEDS_POLL	3
- 	u32			ctype;
- 	unsigned int		clock;
- 	unsigned int		clk_old;
+@@ -488,32 +488,7 @@ static inline void mci_fifo_l_writeq(void __iomem *addr, u64 value)
+ #define mci_writel(dev, reg, value)			\
+ 	writel_relaxed((value), (dev)->regs + SDMMC_##reg)
+ 
+-/* 16-bit FIFO access macros */
+-#define mci_readw(dev, reg)			\
+-	readw_relaxed((dev)->regs + SDMMC_##reg)
+-#define mci_writew(dev, reg, value)			\
+-	writew_relaxed((value), (dev)->regs + SDMMC_##reg)
+-
+-/* 64-bit FIFO access macros */
+-#ifdef readq
+-#define mci_readq(dev, reg)			\
+-	readq_relaxed((dev)->regs + SDMMC_##reg)
+-#define mci_writeq(dev, reg, value)			\
+-	writeq_relaxed((value), (dev)->regs + SDMMC_##reg)
+-#else
+-/*
+- * Dummy readq implementation for architectures that don't define it.
+- *
+- * We would assume that none of these architectures would configure
+- * the IP block with a 64bit FIFO width, so this code will never be
+- * executed on those machines. Defining these macros here keeps the
+- * rest of the code free from ifdefs.
+- */
+-#define mci_readq(dev, reg)			\
+-	(*(volatile u64 __force *)((dev)->regs + SDMMC_##reg))
+-#define mci_writeq(dev, reg, value)			\
+-	(*(volatile u64 __force *)((dev)->regs + SDMMC_##reg) = (value))
+-
++#ifndef readq
+ #define __raw_writeq(__value, __reg) \
+ 	(*(volatile u64 __force *)(__reg) = (__value))
+ #define __raw_readq(__reg) (*(volatile u64 __force *)(__reg))
 -- 
 2.7.4
 
