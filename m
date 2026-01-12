@@ -1,209 +1,138 @@
-Return-Path: <linux-mmc+bounces-9844-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9846-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60FDD11C08
-	for <lists+linux-mmc@lfdr.de>; Mon, 12 Jan 2026 11:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 399D6D13C8F
+	for <lists+linux-mmc@lfdr.de>; Mon, 12 Jan 2026 16:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B591A30080DA
-	for <lists+linux-mmc@lfdr.de>; Mon, 12 Jan 2026 10:14:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EC450303A96B
+	for <lists+linux-mmc@lfdr.de>; Mon, 12 Jan 2026 15:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FA929B78D;
-	Mon, 12 Jan 2026 10:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C1B345CDF;
+	Mon, 12 Jan 2026 15:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=axiado.com header.i=@axiado.com header.b="OoEqGFHn"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0myqGsO2"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11021124.outbound.protection.outlook.com [52.101.52.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AAD28C2DD;
-	Mon, 12 Jan 2026 10:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768212850; cv=fail; b=BrvYz5iKJTEpuS3JQCXfO1aqMcMa489qaOYHKf5Q2txteJL20auaA25HXU2VrvnsLYem/aB/LdjX+24qCV9V6Qvy1TecoAcBcVynbGNfBxScn6fcwH4nSVEQZ9BIHdzRuMMXEA9EZXiS8paZvV8W186oa24zZ9T1l8HGTPDDhOQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768212850; c=relaxed/simple;
-	bh=awJlKxzmsNBztkQAhSVSp7Vtk+gbfEQ/N72yUVSAUYM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IDZeb6xiSWpFCWkIpnKg3+NdC8EqQSjR4AUBM/au070fYPu2Il3J0xjuzVop2qEEYrRdw5ZZHFMhJrPGA17N2EeE17rapYNM/SK7KQEhxQ5trNAvE9N3gBCu7v/Is4oBK8HPuXl47zyOafjKWB3H086Q7LS/Xjg5FQ05vBDUmOE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axiado.com; spf=pass smtp.mailfrom=axiado.com; dkim=pass (2048-bit key) header.d=axiado.com header.i=@axiado.com header.b=OoEqGFHn; arc=fail smtp.client-ip=52.101.52.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axiado.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axiado.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XvFzxsdevf8i08Tl397QexQij3PbPIcmvwJLofshjYaehELK8+K2O94XdBIWGB5btXD9ixyQtkFPsKUIK7EhkZ9Oh41WZU8pku4Y89WDyZ+x1H8CKoWAgEvhBWO34YhVqtPPW0GXVghaBk19nfyXJikBy/GrB+0Q0tGdZfv/Eo/NqOrnSJdW+m7bVd7n8kix0FbTLBSqSGZcbTR0dNZa4OZt4ozKZKFj7OSArsFC0oaO26R51Hnk30nqJTF58tlu127oLLo6Nn0O5OQdmdvRvL97ai30KCV28GYpmhh+gjp3jOhS06HeiE2Ydrw5Abav57Hk7OeU1m7GhOiqk8AjQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f/OdanEruh2+uxeAR8oZ2NbdjZGOPOuLWpiBnlZ1n9c=;
- b=bGYueWMqUzq9ZNrNDmndImGrhITkJ5RNzQCtWQSfSfyR2vEaO+Gvngv9ZW01Y/jFF0Vq+yFLRWgvJXw9WYDZ5H/fhHTMXVBMNK4jD96KYImcuo8KHdQMAwIPoOyNrte1mkBOWukiWEBkSNTmq3Lnd7+PRbBM/YvpOVOcZbOOhb20TjRz8bzms2jntBdLt3+jXT1DovesKW2h3dLTwfaYarJAk7fulVJN0WhoVPR0XwrS6FcWsq08SJrzv5gTSj/eYY7ZMSSawW/J0MupArSFcYQ9MwGs+ag1+Gla9idSdM3Sw4D1t1aFn5MNI6UnpGfof0GcLH3NVgkGuNqsS6XxJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axiado.com; dmarc=pass action=none header.from=axiado.com;
- dkim=pass header.d=axiado.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axiado.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f/OdanEruh2+uxeAR8oZ2NbdjZGOPOuLWpiBnlZ1n9c=;
- b=OoEqGFHnSfD6a0yVJPP+2yoIkGssEXycR6XCbKnYZ3m50HYt2fTIk/OGqCZZgy/Ykojrpso0JdeiyV6Cj2hWhjLwU7gEAbH+c14SlFclHsPuqQhRqkqLt1CetOcMI2AKhQoYgXJSlK1hKCgg5ZtXNb7QqtAH0ETRpnoHqC9+taH8WnOXmKtelZHiR5QQyobVs4Qbqf9vXr6sN7LWgSoK15aBQMfchS2GbQ6SxC+0rudSXrSHrQxueNY/Kar86OTc2qG0jCR8S478EAbmNLLfA68ikdas+WpVpRz0e7QMkebjfp7IHxNs4aAz56TUAncihgSqyMS4zeOhcCCroQ16+g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axiado.com;
-Received: from PH0PR18MB4558.namprd18.prod.outlook.com (2603:10b6:510:ac::13)
- by IA0PPFB6CE6916B.namprd18.prod.outlook.com (2603:10b6:20f:fc04::c36) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 10:14:05 +0000
-Received: from PH0PR18MB4558.namprd18.prod.outlook.com
- ([fe80::7a75:75a5:694b:2311]) by PH0PR18MB4558.namprd18.prod.outlook.com
- ([fe80::7a75:75a5:694b:2311%4]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
- 10:14:05 +0000
-Message-ID: <e59565e2-95a9-4a74-82e3-b9a9e9ea5d89@axiado.com>
-Date: Mon, 12 Jan 2026 18:13:57 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Add Axiado AX3000 eMMC Host Controller Support
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- SriNavmani A <srinavmani@axiado.com>,
- Prasad Bolisetty <pbolisetty@axiado.com>, Vinod Koul <vkoul@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Adrian Hunter <adrian.hunter@intel.com>, Michal Simek <michal.simek@amd.com>
-Cc: linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mmc@vger.kernel.org, openbmc@lists.ozlabs.org
-References: <20260109-axiado-ax3000-add-emmc-host-driver-support-v2-0-934f1a61f7c0@axiado.com>
- <55a2c060-014f-4077-85a1-15f6f799d263@kernel.org>
-Content-Language: en-US
-From: Tzu-Hao Wei <twei@axiado.com>
-In-Reply-To: <55a2c060-014f-4077-85a1-15f6f799d263@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TPYP295CA0028.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:a::17) To PH0PR18MB4558.namprd18.prod.outlook.com
- (2603:10b6:510:ac::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C76D315776
+	for <linux-mmc@vger.kernel.org>; Mon, 12 Jan 2026 15:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768232836; cv=none; b=KRqpeTWaT8wi8FjwIzDLmvMYpktBMPxk8A4zHuNF8NL+9a4lwyXoAU0riqUEggJbttTwfXsgmR97AZlsbLu7dEd94kH6kWGPMdU07spAZ05cxb8X1VPDpH2hsL5z0AbgvKG9yAu8PxB4Xj/YfgzVt78VwLXMHdcPda+rEzFZ2HU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768232836; c=relaxed/simple;
+	bh=vHWFPBypaVR6QO9yY+NIT52Fwn/AnAUPV0IFF36KmuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VGHDSUs3s9ZrpRM4qDagBjqCI/2EZrsvdtjKf1PWGhKqmzuYvggUmDlP/5bbYvMG4aJk5yGyxZBi+XFjQCV0twasC55grAbZxMxGxb23nPNRBaHbjklRT3D6Q1RyHNshD2muxDnZofdGeFreyPzIccI3YQ953DDrr1qsLj7TWQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0myqGsO2; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47d182a8c6cso38880215e9.1
+        for <linux-mmc@vger.kernel.org>; Mon, 12 Jan 2026 07:47:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768232831; x=1768837631; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QU+wdPQeGIMx2R82MPiKqXDiY8zUt2eXhqlQOcy8HXY=;
+        b=0myqGsO2xvaRKfH8bkgIAHGNfjElsxUKLmD+oEQlq0SmO4RtzHus4Vs4d0PL2BtMhL
+         dnGnJUW73JCXZBYKkVQjEf2/PNZmtS/dg3dv6UhiJIhaBgc16QQ7lHpqUmYahVzDGWWM
+         qW0L+S8RS3qF+NaGLRqdPe57c6WCz8VE6kgvK8eEJMIJP9b11x9ZLBwwIXZ8SPQkrfo3
+         FE5la+wW6HHqnFk7VvTUAonELcwi+qNQMOEVkHecLGmlON/gg9sRKyONt2nJ2wFaQ5aR
+         wPruFAjv9ksozvnz/JaEXMyyTZoU1q/FWIFR+/g/Wd471DqPwvXMKK25UXF0YTINBc1E
+         hVLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768232831; x=1768837631;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QU+wdPQeGIMx2R82MPiKqXDiY8zUt2eXhqlQOcy8HXY=;
+        b=GWKAi9bF2Nug5jcHD7uAoZ648XQIm7QDsBhpIyullHH3TfDfJNIwrQpH9iYf7g9mYW
+         CgrrHBYtdp0bDWGre3S5i7sT3MQ9uymN4rzUZNGgB6FzC7R4NXuxHNKV5OgKzXWyH7EI
+         4RBQ2p4cUqZBzVQQFcVTAexVCNMeXOYDjcA3WqU0hYPMThGQvlRuRTEDJe+kj03AoE6H
+         EsRhV3oNHc+kEqEb46Z9Gl16eBHSNSImJLXgwLtxkbMV+SQXpJHp9BRvV/OfmIOsUlOV
+         YR11uZaupSOls8OrXR3gfOthL2pLOtWSA9Y4FB0UIlie9y9XRdw1cIw0Lbd7X6lGjb67
+         TMOg==
+X-Forwarded-Encrypted: i=1; AJvYcCW+XWun4uB/qlSCC1m6gu6ffiE7Cx8uKN5s6eoS4T1niPYS9rUBG4iA9g2kz9cFwFG8wSnmcMcZkcg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYpw98U6O3Il6hBN1gpdsLg7btwsrbXyzAKYkqPiK8VJCS40Wq
+	iZNnAJacT+VH0DdeuUYllf0wLZaeXf1N7vMDrnXZ54n5F4dQ53DDqP7P3UWCxiUDdCc=
+X-Gm-Gg: AY/fxX588MlfIlo4pEKBCKYtnV2Xz6wC1irC+xgZailNEmOl3FBo7as+UvmQrzNDfRU
+	imB7iOoMJ5qD2VD3PeBqXJghZJACK/pRsDsvDtKd1Wr64uGu2XMT8S7gqCAJhYukhQPhWRyWbzC
+	q4eW22yuIujjGRo8bplOlqQUm0pIP27yGumADeOYuuAiNpgqRqaFZ3nYzhfSloxEgKnB1lNC7Zd
+	jd9KHupNb1exjBiE4iDRfsfSHxaNcPG+0fo4YZCZs5VBPmPYROcg4eu2/L8KwkRIpDLbjZBvAbh
+	UOH+DPBCWjIr4HJ7lxIDWIH4WsB9+IDiuFWJPA+YMXahictxKzqJskQTBgs7o2u8L9OdRriP8sN
+	6Lg8OLkLZYpy2DyMstpEyGBQLMnrrwx27mkmg+JlU0YEupfbP/4z2nZdpmRgm5NDp/NpmqElcTL
+	EN8U8sB3nEg3XwlE+bVlraZTbNry920wbxWDNLUyyKyMUutffehZBsQfFnPtUgCSyoQtv8O0aR
+X-Google-Smtp-Source: AGHT+IGBO9eGPmHs6J445wbi3UmFE0FvHJHaxJck1zKJZ9qqr1A5nU0vnmnEQ4zzMoAofUQG+ru4TA==
+X-Received: by 2002:a05:600d:41c9:b0:46e:4e6d:79f4 with SMTP id 5b1f17b1804b1-47d84b21250mr200825905e9.15.1768232830771;
+        Mon, 12 Jan 2026 07:47:10 -0800 (PST)
+Received: from localhost (p200300f65f20eb047d7efe6100b35af4.dip0.t-ipconnect.de. [2003:f6:5f20:eb04:7d7e:fe61:b3:5af4])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-47d8662ffaasm132658945e9.6.2026.01.12.07.47.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 07:47:10 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	linux-mmc@vger.kernel.org
+Subject: [PATCH v2 0/3] sdio: Use bus type function for shutdown
+Date: Mon, 12 Jan 2026 16:46:56 +0100
+Message-ID: <cover.1768232321.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR18MB4558:EE_|IA0PPFB6CE6916B:EE_
-X-MS-Office365-Filtering-Correlation-Id: c30c2b67-c3a0-4aff-cea3-08de51c350d7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|42112799006|1800799024|366016|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MlVjNFJwaG9aVS92cTR4UVpyajZ2dmVjOU90cm5ENmJobGx4UVpOdzByR3BH?=
- =?utf-8?B?akl3NFp0ckR5Um5MZkxoa0t0ck05KzNGT3JPYnBUNmhUcHAzbVc2NzhyWTBS?=
- =?utf-8?B?dnpncnh6b3B2ZkdxNUM4ODU4eUxERlJIakZ4anVMQ0dvR1h6UXBVWG9Sc3VI?=
- =?utf-8?B?ZG5JZ2ZxbFJBUUhMUzRJMUdNUGJ5eHZZcCtLQW1Ha1VqeVVyVGpmTi9DVzFh?=
- =?utf-8?B?VllUUGc4WFo2RVN1bTlZWHdSYk05NnZvYVBPMmhhSFdTdWVYZ0NpbzRQcVBr?=
- =?utf-8?B?OFdiK1J6S2p0ZTVBRjg4a0hTQUtvbE9mUzhrVGZaa2hBN3lscmVtb1RZYWE0?=
- =?utf-8?B?WVdJUndxUXhIbG9UT2YydzBkV1lLTStpZlYzNDVsdHNOQ1d4OGJwYVF1ZnA4?=
- =?utf-8?B?eWFiOWxmRmhIM084YklDWC8rMzZtcDRiRjZzRGhyd1k1YUNLWDhKTzlrMUxZ?=
- =?utf-8?B?NXdMK2hGL0swTjhrVWJ6U1kyQ1lBU0k2NElPelhEYlZnRWFSUFlZOWRtZDJJ?=
- =?utf-8?B?cnpCZFl2QlM2L1lPYllhSmpvc0xyd0oydzg5eTA1b1dKZ2dkUjdCQXdlcXpK?=
- =?utf-8?B?KzB1N1dQVkdLWUt1VUZwZy9TSXhoZ1ZSNHNBWnNxVWxYekYrMTdjQ1drLzRQ?=
- =?utf-8?B?amdIU1BiTDIvTm41b0JWenBOUWF3aW5vOW12M0xpYVZQM255SmF5MmlsaFVU?=
- =?utf-8?B?L0JlOGdXQ1Y0U2JqcC92TUZJVk5UWFg0UlFFUE9ZWGtCSGpvdjBzRU5KRWFT?=
- =?utf-8?B?c2hJWlNCdzZXTWJPdXMzUHM3ZVlFNTdOcnU1dTlqV2R0UVdaNzRqSUhrR2tJ?=
- =?utf-8?B?VGJJQjBVMkZ3U3RBR1JGakNZY1lITTNNc3RDb3VTcytIWUtrQ1Z2VTkzclNl?=
- =?utf-8?B?RkswOENrNFdZWUIzQlZoUEwzOW5DOXd4bDlSM1JMYzZKQWRKZjBKVGFxQ0d1?=
- =?utf-8?B?em9zaGZ3eHZzcURCVHRoV25ORFI2OXZYMjRlcGZhREJzNEVLeUF3TGQvSThT?=
- =?utf-8?B?cDd6bDA0TWZLUUUwNzE4LzZ5RU5FNVdBVWpEUm40WWtvSGJOT3BpUU9Eckdp?=
- =?utf-8?B?WjNsc3lQZ2x2Rk9YY0pXamwrTUY5VkROZGFJOFZVazZxM291TkNYOTg5ZC9r?=
- =?utf-8?B?ekJxd0FWKzBWdjIyR2dOaWxiRUVWeGdudlNwbnl6Z3VtbkxXdTREV3pNTU9y?=
- =?utf-8?B?anRNMVBvOFJyTGlhZlNRUll2NW9uWlg2RjBYWUlSOEkwb296SW0xSVBRRExs?=
- =?utf-8?B?R3N1bk1ZeG5QQ1dkVTNMMnpCd3BjNUMzem8xT2lqbmt3VXk0dytGZzF2U0RN?=
- =?utf-8?B?V2lHTzhrN2hTaTEvUXdNYjE1Rlc5a3RCMzZINkR6OXFPTkppZzhXcThnVGpp?=
- =?utf-8?B?TkpzMzYxZkpSeEdmSmNFTVB1ZjBDZUkra1V0TXUyd3ZkV2VTbUtJd25lbTdD?=
- =?utf-8?B?d1B5SGNiWUtGeWRYRmxHUUtjOTlWMkkyZmdYd0dMVHc2VjBSVVJQeVgyYk9B?=
- =?utf-8?B?Q0RmRkVQbC9yaWVycVJLaFN5VFRmU0FOZTNHNXVWNEZwakhFbmMxejBFNUNU?=
- =?utf-8?B?ZFB4d3Q0NkVGQ1VpOEFtdzBpVWdwR0hJYWQzMXNjcFRDMzVod3htVGZNNGRP?=
- =?utf-8?B?Y0tmL1ora2FweFR4c1VJNEk5Vlc2dGpBQWhxOWNadXp6YllmRkQvNGhvUzNB?=
- =?utf-8?B?NmJlMkd2Y2pkMGFwZWluZzc2NUNhdnNHNS9xdzgzTFZ3RUpsb0FBS1c4TVds?=
- =?utf-8?B?eG1lQzIwK1E0bjhjRU9nZGdEMWJUSUFQRjVQZDZRTUJGZjd3MWRPVmRxZ1Bt?=
- =?utf-8?B?Y1oyQ1R2OUM3dWtVenpOWGRoV01RRHVVUmRobEY4Zlc3QXBLWVZkMUlZcjNa?=
- =?utf-8?B?OHB0dG1zZ0E3T0RGdDFWNHpaNHlvYWdrZ1JrME90dEZHTmUyNFRteFQvTGJl?=
- =?utf-8?B?UU84ek1DQzdpdU1XTWRhSGRHaVJ1VTI1WmVYMXJjOTlCOWpINGg2djQ0MkFa?=
- =?utf-8?Q?czL0sFgNUqZYtThMxDUuFcLljGwOyw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR18MB4558.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(42112799006)(1800799024)(366016)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T2NCWVM5eEZpdUxINjZTSUlrYkhqSVhoSVo3dUorQ1Z0alA0bXprNDlDMFlT?=
- =?utf-8?B?NnN4YzVRd0Y3TG15c1ArYWowSmltWXhsSHBEdDFDRXlvSFk3VEpWWEVOSzlj?=
- =?utf-8?B?YmQ5Rk9JUUszc0tmVGJWMW5rZlJnN0ptdDN5b0JjSEx0cWtMTnNmR0N2QWdQ?=
- =?utf-8?B?R0NoY29oZE1ZSUdsL2Y0Zkw0OU8yZXFZZXp6MFVCTkYrRTRKYW51WjNZY2VY?=
- =?utf-8?B?T25TZzIyZTNJWEdqb2cvb1RqVHo5NXZiaEZoL0Jwa2pEeHo5UFFKQUxGckhy?=
- =?utf-8?B?S1pyNVF1K3AzVFV2eTd6dEJvZUo0NnhoVDJIMVpubjYxUGl1V3lFdUdxMVhP?=
- =?utf-8?B?WTBXdDhzWnlBQVNPUVhSOVRiOW1tYWgyckg0Z0FHUy9yemZkaWYveG9vRjAy?=
- =?utf-8?B?N2Z2OXBmZjJ3dmtWT09qN2FDNVBCVkNxaVdkaGRzUmhVcnl0Y2VLUHI3Tkcy?=
- =?utf-8?B?U1Mva3EvVVJ0eEUxNmpzdVdjWlBJMUVGSjFBMDRta0N6dGxvWFA3TEF1MUZ1?=
- =?utf-8?B?ZzJiUHdZMjNSVG0ybXVUdkRaQlIxbzZWU1JjMG1BVkJ0YXhVek1ZV3R4QlhE?=
- =?utf-8?B?RzlLVmZDK2ZHMWFiQkUvZzY4aVBDSlplcU40aGIyNGJMTU5RQ2tnWTIvZ0NR?=
- =?utf-8?B?THVtOTJ2cmswa1AxU0J4OWdZeGJzV3FHaklTYzUybWR0RnBFcTRqNjRkdEpP?=
- =?utf-8?B?SDZRQnpoQ0paQnlGMGdhaWtObjhadlRIeWEyUnZ0TDkycEZLOUlaT0h2UGFx?=
- =?utf-8?B?OXZuSkUxSVFqV1d4Vk56WCtpT1pUREd0NE9TanJCUW1aZVV3dlNKZWtKYmZm?=
- =?utf-8?B?RFp6T3dqTndOeGtSSVVkcXVMR0xyVVRUUFgvZk4rUWRlK2VOY3lMWVdISVY5?=
- =?utf-8?B?OHdpTWlUbkVlMmovU25ETDhoTmdQNkk2ekFmR0Q4RWdKOG1kcndKTUJ2NGl4?=
- =?utf-8?B?cnl0aE9rcWdYSTlvUGZCZUNOL3p4NnRGWnhyRElzSEdLbU1mOG81clhRdDBv?=
- =?utf-8?B?MWZMQ3FFdnhtV0JXeDhXQ3M2b1J2UURIeWRlT0NnMmIzVzFoNGF3a1NNeHVM?=
- =?utf-8?B?dDdXZmJCZEZVdi9jK29iTGQyc1Fua0EzU3VWU3h2c2lQRVl5QXVqc01aUDZi?=
- =?utf-8?B?dGxIcncydXZRd0YyTmpGTlBNa3JqemhZOHZYa0krNXovSG1MZlFSNlRpUzk1?=
- =?utf-8?B?VGpialJ6cFR5UHZlUk5uT29BTVJhMHBBUEdGY0RIdW9mekEweTN4enZQd3pv?=
- =?utf-8?B?STRlenlhQytabGFMc2VVakxwb3hEWVlxeUh5dlhkWVFHYm1NYXJWa1JyTDBF?=
- =?utf-8?B?UnFHTW5GZlZrN29ORG5FU3FTa3QzZU1vK3lEdDRXU2d6VDFIZG5CekxMS25t?=
- =?utf-8?B?SEprTmpWUGNqanpvNllsandpZVJrRWNRaG9DRzhUUVJQczh3UWg4bVpuL2ts?=
- =?utf-8?B?N0ZNNUNJZjA5R2pIOXcrNnJHbDB0aWh1T0pyRG5iai9NSWVMVWMyejk2UDdk?=
- =?utf-8?B?anVsSU5nQzJ2UTNPZndDakJ6dnhoZlArNk0wSFZ6SVNjSi82bGZIYkNQQkwv?=
- =?utf-8?B?YWtJbUdYTS9sMEpmZ1dBNTJsWUFyTXpuUlBOakRLMlF4Yzk4akovUDd3a2Zm?=
- =?utf-8?B?dHg1M3k2eWlVY1djR1VlY3dmRmNqbGlYNVk1ODNUSkE4TU5VeTQxVlQvRHFa?=
- =?utf-8?B?bHlibUMrZnNKMmtiZXVpSmovVTFpZm1ZbXZFRU0ya3V2MTdXRTF5dkg1am1w?=
- =?utf-8?B?WmRGVnYxRDE0T0xHSVRoT29XRXc3L0EyUmlnZDJMeDY5V28zSEErQ2Q3aU1o?=
- =?utf-8?B?L2VsYzlaNTNnQ2RLSnIzakRJNHBiWWhadUJ1dTBuREFxZUF3VFdyRHdxa0lM?=
- =?utf-8?B?SGs4c2JWZ2dHSFdOUllDaGIyLzM2RkNXQTc1NUthWE16b1JBY1VCRngwdEEy?=
- =?utf-8?B?LzJLNEgwcjlGUFpNNXhxN2c2eVBVclRqZTJvRlQ5V1lVb1hScUtPNDBNUXpV?=
- =?utf-8?B?aUtmclkrc3JsRW9zUWIvbmN6OWF1Wk5QR3RLdTl2MUk5ZU5ObElFS0w3T1VD?=
- =?utf-8?B?WmhLNFptTE5ZU3NEaGhyWGhLenlOWjZyRktBZUI2Y09DSEU0S3pmN05WTkJR?=
- =?utf-8?B?T2dvUWsrbGFZaE1jQnQzVmRnMTJpVFZORVh4OU9pS3prUWJYMENqNUM3MkRI?=
- =?utf-8?B?R2lxVHNhT1VwUzlvN0IrMGtWRjJpVkloa3NKSC9tSVB2ODlpdHowQStOM0Zi?=
- =?utf-8?B?VDVsSmlKdGdYRlVyYTFmU0FzN1dYNzJkKzZpb2RHMUt5VVJRWkFxdk9XWEpq?=
- =?utf-8?B?ZUcxR08rU1Rqem9wUnB6MVBsOVZqUWZ3OW9obkhEcjlEVmxMQXFyUT09?=
-X-OriginatorOrg: axiado.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c30c2b67-c3a0-4aff-cea3-08de51c350d7
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR18MB4558.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 10:14:05.4073
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: ff2db17c-4338-408e-9036-2dee8e3e17d7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vHjcdVup18TEEuo+A5TGukhWmI/MFR/al9Vt0hmlHyYbrP/MuoyObkwHv6ztZF0x
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFB6CE6916B
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1799; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=vHWFPBypaVR6QO9yY+NIT52Fwn/AnAUPV0IFF36KmuA=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpZRdxpa+mgz/013rdQO8j6edwGc1OkH+Mw4/kK zqyYkMywumJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaWUXcQAKCRCPgPtYfRL+ Tu0eCACAG4l5+26CC1ze23VOiVgBa3fPHJORep2Jda+t4jPg95bAUe4p9gS+vNvJVOfcG2aVPRr FyAV1rHhW2KsTYe5Cq1+o59QCfHLUEqtzninrJGVddD11Q1fxxjRNk02t4EnsM+VF1Yr2J0ESEt 7biNL5m18vKnXOhIgwT3hAjF3b1w/fXvju9KtmxTGHqfaY87xs2sP5OgshyIP4embaIhmlw7WSx Gji5CSpppjxDMFRNYBHBFci2pPQ9wfSpclApLYJ2tvTs1GJrL3GgCNdAivvwcBQ9zu6dC9t+Yds Sn8PQsTAH9oyptg2Humj9sI/TmYe624pn4VsZoZ0S66Qr1IS
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On 1/12/2026 4:30 PM, Krzysztof Kozlowski wrote:
->> ---
->> base-commit: f10c325a345fef0a688a2bcdfab1540d1c924148
->> change-id: 20251222-axiado-ax3000-add-emmc-host-driver-support-2cc84a8f889a
->> prerequisite-change-id: 20260108-axiado-ax3000-add-emmc-phy-driver-support-d61aead8f622:v1
->> prerequisite-patch-id: 03617f4dadb7ed33653d1e0b3c03e732ed4948c5
->> prerequisite-patch-id: 454a64fb94f3c1b6cf6fb7fbfce97f706933b7e3
->> prerequisite-patch-id: 7961935b88d6c3056b55b4058c1ba878aa00490c
->> prerequisite-patch-id: f87b65e3c93f8f1edf2305784ea3f81a04c4ad58
-> 
-> Huh, why and how?
-> 
-> It's impossible to apply this.
-> 
-> Best regards,
-> Krzysztof
+Hello,
 
-Thanks. Those prerequisite lines were included from b4 after adding the deps:
-change-id: 20260108-axiado-ax3000-add-emmc-phy-driver-support-d61aead8f622:v1
-base-commit: v6.19-rc4
-I'll remove them.
+this series is part of an effort to get rid of the .shutdown() callback
+(and .probe() and .remove()) in struct device_driver. Preparing that,
+all sdio drivers that up to now use this callback are converted to a new
+sdio specific shutdown callback.
 
-Best regards,
-TH
+v1 is available at https://lore.kernel.org/all/cover.1765968841.git.ukleinek@kernel.org.
+
+Changes since v1:
+ - Drop patch 2/4 which resulted in a build failure with CONFIG_PM=n
+
+Patches #2 and #3 depend on the first patch, and with just the first
+patch applied there is a runtime warning (emitted by the driver core in
+driver_register()) for each unconverted driver. So it would be nice to
+get the whole series in during a single merge window to not let users
+face the warning.
+
+Given that all drivers are in drivers/net/wireless I suggest to apply
+the whole series via the wireless tree.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (3):
+  sdio: Provide a bustype shutdown function
+  wifi: rsi: sdio: Migrate to use sdio specific shutdown function
+  wifi: rtw88: sdio: Migrate to use sdio specific shutdown function
+
+ drivers/mmc/core/sdio_bus.c                   | 25 +++++++++++++++++++
+ .../net/wireless/realtek/rtw88/rtw8723cs.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8723ds.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8821cs.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8822bs.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8822cs.c    |  2 +-
+ drivers/net/wireless/realtek/rtw88/sdio.c     |  3 +--
+ drivers/net/wireless/realtek/rtw88/sdio.h     |  2 +-
+ drivers/net/wireless/rsi/rsi_91x_sdio.c       |  5 ++--
+ include/linux/mmc/sdio_func.h                 |  1 +
+ 10 files changed, 35 insertions(+), 11 deletions(-)
+
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+-- 
+2.47.3
 
