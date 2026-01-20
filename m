@@ -1,48 +1,48 @@
-Return-Path: <linux-mmc+bounces-9940-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9938-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38630D3BD37
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 02:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B6FD3BD31
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 02:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2136A30AC062
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 01:49:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22969309F045
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 01:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAB72C21D3;
-	Tue, 20 Jan 2026 01:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B80526560D;
+	Tue, 20 Jan 2026 01:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X2ZHFYY5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EuwXnPBu"
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D840274650;
-	Tue, 20 Jan 2026 01:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257AF299AA3;
+	Tue, 20 Jan 2026 01:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768873748; cv=none; b=YiSdnRxq1mNLbtTG1Je4T2wVz4S9n78mCgJywapPKtNbZUL/nniPEjqAZ8XwD4XFlEyrrT4jXdxVM4Xo8oi3vNC6ntoTAR9ks4dHGcdLcYVDxybAzNB/N8Xw8VbYZjmTlCzbOKMeECcK7KNgd4bMp0jc0wQcWViQwD1S3vhEJIY=
+	t=1768873747; cv=none; b=UEBP4ZvwkIe1aF3h2CSJKd7SLI3y0PRlQe62eabH4iLllbRRrUE7g4nFzJJtoQVuq26BYT9w/FmkSDxDoC60WzcnAFsYzi+9+C9rgn4VUcNQoT/LUA7izuunIeTZ6DCrhTqGW5fln7Fh+oZfW+G3N4giBGLTFxDAG4WnqgjBwlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768873748; c=relaxed/simple;
-	bh=o179MySf1APoPto2yIG5U1pvyJ0fB8P2TMeBdS62e6w=;
+	s=arc-20240116; t=1768873747; c=relaxed/simple;
+	bh=u8njuo9gBPPAVuFVoNc+/jcJfkp5k0uOtG0VDac+wEw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=I/Rq44twrADckFX+tOxKjIXc24gB4HiRenBAYUo1KGqKasvysomf6g3J8ElCk7d90Gib3IzCWxbm9U5WRwO7JD8UWTtHGLWMHn80g+rCSpLLwWuVlAukKeLMbd/YRSHT/zKSorOGwFzAbwj7KWyw3sA6K6vgsq5ww2Km2/LxgqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X2ZHFYY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D951BC19424;
-	Tue, 20 Jan 2026 01:49:05 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=o5p0tneMmedmmndOKgZaGAAJFuid/nNYHwE9theOus5C0vCzjvrB6GLC/9fdL3rMONc76iRqDwlXaff/wQjQNn3oN24wceN3L/Bnx9cOWxgMZcwvazbJYTzKSIlcY3sKAnGLRzfIRT9nYoMFFimDSgH/LT5NsyVwMKbqMhqgegk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EuwXnPBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD79C2BC87;
+	Tue, 20 Jan 2026 01:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768873746;
-	bh=o179MySf1APoPto2yIG5U1pvyJ0fB8P2TMeBdS62e6w=;
+	s=k20201202; t=1768873747;
+	bh=u8njuo9gBPPAVuFVoNc+/jcJfkp5k0uOtG0VDac+wEw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=X2ZHFYY5tmlAaCPmN+q2SRGEMqo5f9G74bEdvO8XAC3unxsBMviFi5DMXxGyrAcp8
-	 L7D7FAW7vnWa44eamIafkYQghnMv/a6EsPqkfaEFaGlLPVOx2fS7lk15fN+qkof+Vh
-	 02+kiLkwMcaqFudizihrU1J+ee3u7imJ8I6mbyhMkAT/gyD5JlvwMTSHd/0oV1iOK1
-	 eX7QXn9XZgkmuBC2N7+hity2bgkp4P3R/mZvq0wfw5+vK76YpVigL1GIdF4QzzHcgX
-	 W+PJSHduFbIygd2LccUqldcurr3B7IF7y+dmh9EM9477X6J29yIOKxZ6lKF6Vv6NLX
-	 HjORT2KaILvSQ==
+	b=EuwXnPBuc01R4GPCu3dBZ68OCS2fkiclvOeKWYD4g0SeAeN6E8uuPQR2j1NVBIfAa
+	 BlOPjUCf5OlM1jrPCEJsfQIWllJrf3Xj9cahw5Ma8LrraxNEnlJ3gaNJuxXu4Qi1ht
+	 JDKz7tCK1Fky9frLxpRHPn6rR73HTKIqfCrBgBMCHeW2JD5wLLHjtQ9gZozyIgSgoH
+	 WaMKazqPhELqsgMk7ao1XpOs2RTTqDZ1DoyuRtN3v5VD881Rfhd7Dq16fY8CvN/5jI
+	 dPQQszn6U5sWyyY3+QWf/o/aXQbumFNoOpSmrEN+Gwr409kww8UI1zZ6guTnmjXt3h
+	 naPDXr3E5KMWQ==
 From: "Rob Herring (Arm)" <robh@kernel.org>
-Date: Mon, 19 Jan 2026 19:48:30 -0600
-Subject: [PATCH v2 09/10] dt-bindings: mtd: partitions: Convert brcm,trx to
- DT schema
+Date: Mon, 19 Jan 2026 19:48:31 -0600
+Subject: [PATCH v2 10/10] dt-bindings: mtd: partitions: Combine simple
+ partition bindings
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -51,7 +51,7 @@ List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260119-dt-mtd-partitions-v2-9-77ebb958a312@kernel.org>
+Message-Id: <20260119-dt-mtd-partitions-v2-10-77ebb958a312@kernel.org>
 References: <20260119-dt-mtd-partitions-v2-0-77ebb958a312@kernel.org>
 In-Reply-To: <20260119-dt-mtd-partitions-v2-0-77ebb958a312@kernel.org>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
@@ -72,156 +72,280 @@ Cc: linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
 X-Mailer: b4 0.15-dev
 
-Convert the brcm,trx partition binding to DT schema format.
-
-As the "linksys,ns-firmware" compatible also uses "brcm,trx" as a
-fallback, move it to the converted binding.
+Several partition node bindings are just a compatible plus properties
+defined in partition.yaml. Move all of these bindings to a single schema
+file.
 
 Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- .../bindings/mtd/partitions/brcm,trx.txt           | 42 --------------
- .../bindings/mtd/partitions/brcm,trx.yaml          | 65 ++++++++++++++++++++++
- .../mtd/partitions/linksys,ns-partitions.yaml      |  8 +--
- 3 files changed, 66 insertions(+), 49 deletions(-)
+ .../devicetree/bindings/mtd/partitions/binman.yaml | 53 -------------------
+ .../mtd/partitions/brcm,bcm4908-partitions.yaml    |  6 +--
+ .../mtd/partitions/brcm,bcm963xx-imagetag.txt      | 45 ----------------
+ .../devicetree/bindings/mtd/partitions/seama.yaml  | 44 ----------------
+ .../bindings/mtd/partitions/simple-partition.yaml  | 61 ++++++++++++++++++++++
+ MAINTAINERS                                        |  5 --
+ 6 files changed, 62 insertions(+), 152 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mtd/partitions/brcm,trx.txt b/Documentation/devicetree/bindings/mtd/partitions/brcm,trx.txt
+diff --git a/Documentation/devicetree/bindings/mtd/partitions/binman.yaml b/Documentation/devicetree/bindings/mtd/partitions/binman.yaml
 deleted file mode 100644
-index c2175d3c82ec..000000000000
---- a/Documentation/devicetree/bindings/mtd/partitions/brcm,trx.txt
+index bb4b08546184..000000000000
+--- a/Documentation/devicetree/bindings/mtd/partitions/binman.yaml
 +++ /dev/null
-@@ -1,42 +0,0 @@
--Broadcom TRX Container Partition
--================================
+@@ -1,53 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+-%YAML 1.2
+----
+-$id: http://devicetree.org/schemas/mtd/partitions/binman.yaml#
+-$schema: http://devicetree.org/meta-schemas/core.yaml#
 -
--TRX is Broadcom's official firmware format for the BCM947xx boards. It's used by
--most of the vendors building devices based on Broadcom's BCM47xx SoCs and is
--supported by the CFE bootloader.
+-title: Binman entries
 -
--Design of the TRX format is very minimalistic. Its header contains
--identification fields, CRC32 checksum and the locations of embedded partitions.
--Its purpose is to store a few partitions in a format that can be distributed as
--a standalone file and written in a flash memory.
+-description: |
+-  This corresponds to a binman 'entry'. It is a single partition which holds
+-  data of a defined type.
 -
--Container can hold up to 4 partitions. The first partition has to contain a
--device executable binary (e.g. a kernel) as it's what the CFE bootloader starts
--executing. Other partitions can be used for operating system purposes. This is
--useful for systems that keep kernel and rootfs separated.
+-  Binman uses the type to indicate what data file / type to place in the
+-  partition. There are quite a number of binman-specific entry types, such as
+-  section, fill and files, to be added later.
 -
--TRX doesn't enforce any strict partition boundaries or size limits. All
--partitions have to be less than the 4GiB max size limit.
+-maintainers:
+-  - Simon Glass <sjg@chromium.org>
 -
--There are two existing/known TRX variants:
--1) v1 which contains 3 partitions
--2) v2 which contains 4 partitions
+-allOf:
+-  - $ref: /schemas/mtd/partitions/partition.yaml#
 -
--There aren't separated compatible bindings for them as version can be trivialy
--detected by a software parsing TRX header.
+-properties:
+-  compatible:
+-    enum:
+-      - u-boot       # u-boot.bin from U-Boot project
+-      - tfa-bl31     # bl31.bin or bl31.elf from TF-A project
 -
--Required properties:
--- compatible : (required) must be "brcm,trx"
+-required:
+-  - compatible
 -
--Optional properties:
+-unevaluatedProperties: false
 -
--- brcm,trx-magic: TRX magic, if it is different from the default magic
--		  0x30524448 as a u32.
+-examples:
+-  - |
+-    partitions {
+-        compatible = "fixed-partitions";
+-        #address-cells = <1>;
+-        #size-cells = <1>;
 -
--Example:
+-        partition@100000 {
+-            compatible = "u-boot";
+-            reg = <0x100000 0xf00000>;
+-            align-size = <0x1000>;
+-            align-end = <0x10000>;
+-        };
 -
--flash@0 {
--	partitions {
--		compatible = "brcm,trx";
--	};
--};
-diff --git a/Documentation/devicetree/bindings/mtd/partitions/brcm,trx.yaml b/Documentation/devicetree/bindings/mtd/partitions/brcm,trx.yaml
-new file mode 100644
-index 000000000000..71458b2c05fe
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mtd/partitions/brcm,trx.yaml
-@@ -0,0 +1,65 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mtd/partitions/brcm,trx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Broadcom TRX Container Partition
-+
-+maintainers:
-+  - Hauke Mehrtens <hauke@hauke-m.de>
-+  - Rafał Miłecki <rafal@milecki.pl>
-+
-+description: >
-+  TRX is Broadcom's official firmware format for the BCM947xx boards. It's used by
-+  most of the vendors building devices based on Broadcom's BCM47xx SoCs and is
-+  supported by the CFE bootloader.
-+
-+  Design of the TRX format is very minimalistic. Its header contains
-+  identification fields, CRC32 checksum and the locations of embedded partitions.
-+  Its purpose is to store a few partitions in a format that can be distributed as
-+  a standalone file and written in a flash memory.
-+
-+  Container can hold up to 4 partitions. The first partition has to contain a
-+  device executable binary (e.g. a kernel) as it's what the CFE bootloader starts
-+  executing. Other partitions can be used for operating system purposes. This is
-+  useful for systems that keep kernel and rootfs separated.
-+
-+  TRX doesn't enforce any strict partition boundaries or size limits. All
-+  partitions have to be less than the 4GiB max size limit.
-+
-+  There are two existing/known TRX variants:
-+    1) v1 which contains 3 partitions
-+    2) v2 which contains 4 partitions
-+
-+  There aren't separated compatible bindings for them as version can be trivially
-+  detected by a software parsing TRX header.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - const: linksys,ns-firmware
-+          - const: brcm,trx
-+      - const: brcm,trx
-+
-+  brcm,trx-magic:
-+    description: TRX magic, if it is different from the default magic.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    default: 0x30524448
-+
-+required:
-+  - compatible
-+
-+allOf:
-+  - $ref: partition.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    flash {
-+        partitions {
-+            compatible = "brcm,trx";
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/mtd/partitions/linksys,ns-partitions.yaml b/Documentation/devicetree/bindings/mtd/partitions/linksys,ns-partitions.yaml
-index 02ecb51fcece..61d7e701b110 100644
---- a/Documentation/devicetree/bindings/mtd/partitions/linksys,ns-partitions.yaml
-+++ b/Documentation/devicetree/bindings/mtd/partitions/linksys,ns-partitions.yaml
-@@ -30,13 +30,7 @@ properties:
+-        partition@200000 {
+-            compatible = "tfa-bl31";
+-            reg = <0x200000 0x100000>;
+-            align = <0x4000>;
+-        };
+-    };
+diff --git a/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm4908-partitions.yaml b/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm4908-partitions.yaml
+index 159b32d12803..a6edf145df57 100644
+--- a/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm4908-partitions.yaml
++++ b/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm4908-partitions.yaml
+@@ -29,11 +29,7 @@ properties:
  
  patternProperties:
    "^partition@[0-9a-f]+$":
 -    $ref: partition.yaml#
 -    properties:
 -      compatible:
--        items:
--          - const: linksys,ns-firmware
--          - const: brcm,trx
+-        const: brcm,bcm4908-firmware
 -    unevaluatedProperties: false
-+    $ref: partition.yaml#/$defs/partition-node
++    type: object
  
  required:
    - "#address-cells"
+diff --git a/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm963xx-imagetag.txt b/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm963xx-imagetag.txt
+deleted file mode 100644
+index f8b7418ed817..000000000000
+--- a/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm963xx-imagetag.txt
++++ /dev/null
+@@ -1,45 +0,0 @@
+-Broadcom BCM963XX ImageTag Partition Container
+-==============================================
+-
+-Some Broadcom BCM63XX SoC based devices contain additional, non discoverable
+-partitions or non standard bootloader partition sizes. For these a mixed layout
+-needs to be used with an explicit firmware partition.
+-
+-The BCM963XX ImageTag is a simple firmware header describing the offsets and
+-sizes of the rootfs and kernel parts contained in the firmware.
+-
+-Required properties:
+-- compatible : must be "brcm,bcm963xx-imagetag"
+-
+-Example:
+-
+-flash@1e000000 {
+-	compatible = "cfi-flash";
+-	reg = <0x1e000000 0x2000000>;
+-	bank-width = <2>;
+-
+-	partitions {
+-		compatible = "fixed-partitions";
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-
+-		cfe@0 {
+-			reg = <0x0 0x10000>;
+-			read-only;
+-		};
+-
+-		firmware@10000 {
+-			reg = <0x10000 0x7d0000>;
+-			compatible = "brcm,bcm963xx-imagetag";
+-		};
+-
+-		caldata@7e0000 {
+-			reg = <0x7e0000 0x10000>;
+-			read-only;
+-		};
+-
+-		nvram@7f0000 {
+-			reg = <0x7f0000 0x10000>;
+-		};
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/mtd/partitions/seama.yaml b/Documentation/devicetree/bindings/mtd/partitions/seama.yaml
+deleted file mode 100644
+index 4c1cbf43e81a..000000000000
+--- a/Documentation/devicetree/bindings/mtd/partitions/seama.yaml
++++ /dev/null
+@@ -1,44 +0,0 @@
+-# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+-%YAML 1.2
+----
+-$id: http://devicetree.org/schemas/mtd/partitions/seama.yaml#
+-$schema: http://devicetree.org/meta-schemas/core.yaml#
+-
+-title: Seattle Image Partitions
+-
+-description: The SEAttle iMAge (SEAMA) partition is a type of partition
+-  used for NAND flash devices. This type of flash image is found in some
+-  D-Link routers such as DIR-645, DIR-842, DIR-859, DIR-860L, DIR-885L,
+-  DIR890L and DCH-M225, as well as in WD and NEC routers on the ath79
+-  (MIPS), Broadcom BCM53xx, and RAMIPS platforms. This partition type
+-  does not have children defined in the device tree, they need to be
+-  detected by software.
+-
+-allOf:
+-  - $ref: partition.yaml#
+-
+-maintainers:
+-  - Linus Walleij <linus.walleij@linaro.org>
+-
+-properties:
+-  compatible:
+-    const: seama
+-
+-required:
+-  - compatible
+-
+-unevaluatedProperties: false
+-
+-examples:
+-  - |
+-    partitions {
+-        compatible = "fixed-partitions";
+-        #address-cells = <1>;
+-        #size-cells = <1>;
+-
+-        partition@0 {
+-            compatible = "seama";
+-            reg = <0x0 0x800000>;
+-            label = "firmware";
+-        };
+-    };
+diff --git a/Documentation/devicetree/bindings/mtd/partitions/simple-partition.yaml b/Documentation/devicetree/bindings/mtd/partitions/simple-partition.yaml
+new file mode 100644
+index 000000000000..14f5006c54a8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mtd/partitions/simple-partition.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mtd/partitions/simple-partition.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Simple partition types
++
++description:
++  Simple partition types which only define a "compatible" value and no custom
++  properties.
++
++maintainers:
++  - Rafał Miłecki <rafal@milecki.pl>
++  - Simon Glass <sjg@chromium.org>
++
++allOf:
++  - $ref: partition.yaml#
++
++properties:
++  compatible:
++    oneOf:
++      - const: brcm,bcm4908-firmware
++        description:
++          Broadcom BCM4908 CFE bootloader firmware partition
++
++      - const: brcm,bcm963xx-imagetag
++        description:
++          The BCM963XX ImageTag is a simple firmware header describing the
++          offsets and sizes of the rootfs and kernel parts contained in the
++          firmware.
++
++      - const: seama
++        description:
++          The SEAttle iMAge (SEAMA) partition is a type of partition used for
++          NAND flash devices. This type of flash image is found in some D-Link
++          routers such as DIR-645, DIR-842, DIR-859, DIR-860L, DIR-885L, DIR890L
++          and DCH-M225, as well as in WD and NEC routers on the ath79 (MIPS),
++          Broadcom BCM53xx, and RAMIPS platforms. This partition type does not
++          have children defined in the device tree, they need to be detected by
++          software.
++
++      - const: u-boot
++        description: >
++          u-boot.bin from U-Boot project.
++
++          This corresponds to a binman 'entry'. It is a single partition which holds
++          data of a defined type.
++
++          Binman uses the type to indicate what data file / type to place in the
++          partition. There are quite a number of binman-specific entry types, such as
++          section, fill and files, to be added later.
++
++      - const: tfa-bl31
++        description: >
++          bl31.bin or bl31.elf from TF-A project
++
++          This corresponds to a binman 'entry'. It is a single partition which holds
++          data of a defined type.
++
++unevaluatedProperties: false
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c856aed83bb0..c3087c282ee3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4403,11 +4403,6 @@ F:	Documentation/filesystems/bfs.rst
+ F:	fs/bfs/
+ F:	include/uapi/linux/bfs_fs.h
+ 
+-BINMAN
+-M:	Simon Glass <sjg@chromium.org>
+-S:	Supported
+-F:	Documentation/devicetree/bindings/mtd/partitions/binman*
+-
+ BITMAP API
+ M:	Yury Norov <yury.norov@gmail.com>
+ R:	Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
 -- 
 2.51.0
