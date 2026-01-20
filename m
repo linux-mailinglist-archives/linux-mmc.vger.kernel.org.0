@@ -1,134 +1,214 @@
-Return-Path: <linux-mmc+bounces-9950-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9952-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E89ED3C4C9
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 11:16:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44AD6D3C5D0
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 11:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 91B5152953B
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 09:52:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7F56E5A8E19
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 10:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACB13BC4CE;
-	Tue, 20 Jan 2026 09:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A943D6499;
+	Tue, 20 Jan 2026 10:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Yuf7OtuU"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from mail-ua1-f66.google.com (mail-ua1-f66.google.com [209.85.222.66])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81833D6477
-	for <linux-mmc@vger.kernel.org>; Tue, 20 Jan 2026 09:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768902594; cv=none; b=HvFF9nRAC/EgRxhuvldu5lzRF4eP/EKHRxJQ0VlTjpBKAC/tKQri6IPCuuNh0YsmwF1hnD7t6QiczdaN1kou9QZs+rHV6Di+YWy1S7WNDYiVX56+P7tQELuhHHhEkH/C+f6kaRFJQ2QSveF4zedpg1TKlRSPNr44daUcc7yBve8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768902594; c=relaxed/simple;
-	bh=PhelJ3YKLy0g5664IUc1xRM3vK2MnAcXyilLWshEZX0=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567AF3BF30C
+	for <linux-mmc@vger.kernel.org>; Tue, 20 Jan 2026 10:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768904872; cv=pass; b=BzJr5+5W2ldyCqcw9zCz8lKYCcYf/N184hZ/KZasdubhjf+ZRiGERMZbo2akDUqGMMuU1Y1jriqpF6T/fXXu1ughV5ty+MeqBI6MRYk8KsLUVN0XXlACXXfBZHz/BskqI1laTGybo3r4HT1S25FJfykgHyMRs4RrYkNlQse6LG4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768904872; c=relaxed/simple;
+	bh=07idC1GmCrNrfYK8Qy2V4mxBASfpPWP6F+yFcUb/4fE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YSwF7JeZl9bJjE/uhQWRt3OdReUicIz9CUz2vAXnG1aj5QFqjqC6RWjD3wa1aPw1c1/6u/Hy5ciGEMzMaH99SH7uz4NmQKPNmL6U1GqyLgv6uJnk1X8AhYxSZb+ZnJaCCRW0HN8go0AR+A9NJBgDkbRqcqgHJ7s/RCeofkWe9P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f66.google.com with SMTP id a1e0cc1a2514c-93a9f700a8cso1317835241.2
-        for <linux-mmc@vger.kernel.org>; Tue, 20 Jan 2026 01:49:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768902584; x=1769507384;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+	 To:Cc:Content-Type; b=ACY9FQKsaFFfIrHdc5Z0lN8ZxM9SbIz6uFMG94mN640E1pPa07b+85zf2AVgu/QuT1hk/PjLbi/wP9wvrL+/zsPrGxUg3MkZYR2cpbAyZ2eDRgm4IubftUYiD1zsrL4LK6ZPWJKtRf6FlbqJxAZToSVfibogNubnWIcUThzIAe4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Yuf7OtuU; arc=pass smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59b6c905a46so5350141e87.1
+        for <linux-mmc@vger.kernel.org>; Tue, 20 Jan 2026 02:27:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768904867; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DmvQ5KsOLMWlYFmAXVik8XMqehHQqOKbBClUviq7V1RLZgYufsdz1jXIPsoC7DzcAw
+         Yc//IUWi6nDNWNTo+fnknHaNIU4R9oBSyQCo2JP9T4ndUf6gVXNyGAC5Ph8jhYrKbVDT
+         4v/GvNBgGcr4VDdIMp6D/OH24d/L0N6m/Af+lEWVET2MV/9GuDS6PBr2hLCLbiJfWWF+
+         1DZgqa3GT81nl6gzN3vYfHQjttaLW46PIRaGJNrz2D3fLQkhhTUxv7nYxuKfIgZx0O/k
+         mTuGNDZeWP5Z1EGyXTttJo/hyhC/NxINY/DulzaBx3I70JleUSMyRdwqgosuQj4jboOn
+         Mi0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7zcWF83k9wfYKZ/pKRWhqE/Kqb04cd3WQEzcDFN468g=;
+        fh=G2+tzcQHL8rArM2+daSmfuMdTmvrHOOFXMhdergGM98=;
+        b=em9iQKN5HnbaQYhb2B8czrRKC+dUCUWj5+1BU2RSTWIOkKN+koVJ2jewql1t7oEnBd
+         6RleeAlXFGBVW6+nWgcVYVOl8udGVabIvKN7TR915C3R2K9MVjnsEXZIG/mL29LYhZqo
+         yasWdf4IlZeFYoATq35bW8A/kcbKXuuJx5lhyDTD2uX/enQfaJ44GEXWY15oafpBxnNc
+         AUHKpqlzeEB8ND4ty+WKoeXqu6PQT6sVUJK2tF6hakByIPDNNVIkQKmRLpkIwP/U9JfT
+         7073o0wB384F+TFRxYlZGSImdizlb39ba0GtB3oTYsLNITZujKW48Zxdqnxggy6gox5a
+         LfeA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1768904867; x=1769509667; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cMqHiB2kIqqBrLa59wdqxa2/T5exJBY1xL1A1svqwlE=;
-        b=oPLBaYr3XxK8ERRmAjmzryPSFQ8GBhmV/s7/0bp5p8eiD2OD9mnD6wJwKvlScSaV9e
-         4alKA9809eVc+SoCq+F+MUyLD3XseHbISX6OlMNy4D5r2rlZRTD4Rw/XbMF7yrPfeW4V
-         3zVhpOO3F8CAXRxMgPJKQd5bo6C1MaVSKawFkz+KEZJRqwMYs1sseAuN3uAd4Bm8SLmo
-         Q85fKZA6irCWKt7kMPMeXMTL+7jfVj65kj86BJ32Xu0tsiMLgcC5m+0uKTvYP9rbbNVm
-         gNsQWpLyBG2vW7ndqWizHniPInu9VwDTMRZhvh1CRVU0inxLqrjHXf6tL9dSGvrMMQWa
-         sNGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2Yo5k2uB3XX5+YGS5HzjFpghKa+/ETfHRMhySiHOdWxL9akp5Lst/ZDebxkjbdXlmuzHJcFNGFZk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxe4KYsDq7RrDk0TIGFE4yg5ZzntuxrV1aNHb88uiJyx/5LIFom
-	mMzdhRvXxXLL0uqX3YeQvaQDZkNkZ51jxEJkuVqenUJFg1RmWGKFxCHGJuxp0KRiCc8=
-X-Gm-Gg: AZuq6aL8eubLNuWJXhW1eUweYZJiVjy51J5ucqvAcuyh4pfFzj+SiYG+Bvno/msBBl9
-	qUx6Pb/TZ7Y8DPhzX7HYRGU2IuDfbOEW5Amvxv2OKs66lf0qyVWO0OPrr1ScOoZums/XkXM6IE0
-	OXbgUSeiu1ucEXOuM+G59SbMLpwbWbG9SPhE89ZZ+6a2yoSFrYzXfvYLeZTqRUAMcxDRhQgSW8i
-	Uj5GeQy3EG8suCOS5FEEZPK9lI2DqK1chiXvfYWYgEaHholl9Bu+H4SVvmIN/Ow7NrBdhqdcTSu
-	23JhsDlk2Y0wfuJAywmR62PG1O6gTJwSPYjK/okwqaMsiNPWT7X4zDxP6PmYbjfbf3eC9g8e0GQ
-	XYUpuvKSKarLdpz1KyeSQ4BhBD1w30B+bFZOo1YS6Y9QbqPnpmyRBta1BYG3N19o/2axNZplEoE
-	4wQO8/QmrH3wkW/SYdmEh3TLD1lvrlbPaomLPwqE/Bz9QbeDpw4MQs9VQgxjiiwAc=
-X-Received: by 2002:a05:6102:c4e:b0:5df:b3ed:2c8b with SMTP id ada2fe7eead31-5f50aea8b17mr285781137.38.1768902584426;
-        Tue, 20 Jan 2026 01:49:44 -0800 (PST)
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com. [209.85.221.177])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5f1a6925223sm4146363137.4.2026.01.20.01.49.43
-        for <linux-mmc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jan 2026 01:49:43 -0800 (PST)
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5636784884eso1294749e0c.2
-        for <linux-mmc@vger.kernel.org>; Tue, 20 Jan 2026 01:49:43 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVWelJVcdTmqarhg8AU6DfD0w02UJxM/LZUgGLdAYKg+4+7/FGXtF9fJA18iBvomubSL6hC5ci4Rus=@vger.kernel.org
-X-Received: by 2002:a05:6102:2928:b0:5db:f6ef:560 with SMTP id
- ada2fe7eead31-5f50ae0a099mr264663137.28.1768902583158; Tue, 20 Jan 2026
- 01:49:43 -0800 (PST)
+        bh=7zcWF83k9wfYKZ/pKRWhqE/Kqb04cd3WQEzcDFN468g=;
+        b=Yuf7OtuUDfS5/lsLHSZMaQDKnJWqMRmw1ckG7aEY7USvvKCMTFqSy4gQCm4oHm6lGd
+         vNQT++mqJwJdtwXaVABNudNiRl1N62sQ/JEGIJnbpvaStn5Ge4X5CIf2Om9vS51ejGIs
+         T/Qpp3fvGwfaVrtp7bojdmD9YAGlLBRERmoKwtHXa52V9mVdvbUEU9YZhNfccZqnWqed
+         8x8slOqi1oUuyGd1g5hoCp5HEcKY8FGUcuTS0C0Vm17cJWfgUW7+pENTrUf3ntWtwDSp
+         Bi3s5M8cN356hZqJeB18ft6QYI51/fTORWoVp+k8aRPcylMRhopubtMgulYYOj7M0vRE
+         7zLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768904867; x=1769509667;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7zcWF83k9wfYKZ/pKRWhqE/Kqb04cd3WQEzcDFN468g=;
+        b=RMYCyyc7ptavja/NctJmAK62q1Q5iB5c7UoJPI+KEcNOQQNR7eVBH8JXLON70jEVQW
+         cpV4IrwxsZcZNCeO8lr5/Q4FHr97Yg07bSj10feO1rTD4DkocbAXmh980oxpnDfdUhZz
+         SO2GJMqmZdKYRjgCC+XxHMb3YJT9mziXPtsELpcvijzRfyC8CCj2fy1MrEOZvU2vKd5j
+         TRySCmvzdHIVB2I3rcDH3B2aWKQ3wGBPrCC9JV3FJrRyy1pomfICoxjtkYhk5lhij3fP
+         zH6/pWSeJ6ABIRNWZEYYIbS10ny1CACYZKUJJxAOkoLZKk8TMVqTmR7+6/Viy7IhTOmY
+         oEhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpe1M6WWVJU1KCtOOVMHtQMaVhQB7BubR/gVC7JdKqd9TjH82WEZ8lSYd+UdnIttVgpr2Iq+aaauQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywdq7XFVrM+rriixdoQG3Sdpc2AOhLJOlu1By2q0Wj8458Mu8AN
+	H06IWB7VznNgdmWr5anys/a2IUwWf/fCPgoyrP6t1GrBcn9QY+0glM2rYMYXUL38GDj4TTegdO3
+	ZsvGoZZHbWgfkrGslVAnFpmva8F9l1f6+KlWD69lNNw==
+X-Gm-Gg: AZuq6aLJnk3XbFDv4xn7lA3TJLyqFAw+1WrOFYF11FdigekNIhivi14g/MXquokHy33
+	/dxftmMhfjL40u5M1S7F1QSvYSO3VDEzKi7UWV390iwjqmF2ROEDb81Moi6DlpFTBJKTjNH2K/k
+	S5E3badiECVy2H55bCGeBeQBBqdoyrx4/SbW9h+vhTR65xgxdM0Ktt4WVlODGf3EABK3mDCGVES
+	wRLhEnmN3OAELCM7vAhyQo8aPoaIS+Nb72as6yEqseQ2vTOi5kl5U2hG1YbiT5fAw/EG1jWMlmF
+	fc2HIw==
+X-Received: by 2002:a05:6512:8011:20b0:59b:b3df:cd79 with SMTP id
+ 2adb3069b0e04-59bb3dfcdf6mr2962095e87.10.1768904867209; Tue, 20 Jan 2026
+ 02:27:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260118-rz-sdio-mux-v5-0-3c37e8872683@solid-run.com> <20260118-rz-sdio-mux-v5-7-3c37e8872683@solid-run.com>
-In-Reply-To: <20260118-rz-sdio-mux-v5-7-3c37e8872683@solid-run.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 20 Jan 2026 10:49:32 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU5shzYs27wO2A0SoisGBMo8RHf9DO-ubC6VrhWECEPCw@mail.gmail.com>
-X-Gm-Features: AZwV_QjEUqevj8OUxZ5xnP3V3BgNbEzQSiuy0CgomAkdvyQGaaSlv633jCWavtA
-Message-ID: <CAMuHMdU5shzYs27wO2A0SoisGBMo8RHf9DO-ubC6VrhWECEPCw@mail.gmail.com>
-Subject: Re: [PATCH v5 7/7] mmc: host: renesas_sdhi_core: support selecting an
- optional mux
-To: Josua Mayer <josua@solid-run.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Vincent Mailhol <mailhol@kernel.org>, 
-	Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Peter Rosin <peda@axentia.se>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Vignesh R <vigneshr@ti.com>, 
-	Andi Shyti <andi.shyti@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Magnus Damm <magnus.damm@gmail.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Yazan Shhady <yazan.shhady@solid-run.com>, Jon Nettleton <jon@solid-run.com>, 
-	Mikhail Anikin <mikhail.anikin@solid-run.com>, linux-can@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org
+References: <cover.1768232321.git.u.kleine-koenig@baylibre.com> <397f45c2818f6632151f92b70e547262f373c3b6.1768232321.git.u.kleine-koenig@baylibre.com>
+In-Reply-To: <397f45c2818f6632151f92b70e547262f373c3b6.1768232321.git.u.kleine-koenig@baylibre.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 20 Jan 2026 11:27:11 +0100
+X-Gm-Features: AZwV_QjFjXjc-U8euh4MC9z2kFcNJA0P9wX41pDZQ4VLxKcd4e9zNglVFRdV4L4
+Message-ID: <CAPDyKFrinbj0QdL4rAP7zCvcnc6kGRQDTbiq1H0nRd+-B+HWnw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] sdio: Provide a bustype shutdown function
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	Johannes Berg <johannes@sipsolutions.net>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, 
+	linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 18 Jan 2026 at 11:29, Josua Mayer <josua@solid-run.com> wrote:
-> Some hardware designs route data or control signals through a mux to
-> support multiple devices on a single sdhi controller.
+On Mon, 12 Jan 2026 at 16:47, Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@baylibre.com> wrote:
 >
-> In particular SolidRun RZ/G2L/G2LC/V2L System on Module use a mux for
-> switching between soldered eMMC and an optional microSD on a carrier
-> board, e.g. for development or provisioning.
+> To prepare sdio drivers to migrate away from struct device_driver::shutdo=
+wn
+> (and then eventually remove that callback) create a serdev driver shutdow=
+n
+> callback and migration code to keep the existing behaviour. Note this
+> introduces a warning for each driver that isn't converted yet to that
+> callback at register time.
 >
-> SD/SDIO/eMMC are not well suited for runtime switching between different
-> cards, however boot-time selection is possible and useful - in
-> particular considering dt overlays.
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Johannes, please pick this via your tree. And sorry for the delay in
+reviewing this!
+
+Kind regards
+Uffe
+
+> ---
+>  drivers/mmc/core/sdio_bus.c   | 25 +++++++++++++++++++++++++
+>  include/linux/mmc/sdio_func.h |  1 +
+>  2 files changed, 26 insertions(+)
 >
-> Add support for an optional SD/SDIO/eMMC mux defined in dt, and select
-> it during probe.
+> diff --git a/drivers/mmc/core/sdio_bus.c b/drivers/mmc/core/sdio_bus.c
+> index 10799772494a..6e5bdc2f0cc8 100644
+> --- a/drivers/mmc/core/sdio_bus.c
+> +++ b/drivers/mmc/core/sdio_bus.c
+> @@ -232,6 +232,15 @@ static void sdio_bus_remove(struct device *dev)
+>                 pm_runtime_put_sync(dev);
+>  }
 >
-> Similar functionality already exists in other places, e.g. i2c-omap.
+> +static void sdio_bus_shutdown(struct device *dev)
+> +{
+> +       struct sdio_driver *drv =3D to_sdio_driver(dev->driver);
+> +       struct sdio_func *func =3D dev_to_sdio_func(dev);
+> +
+> +       if (dev->driver && drv->shutdown)
+> +               drv->shutdown(func);
+> +}
+> +
+>  static const struct dev_pm_ops sdio_bus_pm_ops =3D {
+>         SET_SYSTEM_SLEEP_PM_OPS(pm_generic_suspend, pm_generic_resume)
+>         SET_RUNTIME_PM_OPS(
+> @@ -248,6 +257,7 @@ static const struct bus_type sdio_bus_type =3D {
+>         .uevent         =3D sdio_bus_uevent,
+>         .probe          =3D sdio_bus_probe,
+>         .remove         =3D sdio_bus_remove,
+> +       .shutdown       =3D sdio_bus_shutdown,
+>         .pm             =3D &sdio_bus_pm_ops,
+>  };
 >
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
-
-LGTM, so
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> @@ -261,6 +271,14 @@ void sdio_unregister_bus(void)
+>         bus_unregister(&sdio_bus_type);
+>  }
+>
+> +static void sdio_legacy_shutdown(struct sdio_func *func)
+> +{
+> +       struct device *dev =3D &func->dev;
+> +       struct device_driver *driver =3D dev->driver;
+> +
+> +       driver->shutdown(dev);
+> +}
+> +
+>  /**
+>   *     __sdio_register_driver - register a function driver
+>   *     @drv: SDIO function driver
+> @@ -272,6 +290,13 @@ int __sdio_register_driver(struct sdio_driver *drv, =
+struct module *owner)
+>         drv->drv.bus =3D &sdio_bus_type;
+>         drv->drv.owner =3D owner;
+>
+> +       /*
+> +        * This driver needs updating. Note that driver_register() warns =
+about
+> +        * this, so we're not adding another warning here.
+> +        */
+> +       if (!drv->shutdown && drv->drv.shutdown)
+> +               drv->shutdown =3D sdio_legacy_shutdown;
+> +
+>         return driver_register(&drv->drv);
+>  }
+>  EXPORT_SYMBOL_GPL(__sdio_register_driver);
+> diff --git a/include/linux/mmc/sdio_func.h b/include/linux/mmc/sdio_func.=
+h
+> index fed1f5f4a8d3..4534bf462aac 100644
+> --- a/include/linux/mmc/sdio_func.h
+> +++ b/include/linux/mmc/sdio_func.h
+> @@ -78,6 +78,7 @@ struct sdio_driver {
+>
+>         int (*probe)(struct sdio_func *, const struct sdio_device_id *);
+>         void (*remove)(struct sdio_func *);
+> +       void (*shutdown)(struct sdio_func *);
+>
+>         struct device_driver drv;
+>  };
+> --
+> 2.47.3
+>
 
