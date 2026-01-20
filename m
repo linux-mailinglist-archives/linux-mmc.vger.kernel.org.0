@@ -1,353 +1,105 @@
-Return-Path: <linux-mmc+bounces-9938-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9941-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B6FD3BD31
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 02:52:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C5AD3BD4D
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 02:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22969309F045
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 01:49:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FF183025A48
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 01:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B80526560D;
-	Tue, 20 Jan 2026 01:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E52C25A645;
+	Tue, 20 Jan 2026 01:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EuwXnPBu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDR9AA/S"
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257AF299AA3;
-	Tue, 20 Jan 2026 01:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3123B19D071
+	for <linux-mmc@vger.kernel.org>; Tue, 20 Jan 2026 01:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768873747; cv=none; b=UEBP4ZvwkIe1aF3h2CSJKd7SLI3y0PRlQe62eabH4iLllbRRrUE7g4nFzJJtoQVuq26BYT9w/FmkSDxDoC60WzcnAFsYzi+9+C9rgn4VUcNQoT/LUA7izuunIeTZ6DCrhTqGW5fln7Fh+oZfW+G3N4giBGLTFxDAG4WnqgjBwlU=
+	t=1768874078; cv=none; b=EaJvbbu9gX+TxiuOjlTOWDnGkQ6ONrLBqzX2WW+rAdBBOLXAfBk71/psJWpuaSW5r9Sks/8Cdjump1p6nfpFjtXwyF2zk9rpGF9xgX09azJmvQc7ViJRz1dP8OVMletW84AFf9wiXIUCbukVMuSnCcoxV5hfhUFMTx2lBiJlLTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768873747; c=relaxed/simple;
-	bh=u8njuo9gBPPAVuFVoNc+/jcJfkp5k0uOtG0VDac+wEw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=o5p0tneMmedmmndOKgZaGAAJFuid/nNYHwE9theOus5C0vCzjvrB6GLC/9fdL3rMONc76iRqDwlXaff/wQjQNn3oN24wceN3L/Bnx9cOWxgMZcwvazbJYTzKSIlcY3sKAnGLRzfIRT9nYoMFFimDSgH/LT5NsyVwMKbqMhqgegk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EuwXnPBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD79C2BC87;
-	Tue, 20 Jan 2026 01:49:06 +0000 (UTC)
+	s=arc-20240116; t=1768874078; c=relaxed/simple;
+	bh=0CpFIUoNQxzCsEqiOC9Tot7+YhNBK8bbLQBjNBE+Whg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aZC4MtUTpMv4DjyFzp0lIdVU+SNaU9aEcUD56kLc7wkoEea0POsFN4ZpAATtAebVNqAdzTo8uxu4QMdx9tsx2cgC7TfCtBmZ9sj44Kv6XP26WIe7VCHazpwSEhnH3NTQp7TCqkQWlEms8XExfLaOcbY2/tnzTrWSb/EuwW76KE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDR9AA/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0551C16AAE
+	for <linux-mmc@vger.kernel.org>; Tue, 20 Jan 2026 01:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768873747;
-	bh=u8njuo9gBPPAVuFVoNc+/jcJfkp5k0uOtG0VDac+wEw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=EuwXnPBuc01R4GPCu3dBZ68OCS2fkiclvOeKWYD4g0SeAeN6E8uuPQR2j1NVBIfAa
-	 BlOPjUCf5OlM1jrPCEJsfQIWllJrf3Xj9cahw5Ma8LrraxNEnlJ3gaNJuxXu4Qi1ht
-	 JDKz7tCK1Fky9frLxpRHPn6rR73HTKIqfCrBgBMCHeW2JD5wLLHjtQ9gZozyIgSgoH
-	 WaMKazqPhELqsgMk7ao1XpOs2RTTqDZ1DoyuRtN3v5VD881Rfhd7Dq16fY8CvN/5jI
-	 dPQQszn6U5sWyyY3+QWf/o/aXQbumFNoOpSmrEN+Gwr409kww8UI1zZ6guTnmjXt3h
-	 naPDXr3E5KMWQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Date: Mon, 19 Jan 2026 19:48:31 -0600
-Subject: [PATCH v2 10/10] dt-bindings: mtd: partitions: Combine simple
- partition bindings
+	s=k20201202; t=1768874077;
+	bh=0CpFIUoNQxzCsEqiOC9Tot7+YhNBK8bbLQBjNBE+Whg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HDR9AA/SAsTWh7Cp/LvXHK4oavlJ+NI2i/YstM0RgVZoOFydeI+PJ1iSiQJbqUCuA
+	 rQRqzo6JCQNXjFwdYgV+2+hfNNdbUmkdASFtL+eAOdBJvpHRayguyP1fpEz+bm8w36
+	 RTNsgNJ/8ruW64htmDg5zRZ2QimUk0D/LLQ/0rMFT6MfdakRBK/YCp6mkCB0nAbsTl
+	 nOgBIQ9z1a82Z6cwHfmXIVHUt4bY041IyfHpxUrVpOKZ+WZTuyJ0QKJeM90iU/f1rw
+	 UomvZ/XFtUyjgf+1xYzHhgKzx1fvtjWZWF4fdt2lzAwuzw7TMCvxWqMn/I1OLjlvgm
+	 MdViyXwDbXDGA==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6505d141d02so8387550a12.3
+        for <linux-mmc@vger.kernel.org>; Mon, 19 Jan 2026 17:54:37 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV7Z+jaQjwp0AFRc4G0Wt3C5UKUEsZBVwpzB13VGEpGmC00s0ndKPK8uqafTY9pNaF62sGOy/s/i4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrygupjSkryyUYjOUB7kKjSfZF751TG1x1PVGu5KEhd70Kq71P
+	BFvW9DlTiIm4okcMrcIkjmoMDC9BFcAK0wkkA3cdnbE51p7pQ/eusN5MUsuWbYfwD+CoEYUjr+T
+	5S0DHchhfyOua42qekraosluBHVOMTA==
+X-Received: by 2002:a05:6402:2348:b0:64b:7307:9b00 with SMTP id
+ 4fb4d7f45d1cf-657ff2a6953mr281430a12.5.1768874076364; Mon, 19 Jan 2026
+ 17:54:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260119-dt-mtd-partitions-v2-10-77ebb958a312@kernel.org>
-References: <20260119-dt-mtd-partitions-v2-0-77ebb958a312@kernel.org>
-In-Reply-To: <20260119-dt-mtd-partitions-v2-0-77ebb958a312@kernel.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Brian Norris <computersforpeace@gmail.com>, 
- Kamal Dasu <kdasu.kdev@gmail.com>, 
- William Zhang <william.zhang@broadcom.com>, Nick Terrell <terrelln@fb.com>, 
- David Sterba <dsterba@suse.com>, 
- =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, 
- Simon Glass <sjg@chromium.org>, Linus Walleij <linusw@kernel.org>, 
- Ulf Hansson <ulf.hansson@linaro.org>, 
- Marcus Folkesson <marcus.folkesson@gmail.com>, 
- Tony Lindgren <tony@atomide.com>, Roger Quadros <rogerq@kernel.org>, 
- Hauke Mehrtens <hauke@hauke-m.de>
-Cc: linux-mtd@lists.infradead.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
-X-Mailer: b4 0.15-dev
+References: <20260108-dt-mtd-partitions-v1-0-124a53ce6279@kernel.org> <87tswhswsp.fsf@bootlin.com>
+In-Reply-To: <87tswhswsp.fsf@bootlin.com>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 19 Jan 2026 19:54:24 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ7_yKRTCOrxcq0QDy_MRMCRMQqhH=TKiBs=nubqNN9HA@mail.gmail.com>
+X-Gm-Features: AZwV_QjPR6v0rtDsZSDoolTLomCXXNQMjCA8Bg08oauq1HlF9vmo2OSFeFzVJj0
+Message-ID: <CAL_JsqJ7_yKRTCOrxcq0QDy_MRMCRMQqhH=TKiBs=nubqNN9HA@mail.gmail.com>
+Subject: Re: [PATCH 00/10] dt-bindings: mtd: Partition binding fixes and restructuring
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Brian Norris <computersforpeace@gmail.com>, Kamal Dasu <kdasu.kdev@gmail.com>, 
+	William Zhang <william.zhang@broadcom.com>, Nick Terrell <terrelln@fb.com>, 
+	David Sterba <dsterba@suse.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
+	Simon Glass <sjg@chromium.org>, Linus Walleij <linusw@kernel.org>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Marcus Folkesson <marcus.folkesson@gmail.com>, 
+	Tony Lindgren <tony@atomide.com>, Roger Quadros <rogerq@kernel.org>, Hauke Mehrtens <hauke@hauke-m.de>, 
+	linux-mtd@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Several partition node bindings are just a compatible plus properties
-defined in partition.yaml. Move all of these bindings to a single schema
-file.
+On Mon, Jan 19, 2026 at 4:48=E2=80=AFAM Miquel Raynal <miquel.raynal@bootli=
+n.com> wrote:
+>
+> Hello Rob,
+>
+> On 08/01/2026 at 11:53:09 -06, "Rob Herring (Arm)" <robh@kernel.org> wrot=
+e:
+>
+> > The partition bindings fail to restrict undefined properties. This is
+> > primarily on fixed-partitions which can be nested and partition nodes
+> > without a compatible string. This series fixes those issues and then
+> > several problems exposed by restricting undefined properties. As part o=
+f
+> > this, the schema structure is reworked to follow more conventional
+> > structure of applying schemas by compatible and a schema only checks 1
+> > level of nodes (unless possible child nodes are fixed).
+>
+> The series does not apply cleanly, I tried mtd/next and then
+> v6.19-rc1. Can you please rebase it and fix the conflicts (at least 2
+> patches fail, and then I stopped)?
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- .../devicetree/bindings/mtd/partitions/binman.yaml | 53 -------------------
- .../mtd/partitions/brcm,bcm4908-partitions.yaml    |  6 +--
- .../mtd/partitions/brcm,bcm963xx-imagetag.txt      | 45 ----------------
- .../devicetree/bindings/mtd/partitions/seama.yaml  | 44 ----------------
- .../bindings/mtd/partitions/simple-partition.yaml  | 61 ++++++++++++++++++++++
- MAINTAINERS                                        |  5 --
- 6 files changed, 62 insertions(+), 152 deletions(-)
+I rebased on mtd/next and sent v2. I only saw one conflict though, and
+that was with seama.yaml. That's going to conflict with Linus' tree,
+but the resolution is take the deleted file.
 
-diff --git a/Documentation/devicetree/bindings/mtd/partitions/binman.yaml b/Documentation/devicetree/bindings/mtd/partitions/binman.yaml
-deleted file mode 100644
-index bb4b08546184..000000000000
---- a/Documentation/devicetree/bindings/mtd/partitions/binman.yaml
-+++ /dev/null
-@@ -1,53 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
--%YAML 1.2
-----
--$id: http://devicetree.org/schemas/mtd/partitions/binman.yaml#
--$schema: http://devicetree.org/meta-schemas/core.yaml#
--
--title: Binman entries
--
--description: |
--  This corresponds to a binman 'entry'. It is a single partition which holds
--  data of a defined type.
--
--  Binman uses the type to indicate what data file / type to place in the
--  partition. There are quite a number of binman-specific entry types, such as
--  section, fill and files, to be added later.
--
--maintainers:
--  - Simon Glass <sjg@chromium.org>
--
--allOf:
--  - $ref: /schemas/mtd/partitions/partition.yaml#
--
--properties:
--  compatible:
--    enum:
--      - u-boot       # u-boot.bin from U-Boot project
--      - tfa-bl31     # bl31.bin or bl31.elf from TF-A project
--
--required:
--  - compatible
--
--unevaluatedProperties: false
--
--examples:
--  - |
--    partitions {
--        compatible = "fixed-partitions";
--        #address-cells = <1>;
--        #size-cells = <1>;
--
--        partition@100000 {
--            compatible = "u-boot";
--            reg = <0x100000 0xf00000>;
--            align-size = <0x1000>;
--            align-end = <0x10000>;
--        };
--
--        partition@200000 {
--            compatible = "tfa-bl31";
--            reg = <0x200000 0x100000>;
--            align = <0x4000>;
--        };
--    };
-diff --git a/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm4908-partitions.yaml b/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm4908-partitions.yaml
-index 159b32d12803..a6edf145df57 100644
---- a/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm4908-partitions.yaml
-+++ b/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm4908-partitions.yaml
-@@ -29,11 +29,7 @@ properties:
- 
- patternProperties:
-   "^partition@[0-9a-f]+$":
--    $ref: partition.yaml#
--    properties:
--      compatible:
--        const: brcm,bcm4908-firmware
--    unevaluatedProperties: false
-+    type: object
- 
- required:
-   - "#address-cells"
-diff --git a/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm963xx-imagetag.txt b/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm963xx-imagetag.txt
-deleted file mode 100644
-index f8b7418ed817..000000000000
---- a/Documentation/devicetree/bindings/mtd/partitions/brcm,bcm963xx-imagetag.txt
-+++ /dev/null
-@@ -1,45 +0,0 @@
--Broadcom BCM963XX ImageTag Partition Container
--==============================================
--
--Some Broadcom BCM63XX SoC based devices contain additional, non discoverable
--partitions or non standard bootloader partition sizes. For these a mixed layout
--needs to be used with an explicit firmware partition.
--
--The BCM963XX ImageTag is a simple firmware header describing the offsets and
--sizes of the rootfs and kernel parts contained in the firmware.
--
--Required properties:
--- compatible : must be "brcm,bcm963xx-imagetag"
--
--Example:
--
--flash@1e000000 {
--	compatible = "cfi-flash";
--	reg = <0x1e000000 0x2000000>;
--	bank-width = <2>;
--
--	partitions {
--		compatible = "fixed-partitions";
--		#address-cells = <1>;
--		#size-cells = <1>;
--
--		cfe@0 {
--			reg = <0x0 0x10000>;
--			read-only;
--		};
--
--		firmware@10000 {
--			reg = <0x10000 0x7d0000>;
--			compatible = "brcm,bcm963xx-imagetag";
--		};
--
--		caldata@7e0000 {
--			reg = <0x7e0000 0x10000>;
--			read-only;
--		};
--
--		nvram@7f0000 {
--			reg = <0x7f0000 0x10000>;
--		};
--	};
--};
-diff --git a/Documentation/devicetree/bindings/mtd/partitions/seama.yaml b/Documentation/devicetree/bindings/mtd/partitions/seama.yaml
-deleted file mode 100644
-index 4c1cbf43e81a..000000000000
---- a/Documentation/devicetree/bindings/mtd/partitions/seama.yaml
-+++ /dev/null
-@@ -1,44 +0,0 @@
--# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
--%YAML 1.2
-----
--$id: http://devicetree.org/schemas/mtd/partitions/seama.yaml#
--$schema: http://devicetree.org/meta-schemas/core.yaml#
--
--title: Seattle Image Partitions
--
--description: The SEAttle iMAge (SEAMA) partition is a type of partition
--  used for NAND flash devices. This type of flash image is found in some
--  D-Link routers such as DIR-645, DIR-842, DIR-859, DIR-860L, DIR-885L,
--  DIR890L and DCH-M225, as well as in WD and NEC routers on the ath79
--  (MIPS), Broadcom BCM53xx, and RAMIPS platforms. This partition type
--  does not have children defined in the device tree, they need to be
--  detected by software.
--
--allOf:
--  - $ref: partition.yaml#
--
--maintainers:
--  - Linus Walleij <linus.walleij@linaro.org>
--
--properties:
--  compatible:
--    const: seama
--
--required:
--  - compatible
--
--unevaluatedProperties: false
--
--examples:
--  - |
--    partitions {
--        compatible = "fixed-partitions";
--        #address-cells = <1>;
--        #size-cells = <1>;
--
--        partition@0 {
--            compatible = "seama";
--            reg = <0x0 0x800000>;
--            label = "firmware";
--        };
--    };
-diff --git a/Documentation/devicetree/bindings/mtd/partitions/simple-partition.yaml b/Documentation/devicetree/bindings/mtd/partitions/simple-partition.yaml
-new file mode 100644
-index 000000000000..14f5006c54a8
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mtd/partitions/simple-partition.yaml
-@@ -0,0 +1,61 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mtd/partitions/simple-partition.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Simple partition types
-+
-+description:
-+  Simple partition types which only define a "compatible" value and no custom
-+  properties.
-+
-+maintainers:
-+  - Rafał Miłecki <rafal@milecki.pl>
-+  - Simon Glass <sjg@chromium.org>
-+
-+allOf:
-+  - $ref: partition.yaml#
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - const: brcm,bcm4908-firmware
-+        description:
-+          Broadcom BCM4908 CFE bootloader firmware partition
-+
-+      - const: brcm,bcm963xx-imagetag
-+        description:
-+          The BCM963XX ImageTag is a simple firmware header describing the
-+          offsets and sizes of the rootfs and kernel parts contained in the
-+          firmware.
-+
-+      - const: seama
-+        description:
-+          The SEAttle iMAge (SEAMA) partition is a type of partition used for
-+          NAND flash devices. This type of flash image is found in some D-Link
-+          routers such as DIR-645, DIR-842, DIR-859, DIR-860L, DIR-885L, DIR890L
-+          and DCH-M225, as well as in WD and NEC routers on the ath79 (MIPS),
-+          Broadcom BCM53xx, and RAMIPS platforms. This partition type does not
-+          have children defined in the device tree, they need to be detected by
-+          software.
-+
-+      - const: u-boot
-+        description: >
-+          u-boot.bin from U-Boot project.
-+
-+          This corresponds to a binman 'entry'. It is a single partition which holds
-+          data of a defined type.
-+
-+          Binman uses the type to indicate what data file / type to place in the
-+          partition. There are quite a number of binman-specific entry types, such as
-+          section, fill and files, to be added later.
-+
-+      - const: tfa-bl31
-+        description: >
-+          bl31.bin or bl31.elf from TF-A project
-+
-+          This corresponds to a binman 'entry'. It is a single partition which holds
-+          data of a defined type.
-+
-+unevaluatedProperties: false
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c856aed83bb0..c3087c282ee3 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4403,11 +4403,6 @@ F:	Documentation/filesystems/bfs.rst
- F:	fs/bfs/
- F:	include/uapi/linux/bfs_fs.h
- 
--BINMAN
--M:	Simon Glass <sjg@chromium.org>
--S:	Supported
--F:	Documentation/devicetree/bindings/mtd/partitions/binman*
--
- BITMAP API
- M:	Yury Norov <yury.norov@gmail.com>
- R:	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-
--- 
-2.51.0
-
+Rob
 
