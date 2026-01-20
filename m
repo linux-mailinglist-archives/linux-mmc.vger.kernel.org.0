@@ -1,95 +1,152 @@
-Return-Path: <linux-mmc+bounces-9953-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9951-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AA7D3C5BC
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 11:42:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BDBD3C655
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 11:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9B77A5AA721
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 10:30:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B7DC721DCF
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 10:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680A23EDAA4;
-	Tue, 20 Jan 2026 10:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF8F3ED12C;
+	Tue, 20 Jan 2026 10:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uD/2eMjE"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SLTsLSsB"
 X-Original-To: linux-mmc@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971023D7D73;
-	Tue, 20 Jan 2026 10:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768904964; cv=none; b=Mh08wlW8Lv7N2HhpsSBtdXvZrSkt8/oJZzGDz1d8odS54uFmmYI5bCMJX0jxKYIzi05AVGqZRSK4yj5qHCk+UevQL3IF6CB2IhOHgCHNPNh8dg4oclo80Rin/TgTNoC+EF4PKmmOPX3U7J39JBtdSS2LCgcqSijfjnbKFJ8QcBM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768904964; c=relaxed/simple;
-	bh=dNjJ9BTo9hkfegYpdM7F3eNNFh+MOmTlbyHa3NowPMY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=i2y/0oA3F1Dgsgz5AObde8SbamU2glmdUhzscAAdvhEv9wxHPz+pT3tKG2ilzxnN8KytvLb+LZUassMEQt1Hq1GqRclyErSzq/hddwp91Q65cfCSq/z2tTB2gJ4rxiIMU0HGYU1ELx5LGu5NcXNJBG1wkDKWNvpEmWtw+coWAAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uD/2eMjE; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=dNjJ9BTo9hkfegYpdM7F3eNNFh+MOmTlbyHa3NowPMY=;
-	t=1768904962; x=1770114562; b=uD/2eMjEcbp1z+P8CkZYyU61LYYEz7F5xW4rB+qxJnOR1F4
-	OAzmp7V/xpSzcPLpalRK3evtQJnk+dEQMmzg0RYNEhdb5TicmBqZeQbCsgUnkyZZUUXNshVusv46i
-	DF4WC1aLzmmaMumRwrJ8aw2aBUnISLdZ8yzLSUukh1x+9iukZXl9n6RNRElE9Rls5oL8XB8GfPYkS
-	jdeDgsVJ6zpCAK1QgDU1AzqXRBRH7uQG2CC2OKCcYqXkdVGspCwYkr+3AgmSiGW6IKO/U4zUfw23L
-	+z1KaBF51UpDaT1UflMpw93AbhPaLx84QD101uiY3rCcvioU/3EJ77LpwW1gPRag==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vi8z9-0000000Gkdf-1aaG;
-	Tue, 20 Jan 2026 11:29:19 +0100
-Message-ID: <55737e5864d4f6bf66b9827832a2b981c1529e97.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/3] sdio: Provide a bustype shutdown function
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ulf Hansson <ulf.hansson@linaro.org>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?=	 <u.kleine-koenig@baylibre.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, 
-	linux-mmc@vger.kernel.org
-Date: Tue, 20 Jan 2026 11:29:18 +0100
-In-Reply-To: <CAPDyKFrinbj0QdL4rAP7zCvcnc6kGRQDTbiq1H0nRd+-B+HWnw@mail.gmail.com> (sfid-20260120_112749_071466_3438B9E1)
-References: <cover.1768232321.git.u.kleine-koenig@baylibre.com>
-	 <397f45c2818f6632151f92b70e547262f373c3b6.1768232321.git.u.kleine-koenig@baylibre.com>
-	 <CAPDyKFrinbj0QdL4rAP7zCvcnc6kGRQDTbiq1H0nRd+-B+HWnw@mail.gmail.com>
-	 (sfid-20260120_112749_071466_3438B9E1)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4813DA7E6
+	for <linux-mmc@vger.kernel.org>; Tue, 20 Jan 2026 10:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768904779; cv=pass; b=ubDrziJevMPy3AHnbwXywYFjY987yQP1DLa9fy6LIgBkaw+jAhZtswP3dHiuaCyivxXVQ2A/QNr0+vkB6GxbVBjU5ySgmAJLosM9MVlhKdHtRri3XmmSCLy07LXLyA/2H5REjlTCGmC8JasNUF6bJTHFSK0RrZj9VEbWgv9j4Hs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768904779; c=relaxed/simple;
+	bh=2voIFGn6SR1MogbmE3kR3Vdr38x74Nd/URKdq4hbHvk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VGmQo5+qYFoDeEullr/lAOduyZmkN8fJ0WFMyCH0ift9r3nAAfNL+E4/mmuMa0KBJBOsFtiRYngHJuBmALOmYH91n03rXqDas+tVVjh1LLV425qD3qjE66+8lIH5WYZJCrvnI+B3VU7ySp3u1juGeL4jJWLJsyx6kH36OXefjMM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SLTsLSsB; arc=pass smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-59b77f2e43aso7782141e87.1
+        for <linux-mmc@vger.kernel.org>; Tue, 20 Jan 2026 02:26:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768904775; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Mf1GMUOuYLVoBeENW1oGtk0XyEH61IyhVcljcLeWArbmHWecnZ5MLKlmp89qobFr16
+         rq1E+1XfK13pgdI4lrJ2n2OAsFXzpgcHoLXtQ+iGxRyAKkwMQv5/DDasnkyy5GWEFqX1
+         hd/44DnkMAOldnAstiEvxZlKyc9ch3ezalmSXExdFoM9w+9jPYSurJ830qcjj0Nnpy9X
+         8bioLLPuJDxOF4wdTTpc2mZzmTn7bIRF/LBaiF2aV6p7iEC57iLDjfJyEJLvmOX/wHBi
+         Y2UmoH7Ql8FasayWaZae+j7Q8+nailzuwF2+BY5fmWlUfW1ULc4AH7TE7AhY+Jwp9zdg
+         VIKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7dc4uOSwQ2vBzThtTBXaWxDon+kZapkB4rooEPiZwsE=;
+        fh=9bCBdMmtBdSSeaThLDKitZ84tJDrdjuXIM/GDfPHJR0=;
+        b=ZCc+jd2Y77bOQ19J49p8kgMTK4VaT2VWmCNV8zLo5DaG4rlBvOhRriLknSIXe1vyig
+         gxkH+TRl0Ko4twMWjuE6V3awgJpfLLMicMNHWwOxNG+iAuT9FPfQMs0ILCSUzlI0Zf8R
+         whosxZ7cg4caXjXG86eG4NzK8ShirKARU+NabPG75K4Dsv54sCo6a9fgoR1wJC2ng0Rj
+         wr40Bz99iAcDaTht/MJ8sOD0clnF1GMm/kwgesBNnTabE+ZeWbo3UZLKv9rk+gbH6N+r
+         RpIIFk7C74Ts5QSSGJbIwx2Zy+6hTOMEZIOBkdNC3yH4IYSz+WiEXLknBiiXFkJ+W9se
+         2d1A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1768904775; x=1769509575; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7dc4uOSwQ2vBzThtTBXaWxDon+kZapkB4rooEPiZwsE=;
+        b=SLTsLSsBmNdCC6K0hs7UxMOpWLLNe9OnzkqQV35PejWHCxehhZfZXrGQaaFNpWCCY+
+         l0L8EXAZFZAjj7irvRlZeBB/rnX8X66H6vhKX2vCnu7Y/t09c3YTPRIatosRiBJlZ/AJ
+         2N+RGPgPuByZlhxAYLoWMY7TliBGbTvCGYrKkXlN9tB6aNdrF13XETDOIA98huKqMGd6
+         XVuoo2J7A+peDjrap3bp4j2UOXkmPnHtmDh5y9L5fSwcNaoJ+UAnbNYDQXrUuP4q0MvZ
+         kCaXu3EF9rUqaS/igwsnpbbbZ/wvfFeb6LEY6M98PkPAhOjkjXfc26v0qwSOmkVEgwE6
+         QzXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768904775; x=1769509575;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7dc4uOSwQ2vBzThtTBXaWxDon+kZapkB4rooEPiZwsE=;
+        b=eQu/E5Oa1RXlEjuw3yZ8hZScdSNQhqYbf/d+EZaa8aUxUuLp9YJHkGDVabPTS5sNmf
+         AHm6RZby9R5G86ATvJ5MzwpaMvOMljZ0iFUsSvTjX9IqgMMnHu3zh+yCyhljKZEY5p0l
+         Tyb+dTfp3qghkAoDWWQRuVZxj6ajWhQf9/QZfBH+3k2EjQfhYZ1tHUS25k0ZLBpcgl1m
+         Bis8CP5LIUAG9BpFEccDuXiliW1hxGSobc3st/mi1UPdjjLaKkMqMzsw4B2b0FZgZZRD
+         4JbnIDhsfM8s9KbzZtF969V7DP60QXCe7vSn4coJF6tfqaO/RqYVVFmkDReqQF9NaWHU
+         zKdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTFDGyJ9a1DmPgt0rLq3OMCb5LfzWaWTD9cp/XZNYkeqcoRA6vSpxKKNjhgCSbjHHlMuGO2ZjviBI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRiKIt28n7hnYLhHV5doB6+zth1J1VeW8+AgPWOIeTzit/bVsW
+	udwEewO5p6QFAAu4exjJsfv5pRktSfzOh2S34AXZWgEgq6GATxxI4lN4WiRCNri66PdgIPXvs4/
+	UtwKzXc6dOJsgHYOZD7nwhbtlD165ry+TInP3KQK09A==
+X-Gm-Gg: AZuq6aKMxyfDLYO0aVJ9TVCqNeVtPRg5W6dYB71TcU90OBDruPDJLF7BQtmvQc8c6vP
+	7T8zsp1StFKZ8aar5CrXoe6G0qJLOVbKHQREM/lOkd3WmHZTn8kzhp8oUs+7qaEXzlP3QzbfD9l
+	6CjiXcZdxGQnwoCunKjyvLLBgub/FFjBH4kLY7VvLt7kD7/MrOdcrWjf9U7LBzOOtU+9wm+sFxw
+	Iirajgp3apS3IurX5UquuEPuQonRjHp2R1FewS1aihnjXfMfa836/ER4sGm+J29suFaLBA=
+X-Received: by 2002:a05:6512:68e:b0:59b:9a12:8902 with SMTP id
+ 2adb3069b0e04-59ba719c7f9mr6571686e87.23.1768904774640; Tue, 20 Jan 2026
+ 02:26:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
 List-Subscribe: <mailto:linux-mmc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <cover.1768232321.git.u.kleine-koenig@baylibre.com>
+ <397f45c2818f6632151f92b70e547262f373c3b6.1768232321.git.u.kleine-koenig@baylibre.com>
+ <CAPDyKFrman8YodyPNy6fSOYahoFKBuJRN6+Esz7ojmYqessEYw@mail.gmail.com> <v5jqdtpdj3zpuyo5owlujvifphjjxyygfrgqnmql664ck6vpc4@yvihqvp4lgka>
+In-Reply-To: <v5jqdtpdj3zpuyo5owlujvifphjjxyygfrgqnmql664ck6vpc4@yvihqvp4lgka>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 20 Jan 2026 11:25:38 +0100
+X-Gm-Features: AZwV_Qioo1xVJnMg6rdq9cvpXXwdbJnFq0ihxCbSVN1OxJlswmdZiRgfxeUuarE
+Message-ID: <CAPDyKFpzB82-pHwr+RtdiXcHPDDXyVh2xD+BVM635hP3bSJ8AQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] sdio: Provide a bustype shutdown function
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-01-20 at 11:27 +0100, Ulf Hansson wrote:
-> On Mon, 12 Jan 2026 at 16:47, Uwe Kleine-K=C3=B6nig
-> <u.kleine-koenig@baylibre.com> wrote:
-> >=20
-> > To prepare sdio drivers to migrate away from struct device_driver::shut=
-down
-> > (and then eventually remove that callback) create a serdev driver shutd=
-own
-> > callback and migration code to keep the existing behaviour. Note this
-> > introduces a warning for each driver that isn't converted yet to that
-> > callback at register time.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
->=20
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
->=20
-> Johannes, please pick this via your tree. And sorry for the delay in
-> reviewing this!
+On Mon, 19 Jan 2026 at 19:25, Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@baylibre.com> wrote:
+>
+> Hello Ulf,
+>
+> On Mon, Jan 19, 2026 at 04:00:48PM +0100, Ulf Hansson wrote:
+> > On Mon, 12 Jan 2026 at 16:47, Uwe Kleine-K=C3=B6nig
+> > <u.kleine-koenig@baylibre.com> wrote:
+> > > @@ -272,6 +290,13 @@ int __sdio_register_driver(struct sdio_driver *d=
+rv, struct module *owner)
+> > >         drv->drv.bus =3D &sdio_bus_type;
+> > >         drv->drv.owner =3D owner;
+> > >
+> > > +       /*
+> > > +        * This driver needs updating. Note that driver_register() wa=
+rns about
+> > > +        * this, so we're not adding another warning here.
+> > > +        */
+> > > +       if (!drv->shutdown && drv->drv.shutdown)
+> > > +               drv->shutdown =3D sdio_legacy_shutdown;
+> > > +
+> >
+> > Is this added only to keep the series bisectable or are there other
+> > (except those you fix in the series) sdio func drivers that make use
+> > of the shutdown callback?
+>
+> It's kept because I don't know if there are any other sdio driver in
+> flight and these would break silently when they are applied between this
+> series and the removal of the callbacks from struct device_driver.
+>
+> > In any case, when are you planning to remove this?
+>
+> So my plan is to remove this in a series where the last patch is the
+> modification to struct driver.
 
-Will do, no worries at all, thanks!
+Okay, thanks for clarifying!
 
-johannes
+Kind regards
+Uffe
 
