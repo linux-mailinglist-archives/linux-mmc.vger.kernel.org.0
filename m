@@ -1,48 +1,48 @@
-Return-Path: <linux-mmc+bounces-9935-lists+linux-mmc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-mmc+bounces-9939-lists+linux-mmc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-mmc@lfdr.de
 Delivered-To: lists+linux-mmc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AE8D3BD27
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 02:51:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F9AD3BD35
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 02:53:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9877E30734EA
-	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 01:49:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E11A30A8D67
+	for <lists+linux-mmc@lfdr.de>; Tue, 20 Jan 2026 01:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D95627B35B;
-	Tue, 20 Jan 2026 01:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BCD2C08B1;
+	Tue, 20 Jan 2026 01:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMyU05kf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NpBfhL9I"
 X-Original-To: linux-mmc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3341C21CC62;
-	Tue, 20 Jan 2026 01:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3937D29DB64;
+	Tue, 20 Jan 2026 01:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768873744; cv=none; b=llayaBzaMMknw9T33Lpn7AbhyUhwhPiBPzCyqel36mEnGLUArxsI17RAJPqsIMd2Cun7tveeSoM986UNy0ocqEW/xIVND/NV0Ffm4cKbRkDeyTPCsEWIPLWAHS65RJVRpxJDrvhew+7HVPviIE3WOy/LMOlGuvvatyPHZCMbCZo=
+	t=1768873748; cv=none; b=e7kfGrcRbexvfgZfxPeJr3H6MFRr7PreiE85GNQNPgEI/9LdGqYmwgBxKCLg7RQ83RMTxKvhyiG+yvfEc6y5EkD0TgyFcyJE9s0aF6I2waeA86RLHJDt7SWqIX+686BG3+PR0BhRsIuLFIaMLuvVLl2KWHT0jhOy1iWVo8vxUnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768873744; c=relaxed/simple;
-	bh=OsjbooI0PzsSGUgngyI7clHgsjttkcXNF84NTeIQn64=;
+	s=arc-20240116; t=1768873748; c=relaxed/simple;
+	bh=VzyB3Sqk9o+hcLkpFFFmVEc5a4M2ouj/OHzJ3QrwqD8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YZEGtaed1ZyEl6SFzdMqWdb2g0jGE/T5cqvKzG9WGg0ihmu7NvB+s4w+Zhgr+0csNnuVKV4098xVXddSTsYRo5OStTjPJQBK64ZEpajyoS3YKTCPE5pVx+KMJGMAIzhOsK3CLwZ+eGZ37gGuxUr5VArKU97VIOpoBASpQmbOprI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMyU05kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D7CC2BC86;
-	Tue, 20 Jan 2026 01:49:00 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=of30gu1ntw0vCt2mjE8LY2m2NHpYUNUMNWr4ZxAc+iXMhXtlE+nDDnE8oot4zlYxEUb41JWFcE+nIESfai5Pnh972gnf3idE44eSrAtOM2aI4/u83g1iUDSFUdoVqSgBQqJbJLz0gbyeWe2jScvECycF8Ze2mOrpflF7jjTEmUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NpBfhL9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6ABC16AAE;
+	Tue, 20 Jan 2026 01:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768873740;
-	bh=OsjbooI0PzsSGUgngyI7clHgsjttkcXNF84NTeIQn64=;
+	s=k20201202; t=1768873741;
+	bh=VzyB3Sqk9o+hcLkpFFFmVEc5a4M2ouj/OHzJ3QrwqD8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=WMyU05kfD6wMw3HNL51ohB+EWjX6Q11jMpErJ66tyqDx823smK+VyGSYwd0lpHM1j
-	 yHmOPy0SxO1gU5B9Kh38d4kr9FSMTCz6aHhNK0cQdsq/Ewr7K/eG80QD96swb0Jpa5
-	 t4m1hdz5rTUxD49SBS2HEs0nq1az6+Bh7ek3qTzV2+x3Sjbl90xU6MecvMMUjheopH
-	 n3j4OvlvWVk5s1A1gqL6D0K8od0q2PM2JgFPgd3zUab7VHsCnsHoHI60iBWG1hcuRF
-	 AT467ptvtQYTmK+LT7EOEeEtpyKl7T+PkmDvF+f5+DxhIe0cUaw5UU/LpHULSBxA1K
-	 HKgtKUhDaQJaQ==
+	b=NpBfhL9IcyNxS5y2b8VewOF9RgOioarlWc4+wuFcd5a78+AGmvwx9gANDTEb5axHg
+	 u9zmPJpqRjEWBKD+mwNca/siGGcMMblZMyO6QCbM09kO0zUpqGJPcjtswsTC+6P78P
+	 FoTyAQmRdUWrLs5IaM1sh7qaJJItyyToqMX45ZmzPE/LS5CZHA+p5FoInE6WO/nReP
+	 0szQwbsw9JNAYtVGnqLHs4hvj2Sa9mDn0oM24SPwEWH5nDgqTy1BokF7Jb31240sWE
+	 OaELpbM6vcGKssKvAN/PQw3tD8XGiy/KnQoA32fcsBvjpYH/qZ1G3aKeJnN5WIcoKc
+	 GudGW/aph/CcA==
 From: "Rob Herring (Arm)" <robh@kernel.org>
-Date: Mon, 19 Jan 2026 19:48:25 -0600
-Subject: [PATCH v2 04/10] dt-bindings: mtd: partitions: Allow
- "nvmem-layout" in generic partition nodes
+Date: Mon, 19 Jan 2026 19:48:26 -0600
+Subject: [PATCH v2 05/10] dt-bindings: mtd: partitions: Define
+ "#{address,size}-cells" in specific schemas
 Precedence: bulk
 X-Mailing-List: linux-mmc@vger.kernel.org
 List-Id: <linux-mmc.vger.kernel.org>
@@ -51,7 +51,7 @@ List-Unsubscribe: <mailto:linux-mmc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260119-dt-mtd-partitions-v2-4-77ebb958a312@kernel.org>
+Message-Id: <20260119-dt-mtd-partitions-v2-5-77ebb958a312@kernel.org>
 References: <20260119-dt-mtd-partitions-v2-0-77ebb958a312@kernel.org>
 In-Reply-To: <20260119-dt-mtd-partitions-v2-0-77ebb958a312@kernel.org>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
@@ -69,32 +69,70 @@ To: Miquel Raynal <miquel.raynal@bootlin.com>,
  Tony Lindgren <tony@atomide.com>, Roger Quadros <rogerq@kernel.org>, 
  Hauke Mehrtens <hauke@hauke-m.de>
 Cc: linux-mtd@lists.infradead.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+ linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
 X-Mailer: b4 0.15-dev
 
-An "nvmem-layout" node can be used in any partition node, so add it.
+Whether "#address-cells" and "#size-cells" are used or not depends on
+the specific partition type, so drop them from partitions.yaml and
+define them in the specific partition schemas as needed.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/mtd/partitions/partition.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+ .../devicetree/bindings/mtd/partitions/fixed-partitions.yaml        | 6 ++++--
+ Documentation/devicetree/bindings/mtd/partitions/partitions.yaml    | 6 ------
+ Documentation/devicetree/bindings/mtd/partitions/redboot-fis.yaml   | 4 ----
+ 3 files changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mtd/partitions/partition.yaml b/Documentation/devicetree/bindings/mtd/partitions/partition.yaml
-index 568fac50f921..fe2f7d622e8b 100644
---- a/Documentation/devicetree/bindings/mtd/partitions/partition.yaml
-+++ b/Documentation/devicetree/bindings/mtd/partitions/partition.yaml
-@@ -135,6 +135,9 @@ properties:
-       but may differ if device has bad eraseblocks on a flash.
-     $ref: /schemas/types.yaml#/definitions/uint32
+diff --git a/Documentation/devicetree/bindings/mtd/partitions/fixed-partitions.yaml b/Documentation/devicetree/bindings/mtd/partitions/fixed-partitions.yaml
+index b504d4376d0b..26bef777353d 100644
+--- a/Documentation/devicetree/bindings/mtd/partitions/fixed-partitions.yaml
++++ b/Documentation/devicetree/bindings/mtd/partitions/fixed-partitions.yaml
+@@ -25,9 +25,11 @@ properties:
+           - const: sercomm,sc-partitions
+           - const: fixed-partitions
  
-+  nvmem-layout:
-+    $ref: /schemas/nvmem/layouts/nvmem-layout.yaml
-+
- if:
-   not:
-     required: [ reg ]
+-  "#address-cells": true
++  "#address-cells":
++    enum: [ 1, 2 ]
+ 
+-  "#size-cells": true
++  "#size-cells":
++    enum: [ 1, 2 ]
+ 
+ patternProperties:
+   "@[0-9a-f]+$":
+diff --git a/Documentation/devicetree/bindings/mtd/partitions/partitions.yaml b/Documentation/devicetree/bindings/mtd/partitions/partitions.yaml
+index 1dda2c80747b..76199506d690 100644
+--- a/Documentation/devicetree/bindings/mtd/partitions/partitions.yaml
++++ b/Documentation/devicetree/bindings/mtd/partitions/partitions.yaml
+@@ -26,12 +26,6 @@ oneOf:
+ properties:
+   compatible: true
+ 
+-  '#address-cells':
+-    enum: [1, 2]
+-
+-  '#size-cells':
+-    enum: [1, 2]
+-
+ patternProperties:
+   "^partition(-.+|@[0-9a-f]+)$":
+     $ref: partition.yaml
+diff --git a/Documentation/devicetree/bindings/mtd/partitions/redboot-fis.yaml b/Documentation/devicetree/bindings/mtd/partitions/redboot-fis.yaml
+index ba7445cd69e8..ba627f51840b 100644
+--- a/Documentation/devicetree/bindings/mtd/partitions/redboot-fis.yaml
++++ b/Documentation/devicetree/bindings/mtd/partitions/redboot-fis.yaml
+@@ -28,10 +28,6 @@ properties:
+       device. On a flash memory with 32KB eraseblocks, 0 means the first
+       eraseblock at 0x00000000, 1 means the second eraseblock at 0x00008000 and so on.
+ 
+-  '#address-cells': false
+-
+-  '#size-cells': false
+-
+ required:
+   - compatible
+   - fis-index-block
 
 -- 
 2.51.0
